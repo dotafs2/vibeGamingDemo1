@@ -475,6 +475,8 @@ kbd {
   display: block;
   width: 29px;
   height: 29px;
+  z-index: 2;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.45));
 }
 .calibrator-icon::before {
   content: '';
@@ -499,30 +501,29 @@ kbd {
   background: #93613f;
   transform: skew(-9deg);
 }
-.blade-icon::before {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 13px;
-  width: 22px;
-  height: 6px;
-  border: 1px solid #9cf4f7;
-  border-radius: 3px 9px 9px 3px;
-  background: linear-gradient(180deg, #e5feff, #55c4ce);
-  box-shadow: 0 0 7px rgba(105,225,234,.42);
-  transform: rotate(-35deg);
-  transform-origin: left center;
-}
-.blade-icon::after {
+.drill-icon::before {
   content: '';
   position: absolute;
   left: 3px;
-  top: 17px;
-  width: 9px;
-  height: 4px;
-  border-radius: 2px;
-  background: #8e5b3c;
-  transform: rotate(-35deg);
+  top: 9px;
+  width: 17px;
+  height: 12px;
+  border: 1px solid #77dce5;
+  border-radius: 5px 2px 2px 5px;
+  background: linear-gradient(180deg, #4d8189, #1c3a41);
+  box-shadow: inset 5px 0 0 rgba(142,240,247,.45), 0 0 7px rgba(93,220,232,.35);
+}
+.drill-icon::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 9px solid #c8fbff;
+  filter: drop-shadow(0 0 3px rgba(105,225,234,.65));
 }
 .hammer-icon::before {
   content: '';
@@ -551,26 +552,26 @@ kbd {
 .wrench-icon::before {
   content: '';
   position: absolute;
-  left: 5px;
-  top: 13px;
-  width: 22px;
-  height: 6px;
+  left: 4px;
+  top: 12px;
+  width: 21px;
+  height: 7px;
   border-radius: 5px;
   background: linear-gradient(180deg, #d8fbfd, #55bec7);
   box-shadow: 0 0 6px rgba(93,220,232,.35);
-  transform: rotate(-38deg);
+  transform: rotate(-34deg);
 }
 .wrench-icon::after {
   content: '';
   position: absolute;
   left: 17px;
-  top: 4px;
-  width: 10px;
-  height: 10px;
-  border: 3px solid #77dce4;
-  border-left-color: transparent;
-  border-radius: 50%;
-  transform: rotate(8deg);
+  top: 2px;
+  width: 11px;
+  height: 12px;
+  border: 4px solid #a9f4f7;
+  border-right-color: transparent;
+  border-radius: 6px 0 0 6px;
+  transform: rotate(-34deg);
 }
 .mini-wheel {
   width: 23px;
@@ -765,6 +766,13 @@ kbd {
   32% { opacity: .8; transform: scaleX(1); }
   100% { opacity: 0; transform: scaleX(1.08); }
 }
+
+/* The direct Boss preview keeps combat, health, controls and the hotbar visible while removing story overlays. */
+.boss-preview-mode .brand,
+.boss-preview-mode .era-card,
+.boss-preview-mode .history-panel,
+.boss-preview-mode .door-status,
+.boss-preview-mode .world-legend { display: none; }
 
 @media (max-width: 900px) {
   .world-legend { display: none; }
