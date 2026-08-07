@@ -135,12 +135,45 @@ const player = {
   grounded: true,
   supportY: groundY,
   facing: 1,
+  aimX: 1,
+  aimY: 0,
   walkPhase: 0,
   walkBlend: 0,
   maxHealth: 100,
   health: 100,
   hurtCooldown: 0,
 };
+
+const pointerAim = {
+  initialized: false,
+  ndc: new THREE.Vector2(.65, 0),
+  world: new THREE.Vector3(),
+};
+
+function refreshAimDirection() {
+  if (!pointerAim.initialized) {
+    player.aimX = player.facing;
+    player.aimY = 0;
+    return;
+  }
+  pointerAim.world.set(pointerAim.ndc.x, pointerAim.ndc.y, 0).unproject(camera);
+  const dx = pointerAim.world.x - player.x;
+  const dy = pointerAim.world.y - (player.y + .12);
+  const length = Math.hypot(dx, dy);
+  if (length < .001) return;
+  player.aimX = dx / length;
+  player.aimY = dy / length;
+  if (Math.abs(dx) > .04) player.facing = dx < 0 ? -1 : 1;
+}
+
+function updatePointerAim(event) {
+  pointerAim.ndc.set(
+    event.clientX / innerWidth * 2 - 1,
+    -(event.clientY / innerHeight) * 2 + 1,
+  );
+  pointerAim.initialized = true;
+  refreshAimDirection();
+}
 
 const vertexShader = /* glsl */`
   varying vec2 vUv;
@@ -1153,11 +1186,11 @@ scene.add(playerMesh);
 
 function createCalibrator() {
   const group = new THREE.Group();
-  rectangle(group, .92, .28, '#284d55', .42, 0, .2, .98);
-  rectangle(group, .58, .18, '#8debf1', .55, .02, .22, .88);
-  polygon(group, [[0, .16], [.42, .1], [.42, -.1], [0, -.16]], '#d9f8fb', 1.04, 0, .24, .98);
-  rectangle(group, .2, .5, '#96613c', .18, -.29, .18, .98).rotation.z = -.2;
-  ring(group, .16, .09, '#8debf1', .92, 0, .26, .92, 20);
+  rectangle(group, .54, .17, '#284d55', .27, 0, .2, .98);
+  rectangle(group, .31, .09, '#8debf1', .33, .015, .22, .88);
+  polygon(group, [[0, .1], [.2, .065], [.2, -.065], [0, -.1]], '#d9f8fb', .54, 0, .24, .98);
+  rectangle(group, .13, .28, '#96613c', .14, -.17, .18, .98).rotation.z = -.18;
+  ring(group, .105, .06, '#8debf1', .5, 0, .26, .92, 18);
   return group;
 }
 
@@ -1166,7 +1199,7 @@ weaponRig.position.set(0, -.39, .45);
 const calibratorMesh = createCalibrator();
 weaponRig.add(calibratorMesh);
 playerMesh.userData.rig.rightArm.add(weaponRig);
-const muzzleFlash = polygon(weaponRig, [[0, .22], [.42, 0], [0, -.22]], '#c8fbff', 1.38, 0, .32, .9);
+const muzzleFlash = polygon(weaponRig, [[0, .11], [.22, 0], [0, -.11]], '#c8fbff', .75, 0, .32, .9);
 muzzleFlash.visible = false;
 
 const playerShotLayer = new THREE.Group();
@@ -1245,7 +1278,7 @@ function updateInventoryHud() {
   hotbarBreach.classList.toggle('empty', !hasBreachKit);
   hotbarCalibrator.classList.add('selected');
   inventoryItemName.textContent = '时相校准器';
-  inventoryItemStatus.textContent = '快捷栏 1 · 发射检修脉冲 · 命中暴露的时晶核心 · 不消耗弹药';
+  inventoryItemStatus.textContent = '快捷栏 1 · 鼠标自由瞄准 · J / 左键发射检修脉冲 · 不消耗弹药';
 }
 
 function setInventoryOpen(open) {
@@ -1368,10 +1401,14 @@ function resetHistory() {
   player.vx = 0;
   player.vy = 0;
   player.supportY = groundY;
+  player.facing = 1;
+  player.aimX = 1;
+  player.aimY = 0;
   player.walkPhase = 0;
   player.walkBlend = 0;
   player.health = player.maxHealth;
   player.hurtCooldown = 0;
+  pointerAim.initialized = false;
   clearCombatEffects();
   document.body.classList.remove('past');
   eraLabel.textContent = '现代 · 2147';
@@ -1716,15 +1753,26 @@ function checkHistoryEvents() {
 
 function tryAttack() {
   if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || state.attackCooldown > 0) return;
+  refreshAimDirection();
   state.attackDuration = .18;
   state.attackTimer = state.attackDuration;
   state.attackCooldown = .3;
   const mesh = new THREE.Group();
-  rectangle(mesh, .62, .12, '#bffaff', 0, 0, .06, .98);
-  ring(mesh, .22, .13, '#66d8e4', player.facing * .28, 0, .08, .82, 18);
-  mesh.position.set(player.x + player.facing * .82, player.y + .03, 2.75);
+  rectangle(mesh, .3, .075, '#bffaff', 0, 0, .06, .98);
+  ring(mesh, .105, .06, '#66d8e4', -.11, 0, .08, .82, 16);
+  mesh.rotation.z = Math.atan2(player.aimY, player.aimX);
+  mesh.position.set(
+    player.x + player.aimX * 1.06,
+    player.y + .12 + player.aimY * 1.06,
+    2.75,
+  );
   playerShotLayer.add(mesh);
-  playerShots.push({ mesh, vx: player.facing * 18.5, life: 2.6 });
+  playerShots.push({
+    mesh,
+    vx: player.aimX * 18.5,
+    vy: player.aimY * 18.5,
+    life: 2.6,
+  });
 }
 
 function clearCombatEffects() {
@@ -1821,6 +1869,7 @@ function updateCombat(dt, elapsed) {
     const shot = playerShots[index];
     shot.life -= dt;
     shot.mesh.position.x += shot.vx * dt;
+    shot.mesh.position.y += shot.vy * dt;
     const hitCore = state.bossAwake
       && !state.boss.defeated
       && state.eraTarget > .5
@@ -1830,9 +1879,18 @@ function updateCombat(dt, elapsed) {
       playerShotLayer.remove(shot.mesh);
       playerShots.splice(index, 1);
       damageBoss(24);
-    } else if (shot.life <= 0 || shot.mesh.position.x < 61.5 || shot.mesh.position.x > bossArenaEndX + 1) {
-      playerShotLayer.remove(shot.mesh);
-      playerShots.splice(index, 1);
+    } else {
+      const shotInLab = shot.mesh.position.y < -12;
+      const outsideHorizontalBounds = shotInLab
+        ? shot.mesh.position.x < 15.5 || shot.mesh.position.x > bossArenaEndX + 1
+        : shot.mesh.position.x < -18 || shot.mesh.position.x > 23;
+      const outsideVerticalBounds = shotInLab
+        ? shot.mesh.position.y < labGroundY - 2 || shot.mesh.position.y > labGroundY + 10.5
+        : shot.mesh.position.y < groundY - 2 || shot.mesh.position.y > groundY + 11;
+      if (shot.life <= 0 || outsideHorizontalBounds || outsideVerticalBounds) {
+        playerShotLayer.remove(shot.mesh);
+        playerShots.splice(index, 1);
+      }
     }
   }
 
@@ -2252,6 +2310,7 @@ function updateVisuals(dt, elapsed) {
   const accentColor = new THREE.Color('#dc8b4d').lerp(new THREE.Color('#75cbd6'), state.era);
   for (const item of playerMesh.userData.accentMaterials) item.color.copy(accentColor);
 
+  refreshAimDirection();
   const rig = playerMesh.userData.rig;
   const moving = player.grounded ? THREE.MathUtils.clamp(Math.abs(player.vx) / player.speed, 0, 1) : 0;
   player.walkBlend = THREE.MathUtils.damp(player.walkBlend, moving, moving > player.walkBlend ? 12 : 9, dt);
@@ -2276,9 +2335,10 @@ function updateVisuals(dt, elapsed) {
   const leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
   const rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
   let leftArmTarget = airborne ? .22 : armStride;
-  let rightArmTarget = airborne ? -.34 : -armStride;
+  const localAimAngle = Math.atan2(player.aimY, Math.abs(player.aimX));
+  const recoil = attacking ? Math.sin(attackProgress * Math.PI) * .07 : 0;
+  const rightArmTarget = localAimAngle + Math.PI * .5 - recoil;
   if (attacking) {
-    rightArmTarget = .24 - Math.sin(attackProgress * Math.PI) * .12;
     leftArmTarget = .12;
   }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
@@ -2300,10 +2360,10 @@ function updateVisuals(dt, elapsed) {
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
 
   calibratorMesh.rotation.z = 0;
-  calibratorMesh.position.x = attacking ? -Math.sin(attackProgress * Math.PI) * .12 : 0;
-  weaponRig.rotation.z = .05;
+  calibratorMesh.position.x = attacking ? -Math.sin(attackProgress * Math.PI) * .055 : 0;
+  weaponRig.rotation.z = -Math.PI * .5;
   muzzleFlash.visible = attacking && attackProgress < .52;
-  muzzleFlash.scale.setScalar(.72 + Math.sin(attackProgress * Math.PI) * .45);
+  muzzleFlash.scale.setScalar(.62 + Math.sin(attackProgress * Math.PI) * .28);
 
   if (player.hurtCooldown > .55) {
     for (const item of playerMesh.userData.bodyMaterials) item.color.set('#ff9b8d');
@@ -2347,7 +2407,7 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
-  if (!event.repeat && event.code === 'Digit1') showToast('已装备时相校准器：用于远程停机与核心调频');
+  if (!event.repeat && event.code === 'Digit1') showToast('已装备小型时相校准器：移动鼠标瞄准，按 J 或左键发射');
   if (!event.repeat && event.code === 'KeyJ') tryAttack();
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
   if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);
@@ -2358,8 +2418,12 @@ addEventListener('keydown', event => {
   keys.add(event.code);
   if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1'].includes(event.code)) event.preventDefault();
 });
+addEventListener('pointermove', updatePointerAim);
 addEventListener('pointerdown', event => {
-  if (event.button === 0) tryAttack();
+  if (event.button === 0) {
+    updatePointerAim(event);
+    tryAttack();
+  }
 });
 addEventListener('keyup', event => keys.delete(event.code));
 addEventListener('blur', () => keys.clear());
