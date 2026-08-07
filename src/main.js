@@ -9,6 +9,10 @@ const interaction = document.querySelector('#interaction');
 const eventCrate = document.querySelector('#event-crate');
 const eventPlate = document.querySelector('#event-plate');
 const eventGate = document.querySelector('#event-gate');
+const inventoryPanel = document.querySelector('#inventory-panel');
+const handwheelSlot = document.querySelector('#handwheel-slot');
+const inventoryItemName = document.querySelector('#inventory-item-name');
+const inventoryItemStatus = document.querySelector('#inventory-item-status');
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-16, 16, 9, -9, 0.1, 100);
@@ -29,9 +33,14 @@ const state = {
   lastToggle: -10,
   gateLift: 0,
   exitReached: false,
+  inventoryOpen: false,
+  inventory: {
+    handwheel: false,
+  },
   history: {
-    winchMoved: false,
-    winchInstalled: false,
+    wheelCollected: false,
+    wheelCrossed: false,
+    wheelInstalled: false,
     gateOpened: false,
   },
 };
@@ -268,23 +277,29 @@ function createCrate(width, height, fill, edge, rune = false) {
   return group;
 }
 
-const boxes = [
-  {
-    id: 'winch-crate',
-    width: 1.5,
-    height: 1.38,
-    pastX: -4.85,
-    presentX: -4.85,
-    initialPastX: -4.85,
-    initialPresentX: -4.85,
-    pastMesh: createCrate(1.5, 1.38, '#6d3d22', '#ffb15d', true),
-    presentMesh: createCrate(1.5, 1.38, '#263f45', '#79c6cf', true),
-  },
-];
+const handwheelPickupX = -4.85;
+const toolCratePast = createCrate(1.65, 1.28, '#6d3d22', '#ffb15d');
+toolCratePast.position.set(handwheelPickupX, groundY + .64, 1.0);
+scene.add(toolCratePast);
 
-for (const box of boxes) {
-  scene.add(box.pastMesh, box.presentMesh);
+function createHandwheel(color, opacity = 1) {
+  const group = new THREE.Group();
+  const ringPoints = Array.from({ length: 49 }, (_, index) => {
+    const angle = index / 48 * Math.PI * 2;
+    return new THREE.Vector3(Math.cos(angle) * .58, Math.sin(angle) * .58, .08);
+  });
+  group.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(ringPoints), lineMaterial(color, opacity)));
+  disc(group, .13, '#101b1e', 0, 0, .1, .96);
+  for (let index = 0; index < 8; index++) {
+    const angle = index / 8 * Math.PI * 2;
+    segment(group, Math.cos(angle) * .12, Math.sin(angle) * .12, Math.cos(angle) * .54, Math.sin(angle) * .54, color, opacity, .09);
+  }
+  return group;
 }
+
+const pastHandwheelPickup = createHandwheel('#ffb15d');
+pastHandwheelPickup.position.set(handwheelPickupX, groundY + 1.62, 1.3);
+scene.add(pastHandwheelPickup);
 
 function addStationNumber(group, color, opacity, yOffset = 0) {
   segment(group, -.72, 3.2 + yOffset, -.72, 4.05 + yOffset, color, opacity, .15);
@@ -348,19 +363,17 @@ function createWinch(baseColor, edgeColor) {
   rectangle(group, 1.45, 1.18, baseColor, 0, .72, 0, .96);
   disc(group, .43, '#101b1e', 0, .78, .06, .95);
   const drum = disc(group, .31, baseColor, 0, .78, .08, 1);
-  const handle = new THREE.Group();
-  handle.position.y = .78;
-  segment(handle, 0, 0, .62, .5, edgeColor, .95, .13);
-  disc(handle, .11, edgeColor, .68, .56, .13, .95);
-  group.add(handle);
   segment(group, .48, 1.23, gateX - winchSocketX - .35, 4.82, edgeColor, .45, .09);
   rectangle(group, .55, .22, edgeColor, -.42, .23, .08, .72);
   scene.add(group);
-  return { group, handle, drum };
+  return { group, drum };
 }
 
 const pastWinch = createWinch('#70402a', '#ffb15d');
 const modernWinch = createWinch('#29464d', '#82d6df');
+const modernInstalledWheel = createHandwheel('#82d6df');
+modernInstalledWheel.position.set(winchSocketX, groundY + .78, 1.24);
+scene.add(modernInstalledWheel);
 
 const exitGroup = new THREE.Group();
 exitGroup.position.set(12.9, -1.3, -.2);
@@ -425,9 +438,37 @@ function flashTime() {
   timeFlash.classList.add('active');
 }
 
+function updateInventoryHud() {
+  const hasWheel = state.inventory.handwheel;
+  handwheelSlot.classList.toggle('empty', !hasWheel);
+  if (hasWheel) {
+    inventoryItemName.textContent = '03号机械手轮';
+    inventoryItemStatus.textContent = '时间锚物品 · 取得于2047年 · 可带往2147年';
+  } else if (state.history.wheelInstalled) {
+    inventoryItemName.textContent = '手轮已取出';
+    inventoryItemStatus.textContent = '当前安装在2147年的03号闸门上';
+  } else {
+    inventoryItemName.textContent = '空物品栏';
+    inventoryItemStatus.textContent = '尚未取得可跨时物品';
+  }
+}
+
+function setInventoryOpen(open) {
+  state.inventoryOpen = open;
+  inventoryPanel.classList.toggle('open', open);
+  inventoryPanel.setAttribute('aria-hidden', String(!open));
+  keys.clear();
+  updateInventoryHud();
+}
+
+function toggleInventory() {
+  setInventoryOpen(!state.inventoryOpen);
+}
+
 function toggleEra() {
   const now = clock.elapsedTime;
   if (now - state.lastToggle < .55) return;
+  setInventoryOpen(false);
   state.lastToggle = now;
   state.eraTarget = state.eraTarget > .5 ? 0 : 1;
   state.pulse = 1;
@@ -437,10 +478,13 @@ function toggleEra() {
 
   if (state.eraTarget < .5) {
     showToast('固定时间点：2047年，03号矿场仍在正常运行');
-  } else if (state.history.winchInstalled) {
-    showToast('固定时间点：2147年，过去安装的绞盘仍留在同一扇门上');
+  } else if (state.history.wheelInstalled) {
+    showToast('固定时间点：2147年，跨时带来的手轮仍安装在03号闸门上');
+  } else if (state.inventory.handwheel) {
+    state.history.wheelCrossed = true;
+    showToast('固定时间点：2147年，时间锚背包把2047年的手轮带了过来');
   } else {
-    showToast('固定时间点：2147年，闸门仍因缺少手动装置而锁死');
+    showToast('固定时间点：2147年，闸门仍因缺少手动开门盘而锁死');
   }
   updateHud();
 }
@@ -451,13 +495,14 @@ function resetHistory() {
   state.pulse = 1;
   state.gateLift = 0;
   state.exitReached = false;
-  state.history.winchMoved = false;
-  state.history.winchInstalled = false;
+  state.inventoryOpen = false;
+  state.inventory.handwheel = false;
+  state.history.wheelCollected = false;
+  state.history.wheelCrossed = false;
+  state.history.wheelInstalled = false;
   state.history.gateOpened = false;
-  for (const box of boxes) {
-    box.pastX = box.initialPastX;
-    box.presentX = box.initialPresentX;
-  }
+  inventoryPanel.classList.remove('open');
+  inventoryPanel.setAttribute('aria-hidden', 'true');
   player.x = -10.4;
   player.y = groundY + player.halfH;
   player.vx = 0;
@@ -469,64 +514,19 @@ function resetHistory() {
   updateHud();
 }
 
-function boxIsActive(box) {
-  return state.eraTarget < .5 && box.id === 'winch-crate' && !state.history.winchInstalled;
-}
-
-function activeBoxX(box) {
-  return box.pastX;
-}
-
-function setActiveBoxX(box, value) {
-  box.pastX = value;
-  if (Math.abs(box.pastX - box.initialPastX) > .3 && !state.history.winchMoved) {
-    state.history.winchMoved = true;
-    showToast('2047年事件：你开始搬运尚未安装的机械绞盘');
-    updateHud();
-  }
-}
-
 function overlaps(aCenter, aHalf, bCenter, bHalf) {
   return Math.abs(aCenter - bCenter) < aHalf + bHalf;
 }
 
-function boxCanMove(box, nextX) {
-  if (!boxIsActive(box)) return false;
-  if (nextX - box.width / 2 < -14.5 || nextX + box.width / 2 > 14.5) return false;
-  if (box.id === 'winch-crate' && nextX > winchSocketX + .55) return false;
-  if (overlaps(nextX, box.width / 2, gateX, .72)) return false;
-  return true;
-}
-
 function updateHorizontal(dt) {
-  const direction = (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0);
+  const direction = state.inventoryOpen
+    ? 0
+    : (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0);
   player.vx = THREE.MathUtils.damp(player.vx, direction * player.speed, direction ? 15 : 22, dt);
   if (direction) player.facing = direction;
   let nextX = THREE.MathUtils.clamp(player.x + player.vx * dt, -14.7, 14.7);
   const playerBottom = player.y - player.halfH;
   const playerTop = player.y + player.halfH;
-
-  const orderedBoxes = boxes
-    .filter(boxIsActive)
-    .sort((a, b) => direction >= 0 ? activeBoxX(a) - activeBoxX(b) : activeBoxX(b) - activeBoxX(a));
-  for (const box of orderedBoxes) {
-    const boxX = activeBoxX(box);
-    const boxBottom = groundY;
-    const boxTop = groundY + box.height;
-    const verticalOverlap = playerTop > boxBottom + .08 && playerBottom < boxTop - .06;
-    if (!verticalOverlap || !overlaps(nextX, player.halfW, boxX, box.width / 2)) continue;
-
-    const pushAmount = nextX - player.x;
-    const nextBoxX = boxX + pushAmount;
-    if (direction && boxCanMove(box, nextBoxX)) {
-      setActiveBoxX(box, nextBoxX);
-    } else {
-      nextX = direction > 0
-        ? boxX - box.width / 2 - player.halfW
-        : boxX + box.width / 2 + player.halfW;
-      player.vx = 0;
-    }
-  }
 
   const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
   const gateVerticalOverlap = playerTop > gateBottom + .05;
@@ -541,21 +541,8 @@ function updateHorizontal(dt) {
 
 function updateVertical(dt) {
   player.vy -= 24 * dt;
-  const previousBottom = player.y - player.halfH;
   let nextY = player.y + player.vy * dt;
   let landingY = groundY;
-
-  if (player.vy <= 0) {
-    for (const box of boxes) {
-      if (!boxIsActive(box)) continue;
-      const top = groundY + box.height;
-      const horizontalOverlap = overlaps(player.x, player.halfW * .82, activeBoxX(box), box.width / 2 * .92);
-      const nextBottom = nextY - player.halfH;
-      if (horizontalOverlap && previousBottom >= top - .08 && nextBottom <= top) {
-        landingY = Math.max(landingY, top);
-      }
-    }
-  }
 
   const nextBottom = nextY - player.halfH;
   if (player.vy <= 0 && nextBottom <= landingY) {
@@ -569,34 +556,39 @@ function updateVertical(dt) {
 }
 
 function tryJump() {
-  if (!player.grounded) return;
+  if (state.inventoryOpen || !player.grounded) return;
   player.vy = player.jumpSpeed;
   player.grounded = false;
 }
 
 function handleInteraction() {
-  const crate = boxes[0];
+  if (state.inventoryOpen) return;
+  const playerNearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const playerNearSocket = Math.abs(player.x - winchSocketX) < 2.0;
 
   if (state.eraTarget < .5) {
-    const crateReady = Math.abs(crate.pastX - winchSocketX) < .72;
-    if (!state.history.winchInstalled && crateReady && playerNearSocket) {
-      state.history.winchInstalled = true;
-      crate.pastX = winchSocketX;
-      showToast('2047年改写：机械绞盘已永久安装在03号闸门上');
+    if (!state.history.wheelCollected && playerNearPickup) {
+      state.inventory.handwheel = true;
+      state.history.wheelCollected = true;
+      showToast('已拾取03号机械手轮；按 B 可以查看时间锚背包');
       updateHud();
-    } else if (!state.history.winchInstalled && playerNearSocket) {
-      showToast('先把维修绞盘推到黄色接口内');
+    } else if (playerNearSocket) {
+      showToast('2047年的电磁联锁仍在通电；把手轮带到断电的2147年');
     }
     return;
   }
 
   if (!playerNearSocket) return;
-  if (!state.history.winchInstalled) {
-    showToast('2147年的接口是空的；必须在2047年完成安装');
+  if (!state.history.wheelInstalled && state.inventory.handwheel) {
+    state.inventory.handwheel = false;
+    state.history.wheelInstalled = true;
+    showToast('2147年操作：从背包取出2047年的手轮并安装到闸门接口');
+    updateHud();
+  } else if (!state.history.wheelInstalled) {
+    showToast('缺少机械手轮；按 Q 到2047年取得它');
   } else if (!state.history.gateOpened) {
     state.history.gateOpened = true;
-    showToast('2147年操作：绞盘带动配重，03号闸门正在升起');
+    showToast('手轮开始转动：配重拉起03号闸门');
     updateHud();
   } else {
     showToast('机械安全卡扣已经锁定，闸门保持开启');
@@ -612,50 +604,54 @@ function checkHistoryEvents() {
     && !state.exitReached
   ) {
     state.exitReached = true;
-    showToast('验证完成：2047年的永久安装为2147年留下了开门手段');
+    showToast('验证完成：你把2047年的物品带到2147年解决了现代障碍');
     updateHud();
   }
 }
 
 function updateHud() {
-  eventCrate.classList.toggle('active', state.history.winchMoved);
-  eventPlate.classList.toggle('active', state.history.winchInstalled);
+  eventCrate.classList.toggle('active', state.history.wheelCollected);
+  eventPlate.classList.toggle('active', state.history.wheelCrossed);
   eventGate.classList.toggle('active', state.history.gateOpened);
-  eventCrate.querySelector('span').textContent = state.history.winchMoved ? '绞盘已离开维修区' : '尚未发生';
-  eventPlate.querySelector('span').textContent = state.history.winchInstalled ? '装置永久留在闸门上' : '尚未发生';
-  eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待历史';
+  eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已进入背包' : '尚未发生';
+  eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
+  eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
 
   if (state.exitReached) {
-    objective.textContent = '验证完成：两个固定时间点共享同一扇已经被改造的03号闸门';
+    objective.textContent = '验证完成：时间锚背包把2047年的手轮带到了2147年';
   } else if (state.eraTarget < .5) {
-    objective.textContent = state.history.winchInstalled
-      ? '2047年：绞盘已经安装，但通电的电磁锁仍关闭闸门。按 Q 返回2147年'
-      : '2047年：把橙色维修绞盘推到门边黄色接口，靠近后按 E 安装';
+    objective.textContent = state.history.wheelCollected
+      ? '2047年：手轮已在时间锚背包中。按 B 查看，按 Q 把它带回2147年'
+      : '2047年：前往左侧橙色维修箱，靠近完整手轮后按 E 拾取';
   } else if (state.history.gateOpened) {
     objective.textContent = '2147年：闸门已经升起并被机械卡扣锁住，前往右侧出口';
-  } else if (state.history.winchInstalled) {
-    objective.textContent = '2147年：过去安装的绞盘仍在。靠近门边装置并按 E 转动';
+  } else if (state.history.wheelInstalled) {
+    objective.textContent = '2147年：手轮已经装上。再次按 E 转动手轮并拉起闸门';
+  } else if (state.inventory.handwheel) {
+    objective.textContent = '2147年：2047年的手轮就在背包里。靠近门边接口按 E 安装';
   } else {
-    objective.textContent = '2147年：闸门断电锁死，手动接口为空。按 Q 前往固定的2047年';
+    objective.textContent = '2147年：闸门缺少手动开门盘。按 Q 前往固定的2047年寻找零件';
   }
+  updateInventoryHud();
 }
 
 function updateInteractionHint() {
-  const crate = boxes[0];
-  const nearCrate = boxIsActive(crate) && Math.abs(player.x - crate.pastX) < 1.65;
+  const nearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const nearSocket = Math.abs(player.x - winchSocketX) < 2.0;
   let message = '';
 
-  if (state.eraTarget < .5 && !state.history.winchInstalled) {
-    const crateReady = Math.abs(crate.pastX - winchSocketX) < .72;
-    if (crateReady && nearSocket) message = '按 E 把绞盘永久安装到03号闸门';
-    else if (nearCrate) message = '继续移动即可推动橙色维修绞盘';
-    else if (nearSocket) message = '黄色接口等待机械绞盘';
-  } else if (state.eraTarget < .5 && state.history.winchInstalled && nearSocket) {
-    message = '绞盘已经安装；2047年的电磁锁仍在通电';
+  if (state.inventoryOpen) {
+    message = '';
+  } else if (state.eraTarget < .5 && nearPickup) {
+    message = state.history.wheelCollected
+      ? '维修箱上的机械手轮已经被你取走'
+      : '按 E 拾取03号机械手轮并放入背包';
+  } else if (state.eraTarget < .5 && nearSocket) {
+    message = '2047年的电磁联锁仍在通电，手轮无法绕过权限';
   } else if (state.eraTarget > .5 && nearSocket) {
-    if (!state.history.winchInstalled) message = '2147年的手动接口为空';
-    else if (!state.history.gateOpened) message = '按 E 转动保存至今的机械绞盘';
+    if (!state.history.wheelInstalled && state.inventory.handwheel) message = '按 E 从背包取出手轮并安装';
+    else if (!state.history.wheelInstalled) message = '2147年的手动开门接口缺少手轮';
+    else if (!state.history.gateOpened) message = '按 E 转动刚刚安装的机械手轮';
     else message = '配重与安全卡扣正在保持闸门开启';
   }
 
@@ -667,15 +663,18 @@ function updateHistoryOutcome(dt, elapsed) {
   const liftTarget = state.history.gateOpened ? 1 : 0;
   state.gateLift = THREE.MathUtils.damp(state.gateLift, liftTarget, 3.4, dt);
   modernGate.door.position.y = 2.58 + state.gateLift * 5.2;
-  modernWinch.handle.rotation.z = -state.gateLift * Math.PI * 3.5;
   modernWinch.drum.rotation.z = state.gateLift * Math.PI * 2.2;
+  modernInstalledWheel.rotation.z = -state.gateLift * Math.PI * 3.5;
 
   setLayerOpacity(pastGate.group, 1 - state.era);
   setLayerOpacity(modernGate.group, state.era);
   setLayerOpacity(pastSocket, 1 - state.era);
   setLayerOpacity(modernSocket, state.era);
-  setLayerOpacity(pastWinch.group, (1 - state.era) * (state.history.winchInstalled ? 1 : 0));
-  setLayerOpacity(modernWinch.group, state.era * (state.history.winchInstalled ? 1 : 0));
+  setLayerOpacity(pastWinch.group, 1 - state.era);
+  setLayerOpacity(modernWinch.group, state.era);
+  setLayerOpacity(toolCratePast, 1 - state.era);
+  setLayerOpacity(pastHandwheelPickup, (1 - state.era) * (state.history.wheelCollected ? 0 : 1));
+  setLayerOpacity(modernInstalledWheel, state.era * (state.history.wheelInstalled ? 1 : 0));
 
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
@@ -698,16 +697,6 @@ function updateVisuals(dt, elapsed) {
   groundMaterial.color.copy(groundPast.lerp(groundPresent, state.era));
   particleMaterial.color.copy(new THREE.Color('#ff9b52').lerp(new THREE.Color('#82d9e5'), state.era));
   particles.rotation.z = Math.sin(elapsed * .08) * .012;
-
-  for (const box of boxes) {
-    box.pastMesh.position.set(box.pastX, groundY + box.height / 2, 1.1);
-    box.presentMesh.position.set(box.presentX, groundY + box.height / 2, 1.2);
-    const portableAmount = state.history.winchInstalled ? 0 : 1;
-    setLayerOpacity(box.pastMesh, (1 - state.era) * portableAmount);
-    setLayerOpacity(box.presentMesh, 0);
-    const nearPast = state.eraTarget < .5 && Math.abs(player.x - box.pastX) < 1.7;
-    box.pastMesh.userData.edgeMaterial.opacity = (nearPast ? 1 : .78) * (1 - state.era);
-  }
 
   const playerPast = new THREE.Color('#ffd8ad');
   const playerPresent = new THREE.Color('#dffaff');
@@ -736,12 +725,14 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
+  if (!event.repeat && event.code === 'KeyB') toggleInventory();
+  if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);
   if (!event.repeat && event.code === 'KeyQ') toggleEra();
   if (!event.repeat && event.code === 'KeyR') resetHistory();
   if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyD', 'KeyE', 'KeyQ'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyQ'].includes(event.code)) event.preventDefault();
 });
 addEventListener('keyup', event => keys.delete(event.code));
 addEventListener('blur', () => keys.clear());
