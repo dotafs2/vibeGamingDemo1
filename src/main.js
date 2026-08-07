@@ -33,6 +33,7 @@ const keys = new Set();
 const groundY = -4.55;
 const labGroundY = -22.4;
 const elevatorX = 18.25;
+const labEntranceX = 21.7;
 const reactorControlX = 47.2;
 const futureBarrierX = 57.4;
 const bossTriggerX = 65.0;
@@ -45,6 +46,7 @@ const state = {
   gateLift: 0,
   exitReached: false,
   elevatorY: groundY,
+  elevatorTargetY: labGroundY,
   elevatorRiding: false,
   elevatorAtBottom: false,
   bossAwake: false,
@@ -486,6 +488,20 @@ function buildExpandedMine(group, palette, ruined) {
     pastElevatorCar = car;
     group.add(car);
   } else {
+    // At the modern shaft mouth the missing car is visible immediately: open void, torn doors and snapped cables.
+    rectangle(group, 3.0, 3.65, '#061217', elevatorX, groundY + 1.85, -.72, .98);
+    rectangle(group, .24, 3.9, palette.trim, 16.68, groundY + 1.95, -.5, .62);
+    rectangle(group, .24, 3.9, palette.trim, 19.82, groundY + 1.95, -.5, .62);
+    rectangle(group, 3.35, .26, palette.trim, elevatorX, groundY + 3.88, -.48, .68);
+    const brokenDoorLeft = rectangle(group, 1.08, 3.25, palette.cage, 17.28, groundY + 1.6, -.35, .32);
+    const brokenDoorRight = rectangle(group, .86, 2.4, palette.cage, 19.22, groundY + 1.15, -.35, .28);
+    brokenDoorLeft.rotation.z = -.08;
+    brokenDoorRight.rotation.z = .16;
+    ring(group, .42, .31, palette.trim, elevatorX, groundY + 4.45, -.4, .48, 24);
+    segment(group, elevatorX, groundY + 4.05, 17.75, groundY + 1.15, palette.cable, .62, -.28);
+    segment(group, 17.75, groundY + 1.15, 18.05, groundY + .55, palette.cable, .46, -.28);
+    segment(group, 15.35, groundY + 1.35, 16.05, groundY + .65, palette.deadLamp, .7, -.2);
+    segment(group, 16.05, groundY + 1.35, 15.35, groundY + .65, palette.deadLamp, .7, -.2);
     segment(group, 17.65, groundY + 3.5, 17.65, groundY - 4.1, palette.cable, .34, -1.6);
     segment(group, 18.85, groundY + 3.5, 18.2, groundY - 5.5, palette.cable, .28, -1.6);
     const wreck = new THREE.Group();
@@ -506,6 +522,26 @@ function buildExpandedMine(group, palette, ruined) {
   for (const x of [21.0, 29.0, 37.0, 45.0, 53.0, 59.2, 62.0, 70.0, 80.0, 90.0]) {
     const column = rectangle(group, .2, 7.25, palette.structure, x, labGroundY + 3.55, -2.6, ruined ? .36 : .72);
     if (ruined && (x === 37.0 || x === 70.0)) column.rotation.z = x < 50 ? -.06 : .045;
+  }
+
+  // Laboratory entrance: powered and permission-locked in 2047, collapsed open in 2147.
+  rectangle(group, .28, 7.1, palette.trim, labEntranceX - .9, labGroundY + 3.5, -1.15, .92);
+  rectangle(group, .28, 7.1, palette.trim, labEntranceX + .9, labGroundY + 3.5, -1.15, .92);
+  rectangle(group, 2.1, .28, palette.trim, labEntranceX, labGroundY + 7.0, -1.12, .92);
+  if (!ruined) {
+    rectangle(group, 1.5, 6.35, palette.bulkhead, labEntranceX, labGroundY + 3.2, -.96, .98);
+    for (let y = labGroundY + .55; y <= labGroundY + 5.9; y += .72) {
+      segment(group, labEntranceX - .62, y, labEntranceX + .62, y, palette.archGlow, .42, -.72);
+    }
+    for (let index = 0; index < 4; index++) {
+      disc(group, .075, palette.lamp, labEntranceX - 1.2, labGroundY + 5.25 - index * .5, -.7, .88, 14);
+    }
+  } else {
+    rectangle(group, 1.55, 6.1, '#07161b', labEntranceX, labGroundY + 3.1, -1.02, .98);
+    const fallenDoor = rectangle(group, 1.5, 4.2, palette.bulkhead, labEntranceX + .72, labGroundY + .95, -.78, .58);
+    fallenDoor.rotation.z = -1.17;
+    segment(group, labEntranceX - .55, labGroundY + 5.8, labEntranceX + .35, labGroundY + 4.9, palette.cable, .46, -.65);
+    segment(group, labEntranceX + .35, labGroundY + 4.9, labEntranceX + .05, labGroundY + 3.85, palette.cable, .34, -.65);
   }
 
   // Sample storage area.
@@ -821,31 +857,45 @@ function createPlayer() {
   rectangle(headRig, .22, .16, '#0e272d', .11, .02, .08, .95);
   group.add(headRig);
 
-  function makeLimb(x, y, length, width, isLeg) {
+  function makeArm(x, y) {
     const limb = new THREE.Group();
     limb.position.set(x, y, .06);
-    const limbBody = rectangle(limb, width, length, '#e9fdff', 0, -length / 2, .08, .96);
+    const limbBody = rectangle(limb, .16, .39, '#e9fdff', 0, -.195, .08, .96);
     limbBody.material = bodyMat;
-    disc(limb, width * .54, '#e9fdff', 0, 0, .09, .96, 12).material = bodyMat;
-    if (isLeg) {
-      const foot = rectangle(limb, .28, .13, '#e9fdff', .07, -length, .1, .96);
-      foot.material = bodyMat;
-    } else {
-      disc(limb, width * .52, '#e9fdff', 0, -length, .1, .96, 12).material = bodyMat;
-    }
+    disc(limb, .086, '#e9fdff', 0, 0, .09, .96, 12).material = bodyMat;
+    disc(limb, .083, '#e9fdff', 0, -.39, .1, .96, 12).material = bodyMat;
     group.add(limb);
     return limb;
   }
 
-  const leftLeg = makeLimb(-.13, -.42, .43, .18, true);
-  const rightLeg = makeLimb(.13, -.42, .43, .18, true);
-  const leftArm = makeLimb(-.3, .12, .39, .16, false);
-  const rightArm = makeLimb(.3, .12, .39, .16, false);
+  function makeLeg(x) {
+    const hip = new THREE.Group();
+    hip.position.set(x, -.4, .06);
+    const upper = rectangle(hip, .19, .25, '#e9fdff', 0, -.125, .08, .98);
+    upper.material = bodyMat;
+    const knee = new THREE.Group();
+    knee.position.set(0, -.245, .02);
+    disc(knee, .098, '#e9fdff', 0, 0, .09, .98, 12).material = bodyMat;
+    const lower = rectangle(knee, .18, .25, '#e9fdff', 0, -.125, .08, .98);
+    lower.material = bodyMat;
+    const boot = rectangle(knee, .29, .14, '#75cbd6', .07, -.27, .11, .98);
+    boot.material = trimMat;
+    hip.add(knee);
+    group.add(hip);
+    return { hip, knee };
+  }
+
+  const leftLegRig = makeLeg(-.13);
+  const rightLegRig = makeLeg(.13);
+  const leftLeg = leftLegRig.hip;
+  const rightLeg = rightLegRig.hip;
+  const leftArm = makeArm(-.3, .12);
+  const rightArm = makeArm(.3, .12);
 
   group.userData.bodyMaterials = [bodyMat];
   group.userData.accentMaterials = [trimMat];
   group.userData.rig = {
-    bodyRig, headRig, shadow, leftLeg, rightLeg, leftArm, rightArm,
+    bodyRig, headRig, shadow, leftLeg, rightLeg, leftKnee: leftLegRig.knee, rightKnee: rightLegRig.knee, leftArm, rightArm,
     bodyBaseY: bodyRig.position.y,
     headBaseY: headRig.position.y,
     leftArmBaseY: leftArm.position.y,
@@ -953,6 +1003,7 @@ function resetHistory() {
   state.gateLift = 0;
   state.exitReached = false;
   state.elevatorY = groundY;
+  state.elevatorTargetY = labGroundY;
   state.elevatorRiding = false;
   state.elevatorAtBottom = false;
   state.bossAwake = false;
@@ -992,18 +1043,24 @@ function isLowerLevel() {
 
 function updateElevator(dt) {
   if (!state.elevatorRiding) return;
-  state.elevatorY = Math.max(labGroundY, state.elevatorY - dt * 4.35);
+  const direction = Math.sign(state.elevatorTargetY - state.elevatorY);
+  const remaining = Math.abs(state.elevatorTargetY - state.elevatorY);
+  state.elevatorY += direction * Math.min(remaining, dt * 4.35);
   player.x = elevatorX;
   player.y = state.elevatorY + player.halfH;
   player.vx = 0;
   player.vy = 0;
   player.grounded = true;
-  if (state.elevatorY <= labGroundY + .015) {
-    state.elevatorY = labGroundY;
+  if (remaining <= dt * 4.35 + .015) {
+    state.elevatorY = state.elevatorTargetY;
     state.elevatorRiding = false;
-    state.elevatorAtBottom = true;
-    state.history.elevatorUsed = true;
-    showToast('已抵达地下实验室：这里仍是2047年，可以调查培养装置');
+    state.elevatorAtBottom = state.elevatorTargetY === labGroundY;
+    if (state.elevatorAtBottom) {
+      state.history.elevatorUsed = true;
+      showToast('抵达地下层：2047年的实验室安全门锁死，按 Q 去2147年穿过坍塌入口');
+    } else {
+      showToast('升降机已返回2047年地面层；切到2147年即可穿过已经打开的03号门离开');
+    }
     updateHud();
   }
 }
@@ -1031,12 +1088,13 @@ function updateHorizontal(dt) {
       player.vx = 0;
     }
   } else {
+    const blockedByPastLabDoor = state.eraTarget < .5 && overlaps(nextX, player.halfW, labEntranceX, .72);
     const blockedByPastBulkhead = state.eraTarget < .5 && overlaps(nextX, player.halfW, 60.2, .72);
     const blockedByFutureGrowth = state.eraTarget > .5
       && !state.history.experimentShutdown
       && overlaps(nextX, player.halfW, futureBarrierX, .9);
-    if (blockedByPastBulkhead || blockedByFutureGrowth) {
-      const obstacleX = blockedByPastBulkhead ? 60.2 : futureBarrierX;
+    if (blockedByPastLabDoor || blockedByPastBulkhead || blockedByFutureGrowth) {
+      const obstacleX = blockedByPastLabDoor ? labEntranceX : (blockedByPastBulkhead ? 60.2 : futureBarrierX);
       nextX = player.x < obstacleX
         ? obstacleX - .9 - player.halfW
         : obstacleX + .9 + player.halfW;
@@ -1072,25 +1130,44 @@ function tryJump() {
 function handleInteraction() {
   if (state.inventoryOpen) return;
   const lowerLevel = isLowerLevel();
-  const nearElevator = !lowerLevel && Math.abs(player.x - elevatorX) < 2.0;
+  const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
+  const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
   const nearReactorControl = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
   const playerNearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const playerNearSocket = Math.abs(player.x - winchSocketX) < 2.0;
 
   if (nearElevator) {
     if (state.eraTarget > .5) {
-      showToast('2147年：轿厢已经坠毁，钢缆断裂；回到2047年乘仍在运行的同一部电梯');
-    } else if (state.elevatorAtBottom) {
-      showToast('2047年的轿厢已经停在实验室层');
+      showToast(lowerLevel
+        ? '2147年井底只剩坠毁轿厢；按 Q 回2047年，使用完好的轿厢返回地面'
+        : '2147年井口是空的：轿厢坠毁、钢缆断裂；回2047年乘完整电梯');
+    } else if (lowerLevel && state.elevatorAtBottom) {
+      state.elevatorRiding = true;
+      state.elevatorTargetY = groundY;
+      player.x = elevatorX;
+      player.vx = 0;
+      keys.clear();
+      showToast('2047年升降机返程启动：正在上升到地面层');
+      updateHud();
+    } else if (!lowerLevel && state.elevatorAtBottom) {
+      showToast('2047年的轿厢当前停在实验室层');
     } else {
       state.elevatorRiding = true;
       state.elevatorY = groundY;
+      state.elevatorTargetY = labGroundY;
       player.x = elevatorX;
       player.vx = 0;
       keys.clear();
       showToast('2047年升降机启动：下降期间强电磁场会暂时干扰时间锚');
       updateHud();
     }
+    return;
+  }
+
+  if (nearLabEntrance) {
+    showToast(state.eraTarget < .5
+      ? '2047年实验室安全门受权限锁定；按 Q 回2147年，从已经坍塌的同一扇门进入'
+      : '2147年门扇和锁具已经坍塌，入口可以直接穿过');
     return;
   }
 
@@ -1190,10 +1267,17 @@ function updateHud() {
   eventFuture.querySelector('span').textContent = state.history.futureCleared ? 'Boss通道已经露出' : '等待改写';
 
   const lowerLevel = isLowerLevel();
+  const beforeLabEntrance = lowerLevel && player.x < labEntranceX - .75;
   if (state.bossAwake) {
     objective.textContent = '2147年：异常采掘构装体已经苏醒；Boss房间与入场流程验证完成';
   } else if (state.elevatorRiding) {
-    objective.textContent = '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰';
+    objective.textContent = state.elevatorTargetY === labGroundY
+      ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
+      : '2047年：升降机正在返回地面层，时间切换暂时受到干扰';
+  } else if (beforeLabEntrance && state.eraTarget < .5) {
+    objective.textContent = '2047年井底：实验室安全门权限锁死。按 Q 去2147年穿过坍塌后的同一入口';
+  } else if (beforeLabEntrance) {
+    objective.textContent = '2147年井底：实验室安全门已经坍塌，向右穿过缺口进入实验室';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.experimentShutdown) {
     objective.textContent = '2047年实验室：向右调查时间矿物培养舱，靠近紧急断路杆按 E';
   } else if (lowerLevel && state.eraTarget < .5) {
@@ -1252,7 +1336,8 @@ function updateHud() {
 
 function updateInteractionHint() {
   const lowerLevel = isLowerLevel();
-  const nearElevator = !lowerLevel && Math.abs(player.x - elevatorX) < 2.0;
+  const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
+  const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
   const nearReactor = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
   const nearBarrier = lowerLevel && Math.abs(player.x - futureBarrierX) < 2.1;
   const nearPastBulkhead = lowerLevel && Math.abs(player.x - 60.2) < 1.9;
@@ -1263,9 +1348,17 @@ function updateInteractionHint() {
   if (state.inventoryOpen) {
     message = '';
   } else if (nearElevator && state.eraTarget > .5) {
-    message = '2147年轿厢已经坠毁 · 按 Q 回到2047年使用完整电梯';
+    message = lowerLevel
+      ? '井底只有坠毁轿厢 · 按 Q 回2047年，再按 E 乘电梯上升'
+      : '空井、断缆、坠毁轿厢 · 按 Q 回到2047年使用完整电梯';
   } else if (nearElevator) {
-    message = state.elevatorAtBottom ? '升降机轿厢已经停在地下实验室层' : '按 E 启动2047年的矿井升降机';
+    if (lowerLevel && state.elevatorAtBottom) message = '按 E 乘2047年的完整轿厢返回地面';
+    else if (!lowerLevel && state.elevatorAtBottom) message = '轿厢当前停在地下实验室层';
+    else message = '按 E 启动2047年的矿井升降机';
+  } else if (nearLabEntrance && state.eraTarget < .5) {
+    message = '2047年安全门锁死 · 按 Q 去2147年穿过坍塌入口';
+  } else if (nearLabEntrance) {
+    message = '2147年安全门已经坍塌 · 向右进入实验室';
   } else if (nearReactor && state.eraTarget < .5) {
     message = state.history.experimentShutdown
       ? '紧急断路杆已锁死 · 培养装置永久停机'
@@ -1401,15 +1494,27 @@ function updateVisuals(dt, elapsed) {
   const moving = player.grounded ? THREE.MathUtils.clamp(Math.abs(player.vx) / player.speed, 0, 1) : 0;
   player.walkBlend = THREE.MathUtils.damp(player.walkBlend, moving, moving > player.walkBlend ? 12 : 9, dt);
   if (moving > .04) player.walkPhase += dt * (7.2 + Math.abs(player.vx) * .8);
-  const stride = Math.sin(player.walkPhase) * .68 * player.walkBlend;
-  const armStride = -stride * .62;
+  const gaitFrames = [
+    { leftHip: .46, rightHip: -.34, leftKnee: .08, rightKnee: .62 },
+    { leftHip: .05, rightHip: -.05, leftKnee: .12, rightKnee: .18 },
+    { leftHip: -.34, rightHip: .46, leftKnee: .62, rightKnee: .08 },
+    { leftHip: -.05, rightHip: .05, leftKnee: .18, rightKnee: .12 },
+  ];
+  const gaitFrame = Math.floor(((player.walkPhase % (Math.PI * 2)) / (Math.PI * 2)) * 4) % 4;
+  const gaitPose = gaitFrames[gaitFrame];
+  const stride = (gaitPose.leftHip - gaitPose.rightHip) * .5 * player.walkBlend;
+  const armStride = -stride * .72;
   const airborne = player.grounded ? 0 : 1;
-  const leftLegTarget = airborne ? -.23 : stride;
-  const rightLegTarget = airborne ? .3 : -stride;
+  const leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
+  const rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
+  const leftKneeTarget = airborne ? .45 : gaitPose.leftKnee * player.walkBlend;
+  const rightKneeTarget = airborne ? .18 : gaitPose.rightKnee * player.walkBlend;
   const leftArmTarget = airborne ? .22 : armStride;
   const rightArmTarget = airborne ? -.34 : -armStride;
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
+  rig.leftKnee.rotation.z = THREE.MathUtils.damp(rig.leftKnee.rotation.z, leftKneeTarget, 17, dt);
+  rig.rightKnee.rotation.z = THREE.MathUtils.damp(rig.rightKnee.rotation.z, rightKneeTarget, 17, dt);
   rig.leftArm.rotation.z = THREE.MathUtils.damp(rig.leftArm.rotation.z, leftArmTarget, 13, dt);
   rig.rightArm.rotation.z = THREE.MathUtils.damp(rig.rightArm.rotation.z, rightArmTarget, 13, dt);
 
