@@ -325,6 +325,33 @@ kbd {
   transform: translate(-50%, 0);
 }
 
+.npc-dialogue {
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  z-index: 5;
+  width: min(560px, calc(100vw - 40px));
+  padding: 15px 18px 13px;
+  border: 1px solid rgba(255, 174, 91, .42);
+  border-left: 3px solid #ff9f4d;
+  background: rgba(24, 10, 12, .94);
+  box-shadow: 0 18px 55px rgba(0,0,0,.5), inset 0 0 34px rgba(255,159,77,.035);
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition: .2s ease;
+}
+
+.npc-dialogue.open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.npc-dialogue header { display: flex; justify-content: space-between; gap: 18px; }
+.npc-dialogue header span { color: #9e7163; font-size: 8px; letter-spacing: .16em; }
+.npc-dialogue header b { color: #ffc17c; font-size: 11px; letter-spacing: .08em; }
+.npc-dialogue p { margin: 10px 0 8px; color: #f2ded0; font-size: 13px; line-height: 1.7; }
+.npc-dialogue em { display: block; color: #9f8176; font-size: 9px; font-style: normal; text-align: right; letter-spacing: .1em; }
+
 .inventory-panel {
   position: absolute;
   left: 50%;
@@ -478,6 +505,23 @@ kbd {
   box-shadow: inset 0 0 0 6px transparent;
 }
 .hotbar-cell.empty .mini-wheel { display: none; }
+
+.breach-kit-icon {
+  display: grid;
+  grid-template-columns: repeat(2, 8px);
+  gap: 3px;
+  transform: rotate(-8deg);
+}
+.breach-kit-icon i {
+  width: 8px;
+  height: 13px;
+  border: 1px solid #ffb15d;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffd08a 0 24%, #8c3e2f 25% 100%);
+  box-shadow: 0 0 7px rgba(255,159,77,.25);
+}
+.hotbar-cell.empty .breach-kit-icon,
+.inventory-cell.empty .breach-kit-icon { display: none; }
 
 .inventory-cell .handwheel-icon {
   width: 27px;

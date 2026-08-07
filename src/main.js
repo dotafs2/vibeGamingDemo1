@@ -21,11 +21,15 @@ const doorPower = document.querySelector('#door-power');
 const doorLock = document.querySelector('#door-lock');
 const hotbarSword = document.querySelector('#hotbar-sword');
 const hotbarWheel = document.querySelector('#hotbar-wheel');
+const hotbarBreach = document.querySelector('#hotbar-breach');
+const breachKitSlot = document.querySelector('#breach-kit-slot');
 const playerHealthFill = document.querySelector('#player-health-fill');
 const playerHealthCopy = document.querySelector('#player-health-copy');
 const bossHud = document.querySelector('#boss-hud');
 const bossHealthFill = document.querySelector('#boss-health-fill');
 const bossHealthCopy = document.querySelector('#boss-health-copy');
+const npcDialogue = document.querySelector('#npc-dialogue');
+const npcDialogueCopy = document.querySelector('#npc-dialogue-copy');
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-16, 16, 9, -9, 0.1, 100);
@@ -41,8 +45,11 @@ const groundY = -4.55;
 const labGroundY = -22.4;
 const elevatorX = 18.25;
 const labEntranceX = 21.7;
-const reactorControlX = 47.2;
-const futureBarrierX = 57.4;
+const maintenanceNpcX = 52.1;
+const scanConsoleX = 55.0;
+const bossDoorX = 60.2;
+const chargeSocketX = 61.45;
+const modernDetonatorX = 58.35;
 const bossTriggerX = 65.0;
 
 const state = {
@@ -56,6 +63,9 @@ const state = {
   elevatorTargetY: labGroundY,
   elevatorRiding: false,
   elevatorAtBottom: false,
+  npcDialogueStep: 0,
+  maintenanceScanActive: false,
+  doorBlast: 0,
   bossAwake: false,
   attackTimer: 0,
   attackDuration: 0,
@@ -77,6 +87,7 @@ const state = {
   inventoryOpen: false,
   inventory: {
     handwheel: false,
+    breachKit: true,
   },
   history: {
     wheelCollected: false,
@@ -84,8 +95,9 @@ const state = {
     wheelInstalled: false,
     gateOpened: false,
     elevatorUsed: false,
-    experimentShutdown: false,
-    futureCleared: false,
+    bossBriefed: false,
+    chargesInstalled: false,
+    doorBreached: false,
   },
 };
 
@@ -243,10 +255,14 @@ const pastMovingOre = [];
 let pastVentFan = null;
 let pastElevatorCar = null;
 let pastElevatorCable = null;
-let pastReactorCore = null;
-let pastShutdownLever = null;
-let modernOvergrowth = null;
-let modernInertCore = null;
+let pastMaintenanceNpc = null;
+let pastScanCore = null;
+let pastScanDoor = null;
+let pastBossDoor = null;
+let pastChargeSockets = null;
+let modernBossDoor = null;
+let modernDoorRubble = null;
+let modernBlastFx = null;
 let modernBoss = null;
 let pastBoss = null;
 let bossBattleBarrier = null;
@@ -478,6 +494,26 @@ function createLabBoss(group, palette, ruined) {
   group.add(boss);
 }
 
+function createMaintenanceNpc(group, palette) {
+  const npc = new THREE.Group();
+  npc.position.set(maintenanceNpcX, labGroundY + .92, -.2);
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(.48, 24), material('#14090a', .34));
+  shadow.scale.y = .22;
+  shadow.position.set(0, -.88, -.2);
+  npc.add(shadow);
+  rectangle(npc, .72, .92, '#e08a4f', 0, -.05, .04, .96);
+  rectangle(npc, .78, .18, '#ffd184', 0, .34, .08, .95);
+  disc(npc, .35, '#f4c18f', 0, .69, .08, .98, 24);
+  rectangle(npc, .68, .16, palette.trim, 0, .91, .1, .96);
+  rectangle(npc, .18, .64, '#d47743', -.47, -.02, .02, .94);
+  rectangle(npc, .18, .64, '#d47743', .47, -.02, .02, .94);
+  rectangle(npc, .22, .65, '#75402e', -.2, -.79, .02, .96);
+  rectangle(npc, .22, .65, '#75402e', .2, -.79, .02, .96);
+  rectangle(npc, .12, .12, palette.lamp, .2, .02, .12, .96);
+  pastMaintenanceNpc = npc;
+  group.add(npc);
+}
+
 function buildExpandedMine(group, palette, ruined) {
   // Gate 03 opens into the same elevator control room in both eras.
   rectangle(group, 8.0, 5.1, palette.surfaceRoom, 17.5, -1.45, -3.1, ruined ? .7 : .94);
@@ -587,53 +623,91 @@ function buildExpandedMine(group, palette, ruined) {
     disc(group, .09, palette.archGlow, 36 + Math.cos(angle) * 1.88, labGroundY + 3.05 + Math.sin(angle) * 1.88, -1.2, ruined ? .26 : .9, 16);
   }
 
-  // Chronite cultivation device and its manual emergency cutoff.
-  rectangle(group, 5.6, 5.4, palette.reactorFrame, 45.4, labGroundY + 3.15, -1.7, ruined ? .46 : .9);
-  rectangle(group, 2.25, 4.35, palette.glass, 44.7, labGroundY + 3.1, -1.45, ruined ? .24 : .46);
-  ring(group, 1.0, .87, palette.trim, 44.7, labGroundY + 3.1, -1.18, ruined ? .38 : .82, 36);
+  // Final-maintenance bay and shielded observation booth.
+  rectangle(group, 10.8, 5.5, palette.reactorFrame, 50.7, labGroundY + 3.15, -1.7, ruined ? .46 : .9);
+  rectangle(group, 3.5, 3.8, palette.glass, 48.3, labGroundY + 3.15, -1.42, ruined ? .2 : .46);
+  rectangle(group, 1.35, 1.5, palette.panel, scanConsoleX, labGroundY + 1.25, -.9, ruined ? .46 : .94);
+  ring(group, .48, .37, palette.trim, scanConsoleX, labGroundY + 1.55, -.65, ruined ? .38 : .86, 28);
+  for (let index = 0; index < 3; index++) {
+    disc(group, .075, ruined ? palette.deadLamp : palette.lamp, scanConsoleX - .34 + index * .34, labGroundY + .82, -.62, ruined ? .34 : .9, 14);
+  }
   if (!ruined) {
-    const reactorCore = new THREE.Group();
-    reactorCore.position.set(44.7, labGroundY + 3.1, -.95);
-    polygon(reactorCore, [[0, 1.05], [-.62, -.2], [-.28, -.95], [.45, -.62], [.72, .15]], palette.reactorCore, 0, 0, 0, .96);
-    ring(reactorCore, 1.35, 1.28, palette.archGlow, 0, 0, -.05, .58, 40);
-    pastReactorCore = reactorCore;
-    group.add(reactorCore);
-    rectangle(group, 1.3, 1.4, palette.panel, reactorControlX, labGroundY + 1.2, -.9, .94);
-    const lever = rectangle(group, .18, .72, palette.lever, reactorControlX, labGroundY + 1.55, -.65, .96);
-    lever.rotation.z = -.45;
-    pastShutdownLever = lever;
-    for (let index = 0; index < 3; index++) disc(group, .075, palette.lamp, 46.8 + index * .38, labGroundY + .82, -.62, .9, 14);
-  } else {
-    rectangle(group, 1.3, 1.4, palette.panel, reactorControlX, labGroundY + 1.2, -.9, .52);
-    const inert = new THREE.Group();
-    inert.position.set(44.7, labGroundY + 2.75, -.9);
-    polygon(inert, [[0, .48], [-.35, -.22], [.28, -.38], [.46, .12]], palette.inertCore, 0, 0, 0, .78);
-    modernInertCore = inert;
-    group.add(inert);
-
-    const growth = new THREE.Group();
-    growth.position.z = -.65;
-    const crystals = [
-      [44.7, labGroundY + 3.25, 1.7, 0], [47.0, labGroundY + 1.1, 1.35, -.35],
-      [50.0, labGroundY + .85, 1.6, .28], [53.2, labGroundY + 1.35, 1.75, -.22],
-      [56.7, labGroundY + 2.0, 2.15, .08], [57.4, labGroundY + 4.4, 2.4, -.1],
-    ];
-    for (const [x, y, scale, rotation] of crystals) {
-      const crystal = polygon(growth, [[0, 1.0 * scale], [-.38 * scale, -.65 * scale], [.4 * scale, -.65 * scale]], palette.growth, x, y, 0, .88);
-      crystal.rotation.z = rotation;
+    createMaintenanceNpc(group, palette);
+    const scanCore = new THREE.Group();
+    scanCore.position.set(50.7, labGroundY + 3.25, -.95);
+    ring(scanCore, 1.25, 1.05, palette.archGlow, 0, 0, 0, .74, 42);
+    for (let index = 0; index < 6; index++) {
+      const angle = index * Math.PI / 3;
+      disc(scanCore, .1, palette.lamp, Math.cos(angle) * 1.15, Math.sin(angle) * 1.15, .04, .92, 14);
     }
-    segment(growth, 44.7, labGroundY + 3.0, 57.2, labGroundY + 1.6, palette.growthLine, .7, .05);
-    segment(growth, 48.0, labGroundY + 1.2, 57.4, labGroundY + 5.8, palette.growthLine, .58, .05);
-    modernOvergrowth = growth;
-    group.add(growth);
+    pastScanCore = scanCore;
+    group.add(scanCore);
+    const boothShutter = new THREE.Group();
+    rectangle(boothShutter, 3.25, 2.55, palette.bulkhead, 48.3, labGroundY + 6.2, .32, .72);
+    for (let x = 47.0; x <= 49.6; x += .52) segment(boothShutter, x, labGroundY + 5.0, x, labGroundY + 7.35, palette.trim, .48, .4);
+    pastScanDoor = boothShutter;
+    group.add(boothShutter);
+  } else {
+    segment(group, 46.8, labGroundY + 5.4, 49.1, labGroundY + 3.7, palette.cable, .42, -.8);
+    segment(group, 49.1, labGroundY + 3.7, 47.5, labGroundY + 1.2, palette.cable, .32, -.8);
+    for (const [x, y, rotation] of [[47.2, .55, -.18], [50.1, .35, .25], [54.0, .42, -.12]]) {
+      const debris = rectangle(group, 1.05, .32, palette.structure, x, labGroundY + y, -.7, .5);
+      debris.rotation.z = rotation;
+    }
   }
 
-  // Boss airlock and one-screen arena.
+  // Boss-room blast door: open for the final 2047 scan, fused into a wall by 2147.
   rectangle(group, .28, 7.1, palette.trim, 59.2, labGroundY + 3.5, -1.2, .92);
   rectangle(group, .28, 7.1, palette.trim, 61.2, labGroundY + 3.5, -1.2, .92);
   rectangle(group, 2.3, .28, palette.trim, 60.2, labGroundY + 7.0, -1.15, .92);
-  if (!ruined) rectangle(group, 1.55, 6.35, palette.bulkhead, 60.2, labGroundY + 3.25, -1.0, .94);
+  if (!ruined) {
+    const door = new THREE.Group();
+    rectangle(door, 1.55, 6.35, palette.bulkhead, bossDoorX, labGroundY + 3.25, -1.0, .96);
+    for (let y = labGroundY + .75; y <= labGroundY + 5.85; y += 1.02) {
+      segment(door, bossDoorX - .62, y, bossDoorX + .62, y, palette.trim, .46, -.7);
+    }
+    pastBossDoor = door;
+    group.add(door);
+
+    const sockets = new THREE.Group();
+    for (const y of [labGroundY + 1.0, labGroundY + 2.5, labGroundY + 4.0, labGroundY + 5.5]) {
+      ring(sockets, .16, .1, palette.archGlow, bossDoorX + .72, y, -.55, .95, 18);
+      rectangle(sockets, .3, .08, palette.lever, bossDoorX + .72, y, -.5, .92);
+    }
+    pastChargeSockets = sockets;
+    group.add(sockets);
+
+    // Powered safety line: the player can reach the inner door panel but not the maintained machine.
+    rectangle(group, .1, 6.5, palette.archGlow, 63.1, labGroundY + 3.4, -.7, .42);
+    for (let y = labGroundY + .4; y < labGroundY + 6.6; y += .5) disc(group, .065, palette.lamp, 63.1, y, -.55, .76, 12);
+  }
   if (ruined) {
+    rectangle(group, 1.0, 1.45, palette.panel, modernDetonatorX, labGroundY + 1.18, -.85, .56);
+    const sealedDoor = new THREE.Group();
+    sealedDoor.position.set(bossDoorX, labGroundY + .1, 0);
+    rectangle(sealedDoor, 1.72, 6.45, palette.bulkhead, 0, 3.23, -1.0, .98);
+    for (let y = .7; y < 6.0; y += 1.05) segment(sealedDoor, -.72, y, .72, y, palette.structure, .5, -.7);
+    segment(sealedDoor, -.62, 5.6, .42, 4.45, palette.crack, .68, -.56);
+    segment(sealedDoor, .42, 4.45, -.25, 3.1, palette.crack, .58, -.56);
+    segment(sealedDoor, -.25, 3.1, .55, 1.75, palette.crack, .5, -.56);
+    modernBossDoor = sealedDoor;
+    group.add(sealedDoor);
+
+    const rubble = new THREE.Group();
+    for (const [x, width, height, rotation] of [[59.45, .8, .38, -.2], [60.2, 1.05, .45, .14], [61.0, .72, .32, -.12], [61.75, .65, .27, .24]]) {
+      const chunk = rectangle(rubble, width, height, palette.bulkhead, x, labGroundY + height * .5, -.55, .82);
+      chunk.rotation.z = rotation;
+    }
+    modernDoorRubble = rubble;
+    group.add(rubble);
+
+    const blastFx = new THREE.Group();
+    blastFx.position.set(bossDoorX, labGroundY + 3.25, 0);
+    ring(blastFx, 1.1, .82, palette.archGlow, 0, 0, .15, .85, 36);
+    ring(blastFx, 1.85, 1.6, palette.lamp, 0, 0, .14, .48, 36);
+    modernBlastFx = blastFx;
+    group.add(blastFx);
+
     const battleBarrier = new THREE.Group();
     for (let y = labGroundY + .35; y <= labGroundY + 6.6; y += .48) {
       disc(battleBarrier, .075, palette.archGlow, 62.45, y, -.62, .82, 14);
@@ -662,7 +736,7 @@ function buildPastExpansion() {
     labWall: '#35181b', bossRoom: '#291417', floor: '#6f3728', glass: '#a9573a', crystal: '#ff9d52',
     arch: '#d27645', archGlow: '#ffb45f', reactorFrame: '#572620', reactorCore: '#ff8c45', lever: '#ffcc72',
     inertCore: '#a86a45', bulkhead: '#4b211e', platform: '#995333', bossShell: '#9d5535', bossBody: '#4b211e',
-    bossCore: '#ffb65f', bossTrim: '#d67a45', drill: '#d98a54', growth: '#ff8f48', growthLine: '#ffb05b',
+    bossCore: '#ffb65f', bossTrim: '#d67a45', drill: '#d98a54', growth: '#ff8f48', growthLine: '#ffb05b', crack: '#e7884e',
   }, false);
 }
 
@@ -673,7 +747,7 @@ function buildPresentExpansion() {
     labWall: '#10272d', bossRoom: '#0b1d22', floor: '#203a40', glass: '#30545b', crystal: '#4c8d96',
     arch: '#4f858d', archGlow: '#75d6e2', reactorFrame: '#17343b', reactorCore: '#5ecbd8', lever: '#79c9d2',
     inertCore: '#54767b', bulkhead: '#17343a', platform: '#365d64', bossShell: '#4e858d', bossBody: '#142b31',
-    bossCore: '#82edf6', bossTrim: '#70bdc6', drill: '#6ba9b1', growth: '#4fb4c1', growthLine: '#70d9e4',
+    bossCore: '#82edf6', bossTrim: '#70bdc6', drill: '#6ba9b1', growth: '#4fb4c1', growthLine: '#70d9e4', crack: '#6ba9b1',
   }, true);
 }
 
@@ -987,6 +1061,33 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1900);
 }
 
+const maintenanceDialogueLines = [
+  '这台是03型时晶采掘机“掘脉者”。它替我们进入不稳定矿脉，胸口的时相核心负责稳定整条采掘通道。',
+  '今天是它封存前的最后维护。门外爆破会震坏核心，真遇到事故，只能从门内侧的四个紧急槽定向切断门框。',
+  '我要启动最终时相扫描。扫描期间所有人员都必须撤进隔离观察室，防爆门会暂时保持开启；不要越过里面的安全线。',
+];
+
+function closeNpcDialogue() {
+  npcDialogue.classList.remove('open');
+  npcDialogue.setAttribute('aria-hidden', 'true');
+}
+
+function advanceNpcDialogue() {
+  if (state.npcDialogueStep >= maintenanceDialogueLines.length) {
+    closeNpcDialogue();
+    return;
+  }
+  npcDialogueCopy.textContent = maintenanceDialogueLines[state.npcDialogueStep];
+  state.npcDialogueStep += 1;
+  npcDialogue.classList.add('open');
+  npcDialogue.setAttribute('aria-hidden', 'false');
+  if (state.npcDialogueStep === maintenanceDialogueLines.length) {
+    state.history.bossBriefed = true;
+    showToast('工程师已说明维护流程：到右侧控制台按 E 启动最终时相扫描');
+    updateHud();
+  }
+}
+
 function flashTime() {
   timeFlash.classList.remove('active');
   void timeFlash.offsetWidth;
@@ -995,8 +1096,11 @@ function flashTime() {
 
 function updateInventoryHud() {
   const hasWheel = state.inventory.handwheel;
+  const hasBreachKit = state.inventory.breachKit;
   handwheelSlot.classList.toggle('empty', !hasWheel);
   hotbarWheel.classList.toggle('empty', !hasWheel);
+  breachKitSlot.classList.toggle('empty', !hasBreachKit);
+  hotbarBreach.classList.toggle('empty', !hasBreachKit);
   hotbarSword.classList.add('selected');
   inventoryItemName.textContent = '矿用长剑';
   inventoryItemStatus.textContent = '快捷栏 1 · 从右上向右下挥砍 · 伤害 38 · 不会消耗';
@@ -1011,16 +1115,28 @@ function setInventoryOpen(open) {
 }
 
 function toggleInventory() {
+  if (npcDialogue.classList.contains('open')) {
+    showToast('先按 E 完成与维修工程师的对话');
+    return;
+  }
   setInventoryOpen(!state.inventoryOpen);
 }
 
 function toggleEra() {
+  if (npcDialogue.classList.contains('open')) {
+    showToast('先按 E 完成与维修工程师的对话');
+    return;
+  }
   if (state.bossAwake && !state.boss.defeated) {
     showToast('Boss的时间扰动场正在封锁时代切换；击败构装体后才能离开');
     return;
   }
   if (state.elevatorRiding) {
     showToast('升降机强电磁场正在干扰时间锚；到站后才能切换时代');
+    return;
+  }
+  if (state.eraTarget < .5 && isLowerLevel() && player.x > bossDoorX + .45) {
+    showToast('Boss维护区的时相屏障会撕裂切换坐标；先从内侧返回实验室再切换时代');
     return;
   }
   const now = clock.elapsedTime;
@@ -1035,14 +1151,13 @@ function toggleEra() {
 
   const inLab = player.y < -12;
   if (state.eraTarget < .5 && inLab) {
-    showToast('2047年：地下实验室仍在运行，时间矿物培养装置尚未失控');
+    showToast('2047年：掘脉者正在接受封存前的最后维护，实验室工作人员仍在现场');
   } else if (state.eraTarget < .5) {
     showToast('固定时间点：2047年，03号矿场仍在正常运行');
-  } else if (inLab && state.history.experimentShutdown) {
-    state.history.futureCleared = true;
-    showToast('因果改写生效：2147年的异常结晶没有形成，Boss通道已经露出');
+  } else if (inLab && state.history.chargesInstalled) {
+    showToast('2147年：四枚时锁破门栓仍藏在门内夹层，外侧接收器已经获得引爆信号');
   } else if (inLab) {
-    showToast('2147年：培养装置持续运行百年，异常结晶已经封死前方通道');
+    showToast('2147年：Boss防爆门已经锈死成墙；外部记录注明只能从内侧定向爆破');
   } else if (state.history.wheelInstalled) {
     showToast('固定时间点：2147年，跨时带来的手轮仍安装在03号闸门上');
   } else if (state.inventory.handwheel) {
@@ -1064,6 +1179,9 @@ function resetHistory() {
   state.elevatorTargetY = labGroundY;
   state.elevatorRiding = false;
   state.elevatorAtBottom = false;
+  state.npcDialogueStep = 0;
+  state.maintenanceScanActive = false;
+  state.doorBlast = 0;
   state.bossAwake = false;
   state.attackTimer = 0;
   state.attackDuration = 0;
@@ -1081,15 +1199,18 @@ function resetHistory() {
   state.cameraY = 0;
   state.inventoryOpen = false;
   state.inventory.handwheel = false;
+  state.inventory.breachKit = true;
   state.history.wheelCollected = false;
   state.history.wheelCrossed = false;
   state.history.wheelInstalled = false;
   state.history.gateOpened = false;
   state.history.elevatorUsed = false;
-  state.history.experimentShutdown = false;
-  state.history.futureCleared = false;
+  state.history.bossBriefed = false;
+  state.history.chargesInstalled = false;
+  state.history.doorBreached = false;
   inventoryPanel.classList.remove('open');
   inventoryPanel.setAttribute('aria-hidden', 'true');
+  closeNpcDialogue();
   player.x = -10.4;
   player.y = groundY + player.halfH;
   player.vx = 0;
@@ -1141,7 +1262,7 @@ function updateElevator(dt) {
 
 function updateHorizontal(dt) {
   if (state.elevatorRiding) return;
-  const direction = state.inventoryOpen
+  const direction = state.inventoryOpen || npcDialogue.classList.contains('open')
     ? 0
     : (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0);
   player.vx = THREE.MathUtils.damp(player.vx, direction * player.speed, direction ? 15 : 22, dt);
@@ -1163,18 +1284,24 @@ function updateHorizontal(dt) {
     }
   } else {
     const blockedByPastLabDoor = state.eraTarget < .5 && overlaps(nextX, player.halfW, labEntranceX, .72);
-    const blockedByPastBulkhead = state.eraTarget < .5 && overlaps(nextX, player.halfW, 60.2, .72);
-    const blockedByFutureGrowth = state.eraTarget > .5
-      && !state.history.experimentShutdown
-      && overlaps(nextX, player.halfW, futureBarrierX, .9);
+    const blockedByPastBossDoor = state.eraTarget < .5
+      && !state.maintenanceScanActive
+      && overlaps(nextX, player.halfW, bossDoorX, .72);
+    const blockedByPastSafetyLine = state.eraTarget < .5
+      && overlaps(nextX, player.halfW, 63.1, .2);
+    const blockedByModernBossDoor = state.eraTarget > .5
+      && state.doorBlast < .72
+      && overlaps(nextX, player.halfW, bossDoorX, .82);
     const blockedByBattleGate = state.eraTarget > .5
       && state.bossAwake
       && !state.boss.defeated
       && overlaps(nextX, player.halfW, 62.45, .34);
-    if (blockedByPastLabDoor || blockedByPastBulkhead || blockedByFutureGrowth || blockedByBattleGate) {
+    if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate) {
       const obstacleX = blockedByPastLabDoor
         ? labEntranceX
-        : (blockedByPastBulkhead ? 60.2 : (blockedByFutureGrowth ? futureBarrierX : 62.45));
+        : (blockedByPastBossDoor || blockedByModernBossDoor
+          ? bossDoorX
+          : (blockedByPastSafetyLine ? 63.1 : 62.45));
       nextX = player.x < obstacleX
         ? obstacleX - .9 - player.halfW
         : obstacleX + .9 + player.halfW;
@@ -1202,17 +1329,24 @@ function updateVertical(dt) {
 }
 
 function tryJump() {
-  if (state.inventoryOpen || state.elevatorRiding || !player.grounded) return;
+  if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || !player.grounded) return;
   player.vy = player.jumpSpeed;
   player.grounded = false;
 }
 
 function handleInteraction() {
   if (state.inventoryOpen) return;
+  if (npcDialogue.classList.contains('open')) {
+    advanceNpcDialogue();
+    return;
+  }
   const lowerLevel = isLowerLevel();
   const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
-  const nearReactorControl = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
+  const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
+  const nearScanConsole = lowerLevel && Math.abs(player.x - scanConsoleX) < 1.2;
+  const nearChargeSocket = lowerLevel && Math.abs(player.x - chargeSocketX) < 1.0;
+  const nearModernDetonator = lowerLevel && Math.abs(player.x - modernDetonatorX) < 1.25;
   const playerNearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const playerNearSocket = Math.abs(player.x - winchSocketX) < 2.0;
 
@@ -1251,27 +1385,70 @@ function handleInteraction() {
     return;
   }
 
-  if (nearReactorControl) {
-    if (state.eraTarget > .5) {
-      showToast(state.history.experimentShutdown
-        ? '2147年：装置早已停机，培养舱中只剩没有增生的惰性矿物'
-        : '2147年：控制台已经被结晶吞没；必须在2047年阻止培养实验继续运行');
-    } else if (!state.history.experimentShutdown) {
-      state.history.experimentShutdown = true;
+  if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
+    if (state.history.bossBriefed) {
+      showToast('工程师：说明都写在维护终端上了。到右侧控制台启动最终扫描。');
+    } else {
+      state.npcDialogueStep = 0;
+      advanceNpcDialogue();
+    }
+    return;
+  }
+
+  if (nearScanConsole && state.eraTarget < .5) {
+    if (!state.history.bossBriefed) {
+      showToast('控制台要求维修工程师确认；先和左侧工作人员交谈');
+    } else if (!state.maintenanceScanActive) {
+      state.maintenanceScanActive = true;
       state.pulse = 1;
-      showToast('2047年操作：拉下紧急断路杆，时间矿物培养装置永久停止供能');
+      showToast('最终时相扫描启动：工作人员撤入隔离室，防爆门保持维护开启');
       updateHud();
     } else {
-      showToast('2047年：紧急断路杆已经锁死，培养装置不会重新启动');
+      showToast('最终扫描进行中：人员与监控都在隔离状态，防爆门保持开启');
+    }
+    return;
+  }
+
+  if (nearChargeSocket && state.eraTarget < .5) {
+    if (!state.maintenanceScanActive) {
+      showToast('内侧爆破面板在门后；必须先启动维护扫描并打开防爆门');
+    } else if (!state.history.chargesInstalled) {
+      if (!state.inventory.breachKit) {
+        showToast('时间锚背包中没有破门套件，无法安装');
+        return;
+      }
+      state.inventory.breachKit = false;
+      state.history.chargesInstalled = true;
+      state.pulse = 1;
+      showToast('四枚时锁式定向破门栓已装入内侧夹层；它们只响应2147年的时间锚信号');
+      updateHud();
+    } else {
+      showToast('四个紧急槽已经封闭，破门栓处于时锁冻结状态');
+    }
+    return;
+  }
+
+  if (nearModernDetonator && state.eraTarget > .5) {
+    if (!state.history.chargesInstalled) {
+      showToast('外侧没有安全爆破位置；记录显示紧急破门槽只存在于门内侧');
+    } else if (!state.history.doorBreached) {
+      state.history.doorBreached = true;
+      state.pulse = 1.8;
+      showToast('2147年时间锚信号确认：四枚破门栓正在向Boss房内部依次切断门框');
+      updateHud();
+    } else {
+      showToast('防爆门连接已被切断，等待门体完全倒向Boss房内部');
     }
     return;
   }
 
   if (lowerLevel) {
-    if (state.eraTarget > .5 && !state.history.experimentShutdown && Math.abs(player.x - futureBarrierX) < 2.2) {
-      showToast('这些结晶从培养装置一直增生到2147年；回到2047年切断它的能源');
-    } else if (state.eraTarget < .5 && Math.abs(player.x - 60.2) < 2.0) {
-      showToast('2047年Boss实验区受安全权限封锁；改变实验历史后从2147年进入');
+    if (state.eraTarget < .5 && Math.abs(player.x - bossDoorX) < 2.0 && !state.maintenanceScanActive) {
+      showToast('2047年防爆门受维护权限锁定；先和工程师交谈并启动最终扫描');
+    } else if (state.eraTarget < .5 && player.x > bossDoorX + .45) {
+      showToast(state.history.chargesInstalled
+        ? '破门栓安装完成；从维护门返回实验室一侧后，再按 Q 回2147年'
+        : '这里是大门内侧的四个紧急破门槽，靠近面板按 E 安装破门栓');
     }
     return;
   }
@@ -1320,7 +1497,8 @@ function checkHistoryEvents() {
 
   if (
     state.eraTarget > .5
-    && state.history.experimentShutdown
+    && state.history.doorBreached
+    && state.doorBlast > .82
     && isLowerLevel()
     && player.x > bossTriggerX
     && !state.bossAwake
@@ -1328,13 +1506,13 @@ function checkHistoryEvents() {
     state.bossAwake = true;
     state.pulse = 1;
     state.boss.projectileTimer = .8;
-    showToast('异常采掘构装体苏醒：按 J 或点击鼠标，用长剑从上向下挥砍');
+    showToast('03型时晶采掘机“掘脉者”苏醒：敌对识别指令锁定时间锚，Boss战开始');
     updateHud();
   }
 }
 
 function tryAttack() {
-  if (state.inventoryOpen || state.elevatorRiding || state.attackCooldown > 0) return;
+  if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || state.attackCooldown > 0) return;
   state.attackDuration = .38;
   state.attackTimer = state.attackDuration;
   state.attackCooldown = .44;
@@ -1383,7 +1561,7 @@ function damageBoss(amount) {
     state.boss.vx = 0;
     state.pulse = 1;
     clearBossProjectiles();
-    showToast('异常采掘构装体被击败：Boss房封锁与时间扰动场已经解除');
+    showToast('掘脉者被强制停机：Boss房封锁解除，时相核心可以安全回收');
   }
   updateHud();
 }
@@ -1464,19 +1642,19 @@ function updateHud() {
   eventPlate.classList.toggle('active', state.history.wheelCrossed);
   eventGate.classList.toggle('active', state.history.gateOpened);
   eventElevator.classList.toggle('active', state.history.elevatorUsed);
-  eventReactor.classList.toggle('active', state.history.experimentShutdown);
-  eventFuture.classList.toggle('active', state.history.futureCleared);
+  eventReactor.classList.toggle('active', state.history.chargesInstalled);
+  eventFuture.classList.toggle('active', state.history.doorBreached);
   eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已从闸门拆下' : '尚未发生';
   eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
   eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
   eventElevator.querySelector('span').textContent = state.history.elevatorUsed ? '已抵达地下实验室' : '等待进入';
-  eventReactor.querySelector('span').textContent = state.history.experimentShutdown ? '供能已永久切断' : '尚未发生';
-  eventFuture.querySelector('span').textContent = state.history.futureCleared ? 'Boss通道已经露出' : '等待改写';
+  eventReactor.querySelector('span').textContent = state.history.chargesInstalled ? '四枚内侧破门栓已安装' : '尚未发生';
+  eventFuture.querySelector('span').textContent = state.history.doorBreached ? '门框已从内部切断' : '等待改写';
 
   const lowerLevel = isLowerLevel();
   const beforeLabEntrance = lowerLevel && player.x < labEntranceX - .75;
   if (state.boss.defeated) {
-    objective.textContent = 'Boss已击败：异常采掘构装体停止运行，时间扰动场和战斗封锁已经解除';
+    objective.textContent = 'Boss已击败：掘脉者被强制停机，时相核心现在可以安全取出';
   } else if (state.bossAwake) {
     objective.textContent = 'Boss战：长剑从右上向右下挥砍 · 靠近后按 J 或点击鼠标攻击';
   } else if (state.elevatorRiding) {
@@ -1487,14 +1665,26 @@ function updateHud() {
     objective.textContent = '2047年井底：实验室安全门权限锁死。按 Q 去2147年穿过坍塌后的同一入口';
   } else if (beforeLabEntrance) {
     objective.textContent = '2147年井底：实验室安全门已经坍塌，向右穿过缺口进入实验室';
-  } else if (lowerLevel && state.eraTarget < .5 && !state.history.experimentShutdown) {
-    objective.textContent = '2047年实验室：向右调查时间矿物培养舱，靠近紧急断路杆按 E';
+  } else if (lowerLevel && state.eraTarget < .5 && !state.history.bossBriefed) {
+    objective.textContent = '2047年最终维护日：向右找到维修工程师，靠近后按 E 了解正在维护的掘脉者';
+  } else if (lowerLevel && state.eraTarget < .5 && !state.maintenanceScanActive) {
+    objective.textContent = '2047年：工程师已说明流程。到右侧扫描控制台按 E，让人员撤入隔离室并开启防爆门';
+  } else if (lowerLevel && state.eraTarget < .5 && !state.history.chargesInstalled) {
+    objective.textContent = player.x > bossDoorX + .4
+      ? '2047年门内侧：靠近四个紧急破门槽按 E，安装时锁式定向破门栓'
+      : '2047年扫描中：防爆门已经开启，穿过去但不要越过里面的时相安全线';
   } else if (lowerLevel && state.eraTarget < .5) {
-    objective.textContent = '2047年：培养装置已经永久停机。按 Q 查看这一行为对2147年的影响';
-  } else if (lowerLevel && !state.history.experimentShutdown) {
-    objective.textContent = '2147年实验室：百年结晶封死Boss通道。按 Q 回2047年关闭培养装置';
+    objective.textContent = player.x > bossDoorX + .4
+      ? '2047年：破门栓安装完成，先从门内侧返回实验室，安全线内无法切换时代'
+      : '2047年：破门栓藏在内侧夹层并处于时锁冻结。按 Q 回2147年';
+  } else if (lowerLevel && !state.history.chargesInstalled) {
+    objective.textContent = '2147年：防爆门锈死成墙，外侧无法安全爆破。按 Q 回2047年进入门内侧';
+  } else if (lowerLevel && !state.history.doorBreached) {
+    objective.textContent = '2147年：门内破门栓已响应。靠近墙左侧的外部接收器按 E 定向爆破';
+  } else if (lowerLevel && state.doorBlast < .82) {
+    objective.textContent = '2147年：四个连接点正在依次断裂，等待厚重门体完全倒向Boss房内部';
   } else if (lowerLevel) {
-    objective.textContent = '2147年：异常结晶没有形成，继续向右穿过打开的通道进入Boss房间';
+    objective.textContent = '2147年：Boss通道已打开。越过倒塌门体，进入房间取出掘脉者的时相核心';
   } else if (state.exitReached && state.eraTarget > .5) {
     objective.textContent = '2147年：电梯已经坠毁。靠近电梯按 Q 回2047年，再按 E 乘坐完整轿厢';
   } else if (state.exitReached) {
@@ -1514,17 +1704,17 @@ function updateHud() {
   }
   doorStatus.classList.toggle('online', state.eraTarget < .5);
   if (lowerLevel) {
-    doorStatus.querySelector('span').textContent = 'CHRONITE CULTURE LAB';
+    doorStatus.querySelector('span').textContent = '03 CONTAINMENT BAY';
     if (state.eraTarget < .5) {
-      doorPower.textContent = state.history.experimentShutdown ? '培养供能：已人工切断' : '培养供能：在线 · 持续生长';
-      doorLock.textContent = state.history.experimentShutdown
-        ? '历史结果：2147年将不会形成增生结晶'
-        : '预测结果：持续运行将封死Boss通道';
+      doorPower.textContent = state.maintenanceScanActive ? '最终扫描：进行中 · 人员已隔离' : '最终维护：进行中 · 人员在场';
+      doorLock.textContent = state.history.chargesInstalled
+        ? '内侧破门槽：已封闭 · 时锁栓冻结'
+        : (state.maintenanceScanActive ? '防爆门：维护开启 · 内侧可进入' : '防爆门：权限锁定');
     } else {
-      doorPower.textContent = state.history.experimentShutdown ? '历史结果：培养实验提前终止' : '历史结果：装置运行至失控';
-      doorLock.textContent = state.history.experimentShutdown
-        ? 'Boss通道：开放 · 异常结晶未形成'
-        : 'Boss通道：封闭 · 结晶严重增生';
+      doorPower.textContent = state.history.chargesInstalled ? '时间锚链路：四个内侧信号在线' : '防爆门：断电 · 门框完全锈死';
+      doorLock.textContent = state.history.doorBreached
+        ? '门框：已定向切断 · 门体向内倒塌'
+        : (state.history.chargesInstalled ? '外侧接收器：等待引爆指令' : '安全记录：仅允许从内侧破门');
     }
   } else if (state.eraTarget < .5) {
     doorStatus.querySelector('span').textContent = '03 GATE CONTROL';
@@ -1555,14 +1745,16 @@ function updateInteractionHint() {
   const lowerLevel = isLowerLevel();
   const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
-  const nearReactor = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
-  const nearBarrier = lowerLevel && Math.abs(player.x - futureBarrierX) < 2.1;
-  const nearPastBulkhead = lowerLevel && Math.abs(player.x - 60.2) < 1.9;
+  const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
+  const nearScanConsole = lowerLevel && Math.abs(player.x - scanConsoleX) < 1.2;
+  const nearChargeSocket = lowerLevel && Math.abs(player.x - chargeSocketX) < 1.0;
+  const nearModernDetonator = lowerLevel && Math.abs(player.x - modernDetonatorX) < 1.25;
+  const nearBossDoor = lowerLevel && Math.abs(player.x - bossDoorX) < 1.6;
   const nearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const nearSocket = Math.abs(player.x - winchSocketX) < 2.0;
   let message = '';
 
-  if (state.inventoryOpen) {
+  if (state.inventoryOpen || npcDialogue.classList.contains('open')) {
     message = '';
   } else if (nearElevator && state.eraTarget > .5) {
     message = lowerLevel
@@ -1576,18 +1768,36 @@ function updateInteractionHint() {
     message = '2047年安全门锁死 · 按 Q 去2147年穿过坍塌入口';
   } else if (nearLabEntrance) {
     message = '2147年安全门已经坍塌 · 向右进入实验室';
-  } else if (nearReactor && state.eraTarget < .5) {
-    message = state.history.experimentShutdown
-      ? '紧急断路杆已锁死 · 培养装置永久停机'
-      : '按 E 拉下紧急断路杆 · 改变2147年的结晶结果';
-  } else if (nearReactor) {
-    message = state.history.experimentShutdown
-      ? '装置在2047年已经停机 · 现代只剩惰性矿物'
-      : '现代控制台已被吞没 · 必须回2047年操作';
-  } else if (nearBarrier && state.eraTarget > .5 && !state.history.experimentShutdown) {
-    message = '百年增生结晶封死通道 · 回2047年关闭培养装置';
-  } else if (nearPastBulkhead && state.eraTarget < .5) {
-    message = '2047年安全门锁定 · 改写实验历史后从2147年进入';
+  } else if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
+    message = state.history.bossBriefed
+      ? '工程师正在等待最终扫描 · 到右侧控制台按 E 启动'
+      : '按 E 与维修工程师交谈 · 了解正在维护的03型时晶采掘机';
+  } else if (nearScanConsole && state.eraTarget < .5) {
+    message = !state.history.bossBriefed
+      ? '最终扫描需要工程师确认 · 先与左侧工作人员交谈'
+      : (state.maintenanceScanActive
+        ? '最终扫描进行中 · 工作人员和监控已进入隔离状态'
+        : '按 E 启动最终时相扫描 · 打开Boss防爆门的维护模式');
+  } else if (nearChargeSocket && state.eraTarget < .5) {
+    message = state.history.chargesInstalled
+      ? '内侧面板已重新封闭 · 四枚破门栓处于时锁冻结状态'
+      : (state.maintenanceScanActive
+        ? '按 E 将四枚时锁式破门栓装进门内侧的紧急槽'
+        : '内侧面板被防爆门挡住 · 先启动最终扫描');
+  } else if (nearModernDetonator && state.eraTarget > .5) {
+    message = !state.history.chargesInstalled
+      ? '外侧无法安全爆破 · 必须在2047年进入门内安装定向破门栓'
+      : (state.history.doorBreached
+        ? '门框连接已切断 · 厚重门体正在倒向Boss房内部'
+        : '按 E 让2147年的时间锚信号同时激活四枚内侧破门栓');
+  } else if (nearBossDoor && state.eraTarget < .5) {
+    message = state.maintenanceScanActive
+      ? '维护防爆门已经开启 · 进入内侧安装破门栓，不要越过安全线'
+      : '2047年防爆门权限锁定 · 与工程师交谈并启动最终扫描';
+  } else if (nearBossDoor) {
+    message = state.doorBlast >= .82
+      ? '门体已经向房间内部倒塌 · Boss通道开放'
+      : '2147年门扇与墙体锈结 · 安全记录：只能从内侧定向爆破';
   } else if (state.eraTarget < .5 && nearPickup) {
     message = state.history.wheelCollected
       ? '2047年闸门上的应急手轮已经被你拆下'
@@ -1640,23 +1850,37 @@ function updateHistoryOutcome(dt, elapsed) {
   }
 
   if (pastElevatorCar) pastElevatorCar.position.y = state.elevatorY;
-  if (pastShutdownLever) {
-    const leverTarget = state.history.experimentShutdown ? .55 : -.45;
-    pastShutdownLever.rotation.z = THREE.MathUtils.damp(pastShutdownLever.rotation.z, leverTarget, 8, dt);
+  if (pastMaintenanceNpc) {
+    const npcTargetX = state.maintenanceScanActive ? 48.3 : maintenanceNpcX;
+    pastMaintenanceNpc.position.x = THREE.MathUtils.damp(pastMaintenanceNpc.position.x, npcTargetX, 3.8, dt);
   }
-  if (pastReactorCore) {
-    pastReactorCore.rotation.z += dt * (state.history.experimentShutdown ? .16 : 1.25);
-    const coreScale = state.history.experimentShutdown ? .62 : 1 + Math.sin(elapsed * 3.2) * .035;
-    pastReactorCore.scale.setScalar(THREE.MathUtils.damp(pastReactorCore.scale.x, coreScale, 5, dt));
-    setLayerOpacity(pastReactorCore, pastAmount * (state.history.experimentShutdown ? .28 : 1));
+  if (pastScanDoor) {
+    const shutterTargetY = state.maintenanceScanActive ? -2.65 : 0;
+    pastScanDoor.position.y = THREE.MathUtils.damp(pastScanDoor.position.y, shutterTargetY, 5, dt);
   }
-  if (modernOvergrowth) {
-    const growthAmount = state.era * (state.history.experimentShutdown ? 0 : 1);
-    setLayerOpacity(modernOvergrowth, growthAmount);
-    const growthPulse = 1 + Math.sin(elapsed * 2.15) * .018;
-    modernOvergrowth.scale.set(growthPulse, growthPulse, 1);
+  if (pastScanCore) {
+    pastScanCore.rotation.z += dt * (state.maintenanceScanActive ? 2.1 : .25);
+    const scanScale = state.maintenanceScanActive ? 1 + Math.sin(elapsed * 5.4) * .04 : 1;
+    pastScanCore.scale.setScalar(scanScale);
   }
-  if (modernInertCore) setLayerOpacity(modernInertCore, state.era * (state.history.experimentShutdown ? 1 : 0));
+  if (pastBossDoor) {
+    const doorTargetY = state.maintenanceScanActive ? 6.55 : 0;
+    pastBossDoor.position.y = THREE.MathUtils.damp(pastBossDoor.position.y, doorTargetY, 5.5, dt);
+  }
+  if (pastChargeSockets) {
+    setLayerOpacity(pastChargeSockets, pastAmount * (state.history.chargesInstalled ? 1 : .42));
+  }
+  state.doorBlast = THREE.MathUtils.damp(state.doorBlast, state.history.doorBreached ? 1 : 0, 2.8, dt);
+  const blastEase = state.doorBlast * state.doorBlast * (3 - state.doorBlast * 2);
+  if (modernBossDoor) {
+    modernBossDoor.rotation.z = -1.43 * blastEase;
+  }
+  if (modernDoorRubble) setLayerOpacity(modernDoorRubble, state.era * blastEase);
+  if (modernBlastFx) {
+    const flash = state.history.doorBreached ? Math.max(0, Math.sin(Math.min(1, state.doorBlast * 2.15) * Math.PI)) : 0;
+    setLayerOpacity(modernBlastFx, state.era * flash);
+    modernBlastFx.scale.setScalar(.65 + state.doorBlast * 1.35);
+  }
   if (bossBattleBarrier) {
     setLayerOpacity(bossBattleBarrier, state.era * (state.bossAwake && !state.boss.defeated ? 1 : 0));
   }

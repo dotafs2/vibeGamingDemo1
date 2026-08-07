@@ -38,8 +38,8 @@
           <li id="event-plate"><i></i><div><b>手轮跨越时间</b><span>等待背包</span></div></li>
           <li id="event-gate"><i></i><div><b>2147年开启闸门</b><span>等待物品</span></div></li>
           <li id="event-elevator"><i></i><div><b>乘过去电梯下井</b><span>等待进入</span></div></li>
-          <li id="event-reactor"><i></i><div><b>2047年关闭培养装置</b><span>尚未发生</span></div></li>
-          <li id="event-future"><i></i><div><b>2147年结晶停止增生</b><span>等待改写</span></div></li>
+          <li id="event-reactor"><i></i><div><b>2047年安装破门栓</b><span>尚未发生</span></div></li>
+          <li id="event-future"><i></i><div><b>2147年从内部爆破</b><span>等待改写</span></div></li>
         </ol>
       </aside>
 
@@ -72,7 +72,7 @@
       </section>
 
       <section id="boss-hud" class="boss-hud" aria-hidden="true">
-        <span>异常采掘构装体</span>
+        <span>03型时晶采掘机 · 掘脉者</span>
         <div><i id="boss-health-fill"></i></div>
         <b id="boss-health-copy">320 / 320</b>
       </section>
@@ -81,7 +81,7 @@
         <div id="hotbar-sword" class="hotbar-cell selected"><em>1</em><i class="weapon-icon sword-icon"></i></div>
         <div class="hotbar-cell empty"><em>2</em></div>
         <div id="hotbar-wheel" class="hotbar-cell empty"><em>3</em><div class="mini-wheel"></div></div>
-        <div class="hotbar-cell empty"><em>4</em></div>
+        <div id="hotbar-breach" class="hotbar-cell"><em>4</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div></div>
         <div class="hotbar-cell empty"><em>5</em></div>
         <div class="hotbar-cell empty"><em>6</em></div>
         <div class="hotbar-cell empty"><em>7</em></div>
@@ -94,13 +94,19 @@
         <span>靠近场景装置后按 E 交互</span>
       </div>
 
+      <section id="npc-dialogue" class="npc-dialogue" aria-hidden="true">
+        <header><span>2047 / FINAL MAINTENANCE</span><b>维修工程师 · 林</b></header>
+        <p id="npc-dialogue-copy"></p>
+        <em>按 E 继续</em>
+      </section>
+
       <aside id="inventory-panel" class="inventory-panel" aria-hidden="true">
         <header><span>TIME-ANCHORED PACK</span><b>时间锚背包</b><kbd>B</kbd></header>
         <div class="inventory-grid">
           <div class="inventory-cell"><em>1</em><i class="weapon-icon sword-icon"></i><small>长剑</small></div>
           <div class="inventory-cell empty"><em>2</em></div>
           <div id="handwheel-slot" class="inventory-cell empty"><em>3</em><div class="handwheel-icon"><i></i><i></i><i></i><i></i></div><small>手轮</small></div>
-          <div class="inventory-cell empty"><em>4</em></div><div class="inventory-cell empty"><em>5</em></div>
+          <div id="breach-kit-slot" class="inventory-cell"><em>4</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div><small>破门栓×4</small></div><div class="inventory-cell empty"><em>5</em></div>
           <div class="inventory-cell empty"><em>6</em></div><div class="inventory-cell empty"><em>7</em></div>
           <div class="inventory-cell empty"><em>8</em></div><div class="inventory-cell empty"><em>9</em></div>
           <div class="inventory-cell empty"><em>10</em></div><div class="inventory-cell empty"><em>11</em></div>
