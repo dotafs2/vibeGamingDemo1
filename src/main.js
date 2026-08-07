@@ -20,7 +20,7 @@ const inventoryItemStatus = document.querySelector('#inventory-item-status');
 const doorStatus = document.querySelector('#door-status');
 const doorPower = document.querySelector('#door-power');
 const doorLock = document.querySelector('#door-lock');
-const hotbarSword = document.querySelector('#hotbar-sword');
+const hotbarCalibrator = document.querySelector('#hotbar-calibrator');
 const hotbarWheel = document.querySelector('#hotbar-wheel');
 const hotbarBreach = document.querySelector('#hotbar-breach');
 const breachKitSlot = document.querySelector('#breach-kit-slot');
@@ -53,6 +53,17 @@ const bossDoorX = 60.2;
 const chargeSocketX = 61.45;
 const modernDetonatorX = 58.35;
 const bossTriggerX = 65.0;
+const bossHomeX = 89.0;
+const bossArenaEndX = 116.0;
+const bossCoreY = labGroundY + 2.85;
+const bossPlatforms = [
+  { x: 68.0, width: 5.4, top: labGroundY + 1.55 },
+  { x: 73.0, width: 5.4, top: labGroundY + 3.15 },
+  { x: 78.0, width: 5.4, top: labGroundY + 4.75 },
+  { x: 100.0, width: 5.4, top: labGroundY + 4.75 },
+  { x: 105.0, width: 5.4, top: labGroundY + 3.15 },
+  { x: 110.0, width: 5.4, top: labGroundY + 1.55 },
+];
 
 const state = {
   era: 1,
@@ -73,15 +84,18 @@ const state = {
   attackTimer: 0,
   attackDuration: 0,
   attackCooldown: 0,
-  attackHit: false,
   boss: {
-    maxHealth: 320,
-    health: 320,
-    x: 75,
-    vx: 0,
-    decisionTimer: 1.4,
-    chargeTimer: 0,
-    projectileTimer: 1.2,
+    maxHealth: 360,
+    health: 360,
+    x: bossHomeX,
+    beamPhase: 'cooldown',
+    beamTimer: 1.25,
+    beamOriginX: bossHomeX,
+    beamOriginY: labGroundY + 4.7,
+    beamDirectionX: -1,
+    beamDirectionY: 0,
+    beamLength: 48,
+    beamHit: false,
     hitFlash: 0,
     defeated: false,
   },
@@ -116,6 +130,7 @@ const player = {
   speed: 6.2,
   jumpSpeed: 10.4,
   grounded: true,
+  supportY: groundY,
   facing: 1,
   walkPhase: 0,
   walkBlend: 0,
@@ -174,8 +189,8 @@ const backgroundMaterial = new THREE.ShaderMaterial({
   depthWrite: false,
 });
 
-const background = new THREE.Mesh(new THREE.PlaneGeometry(140, 70), backgroundMaterial);
-background.position.set(34, -10, -12);
+const background = new THREE.Mesh(new THREE.PlaneGeometry(180, 70), backgroundMaterial);
+background.position.set(46, -10, -12);
 scene.add(background);
 
 function material(color, opacity = 1) {
@@ -274,7 +289,7 @@ let modernBoss = null;
 let pastBoss = null;
 let bossBattleBarrier = null;
 const bossCoreMaterials = [];
-const bossProjectiles = [];
+const playerShots = [];
 
 function buildMineLandmarks(group, palette, ruined) {
   const fade = ruined ? .72 : .96;
@@ -465,37 +480,80 @@ function buildPresentScene() {
 
 function createLabBoss(group, palette, ruined) {
   const boss = new THREE.Group();
-  boss.position.set(75.0, labGroundY + 2.35, -.35);
-  ring(boss, 1.62, 1.28, palette.bossShell, 0, .42, 0, ruined ? .88 : .72, 40);
-  disc(boss, 1.12, palette.bossBody, 0, .42, .04, .96, 32);
-  const core = disc(boss, .42, palette.bossCore, 0, .42, .12, ruined ? .98 : .72, 24);
+  boss.position.set(bossHomeX, labGroundY + .04, -.35);
+
+  // Wide tracked chassis: this is a tunnel-mining machine, not a humanoid robot.
+  rectangle(boss, 8.2, 1.35, palette.bossBody, 0, .72, -.04, .98);
+  rectangle(boss, 7.55, .82, palette.bossShell, 0, .72, .02, .94);
+  for (const x of [-2.85, -1.45, 0, 1.45, 2.85]) {
+    ring(boss, .48, .31, palette.bossTrim, x, .72, .08, .9, 24);
+    disc(boss, .23, palette.bossBody, x, .72, .1, .96, 20);
+  }
+
+  polygon(boss, [
+    [-3.25, 1.2], [2.85, 1.2], [3.45, 2.25], [2.45, 4.15],
+    [.8, 4.72], [-2.45, 4.35], [-3.55, 2.8],
+  ], palette.bossShell, 0, 0, .02, .98);
+  rectangle(boss, 5.15, .22, palette.bossTrim, -.1, 1.42, .08, .82);
+  rectangle(boss, 3.7, .22, palette.bossTrim, .65, 4.08, .08, .72).rotation.z = .12;
+
+  // The cutter wheel bites into crystal-bearing rock and makes “掘脉者” readable at a glance.
+  const cutter = new THREE.Group();
+  cutter.position.set(-3.55, 2.65, .16);
+  ring(cutter, 1.72, 1.28, palette.drill, 0, 0, 0, .98, 40);
+  ring(cutter, 1.08, .42, palette.bossTrim, 0, 0, .03, .9, 32);
+  disc(cutter, .38, palette.bossBody, 0, 0, .05, .98, 28);
+  for (let index = 0; index < 10; index++) {
+    const angle = index * Math.PI / 5;
+    const tooth = polygon(cutter, [[1.35, -.18], [2.05, 0], [1.35, .18]], palette.drill, 0, 0, .02, .96);
+    tooth.rotation.z = angle;
+    segment(cutter, Math.cos(angle) * .45, Math.sin(angle) * .45, Math.cos(angle) * 1.23, Math.sin(angle) * 1.23, palette.bossTrim, .72, .08);
+  }
+  boss.userData.cutter = cutter;
+  boss.add(cutter);
+
+  // Ore conveyor and hopper show what the machine does with the material it digs out.
+  const conveyor = rectangle(boss, 3.25, .55, palette.bossBody, -.15, 3.72, .11, .95);
+  conveyor.rotation.z = .13;
+  for (let index = 0; index < 5; index++) {
+    disc(boss, .14, palette.crystal, -1.4 + index * .62, 3.52 + index * .08, .16, ruined ? .56 : .9, 12);
+  }
+  polygon(boss, [[-.9, .75], [.9, .75], [.62, -.6], [-.62, -.6]], palette.bossBody, 1.65, 4.15, .1, .98);
+  for (const x of [1.15, 1.65, 2.15]) polygon(boss, [[0, .55], [-.24, -.34], [.24, -.34]], palette.crystal, x, 4.35, .16, ruined ? .82 : .6);
+
+  // The visible time-crystal regulation core is both the machine's identity and the player's target.
+  ring(boss, 1.12, .82, palette.bossTrim, .45, 2.72, .18, .96, 40);
+  disc(boss, .76, palette.bossBody, .45, 2.72, .2, .98, 32);
+  const core = polygon(boss, [[0, .82], [-.5, .1], [-.3, -.72], [.3, -.72], [.5, .1]], palette.bossCore, .45, 2.72, .24, ruined ? .98 : .78);
   bossCoreMaterials.push(core.material);
   for (let index = 0; index < 6; index++) {
     const angle = index * Math.PI / 3;
-    segment(boss, Math.cos(angle) * .48, .42 + Math.sin(angle) * .48, Math.cos(angle) * 1.08, .42 + Math.sin(angle) * 1.08, palette.bossTrim, ruined ? .62 : .46, .1);
+    disc(boss, .08, palette.bossCore, .45 + Math.cos(angle) * .95, 2.72 + Math.sin(angle) * .95, .25, .88, 12);
   }
-  const leftArm = new THREE.Group();
-  leftArm.position.set(-1.25, .42, .02);
-  rectangle(leftArm, 1.6, .34, palette.bossShell, -.65, 0, 0, .94);
-  polygon(leftArm, [[-1.8, 0], [-1.0, .58], [-1.0, -.58]], palette.drill, -1.1, 0, .06, .92);
-  boss.add(leftArm);
-  const rightArm = leftArm.clone();
-  rightArm.scale.x = -1;
-  rightArm.position.x = 1.25;
-  boss.add(rightArm);
-  for (const x of [-.72, .72]) {
-    rectangle(boss, .38, 1.35, palette.bossShell, x, -1.08, 0, .94);
-    rectangle(boss, .82, .24, palette.bossTrim, x + (x < 0 ? -.15 : .15), -1.72, .04, .82);
-  }
+
+  // A swivelling survey emitter becomes the only damaging weapon: telegraphed crystal rays.
+  const emitter = new THREE.Group();
+  emitter.position.set(2.45, 4.5, .2);
+  rectangle(emitter, 1.15, .34, palette.bossTrim, 0, 0, 0, .96);
+  ring(emitter, .43, .25, palette.bossCore, .5, 0, .04, .92, 24);
+  rectangle(emitter, .18, .9, palette.bossShell, -.38, -.48, -.02, .9);
+  boss.userData.emitter = emitter;
+  boss.add(emitter);
+
+  // A literal 03 service plate keeps the model name readable inside the world, not only in the HUD.
+  rectangle(boss, 1.72, 1.02, palette.bossBody, 2.25, 2.58, .15, .82);
+  ring(boss, .33, .24, palette.bossTrim, 1.82, 2.58, .2, .92, 24);
+  for (const y of [2.88, 2.58, 2.28]) segment(boss, 2.28, y, 2.72, y, palette.bossTrim, .92, .22);
+  segment(boss, 2.72, 2.28, 2.72, 2.88, palette.bossTrim, .92, .22);
   if (ruined) {
-    for (const [x, y, scale] of [[-.85, 1.4, .72], [.9, 1.15, .58], [0, 1.72, .65]]) {
+    for (const [x, y, scale] of [[-1.5, 4.5, .72], [2.65, 3.7, .58], [.25, 5.0, .65]]) {
       polygon(boss, [[0, .8 * scale], [-.34 * scale, 0], [.34 * scale, 0]], palette.crystal, x, y, .16, .9);
     }
     modernBoss = boss;
   } else {
-    rectangle(boss, 3.6, .12, palette.cable, 0, 2.0, -.1, .6);
-    segment(boss, -1.15, 2.0, -1.15, 1.42, palette.cable, .65, -.05);
-    segment(boss, 1.15, 2.0, 1.15, 1.42, palette.cable, .65, -.05);
+    rectangle(boss, 5.8, .12, palette.cable, 0, 5.45, -.1, .6);
+    segment(boss, -2.1, 5.45, -2.1, 4.35, palette.cable, .65, -.05);
+    segment(boss, 2.1, 5.45, 2.1, 4.35, palette.cable, .65, -.05);
     pastBoss = boss;
   }
   group.add(boss);
@@ -584,12 +642,12 @@ function buildExpandedMine(group, palette, ruined) {
     group.add(wreck);
   }
 
-  // The laboratory is about 1.3 screens wide: three readable interaction zones, not one empty hall.
+  // The laboratory leads into a tall, extended mining-machine test chamber.
   rectangle(group, 39.5, 7.5, palette.labWall, 40.0, labGroundY + 3.55, -4.2, ruined ? .75 : .96);
-  rectangle(group, 31.0, 8.2, palette.bossRoom, 75.2, labGroundY + 3.9, -4.35, ruined ? .78 : .94);
-  rectangle(group, 70.5, .28, palette.trim, 55.0, labGroundY + 7.35, -2.9, ruined ? .34 : .76);
-  rectangle(group, 70.5, .34, palette.floor, 55.0, labGroundY - .16, -2.7, ruined ? .7 : .95);
-  for (const x of [21.0, 29.0, 37.0, 45.0, 53.0, 59.2, 62.0, 70.0, 80.0, 90.0]) {
+  rectangle(group, 55.0, 9.1, palette.bossRoom, 88.6, labGroundY + 4.35, -4.35, ruined ? .78 : .94);
+  rectangle(group, 96.5, .28, palette.trim, 67.4, labGroundY + 7.35, -2.9, ruined ? .34 : .76);
+  rectangle(group, 96.5, .34, palette.floor, 67.4, labGroundY - .16, -2.7, ruined ? .7 : .95);
+  for (const x of [21.0, 29.0, 37.0, 45.0, 53.0, 59.2, 62.0, 70.0, 78.0, 88.0, 98.0, 108.0, 115.4]) {
     const column = rectangle(group, .2, 7.25, palette.structure, x, labGroundY + 3.55, -2.6, ruined ? .36 : .72);
     if (ruined && (x === 37.0 || x === 70.0)) column.rotation.z = x < 50 ? -.06 : .045;
   }
@@ -751,12 +809,28 @@ function buildExpandedMine(group, palette, ruined) {
     bossBattleBarrier = battleBarrier;
     group.add(battleBarrier);
   }
-  rectangle(group, 5.2, .26, palette.platform, 67.0, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
-  rectangle(group, 5.2, .26, palette.platform, 83.2, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
-  for (const x of [64.8, 69.2, 81.0, 85.4]) rectangle(group, .16, 2.0, palette.structure, x, labGroundY + 1.0, -1.2, ruined ? .38 : .65);
+  // Symmetrical maintenance stairs: readable jump routes inspired by classic multi-level boss rooms.
+  for (const platform of bossPlatforms) {
+    rectangle(group, platform.width, .28, palette.platform, platform.x, platform.top - .14, -1.0, ruined ? .72 : .92);
+    rectangle(group, platform.width - .35, .1, palette.trim, platform.x, platform.top + .03, -.86, ruined ? .5 : .84);
+    const supportHeight = Math.max(.5, platform.top - labGroundY);
+    for (const offset of [-platform.width * .36, platform.width * .36]) {
+      rectangle(group, .16, supportHeight, palette.structure, platform.x + offset, labGroundY + supportHeight * .5, -1.2, ruined ? .4 : .68);
+      segment(group, platform.x + offset, labGroundY + .1, platform.x - offset * .42, platform.top - .18, palette.structure, ruined ? .3 : .58, -1.15);
+    }
+  }
+
+  // Far rock face, ore seams and extraction pipes make the arena part of a mine rather than an empty box.
+  rectangle(group, 1.0, 8.4, palette.shaftRock, 115.45, labGroundY + 4.05, -2.1, .96);
+  for (const [x1, y1, x2, y2] of [
+    [112.9, 6.7, 115.4, 5.8], [113.1, 5.0, 115.4, 4.2], [113.0, 2.9, 115.4, 2.1],
+  ]) segment(group, x1, labGroundY + y1, x2, labGroundY + y2, palette.crystal, ruined ? .38 : .68, -1.75);
+  for (const y of [1.3, 3.1, 5.1]) {
+    segment(group, 63.2, labGroundY + y, 114.8, labGroundY + y + .15, palette.cable, ruined ? .22 : .42, -2.0);
+  }
   createLabBoss(group, palette, ruined);
 
-  const lampXs = [23.0, 28.5, 34.0, 40.0, 46.0, 52.0, 56.0, 65.0, 72.0, 79.0, 86.0];
+  const lampXs = [23.0, 28.5, 34.0, 40.0, 46.0, 52.0, 56.0, 65.0, 72.0, 79.0, 88.0, 97.0, 106.0, 114.0];
   for (const x of lampXs) {
     segment(group, x, labGroundY + 7.2, x, labGroundY + 6.65, palette.structure, ruined ? .28 : .58, -1.4);
     const lamp = disc(group, .16, ruined ? palette.deadLamp : palette.lamp, x, labGroundY + 6.5, -1.15, ruined ? .3 : .95, 18);
@@ -801,8 +875,8 @@ bedrock.position.set(2.5, groundY - 4.5, -5.8);
 commonLayer.add(bedrock);
 
 const deepBedrockMaterial = material('#0d242a', 1);
-const deepBedrock = new THREE.Mesh(new THREE.PlaneGeometry(82, 7.5), deepBedrockMaterial);
-deepBedrock.position.set(55, labGroundY - 3.9, -5.8);
+const deepBedrock = new THREE.Mesh(new THREE.PlaneGeometry(104, 7.5), deepBedrockMaterial);
+deepBedrock.position.set(66, labGroundY - 3.9, -5.8);
 commonLayer.add(deepBedrock);
 
 const strataMaterial = lineMaterial('#3e6870', .34);
@@ -851,10 +925,10 @@ for (let x = -15.5; x <= 22.0; x += 1.05) {
 }
 
 const labGroundMaterial = material('#203a40', 1);
-const labGround = new THREE.Mesh(new THREE.PlaneGeometry(78, .6), labGroundMaterial);
-labGround.position.set(55, labGroundY - .3, .18);
+const labGround = new THREE.Mesh(new THREE.PlaneGeometry(102, .6), labGroundMaterial);
+labGround.position.set(67, labGroundY - .3, .18);
 commonLayer.add(labGround);
-for (let x = 16.2; x <= 93.0; x += 1.1) {
+for (let x = 16.2; x <= 117.0; x += 1.1) {
   segment(commonLayer, x, labGroundY + .015, x + .76, labGroundY + .015, '#789099', .2, .3);
 }
 
@@ -1052,34 +1126,41 @@ function createPlayer() {
 const playerMesh = createPlayer();
 scene.add(playerMesh);
 
-function createSword() {
+function createCalibrator() {
   const group = new THREE.Group();
-  polygon(group, [[0, -.075], [1.18, -.075], [1.48, 0], [1.18, .075], [0, .075]], '#d9f8fb', .05, 0, .2, .98);
-  rectangle(group, .12, .46, '#d39a59', -.03, 0, .22, .98).rotation.z = Math.PI / 2;
-  rectangle(group, .38, .09, '#96613c', -.2, 0, .23, .98);
+  rectangle(group, .92, .28, '#284d55', .42, 0, .2, .98);
+  rectangle(group, .58, .18, '#8debf1', .55, .02, .22, .88);
+  polygon(group, [[0, .16], [.42, .1], [.42, -.1], [0, -.16]], '#d9f8fb', 1.04, 0, .24, .98);
+  rectangle(group, .2, .5, '#96613c', .18, -.29, .18, .98).rotation.z = -.2;
+  ring(group, .16, .09, '#8debf1', .92, 0, .26, .92, 20);
   return group;
 }
 
 const weaponRig = new THREE.Group();
 weaponRig.position.set(0, -.39, .45);
-const swordMesh = createSword();
-weaponRig.add(swordMesh);
+const calibratorMesh = createCalibrator();
+weaponRig.add(calibratorMesh);
 playerMesh.userData.rig.rightArm.add(weaponRig);
-const slashMesh = new THREE.Mesh(
-  new THREE.RingGeometry(.68, 1.48, 28, 1, -.9, 1.8),
-  material('#b8f5fa', .22),
-);
-slashMesh.position.set(.28, .02, .3);
-slashMesh.visible = false;
-playerMesh.add(slashMesh);
+const muzzleFlash = polygon(weaponRig, [[0, .22], [.42, 0], [0, -.22]], '#c8fbff', 1.38, 0, .32, .9);
+muzzleFlash.visible = false;
 
-const bossProjectileLayer = new THREE.Group();
-scene.add(bossProjectileLayer);
+const playerShotLayer = new THREE.Group();
+scene.add(playerShotLayer);
+
+const bossBeamLayer = new THREE.Group();
+const beamTelegraphMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material('#82edf6', .24));
+const beamGlowMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material('#6fd9e6', .55));
+const beamCoreMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material('#e9ffff', .96));
+beamTelegraphMesh.visible = false;
+beamGlowMesh.visible = false;
+beamCoreMesh.visible = false;
+bossBeamLayer.add(beamTelegraphMesh, beamGlowMesh, beamCoreMesh);
+scene.add(bossBeamLayer);
 
 const particleCount = 360;
 const particlePositions = new Float32Array(particleCount * 3);
 for (let index = 0; index < particleCount; index++) {
-  particlePositions[index * 3] = THREE.MathUtils.randFloat(-17, 94);
+  particlePositions[index * 3] = THREE.MathUtils.randFloat(-17, 118);
   particlePositions[index * 3 + 1] = THREE.MathUtils.randFloat(-27, 7);
   particlePositions[index * 3 + 2] = THREE.MathUtils.randFloat(-5, 4);
 }
@@ -1137,9 +1218,9 @@ function updateInventoryHud() {
   hotbarWheel.classList.toggle('empty', !hasWheel);
   breachKitSlot.classList.toggle('empty', !hasBreachKit);
   hotbarBreach.classList.toggle('empty', !hasBreachKit);
-  hotbarSword.classList.add('selected');
-  inventoryItemName.textContent = '矿用长剑';
-  inventoryItemStatus.textContent = '快捷栏 1 · 从右上向右下挥砍 · 伤害 38 · 不会消耗';
+  hotbarCalibrator.classList.add('selected');
+  inventoryItemName.textContent = '时相校准器';
+  inventoryItemStatus.textContent = '快捷栏 1 · 发射检修脉冲 · 命中暴露的时晶核心 · 不消耗弹药';
 }
 
 function setInventoryOpen(open) {
@@ -1227,13 +1308,15 @@ function resetHistory() {
   state.attackTimer = 0;
   state.attackDuration = 0;
   state.attackCooldown = 0;
-  state.attackHit = false;
   state.boss.health = state.boss.maxHealth;
-  state.boss.x = 75;
-  state.boss.vx = 0;
-  state.boss.decisionTimer = 1.4;
-  state.boss.chargeTimer = 0;
-  state.boss.projectileTimer = 1.2;
+  state.boss.x = bossHomeX;
+  state.boss.beamPhase = 'cooldown';
+  state.boss.beamTimer = 1.25;
+  state.boss.beamOriginX = bossHomeX;
+  state.boss.beamOriginY = labGroundY + 4.7;
+  state.boss.beamDirectionX = -1;
+  state.boss.beamDirectionY = 0;
+  state.boss.beamHit = false;
   state.boss.hitFlash = 0;
   state.boss.defeated = false;
   state.cameraX = 0;
@@ -1258,12 +1341,12 @@ function resetHistory() {
   player.y = groundY + player.halfH;
   player.vx = 0;
   player.vy = 0;
+  player.supportY = groundY;
   player.walkPhase = 0;
   player.walkBlend = 0;
   player.health = player.maxHealth;
   player.hurtCooldown = 0;
-  for (const projectile of bossProjectiles) bossProjectileLayer.remove(projectile.mesh);
-  bossProjectiles.length = 0;
+  clearCombatEffects();
   document.body.classList.remove('past');
   eraLabel.textContent = '现代 · 2147';
   flashTime();
@@ -1289,6 +1372,7 @@ function updateElevator(dt) {
   player.vx = 0;
   player.vy = 0;
   player.grounded = true;
+  player.supportY = state.elevatorY;
   if (remaining <= dt * 4.35 + .015) {
     state.elevatorY = state.elevatorTargetY;
     state.elevatorRiding = false;
@@ -1312,9 +1396,10 @@ function updateHorizontal(dt) {
   if (direction) player.facing = direction;
   const lowerLevel = isLowerLevel();
   const minX = lowerLevel ? 16.9 : -14.7;
-  const maxX = lowerLevel ? 91.0 : 20.25;
+  const maxX = lowerLevel ? bossArenaEndX - .55 : 20.25;
   let nextX = THREE.MathUtils.clamp(player.x + player.vx * dt, minX, maxX);
   const playerTop = player.y + player.halfH;
+  const playerBottom = player.y - player.halfH;
 
   if (!lowerLevel) {
     const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
@@ -1339,10 +1424,22 @@ function updateHorizontal(dt) {
       && state.bossAwake
       && !state.boss.defeated
       && overlaps(nextX, player.halfW, 62.45, .34);
-    if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate) {
+    const blockedByBossBody = state.eraTarget > .5
+      && state.bossAwake
+      && !state.boss.defeated
+      && playerBottom < labGroundY + 4.65
+      && overlaps(nextX, player.halfW, state.boss.x, 5.1);
+    if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate || blockedByBossBody) {
       if (blockedByPastSafetyLine && clock.elapsedTime - state.lastNpcWarning > 2.2) {
         state.lastNpcWarning = clock.elapsedTime;
         showToast('维修工程师警告：停下！你的工单只允许维护防爆门，黄色安全线后是Boss区域，立即离开！');
+      }
+      if (blockedByBossBody) {
+        const side = player.x < state.boss.x ? -1 : 1;
+        nextX = state.boss.x + side * (5.12 + player.halfW);
+        player.vx = side * 2.8;
+        player.x = nextX;
+        return;
       }
       const obstacleX = blockedByPastLabDoor
         ? labEntranceX
@@ -1360,15 +1457,25 @@ function updateHorizontal(dt) {
 
 function updateVertical(dt) {
   if (state.elevatorRiding) return;
+  const previousBottom = player.y - player.halfH;
   player.vy -= 24 * dt;
   let nextY = player.y + player.vy * dt;
-  const landingY = isLowerLevel() ? labGroundY : groundY;
+  const lowerLevel = isLowerLevel();
+  let landingY = lowerLevel ? labGroundY : groundY;
 
   const nextBottom = nextY - player.halfH;
+  if (lowerLevel && player.vy <= 0) {
+    for (const platform of bossPlatforms) {
+      const overPlatform = Math.abs(player.x - platform.x) <= platform.width * .5 + player.halfW * .7;
+      const crossedTop = previousBottom >= platform.top - .09 && nextBottom <= platform.top;
+      if (overPlatform && crossedTop) landingY = Math.max(landingY, platform.top);
+    }
+  }
   if (player.vy <= 0 && nextBottom <= landingY) {
     nextY = landingY + player.halfH;
     player.vy = 0;
     player.grounded = true;
+    player.supportY = landingY;
   } else {
     player.grounded = false;
   }
@@ -1587,23 +1694,32 @@ function checkHistoryEvents() {
   ) {
     state.bossAwake = true;
     state.pulse = 1;
-    state.boss.projectileTimer = .8;
-    showToast('03型时晶采掘机“掘脉者”苏醒：敌对识别指令锁定时间锚，Boss战开始');
+    state.boss.beamPhase = 'cooldown';
+    state.boss.beamTimer = 1.15;
+    showToast('掘脉者苏醒：沿维护阶梯躲避扫描射线，用时相校准器攻击暴露核心');
     updateHud();
   }
 }
 
 function tryAttack() {
   if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || state.attackCooldown > 0) return;
-  state.attackDuration = .38;
+  state.attackDuration = .18;
   state.attackTimer = state.attackDuration;
-  state.attackCooldown = .44;
-  state.attackHit = false;
+  state.attackCooldown = .3;
+  const mesh = new THREE.Group();
+  rectangle(mesh, .62, .12, '#bffaff', 0, 0, .06, .98);
+  ring(mesh, .22, .13, '#66d8e4', player.facing * .28, 0, .08, .82, 18);
+  mesh.position.set(player.x + player.facing * .82, player.y + .03, 2.75);
+  playerShotLayer.add(mesh);
+  playerShots.push({ mesh, vx: player.facing * 18.5, life: 2.6 });
 }
 
-function clearBossProjectiles() {
-  for (const projectile of bossProjectiles) bossProjectileLayer.remove(projectile.mesh);
-  bossProjectiles.length = 0;
+function clearCombatEffects() {
+  for (const shot of playerShots) playerShotLayer.remove(shot.mesh);
+  playerShots.length = 0;
+  beamTelegraphMesh.visible = false;
+  beamGlowMesh.visible = false;
+  beamCoreMesh.visible = false;
 }
 
 function damagePlayer(amount, knockDirection) {
@@ -1621,13 +1737,16 @@ function damagePlayer(amount, knockDirection) {
     player.y = labGroundY + player.halfH;
     player.vx = 0;
     player.vy = 0;
+    player.supportY = labGroundY;
     state.boss.health = state.boss.maxHealth;
-    state.boss.x = 75;
-    state.boss.vx = 0;
-    clearBossProjectiles();
-    showToast('时间锚将你重构在Boss房入口；构装体也恢复了完整状态');
+    state.boss.x = bossHomeX;
+    state.boss.beamPhase = 'cooldown';
+    state.boss.beamTimer = 1.3;
+    state.boss.beamHit = false;
+    clearCombatEffects();
+    showToast('时间锚将你重构在Boss房入口；掘脉者与射线序列已经恢复');
   } else {
-    showToast(`受到 ${amount} 点伤害 · 剩余生命 ${Math.ceil(player.health)}`);
+    showToast(`被时晶射线命中：-${amount} · 剩余生命 ${Math.ceil(player.health)}`);
   }
   updateHud();
   return defeated;
@@ -1637,84 +1756,108 @@ function damageBoss(amount) {
   if (!state.bossAwake || state.boss.defeated || state.eraTarget < .5) return;
   state.boss.health = Math.max(0, state.boss.health - amount);
   state.boss.hitFlash = .16;
-  state.boss.vx += player.facing * 1.8;
   if (state.boss.health <= 0) {
     state.boss.defeated = true;
-    state.boss.vx = 0;
     state.pulse = 1;
-    clearBossProjectiles();
+    clearCombatEffects();
     showToast('掘脉者被强制停机：Boss房封锁解除，时相核心可以安全回收');
   }
   updateHud();
 }
 
-function spawnBossProjectile() {
-  const mesh = new THREE.Group();
-  disc(mesh, .3, '#78e5ef', 0, 0, .12, .92, 18);
-  ring(mesh, .48, .4, '#b7f9fc', 0, 0, .1, .52, 22);
-  mesh.position.set(state.boss.x, labGroundY + 2.75, 2.5);
-  bossProjectileLayer.add(mesh);
-  const dx = player.x - state.boss.x;
-  const dy = player.y - (labGroundY + 2.75);
+function beginBossBeam() {
+  state.boss.beamPhase = 'telegraph';
+  state.boss.beamTimer = .92;
+  state.boss.beamOriginX = state.boss.x + 2.92;
+  state.boss.beamOriginY = labGroundY + 4.55;
+  const dx = player.x - state.boss.beamOriginX;
+  const dy = player.y - state.boss.beamOriginY;
   const length = Math.max(.001, Math.hypot(dx, dy));
-  const speed = 6.2;
-  bossProjectiles.push({ mesh, vx: dx / length * speed, vy: dy / length * speed, life: 4.5 });
+  state.boss.beamDirectionX = dx / length;
+  state.boss.beamDirectionY = dy / length;
+  state.boss.beamHit = false;
+}
+
+function setBeamMesh(mesh, thickness, visible) {
+  const x1 = state.boss.beamOriginX;
+  const y1 = state.boss.beamOriginY;
+  const x2 = x1 + state.boss.beamDirectionX * state.boss.beamLength;
+  const y2 = y1 + state.boss.beamDirectionY * state.boss.beamLength;
+  mesh.position.set((x1 + x2) * .5, (y1 + y2) * .5, 3.05);
+  mesh.rotation.z = Math.atan2(y2 - y1, x2 - x1);
+  mesh.scale.set(state.boss.beamLength, thickness, 1);
+  mesh.visible = visible;
+}
+
+function playerDistanceToBeam() {
+  const px = player.x - state.boss.beamOriginX;
+  const py = player.y - state.boss.beamOriginY;
+  const along = px * state.boss.beamDirectionX + py * state.boss.beamDirectionY;
+  if (along < 0 || along > state.boss.beamLength) return Infinity;
+  return Math.abs(px * state.boss.beamDirectionY - py * state.boss.beamDirectionX);
 }
 
 function updateCombat(dt, elapsed) {
   state.attackCooldown = Math.max(0, state.attackCooldown - dt);
+  state.attackTimer = Math.max(0, state.attackTimer - dt);
   player.hurtCooldown = Math.max(0, player.hurtCooldown - dt);
   state.boss.hitFlash = Math.max(0, state.boss.hitFlash - dt);
-  if (state.attackTimer > 0) {
-    state.attackTimer = Math.max(0, state.attackTimer - dt);
-    const range = 1.85;
-    const damage = 38;
-    const strikeProgress = state.attackDuration > 0 ? 1 - state.attackTimer / state.attackDuration : 1;
-    const bossAhead = (state.boss.x - player.x) * player.facing > -.35;
-    if (!state.attackHit && strikeProgress >= .3 && bossAhead && Math.abs(state.boss.x - player.x) < range && Math.abs(player.y - (labGroundY + player.halfH)) < 1.4) {
-      state.attackHit = true;
-      damageBoss(damage);
+
+  for (let index = playerShots.length - 1; index >= 0; index--) {
+    const shot = playerShots[index];
+    shot.life -= dt;
+    shot.mesh.position.x += shot.vx * dt;
+    const hitCore = state.bossAwake
+      && !state.boss.defeated
+      && state.eraTarget > .5
+      && Math.abs(shot.mesh.position.x - (state.boss.x + .45)) < 1.15
+      && Math.abs(shot.mesh.position.y - bossCoreY) < 1.3;
+    if (hitCore) {
+      playerShotLayer.remove(shot.mesh);
+      playerShots.splice(index, 1);
+      damageBoss(24);
+    } else if (shot.life <= 0 || shot.mesh.position.x < 61.5 || shot.mesh.position.x > bossArenaEndX + 1) {
+      playerShotLayer.remove(shot.mesh);
+      playerShots.splice(index, 1);
     }
   }
 
-  if (state.bossAwake && !state.boss.defeated && state.eraTarget > .5 && isLowerLevel()) {
-    state.boss.decisionTimer -= dt;
-    state.boss.chargeTimer = Math.max(0, state.boss.chargeTimer - dt);
-    if (state.boss.decisionTimer <= 0) {
-      state.boss.decisionTimer = 2.4 + Math.sin(elapsed) * .35;
-      state.boss.chargeTimer = .68;
-    }
-    const targetDirection = Math.sign(player.x - state.boss.x) || 1;
-    const bossSpeed = state.boss.chargeTimer > 0 ? 8.2 : 2.5;
-    state.boss.vx = THREE.MathUtils.damp(state.boss.vx, targetDirection * bossSpeed, state.boss.chargeTimer > 0 ? 10 : 3.5, dt);
-    state.boss.x = THREE.MathUtils.clamp(state.boss.x + state.boss.vx * dt, 64.4, 88.0);
-
-    state.boss.projectileTimer -= dt;
-    if (state.boss.projectileTimer <= 0) {
-      state.boss.projectileTimer = state.boss.health < state.boss.maxHealth * .5 ? 1.15 : 1.75;
-      spawnBossProjectile();
-    }
-    if (Math.abs(state.boss.x - player.x) < 1.72) {
-      damagePlayer(state.boss.chargeTimer > 0 ? 22 : 13, Math.sign(player.x - state.boss.x) || -1);
-    }
+  const fighting = state.bossAwake && !state.boss.defeated && state.eraTarget > .5 && isLowerLevel();
+  if (!fighting) {
+    beamTelegraphMesh.visible = false;
+    beamGlowMesh.visible = false;
+    beamCoreMesh.visible = false;
+    return;
   }
 
-  for (let index = bossProjectiles.length - 1; index >= 0; index--) {
-    const projectile = bossProjectiles[index];
-    projectile.life -= dt;
-    projectile.mesh.position.x += projectile.vx * dt;
-    projectile.mesh.position.y += projectile.vy * dt;
-    projectile.mesh.rotation.z += dt * 4.2;
-    const hitPlayer = Math.abs(projectile.mesh.position.x - player.x) < .55
-      && Math.abs(projectile.mesh.position.y - player.y) < .78;
-    if (hitPlayer) {
-      bossProjectileLayer.remove(projectile.mesh);
-      bossProjectiles.splice(index, 1);
-      const playerDefeated = damagePlayer(11, Math.sign(projectile.vx) || 1);
-      if (playerDefeated) return;
-    } else if (projectile.life <= 0 || projectile.mesh.position.x < 61.5 || projectile.mesh.position.x > 91.5) {
-      bossProjectileLayer.remove(projectile.mesh);
-      bossProjectiles.splice(index, 1);
+  state.boss.beamTimer -= dt;
+  if (state.boss.beamPhase === 'cooldown' && state.boss.beamTimer <= 0) {
+    beginBossBeam();
+  } else if (state.boss.beamPhase === 'telegraph') {
+    setBeamMesh(beamTelegraphMesh, .08 + Math.sin(elapsed * 24) * .025, true);
+    beamTelegraphMesh.material.opacity = .2 + Math.abs(Math.sin(elapsed * 18)) * .22;
+    beamGlowMesh.visible = false;
+    beamCoreMesh.visible = false;
+    if (state.boss.beamTimer <= 0) {
+      state.boss.beamPhase = 'active';
+      state.boss.beamTimer = .36;
+      state.boss.beamHit = false;
+      state.pulse = Math.max(state.pulse, .28);
+    }
+  } else if (state.boss.beamPhase === 'active') {
+    beamTelegraphMesh.visible = false;
+    setBeamMesh(beamGlowMesh, .52, true);
+    setBeamMesh(beamCoreMesh, .13, true);
+    if (!state.boss.beamHit && playerDistanceToBeam() < .56) {
+      state.boss.beamHit = true;
+      const defeated = damagePlayer(20, Math.sign(state.boss.beamDirectionX) || -1);
+      if (defeated) return;
+    }
+    if (state.boss.beamTimer <= 0) {
+      state.boss.beamPhase = 'cooldown';
+      state.boss.beamTimer = state.boss.health < state.boss.maxHealth * .5 ? .82 : 1.18;
+      beamGlowMesh.visible = false;
+      beamCoreMesh.visible = false;
     }
   }
 }
@@ -1740,7 +1883,7 @@ function updateHud() {
   if (state.boss.defeated) {
     objective.textContent = 'Boss已击败：掘脉者被强制停机，时相核心现在可以安全取出';
   } else if (state.bossAwake) {
-    objective.textContent = 'Boss战：长剑从右上向右下挥砍 · 靠近后按 J 或点击鼠标攻击';
+    objective.textContent = 'Boss战：沿左右维护阶梯躲开预警射线 · 用时相校准器对准暴露核心按 J 发射 · 接触机体不会受伤';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -2002,17 +2145,26 @@ function updateHistoryOutcome(dt, elapsed) {
     setLayerOpacity(bossBattleBarrier, state.era * (state.bossAwake && !state.boss.defeated ? 1 : 0));
   }
   if (pastBoss) {
-    pastBoss.rotation.z = Math.sin(elapsed * .5) * .012;
+    pastBoss.rotation.z = 0;
+    if (pastBoss.userData.cutter) pastBoss.userData.cutter.rotation.z = elapsed * .32;
   }
   if (modernBoss) {
-    const awakeAmount = state.bossAwake && !state.boss.defeated ? 1 : 0;
     modernBoss.position.x = state.boss.x;
-    const bossTargetY = state.boss.defeated ? labGroundY + .75 : labGroundY + 2.35 + Math.sin(elapsed * (state.bossAwake ? 2.4 : .7)) * (.16 + awakeAmount * .22);
-    modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, state.boss.defeated ? 2.2 : 8, dt);
-    const bossTargetRotation = state.boss.defeated ? -1.12 : Math.sin(elapsed * (state.bossAwake ? 1.8 : .45)) * (.018 + awakeAmount * .035);
+    const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04;
+    modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, 6, dt);
+    const bossTargetRotation = state.boss.defeated ? -.08 : 0;
     modernBoss.rotation.z = THREE.MathUtils.damp(modernBoss.rotation.z, bossTargetRotation, 5, dt);
-    const bossScale = state.boss.defeated ? .82 : (state.bossAwake ? 1.08 + Math.sin(elapsed * 3.4) * .025 : 1);
+    const bossScale = state.boss.defeated ? .96 : 1;
     modernBoss.scale.setScalar(THREE.MathUtils.damp(modernBoss.scale.x, bossScale, 4.5, dt));
+    if (modernBoss.userData.cutter) {
+      modernBoss.userData.cutter.rotation.z += dt * (state.bossAwake && !state.boss.defeated ? 4.2 : .18);
+    }
+    if (modernBoss.userData.emitter) {
+      const emitterAngle = state.boss.beamPhase === 'cooldown'
+        ? Math.sin(elapsed * .7) * .35 + Math.PI
+        : Math.atan2(state.boss.beamDirectionY, state.boss.beamDirectionX);
+      modernBoss.userData.emitter.rotation.z = THREE.MathUtils.damp(modernBoss.userData.emitter.rotation.z, emitterAngle, 9, dt);
+    }
   }
   for (let index = 0; index < bossCoreMaterials.length; index++) {
     const eraAmount = index === 0 ? 1 - state.era : state.era;
@@ -2073,7 +2225,6 @@ function updateVisuals(dt, elapsed) {
   const attackProgress = attacking && state.attackDuration > 0
     ? 1 - state.attackTimer / state.attackDuration
     : 0;
-  const attackEase = attackProgress * attackProgress * (3 - attackProgress * 2);
   const airborne = player.grounded ? 0 : 1;
   const leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
   const rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
@@ -2082,8 +2233,8 @@ function updateVisuals(dt, elapsed) {
   let leftArmTarget = airborne ? .22 : armStride;
   let rightArmTarget = airborne ? -.34 : -armStride;
   if (attacking) {
-    rightArmTarget = THREE.MathUtils.lerp(-.22, .62, attackEase);
-    leftArmTarget = THREE.MathUtils.lerp(.12, .46, Math.sin(attackProgress * Math.PI));
+    rightArmTarget = .24 - Math.sin(attackProgress * Math.PI) * .12;
+    leftArmTarget = .12;
   }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
@@ -2097,19 +2248,17 @@ function updateVisuals(dt, elapsed) {
   rig.headRig.position.y = rig.headBaseY + stepBounce * .72;
   rig.leftArm.position.y = rig.leftArmBaseY + stepBounce;
   rig.rightArm.position.y = rig.rightArmBaseY + stepBounce;
-  const activeFloorY = isLowerLevel() ? labGroundY : groundY;
-  const jumpHeight = Math.max(0, player.y - (activeFloorY + player.halfH));
+  const jumpHeight = Math.max(0, player.y - (player.supportY + player.halfH));
   rig.shadow.position.y = -.83 - jumpHeight;
   rig.shadow.scale.x = 1 - Math.min(.42, jumpHeight * .12) + player.walkBlend * .06;
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
 
-  swordMesh.rotation.z = 0;
-  swordMesh.position.set(0, 0, 0);
-  weaponRig.rotation.z = attacking ? THREE.MathUtils.lerp(1.22, -1.18, attackEase) : -.72;
-  slashMesh.visible = attacking;
-  slashMesh.rotation.z = .62 - attackEase * 1.18;
-  slashMesh.material.opacity = attacking ? Math.sin(attackProgress * Math.PI) * .3 : 0;
+  calibratorMesh.rotation.z = 0;
+  calibratorMesh.position.x = attacking ? -Math.sin(attackProgress * Math.PI) * .12 : 0;
+  weaponRig.rotation.z = .05;
+  muzzleFlash.visible = attacking && attackProgress < .52;
+  muzzleFlash.scale.setScalar(.72 + Math.sin(attackProgress * Math.PI) * .45);
 
   if (player.hurtCooldown > .55) {
     for (const item of playerMesh.userData.bodyMaterials) item.color.set('#ff9b8d');
@@ -2126,7 +2275,7 @@ function updateVisuals(dt, elapsed) {
     cameraTargetX = elevatorX;
     cameraTargetY = player.y + 3.0;
   } else if (isLowerLevel()) {
-    cameraTargetX = THREE.MathUtils.clamp(player.x, 17 + viewHalfWidth, 92 - viewHalfWidth);
+    cameraTargetX = THREE.MathUtils.clamp(player.x, 17 + viewHalfWidth, bossArenaEndX - viewHalfWidth);
     cameraTargetY = labGroundY + 4.15;
   } else {
     cameraTargetX = THREE.MathUtils.clamp(player.x, -17 + viewHalfWidth, 22 - viewHalfWidth);
@@ -2153,7 +2302,7 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
-  if (!event.repeat && event.code === 'Digit1') showToast('已装备矿用长剑');
+  if (!event.repeat && event.code === 'Digit1') showToast('已装备时相校准器：用于远程停机与核心调频');
   if (!event.repeat && event.code === 'KeyJ') tryAttack();
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
   if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);

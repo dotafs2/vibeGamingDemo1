@@ -475,27 +475,29 @@ kbd {
   display: block;
   width: 29px;
   height: 29px;
-  transform: rotate(-42deg);
 }
-.sword-icon::before {
+.calibrator-icon::before {
   content: '';
   position: absolute;
-  left: 12px;
-  top: 1px;
-  width: 5px;
-  height: 20px;
-  background: linear-gradient(90deg, #8baeb5, #e6fbff 55%, #668b93);
-  clip-path: polygon(50% 0, 100% 18%, 100% 100%, 0 100%, 0 18%);
+  left: 3px;
+  top: 8px;
+  width: 23px;
+  height: 10px;
+  border: 1px solid #76dce5;
+  border-radius: 3px 7px 7px 3px;
+  background: linear-gradient(180deg, #2b5961, #142d33);
+  box-shadow: inset 7px 0 0 rgba(142,240,247,.55), 0 0 7px rgba(93,220,232,.32);
 }
-.sword-icon::after {
+.calibrator-icon::after {
   content: '';
   position: absolute;
-  left: 5px;
-  top: 20px;
-  width: 19px;
-  height: 4px;
-  border-bottom: 7px solid #8e5c38;
-  background: #d49a58;
+  left: 8px;
+  top: 17px;
+  width: 7px;
+  height: 9px;
+  border-radius: 0 0 2px 2px;
+  background: #93613f;
+  transform: skew(-9deg);
 }
 .mini-wheel {
   width: 23px;
