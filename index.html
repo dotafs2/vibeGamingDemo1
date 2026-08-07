@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>零时回响 · 历史交互场景</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="/src/style.css?v=weapon-boss-v2" />
+    <link rel="stylesheet" href="/src/style.css?v=boss-phase-v3" />
   </head>
   <body>
     <canvas id="game" aria-label="零时回响时间切换交互场景"></canvas>
@@ -58,6 +58,7 @@
       <section class="controls">
         <div><kbd>A</kbd><kbd>D</kbd><span>左右移动</span></div>
         <div><kbd>W</kbd><span>跳跃</span></div>
+        <div><kbd>S</kbd><kbd>Ctrl</kbd><span>下蹲 / 下平台</span></div>
         <div><kbd>E</kbd><span>拾取 / 安装 / 使用</span></div>
         <div><kbd>B</kbd><span>打开背包</span></div>
         <div><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><span>切换武器</span></div>
@@ -75,7 +76,7 @@
       <section id="boss-hud" class="boss-hud" aria-hidden="true">
         <span>03型时晶采掘机 · 掘脉者</span>
         <div><i id="boss-health-fill"></i></div>
-        <b id="boss-health-copy">360 / 360</b>
+        <b id="boss-health-copy">720 / 720</b>
       </section>
 
       <section class="hotbar" aria-label="快捷栏">
@@ -130,6 +131,6 @@
     </main>
 
     <div id="toast" class="toast" role="status"></div>
-    <script type="module" src="/src/main.js?v=weapon-boss-v2"></script>
+    <script type="module" src="/src/main.js?v=boss-phase-v3"></script>
   </body>
 </html>

@@ -96,14 +96,14 @@ const state = {
   wrenchInFlight: false,
   attackHeld: false,
   boss: {
-    maxHealth: 360,
-    health: 360,
+    maxHealth: 720,
+    health: 720,
     x: bossHomeX,
     direction: -1,
     patrolMinX: 69.5,
     patrolMaxX: 108.5,
     beamPhase: 'cooldown',
-    beamTimer: 1.25,
+    beamTimer: 10,
     beamOriginX: bossHomeX + 1.12,
     beamOriginY: labGroundY + 3.58,
     beamDirectionX: -1,
@@ -115,8 +115,12 @@ const state = {
     jumpStartX: bossHomeX,
     jumpTargetX: bossHomeX,
     drillAngle: Math.PI,
-    drillLength: .85,
+    drillLength: 0,
     drillHit: false,
+    dashDirection: -1,
+    dashHit: false,
+    dashStartX: bossHomeX,
+    jumpInvulnerable: false,
     hitFlash: 0,
     defeated: false,
   },
@@ -148,6 +152,10 @@ const player = {
   vy: 0,
   halfW: .38,
   halfH: .86,
+  standingHalfH: .86,
+  crouchHalfH: .5,
+  crouching: false,
+  dropThroughTimer: 0,
   speed: 6.2,
   jumpSpeed: 10.4,
   grounded: true,
@@ -629,6 +637,18 @@ function createLabBoss(group, palette, ruined) {
   boss.userData.cutter = cutter;
   boss.add(cutter);
 
+  // Rear jets stop the machine before every saw charge, giving the player a readable warning window.
+  const dashJets = new THREE.Group();
+  dashJets.position.set(1.72, 2.18, .46);
+  ring(dashJets, .32, .22, palette.bossTrim, .02, 0, .02, .98, 20);
+  polygon(dashJets, [[0, .19], [1.15, 0], [0, -.19]], palette.bossCore, .24, .26, .04, .92);
+  polygon(dashJets, [[0, .12], [.78, 0], [0, -.12]], '#efffff', .28, .26, .06, .96);
+  polygon(dashJets, [[0, .19], [1.15, 0], [0, -.19]], palette.bossCore, .24, -.26, .04, .92);
+  polygon(dashJets, [[0, .12], [.78, 0], [0, -.12]], '#efffff', .28, -.26, .06, .96);
+  dashJets.visible = false;
+  boss.userData.dashJets = dashJets;
+  boss.add(dashJets);
+
   // Sample channel and rear ore capsule make the mining process legible without a tank-like conveyor chassis.
   const sampleTube = thickSegment(boss, -1.0, 3.2, 1.45, 2.85, palette.bossTrim, .26, .12, .88);
   sampleTube.rotation.z += .01;
@@ -650,17 +670,20 @@ function createLabBoss(group, palette, ruined) {
 
   // Telescopic belly drill: normally retracted under the core, then points and extends during combat.
   const bellyDrill = new THREE.Group();
-  bellyDrill.position.set(.12, 1.36, .28);
+  bellyDrill.position.set(.12, 1.36, 3.0);
   bellyDrill.rotation.z = -Math.PI * .5;
-  const drillShaft = rectangle(bellyDrill, .8, .34, palette.bossBody, .4, 0, .02, .98);
-  ring(bellyDrill, .29, .19, palette.bossTrim, .08, 0, .05, .96, 22);
+  const drillHatch = ring(boss, .52, .35, palette.bossTrim, .12, 1.36, .27, .94, 26);
+  const drillShaft = rectangle(bellyDrill, 1.0, .48, palette.bossBody, .5, 0, .02, .98);
+  ring(bellyDrill, .4, .25, palette.bossTrim, .08, 0, .05, .96, 22);
   const drillBit = new THREE.Group();
-  drillBit.position.x = .92;
-  polygon(drillBit, [[0, .3], [.42, .22], [.82, .1], [1.08, 0], [.82, -.1], [.42, -.22], [0, -.3]], palette.drill, 0, 0, .08, .98);
-  for (const x of [.16, .39, .62]) segment(drillBit, x, -.23 + x * .12, x + .24, .23 - x * .12, palette.bossCore, .72, .16);
+  drillBit.position.x = 1.05;
+  polygon(drillBit, [[0, .48], [.55, .36], [1.08, .18], [1.48, 0], [1.08, -.18], [.55, -.36], [0, -.48]], palette.drill, 0, 0, .08, .98);
+  for (const x of [.18, .48, .78]) segment(drillBit, x, -.38 + x * .12, x + .34, .38 - x * .12, palette.bossCore, .78, .2);
   bellyDrill.add(drillBit);
   bellyDrill.userData.shaft = drillShaft;
   bellyDrill.userData.bit = drillBit;
+  bellyDrill.userData.hatch = drillHatch;
+  bellyDrill.visible = false;
   boss.userData.bellyDrill = bellyDrill;
   boss.add(bellyDrill);
 
@@ -1285,7 +1308,9 @@ function createCoreDrill() {
   const bit = new THREE.Group();
   bit.position.x = .78;
   polygon(bit, [[0, .16], [.52, .1], [.8, 0], [.52, -.1], [0, -.16]], '#c8fbff', 0, 0, .26, .98);
-  for (const x of [.14, .32, .5]) segment(bit, x, -.13, x + .12, .13, '#55bdc7', .85, .28);
+  const flutes = [];
+  for (const x of [.14, .32, .5]) flutes.push(segment(bit, x, -.13, x + .12, .13, '#55bdc7', .85, .28));
+  bit.userData.flutes = flutes;
   group.add(bit);
   group.userData.bit = bit;
   return group;
@@ -1538,7 +1563,7 @@ function resetHistory() {
   state.boss.x = bossHomeX;
   state.boss.direction = -1;
   state.boss.beamPhase = 'cooldown';
-  state.boss.beamTimer = 1.25;
+  state.boss.beamTimer = 10;
   state.boss.beamOriginX = bossHomeX + 1.12;
   state.boss.beamOriginY = labGroundY + 3.58;
   state.boss.beamDirectionX = -1;
@@ -1549,8 +1574,12 @@ function resetHistory() {
   state.boss.jumpStartX = bossHomeX;
   state.boss.jumpTargetX = bossHomeX;
   state.boss.drillAngle = Math.PI;
-  state.boss.drillLength = .85;
+  state.boss.drillLength = 0;
   state.boss.drillHit = false;
+  state.boss.dashDirection = -1;
+  state.boss.dashHit = false;
+  state.boss.dashStartX = bossHomeX;
+  state.boss.jumpInvulnerable = false;
   state.boss.hitFlash = 0;
   state.boss.defeated = false;
   state.cameraX = 0;
@@ -1571,6 +1600,9 @@ function resetHistory() {
   inventoryPanel.classList.remove('open');
   inventoryPanel.setAttribute('aria-hidden', 'true');
   closeNpcDialogue();
+  player.crouching = false;
+  player.halfH = player.standingHalfH;
+  player.dropThroughTimer = 0;
   player.x = -10.4;
   player.y = groundY + player.halfH;
   player.vx = 0;
@@ -1630,7 +1662,8 @@ function updateHorizontal(dt) {
   const direction = state.inventoryOpen || npcDialogue.classList.contains('open')
     ? 0
     : (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0);
-  player.vx = THREE.MathUtils.damp(player.vx, direction * player.speed, direction ? 15 : 22, dt);
+  const movementSpeed = player.speed * (player.crouching ? .52 : 1);
+  player.vx = THREE.MathUtils.damp(player.vx, direction * movementSpeed, direction ? 15 : 22, dt);
   if (direction) player.facing = direction;
   const lowerLevel = isLowerLevel();
   const minX = lowerLevel ? 16.9 : -14.7;
@@ -1680,6 +1713,28 @@ function updateHorizontal(dt) {
   player.x = nextX;
 }
 
+function setPlayerCrouching(crouching) {
+  if (player.crouching === crouching) return;
+  const feetY = player.y - player.halfH;
+  player.crouching = crouching;
+  player.halfH = crouching ? player.crouchHalfH : player.standingHalfH;
+  player.y = feetY + player.halfH;
+}
+
+function tryDropThroughPlatform() {
+  if (!isLowerLevel() || !player.grounded || player.supportY <= labGroundY + .2) return;
+  player.dropThroughTimer = .18;
+  player.grounded = false;
+  player.vy = -2.4;
+  player.y -= .12;
+}
+
+function updateCrouch(dt) {
+  player.dropThroughTimer = Math.max(0, player.dropThroughTimer - dt);
+  const wantsCrouch = keys.has('KeyS') || keys.has('ControlLeft') || keys.has('ControlRight');
+  setPlayerCrouching(wantsCrouch && !state.elevatorRiding && !state.inventoryOpen);
+}
+
 function updateVertical(dt) {
   if (state.elevatorRiding) return;
   const previousBottom = player.y - player.halfH;
@@ -1689,7 +1744,7 @@ function updateVertical(dt) {
   let landingY = lowerLevel ? labGroundY : groundY;
 
   const nextBottom = nextY - player.halfH;
-  if (lowerLevel && player.vy <= 0) {
+  if (lowerLevel && player.vy <= 0 && player.dropThroughTimer <= 0) {
     for (const platform of bossPlatforms) {
       const overPlatform = Math.abs(player.x - platform.x) <= platform.width * .5 + player.halfW * .7;
       const crossedTop = previousBottom >= platform.top - .09 && nextBottom <= platform.top;
@@ -1708,7 +1763,7 @@ function updateVertical(dt) {
 }
 
 function tryJump() {
-  if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || !player.grounded) return;
+  if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || !player.grounded || player.crouching) return;
   player.vy = player.jumpSpeed;
   player.grounded = false;
 }
@@ -1920,8 +1975,8 @@ function checkHistoryEvents() {
     state.bossAwake = true;
     state.pulse = 1;
     state.boss.beamPhase = 'cooldown';
-    state.boss.beamTimer = 1.15;
-    showToast('掘脉者解除封存：它会轮流使用测绘射线、伸缩腹钻与跳跃砸地冲击波');
+    state.boss.beamTimer = 10;
+    showToast('掘脉者解除封存：锯齿每10秒喷气预警后冲刺；半血后每次冲刺都会接3秒跳钻');
     updateHud();
   }
 }
@@ -2009,6 +2064,9 @@ function damagePlayer(amount, knockDirection) {
   const defeated = player.health <= 0;
   if (defeated) {
     player.health = player.maxHealth;
+    player.crouching = false;
+    player.halfH = player.standingHalfH;
+    player.dropThroughTimer = 0;
     player.x = 64.2;
     player.y = labGroundY + player.halfH;
     player.vx = 0;
@@ -2018,12 +2076,15 @@ function damagePlayer(amount, knockDirection) {
     state.boss.x = bossHomeX;
     state.boss.direction = -1;
     state.boss.beamPhase = 'cooldown';
-    state.boss.beamTimer = 1.3;
+    state.boss.beamTimer = 10;
     state.boss.beamHit = false;
     state.boss.attackIndex = 0;
     state.boss.airY = 0;
-    state.boss.drillLength = .85;
+    state.boss.drillLength = 0;
     state.boss.drillHit = false;
+    state.boss.dashDirection = -1;
+    state.boss.dashHit = false;
+    state.boss.jumpInvulnerable = false;
     clearCombatEffects();
     showToast('时间锚将你重构在Boss房入口；掘脉者的攻击序列已经恢复');
   } else {
@@ -2035,13 +2096,18 @@ function damagePlayer(amount, knockDirection) {
 
 function damageBoss(amount) {
   if (!state.bossAwake || state.boss.defeated || state.eraTarget < .5) return;
+  if (state.boss.jumpInvulnerable) {
+    state.boss.hitFlash = .05;
+    return;
+  }
   state.boss.health = Math.max(0, state.boss.health - amount);
   state.boss.hitFlash = .16;
   if (state.boss.health <= 0) {
     state.boss.defeated = true;
     state.boss.airY = 0;
-    state.boss.drillLength = .85;
+    state.boss.drillLength = 0;
     state.boss.beamPhase = 'cooldown';
+    state.boss.jumpInvulnerable = false;
     state.pulse = 1;
     clearCombatEffects();
     showToast('掘脉者被强制停机：Boss房封锁解除，时相核心可以安全回收');
@@ -2069,66 +2135,50 @@ function updateMeleeAttack() {
   damageBoss(weapon.damage);
 }
 
-function beginBossBeam() {
-  state.boss.beamPhase = 'telegraph';
-  state.boss.beamTimer = .92;
-  state.boss.beamOriginX = state.boss.x + 1.12;
-  state.boss.beamOriginY = labGroundY + 3.58;
-  const dx = player.x - state.boss.beamOriginX;
-  const dy = player.y - state.boss.beamOriginY;
-  const length = Math.max(.001, Math.hypot(dx, dy));
-  state.boss.beamDirectionX = dx / length;
-  state.boss.beamDirectionY = dy / length;
-  state.boss.beamHit = false;
+function bossIsJumping() {
+  return state.boss.beamPhase === 'jumpRise'
+    || state.boss.beamPhase === 'jumpHover'
+    || state.boss.beamPhase === 'jumpFall'
+    || state.boss.beamPhase === 'jumpImpact';
 }
 
-function beginBossDrill() {
-  state.boss.beamPhase = 'drillTelegraph';
-  state.boss.beamTimer = .68;
-  const originX = state.boss.x + .12;
-  const originY = labGroundY + state.boss.airY + 1.4;
-  state.boss.drillAngle = Math.atan2(player.y - originY, player.x - originX);
-  state.boss.drillLength = .85;
-  state.boss.drillHit = false;
+function beginBossDash() {
+  state.boss.beamPhase = 'dashCharge';
+  state.boss.beamTimer = 1.25;
+  state.boss.dashDirection = Math.sign(player.x - state.boss.x) || state.boss.direction;
+  state.boss.direction = state.boss.dashDirection;
+  state.boss.dashStartX = state.boss.x;
+  state.boss.dashHit = false;
 }
 
 function beginBossSlam() {
-  state.boss.beamPhase = 'slamRise';
-  state.boss.beamTimer = .48;
+  state.boss.beamPhase = 'jumpRise';
+  state.boss.beamTimer = 1.1;
   state.boss.jumpStartX = state.boss.x;
   state.boss.jumpTargetX = THREE.MathUtils.clamp(player.x, state.boss.patrolMinX, state.boss.patrolMaxX);
   state.boss.airY = 0;
-  state.boss.beamHit = false;
+  state.boss.drillLength = 0;
+  state.boss.drillHit = false;
+  state.boss.jumpInvulnerable = true;
 }
 
 function finishBossAttack() {
   state.boss.beamPhase = 'cooldown';
-  state.boss.beamTimer = state.boss.health < state.boss.maxHealth * .5 ? .68 : .98;
+  state.boss.beamTimer = 10;
   state.boss.airY = 0;
-  state.boss.drillLength = .85;
+  state.boss.drillLength = 0;
+  state.boss.jumpInvulnerable = false;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
 }
 
-function chooseBossAttack() {
-  const attack = state.boss.attackIndex % 3;
-  state.boss.attackIndex += 1;
-  if (attack === 0) beginBossBeam();
-  else if (attack === 1) beginBossDrill();
-  else beginBossSlam();
-}
-
-function playerDistanceToBossDrill() {
-  const originX = state.boss.x + .12;
-  const originY = labGroundY + state.boss.airY + 1.4;
-  const directionX = Math.cos(state.boss.drillAngle);
-  const directionY = Math.sin(state.boss.drillAngle);
-  const px = player.x - originX;
-  const py = player.y - originY;
-  const along = px * directionX + py * directionY;
-  if (along < 0 || along > state.boss.drillLength) return Infinity;
-  return Math.abs(px * directionY - py * directionX);
+function playerTouchesChargingSaw() {
+  const sawX = state.boss.x + (state.boss.dashDirection < 0 ? -1.82 : 1.82);
+  const sawY = labGroundY + 2.37;
+  const closestX = THREE.MathUtils.clamp(sawX, player.x - player.halfW, player.x + player.halfW);
+  const closestY = THREE.MathUtils.clamp(sawY, player.y - player.halfH, player.y + player.halfH);
+  return Math.hypot(sawX - closestX, sawY - closestY) < .96;
 }
 
 function spawnBossShockwave(direction) {
@@ -2248,7 +2298,6 @@ function updateCombat(dt, elapsed) {
   }
 
   const fighting = state.bossAwake && !state.boss.defeated && state.eraTarget > .5 && isLowerLevel();
-  if (updateBossShockwaves(dt)) return;
   if (!fighting) {
     beamTelegraphMesh.visible = false;
     beamGlowMesh.visible = false;
@@ -2256,11 +2305,9 @@ function updateCombat(dt, elapsed) {
     return;
   }
 
-  // The autonomous sampler walks the room during recovery, then braces its legs before aiming.
-  // It is a visual/combat target only: movement never creates a collision wall or contact damage.
+  // Contact is harmless during patrol. Every ten seconds the machine stops, vents, then attacks with the saw.
   if (state.boss.beamPhase === 'cooldown') {
-    const healthRatio = state.boss.health / state.boss.maxHealth;
-    const patrolSpeed = healthRatio < .5 ? 4.4 : 3.0;
+    const patrolSpeed = state.boss.health <= state.boss.maxHealth * .5 ? 3.8 : 3.0;
     state.boss.x += state.boss.direction * patrolSpeed * dt;
     if (state.boss.x <= state.boss.patrolMinX) {
       state.boss.x = state.boss.patrolMinX;
@@ -2273,79 +2320,71 @@ function updateCombat(dt, elapsed) {
 
   state.boss.beamTimer -= dt;
   if (state.boss.beamPhase === 'cooldown' && state.boss.beamTimer <= 0) {
-    chooseBossAttack();
-  } else if (state.boss.beamPhase === 'telegraph') {
-    setBeamMesh(beamTelegraphMesh, .08 + Math.sin(elapsed * 24) * .025, true);
-    beamTelegraphMesh.material.opacity = .2 + Math.abs(Math.sin(elapsed * 18)) * .22;
-    beamGlowMesh.visible = false;
-    beamCoreMesh.visible = false;
+    beginBossDash();
+  } else if (state.boss.beamPhase === 'dashCharge') {
     if (state.boss.beamTimer <= 0) {
-      state.boss.beamPhase = 'active';
-      state.boss.beamTimer = .36;
-      state.boss.beamHit = false;
-      state.pulse = Math.max(state.pulse, .28);
+      state.boss.beamPhase = 'dashActive';
+      state.boss.beamTimer = .9;
+      state.boss.dashHit = false;
+      state.pulse = Math.max(state.pulse, .32);
     }
-  } else if (state.boss.beamPhase === 'active') {
-    beamTelegraphMesh.visible = false;
-    setBeamMesh(beamGlowMesh, .52, true);
-    setBeamMesh(beamCoreMesh, .13, true);
-    if (!state.boss.beamHit && playerDistanceToBeam() < .56) {
-      state.boss.beamHit = true;
-      const defeated = damagePlayer(20, Math.sign(state.boss.beamDirectionX) || -1);
+  } else if (state.boss.beamPhase === 'dashActive') {
+    state.boss.x += state.boss.dashDirection * 19 * dt;
+    const reachedWall = state.boss.x <= state.boss.patrolMinX || state.boss.x >= state.boss.patrolMaxX;
+    state.boss.x = THREE.MathUtils.clamp(state.boss.x, state.boss.patrolMinX, state.boss.patrolMaxX);
+    if (!state.boss.dashHit && playerTouchesChargingSaw()) {
+      state.boss.dashHit = true;
+      const defeated = damagePlayer(26, state.boss.dashDirection);
       if (defeated) return;
     }
+    if (state.boss.beamTimer <= 0 || reachedWall) {
+      state.boss.beamPhase = 'dashRecover';
+      state.boss.beamTimer = .55;
+    }
+  } else if (state.boss.beamPhase === 'dashRecover') {
     if (state.boss.beamTimer <= 0) {
-      finishBossAttack();
+      if (state.boss.health <= state.boss.maxHealth * .5) beginBossSlam();
+      else finishBossAttack();
     }
-  } else if (state.boss.beamPhase === 'drillTelegraph') {
-    state.boss.drillLength = .82 + Math.abs(Math.sin(elapsed * 18)) * .22;
+  } else if (state.boss.beamPhase === 'jumpRise') {
+    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / 1.1, 0, 1);
+    state.boss.jumpTargetX = THREE.MathUtils.damp(state.boss.jumpTargetX, player.x, 3.2, dt);
+    state.boss.x = THREE.MathUtils.lerp(state.boss.jumpStartX, state.boss.jumpTargetX, THREE.MathUtils.smoothstep(progress, 0, 1));
+    state.boss.airY = THREE.MathUtils.lerp(0, 5.8, THREE.MathUtils.smoothstep(progress, 0, 1));
     if (state.boss.beamTimer <= 0) {
-      state.boss.beamPhase = 'drillActive';
-      state.boss.beamTimer = .52;
-      state.boss.drillHit = false;
+      state.boss.beamPhase = 'jumpHover';
+      state.boss.beamTimer = 1.0;
     }
-  } else if (state.boss.beamPhase === 'drillActive') {
-    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .52, 0, 1);
-    state.boss.drillLength = THREE.MathUtils.lerp(.9, 5.6, THREE.MathUtils.smoothstep(progress, 0, .42));
-    if (!state.boss.drillHit && playerDistanceToBossDrill() < .58) {
-      state.boss.drillHit = true;
-      const defeated = damagePlayer(24, Math.sign(Math.cos(state.boss.drillAngle)) || -1);
-      if (defeated) return;
-    }
+  } else if (state.boss.beamPhase === 'jumpHover') {
+    state.boss.airY = 5.8 + Math.sin(elapsed * 8) * .08;
+    state.boss.x = THREE.MathUtils.damp(state.boss.x, player.x, 4.2, dt);
     if (state.boss.beamTimer <= 0) {
-      state.boss.beamPhase = 'drillRetract';
-      state.boss.beamTimer = .3;
+      state.boss.beamPhase = 'jumpFall';
+      state.boss.beamTimer = .9;
+      state.boss.jumpStartX = state.boss.x;
+      state.boss.jumpTargetX = THREE.MathUtils.clamp(player.x, state.boss.patrolMinX, state.boss.patrolMaxX);
+      state.boss.drillLength = 0;
     }
-  } else if (state.boss.beamPhase === 'drillRetract') {
-    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .3, 0, 1);
-    state.boss.drillLength = THREE.MathUtils.lerp(5.6, .85, progress);
-    if (state.boss.beamTimer <= 0) finishBossAttack();
-  } else if (state.boss.beamPhase === 'slamRise') {
-    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .48, 0, 1);
-    state.boss.airY = THREE.MathUtils.lerp(0, 3.45, THREE.MathUtils.smoothstep(progress, 0, 1));
-    state.boss.x = THREE.MathUtils.lerp(state.boss.jumpStartX, state.boss.jumpTargetX, progress * .48);
-    if (state.boss.beamTimer <= 0) {
-      state.boss.beamPhase = 'slamFall';
-      state.boss.beamTimer = .36;
-    }
-  } else if (state.boss.beamPhase === 'slamFall') {
-    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .36, 0, 1);
-    state.boss.airY = THREE.MathUtils.lerp(3.45, 0, progress * progress);
-    state.boss.x = THREE.MathUtils.lerp(state.boss.jumpStartX, state.boss.jumpTargetX, .48 + progress * .52);
+  } else if (state.boss.beamPhase === 'jumpFall') {
+    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .9, 0, 1);
+    state.boss.airY = THREE.MathUtils.lerp(5.8, 0, progress * progress);
+    state.boss.x = THREE.MathUtils.lerp(state.boss.jumpStartX, state.boss.jumpTargetX, THREE.MathUtils.smoothstep(progress, 0, 1));
+    state.boss.drillLength = THREE.MathUtils.lerp(0, 3.5, THREE.MathUtils.smoothstep(progress, .12, .82));
     if (state.boss.beamTimer <= 0) {
       state.boss.airY = 0;
-      state.boss.beamPhase = 'slamImpact';
-      state.boss.beamTimer = .46;
+      state.boss.beamPhase = 'jumpImpact';
+      state.boss.beamTimer = .5;
+      state.boss.jumpInvulnerable = false;
       state.pulse = 1;
-      spawnBossShockwave(-1);
-      spawnBossShockwave(1);
-      if (Math.abs(player.x - state.boss.x) < 1.9 && player.y < labGroundY + 2.3) {
-        const defeated = damagePlayer(30, Math.sign(player.x - state.boss.x) || 1);
+      if (!state.boss.drillHit && Math.abs(player.x - state.boss.x) < 1.25 && player.y < labGroundY + 2.0) {
+        state.boss.drillHit = true;
+        const defeated = damagePlayer(34, Math.sign(player.x - state.boss.x) || 1);
         if (defeated) return;
       }
     }
-  } else if (state.boss.beamPhase === 'slamImpact' && state.boss.beamTimer <= 0) {
-    finishBossAttack();
+  } else if (state.boss.beamPhase === 'jumpImpact') {
+    state.boss.drillLength = 3.5 * THREE.MathUtils.clamp(state.boss.beamTimer / .5, 0, 1);
+    if (state.boss.beamTimer <= 0) finishBossAttack();
   }
 }
 
@@ -2370,7 +2409,9 @@ function updateHud() {
   if (state.boss.defeated) {
     objective.textContent = 'Boss已击败：掘脉者被强制停机，时相核心现在可以安全取出';
   } else if (state.bossAwake) {
-    objective.textContent = 'Boss战：躲避测绘射线、伸缩腹钻和跳砸冲击波 · 1/2/3/4切换武器攻击中央核心 · 机体本身可直接穿过';
+    objective.textContent = state.boss.jumpInvulnerable
+      ? '二阶段：Boss起跳后核心无敌 · 3秒后钻头落地 · 离开它锁定的位置'
+      : 'Boss战：每10秒停步喷气后锯齿冲刺 · S/Ctrl下蹲躲避或穿过平台 · 半血后冲刺必接跳钻';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -2648,19 +2689,25 @@ function updateHistoryOutcome(dt, elapsed) {
     const bossWalking = state.bossAwake && !state.boss.defeated && state.boss.beamPhase === 'cooldown';
     const gaitBob = bossWalking ? Math.abs(Math.sin(elapsed * 7.2)) * .075 : 0;
     const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04 + gaitBob + state.boss.airY;
-    const bossVerticalDamp = state.boss.beamPhase.startsWith('slam') ? 16 : 6;
+    const bossVerticalDamp = state.boss.beamPhase.startsWith('jump') ? 16 : 6;
     modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, bossVerticalDamp, dt);
-    const slamTilt = state.boss.beamPhase === 'slamRise' ? -.08 : state.boss.beamPhase === 'slamFall' ? .08 : 0;
-    const bossTargetRotation = state.boss.defeated ? -.08 : slamTilt;
+    const jumpTilt = state.boss.beamPhase === 'jumpRise' ? -.08 : state.boss.beamPhase === 'jumpFall' ? .09 : 0;
+    const bossTargetRotation = state.boss.defeated ? -.08 : jumpTilt;
     modernBoss.rotation.z = THREE.MathUtils.damp(modernBoss.rotation.z, bossTargetRotation, 5, dt);
     const bossScale = state.boss.defeated ? .96 : 1;
-    modernBoss.scale.setScalar(THREE.MathUtils.damp(modernBoss.scale.x, bossScale, 4.5, dt));
+    const facingScale = state.boss.direction < 0 ? 1 : -1;
+    modernBoss.scale.x = THREE.MathUtils.damp(modernBoss.scale.x, bossScale * facingScale, 8, dt);
+    modernBoss.scale.y = THREE.MathUtils.damp(modernBoss.scale.y, bossScale, 5, dt);
+    modernBoss.scale.z = bossScale;
     if (modernBoss.userData.cutter) {
-      modernBoss.userData.cutter.rotation.z += dt * (state.bossAwake && !state.boss.defeated ? 4.2 : .18);
+      const sawSpeed = state.boss.beamPhase === 'dashCharge'
+        ? 13
+        : state.boss.beamPhase === 'dashActive' ? 22 : (bossWalking ? 1.5 : .25);
+      modernBoss.userData.cutter.rotation.z += dt * sawSpeed;
     }
     if (modernBoss.userData.legs) {
       for (const leg of modernBoss.userData.legs) {
-        const slamPose = state.boss.beamPhase === 'slamRise' || state.boss.beamPhase === 'slamFall'
+        const slamPose = state.boss.beamPhase === 'jumpRise' || state.boss.beamPhase === 'jumpFall'
           ? Math.sin(leg.userData.phase) * .2
           : 0;
         const stride = bossWalking ? Math.sin(elapsed * 7.2 + leg.userData.phase) * .13 : slamPose;
@@ -2669,20 +2716,28 @@ function updateHistoryOutcome(dt, elapsed) {
     }
     if (modernBoss.userData.bellyDrill) {
       const bellyDrill = modernBoss.userData.bellyDrill;
-      const drillAttack = state.boss.beamPhase.startsWith('drill');
-      const targetAngle = drillAttack ? state.boss.drillAngle : -Math.PI * .5;
-      bellyDrill.rotation.z = THREE.MathUtils.damp(bellyDrill.rotation.z, targetAngle, 12, dt);
-      const shaftLength = Math.max(.22, state.boss.drillLength - 1.02);
-      bellyDrill.userData.shaft.scale.x = shaftLength / .8;
+      const drillAttack = state.boss.beamPhase === 'jumpFall' || state.boss.beamPhase === 'jumpImpact';
+      bellyDrill.visible = drillAttack && state.boss.drillLength > .08;
+      bellyDrill.rotation.z = -Math.PI * .5;
+      const drillExtension = THREE.MathUtils.clamp(state.boss.drillLength / 3.5, 0, 1);
+      bellyDrill.scale.x = .25 + drillExtension * .75;
+      bellyDrill.scale.y = 1;
+      const shaftLength = Math.max(.18, state.boss.drillLength - 1.45);
+      bellyDrill.userData.shaft.scale.x = shaftLength / 1.0;
       bellyDrill.userData.shaft.position.x = shaftLength * .5;
       bellyDrill.userData.bit.position.x = shaftLength;
-      bellyDrill.userData.bit.rotation.z -= dt * (drillAttack ? 18 : 1.2);
+      bellyDrill.userData.bit.rotation.z = 0;
+      bellyDrill.userData.bit.scale.y = drillAttack ? .94 + Math.sin(elapsed * 36) * .08 : 1;
+      const hatchOpen = state.boss.beamPhase === 'jumpHover' || drillAttack;
+      bellyDrill.userData.hatch.scale.setScalar(1 + (hatchOpen ? .16 + Math.sin(elapsed * 10) * .05 : 0));
+    }
+    if (modernBoss.userData.dashJets) {
+      const jetting = state.boss.beamPhase === 'dashCharge';
+      modernBoss.userData.dashJets.visible = jetting;
+      if (jetting) modernBoss.userData.dashJets.scale.x = .75 + Math.abs(Math.sin(elapsed * 17)) * .7;
     }
     if (modernBoss.userData.emitter) {
-      const aimingBeam = state.boss.beamPhase === 'telegraph' || state.boss.beamPhase === 'active';
-      const emitterAngle = aimingBeam
-        ? Math.atan2(state.boss.beamDirectionY, state.boss.beamDirectionX)
-        : Math.sin(elapsed * .7) * .35 + Math.PI;
+      const emitterAngle = Math.sin(elapsed * .7) * .35 + Math.PI;
       modernBoss.userData.emitter.rotation.z = THREE.MathUtils.damp(modernBoss.userData.emitter.rotation.z, emitterAngle, 9, dt);
     }
   }
@@ -2690,7 +2745,9 @@ function updateHistoryOutcome(dt, elapsed) {
     const eraAmount = index === 0 ? 1 - state.era : state.era;
     bossCoreMaterials[index].opacity = (.62 + Math.sin(elapsed * (state.bossAwake ? 5.2 : 2.0) + index) * .24) * eraAmount;
   }
-  if (bossCoreMaterials[1]) bossCoreMaterials[1].color.set(state.boss.hitFlash > 0 ? '#ffffff' : '#82edf6');
+  if (bossCoreMaterials[1]) bossCoreMaterials[1].color.set(
+    state.boss.jumpInvulnerable ? '#ffd26f' : (state.boss.hitFlash > 0 ? '#ffffff' : '#82edf6'),
+  );
 
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
@@ -2805,7 +2862,16 @@ function updateVisuals(dt, elapsed) {
   stowedHammer.visible = !weaponDrawn && state.equippedWeapon === 'impactHammer';
   holsteredWrench.visible = !weaponDrawn && !state.wrenchInFlight && state.equippedWeapon === 'returnWrench';
   calibratorMesh.rotation.z = 0;
-  if (coreDrillMesh.userData.bit) coreDrillMesh.userData.bit.rotation.z -= dt * (attacking && posedWeapon === 'coreDrill' ? 24 : 1.2);
+  if (coreDrillMesh.userData.bit) {
+    const drillBit = coreDrillMesh.userData.bit;
+    drillBit.rotation.z = 0;
+    drillBit.position.y = attacking && posedWeapon === 'coreDrill' ? Math.sin(elapsed * 42) * .018 : 0;
+    for (let index = 0; index < drillBit.userData.flutes.length; index++) {
+      drillBit.userData.flutes[index].material.opacity = attacking && posedWeapon === 'coreDrill'
+        ? .3 + ((elapsed * 10 + index * .34) % 1) * .7
+        : .58;
+    }
+  }
   calibratorMesh.position.x = attacking && posedWeapon === 'calibrator' ? -Math.sin(attackProgress * Math.PI) * .055 : 0;
   weaponRig.rotation.z = -Math.PI * .5;
   muzzleFlash.visible = weaponDrawn && attacking && posedWeapon === 'calibrator' && attackProgress < .52;
@@ -2817,6 +2883,7 @@ function updateVisuals(dt, elapsed) {
 
   playerMesh.position.set(player.x, player.y, 2.2);
   playerMesh.scale.x = player.facing;
+  playerMesh.scale.y = THREE.MathUtils.damp(playerMesh.scale.y, player.crouching ? .62 : 1, 18, dt);
   playerMesh.rotation.z = THREE.MathUtils.damp(playerMesh.rotation.z, -player.vx * .008, 12, dt);
 
   const viewHalfWidth = 9 * (innerWidth / innerHeight);
@@ -2867,8 +2934,9 @@ addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'KeyR') resetHistory();
   if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
+  if (!event.repeat && (event.code === 'KeyS' || event.code === 'ControlLeft' || event.code === 'ControlRight')) tryDropThroughPlatform();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1', 'Digit2', 'Digit3', 'Digit4'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'KeyS', 'ControlLeft', 'ControlRight', 'Digit1', 'Digit2', 'Digit3', 'Digit4'].includes(event.code)) event.preventDefault();
 });
 addEventListener('pointermove', updatePointerAim);
 addEventListener('pointerdown', event => {
@@ -2893,7 +2961,8 @@ addEventListener('blur', () => {
 addEventListener('resize', resize);
 
 // Development preview: opens directly inside the completed Boss room without changing normal saves or progression.
-if (new URLSearchParams(location.search).has('boss-preview')) {
+const previewParams = new URLSearchParams(location.search);
+if (previewParams.has('boss-preview')) {
   document.body.classList.add('boss-preview-mode');
   state.era = 1;
   state.eraTarget = 1;
@@ -2904,6 +2973,24 @@ if (new URLSearchParams(location.search).has('boss-preview')) {
   state.bossAwake = true;
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = .75;
+  if (previewParams.has('phase2-preview')) state.boss.health = state.boss.maxHealth * .48;
+  if (previewParams.has('dash-preview')) {
+    state.boss.beamPhase = 'dashCharge';
+    state.boss.beamTimer = 1.2;
+    state.boss.dashDirection = -1;
+    state.boss.direction = -1;
+  }
+  if (previewParams.has('jump-preview')) {
+    state.boss.health = state.boss.maxHealth * .48;
+    state.boss.beamPhase = 'jumpFall';
+    state.boss.beamTimer = .24;
+    state.boss.jumpInvulnerable = true;
+    state.boss.jumpStartX = 84;
+    state.boss.jumpTargetX = 78.5;
+    state.boss.x = 84;
+    state.boss.airY = 1.15;
+    state.boss.drillLength = 3.2;
+  }
   Object.assign(state.history, {
     wheelCollected: true,
     wheelCrossed: true,
@@ -2936,6 +3023,7 @@ function animate() {
   const dt = Math.min(clock.getDelta(), .04);
   const elapsed = clock.elapsedTime;
   updateElevator(dt);
+  updateCrouch(dt);
   updateHorizontal(dt);
   updateVertical(dt);
   checkHistoryEvents();
