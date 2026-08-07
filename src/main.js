@@ -10,6 +10,7 @@ const eventCrate = document.querySelector('#event-crate');
 const eventPlate = document.querySelector('#event-plate');
 const eventGate = document.querySelector('#event-gate');
 const eventElevator = document.querySelector('#event-elevator');
+const eventWorkOrder = document.querySelector('#event-work-order');
 const eventReactor = document.querySelector('#event-reactor');
 const eventFuture = document.querySelector('#event-future');
 const inventoryPanel = document.querySelector('#inventory-panel');
@@ -47,6 +48,7 @@ const elevatorX = 18.25;
 const labEntranceX = 21.7;
 const maintenanceNpcX = 52.1;
 const scanConsoleX = 55.0;
+const workOrderX = 40.2;
 const bossDoorX = 60.2;
 const chargeSocketX = 61.45;
 const modernDetonatorX = 58.35;
@@ -65,6 +67,7 @@ const state = {
   elevatorAtBottom: false,
   npcDialogueStep: 0,
   maintenanceScanActive: false,
+  lastNpcWarning: -10,
   doorBlast: 0,
   bossAwake: false,
   attackTimer: 0,
@@ -95,8 +98,10 @@ const state = {
     wheelInstalled: false,
     gateOpened: false,
     elevatorUsed: false,
+    workOrderFound: false,
     bossBriefed: false,
     chargesInstalled: false,
+    scanFinalized: false,
     doorBreached: false,
   },
 };
@@ -260,6 +265,8 @@ let pastScanCore = null;
 let pastScanDoor = null;
 let pastBossDoor = null;
 let pastChargeSockets = null;
+let pastWorkOrder = null;
+let modernWorkOrder = null;
 let modernBossDoor = null;
 let modernDoorRubble = null;
 let modernBlastFx = null;
@@ -623,6 +630,27 @@ function buildExpandedMine(group, palette, ruined) {
     disc(group, .09, palette.archGlow, 36 + Math.cos(angle) * 1.88, labGroundY + 3.05 + Math.sin(angle) * 1.88, -1.2, ruined ? .26 : .9, 16);
   }
 
+  // Maintenance archive beside the time-observation ring: information crosses time, not the old paper itself.
+  rectangle(group, 2.5, 1.05, palette.panel, workOrderX, labGroundY + .62, -1.15, ruined ? .58 : .92);
+  rectangle(group, .16, 1.15, palette.structure, workOrderX - .9, labGroundY + .02, -1.1, ruined ? .42 : .82);
+  rectangle(group, .16, 1.15, palette.structure, workOrderX + .9, labGroundY + .02, -1.1, ruined ? .42 : .82);
+  if (!ruined) {
+    const order = new THREE.Group();
+    rectangle(order, 1.05, .72, '#f1c59a', workOrderX, labGroundY + 1.18, -.72, .96);
+    for (let row = 0; row < 4; row++) rectangle(order, .72 - row * .06, .045, '#6f3728', workOrderX, labGroundY + 1.38 - row * .14, -.62, .72);
+    rectangle(order, .42, .1, palette.lever, workOrderX, labGroundY + 1.0, -.6, .9);
+    pastWorkOrder = order;
+    group.add(order);
+  } else {
+    const archive = new THREE.Group();
+    rectangle(archive, 1.18, .78, '#0b1b20', workOrderX, labGroundY + 1.2, -.7, .96);
+    rectangle(archive, .92, .5, palette.glass, workOrderX, labGroundY + 1.2, -.58, .84);
+    for (let row = 0; row < 3; row++) rectangle(archive, .62 - row * .08, .045, palette.archGlow, workOrderX, labGroundY + 1.34 - row * .14, -.46, .82);
+    disc(archive, .09, palette.lamp, workOrderX + .43, labGroundY + .93, -.44, .9, 14);
+    modernWorkOrder = archive;
+    group.add(archive);
+  }
+
   // Final-maintenance bay and shielded observation booth.
   rectangle(group, 10.8, 5.5, palette.reactorFrame, 50.7, labGroundY + 3.15, -1.7, ruined ? .46 : .9);
   rectangle(group, 3.5, 3.8, palette.glass, 48.3, labGroundY + 3.15, -1.42, ruined ? .2 : .46);
@@ -680,6 +708,13 @@ function buildExpandedMine(group, palette, ruined) {
     // Powered safety line: the player can reach the inner door panel but not the maintained machine.
     rectangle(group, .1, 6.5, palette.archGlow, 63.1, labGroundY + 3.4, -.7, .42);
     for (let y = labGroundY + .4; y < labGroundY + 6.6; y += .5) disc(group, .065, palette.lamp, 63.1, y, -.55, .76, 12);
+    for (let index = 0; index < 5; index++) {
+      const stripe = rectangle(group, .34, .12, index % 2 ? '#321819' : palette.lever, 62.45 + index * .32, labGroundY + .06, -.42, .96);
+      stripe.rotation.z = -.45;
+    }
+    rectangle(group, 1.55, .52, palette.panel, 63.15, labGroundY + 5.75, -.45, .92);
+    rectangle(group, 1.05, .06, palette.lever, 63.15, labGroundY + 5.88, -.34, .9);
+    rectangle(group, .78, .06, palette.lever, 63.15, labGroundY + 5.68, -.34, .72);
   }
   if (ruined) {
     rectangle(group, 1.0, 1.45, palette.panel, modernDetonatorX, labGroundY + 1.18, -.85, .56);
@@ -1062,9 +1097,10 @@ function showToast(message) {
 }
 
 const maintenanceDialogueLines = [
-  '这台是03型时晶采掘机“掘脉者”。它替我们进入不稳定矿脉，胸口的时相核心负责稳定整条采掘通道。',
-  '今天是它封存前的最后维护。门外爆破会震坏核心，真遇到事故，只能从门内侧的四个紧急槽定向切断门框。',
-  '我要启动最终时相扫描。扫描期间所有人员都必须撤进隔离观察室，防爆门会暂时保持开启；不要越过里面的安全线。',
+  '工单M-03-7721核验通过。你负责防爆门和四个紧急破门槽，我给你开放一次门体维护权限。',
+  '门后那台是03型时晶采掘机“掘脉者”。它进入不稳定矿脉采样，胸口的时相核心负责稳定整条采掘通道。',
+  '你的工单只覆盖门体维修凹槽。黄色时相安全线之后属于Boss维护区，未经授权绝对不能进入。',
+  '最终扫描时所有人员都会撤进隔离观察室，防爆门暂时保持开启。换好四个门框诊断塞后必须回来结束扫描并接受封存验收。',
 ];
 
 function closeNpcDialogue() {
@@ -1139,6 +1175,10 @@ function toggleEra() {
     showToast('Boss维护区的时相屏障会撕裂切换坐标；先从内侧返回实验室再切换时代');
     return;
   }
+  if (state.eraTarget < .5 && isLowerLevel() && state.maintenanceScanActive) {
+    showToast('最终扫描尚未结束；回到控制台完成验收和封门后才能切换时代');
+    return;
+  }
   const now = clock.elapsedTime;
   if (now - state.lastToggle < .55) return;
   setInventoryOpen(false);
@@ -1181,6 +1221,7 @@ function resetHistory() {
   state.elevatorAtBottom = false;
   state.npcDialogueStep = 0;
   state.maintenanceScanActive = false;
+  state.lastNpcWarning = -10;
   state.doorBlast = 0;
   state.bossAwake = false;
   state.attackTimer = 0;
@@ -1205,8 +1246,10 @@ function resetHistory() {
   state.history.wheelInstalled = false;
   state.history.gateOpened = false;
   state.history.elevatorUsed = false;
+  state.history.workOrderFound = false;
   state.history.bossBriefed = false;
   state.history.chargesInstalled = false;
+  state.history.scanFinalized = false;
   state.history.doorBreached = false;
   inventoryPanel.classList.remove('open');
   inventoryPanel.setAttribute('aria-hidden', 'true');
@@ -1297,6 +1340,10 @@ function updateHorizontal(dt) {
       && !state.boss.defeated
       && overlaps(nextX, player.halfW, 62.45, .34);
     if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate) {
+      if (blockedByPastSafetyLine && clock.elapsedTime - state.lastNpcWarning > 2.2) {
+        state.lastNpcWarning = clock.elapsedTime;
+        showToast('维修工程师警告：停下！你的工单只允许维护防爆门，黄色安全线后是Boss区域，立即离开！');
+      }
       const obstacleX = blockedByPastLabDoor
         ? labEntranceX
         : (blockedByPastBossDoor || blockedByModernBossDoor
@@ -1343,6 +1390,7 @@ function handleInteraction() {
   const lowerLevel = isLowerLevel();
   const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
+  const nearWorkOrder = lowerLevel && Math.abs(player.x - workOrderX) < 1.35;
   const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
   const nearScanConsole = lowerLevel && Math.abs(player.x - scanConsoleX) < 1.2;
   const nearChargeSocket = lowerLevel && Math.abs(player.x - chargeSocketX) < 1.0;
@@ -1385,8 +1433,28 @@ function handleInteraction() {
     return;
   }
 
+  if (nearWorkOrder) {
+    if (state.eraTarget > .5 && !state.history.workOrderFound) {
+      state.history.workOrderFound = true;
+      state.pulse = 1;
+      showToast('从2147年的维护档案中找到：防爆门封存工单 M-03-7721 · 外包门体检修');
+      updateHud();
+    } else if (state.eraTarget > .5) {
+      showToast('旧档案确认：M-03-7721只授权维护防爆门，不允许进入掘脉者维护区');
+    } else if (state.history.workOrderFound) {
+      showToast('2047年的原始工单仍放在工程师桌上；你已经从2147年记住了编号和工作范围');
+    } else {
+      showToast('桌上文件属于当日内部资料，外来人员不能直接翻阅；现代残存档案也许保留了内容');
+    }
+    return;
+  }
+
   if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
-    if (state.history.bossBriefed) {
+    if (!state.history.workOrderFound) {
+      showToast('维修工程师：没有工单编号和工作范围，我不能给你开放防爆门维护权限。');
+    } else if (state.history.scanFinalized) {
+      showToast('维修工程师：M-03-7721验收通过。防爆门已经完成最终封存。');
+    } else if (state.history.bossBriefed) {
       showToast('工程师：说明都写在维护终端上了。到右侧控制台启动最终扫描。');
     } else {
       state.npcDialogueStep = 0;
@@ -1396,15 +1464,29 @@ function handleInteraction() {
   }
 
   if (nearScanConsole && state.eraTarget < .5) {
-    if (!state.history.bossBriefed) {
+    if (!state.history.workOrderFound) {
+      showToast('控制台拒绝访问：需要有效的防爆门维护工单');
+    } else if (!state.history.bossBriefed) {
       showToast('控制台要求维修工程师确认；先和左侧工作人员交谈');
-    } else if (!state.maintenanceScanActive) {
-      state.maintenanceScanActive = true;
+    } else if (state.maintenanceScanActive && state.history.chargesInstalled && player.x < bossDoorX - .7) {
+      state.maintenanceScanActive = false;
+      state.history.scanFinalized = true;
       state.pulse = 1;
-      showToast('最终时相扫描启动：工作人员撤入隔离室，防爆门保持维护开启');
+      showToast('工程师只读到四个合格诊断塞：M-03-7721验收通过，防爆门重新封存');
       updateHud();
+    } else if (!state.maintenanceScanActive) {
+      if (state.history.scanFinalized) {
+        showToast('最终维护已经验收并封存，扫描程序不能再次启动');
+      } else {
+        state.maintenanceScanActive = true;
+        state.pulse = 1;
+        showToast('最终时相扫描启动：工作人员撤入隔离室，防爆门保持维护开启');
+        updateHud();
+      }
     } else {
-      showToast('最终扫描进行中：人员与监控都在隔离状态，防爆门保持开启');
+      showToast(state.history.chargesInstalled
+        ? '先从门体维修凹槽返回控制台，再按 E 结束扫描和封门'
+        : '最终扫描进行中：进入门体维修凹槽检查四个紧急破门槽');
     }
     return;
   }
@@ -1420,7 +1502,7 @@ function handleInteraction() {
       state.inventory.breachKit = false;
       state.history.chargesInstalled = true;
       state.pulse = 1;
-      showToast('四枚时锁式定向破门栓已装入内侧夹层；它们只响应2147年的时间锚信号');
+      showToast('破门栓已装入内侧夹层；外壳模拟2047年标准诊断塞，只响应2147年的时间锚信号');
       updateHud();
     } else {
       showToast('四个紧急槽已经封闭，破门栓处于时锁冻结状态');
@@ -1642,12 +1724,14 @@ function updateHud() {
   eventPlate.classList.toggle('active', state.history.wheelCrossed);
   eventGate.classList.toggle('active', state.history.gateOpened);
   eventElevator.classList.toggle('active', state.history.elevatorUsed);
+  eventWorkOrder.classList.toggle('active', state.history.workOrderFound);
   eventReactor.classList.toggle('active', state.history.chargesInstalled);
   eventFuture.classList.toggle('active', state.history.doorBreached);
   eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已从闸门拆下' : '尚未发生';
   eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
   eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
   eventElevator.querySelector('span').textContent = state.history.elevatorUsed ? '已抵达地下实验室' : '等待进入';
+  eventWorkOrder.querySelector('span').textContent = state.history.workOrderFound ? '已记住 M-03-7721' : '等待调查';
   eventReactor.querySelector('span').textContent = state.history.chargesInstalled ? '四枚内侧破门栓已安装' : '尚未发生';
   eventFuture.querySelector('span').textContent = state.history.doorBreached ? '门框已从内部切断' : '等待改写';
 
@@ -1665,8 +1749,14 @@ function updateHud() {
     objective.textContent = '2047年井底：实验室安全门权限锁死。按 Q 去2147年穿过坍塌后的同一入口';
   } else if (beforeLabEntrance) {
     objective.textContent = '2147年井底：实验室安全门已经坍塌，向右穿过缺口进入实验室';
+  } else if (lowerLevel && state.eraTarget > .5 && !state.history.workOrderFound) {
+    objective.textContent = '2147年实验室：前往时间观察环右侧的旧档案台，按 E 查找防爆门封存维修单';
+  } else if (lowerLevel && state.eraTarget < .5 && !state.history.workOrderFound) {
+    objective.textContent = '2047年：没有工单无法取得门体维护权限。按 Q 回2147年调查时间观察环旁的旧档案';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.bossBriefed) {
-    objective.textContent = '2047年最终维护日：向右找到维修工程师，靠近后按 E 了解正在维护的掘脉者';
+    objective.textContent = '2047年最终维护日：向右找到维修工程师，按 E 报出工单M-03-7721并确认工作范围';
+  } else if (lowerLevel && state.eraTarget < .5 && state.history.scanFinalized) {
+    objective.textContent = '2047年：工程师已经验收并完成封门。按 Q 回2147年激活藏在门内的破门栓';
   } else if (lowerLevel && state.eraTarget < .5 && !state.maintenanceScanActive) {
     objective.textContent = '2047年：工程师已说明流程。到右侧扫描控制台按 E，让人员撤入隔离室并开启防爆门';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.chargesInstalled) {
@@ -1676,7 +1766,7 @@ function updateHud() {
   } else if (lowerLevel && state.eraTarget < .5) {
     objective.textContent = player.x > bossDoorX + .4
       ? '2047年：破门栓安装完成，先从门内侧返回实验室，安全线内无法切换时代'
-      : '2047年：破门栓藏在内侧夹层并处于时锁冻结。按 Q 回2147年';
+      : '2047年：破门栓安装完成。回到扫描控制台按 E 结束扫描，让工程师验收并封门';
   } else if (lowerLevel && !state.history.chargesInstalled) {
     objective.textContent = '2147年：防爆门锈死成墙，外侧无法安全爆破。按 Q 回2047年进入门内侧';
   } else if (lowerLevel && !state.history.doorBreached) {
@@ -1706,10 +1796,14 @@ function updateHud() {
   if (lowerLevel) {
     doorStatus.querySelector('span').textContent = '03 CONTAINMENT BAY';
     if (state.eraTarget < .5) {
-      doorPower.textContent = state.maintenanceScanActive ? '最终扫描：进行中 · 人员已隔离' : '最终维护：进行中 · 人员在场';
-      doorLock.textContent = state.history.chargesInstalled
-        ? '内侧破门槽：已封闭 · 时锁栓冻结'
-        : (state.maintenanceScanActive ? '防爆门：维护开启 · 内侧可进入' : '防爆门：权限锁定');
+      doorPower.textContent = state.history.scanFinalized
+        ? 'M-03-7721：验收通过 · 封存完成'
+        : (state.maintenanceScanActive ? '最终扫描：进行中 · 人员已隔离' : '最终维护：进行中 · 人员在场');
+      doorLock.textContent = state.history.scanFinalized
+        ? '防爆门：最终关闭 · 内侧面板已封存'
+        : (state.history.chargesInstalled
+          ? '内侧破门槽：已封闭 · 等待扫描验收'
+          : (state.maintenanceScanActive ? '防爆门：维护开启 · 仅限门体凹槽' : '防爆门：权限锁定'));
     } else {
       doorPower.textContent = state.history.chargesInstalled ? '时间锚链路：四个内侧信号在线' : '防爆门：断电 · 门框完全锈死';
       doorLock.textContent = state.history.doorBreached
@@ -1745,6 +1839,7 @@ function updateInteractionHint() {
   const lowerLevel = isLowerLevel();
   const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
+  const nearWorkOrder = lowerLevel && Math.abs(player.x - workOrderX) < 1.35;
   const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
   const nearScanConsole = lowerLevel && Math.abs(player.x - scanConsoleX) < 1.2;
   const nearChargeSocket = lowerLevel && Math.abs(player.x - chargeSocketX) < 1.0;
@@ -1768,16 +1863,34 @@ function updateInteractionHint() {
     message = '2047年安全门锁死 · 按 Q 去2147年穿过坍塌入口';
   } else if (nearLabEntrance) {
     message = '2147年安全门已经坍塌 · 向右进入实验室';
+  } else if (nearWorkOrder && state.eraTarget > .5) {
+    message = state.history.workOrderFound
+      ? '旧档案：M-03-7721 · 外包防爆门检修 · 禁止进入Boss维护区'
+      : '按 E 读取2147年残存的防爆门封存维修单';
+  } else if (nearWorkOrder) {
+    message = state.history.workOrderFound
+      ? '2047年原始工单 · 你已从现代档案记住编号和工作范围'
+      : '内部文件不可直接翻阅 · 前往2147年寻找废弃档案';
   } else if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
-    message = state.history.bossBriefed
-      ? '工程师正在等待最终扫描 · 到右侧控制台按 E 启动'
-      : '按 E 与维修工程师交谈 · 了解正在维护的03型时晶采掘机';
+    message = !state.history.workOrderFound
+      ? '工程师要求提供门体维护工单号'
+      : (state.history.scanFinalized
+        ? '按 E 查看工程师的最终封存验收结果'
+        : (state.history.bossBriefed
+          ? '工程师已授权门体维护 · 到右侧控制台启动最终扫描'
+          : '按 E 报出M-03-7721 · 确认只维护防爆门，不进入Boss区域'));
   } else if (nearScanConsole && state.eraTarget < .5) {
-    message = !state.history.bossBriefed
-      ? '最终扫描需要工程师确认 · 先与左侧工作人员交谈'
-      : (state.maintenanceScanActive
-        ? '最终扫描进行中 · 工作人员和监控已进入隔离状态'
-        : '按 E 启动最终时相扫描 · 打开Boss防爆门的维护模式');
+    message = !state.history.workOrderFound
+      ? '控制台拒绝访问 · 缺少防爆门维护工单'
+      : (!state.history.bossBriefed
+        ? '最终扫描需要工程师确认 · 先与左侧工作人员交谈'
+        : (state.history.scanFinalized
+          ? 'M-03-7721验收完成 · 防爆门已最终封存'
+          : (state.maintenanceScanActive
+            ? (state.history.chargesInstalled
+              ? '按 E 结束扫描 · 关闭防爆门并让工程师完成验收'
+              : '最终扫描进行中 · 人员和监控已进入隔离状态')
+            : '按 E 启动最终时相扫描 · 打开防爆门维护模式')));
   } else if (nearChargeSocket && state.eraTarget < .5) {
     message = state.history.chargesInstalled
       ? '内侧面板已重新封闭 · 四枚破门栓处于时锁冻结状态'
@@ -1791,9 +1904,11 @@ function updateInteractionHint() {
         ? '门框连接已切断 · 厚重门体正在倒向Boss房内部'
         : '按 E 让2147年的时间锚信号同时激活四枚内侧破门栓');
   } else if (nearBossDoor && state.eraTarget < .5) {
-    message = state.maintenanceScanActive
-      ? '维护防爆门已经开启 · 进入内侧安装破门栓，不要越过安全线'
-      : '2047年防爆门权限锁定 · 与工程师交谈并启动最终扫描';
+    message = state.history.scanFinalized
+      ? '最终维护验收完成 · 防爆门已经永久封闭'
+      : (state.maintenanceScanActive
+        ? '门体维修凹槽已经开放 · 禁止越过黄色安全线进入Boss区域'
+        : '2047年防爆门权限锁定 · 凭工单取得维护授权并启动扫描');
   } else if (nearBossDoor) {
     message = state.doorBlast >= .82
       ? '门体已经向房间内部倒塌 · Boss通道开放'
@@ -1868,8 +1983,10 @@ function updateHistoryOutcome(dt, elapsed) {
     pastBossDoor.position.y = THREE.MathUtils.damp(pastBossDoor.position.y, doorTargetY, 5.5, dt);
   }
   if (pastChargeSockets) {
-    setLayerOpacity(pastChargeSockets, pastAmount * (state.history.chargesInstalled ? 1 : .42));
+    const socketVisibility = state.maintenanceScanActive ? (state.history.chargesInstalled ? 1 : .42) : 0;
+    setLayerOpacity(pastChargeSockets, pastAmount * socketVisibility);
   }
+  if (modernWorkOrder) setLayerOpacity(modernWorkOrder, state.era * (state.history.workOrderFound ? .58 : 1));
   state.doorBlast = THREE.MathUtils.damp(state.doorBlast, state.history.doorBreached ? 1 : 0, 2.8, dt);
   const blastEase = state.doorBlast * state.doorBlast * (3 - state.doorBlast * 2);
   if (modernBossDoor) {
