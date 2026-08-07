@@ -9,6 +9,9 @@ const interaction = document.querySelector('#interaction');
 const eventCrate = document.querySelector('#event-crate');
 const eventPlate = document.querySelector('#event-plate');
 const eventGate = document.querySelector('#event-gate');
+const eventElevator = document.querySelector('#event-elevator');
+const eventReactor = document.querySelector('#event-reactor');
+const eventFuture = document.querySelector('#event-future');
 const inventoryPanel = document.querySelector('#inventory-panel');
 const handwheelSlot = document.querySelector('#handwheel-slot');
 const inventoryItemName = document.querySelector('#inventory-item-name');
@@ -28,6 +31,11 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 const clock = new THREE.Clock();
 const keys = new Set();
 const groundY = -4.55;
+const labGroundY = -22.4;
+const elevatorX = 18.25;
+const reactorControlX = 47.2;
+const futureBarrierX = 57.4;
+const bossTriggerX = 65.0;
 
 const state = {
   era: 1,
@@ -36,6 +44,12 @@ const state = {
   lastToggle: -10,
   gateLift: 0,
   exitReached: false,
+  elevatorY: groundY,
+  elevatorRiding: false,
+  elevatorAtBottom: false,
+  bossAwake: false,
+  cameraX: 0,
+  cameraY: 0,
   inventoryOpen: false,
   inventory: {
     handwheel: false,
@@ -45,6 +59,9 @@ const state = {
     wheelCrossed: false,
     wheelInstalled: false,
     gateOpened: false,
+    elevatorUsed: false,
+    experimentShutdown: false,
+    futureCleared: false,
   },
 };
 
@@ -113,8 +130,8 @@ const backgroundMaterial = new THREE.ShaderMaterial({
   depthWrite: false,
 });
 
-const background = new THREE.Mesh(new THREE.PlaneGeometry(42, 24), backgroundMaterial);
-background.position.z = -12;
+const background = new THREE.Mesh(new THREE.PlaneGeometry(140, 70), backgroundMaterial);
+background.position.set(34, -10, -12);
 scene.add(background);
 
 function material(color, opacity = 1) {
@@ -148,6 +165,16 @@ function segment(group, x1, y1, x2, y2, color, opacity = 1, z = .1) {
 
 function disc(group, radius, color, x, y, z = 0, opacity = 1, segments = 48) {
   const mesh = new THREE.Mesh(new THREE.CircleGeometry(radius, segments), material(color, opacity));
+  mesh.position.set(x, y, z);
+  group.add(mesh);
+  return mesh;
+}
+
+function ring(group, outerRadius, innerRadius, color, x, y, z = 0, opacity = 1, segments = 48) {
+  const mesh = new THREE.Mesh(
+    new THREE.RingGeometry(innerRadius, outerRadius, segments),
+    material(color, opacity),
+  );
   mesh.position.set(x, y, z);
   group.add(mesh);
   return mesh;
@@ -187,6 +214,15 @@ const pastPowerNodeMaterials = [];
 const pastDoorPowerMaterials = [];
 const pastMovingOre = [];
 let pastVentFan = null;
+let pastElevatorCar = null;
+let pastElevatorCable = null;
+let pastReactorCore = null;
+let pastShutdownLever = null;
+let modernOvergrowth = null;
+let modernInertCore = null;
+let modernBoss = null;
+let pastBoss = null;
+const bossCoreMaterials = [];
 
 function buildMineLandmarks(group, palette, ruined) {
   const fade = ruined ? .72 : .96;
@@ -375,17 +411,218 @@ function buildPresentScene() {
   }, true);
 }
 
+function createLabBoss(group, palette, ruined) {
+  const boss = new THREE.Group();
+  boss.position.set(75.0, labGroundY + 2.35, -.35);
+  ring(boss, 1.62, 1.28, palette.bossShell, 0, .42, 0, ruined ? .88 : .72, 40);
+  disc(boss, 1.12, palette.bossBody, 0, .42, .04, .96, 32);
+  const core = disc(boss, .42, palette.bossCore, 0, .42, .12, ruined ? .98 : .72, 24);
+  bossCoreMaterials.push(core.material);
+  for (let index = 0; index < 6; index++) {
+    const angle = index * Math.PI / 3;
+    segment(boss, Math.cos(angle) * .48, .42 + Math.sin(angle) * .48, Math.cos(angle) * 1.08, .42 + Math.sin(angle) * 1.08, palette.bossTrim, ruined ? .62 : .46, .1);
+  }
+  const leftArm = new THREE.Group();
+  leftArm.position.set(-1.25, .42, .02);
+  rectangle(leftArm, 1.6, .34, palette.bossShell, -.65, 0, 0, .94);
+  polygon(leftArm, [[-1.8, 0], [-1.0, .58], [-1.0, -.58]], palette.drill, -1.1, 0, .06, .92);
+  boss.add(leftArm);
+  const rightArm = leftArm.clone();
+  rightArm.scale.x = -1;
+  rightArm.position.x = 1.25;
+  boss.add(rightArm);
+  for (const x of [-.72, .72]) {
+    rectangle(boss, .38, 1.35, palette.bossShell, x, -1.08, 0, .94);
+    rectangle(boss, .82, .24, palette.bossTrim, x + (x < 0 ? -.15 : .15), -1.72, .04, .82);
+  }
+  if (ruined) {
+    for (const [x, y, scale] of [[-.85, 1.4, .72], [.9, 1.15, .58], [0, 1.72, .65]]) {
+      polygon(boss, [[0, .8 * scale], [-.34 * scale, 0], [.34 * scale, 0]], palette.crystal, x, y, .16, .9);
+    }
+    modernBoss = boss;
+  } else {
+    rectangle(boss, 3.6, .12, palette.cable, 0, 2.0, -.1, .6);
+    segment(boss, -1.15, 2.0, -1.15, 1.42, palette.cable, .65, -.05);
+    segment(boss, 1.15, 2.0, 1.15, 1.42, palette.cable, .65, -.05);
+    pastBoss = boss;
+  }
+  group.add(boss);
+}
+
+function buildExpandedMine(group, palette, ruined) {
+  // Gate 03 opens into the same elevator control room in both eras.
+  rectangle(group, 8.0, 5.1, palette.surfaceRoom, 17.5, -1.45, -3.1, ruined ? .7 : .94);
+  rectangle(group, 7.6, .24, palette.trim, 17.5, 1.15, -2.0, ruined ? .34 : .8);
+  for (const x of [14.0, 16.7, 19.85, 21.0]) {
+    segment(group, x, groundY, x, 1.12, palette.structure, ruined ? .32 : .7, -1.8);
+  }
+  rectangle(group, 1.2, 1.55, palette.panel, 15.7, groundY + .9, -.85, ruined ? .56 : .92);
+  for (let index = 0; index < 4; index++) {
+    disc(group, .075, ruined ? palette.deadLamp : palette.lamp, 15.45 + (index % 2) * .4, groundY + 1.18 - Math.floor(index / 2) * .4, -.65, ruined ? .35 : .92, 16);
+  }
+
+  // A continuous vertical shaft makes the descent spatial rather than a teleport.
+  rectangle(group, 5.2, groundY - labGroundY + 7.0, palette.shaftRock, elevatorX, (groundY + labGroundY) / 2 + 1.5, -5.0, .9);
+  segment(group, 16.65, groundY + 3.7, 16.65, labGroundY + .15, palette.structure, ruined ? .32 : .68, -2.3);
+  segment(group, 19.85, groundY + 3.7, 19.85, labGroundY + .15, palette.structure, ruined ? .3 : .68, -2.3);
+  for (let y = groundY + 2.9; y >= labGroundY + .8; y -= 2.1) {
+    segment(group, 16.72, y, 19.78, y, palette.trim, ruined ? .26 : .58, -2.15);
+    rectangle(group, .72, .18, palette.depthMark, 20.35, y, -1.8, ruined ? .24 : .68);
+  }
+
+  if (!ruined) {
+    rectangle(group, .07, groundY - labGroundY + 5.8, palette.cable, 17.65, (groundY + labGroundY) / 2 + 1.55, -1.6, .72);
+    rectangle(group, .07, groundY - labGroundY + 5.8, palette.cable, 18.85, (groundY + labGroundY) / 2 + 1.55, -1.6, .72);
+    const car = new THREE.Group();
+    car.position.set(elevatorX, groundY, -.35);
+    rectangle(car, 3.0, .24, palette.trim, 0, .04, 0, .96);
+    rectangle(car, .18, 3.7, palette.structure, -1.42, 1.85, 0, .9);
+    rectangle(car, .18, 3.7, palette.structure, 1.42, 1.85, 0, .9);
+    rectangle(car, 3.0, .24, palette.trim, 0, 3.62, 0, .92);
+    rectangle(car, 2.5, .18, palette.cage, 0, 1.65, -.02, .34);
+    for (const x of [-1.0, -.5, 0, .5, 1.0]) segment(car, x, .2, x, 3.45, palette.cage, .42, .04);
+    rectangle(car, .42, .8, palette.panel, 1.08, 1.3, .08, .9);
+    disc(car, .08, palette.lamp, 1.08, 1.48, .12, .95, 16);
+    pastElevatorCar = car;
+    group.add(car);
+  } else {
+    segment(group, 17.65, groundY + 3.5, 17.65, groundY - 4.1, palette.cable, .34, -1.6);
+    segment(group, 18.85, groundY + 3.5, 18.2, groundY - 5.5, palette.cable, .28, -1.6);
+    const wreck = new THREE.Group();
+    wreck.position.set(elevatorX, labGroundY + .35, -.4);
+    wreck.rotation.z = -.12;
+    rectangle(wreck, 3.0, .3, palette.trim, 0, .05, 0, .58);
+    rectangle(wreck, .22, 2.2, palette.structure, -1.28, 1.0, 0, .45);
+    rectangle(wreck, .22, 1.8, palette.structure, 1.15, .8, 0, .38);
+    rectangle(wreck, 2.4, .18, palette.cage, 0, 1.5, .02, .28);
+    group.add(wreck);
+  }
+
+  // The laboratory is about 1.3 screens wide: three readable interaction zones, not one empty hall.
+  rectangle(group, 39.5, 7.5, palette.labWall, 40.0, labGroundY + 3.55, -4.2, ruined ? .75 : .96);
+  rectangle(group, 31.0, 8.2, palette.bossRoom, 75.2, labGroundY + 3.9, -4.35, ruined ? .78 : .94);
+  rectangle(group, 70.5, .28, palette.trim, 55.0, labGroundY + 7.35, -2.9, ruined ? .34 : .76);
+  rectangle(group, 70.5, .34, palette.floor, 55.0, labGroundY - .16, -2.7, ruined ? .7 : .95);
+  for (const x of [21.0, 29.0, 37.0, 45.0, 53.0, 59.2, 62.0, 70.0, 80.0, 90.0]) {
+    const column = rectangle(group, .2, 7.25, palette.structure, x, labGroundY + 3.55, -2.6, ruined ? .36 : .72);
+    if (ruined && (x === 37.0 || x === 70.0)) column.rotation.z = x < 50 ? -.06 : .045;
+  }
+
+  // Sample storage area.
+  rectangle(group, 6.3, .28, palette.trim, 26.0, labGroundY + 1.05, -1.7, ruined ? .4 : .82);
+  for (const x of [23.8, 25.4, 27.0, 28.6]) {
+    rectangle(group, 1.0, 2.65, palette.glass, x, labGroundY + 2.55, -1.6, ruined ? .28 : .48);
+    ring(group, .46, .38, palette.trim, x, labGroundY + 3.0, -1.35, ruined ? .34 : .76, 24);
+    polygon(group, [[0, .55], [-.3, -.35], [.3, -.35]], palette.crystal, x, labGroundY + 2.65, -1.25, ruined ? .38 : .8);
+  }
+
+  // Time observation arch: the repeated ring remains recognizable after a century.
+  ring(group, 2.05, 1.72, palette.arch, 36.0, labGroundY + 3.05, -1.5, ruined ? .46 : .9, 48);
+  ring(group, 1.48, 1.37, palette.archGlow, 36.0, labGroundY + 3.05, -1.35, ruined ? .2 : .72, 48);
+  for (let index = 0; index < 8; index++) {
+    const angle = index * Math.PI / 4;
+    disc(group, .09, palette.archGlow, 36 + Math.cos(angle) * 1.88, labGroundY + 3.05 + Math.sin(angle) * 1.88, -1.2, ruined ? .26 : .9, 16);
+  }
+
+  // Chronite cultivation device and its manual emergency cutoff.
+  rectangle(group, 5.6, 5.4, palette.reactorFrame, 45.4, labGroundY + 3.15, -1.7, ruined ? .46 : .9);
+  rectangle(group, 2.25, 4.35, palette.glass, 44.7, labGroundY + 3.1, -1.45, ruined ? .24 : .46);
+  ring(group, 1.0, .87, palette.trim, 44.7, labGroundY + 3.1, -1.18, ruined ? .38 : .82, 36);
+  if (!ruined) {
+    const reactorCore = new THREE.Group();
+    reactorCore.position.set(44.7, labGroundY + 3.1, -.95);
+    polygon(reactorCore, [[0, 1.05], [-.62, -.2], [-.28, -.95], [.45, -.62], [.72, .15]], palette.reactorCore, 0, 0, 0, .96);
+    ring(reactorCore, 1.35, 1.28, palette.archGlow, 0, 0, -.05, .58, 40);
+    pastReactorCore = reactorCore;
+    group.add(reactorCore);
+    rectangle(group, 1.3, 1.4, palette.panel, reactorControlX, labGroundY + 1.2, -.9, .94);
+    const lever = rectangle(group, .18, .72, palette.lever, reactorControlX, labGroundY + 1.55, -.65, .96);
+    lever.rotation.z = -.45;
+    pastShutdownLever = lever;
+    for (let index = 0; index < 3; index++) disc(group, .075, palette.lamp, 46.8 + index * .38, labGroundY + .82, -.62, .9, 14);
+  } else {
+    rectangle(group, 1.3, 1.4, palette.panel, reactorControlX, labGroundY + 1.2, -.9, .52);
+    const inert = new THREE.Group();
+    inert.position.set(44.7, labGroundY + 2.75, -.9);
+    polygon(inert, [[0, .48], [-.35, -.22], [.28, -.38], [.46, .12]], palette.inertCore, 0, 0, 0, .78);
+    modernInertCore = inert;
+    group.add(inert);
+
+    const growth = new THREE.Group();
+    growth.position.z = -.65;
+    const crystals = [
+      [44.7, labGroundY + 3.25, 1.7, 0], [47.0, labGroundY + 1.1, 1.35, -.35],
+      [50.0, labGroundY + .85, 1.6, .28], [53.2, labGroundY + 1.35, 1.75, -.22],
+      [56.7, labGroundY + 2.0, 2.15, .08], [57.4, labGroundY + 4.4, 2.4, -.1],
+    ];
+    for (const [x, y, scale, rotation] of crystals) {
+      const crystal = polygon(growth, [[0, 1.0 * scale], [-.38 * scale, -.65 * scale], [.4 * scale, -.65 * scale]], palette.growth, x, y, 0, .88);
+      crystal.rotation.z = rotation;
+    }
+    segment(growth, 44.7, labGroundY + 3.0, 57.2, labGroundY + 1.6, palette.growthLine, .7, .05);
+    segment(growth, 48.0, labGroundY + 1.2, 57.4, labGroundY + 5.8, palette.growthLine, .58, .05);
+    modernOvergrowth = growth;
+    group.add(growth);
+  }
+
+  // Boss airlock and one-screen arena.
+  rectangle(group, .28, 7.1, palette.trim, 59.2, labGroundY + 3.5, -1.2, .92);
+  rectangle(group, .28, 7.1, palette.trim, 61.2, labGroundY + 3.5, -1.2, .92);
+  rectangle(group, 2.3, .28, palette.trim, 60.2, labGroundY + 7.0, -1.15, .92);
+  if (!ruined) rectangle(group, 1.55, 6.35, palette.bulkhead, 60.2, labGroundY + 3.25, -1.0, .94);
+  rectangle(group, 5.2, .26, palette.platform, 67.0, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
+  rectangle(group, 5.2, .26, palette.platform, 83.2, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
+  for (const x of [64.8, 69.2, 81.0, 85.4]) rectangle(group, .16, 2.0, palette.structure, x, labGroundY + 1.0, -1.2, ruined ? .38 : .65);
+  createLabBoss(group, palette, ruined);
+
+  const lampXs = [23.0, 28.5, 34.0, 40.0, 46.0, 52.0, 56.0, 65.0, 72.0, 79.0, 86.0];
+  for (const x of lampXs) {
+    segment(group, x, labGroundY + 7.2, x, labGroundY + 6.65, palette.structure, ruined ? .28 : .58, -1.4);
+    const lamp = disc(group, .16, ruined ? palette.deadLamp : palette.lamp, x, labGroundY + 6.5, -1.15, ruined ? .3 : .95, 18);
+    if (!ruined) pastLampMaterials.push(lamp.material);
+  }
+}
+
+function buildPastExpansion() {
+  buildExpandedMine(pastLayer, {
+    surfaceRoom: '#301719', trim: '#d17645', structure: '#9e5738', panel: '#51251f', lamp: '#ffb15d',
+    deadLamp: '#774534', shaftRock: '#1e1013', depthMark: '#d9854e', cable: '#e58449', cage: '#b96a43',
+    labWall: '#35181b', bossRoom: '#291417', floor: '#6f3728', glass: '#a9573a', crystal: '#ff9d52',
+    arch: '#d27645', archGlow: '#ffb45f', reactorFrame: '#572620', reactorCore: '#ff8c45', lever: '#ffcc72',
+    inertCore: '#a86a45', bulkhead: '#4b211e', platform: '#995333', bossShell: '#9d5535', bossBody: '#4b211e',
+    bossCore: '#ffb65f', bossTrim: '#d67a45', drill: '#d98a54', growth: '#ff8f48', growthLine: '#ffb05b',
+  }, false);
+}
+
+function buildPresentExpansion() {
+  buildExpandedMine(presentLayer, {
+    surfaceRoom: '#10252b', trim: '#5f9da6', structure: '#456e75', panel: '#142e34', lamp: '#82d9e5',
+    deadLamp: '#526d72', shaftRock: '#09191e', depthMark: '#4e7a81', cable: '#4d7379', cage: '#42666c',
+    labWall: '#10272d', bossRoom: '#0b1d22', floor: '#203a40', glass: '#30545b', crystal: '#4c8d96',
+    arch: '#4f858d', archGlow: '#75d6e2', reactorFrame: '#17343b', reactorCore: '#5ecbd8', lever: '#79c9d2',
+    inertCore: '#54767b', bulkhead: '#17343a', platform: '#365d64', bossShell: '#4e858d', bossBody: '#142b31',
+    bossCore: '#82edf6', bossTrim: '#70bdc6', drill: '#6ba9b1', growth: '#4fb4c1', growthLine: '#70d9e4',
+  }, true);
+}
+
 buildPastScene();
 buildPresentScene();
+buildPastExpansion();
+buildPresentExpansion();
 
 const commonLayer = new THREE.Group();
 scene.add(commonLayer);
 
 // 地面以下不是空画布，而是可见的岩层剖面与更深一层的排水巷道。
 const bedrockMaterial = material('#122b31', 1);
-const bedrock = new THREE.Mesh(new THREE.PlaneGeometry(38, 8.5), bedrockMaterial);
-bedrock.position.set(0, groundY - 4.5, -5.8);
+const bedrock = new THREE.Mesh(new THREE.PlaneGeometry(46, 8.5), bedrockMaterial);
+bedrock.position.set(2.5, groundY - 4.5, -5.8);
 commonLayer.add(bedrock);
+
+const deepBedrockMaterial = material('#0d242a', 1);
+const deepBedrock = new THREE.Mesh(new THREE.PlaneGeometry(82, 7.5), deepBedrockMaterial);
+deepBedrock.position.set(55, labGroundY - 3.9, -5.8);
+commonLayer.add(deepBedrock);
 
 const strataMaterial = lineMaterial('#3e6870', .34);
 for (let row = 0; row < 6; row++) {
@@ -424,12 +661,20 @@ for (const x of [1.3, 4.0, 6.7, 9.4]) {
 segment(commonLayer, 1.3, groundY - 2.35, 9.95, groundY - 2.35, '#38535a', .42, -4.44);
 
 const groundMaterial = material('#274048', 1);
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(34, .56), groundMaterial);
-ground.position.set(0, groundY - .28, .2);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(45, .56), groundMaterial);
+ground.position.set(3.0, groundY - .28, .2);
 commonLayer.add(ground);
 
-for (let x = -15.5; x <= 15.5; x += 1.05) {
+for (let x = -15.5; x <= 22.0; x += 1.05) {
   segment(commonLayer, x, groundY + .01, x + .72, groundY + .01, '#789099', .18, .3);
+}
+
+const labGroundMaterial = material('#203a40', 1);
+const labGround = new THREE.Mesh(new THREE.PlaneGeometry(78, .6), labGroundMaterial);
+labGround.position.set(55, labGroundY - .3, .18);
+commonLayer.add(labGround);
+for (let x = 16.2; x <= 93.0; x += 1.1) {
+  segment(commonLayer, x, labGroundY + .015, x + .76, labGroundY + .015, '#789099', .2, .3);
 }
 
 function createHandwheel(color, opacity = 1) {
@@ -548,12 +793,12 @@ exitGroup.position.set(12.9, -1.3, -.2);
 scene.add(exitGroup);
 const exitGlow = disc(exitGroup, 2.35, '#7ce5f2', 0, 0, 0, .06);
 const exitCore = rectangle(exitGroup, .12, 4.4, '#a5f5ff', 0, 0, .1, .6);
+exitGroup.visible = false;
 
 function createPlayer() {
   const group = new THREE.Group();
   const bodyMat = material('#dffaff', .96);
   const trimMat = material('#75cbd6', .86);
-  const lineMat = lineMaterial('#e9fdff', .95);
   const shadowMat = material('#000000', .24);
 
   const shadow = new THREE.Mesh(new THREE.CircleGeometry(.58, 24), shadowMat);
@@ -563,39 +808,41 @@ function createPlayer() {
 
   const bodyRig = new THREE.Group();
   group.add(bodyRig);
-  const body = new THREE.Mesh(new THREE.PlaneGeometry(.58, .78), bodyMat);
-  body.position.y = -.12;
+  const body = new THREE.Mesh(new THREE.PlaneGeometry(.48, .7), bodyMat);
+  body.position.y = -.08;
   bodyRig.add(body);
-  const chestTrim = rectangle(bodyRig, .72, .13, '#75cbd6', 0, .18, .05, .78);
+  const chestTrim = rectangle(bodyRig, .56, .13, '#75cbd6', 0, .19, .05, .9);
   chestTrim.material = trimMat;
 
   const headRig = new THREE.Group();
   headRig.position.y = .55;
-  const head = new THREE.Mesh(new THREE.CircleGeometry(.3, 28), bodyMat);
+  const head = new THREE.Mesh(new THREE.CircleGeometry(.31, 12), bodyMat);
   headRig.add(head);
-  rectangle(headRig, .19, .16, '#0e272d', .12, .03, .08, .95);
+  rectangle(headRig, .22, .16, '#0e272d', .11, .02, .08, .95);
   group.add(headRig);
 
-  function makeLimb(x, y, length, isLeg) {
+  function makeLimb(x, y, length, width, isLeg) {
     const limb = new THREE.Group();
     limb.position.set(x, y, .06);
-    const limbLine = segment(limb, 0, 0, 0, -length, '#e9fdff', .95, .08);
-    limbLine.material = lineMat;
-    disc(limb, .055, '#e9fdff', 0, 0, .09, .95, 16).material = bodyMat;
+    const limbBody = rectangle(limb, width, length, '#e9fdff', 0, -length / 2, .08, .96);
+    limbBody.material = bodyMat;
+    disc(limb, width * .54, '#e9fdff', 0, 0, .09, .96, 12).material = bodyMat;
     if (isLeg) {
-      const foot = rectangle(limb, .25, .075, '#e9fdff', .08, -length, .1, .95);
+      const foot = rectangle(limb, .28, .13, '#e9fdff', .07, -length, .1, .96);
       foot.material = bodyMat;
+    } else {
+      disc(limb, width * .52, '#e9fdff', 0, -length, .1, .96, 12).material = bodyMat;
     }
     group.add(limb);
     return limb;
   }
 
-  const leftLeg = makeLimb(-.18, -.43, .43, true);
-  const rightLeg = makeLimb(.18, -.43, .43, true);
-  const leftArm = makeLimb(-.29, .08, .43, false);
-  const rightArm = makeLimb(.29, .08, .43, false);
+  const leftLeg = makeLimb(-.13, -.42, .43, .18, true);
+  const rightLeg = makeLimb(.13, -.42, .43, .18, true);
+  const leftArm = makeLimb(-.3, .12, .39, .16, false);
+  const rightArm = makeLimb(.3, .12, .39, .16, false);
 
-  group.userData.bodyMaterials = [bodyMat, lineMat];
+  group.userData.bodyMaterials = [bodyMat];
   group.userData.accentMaterials = [trimMat];
   group.userData.rig = {
     bodyRig, headRig, shadow, leftLeg, rightLeg, leftArm, rightArm,
@@ -610,11 +857,11 @@ function createPlayer() {
 const playerMesh = createPlayer();
 scene.add(playerMesh);
 
-const particleCount = 150;
+const particleCount = 360;
 const particlePositions = new Float32Array(particleCount * 3);
 for (let index = 0; index < particleCount; index++) {
-  particlePositions[index * 3] = THREE.MathUtils.randFloatSpread(33);
-  particlePositions[index * 3 + 1] = THREE.MathUtils.randFloat(-4.1, 6.8);
+  particlePositions[index * 3] = THREE.MathUtils.randFloat(-17, 94);
+  particlePositions[index * 3 + 1] = THREE.MathUtils.randFloat(-27, 7);
   particlePositions[index * 3 + 2] = THREE.MathUtils.randFloat(-5, 4);
 }
 const particleGeometry = new THREE.BufferGeometry();
@@ -664,6 +911,10 @@ function toggleInventory() {
 }
 
 function toggleEra() {
+  if (state.elevatorRiding) {
+    showToast('升降机强电磁场正在干扰时间锚；到站后才能切换时代');
+    return;
+  }
   const now = clock.elapsedTime;
   if (now - state.lastToggle < .55) return;
   setInventoryOpen(false);
@@ -674,8 +925,16 @@ function toggleEra() {
   eraLabel.textContent = state.eraTarget < .5 ? '过去 · 2047' : '现代 · 2147';
   flashTime();
 
-  if (state.eraTarget < .5) {
+  const inLab = player.y < -12;
+  if (state.eraTarget < .5 && inLab) {
+    showToast('2047年：地下实验室仍在运行，时间矿物培养装置尚未失控');
+  } else if (state.eraTarget < .5) {
     showToast('固定时间点：2047年，03号矿场仍在正常运行');
+  } else if (inLab && state.history.experimentShutdown) {
+    state.history.futureCleared = true;
+    showToast('因果改写生效：2147年的异常结晶没有形成，Boss通道已经露出');
+  } else if (inLab) {
+    showToast('2147年：培养装置持续运行百年，异常结晶已经封死前方通道');
   } else if (state.history.wheelInstalled) {
     showToast('固定时间点：2147年，跨时带来的手轮仍安装在03号闸门上');
   } else if (state.inventory.handwheel) {
@@ -693,12 +952,21 @@ function resetHistory() {
   state.pulse = 1;
   state.gateLift = 0;
   state.exitReached = false;
+  state.elevatorY = groundY;
+  state.elevatorRiding = false;
+  state.elevatorAtBottom = false;
+  state.bossAwake = false;
+  state.cameraX = 0;
+  state.cameraY = 0;
   state.inventoryOpen = false;
   state.inventory.handwheel = false;
   state.history.wheelCollected = false;
   state.history.wheelCrossed = false;
   state.history.wheelInstalled = false;
   state.history.gateOpened = false;
+  state.history.elevatorUsed = false;
+  state.history.experimentShutdown = false;
+  state.history.futureCleared = false;
   inventoryPanel.classList.remove('open');
   inventoryPanel.setAttribute('aria-hidden', 'true');
   player.x = -10.4;
@@ -718,31 +986,71 @@ function overlaps(aCenter, aHalf, bCenter, bHalf) {
   return Math.abs(aCenter - bCenter) < aHalf + bHalf;
 }
 
+function isLowerLevel() {
+  return player.y < (groundY + labGroundY) / 2;
+}
+
+function updateElevator(dt) {
+  if (!state.elevatorRiding) return;
+  state.elevatorY = Math.max(labGroundY, state.elevatorY - dt * 4.35);
+  player.x = elevatorX;
+  player.y = state.elevatorY + player.halfH;
+  player.vx = 0;
+  player.vy = 0;
+  player.grounded = true;
+  if (state.elevatorY <= labGroundY + .015) {
+    state.elevatorY = labGroundY;
+    state.elevatorRiding = false;
+    state.elevatorAtBottom = true;
+    state.history.elevatorUsed = true;
+    showToast('已抵达地下实验室：这里仍是2047年，可以调查培养装置');
+    updateHud();
+  }
+}
+
 function updateHorizontal(dt) {
+  if (state.elevatorRiding) return;
   const direction = state.inventoryOpen
     ? 0
     : (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0);
   player.vx = THREE.MathUtils.damp(player.vx, direction * player.speed, direction ? 15 : 22, dt);
   if (direction) player.facing = direction;
-  let nextX = THREE.MathUtils.clamp(player.x + player.vx * dt, -14.7, 14.7);
-  const playerBottom = player.y - player.halfH;
+  const lowerLevel = isLowerLevel();
+  const minX = lowerLevel ? 16.9 : -14.7;
+  const maxX = lowerLevel ? 91.0 : 20.25;
+  let nextX = THREE.MathUtils.clamp(player.x + player.vx * dt, minX, maxX);
   const playerTop = player.y + player.halfH;
 
-  const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
-  const gateVerticalOverlap = playerTop > gateBottom + .05;
-  if (gateVerticalOverlap && overlaps(nextX, player.halfW, gateX, .72)) {
-    nextX = player.x < gateX
-      ? gateX - .72 - player.halfW
-      : gateX + .72 + player.halfW;
-    player.vx = 0;
+  if (!lowerLevel) {
+    const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
+    const gateVerticalOverlap = playerTop > gateBottom + .05;
+    if (gateVerticalOverlap && overlaps(nextX, player.halfW, gateX, .72)) {
+      nextX = player.x < gateX
+        ? gateX - .72 - player.halfW
+        : gateX + .72 + player.halfW;
+      player.vx = 0;
+    }
+  } else {
+    const blockedByPastBulkhead = state.eraTarget < .5 && overlaps(nextX, player.halfW, 60.2, .72);
+    const blockedByFutureGrowth = state.eraTarget > .5
+      && !state.history.experimentShutdown
+      && overlaps(nextX, player.halfW, futureBarrierX, .9);
+    if (blockedByPastBulkhead || blockedByFutureGrowth) {
+      const obstacleX = blockedByPastBulkhead ? 60.2 : futureBarrierX;
+      nextX = player.x < obstacleX
+        ? obstacleX - .9 - player.halfW
+        : obstacleX + .9 + player.halfW;
+      player.vx = 0;
+    }
   }
   player.x = nextX;
 }
 
 function updateVertical(dt) {
+  if (state.elevatorRiding) return;
   player.vy -= 24 * dt;
   let nextY = player.y + player.vy * dt;
-  let landingY = groundY;
+  const landingY = isLowerLevel() ? labGroundY : groundY;
 
   const nextBottom = nextY - player.halfH;
   if (player.vy <= 0 && nextBottom <= landingY) {
@@ -756,15 +1064,60 @@ function updateVertical(dt) {
 }
 
 function tryJump() {
-  if (state.inventoryOpen || !player.grounded) return;
+  if (state.inventoryOpen || state.elevatorRiding || !player.grounded) return;
   player.vy = player.jumpSpeed;
   player.grounded = false;
 }
 
 function handleInteraction() {
   if (state.inventoryOpen) return;
+  const lowerLevel = isLowerLevel();
+  const nearElevator = !lowerLevel && Math.abs(player.x - elevatorX) < 2.0;
+  const nearReactorControl = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
   const playerNearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const playerNearSocket = Math.abs(player.x - winchSocketX) < 2.0;
+
+  if (nearElevator) {
+    if (state.eraTarget > .5) {
+      showToast('2147年：轿厢已经坠毁，钢缆断裂；回到2047年乘仍在运行的同一部电梯');
+    } else if (state.elevatorAtBottom) {
+      showToast('2047年的轿厢已经停在实验室层');
+    } else {
+      state.elevatorRiding = true;
+      state.elevatorY = groundY;
+      player.x = elevatorX;
+      player.vx = 0;
+      keys.clear();
+      showToast('2047年升降机启动：下降期间强电磁场会暂时干扰时间锚');
+      updateHud();
+    }
+    return;
+  }
+
+  if (nearReactorControl) {
+    if (state.eraTarget > .5) {
+      showToast(state.history.experimentShutdown
+        ? '2147年：装置早已停机，培养舱中只剩没有增生的惰性矿物'
+        : '2147年：控制台已经被结晶吞没；必须在2047年阻止培养实验继续运行');
+    } else if (!state.history.experimentShutdown) {
+      state.history.experimentShutdown = true;
+      state.pulse = 1;
+      showToast('2047年操作：拉下紧急断路杆，时间矿物培养装置永久停止供能');
+      updateHud();
+    } else {
+      showToast('2047年：紧急断路杆已经锁死，培养装置不会重新启动');
+    }
+    return;
+  }
+
+  if (lowerLevel) {
+    if (state.eraTarget > .5 && !state.history.experimentShutdown && Math.abs(player.x - futureBarrierX) < 2.2) {
+      showToast('这些结晶从培养装置一直增生到2147年；回到2047年切断它的能源');
+    } else if (state.eraTarget < .5 && Math.abs(player.x - 60.2) < 2.0) {
+      showToast('2047年Boss实验区受安全权限封锁；改变实验历史后从2147年进入');
+    }
+    return;
+  }
 
   if (state.eraTarget < .5) {
     if (!state.history.wheelCollected && playerNearPickup) {
@@ -804,7 +1157,20 @@ function checkHistoryEvents() {
     && !state.exitReached
   ) {
     state.exitReached = true;
-    showToast('验证完成：你把2047年的物品带到2147年解决了现代障碍');
+    showToast('闸门后是损坏的升降机：现代无法下降，但2047年的电梯仍在运行');
+    updateHud();
+  }
+
+  if (
+    state.eraTarget > .5
+    && state.history.experimentShutdown
+    && isLowerLevel()
+    && player.x > bossTriggerX
+    && !state.bossAwake
+  ) {
+    state.bossAwake = true;
+    state.pulse = 1;
+    showToast('Boss原型已唤醒：异常采掘构装体。当前版本展示场地与入场，不结算战斗伤害');
     updateHud();
   }
 }
@@ -813,18 +1179,39 @@ function updateHud() {
   eventCrate.classList.toggle('active', state.history.wheelCollected);
   eventPlate.classList.toggle('active', state.history.wheelCrossed);
   eventGate.classList.toggle('active', state.history.gateOpened);
+  eventElevator.classList.toggle('active', state.history.elevatorUsed);
+  eventReactor.classList.toggle('active', state.history.experimentShutdown);
+  eventFuture.classList.toggle('active', state.history.futureCleared);
   eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已从闸门拆下' : '尚未发生';
   eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
   eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
+  eventElevator.querySelector('span').textContent = state.history.elevatorUsed ? '已抵达地下实验室' : '等待进入';
+  eventReactor.querySelector('span').textContent = state.history.experimentShutdown ? '供能已永久切断' : '尚未发生';
+  eventFuture.querySelector('span').textContent = state.history.futureCleared ? 'Boss通道已经露出' : '等待改写';
 
-  if (state.exitReached) {
-    objective.textContent = '验证完成：时间锚背包把2047年的手轮带到了2147年';
+  const lowerLevel = isLowerLevel();
+  if (state.bossAwake) {
+    objective.textContent = '2147年：异常采掘构装体已经苏醒；Boss房间与入场流程验证完成';
+  } else if (state.elevatorRiding) {
+    objective.textContent = '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰';
+  } else if (lowerLevel && state.eraTarget < .5 && !state.history.experimentShutdown) {
+    objective.textContent = '2047年实验室：向右调查时间矿物培养舱，靠近紧急断路杆按 E';
+  } else if (lowerLevel && state.eraTarget < .5) {
+    objective.textContent = '2047年：培养装置已经永久停机。按 Q 查看这一行为对2147年的影响';
+  } else if (lowerLevel && !state.history.experimentShutdown) {
+    objective.textContent = '2147年实验室：百年结晶封死Boss通道。按 Q 回2047年关闭培养装置';
+  } else if (lowerLevel) {
+    objective.textContent = '2147年：异常结晶没有形成，继续向右穿过打开的通道进入Boss房间';
+  } else if (state.exitReached && state.eraTarget > .5) {
+    objective.textContent = '2147年：电梯已经坠毁。靠近电梯按 Q 回2047年，再按 E 乘坐完整轿厢';
+  } else if (state.exitReached) {
+    objective.textContent = '2047年：同一部升降机仍在运行。进入右侧轿厢并按 E 下降';
   } else if (state.eraTarget < .5) {
     objective.textContent = state.history.wheelCollected
       ? '2047年：手轮已在时间锚背包中。按 B 查看，按 Q 把它带回2147年'
       : '2047年：闸门主电网在线且电磁锁定。靠近门边手轮按 E 拆下';
   } else if (state.history.gateOpened) {
-    objective.textContent = '2147年：闸门已经升起并被机械卡扣锁住，前往右侧出口';
+    objective.textContent = '2147年：闸门已经升起，继续向右调查通往地下实验室的升降机';
   } else if (state.history.wheelInstalled) {
     objective.textContent = '2147年：手轮已经装上。再次按 E 转动手轮并拉起闸门';
   } else if (state.inventory.handwheel) {
@@ -833,12 +1220,27 @@ function updateHud() {
     objective.textContent = '2147年：闸门断电，但原手轮已经锈死。按 Q 查看2047年的同一机构';
   }
   doorStatus.classList.toggle('online', state.eraTarget < .5);
-  if (state.eraTarget < .5) {
+  if (lowerLevel) {
+    doorStatus.querySelector('span').textContent = 'CHRONITE CULTURE LAB';
+    if (state.eraTarget < .5) {
+      doorPower.textContent = state.history.experimentShutdown ? '培养供能：已人工切断' : '培养供能：在线 · 持续生长';
+      doorLock.textContent = state.history.experimentShutdown
+        ? '历史结果：2147年将不会形成增生结晶'
+        : '预测结果：持续运行将封死Boss通道';
+    } else {
+      doorPower.textContent = state.history.experimentShutdown ? '历史结果：培养实验提前终止' : '历史结果：装置运行至失控';
+      doorLock.textContent = state.history.experimentShutdown
+        ? 'Boss通道：开放 · 异常结晶未形成'
+        : 'Boss通道：封闭 · 结晶严重增生';
+    }
+  } else if (state.eraTarget < .5) {
+    doorStatus.querySelector('span').textContent = '03 GATE CONTROL';
     doorPower.textContent = '主电网：在线 · 供电稳定';
     doorLock.textContent = state.history.wheelCollected
       ? '电磁联锁：锁定 · 应急手轮已拆下'
       : '电磁联锁：锁定 · 手轮无法驱动大门';
   } else {
+    doorStatus.querySelector('span').textContent = '03 GATE CONTROL';
     doorPower.textContent = '主电网：离线 · 无法恢复';
     if (state.history.gateOpened) doorLock.textContent = '机械卡扣：已锁定开启位置';
     else if (state.history.wheelInstalled) doorLock.textContent = '电磁联锁：失效 · 新手轮已安装';
@@ -849,12 +1251,33 @@ function updateHud() {
 }
 
 function updateInteractionHint() {
+  const lowerLevel = isLowerLevel();
+  const nearElevator = !lowerLevel && Math.abs(player.x - elevatorX) < 2.0;
+  const nearReactor = lowerLevel && Math.abs(player.x - reactorControlX) < 1.65;
+  const nearBarrier = lowerLevel && Math.abs(player.x - futureBarrierX) < 2.1;
+  const nearPastBulkhead = lowerLevel && Math.abs(player.x - 60.2) < 1.9;
   const nearPickup = Math.abs(player.x - handwheelPickupX) < 1.75;
   const nearSocket = Math.abs(player.x - winchSocketX) < 2.0;
   let message = '';
 
   if (state.inventoryOpen) {
     message = '';
+  } else if (nearElevator && state.eraTarget > .5) {
+    message = '2147年轿厢已经坠毁 · 按 Q 回到2047年使用完整电梯';
+  } else if (nearElevator) {
+    message = state.elevatorAtBottom ? '升降机轿厢已经停在地下实验室层' : '按 E 启动2047年的矿井升降机';
+  } else if (nearReactor && state.eraTarget < .5) {
+    message = state.history.experimentShutdown
+      ? '紧急断路杆已锁死 · 培养装置永久停机'
+      : '按 E 拉下紧急断路杆 · 改变2147年的结晶结果';
+  } else if (nearReactor) {
+    message = state.history.experimentShutdown
+      ? '装置在2047年已经停机 · 现代只剩惰性矿物'
+      : '现代控制台已被吞没 · 必须回2047年操作';
+  } else if (nearBarrier && state.eraTarget > .5 && !state.history.experimentShutdown) {
+    message = '百年增生结晶封死通道 · 回2047年关闭培养装置';
+  } else if (nearPastBulkhead && state.eraTarget < .5) {
+    message = '2047年安全门锁定 · 改写实验历史后从2147年进入';
   } else if (state.eraTarget < .5 && nearPickup) {
     message = state.history.wheelCollected
       ? '2047年闸门上的应急手轮已经被你拆下'
@@ -906,6 +1329,39 @@ function updateHistoryOutcome(dt, elapsed) {
     pastMovingOre[index].position.y = -2.82 + Math.sin(elapsed * 5 + index) * .025;
   }
 
+  if (pastElevatorCar) pastElevatorCar.position.y = state.elevatorY;
+  if (pastShutdownLever) {
+    const leverTarget = state.history.experimentShutdown ? .55 : -.45;
+    pastShutdownLever.rotation.z = THREE.MathUtils.damp(pastShutdownLever.rotation.z, leverTarget, 8, dt);
+  }
+  if (pastReactorCore) {
+    pastReactorCore.rotation.z += dt * (state.history.experimentShutdown ? .16 : 1.25);
+    const coreScale = state.history.experimentShutdown ? .62 : 1 + Math.sin(elapsed * 3.2) * .035;
+    pastReactorCore.scale.setScalar(THREE.MathUtils.damp(pastReactorCore.scale.x, coreScale, 5, dt));
+    setLayerOpacity(pastReactorCore, pastAmount * (state.history.experimentShutdown ? .28 : 1));
+  }
+  if (modernOvergrowth) {
+    const growthAmount = state.era * (state.history.experimentShutdown ? 0 : 1);
+    setLayerOpacity(modernOvergrowth, growthAmount);
+    const growthPulse = 1 + Math.sin(elapsed * 2.15) * .018;
+    modernOvergrowth.scale.set(growthPulse, growthPulse, 1);
+  }
+  if (modernInertCore) setLayerOpacity(modernInertCore, state.era * (state.history.experimentShutdown ? 1 : 0));
+  if (pastBoss) {
+    pastBoss.rotation.z = Math.sin(elapsed * .5) * .012;
+  }
+  if (modernBoss) {
+    const awakeAmount = state.bossAwake ? 1 : 0;
+    modernBoss.position.y = labGroundY + 2.35 + Math.sin(elapsed * (state.bossAwake ? 2.4 : .7)) * (.16 + awakeAmount * .22);
+    modernBoss.rotation.z = Math.sin(elapsed * (state.bossAwake ? 1.8 : .45)) * (.018 + awakeAmount * .035);
+    const bossScale = state.bossAwake ? 1.08 + Math.sin(elapsed * 3.4) * .025 : 1;
+    modernBoss.scale.setScalar(THREE.MathUtils.damp(modernBoss.scale.x, bossScale, 4.5, dt));
+  }
+  for (let index = 0; index < bossCoreMaterials.length; index++) {
+    const eraAmount = index === 0 ? 1 - state.era : state.era;
+    bossCoreMaterials[index].opacity = (.62 + Math.sin(elapsed * (state.bossAwake ? 5.2 : 2.0) + index) * .24) * eraAmount;
+  }
+
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
   exitCore.material.opacity = .18 + state.gateLift * .62;
@@ -926,6 +1382,8 @@ function updateVisuals(dt, elapsed) {
   const groundPresent = new THREE.Color('#274048');
   groundMaterial.color.copy(groundPast.lerp(groundPresent, state.era));
   bedrockMaterial.color.copy(new THREE.Color('#351817').lerp(new THREE.Color('#122b31'), state.era));
+  deepBedrockMaterial.color.copy(new THREE.Color('#2a1115').lerp(new THREE.Color('#0d242a'), state.era));
+  labGroundMaterial.color.copy(new THREE.Color('#663126').lerp(new THREE.Color('#203a40'), state.era));
   strataMaterial.color.copy(new THREE.Color('#9a5136').lerp(new THREE.Color('#3e6870'), state.era));
   undergroundOreMaterial.color.copy(new THREE.Color('#b85d32').lerp(new THREE.Color('#3b7d86'), state.era));
   lowerTunnelMaterial.color.copy(new THREE.Color('#18090c').lerp(new THREE.Color('#081419'), state.era));
@@ -960,7 +1418,8 @@ function updateVisuals(dt, elapsed) {
   rig.headRig.position.y = rig.headBaseY + stepBounce * .72;
   rig.leftArm.position.y = rig.leftArmBaseY + stepBounce;
   rig.rightArm.position.y = rig.rightArmBaseY + stepBounce;
-  const jumpHeight = Math.max(0, player.y - (groundY + player.halfH));
+  const activeFloorY = isLowerLevel() ? labGroundY : groundY;
+  const jumpHeight = Math.max(0, player.y - (activeFloorY + player.halfH));
   rig.shadow.position.y = -.83 - jumpHeight;
   rig.shadow.scale.x = 1 - Math.min(.42, jumpHeight * .12) + player.walkBlend * .06;
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
@@ -970,9 +1429,24 @@ function updateVisuals(dt, elapsed) {
   playerMesh.scale.x = player.facing;
   playerMesh.rotation.z = THREE.MathUtils.damp(playerMesh.rotation.z, -player.vx * .008, 12, dt);
 
+  const viewHalfWidth = 9 * (innerWidth / innerHeight);
+  let cameraTargetX;
+  let cameraTargetY;
+  if (state.elevatorRiding) {
+    cameraTargetX = elevatorX;
+    cameraTargetY = player.y + 3.0;
+  } else if (isLowerLevel()) {
+    cameraTargetX = THREE.MathUtils.clamp(player.x, 17 + viewHalfWidth, 92 - viewHalfWidth);
+    cameraTargetY = labGroundY + 4.15;
+  } else {
+    cameraTargetX = THREE.MathUtils.clamp(player.x, -17 + viewHalfWidth, 22 - viewHalfWidth);
+    cameraTargetY = 0;
+  }
+  state.cameraX = THREE.MathUtils.damp(state.cameraX, cameraTargetX, state.elevatorRiding ? 3.2 : 5.8, dt);
+  state.cameraY = THREE.MathUtils.damp(state.cameraY, cameraTargetY, state.elevatorRiding ? 3.2 : 5.8, dt);
   const cameraShake = state.pulse * Math.sin(elapsed * 58) * .08;
-  camera.position.x = cameraShake;
-  camera.position.y = state.pulse * Math.cos(elapsed * 49) * .035;
+  camera.position.x = state.cameraX + cameraShake;
+  camera.position.y = state.cameraY + state.pulse * Math.cos(elapsed * 49) * .035;
   camera.zoom = 1 + state.pulse * .012;
   camera.updateProjectionMatrix();
 }
@@ -1009,6 +1483,7 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), .04);
   const elapsed = clock.elapsedTime;
+  updateElevator(dt);
   updateHorizontal(dt);
   updateVertical(dt);
   checkHistoryEvents();
