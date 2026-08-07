@@ -21,6 +21,9 @@ const doorStatus = document.querySelector('#door-status');
 const doorPower = document.querySelector('#door-power');
 const doorLock = document.querySelector('#door-lock');
 const hotbarCalibrator = document.querySelector('#hotbar-calibrator');
+const hotbarBlade = document.querySelector('#hotbar-blade');
+const hotbarHammer = document.querySelector('#hotbar-hammer');
+const hotbarWrench = document.querySelector('#hotbar-wrench');
 const hotbarWheel = document.querySelector('#hotbar-wheel');
 const hotbarBreach = document.querySelector('#hotbar-breach');
 const breachKitSlot = document.querySelector('#breach-kit-slot');
@@ -84,6 +87,13 @@ const state = {
   attackTimer: 0,
   attackDuration: 0,
   attackCooldown: 0,
+  equippedWeapon: 'calibrator',
+  attackWeapon: 'calibrator',
+  attackAimX: 1,
+  attackAimY: 0,
+  meleeHit: false,
+  weaponReadyTimer: 0,
+  wrenchInFlight: false,
   boss: {
     maxHealth: 360,
     health: 360,
@@ -173,6 +183,53 @@ function updatePointerAim(event) {
   );
   pointerAim.initialized = true;
   refreshAimDirection();
+}
+
+const weaponDefinitions = {
+  calibrator: {
+    name: '小型时相校准器',
+    detail: '快捷栏 1 · 鼠标自由瞄准 · 远程检修脉冲 · 24伤害',
+    duration: .18,
+    cooldown: .3,
+  },
+  arcBlade: {
+    name: '磁弧切割刀',
+    detail: '快捷栏 2 · 快速斜向下挥 · 近战范围1.85 · 34伤害',
+    duration: .3,
+    cooldown: .4,
+    range: 1.85,
+    damage: 34,
+    activeStart: .34,
+    activeEnd: .72,
+    minDot: .22,
+    melee: true,
+  },
+  impactHammer: {
+    name: '液压震击锤',
+    detail: '快捷栏 5 · 抬锤蓄力后向前砸落 · 近战范围1.75 · 62伤害',
+    duration: .66,
+    cooldown: .86,
+    range: 1.75,
+    damage: 62,
+    activeStart: .68,
+    activeEnd: .9,
+    minDot: .38,
+    melee: true,
+  },
+  returnWrench: {
+    name: '回弹检修扳手',
+    detail: '快捷栏 6 · 投出后自动返回 · 可穿过平台 · 20伤害',
+    duration: .24,
+    cooldown: .52,
+  },
+};
+
+function equipWeapon(weaponId) {
+  if (!weaponDefinitions[weaponId] || state.attackTimer > 0) return;
+  state.equippedWeapon = weaponId;
+  state.weaponReadyTimer = 0;
+  updateInventoryHud();
+  showToast(`已装备${weaponDefinitions[weaponId].name}`);
 }
 
 const vertexShader = /* glsl */`
@@ -1194,13 +1251,76 @@ function createCalibrator() {
   return group;
 }
 
+function createArcBlade() {
+  const group = new THREE.Group();
+  rectangle(group, .28, .11, '#87583b', .13, 0, .2, .98);
+  rectangle(group, .1, .34, '#365d64', .28, 0, .21, .98);
+  polygon(group, [[0, .11], [.5, .075], [.66, 0], [.5, -.075], [0, -.11]], '#bdf9fb', .3, 0, .24, .98);
+  polygon(group, [[0, .055], [.43, .035], [.53, 0], [.43, -.035], [0, -.055]], '#58c5ce', .31, 0, .26, .82);
+  return group;
+}
+
+function createImpactHammer() {
+  const group = new THREE.Group();
+  rectangle(group, .72, .12, '#8d5b3c', .34, 0, .19, .98);
+  ring(group, .11, .055, '#77dbe3', .17, 0, .24, .9, 18);
+  rectangle(group, .34, .48, '#294d54', .76, 0, .22, .98);
+  rectangle(group, .2, .39, '#64c7d0', .73, 0, .24, .78);
+  rectangle(group, .12, .5, '#bceff2', .95, 0, .25, .86);
+  return group;
+}
+
+function createReturnWrench() {
+  const group = new THREE.Group();
+  rectangle(group, .5, .09, '#8b694b', .25, 0, .2, .98);
+  ring(group, .13, .07, '#8ee8ee', .04, 0, .24, .9, 18);
+  ring(group, .16, .09, '#5cbfc8', .54, 0, .24, .96, 18);
+  polygon(group, [[0, .16], [.2, .07], [.1, 0], [.2, -.07], [0, -.16]], '#d7f7f8', .57, 0, .26, .92);
+  return group;
+}
+
+function createBladeSheath() {
+  const group = new THREE.Group();
+  rectangle(group, .76, .13, '#263d43', .34, 0, .03, .98);
+  rectangle(group, .24, .11, '#8b593b', -.13, 0, .04, .98);
+  rectangle(group, .08, .26, '#65cbd2', 0, 0, .05, .82);
+  return group;
+}
+
 const weaponRig = new THREE.Group();
 weaponRig.position.set(0, -.39, .45);
 const calibratorMesh = createCalibrator();
-weaponRig.add(calibratorMesh);
+const arcBladeMesh = createArcBlade();
+const impactHammerMesh = createImpactHammer();
+const returnWrenchMesh = createReturnWrench();
+weaponRig.add(calibratorMesh, arcBladeMesh, impactHammerMesh, returnWrenchMesh);
 playerMesh.userData.rig.rightArm.add(weaponRig);
 const muzzleFlash = polygon(weaponRig, [[0, .11], [.22, 0], [0, -.11]], '#c8fbff', .75, 0, .32, .9);
 muzzleFlash.visible = false;
+
+// Selected weapons are visible on the body while idle, then move into the hand only during combat readiness.
+const storageRig = new THREE.Group();
+playerMesh.add(storageRig);
+const holsteredCalibrator = createCalibrator();
+holsteredCalibrator.scale.setScalar(.78);
+holsteredCalibrator.position.set(.26, -.36, .04);
+holsteredCalibrator.rotation.z = -1.38;
+storageRig.add(holsteredCalibrator);
+const sheathedBlade = createBladeSheath();
+sheathedBlade.scale.setScalar(.9);
+sheathedBlade.position.set(-.27, -.45, .03);
+sheathedBlade.rotation.z = -1.18;
+storageRig.add(sheathedBlade);
+const stowedHammer = createImpactHammer();
+stowedHammer.scale.setScalar(.78);
+stowedHammer.position.set(-.22, .02, -.34);
+stowedHammer.rotation.z = .92;
+storageRig.add(stowedHammer);
+const holsteredWrench = createReturnWrench();
+holsteredWrench.scale.setScalar(.7);
+holsteredWrench.position.set(.28, -.4, .05);
+holsteredWrench.rotation.z = -1.12;
+storageRig.add(holsteredWrench);
 
 const playerShotLayer = new THREE.Group();
 scene.add(playerShotLayer);
@@ -1276,9 +1396,13 @@ function updateInventoryHud() {
   hotbarWheel.classList.toggle('empty', !hasWheel);
   breachKitSlot.classList.toggle('empty', !hasBreachKit);
   hotbarBreach.classList.toggle('empty', !hasBreachKit);
-  hotbarCalibrator.classList.add('selected');
-  inventoryItemName.textContent = '时相校准器';
-  inventoryItemStatus.textContent = '快捷栏 1 · 鼠标自由瞄准 · J / 左键发射检修脉冲 · 不消耗弹药';
+  hotbarCalibrator.classList.toggle('selected', state.equippedWeapon === 'calibrator');
+  hotbarBlade.classList.toggle('selected', state.equippedWeapon === 'arcBlade');
+  hotbarHammer.classList.toggle('selected', state.equippedWeapon === 'impactHammer');
+  hotbarWrench.classList.toggle('selected', state.equippedWeapon === 'returnWrench');
+  const weapon = weaponDefinitions[state.equippedWeapon];
+  inventoryItemName.textContent = weapon.name;
+  inventoryItemStatus.textContent = `${weapon.detail} · J / 左键攻击`;
 }
 
 function setInventoryOpen(open) {
@@ -1366,6 +1490,13 @@ function resetHistory() {
   state.attackTimer = 0;
   state.attackDuration = 0;
   state.attackCooldown = 0;
+  state.weaponReadyTimer = 0;
+  state.wrenchInFlight = false;
+  state.equippedWeapon = 'calibrator';
+  state.attackWeapon = 'calibrator';
+  state.attackAimX = 1;
+  state.attackAimY = 0;
+  state.meleeHit = false;
   state.boss.health = state.boss.maxHealth;
   state.boss.x = bossHomeX;
   state.boss.direction = -1;
@@ -1753,10 +1884,44 @@ function checkHistoryEvents() {
 
 function tryAttack() {
   if (state.inventoryOpen || npcDialogue.classList.contains('open') || state.elevatorRiding || state.attackCooldown > 0) return;
+  if (state.equippedWeapon === 'returnWrench' && state.wrenchInFlight) {
+    showToast('回弹扳手还没有回到手中');
+    return;
+  }
   refreshAimDirection();
-  state.attackDuration = .18;
+  const weapon = weaponDefinitions[state.equippedWeapon];
+  state.attackWeapon = state.equippedWeapon;
+  state.attackAimX = player.aimX;
+  state.attackAimY = player.aimY;
+  state.meleeHit = false;
+  state.attackDuration = weapon.duration;
   state.attackTimer = state.attackDuration;
-  state.attackCooldown = .3;
+  state.attackCooldown = weapon.cooldown;
+  state.weaponReadyTimer = 1.2;
+  if (state.attackWeapon === 'arcBlade' || state.attackWeapon === 'impactHammer') return;
+  if (state.attackWeapon === 'returnWrench') {
+    const mesh = createReturnWrench();
+    mesh.scale.setScalar(.82);
+    mesh.position.set(
+      player.x + player.aimX * .88,
+      player.y + .12 + player.aimY * .88,
+      2.75,
+    );
+    playerShotLayer.add(mesh);
+    playerShots.push({
+      type: 'wrench',
+      mesh,
+      vx: player.aimX * 11.5,
+      vy: player.aimY * 11.5,
+      damage: 20,
+      life: 2.4,
+      age: 0,
+      returning: false,
+      hitCore: false,
+    });
+    state.wrenchInFlight = true;
+    return;
+  }
   const mesh = new THREE.Group();
   rectangle(mesh, .3, .075, '#bffaff', 0, 0, .06, .98);
   ring(mesh, .105, .06, '#66d8e4', -.11, 0, .08, .82, 16);
@@ -1768,16 +1933,20 @@ function tryAttack() {
   );
   playerShotLayer.add(mesh);
   playerShots.push({
+    type: 'pulse',
     mesh,
     vx: player.aimX * 18.5,
     vy: player.aimY * 18.5,
+    damage: 24,
     life: 2.6,
+    age: 0,
   });
 }
 
 function clearCombatEffects() {
   for (const shot of playerShots) playerShotLayer.remove(shot.mesh);
   playerShots.length = 0;
+  state.wrenchInFlight = false;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -1827,6 +1996,26 @@ function damageBoss(amount) {
   updateHud();
 }
 
+function updateMeleeAttack() {
+  const weapon = weaponDefinitions[state.attackWeapon];
+  if (state.attackTimer <= 0 || !weapon?.melee || state.meleeHit) return;
+  const progress = 1 - state.attackTimer / Math.max(.001, state.attackDuration);
+  if (progress < weapon.activeStart || progress > weapon.activeEnd) return;
+  if (!state.bossAwake || state.boss.defeated || state.eraTarget < .5 || !isLowerLevel()) return;
+
+  const originX = player.x;
+  const originY = player.y + .12;
+  const dx = state.boss.x + .18 - originX;
+  const dy = bossCoreY - originY;
+  const distance = Math.max(.001, Math.hypot(dx, dy));
+  const aimDot = (dx * state.attackAimX + dy * state.attackAimY) / distance;
+  if (distance > weapon.range || aimDot < weapon.minDot) return;
+
+  state.meleeHit = true;
+  state.pulse = Math.max(state.pulse, state.attackWeapon === 'impactHammer' ? .42 : .24);
+  damageBoss(weapon.damage);
+}
+
 function beginBossBeam() {
   state.boss.beamPhase = 'telegraph';
   state.boss.beamTimer = .92;
@@ -1860,14 +2049,37 @@ function playerDistanceToBeam() {
 }
 
 function updateCombat(dt, elapsed) {
+  const wasAttacking = state.attackTimer > 0;
   state.attackCooldown = Math.max(0, state.attackCooldown - dt);
   state.attackTimer = Math.max(0, state.attackTimer - dt);
+  state.weaponReadyTimer = wasAttacking
+    ? 1.2
+    : Math.max(0, state.weaponReadyTimer - dt);
   player.hurtCooldown = Math.max(0, player.hurtCooldown - dt);
   state.boss.hitFlash = Math.max(0, state.boss.hitFlash - dt);
+  updateMeleeAttack();
 
   for (let index = playerShots.length - 1; index >= 0; index--) {
     const shot = playerShots[index];
     shot.life -= dt;
+    shot.age += dt;
+    if (shot.type === 'wrench') {
+      shot.mesh.rotation.z -= dt * 13;
+      if (shot.age > .42) shot.returning = true;
+      if (shot.returning) {
+        const dx = player.x - shot.mesh.position.x;
+        const dy = player.y + .12 - shot.mesh.position.y;
+        const distance = Math.max(.001, Math.hypot(dx, dy));
+        shot.vx = dx / distance * 13.5;
+        shot.vy = dy / distance * 13.5;
+        if (distance < .48 && shot.age > .45) {
+          playerShotLayer.remove(shot.mesh);
+          playerShots.splice(index, 1);
+          state.wrenchInFlight = false;
+          continue;
+        }
+      }
+    }
     shot.mesh.position.x += shot.vx * dt;
     shot.mesh.position.y += shot.vy * dt;
     const hitCore = state.bossAwake
@@ -1876,9 +2088,17 @@ function updateCombat(dt, elapsed) {
       && Math.abs(shot.mesh.position.x - (state.boss.x + .18)) < .92
       && Math.abs(shot.mesh.position.y - bossCoreY) < 1.0;
     if (hitCore) {
-      playerShotLayer.remove(shot.mesh);
-      playerShots.splice(index, 1);
-      damageBoss(24);
+      if (shot.type === 'wrench') {
+        if (!shot.hitCore) {
+          shot.hitCore = true;
+          shot.returning = true;
+          damageBoss(shot.damage);
+        }
+      } else {
+        playerShotLayer.remove(shot.mesh);
+        playerShots.splice(index, 1);
+        damageBoss(shot.damage);
+      }
     } else {
       const shotInLab = shot.mesh.position.y < -12;
       const outsideHorizontalBounds = shotInLab
@@ -1890,6 +2110,7 @@ function updateCombat(dt, elapsed) {
       if (shot.life <= 0 || outsideHorizontalBounds || outsideVerticalBounds) {
         playerShotLayer.remove(shot.mesh);
         playerShots.splice(index, 1);
+        if (shot.type === 'wrench') state.wrenchInFlight = false;
       }
     }
   }
@@ -2335,11 +2556,34 @@ function updateVisuals(dt, elapsed) {
   const leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
   const rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
   let leftArmTarget = airborne ? .22 : armStride;
+  let rightArmTarget = airborne ? -.22 : -armStride;
   const localAimAngle = Math.atan2(player.aimY, Math.abs(player.aimX));
-  const recoil = attacking ? Math.sin(attackProgress * Math.PI) * .07 : 0;
-  const rightArmTarget = localAimAngle + Math.PI * .5 - recoil;
-  if (attacking) {
-    leftArmTarget = .12;
+  const attackAimAngle = Math.atan2(state.attackAimY, Math.abs(state.attackAimX));
+  const posedWeapon = attacking ? state.attackWeapon : state.equippedWeapon;
+  const weaponAvailableInHand = posedWeapon !== 'returnWrench' || !state.wrenchInFlight;
+  const weaponDrawn = attacking || (state.weaponReadyTimer > 0 && weaponAvailableInHand);
+  let weaponAimAngle = localAimAngle;
+  let recoil = 0;
+  if (attacking && posedWeapon === 'calibrator') {
+    recoil = Math.sin(attackProgress * Math.PI) * .07;
+  } else if (attacking && posedWeapon === 'arcBlade') {
+    const slashT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
+    weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(1.08, -.74, slashT);
+  } else if (attacking && posedWeapon === 'impactHammer') {
+    if (attackProgress < .38) {
+      const windupT = THREE.MathUtils.smoothstep(attackProgress, 0, .38);
+      weaponAimAngle = THREE.MathUtils.lerp(attackAimAngle, attackAimAngle + 1.3, windupT);
+    } else {
+      const slamT = THREE.MathUtils.smoothstep(attackProgress, .38, 1);
+      weaponAimAngle = THREE.MathUtils.lerp(attackAimAngle + 1.3, attackAimAngle - .62, slamT);
+    }
+  } else if (attacking && posedWeapon === 'returnWrench') {
+    const throwT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
+    weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(.48, -.38, throwT);
+  }
+  if (weaponDrawn) rightArmTarget = weaponAimAngle + Math.PI * .5 - recoil;
+  if (attacking && weaponDrawn) {
+    leftArmTarget = posedWeapon === 'impactHammer' ? rightArmTarget - .18 : .12;
   }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
@@ -2359,10 +2603,19 @@ function updateVisuals(dt, elapsed) {
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
 
+  weaponRig.visible = weaponDrawn;
+  calibratorMesh.visible = weaponDrawn && posedWeapon === 'calibrator';
+  arcBladeMesh.visible = weaponDrawn && posedWeapon === 'arcBlade';
+  impactHammerMesh.visible = weaponDrawn && posedWeapon === 'impactHammer';
+  returnWrenchMesh.visible = weaponDrawn && !state.wrenchInFlight && posedWeapon === 'returnWrench';
+  holsteredCalibrator.visible = !weaponDrawn && state.equippedWeapon === 'calibrator';
+  sheathedBlade.visible = !weaponDrawn && state.equippedWeapon === 'arcBlade';
+  stowedHammer.visible = !weaponDrawn && state.equippedWeapon === 'impactHammer';
+  holsteredWrench.visible = !weaponDrawn && !state.wrenchInFlight && state.equippedWeapon === 'returnWrench';
   calibratorMesh.rotation.z = 0;
-  calibratorMesh.position.x = attacking ? -Math.sin(attackProgress * Math.PI) * .055 : 0;
+  calibratorMesh.position.x = attacking && posedWeapon === 'calibrator' ? -Math.sin(attackProgress * Math.PI) * .055 : 0;
   weaponRig.rotation.z = -Math.PI * .5;
-  muzzleFlash.visible = attacking && attackProgress < .52;
+  muzzleFlash.visible = weaponDrawn && attacking && posedWeapon === 'calibrator' && attackProgress < .52;
   muzzleFlash.scale.setScalar(.62 + Math.sin(attackProgress * Math.PI) * .28);
 
   if (player.hurtCooldown > .55) {
@@ -2407,7 +2660,10 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
-  if (!event.repeat && event.code === 'Digit1') showToast('已装备小型时相校准器：移动鼠标瞄准，按 J 或左键发射');
+  if (!event.repeat && event.code === 'Digit1') equipWeapon('calibrator');
+  if (!event.repeat && event.code === 'Digit2') equipWeapon('arcBlade');
+  if (!event.repeat && event.code === 'Digit5') equipWeapon('impactHammer');
+  if (!event.repeat && event.code === 'Digit6') equipWeapon('returnWrench');
   if (!event.repeat && event.code === 'KeyJ') tryAttack();
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
   if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);
@@ -2416,7 +2672,7 @@ addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1', 'Digit2', 'Digit5', 'Digit6'].includes(event.code)) event.preventDefault();
 });
 addEventListener('pointermove', updatePointerAim);
 addEventListener('pointerdown', event => {

@@ -60,8 +60,8 @@
         <div><kbd>W</kbd><span>跳跃</span></div>
         <div><kbd>E</kbd><span>拾取 / 安装 / 使用</span></div>
         <div><kbd>B</kbd><span>打开背包</span></div>
-        <div><kbd>1</kbd><span>装备小型时相校准器</span></div>
-        <div><kbd>J</kbd><span>向鼠标方向发射</span></div>
+        <div><kbd>1</kbd><kbd>2</kbd><kbd>5</kbd><kbd>6</kbd><span>切换武器</span></div>
+        <div><kbd>J</kbd><span>朝鼠标方向攻击</span></div>
         <div class="primary"><kbd>Q</kbd><span>切换过去 / 现代</span></div>
         <div><kbd>R</kbd><span>重置历史</span></div>
       </section>
@@ -80,11 +80,11 @@
 
       <section class="hotbar" aria-label="快捷栏">
         <div id="hotbar-calibrator" class="hotbar-cell selected"><em>1</em><i class="weapon-icon calibrator-icon"></i></div>
-        <div class="hotbar-cell empty"><em>2</em></div>
+        <div id="hotbar-blade" class="hotbar-cell"><em>2</em><i class="weapon-icon blade-icon"></i></div>
         <div id="hotbar-wheel" class="hotbar-cell empty"><em>3</em><div class="mini-wheel"></div></div>
         <div id="hotbar-breach" class="hotbar-cell"><em>4</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div></div>
-        <div class="hotbar-cell empty"><em>5</em></div>
-        <div class="hotbar-cell empty"><em>6</em></div>
+        <div id="hotbar-hammer" class="hotbar-cell"><em>5</em><i class="weapon-icon hammer-icon"></i></div>
+        <div id="hotbar-wrench" class="hotbar-cell"><em>6</em><i class="weapon-icon wrench-icon"></i></div>
         <div class="hotbar-cell empty"><em>7</em></div>
         <div class="hotbar-cell empty"><em>8</em></div>
         <div class="hotbar-cell empty"><em>9</em></div>
@@ -105,10 +105,10 @@
         <header><span>TIME-ANCHORED PACK</span><b>时间锚背包</b><kbd>B</kbd></header>
         <div class="inventory-grid">
           <div class="inventory-cell"><em>1</em><i class="weapon-icon calibrator-icon"></i><small>校准器</small></div>
-          <div class="inventory-cell empty"><em>2</em></div>
+          <div class="inventory-cell"><em>2</em><i class="weapon-icon blade-icon"></i><small>切割刀</small></div>
           <div id="handwheel-slot" class="inventory-cell empty"><em>3</em><div class="handwheel-icon"><i></i><i></i><i></i><i></i></div><small>手轮</small></div>
-          <div id="breach-kit-slot" class="inventory-cell"><em>4</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div><small>时锁爆破器</small></div><div class="inventory-cell empty"><em>5</em></div>
-          <div class="inventory-cell empty"><em>6</em></div><div class="inventory-cell empty"><em>7</em></div>
+          <div id="breach-kit-slot" class="inventory-cell"><em>4</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div><small>时锁爆破器</small></div><div class="inventory-cell"><em>5</em><i class="weapon-icon hammer-icon"></i><small>震击锤</small></div>
+          <div class="inventory-cell"><em>6</em><i class="weapon-icon wrench-icon"></i><small>回弹扳手</small></div><div class="inventory-cell empty"><em>7</em></div>
           <div class="inventory-cell empty"><em>8</em></div><div class="inventory-cell empty"><em>9</em></div>
           <div class="inventory-cell empty"><em>10</em></div><div class="inventory-cell empty"><em>11</em></div>
           <div class="inventory-cell empty"><em>12</em></div><div class="inventory-cell empty"><em>13</em></div>
@@ -118,7 +118,7 @@
           <div class="inventory-cell empty"><em>20</em></div>
         </div>
         <div class="inventory-detail"><b id="inventory-item-name">时相校准器</b><span id="inventory-item-status">快捷栏 1 · 发射检修脉冲 · 不消耗弹药</span></div>
-        <p>武器会一直保留；手轮等任务物品安装或消耗后会立即移出格子，不留下失效占位。</p>
+        <p>四种武器会一直保留，停止攻击后自动收回腰间、刀鞘或背部；手轮等任务物品消耗后立即移出格子。</p>
       </aside>
 
       <div class="world-legend">

@@ -499,6 +499,79 @@ kbd {
   background: #93613f;
   transform: skew(-9deg);
 }
+.blade-icon::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 13px;
+  width: 22px;
+  height: 6px;
+  border: 1px solid #9cf4f7;
+  border-radius: 3px 9px 9px 3px;
+  background: linear-gradient(180deg, #e5feff, #55c4ce);
+  box-shadow: 0 0 7px rgba(105,225,234,.42);
+  transform: rotate(-35deg);
+  transform-origin: left center;
+}
+.blade-icon::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 17px;
+  width: 9px;
+  height: 4px;
+  border-radius: 2px;
+  background: #8e5b3c;
+  transform: rotate(-35deg);
+}
+.hammer-icon::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 5px;
+  height: 20px;
+  border-radius: 2px;
+  background: #8c5a3b;
+  transform: rotate(38deg);
+}
+.hammer-icon::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 5px;
+  width: 19px;
+  height: 9px;
+  border: 1px solid #79dfe7;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #477a82, #203e45);
+  box-shadow: inset 4px 0 rgba(148,240,246,.58), 0 0 6px rgba(93,220,232,.28);
+  transform: rotate(38deg);
+}
+.wrench-icon::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 13px;
+  width: 22px;
+  height: 6px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #d8fbfd, #55bec7);
+  box-shadow: 0 0 6px rgba(93,220,232,.35);
+  transform: rotate(-38deg);
+}
+.wrench-icon::after {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border: 3px solid #77dce4;
+  border-left-color: transparent;
+  border-radius: 50%;
+  transform: rotate(8deg);
+}
 .mini-wheel {
   width: 23px;
   height: 23px;
