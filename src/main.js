@@ -27,12 +27,12 @@ const state = {
   eraTarget: 1,
   pulse: 0,
   lastToggle: -10,
-  routeOpen: 0,
+  gateLift: 0,
   exitReached: false,
   history: {
-    crateMoved: false,
-    coreContained: false,
-    supportSeen: false,
+    winchMoved: false,
+    winchInstalled: false,
+    gateOpened: false,
   },
 };
 
@@ -233,20 +233,6 @@ for (let x = -15.5; x <= 15.5; x += 1.05) {
   segment(commonLayer, x, groundY + .01, x + .72, groundY + .01, '#789099', .18, .3);
 }
 
-const shieldBay = new THREE.Group();
-shieldBay.position.set(1.35, groundY + .08, .7);
-scene.add(shieldBay);
-const shieldFloorMaterial = material('#32434a', .95);
-const shieldSealMaterial = material('#8ddce7', .3);
-rectangle(shieldBay, 2.55, .18, '#32434a', 0, 0, 0, .95).material = shieldFloorMaterial;
-rectangle(shieldBay, .16, 2.2, '#536970', -1.18, 1.02, .02, .78);
-rectangle(shieldBay, .16, 2.2, '#536970', 1.18, 1.02, .02, .78);
-rectangle(shieldBay, 2.5, .18, '#536970', 0, 2.08, .02, .78);
-rectangle(shieldBay, 2.05, .09, '#8ddce7', 0, 1.82, .05, .3).material = shieldSealMaterial;
-for (let index = 0; index < 4; index++) {
-  segment(shieldBay, -.76 + index * .5, .24, -.76 + index * .5, 1.72, '#7eb8c0', .22, .08);
-}
-
 function createCrate(width, height, fill, edge, rune = false) {
   const group = new THREE.Group();
   const fillMaterial = material(fill, .9);
@@ -284,28 +270,15 @@ function createCrate(width, height, fill, edge, rune = false) {
 
 const boxes = [
   {
-    id: 'anchor',
-    width: 1.55,
-    height: 1.5,
-    pastX: 4.65,
-    presentX: 4.65,
-    initialPastX: 4.65,
-    initialPresentX: 4.65,
-    presentTouched: false,
-    pastMesh: createCrate(1.55, 1.5, '#672331', '#ff687d', true),
-    presentMesh: createCrate(1.55, 1.5, '#33232b', '#a75868', true),
-  },
-  {
-    id: 'ordinary',
-    width: 1.18,
-    height: 1.12,
-    pastX: -7.15,
-    presentX: -6.7,
-    initialPastX: -7.15,
-    initialPresentX: -6.7,
-    presentTouched: false,
-    pastMesh: createCrate(1.18, 1.12, '#68301f', '#e39152'),
-    presentMesh: createCrate(1.18, 1.12, '#203f46', '#77c8d3'),
+    id: 'winch-crate',
+    width: 1.5,
+    height: 1.38,
+    pastX: -4.85,
+    presentX: -4.85,
+    initialPastX: -4.85,
+    initialPresentX: -4.85,
+    pastMesh: createCrate(1.5, 1.38, '#6d3d22', '#ffb15d', true),
+    presentMesh: createCrate(1.5, 1.38, '#263f45', '#79c6cf', true),
   },
 ];
 
@@ -313,98 +286,81 @@ for (const box of boxes) {
   scene.add(box.pastMesh, box.presentMesh);
 }
 
-function addStationNumber(group, color, opacity) {
-  segment(group, -.72, 3.2, -.72, 4.05, color, opacity, .15);
-  segment(group, -.72, 4.05, -.28, 4.05, color, opacity, .15);
-  segment(group, -.28, 4.05, -.28, 3.2, color, opacity, .15);
-  segment(group, -.28, 3.2, -.72, 3.2, color, opacity, .15);
-  segment(group, .08, 4.05, .55, 4.05, color, opacity, .15);
-  segment(group, .55, 4.05, .55, 3.2, color, opacity, .15);
-  segment(group, .08, 3.64, .55, 3.64, color, opacity, .15);
-  segment(group, .08, 3.2, .55, 3.2, color, opacity, .15);
+function addStationNumber(group, color, opacity, yOffset = 0) {
+  segment(group, -.72, 3.2 + yOffset, -.72, 4.05 + yOffset, color, opacity, .15);
+  segment(group, -.72, 4.05 + yOffset, -.28, 4.05 + yOffset, color, opacity, .15);
+  segment(group, -.28, 4.05 + yOffset, -.28, 3.2 + yOffset, color, opacity, .15);
+  segment(group, -.28, 3.2 + yOffset, -.72, 3.2 + yOffset, color, opacity, .15);
+  segment(group, .08, 4.05 + yOffset, .55, 4.05 + yOffset, color, opacity, .15);
+  segment(group, .55, 4.05 + yOffset, .55, 3.2 + yOffset, color, opacity, .15);
+  segment(group, .08, 3.64 + yOffset, .55, 3.64 + yOffset, color, opacity, .15);
+  segment(group, .08, 3.2 + yOffset, .55, 3.2 + yOffset, color, opacity, .15);
 }
 
-const coreLeakPast = new THREE.Group();
-scene.add(coreLeakPast);
-for (let index = 0; index < 4; index++) {
-  const radius = .92 + index * .23;
-  const points = Array.from({ length: 33 }, (_, pointIndex) => {
-    const angle = pointIndex / 32 * Math.PI * 2;
-    return new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, .02);
-  });
-  coreLeakPast.add(new THREE.LineLoop(
-    new THREE.BufferGeometry().setFromPoints(points),
-    lineMaterial('#ff6379', .22 - index * .035),
-  ));
+const gateX = 8.35;
+const winchSocketX = 5.25;
+
+function createGate(frameColor, doorColor, edgeColor, powered) {
+  const group = new THREE.Group();
+  group.position.set(gateX, groundY, .88);
+  rectangle(group, .28, 6.4, frameColor, -1.0, 3.2, 0, .96);
+  rectangle(group, .28, 6.4, frameColor, 1.0, 3.2, 0, .96);
+  rectangle(group, 2.3, .34, frameColor, 0, 6.18, .01, .96);
+
+  const door = new THREE.Group();
+  rectangle(door, 1.55, 5.15, doorColor, 0, 0, .03, .98);
+  for (let y = -2.1; y <= 2.1; y += .7) {
+    segment(door, -.67, y, .67, y, edgeColor, .62, .08);
+  }
+  segment(door, -.64, -2.35, .64, 2.35, edgeColor, .32, .07);
+  segment(door, .64, -2.35, -.64, 2.35, edgeColor, .32, .07);
+  addStationNumber(door, edgeColor, .82, -3.63);
+  door.position.y = 2.58;
+  group.add(door);
+
+  const indicator = disc(group, .14, powered ? '#ffac59' : '#648990', -1.0, 5.55, .08, .9);
+  segment(group, -1.35, 4.95, -1.35, .75, edgeColor, .3, .06);
+  scene.add(group);
+  return { group, door, indicator };
 }
 
-const pastSupport = new THREE.Group();
-pastSupport.position.set(7.35, groundY, .82);
-scene.add(pastSupport);
-rectangle(pastSupport, .58, 5.0, '#70402d', 0, 2.5, 0, .96);
-rectangle(pastSupport, .58, 5.0, '#70402d', 2.35, 2.5, 0, .96);
-rectangle(pastSupport, 3.45, .42, '#875239', 1.15, 4.9, .04, .96);
-segment(pastSupport, .28, .5, 2.05, 4.55, '#cb754a', .42, .08);
-segment(pastSupport, 2.08, .5, .3, 4.55, '#cb754a', .42, .08);
-addStationNumber(pastSupport, '#ffb069', .76);
+const pastGate = createGate('#77462e', '#4d251f', '#ffad5b', true);
+const modernGate = createGate('#29464d', '#18353c', '#82d6df', false);
 
-const modernSupport = new THREE.Group();
-modernSupport.position.set(7.35, groundY, .84);
-scene.add(modernSupport);
-rectangle(modernSupport, .58, 5.0, '#29474d', 0, 2.5, 0, .94);
-rectangle(modernSupport, .58, 5.0, '#29474d', 2.35, 2.5, 0, .94);
-rectangle(modernSupport, 3.45, .42, '#345b62', 1.15, 4.9, .04, .94);
-segment(modernSupport, .28, .5, 2.05, 4.55, '#6ba8ae', .32, .08);
-segment(modernSupport, 2.08, .5, .3, 4.55, '#6ba8ae', .32, .08);
-addStationNumber(modernSupport, '#8edce5', .56);
-
-const brokenSupport = new THREE.Group();
-brokenSupport.position.set(7.35, groundY, .88);
-scene.add(brokenSupport);
-rectangle(brokenSupport, .68, 1.65, '#263f45', 0, .82, 0, .96);
-const brokenPost = rectangle(brokenSupport, .68, 3.55, '#263f45', 2.02, 1.7, .01, .96);
-brokenPost.rotation.z = -.28;
-const fallenBeam = rectangle(brokenSupport, 3.25, .48, '#315159', 1.1, .68, .04, .96);
-fallenBeam.rotation.z = .18;
-segment(brokenSupport, .18, 1.5, .84, 2.34, '#c15872', .55, .09);
-segment(brokenSupport, 1.86, 3.25, 2.42, 4.2, '#c15872', .42, .09);
-addStationNumber(brokenSupport, '#b9677b', .48);
-
-const crystalMass = new THREE.Group();
-crystalMass.position.set(6.1, groundY, .95);
-scene.add(crystalMass);
-for (let index = 0; index < 9; index++) {
-  const width = .38 + (index % 3) * .16;
-  const height = 1.25 + (index % 4) * .55;
-  const shard = rectangle(crystalMass, width, height, '#71384d', -1.2 + index * .42, height / 2, 0, .84);
-  shard.rotation.z = -.38 + (index % 5) * .18;
+function createSocket(color, glow) {
+  const group = new THREE.Group();
+  group.position.set(winchSocketX, groundY, .82);
+  rectangle(group, 1.85, .2, color, 0, .1, 0, .9);
+  rectangle(group, .16, 1.8, color, -.82, .92, 0, .78);
+  rectangle(group, .16, 1.8, color, .82, .92, 0, .78);
+  segment(group, -.62, 1.62, .62, 1.62, glow, .68, .08);
+  for (let x = -.45; x <= .45; x += .3) disc(group, .07, glow, x, .52, .08, .72);
+  scene.add(group);
+  return group;
 }
-segment(crystalMass, -1.8, .55, 2.45, 3.9, '#d05a78', .42, .12);
-segment(crystalMass, -1.5, 1.35, 2.0, 4.6, '#a94d67', .32, .12);
 
-const rubble = new THREE.Group();
-rubble.position.set(8.25, groundY, 1.05);
-scene.add(rubble);
-const rubbleLayouts = [
-  { x: -1.1, y: .65, w: 2.2, h: 1.25, r: .28 },
-  { x: .55, y: .78, w: 1.8, h: 1.45, r: -.22 },
-  { x: -.35, y: 1.85, w: 2.0, h: 1.05, r: -.48 },
-  { x: .85, y: 2.15, w: 1.35, h: 1.7, r: .35 },
-  { x: -.75, y: 3.0, w: 1.4, h: 1.25, r: .42 },
-];
-for (const layout of rubbleLayouts) {
-  const chunk = new THREE.Group();
-  const fill = rectangle(chunk, layout.w, layout.h, '#263f45', 0, 0, 0, .96);
-  const edge = new THREE.LineSegments(
-    new THREE.EdgesGeometry(new THREE.PlaneGeometry(layout.w, layout.h)),
-    lineMaterial('#79b7bf', .52),
-  );
-  chunk.add(edge);
-  chunk.position.set(layout.x, layout.y, 0);
-  chunk.rotation.z = layout.r;
-  chunk.userData.fill = fill;
-  rubble.add(chunk);
+const pastSocket = createSocket('#6d422d', '#ffb15d');
+const modernSocket = createSocket('#29464d', '#82d6df');
+
+function createWinch(baseColor, edgeColor) {
+  const group = new THREE.Group();
+  group.position.set(winchSocketX, groundY, 1.02);
+  rectangle(group, 1.45, 1.18, baseColor, 0, .72, 0, .96);
+  disc(group, .43, '#101b1e', 0, .78, .06, .95);
+  const drum = disc(group, .31, baseColor, 0, .78, .08, 1);
+  const handle = new THREE.Group();
+  handle.position.y = .78;
+  segment(handle, 0, 0, .62, .5, edgeColor, .95, .13);
+  disc(handle, .11, edgeColor, .68, .56, .13, .95);
+  group.add(handle);
+  segment(group, .48, 1.23, gateX - winchSocketX - .35, 4.82, edgeColor, .45, .09);
+  rectangle(group, .55, .22, edgeColor, -.42, .23, .08, .72);
+  scene.add(group);
+  return { group, handle, drum };
 }
+
+const pastWinch = createWinch('#70402a', '#ffb15d');
+const modernWinch = createWinch('#29464d', '#82d6df');
 
 const exitGroup = new THREE.Group();
 exitGroup.position.set(12.9, -1.3, -.2);
@@ -480,11 +436,11 @@ function toggleEra() {
   flashTime();
 
   if (state.eraTarget < .5) {
-    showToast('时间坐标锁定：矿镇建造期 / 2047');
-  } else if (state.history.coreContained) {
-    showToast('时间推进一百年：核心始终被屏蔽，03号承重柱没有遭到侵蚀');
+    showToast('固定时间点：2047年，03号矿场仍在正常运行');
+  } else if (state.history.winchInstalled) {
+    showToast('固定时间点：2147年，过去安装的绞盘仍留在同一扇门上');
   } else {
-    showToast('返回现代：核心仍在承重柱旁泄漏，坍塌没有改变');
+    showToast('固定时间点：2147年，闸门仍因缺少手动装置而锁死');
   }
   updateHud();
 }
@@ -493,17 +449,14 @@ function resetHistory() {
   state.eraTarget = 1;
   state.era = 1;
   state.pulse = 1;
-  state.routeOpen = 0;
+  state.gateLift = 0;
   state.exitReached = false;
-  state.history.crateMoved = false;
-  state.history.coreContained = false;
-  state.history.supportSeen = false;
-  shieldSealMaterial.opacity = .3;
-  shieldSealMaterial.userData.baseOpacity = .3;
+  state.history.winchMoved = false;
+  state.history.winchInstalled = false;
+  state.history.gateOpened = false;
   for (const box of boxes) {
     box.pastX = box.initialPastX;
     box.presentX = box.initialPresentX;
-    box.presentTouched = false;
   }
   player.x = -10.4;
   player.y = groundY + player.halfH;
@@ -516,23 +469,20 @@ function resetHistory() {
   updateHud();
 }
 
+function boxIsActive(box) {
+  return state.eraTarget < .5 && box.id === 'winch-crate' && !state.history.winchInstalled;
+}
+
 function activeBoxX(box) {
-  return state.eraTarget < .5 ? box.pastX : box.presentX;
+  return box.pastX;
 }
 
 function setActiveBoxX(box, value) {
-  if (state.eraTarget < .5) {
-    box.pastX = value;
-    if (box.id !== 'anchor' && !box.presentTouched) box.presentX = value + .55;
-    if (box.id === 'anchor' && Math.abs(box.pastX - box.initialPastX) > .3 && !state.history.crateMoved) {
-      state.history.crateMoved = true;
-      showToast('历史事件：泄漏核心正在远离03号承重柱');
-      updateHud();
-    }
-  } else {
-    box.presentX = value;
-    box.presentTouched = true;
-    if (box.id === 'anchor') showToast('现代只能移动残骸，无法反向改变核心过去的存放位置');
+  box.pastX = value;
+  if (Math.abs(box.pastX - box.initialPastX) > .3 && !state.history.winchMoved) {
+    state.history.winchMoved = true;
+    showToast('2047年事件：你开始搬运尚未安装的机械绞盘');
+    updateHud();
   }
 }
 
@@ -541,14 +491,10 @@ function overlaps(aCenter, aHalf, bCenter, bHalf) {
 }
 
 function boxCanMove(box, nextX) {
-  if (box.id === 'anchor' && state.history.coreContained) return false;
+  if (!boxIsActive(box)) return false;
   if (nextX - box.width / 2 < -14.5 || nextX + box.width / 2 > 14.5) return false;
-  for (const other of boxes) {
-    if (other === box) continue;
-    if (overlaps(nextX, box.width / 2, activeBoxX(other), other.width / 2)) return false;
-  }
-  const rubbleBlocking = state.eraTarget > .5 && !state.history.coreContained;
-  if (rubbleBlocking && overlaps(nextX, box.width / 2, rubble.position.x, 2.15)) return false;
+  if (box.id === 'winch-crate' && nextX > winchSocketX + .55) return false;
+  if (overlaps(nextX, box.width / 2, gateX, .72)) return false;
   return true;
 }
 
@@ -560,7 +506,9 @@ function updateHorizontal(dt) {
   const playerBottom = player.y - player.halfH;
   const playerTop = player.y + player.halfH;
 
-  const orderedBoxes = [...boxes].sort((a, b) => direction >= 0 ? activeBoxX(a) - activeBoxX(b) : activeBoxX(b) - activeBoxX(a));
+  const orderedBoxes = boxes
+    .filter(boxIsActive)
+    .sort((a, b) => direction >= 0 ? activeBoxX(a) - activeBoxX(b) : activeBoxX(b) - activeBoxX(a));
   for (const box of orderedBoxes) {
     const boxX = activeBoxX(box);
     const boxBottom = groundY;
@@ -580,11 +528,12 @@ function updateHorizontal(dt) {
     }
   }
 
-  const rubbleBlocking = state.eraTarget > .5 && !state.history.coreContained;
-  if (rubbleBlocking && overlaps(nextX, player.halfW, rubble.position.x, 2.05) && playerBottom < groundY + 4.4) {
-    nextX = player.x < rubble.position.x
-      ? rubble.position.x - 2.05 - player.halfW
-      : rubble.position.x + 2.05 + player.halfW;
+  const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
+  const gateVerticalOverlap = playerTop > gateBottom + .05;
+  if (gateVerticalOverlap && overlaps(nextX, player.halfW, gateX, .72)) {
+    nextX = player.x < gateX
+      ? gateX - .72 - player.halfW
+      : gateX + .72 + player.halfW;
     player.vx = 0;
   }
   player.x = nextX;
@@ -598,6 +547,7 @@ function updateVertical(dt) {
 
   if (player.vy <= 0) {
     for (const box of boxes) {
+      if (!boxIsActive(box)) continue;
       const top = groundY + box.height;
       const horizontalOverlap = overlaps(player.x, player.halfW * .82, activeBoxX(box), box.width / 2 * .92);
       const nextBottom = nextY - player.halfH;
@@ -624,94 +574,112 @@ function tryJump() {
   player.grounded = false;
 }
 
-function checkHistoryEvents() {
-  const anchor = boxes[0];
-  const anchorInShieldBay = Math.abs(anchor.pastX - shieldBay.position.x) < .66;
-  if (state.eraTarget < .5 && anchorInShieldBay && !state.history.coreContained) {
-    state.history.coreContained = true;
-    anchor.pastX = shieldBay.position.x;
-    anchor.presentX = shieldBay.position.x;
-    shieldSealMaterial.opacity = .92;
-    shieldSealMaterial.userData.baseOpacity = .92;
-    showToast('因果成立：时间核心已进入屏蔽仓，长期泄漏被阻止');
-    updateHud();
+function handleInteraction() {
+  const crate = boxes[0];
+  const playerNearSocket = Math.abs(player.x - winchSocketX) < 2.0;
+
+  if (state.eraTarget < .5) {
+    const crateReady = Math.abs(crate.pastX - winchSocketX) < .72;
+    if (!state.history.winchInstalled && crateReady && playerNearSocket) {
+      state.history.winchInstalled = true;
+      crate.pastX = winchSocketX;
+      showToast('2047年改写：机械绞盘已永久安装在03号闸门上');
+      updateHud();
+    } else if (!state.history.winchInstalled && playerNearSocket) {
+      showToast('先把维修绞盘推到黄色接口内');
+    }
+    return;
   }
 
+  if (!playerNearSocket) return;
+  if (!state.history.winchInstalled) {
+    showToast('2147年的接口是空的；必须在2047年完成安装');
+  } else if (!state.history.gateOpened) {
+    state.history.gateOpened = true;
+    showToast('2147年操作：绞盘带动配重，03号闸门正在升起');
+    updateHud();
+  } else {
+    showToast('机械安全卡扣已经锁定，闸门保持开启');
+  }
+}
+
+function checkHistoryEvents() {
   if (
     state.eraTarget > .5
-    && state.history.coreContained
-    && state.routeOpen > .75
+    && state.history.gateOpened
+    && state.gateLift > .82
     && player.x > 12.15
     && !state.exitReached
   ) {
     state.exitReached = true;
-    showToast('验证完成：你通过改写历史打开了现代道路');
+    showToast('验证完成：2047年的永久安装为2147年留下了开门手段');
     updateHud();
   }
 }
 
 function updateHud() {
-  eventCrate.classList.toggle('active', state.history.crateMoved);
-  eventPlate.classList.toggle('active', state.history.coreContained);
-  eventGate.classList.toggle('active', state.history.supportSeen);
-  eventCrate.querySelector('span').textContent = state.history.crateMoved ? '核心远离承重柱' : '尚未发生';
-  eventPlate.querySelector('span').textContent = state.history.coreContained ? '泄漏已被隔绝' : '尚未发生';
-  eventGate.querySelector('span').textContent = state.history.supportSeen ? '现代矿道保持畅通' : '等待时间';
+  eventCrate.classList.toggle('active', state.history.winchMoved);
+  eventPlate.classList.toggle('active', state.history.winchInstalled);
+  eventGate.classList.toggle('active', state.history.gateOpened);
+  eventCrate.querySelector('span').textContent = state.history.winchMoved ? '绞盘已离开维修区' : '尚未发生';
+  eventPlate.querySelector('span').textContent = state.history.winchInstalled ? '装置永久留在闸门上' : '尚未发生';
+  eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待历史';
 
   if (state.exitReached) {
-    objective.textContent = '原型验证完成：过去的行动已经为现代打开新道路';
+    objective.textContent = '验证完成：两个固定时间点共享同一扇已经被改造的03号闸门';
   } else if (state.eraTarget < .5) {
-    objective.textContent = state.history.coreContained
-      ? '核心已经封存。按 Q 返回现代，检查03号承重柱是否幸存'
-      : '越过红色泄漏核心，从右侧把它推入左边蓝色屏蔽仓';
-  } else if (state.history.coreContained) {
-    objective.textContent = '泄漏没有发生：03号承重柱与矿道仍然完整，前往右侧出口';
+    objective.textContent = state.history.winchInstalled
+      ? '2047年：绞盘已经安装，但通电的电磁锁仍关闭闸门。按 Q 返回2147年'
+      : '2047年：把橙色维修绞盘推到门边黄色接口，靠近后按 E 安装';
+  } else if (state.history.gateOpened) {
+    objective.textContent = '2147年：闸门已经升起并被机械卡扣锁住，前往右侧出口';
+  } else if (state.history.winchInstalled) {
+    objective.textContent = '2147年：过去安装的绞盘仍在。靠近门边装置并按 E 转动';
   } else {
-    objective.textContent = '结晶侵蚀造成矿道坍塌。按 Q 回到过去处理泄漏核心';
+    objective.textContent = '2147年：闸门断电锁死，手动接口为空。按 Q 前往固定的2047年';
   }
 }
 
 function updateInteractionHint() {
-  const nearest = boxes.reduce((best, box) => {
-    const distance = Math.abs(player.x - activeBoxX(box));
-    return !best || distance < best.distance ? { box, distance } : best;
-  }, null);
-  const show = nearest && nearest.distance < 1.65 && player.y < groundY + nearest.box.height + 1.0;
-  interaction.classList.toggle('show', Boolean(show));
-  if (show) {
-    if (nearest.box.id === 'anchor' && state.history.coreContained) {
-      interaction.querySelector('span').textContent = state.eraTarget < .5
-        ? '核心已经被屏蔽仓锁定，无法再次移动'
-        : '这就是过去封存的核心，如今仍在同一座屏蔽仓内';
-    } else {
-      interaction.querySelector('span').textContent = state.eraTarget < .5
-        ? '继续移动即可推动 · 过去的变化会传到现代'
-        : '继续移动即可推动 · 现代变化不会反向传到过去';
-    }
+  const crate = boxes[0];
+  const nearCrate = boxIsActive(crate) && Math.abs(player.x - crate.pastX) < 1.65;
+  const nearSocket = Math.abs(player.x - winchSocketX) < 2.0;
+  let message = '';
+
+  if (state.eraTarget < .5 && !state.history.winchInstalled) {
+    const crateReady = Math.abs(crate.pastX - winchSocketX) < .72;
+    if (crateReady && nearSocket) message = '按 E 把绞盘永久安装到03号闸门';
+    else if (nearCrate) message = '继续移动即可推动橙色维修绞盘';
+    else if (nearSocket) message = '黄色接口等待机械绞盘';
+  } else if (state.eraTarget < .5 && state.history.winchInstalled && nearSocket) {
+    message = '绞盘已经安装；2047年的电磁锁仍在通电';
+  } else if (state.eraTarget > .5 && nearSocket) {
+    if (!state.history.winchInstalled) message = '2147年的手动接口为空';
+    else if (!state.history.gateOpened) message = '按 E 转动保存至今的机械绞盘';
+    else message = '配重与安全卡扣正在保持闸门开启';
   }
+
+  interaction.classList.toggle('show', Boolean(message));
+  if (message) interaction.querySelector('span').textContent = message;
 }
 
 function updateHistoryOutcome(dt, elapsed) {
-  const routeTarget = state.era * (state.history.coreContained ? 1 : 0);
-  state.routeOpen = THREE.MathUtils.damp(state.routeOpen, routeTarget, 7, dt);
+  const liftTarget = state.history.gateOpened ? 1 : 0;
+  state.gateLift = THREE.MathUtils.damp(state.gateLift, liftTarget, 3.4, dt);
+  modernGate.door.position.y = 2.58 + state.gateLift * 5.2;
+  modernWinch.handle.rotation.z = -state.gateLift * Math.PI * 3.5;
+  modernWinch.drum.rotation.z = state.gateLift * Math.PI * 2.2;
 
-  if (state.history.coreContained && state.era > .78 && !state.history.supportSeen) {
-    state.history.supportSeen = true;
-    showToast('现代结果：核心没有泄漏，03号承重柱与矿道幸存');
-    updateHud();
-  }
+  setLayerOpacity(pastGate.group, 1 - state.era);
+  setLayerOpacity(modernGate.group, state.era);
+  setLayerOpacity(pastSocket, 1 - state.era);
+  setLayerOpacity(modernSocket, state.era);
+  setLayerOpacity(pastWinch.group, (1 - state.era) * (state.history.winchInstalled ? 1 : 0));
+  setLayerOpacity(modernWinch.group, state.era * (state.history.winchInstalled ? 1 : 0));
 
-  const originalHistory = state.era * (state.history.coreContained ? 0 : 1);
-  const rewrittenHistory = state.era * (state.history.coreContained ? 1 : 0);
-  setLayerOpacity(pastSupport, 1 - state.era);
-  setLayerOpacity(modernSupport, rewrittenHistory);
-  setLayerOpacity(brokenSupport, originalHistory);
-  setLayerOpacity(crystalMass, originalHistory);
-  setLayerOpacity(rubble, originalHistory);
-  setLayerOpacity(coreLeakPast, (1 - state.era) * (state.history.coreContained ? .06 : 1));
-
-  exitGlow.material.opacity = .035 + state.routeOpen * .12 + Math.sin(elapsed * 3.1) * .012;
-  exitCore.material.opacity = .18 + state.routeOpen * .62;
+  modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
+  exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
+  exitCore.material.opacity = .18 + state.gateLift * .62;
 }
 
 function updateVisuals(dt, elapsed) {
@@ -724,7 +692,6 @@ function updateVisuals(dt, elapsed) {
   setLayerOpacity(pastLayer, 1 - state.era);
   setLayerOpacity(presentLayer, state.era);
   setLayerOpacity(exitGroup, state.era);
-  setLayerOpacity(shieldBay, .5 + (1 - state.era) * .5 + state.history.coreContained * state.era * .5);
 
   const groundPast = new THREE.Color('#5d2b25');
   const groundPresent = new THREE.Color('#274048');
@@ -735,17 +702,12 @@ function updateVisuals(dt, elapsed) {
   for (const box of boxes) {
     box.pastMesh.position.set(box.pastX, groundY + box.height / 2, 1.1);
     box.presentMesh.position.set(box.presentX, groundY + box.height / 2, 1.2);
-    setLayerOpacity(box.pastMesh, 1 - state.era);
-    setLayerOpacity(box.presentMesh, state.era);
+    const portableAmount = state.history.winchInstalled ? 0 : 1;
+    setLayerOpacity(box.pastMesh, (1 - state.era) * portableAmount);
+    setLayerOpacity(box.presentMesh, 0);
     const nearPast = state.eraTarget < .5 && Math.abs(player.x - box.pastX) < 1.7;
-    const nearPresent = state.eraTarget > .5 && Math.abs(player.x - box.presentX) < 1.7;
     box.pastMesh.userData.edgeMaterial.opacity = (nearPast ? 1 : .78) * (1 - state.era);
-    box.presentMesh.userData.edgeMaterial.opacity = (nearPresent ? 1 : .78) * state.era;
   }
-
-  const anchor = boxes[0];
-  coreLeakPast.position.set(anchor.pastX, groundY + anchor.height / 2, 1.35);
-  coreLeakPast.rotation.z = elapsed * .12;
 
   const playerPast = new THREE.Color('#ffd8ad');
   const playerPresent = new THREE.Color('#dffaff');
@@ -776,9 +738,10 @@ function resize() {
 addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'KeyQ') toggleEra();
   if (!event.repeat && event.code === 'KeyR') resetHistory();
+  if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyD', 'KeyQ'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyD', 'KeyE', 'KeyQ'].includes(event.code)) event.preventDefault();
 });
 addEventListener('keyup', event => keys.delete(event.code));
 addEventListener('blur', () => keys.clear());
