@@ -59,8 +59,35 @@
         <div><kbd>W</kbd><span>跳跃</span></div>
         <div><kbd>E</kbd><span>拾取 / 安装 / 使用</span></div>
         <div><kbd>B</kbd><span>打开背包</span></div>
+        <div><kbd>1</kbd><kbd>2</kbd><span>切换长剑 / 长矛</span></div>
+        <div><kbd>J</kbd><span>攻击（也可点击鼠标）</span></div>
         <div class="primary"><kbd>Q</kbd><span>切换过去 / 现代</span></div>
         <div><kbd>R</kbd><span>重置历史</span></div>
+      </section>
+
+      <section class="player-health" aria-label="玩家生命">
+        <span>TIME ANCHOR / HP</span>
+        <div><i id="player-health-fill"></i></div>
+        <b id="player-health-copy">100 / 100</b>
+      </section>
+
+      <section id="boss-hud" class="boss-hud" aria-hidden="true">
+        <span>异常采掘构装体</span>
+        <div><i id="boss-health-fill"></i></div>
+        <b id="boss-health-copy">320 / 320</b>
+      </section>
+
+      <section class="hotbar" aria-label="快捷栏">
+        <div id="hotbar-sword" class="hotbar-cell selected"><em>1</em><i class="weapon-icon sword-icon"></i></div>
+        <div id="hotbar-spear" class="hotbar-cell"><em>2</em><i class="weapon-icon spear-icon"></i></div>
+        <div id="hotbar-wheel" class="hotbar-cell empty"><em>3</em><div class="mini-wheel"></div></div>
+        <div class="hotbar-cell empty"><em>4</em></div>
+        <div class="hotbar-cell empty"><em>5</em></div>
+        <div class="hotbar-cell empty"><em>6</em></div>
+        <div class="hotbar-cell empty"><em>7</em></div>
+        <div class="hotbar-cell empty"><em>8</em></div>
+        <div class="hotbar-cell empty"><em>9</em></div>
+        <div class="hotbar-cell empty"><em>0</em></div>
       </section>
 
       <div id="interaction" class="interaction">
@@ -69,11 +96,22 @@
 
       <aside id="inventory-panel" class="inventory-panel" aria-hidden="true">
         <header><span>TIME-ANCHORED PACK</span><b>时间锚背包</b><kbd>B</kbd></header>
-        <div id="handwheel-slot" class="inventory-slot empty">
-          <div class="handwheel-icon"><i></i><i></i><i></i><i></i></div>
-          <div><b id="inventory-item-name">空物品栏</b><span id="inventory-item-status">尚未取得可跨时物品</span></div>
+        <div class="inventory-grid">
+          <div class="inventory-cell"><em>1</em><i class="weapon-icon sword-icon"></i><small>长剑</small></div>
+          <div class="inventory-cell"><em>2</em><i class="weapon-icon spear-icon"></i><small>长矛</small></div>
+          <div id="handwheel-slot" class="inventory-cell empty"><em>3</em><div class="handwheel-icon"><i></i><i></i><i></i><i></i></div><small>手轮</small></div>
+          <div class="inventory-cell empty"><em>4</em></div><div class="inventory-cell empty"><em>5</em></div>
+          <div class="inventory-cell empty"><em>6</em></div><div class="inventory-cell empty"><em>7</em></div>
+          <div class="inventory-cell empty"><em>8</em></div><div class="inventory-cell empty"><em>9</em></div>
+          <div class="inventory-cell empty"><em>10</em></div><div class="inventory-cell empty"><em>11</em></div>
+          <div class="inventory-cell empty"><em>12</em></div><div class="inventory-cell empty"><em>13</em></div>
+          <div class="inventory-cell empty"><em>14</em></div><div class="inventory-cell empty"><em>15</em></div>
+          <div class="inventory-cell empty"><em>16</em></div><div class="inventory-cell empty"><em>17</em></div>
+          <div class="inventory-cell empty"><em>18</em></div><div class="inventory-cell empty"><em>19</em></div>
+          <div class="inventory-cell empty"><em>20</em></div>
         </div>
-        <p>背包与主角受时间锚保护，其中的小型物品会随你在2047与2147之间移动。</p>
+        <div class="inventory-detail"><b id="inventory-item-name">长剑</b><span id="inventory-item-status">快捷栏 1 · 近距离横斩 · 不会消耗</span></div>
+        <p>武器会一直保留；手轮等任务物品安装或消耗后会立即移出格子，不留下失效占位。</p>
       </aside>
 
       <div class="world-legend">

@@ -19,6 +19,14 @@ const inventoryItemStatus = document.querySelector('#inventory-item-status');
 const doorStatus = document.querySelector('#door-status');
 const doorPower = document.querySelector('#door-power');
 const doorLock = document.querySelector('#door-lock');
+const hotbarSword = document.querySelector('#hotbar-sword');
+const hotbarSpear = document.querySelector('#hotbar-spear');
+const hotbarWheel = document.querySelector('#hotbar-wheel');
+const playerHealthFill = document.querySelector('#player-health-fill');
+const playerHealthCopy = document.querySelector('#player-health-copy');
+const bossHud = document.querySelector('#boss-hud');
+const bossHealthFill = document.querySelector('#boss-health-fill');
+const bossHealthCopy = document.querySelector('#boss-health-copy');
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-16, 16, 9, -9, 0.1, 100);
@@ -50,6 +58,22 @@ const state = {
   elevatorRiding: false,
   elevatorAtBottom: false,
   bossAwake: false,
+  selectedWeapon: 'sword',
+  attackTimer: 0,
+  attackDuration: 0,
+  attackCooldown: 0,
+  attackHit: false,
+  boss: {
+    maxHealth: 320,
+    health: 320,
+    x: 75,
+    vx: 0,
+    decisionTimer: 1.4,
+    chargeTimer: 0,
+    projectileTimer: 1.2,
+    hitFlash: 0,
+    defeated: false,
+  },
   cameraX: 0,
   cameraY: 0,
   inventoryOpen: false,
@@ -80,6 +104,9 @@ const player = {
   facing: 1,
   walkPhase: 0,
   walkBlend: 0,
+  maxHealth: 100,
+  health: 100,
+  hurtCooldown: 0,
 };
 
 const vertexShader = /* glsl */`
@@ -224,7 +251,9 @@ let modernOvergrowth = null;
 let modernInertCore = null;
 let modernBoss = null;
 let pastBoss = null;
+let bossBattleBarrier = null;
 const bossCoreMaterials = [];
+const bossProjectiles = [];
 
 function buildMineLandmarks(group, palette, ruined) {
   const fade = ruined ? .72 : .96;
@@ -606,6 +635,15 @@ function buildExpandedMine(group, palette, ruined) {
   rectangle(group, .28, 7.1, palette.trim, 61.2, labGroundY + 3.5, -1.2, .92);
   rectangle(group, 2.3, .28, palette.trim, 60.2, labGroundY + 7.0, -1.15, .92);
   if (!ruined) rectangle(group, 1.55, 6.35, palette.bulkhead, 60.2, labGroundY + 3.25, -1.0, .94);
+  if (ruined) {
+    const battleBarrier = new THREE.Group();
+    for (let y = labGroundY + .35; y <= labGroundY + 6.6; y += .48) {
+      disc(battleBarrier, .075, palette.archGlow, 62.45, y, -.62, .82, 14);
+    }
+    rectangle(battleBarrier, .09, 6.55, palette.archGlow, 62.45, labGroundY + 3.45, -.68, .34);
+    bossBattleBarrier = battleBarrier;
+    group.add(battleBarrier);
+  }
   rectangle(group, 5.2, .26, palette.platform, 67.0, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
   rectangle(group, 5.2, .26, palette.platform, 83.2, labGroundY + 2.0, -1.1, ruined ? .62 : .78);
   for (const x of [64.8, 69.2, 81.0, 85.4]) rectangle(group, .16, 2.0, palette.structure, x, labGroundY + 1.0, -1.2, ruined ? .38 : .65);
@@ -907,6 +945,39 @@ function createPlayer() {
 const playerMesh = createPlayer();
 scene.add(playerMesh);
 
+function createSword() {
+  const group = new THREE.Group();
+  polygon(group, [[0, -.075], [1.18, -.075], [1.48, 0], [1.18, .075], [0, .075]], '#d9f8fb', .05, 0, .2, .98);
+  rectangle(group, .12, .46, '#d39a59', -.03, 0, .22, .98).rotation.z = Math.PI / 2;
+  rectangle(group, .38, .09, '#96613c', -.2, 0, .23, .98);
+  return group;
+}
+
+function createSpear() {
+  const group = new THREE.Group();
+  rectangle(group, 2.35, .07, '#a76e43', 1.0, 0, .2, .98);
+  polygon(group, [[0, -.18], [.52, 0], [0, .18]], '#d8f8fb', 2.18, 0, .22, .98);
+  rectangle(group, .24, .11, '#d39a59', -.18, 0, .22, .95);
+  return group;
+}
+
+const weaponRig = new THREE.Group();
+weaponRig.position.set(.22, -.02, .45);
+const swordMesh = createSword();
+const spearMesh = createSpear();
+weaponRig.add(swordMesh, spearMesh);
+playerMesh.add(weaponRig);
+const slashMesh = new THREE.Mesh(
+  new THREE.RingGeometry(.68, 1.48, 28, 1, -.9, 1.8),
+  material('#b8f5fa', .22),
+);
+slashMesh.position.set(.28, .02, .3);
+slashMesh.visible = false;
+playerMesh.add(slashMesh);
+
+const bossProjectileLayer = new THREE.Group();
+scene.add(bossProjectileLayer);
+
 const particleCount = 360;
 const particlePositions = new Float32Array(particleCount * 3);
 for (let index = 0; index < particleCount; index++) {
@@ -936,16 +1007,21 @@ function flashTime() {
 function updateInventoryHud() {
   const hasWheel = state.inventory.handwheel;
   handwheelSlot.classList.toggle('empty', !hasWheel);
-  if (hasWheel) {
-    inventoryItemName.textContent = '03号机械手轮';
-    inventoryItemStatus.textContent = '时间锚物品 · 取得于2047年 · 可带往2147年';
-  } else if (state.history.wheelInstalled) {
-    inventoryItemName.textContent = '手轮已取出';
-    inventoryItemStatus.textContent = '当前安装在2147年的03号闸门上';
+  hotbarWheel.classList.toggle('empty', !hasWheel);
+  hotbarSword.classList.toggle('selected', state.selectedWeapon === 'sword');
+  hotbarSpear.classList.toggle('selected', state.selectedWeapon === 'spear');
+  if (state.selectedWeapon === 'spear') {
+    inventoryItemName.textContent = '矿用长矛';
+    inventoryItemStatus.textContent = '快捷栏 2 · 较远距离直刺 · 伤害 24 · 不会消耗';
   } else {
-    inventoryItemName.textContent = '空物品栏';
-    inventoryItemStatus.textContent = '尚未取得可跨时物品';
+    inventoryItemName.textContent = '矿用长剑';
+    inventoryItemStatus.textContent = '快捷栏 1 · 近距离横斩 · 伤害 38 · 不会消耗';
   }
+}
+
+function selectWeapon(weapon) {
+  state.selectedWeapon = weapon;
+  updateHud();
 }
 
 function setInventoryOpen(open) {
@@ -961,6 +1037,10 @@ function toggleInventory() {
 }
 
 function toggleEra() {
+  if (state.bossAwake && !state.boss.defeated) {
+    showToast('Boss的时间扰动场正在封锁时代切换；击败构装体后才能离开');
+    return;
+  }
   if (state.elevatorRiding) {
     showToast('升降机强电磁场正在干扰时间锚；到站后才能切换时代');
     return;
@@ -1007,6 +1087,19 @@ function resetHistory() {
   state.elevatorRiding = false;
   state.elevatorAtBottom = false;
   state.bossAwake = false;
+  state.selectedWeapon = 'sword';
+  state.attackTimer = 0;
+  state.attackDuration = 0;
+  state.attackCooldown = 0;
+  state.attackHit = false;
+  state.boss.health = state.boss.maxHealth;
+  state.boss.x = 75;
+  state.boss.vx = 0;
+  state.boss.decisionTimer = 1.4;
+  state.boss.chargeTimer = 0;
+  state.boss.projectileTimer = 1.2;
+  state.boss.hitFlash = 0;
+  state.boss.defeated = false;
   state.cameraX = 0;
   state.cameraY = 0;
   state.inventoryOpen = false;
@@ -1026,6 +1119,10 @@ function resetHistory() {
   player.vy = 0;
   player.walkPhase = 0;
   player.walkBlend = 0;
+  player.health = player.maxHealth;
+  player.hurtCooldown = 0;
+  for (const projectile of bossProjectiles) bossProjectileLayer.remove(projectile.mesh);
+  bossProjectiles.length = 0;
   document.body.classList.remove('past');
   eraLabel.textContent = '现代 · 2147';
   flashTime();
@@ -1093,8 +1190,14 @@ function updateHorizontal(dt) {
     const blockedByFutureGrowth = state.eraTarget > .5
       && !state.history.experimentShutdown
       && overlaps(nextX, player.halfW, futureBarrierX, .9);
-    if (blockedByPastLabDoor || blockedByPastBulkhead || blockedByFutureGrowth) {
-      const obstacleX = blockedByPastLabDoor ? labEntranceX : (blockedByPastBulkhead ? 60.2 : futureBarrierX);
+    const blockedByBattleGate = state.eraTarget > .5
+      && state.bossAwake
+      && !state.boss.defeated
+      && overlaps(nextX, player.halfW, 62.45, .34);
+    if (blockedByPastLabDoor || blockedByPastBulkhead || blockedByFutureGrowth || blockedByBattleGate) {
+      const obstacleX = blockedByPastLabDoor
+        ? labEntranceX
+        : (blockedByPastBulkhead ? 60.2 : (blockedByFutureGrowth ? futureBarrierX : 62.45));
       nextX = player.x < obstacleX
         ? obstacleX - .9 - player.halfW
         : obstacleX + .9 + player.halfW;
@@ -1247,8 +1350,135 @@ function checkHistoryEvents() {
   ) {
     state.bossAwake = true;
     state.pulse = 1;
-    showToast('Boss原型已唤醒：异常采掘构装体。当前版本展示场地与入场，不结算战斗伤害');
+    state.boss.projectileTimer = .8;
+    showToast('异常采掘构装体苏醒：按 1/2 切换长剑与长矛，按 J 或点击鼠标攻击');
     updateHud();
+  }
+}
+
+function tryAttack() {
+  if (state.inventoryOpen || state.elevatorRiding || state.attackCooldown > 0) return;
+  const sword = state.selectedWeapon === 'sword';
+  state.attackDuration = sword ? .34 : .46;
+  state.attackTimer = state.attackDuration;
+  state.attackCooldown = sword ? .4 : .54;
+  state.attackHit = false;
+}
+
+function clearBossProjectiles() {
+  for (const projectile of bossProjectiles) bossProjectileLayer.remove(projectile.mesh);
+  bossProjectiles.length = 0;
+}
+
+function damagePlayer(amount, knockDirection) {
+  if (player.hurtCooldown > 0) return false;
+  player.health = Math.max(0, player.health - amount);
+  player.hurtCooldown = .82;
+  player.vx = knockDirection * 7.5;
+  player.vy = 5.2;
+  player.grounded = false;
+  state.pulse = Math.max(state.pulse, .45);
+  const defeated = player.health <= 0;
+  if (defeated) {
+    player.health = player.maxHealth;
+    player.x = 64.2;
+    player.y = labGroundY + player.halfH;
+    player.vx = 0;
+    player.vy = 0;
+    state.boss.health = state.boss.maxHealth;
+    state.boss.x = 75;
+    state.boss.vx = 0;
+    clearBossProjectiles();
+    showToast('时间锚将你重构在Boss房入口；构装体也恢复了完整状态');
+  } else {
+    showToast(`受到 ${amount} 点伤害 · 剩余生命 ${Math.ceil(player.health)}`);
+  }
+  updateHud();
+  return defeated;
+}
+
+function damageBoss(amount) {
+  if (!state.bossAwake || state.boss.defeated || state.eraTarget < .5) return;
+  state.boss.health = Math.max(0, state.boss.health - amount);
+  state.boss.hitFlash = .16;
+  state.boss.vx += player.facing * (state.selectedWeapon === 'sword' ? 1.8 : 2.6);
+  if (state.boss.health <= 0) {
+    state.boss.defeated = true;
+    state.boss.vx = 0;
+    state.pulse = 1;
+    clearBossProjectiles();
+    showToast('异常采掘构装体被击败：Boss房封锁与时间扰动场已经解除');
+  }
+  updateHud();
+}
+
+function spawnBossProjectile() {
+  const mesh = new THREE.Group();
+  disc(mesh, .3, '#78e5ef', 0, 0, .12, .92, 18);
+  ring(mesh, .48, .4, '#b7f9fc', 0, 0, .1, .52, 22);
+  mesh.position.set(state.boss.x, labGroundY + 2.75, 2.5);
+  bossProjectileLayer.add(mesh);
+  const dx = player.x - state.boss.x;
+  const dy = player.y - (labGroundY + 2.75);
+  const length = Math.max(.001, Math.hypot(dx, dy));
+  const speed = 6.2;
+  bossProjectiles.push({ mesh, vx: dx / length * speed, vy: dy / length * speed, life: 4.5 });
+}
+
+function updateCombat(dt, elapsed) {
+  state.attackCooldown = Math.max(0, state.attackCooldown - dt);
+  player.hurtCooldown = Math.max(0, player.hurtCooldown - dt);
+  state.boss.hitFlash = Math.max(0, state.boss.hitFlash - dt);
+  if (state.attackTimer > 0) {
+    state.attackTimer = Math.max(0, state.attackTimer - dt);
+    const range = state.selectedWeapon === 'sword' ? 1.85 : 3.05;
+    const damage = state.selectedWeapon === 'sword' ? 38 : 24;
+    const bossAhead = (state.boss.x - player.x) * player.facing > -.35;
+    if (!state.attackHit && bossAhead && Math.abs(state.boss.x - player.x) < range && Math.abs(player.y - (labGroundY + player.halfH)) < 1.4) {
+      state.attackHit = true;
+      damageBoss(damage);
+    }
+  }
+
+  if (state.bossAwake && !state.boss.defeated && state.eraTarget > .5 && isLowerLevel()) {
+    state.boss.decisionTimer -= dt;
+    state.boss.chargeTimer = Math.max(0, state.boss.chargeTimer - dt);
+    if (state.boss.decisionTimer <= 0) {
+      state.boss.decisionTimer = 2.4 + Math.sin(elapsed) * .35;
+      state.boss.chargeTimer = .68;
+    }
+    const targetDirection = Math.sign(player.x - state.boss.x) || 1;
+    const bossSpeed = state.boss.chargeTimer > 0 ? 8.2 : 2.5;
+    state.boss.vx = THREE.MathUtils.damp(state.boss.vx, targetDirection * bossSpeed, state.boss.chargeTimer > 0 ? 10 : 3.5, dt);
+    state.boss.x = THREE.MathUtils.clamp(state.boss.x + state.boss.vx * dt, 64.4, 88.0);
+
+    state.boss.projectileTimer -= dt;
+    if (state.boss.projectileTimer <= 0) {
+      state.boss.projectileTimer = state.boss.health < state.boss.maxHealth * .5 ? 1.15 : 1.75;
+      spawnBossProjectile();
+    }
+    if (Math.abs(state.boss.x - player.x) < 1.72) {
+      damagePlayer(state.boss.chargeTimer > 0 ? 22 : 13, Math.sign(player.x - state.boss.x) || -1);
+    }
+  }
+
+  for (let index = bossProjectiles.length - 1; index >= 0; index--) {
+    const projectile = bossProjectiles[index];
+    projectile.life -= dt;
+    projectile.mesh.position.x += projectile.vx * dt;
+    projectile.mesh.position.y += projectile.vy * dt;
+    projectile.mesh.rotation.z += dt * 4.2;
+    const hitPlayer = Math.abs(projectile.mesh.position.x - player.x) < .55
+      && Math.abs(projectile.mesh.position.y - player.y) < .78;
+    if (hitPlayer) {
+      bossProjectileLayer.remove(projectile.mesh);
+      bossProjectiles.splice(index, 1);
+      const playerDefeated = damagePlayer(11, Math.sign(projectile.vx) || 1);
+      if (playerDefeated) return;
+    } else if (projectile.life <= 0 || projectile.mesh.position.x < 61.5 || projectile.mesh.position.x > 91.5) {
+      bossProjectileLayer.remove(projectile.mesh);
+      bossProjectiles.splice(index, 1);
+    }
   }
 }
 
@@ -1268,8 +1498,10 @@ function updateHud() {
 
   const lowerLevel = isLowerLevel();
   const beforeLabEntrance = lowerLevel && player.x < labEntranceX - .75;
-  if (state.bossAwake) {
-    objective.textContent = '2147年：异常采掘构装体已经苏醒；Boss房间与入场流程验证完成';
+  if (state.boss.defeated) {
+    objective.textContent = 'Boss已击败：异常采掘构装体停止运行，时间扰动场和战斗封锁已经解除';
+  } else if (state.bossAwake) {
+    objective.textContent = `Boss战：${state.selectedWeapon === 'sword' ? '长剑近身横斩' : '长矛保持距离直刺'} · 按 1/2 切换 · J或鼠标攻击`;
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -1331,6 +1563,14 @@ function updateHud() {
     else if (state.inventory.handwheel) doorLock.textContent = '电磁联锁：失效 · 原接口已空置';
     else doorLock.textContent = '电磁联锁：失效 · 原手轮锈死';
   }
+  const playerHealthRatio = THREE.MathUtils.clamp(player.health / player.maxHealth, 0, 1);
+  playerHealthFill.style.width = `${playerHealthRatio * 100}%`;
+  playerHealthCopy.textContent = `${Math.ceil(player.health)} / ${player.maxHealth}`;
+  bossHud.classList.toggle('active', state.bossAwake);
+  bossHud.setAttribute('aria-hidden', String(!state.bossAwake));
+  const bossHealthRatio = THREE.MathUtils.clamp(state.boss.health / state.boss.maxHealth, 0, 1);
+  bossHealthFill.style.width = `${bossHealthRatio * 100}%`;
+  bossHealthCopy.textContent = state.boss.defeated ? 'DEFEATED' : `${Math.ceil(state.boss.health)} / ${state.boss.maxHealth}`;
   updateInventoryHud();
 }
 
@@ -1440,20 +1680,27 @@ function updateHistoryOutcome(dt, elapsed) {
     modernOvergrowth.scale.set(growthPulse, growthPulse, 1);
   }
   if (modernInertCore) setLayerOpacity(modernInertCore, state.era * (state.history.experimentShutdown ? 1 : 0));
+  if (bossBattleBarrier) {
+    setLayerOpacity(bossBattleBarrier, state.era * (state.bossAwake && !state.boss.defeated ? 1 : 0));
+  }
   if (pastBoss) {
     pastBoss.rotation.z = Math.sin(elapsed * .5) * .012;
   }
   if (modernBoss) {
-    const awakeAmount = state.bossAwake ? 1 : 0;
-    modernBoss.position.y = labGroundY + 2.35 + Math.sin(elapsed * (state.bossAwake ? 2.4 : .7)) * (.16 + awakeAmount * .22);
-    modernBoss.rotation.z = Math.sin(elapsed * (state.bossAwake ? 1.8 : .45)) * (.018 + awakeAmount * .035);
-    const bossScale = state.bossAwake ? 1.08 + Math.sin(elapsed * 3.4) * .025 : 1;
+    const awakeAmount = state.bossAwake && !state.boss.defeated ? 1 : 0;
+    modernBoss.position.x = state.boss.x;
+    const bossTargetY = state.boss.defeated ? labGroundY + .75 : labGroundY + 2.35 + Math.sin(elapsed * (state.bossAwake ? 2.4 : .7)) * (.16 + awakeAmount * .22);
+    modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, state.boss.defeated ? 2.2 : 8, dt);
+    const bossTargetRotation = state.boss.defeated ? -1.12 : Math.sin(elapsed * (state.bossAwake ? 1.8 : .45)) * (.018 + awakeAmount * .035);
+    modernBoss.rotation.z = THREE.MathUtils.damp(modernBoss.rotation.z, bossTargetRotation, 5, dt);
+    const bossScale = state.boss.defeated ? .82 : (state.bossAwake ? 1.08 + Math.sin(elapsed * 3.4) * .025 : 1);
     modernBoss.scale.setScalar(THREE.MathUtils.damp(modernBoss.scale.x, bossScale, 4.5, dt));
   }
   for (let index = 0; index < bossCoreMaterials.length; index++) {
     const eraAmount = index === 0 ? 1 - state.era : state.era;
     bossCoreMaterials[index].opacity = (.62 + Math.sin(elapsed * (state.bossAwake ? 5.2 : 2.0) + index) * .24) * eraAmount;
   }
+  if (bossCoreMaterials[1]) bossCoreMaterials[1].color.set(state.boss.hitFlash > 0 ? '#ffffff' : '#82edf6');
 
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
@@ -1495,10 +1742,10 @@ function updateVisuals(dt, elapsed) {
   player.walkBlend = THREE.MathUtils.damp(player.walkBlend, moving, moving > player.walkBlend ? 12 : 9, dt);
   if (moving > .04) player.walkPhase += dt * (7.2 + Math.abs(player.vx) * .8);
   const gaitFrames = [
-    { leftHip: .46, rightHip: -.34, leftKnee: .08, rightKnee: .62 },
-    { leftHip: .05, rightHip: -.05, leftKnee: .12, rightKnee: .18 },
-    { leftHip: -.34, rightHip: .46, leftKnee: .62, rightKnee: .08 },
-    { leftHip: -.05, rightHip: .05, leftKnee: .18, rightKnee: .12 },
+    { leftHip: .38, rightHip: -.28, leftKnee: -.04, rightKnee: -.42 },
+    { leftHip: .04, rightHip: -.04, leftKnee: -.08, rightKnee: -.14 },
+    { leftHip: -.28, rightHip: .38, leftKnee: -.42, rightKnee: -.04 },
+    { leftHip: -.04, rightHip: .04, leftKnee: -.14, rightKnee: -.08 },
   ];
   const gaitFrame = Math.floor(((player.walkPhase % (Math.PI * 2)) / (Math.PI * 2)) * 4) % 4;
   const gaitPose = gaitFrames[gaitFrame];
@@ -1507,8 +1754,8 @@ function updateVisuals(dt, elapsed) {
   const airborne = player.grounded ? 0 : 1;
   const leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
   const rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
-  const leftKneeTarget = airborne ? .45 : gaitPose.leftKnee * player.walkBlend;
-  const rightKneeTarget = airborne ? .18 : gaitPose.rightKnee * player.walkBlend;
+  const leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
+  const rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
   const leftArmTarget = airborne ? .22 : armStride;
   const rightArmTarget = airborne ? -.34 : -armStride;
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
@@ -1529,6 +1776,28 @@ function updateVisuals(dt, elapsed) {
   rig.shadow.scale.x = 1 - Math.min(.42, jumpHeight * .12) + player.walkBlend * .06;
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
+
+  const attacking = state.attackTimer > 0;
+  const attackProgress = attacking && state.attackDuration > 0
+    ? 1 - state.attackTimer / state.attackDuration
+    : 0;
+  swordMesh.visible = state.selectedWeapon === 'sword';
+  spearMesh.visible = state.selectedWeapon === 'spear';
+  if (state.selectedWeapon === 'sword') {
+    swordMesh.rotation.z = attacking ? -1.02 + attackProgress * 1.92 : -.72;
+    swordMesh.position.set(.02, attacking ? .08 : -.08, 0);
+    slashMesh.visible = attacking;
+    slashMesh.rotation.z = -.25 + attackProgress * .65;
+    slashMesh.material.opacity = attacking ? Math.sin(attackProgress * Math.PI) * .3 : 0;
+  } else {
+    spearMesh.rotation.z = -.16;
+    spearMesh.position.set(attacking ? Math.sin(attackProgress * Math.PI) * .92 : 0, attacking ? .04 : -.12, 0);
+    slashMesh.visible = false;
+  }
+
+  if (player.hurtCooldown > .55) {
+    for (const item of playerMesh.userData.bodyMaterials) item.color.set('#ff9b8d');
+  }
 
   playerMesh.position.set(player.x, player.y, 2.2);
   playerMesh.scale.x = player.facing;
@@ -1568,6 +1837,9 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
+  if (!event.repeat && event.code === 'Digit1') selectWeapon('sword');
+  if (!event.repeat && event.code === 'Digit2') selectWeapon('spear');
+  if (!event.repeat && event.code === 'KeyJ') tryAttack();
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
   if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);
   if (!event.repeat && event.code === 'KeyQ') toggleEra();
@@ -1575,7 +1847,10 @@ addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyQ'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1', 'Digit2'].includes(event.code)) event.preventDefault();
+});
+addEventListener('pointerdown', event => {
+  if (event.button === 0) tryAttack();
 });
 addEventListener('keyup', event => keys.delete(event.code));
 addEventListener('blur', () => keys.clear());
@@ -1592,6 +1867,7 @@ function animate() {
   updateHorizontal(dt);
   updateVertical(dt);
   checkHistoryEvents();
+  updateCombat(dt, elapsed);
   updateVisuals(dt, elapsed);
   updateHistoryOutcome(dt, elapsed);
   updateInteractionHint();

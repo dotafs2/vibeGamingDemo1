@@ -330,7 +330,7 @@ kbd {
   left: 50%;
   top: 50%;
   z-index: 6;
-  width: min(440px, calc(100vw - 34px));
+  width: min(520px, calc(100vw - 34px));
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--era) 48%, transparent);
   background:
@@ -373,6 +373,173 @@ kbd {
   grid-column: 2;
   grid-row: 1 / span 2;
 }
+
+.hotbar {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(10, 42px);
+  gap: 4px;
+  transform: translateX(-50%);
+}
+
+.hotbar-cell,
+.inventory-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(137, 185, 194, .28);
+  border-radius: 3px;
+  background: rgba(7, 18, 22, .88);
+  box-shadow: inset 0 0 12px rgba(255,255,255,.025), 0 3px 10px rgba(0,0,0,.3);
+}
+
+.hotbar-cell { width: 42px; height: 42px; }
+.hotbar-cell.selected,
+.inventory-cell.selected {
+  border-color: var(--era);
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--era) 18%, transparent), 0 0 13px color-mix(in srgb, var(--era) 25%, transparent);
+  transform: translateY(-3px);
+}
+
+.hotbar-cell.empty,
+.inventory-cell.empty { background: rgba(8, 17, 20, .56); }
+.hotbar-cell em,
+.inventory-cell em {
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  color: #748a90;
+  font: 600 7px/1 Inter, sans-serif;
+  font-style: normal;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+}
+
+.inventory-cell { min-width: 0; height: 43px; }
+.inventory-cell small {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  color: #9fb2b7;
+  font-size: 6px;
+}
+.inventory-cell.empty > :not(em) { display: none; }
+
+.inventory-detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 9px 11px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.025);
+}
+.inventory-detail b { color: #eef8fa; font-size: 11px; }
+.inventory-detail span { color: #789096; font-size: 9px; text-align: right; }
+
+.weapon-icon {
+  position: relative;
+  display: block;
+  width: 29px;
+  height: 29px;
+  transform: rotate(-42deg);
+}
+.sword-icon::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 1px;
+  width: 5px;
+  height: 20px;
+  background: linear-gradient(90deg, #8baeb5, #e6fbff 55%, #668b93);
+  clip-path: polygon(50% 0, 100% 18%, 100% 100%, 0 100%, 0 18%);
+}
+.sword-icon::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  width: 19px;
+  height: 4px;
+  border-bottom: 7px solid #8e5c38;
+  background: #d49a58;
+}
+.spear-icon::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 5px;
+  width: 3px;
+  height: 25px;
+  background: #a46a3f;
+}
+.spear-icon::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 0;
+  width: 11px;
+  height: 11px;
+  background: #cff7fb;
+  clip-path: polygon(50% 0, 100% 70%, 50% 100%, 0 70%);
+}
+.mini-wheel {
+  width: 23px;
+  height: 23px;
+  border: 3px solid var(--era);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 6px transparent;
+}
+.hotbar-cell.empty .mini-wheel { display: none; }
+
+.inventory-cell .handwheel-icon {
+  width: 27px;
+  height: 27px;
+  border-width: 3px;
+}
+.inventory-cell .handwheel-icon::after { width: 7px; height: 7px; border-width: 2px; }
+.inventory-cell .handwheel-icon i { width: 21px; height: 1px; }
+
+.player-health {
+  position: absolute;
+  left: 28px;
+  top: 220px;
+  width: 220px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.player-health span,
+.boss-hud span { color: #80969b; font: 600 8px/1 Inter, sans-serif; letter-spacing: .14em; }
+.player-health > div,
+.boss-hud > div { height: 6px; margin-top: 8px; background: rgba(255,255,255,.08); overflow: hidden; }
+.player-health i,
+.boss-hud i { display: block; width: 100%; height: 100%; background: #76dae4; transition: width .18s ease; }
+.player-health b,
+.boss-hud b { display: block; margin-top: 5px; color: #a9bec2; font-size: 8px; }
+
+.boss-hud {
+  position: absolute;
+  left: 50%;
+  top: 118px;
+  width: min(470px, 58vw);
+  padding: 10px 13px;
+  border: 1px solid rgba(103, 225, 238, .42);
+  background: rgba(5, 17, 21, .9);
+  opacity: 0;
+  transform: translate(-50%, -8px);
+  transition: .25s ease;
+}
+.boss-hud.active { opacity: 1; transform: translate(-50%, 0); }
+.boss-hud span { color: #b9f4f8; }
+.boss-hud i { background: linear-gradient(90deg, #48a9b5, #8df4f8); }
+.boss-hud b { text-align: right; }
 
 .inventory-slot {
   display: grid;
