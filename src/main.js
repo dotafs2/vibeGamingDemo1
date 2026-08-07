@@ -111,8 +111,7 @@ const state = {
     beamLength: 48,
     beamHit: false,
     laserPhase: 'idle',
-    laserTimer: 0,
-    laserUsedThisCycle: false,
+    laserTimer: .8,
     attackIndex: 0,
     airY: 0,
     jumpStartX: bossHomeX,
@@ -225,13 +224,13 @@ const weaponDefinitions = {
   },
   impactHammer: {
     name: '液压挥击锤',
-    detail: '快捷栏 3 · 像挥剑一样横向抡击 · 近战范围2.05 · 54伤害',
-    duration: .44,
-    cooldown: .62,
+    detail: '快捷栏 3 · 每点击一次完整挥动一次 · 固定朝前劈砸 · 54伤害',
+    duration: .5,
+    cooldown: .58,
     range: 2.05,
     damage: 54,
-    activeStart: .38,
-    activeEnd: .7,
+    activeStart: .34,
+    activeEnd: .72,
     minDot: .18,
     melee: true,
   },
@@ -679,8 +678,8 @@ function createLabBoss(group, palette, ruined) {
   const drillHatch = ring(boss, .52, .35, palette.bossTrim, .12, 1.36, .27, .94, 26);
   const drillBit = new THREE.Group();
   drillBit.position.x = .08;
-  polygon(drillBit, [[0, .68], [.72, .54], [1.42, .3], [2.05, 0], [1.42, -.3], [.72, -.54], [0, -.68]], palette.drill, 0, 0, .08, .98);
-  for (const x of [.18, .58, .98, 1.38]) segment(drillBit, x, -.53 + x * .13, x + .43, .53 - x * .13, palette.bossCore, .78, .22);
+  polygon(drillBit, [[0, .9], [.72, .7], [1.42, .38], [2.05, 0], [1.42, -.38], [.72, -.7], [0, -.9]], palette.drill, 0, 0, .08, .98);
+  for (const x of [.18, .58, .98, 1.38]) segment(drillBit, x, -.69 + x * .17, x + .43, .69 - x * .17, palette.bossCore, .78, .24);
   bellyDrill.add(drillBit);
   bellyDrill.userData.bit = drillBit;
   bellyDrill.userData.hatch = drillHatch;
@@ -1319,11 +1318,11 @@ function createCoreDrill() {
 
 function createImpactHammer() {
   const group = new THREE.Group();
-  rectangle(group, .72, .12, '#8d5b3c', .34, 0, .19, .98);
+  rectangle(group, 1.02, .14, '#8d5b3c', .49, 0, .19, .98);
   ring(group, .11, .055, '#77dbe3', .17, 0, .24, .9, 18);
-  rectangle(group, .34, .48, '#294d54', .76, 0, .22, .98);
-  rectangle(group, .2, .39, '#64c7d0', .73, 0, .24, .78);
-  rectangle(group, .12, .5, '#bceff2', .95, 0, .25, .86);
+  rectangle(group, .46, .62, '#294d54', 1.02, 0, .22, .98);
+  rectangle(group, .28, .52, '#64c7d0', .98, 0, .24, .78);
+  rectangle(group, .15, .66, '#bceff2', 1.23, 0, .25, .86);
   return group;
 }
 
@@ -1571,8 +1570,7 @@ function resetHistory() {
   state.boss.beamDirectionY = 0;
   state.boss.beamHit = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 0;
-  state.boss.laserUsedThisCycle = false;
+  state.boss.laserTimer = .8;
   state.boss.attackIndex = 0;
   state.boss.airY = 0;
   state.boss.jumpStartX = bossHomeX;
@@ -1981,8 +1979,7 @@ function checkHistoryEvents() {
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 10;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 0;
-    state.boss.laserUsedThisCycle = false;
+    state.boss.laserTimer = .8;
     showToast('掘脉者解除封存：测绘激光会锁定射击；锯齿每10秒喷气预警后冲刺；半血后冲刺接1秒跳钻');
     updateHud();
   }
@@ -2004,6 +2001,11 @@ function tryAttack() {
   state.attackTimer = state.attackDuration;
   state.attackCooldown = weapon.cooldown;
   state.weaponReadyTimer = 1.2;
+  if (state.attackWeapon === 'impactHammer') {
+    // Sword-style attack: one click commits to one fixed forward arc.
+    state.attackAimX = player.facing;
+    state.attackAimY = 0;
+  }
   if (state.attackWeapon === 'coreDrill' || state.attackWeapon === 'impactHammer') return;
   if (state.attackWeapon === 'returnWrench') {
     const mesh = createReturnWrench();
@@ -2056,7 +2058,7 @@ function clearCombatEffects() {
   bossShockwaves.length = 0;
   state.wrenchInFlight = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 0;
+  state.boss.laserTimer = .8;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -2088,8 +2090,7 @@ function damagePlayer(amount, knockDirection) {
     state.boss.beamTimer = 10;
     state.boss.beamHit = false;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 0;
-    state.boss.laserUsedThisCycle = false;
+    state.boss.laserTimer = .8;
     state.boss.attackIndex = 0;
     state.boss.airY = 0;
     state.boss.drillLength = 0;
@@ -2120,7 +2121,7 @@ function damageBoss(amount) {
     state.boss.drillLength = 0;
     state.boss.beamPhase = 'cooldown';
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 0;
+    state.boss.laserTimer = .8;
     state.boss.jumpInvulnerable = false;
     state.pulse = 1;
     clearCombatEffects();
@@ -2158,7 +2159,7 @@ function bossIsJumping() {
 
 function beginBossDash() {
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 0;
+  state.boss.laserTimer = .45;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -2184,7 +2185,8 @@ function beginBossSlam() {
 function finishBossAttack() {
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = 10;
-  state.boss.laserUsedThisCycle = false;
+  state.boss.laserPhase = 'idle';
+  state.boss.laserTimer = state.boss.health <= state.boss.maxHealth * .5 ? .5 : 1.2;
   state.boss.airY = 0;
   state.boss.drillLength = 0;
   state.boss.jumpInvulnerable = false;
@@ -2194,9 +2196,9 @@ function finishBossAttack() {
 }
 
 function beginBossLaser() {
+  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
   state.boss.laserPhase = 'telegraph';
-  state.boss.laserTimer = .92;
-  state.boss.laserUsedThisCycle = true;
+  state.boss.laserTimer = phaseTwo ? .12 : .45;
   state.boss.beamHit = false;
   state.boss.direction = Math.sign(player.x - state.boss.x) || state.boss.direction;
   state.boss.beamOriginX = state.boss.x + (state.boss.direction < 0 ? .72 : -.72);
@@ -2217,10 +2219,12 @@ function updateBossLaser(dt) {
     return false;
   }
 
-  if (state.boss.laserPhase === 'idle' && !state.boss.laserUsedThisCycle && state.boss.beamTimer <= 5.7) {
-    beginBossLaser();
+  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
+  if (state.boss.laserPhase === 'idle') {
+    state.boss.laserTimer -= dt;
+    if (state.boss.laserTimer <= 0) beginBossLaser();
+    else return false;
   }
-  if (state.boss.laserPhase === 'idle') return false;
 
   state.boss.beamOriginX = state.boss.x + (state.boss.direction < 0 ? .72 : -.72);
   state.boss.beamOriginY = labGroundY + 3.58;
@@ -2233,7 +2237,7 @@ function updateBossLaser(dt) {
     beamCoreMesh.visible = false;
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'active';
-      state.boss.laserTimer = .36;
+      state.boss.laserTimer = phaseTwo ? .12 : .2;
       state.pulse = Math.max(state.pulse, .42);
     }
   } else if (state.boss.laserPhase === 'active') {
@@ -2242,10 +2246,11 @@ function updateBossLaser(dt) {
     setBeamMesh(beamCoreMesh, .085, true);
     if (!state.boss.beamHit && playerDistanceToBeam() < .55) {
       state.boss.beamHit = true;
-      if (damagePlayer(20, Math.sign(state.boss.beamDirectionX) || 1)) return true;
+      if (damagePlayer(phaseTwo ? 10 : 20, Math.sign(state.boss.beamDirectionX) || 1)) return true;
     }
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'idle';
+      state.boss.laserTimer = phaseTwo ? .58 : 2.0;
       beamGlowMesh.visible = false;
       beamCoreMesh.visible = false;
     }
@@ -2494,7 +2499,9 @@ function updateHud() {
   } else if (state.bossAwake) {
     objective.textContent = state.boss.jumpInvulnerable
       ? '二阶段：Boss起跳后核心无敌 · 1秒后大型钻头落地 · 立即离开锁定位置'
-      : 'Boss战：测绘激光锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避 · 半血后冲刺必接1秒跳钻';
+      : state.boss.health <= state.boss.maxHealth * .5
+        ? '二阶段：测绘器高频脉冲射击 · 每次冲刺后接1秒跳钻 · 利用平台持续换位'
+        : 'Boss战：测绘激光约每3秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -2769,7 +2776,10 @@ function updateHistoryOutcome(dt, elapsed) {
   }
   if (modernBoss) {
     modernBoss.position.x = state.boss.x;
-    const bossWalking = state.bossAwake && !state.boss.defeated && state.boss.beamPhase === 'cooldown';
+    const bossWalking = state.bossAwake
+      && !state.boss.defeated
+      && state.boss.beamPhase === 'cooldown'
+      && state.boss.laserPhase === 'idle';
     const gaitBob = bossWalking ? Math.abs(Math.sin(elapsed * 7.2)) * .075 : 0;
     const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04 + gaitBob + state.boss.airY;
     const bossVerticalDamp = state.boss.beamPhase.startsWith('jump') ? 16 : 6;
@@ -2807,7 +2817,7 @@ function updateHistoryOutcome(dt, elapsed) {
       bellyDrill.userData.bit.position.x = .08;
       bellyDrill.userData.bit.rotation.z = 0;
       bellyDrill.userData.bit.scale.x = .42 + drillExtension * 1.15;
-      bellyDrill.userData.bit.scale.y = drillAttack ? 1.08 + Math.sin(elapsed * 36) * .045 : 1.08;
+      bellyDrill.userData.bit.scale.y = drillAttack ? 1.16 + Math.sin(elapsed * 36) * .045 : 1.16;
       const hatchOpen = state.boss.beamPhase === 'jumpHover' || drillAttack;
       bellyDrill.userData.hatch.scale.setScalar(1 + (hatchOpen ? .16 + Math.sin(elapsed * 10) * .05 : 0));
     }
@@ -2898,7 +2908,8 @@ function updateVisuals(dt, elapsed) {
   const attackAimAngle = Math.atan2(state.attackAimY, Math.abs(state.attackAimX));
   const posedWeapon = attacking ? state.attackWeapon : state.equippedWeapon;
   const weaponAvailableInHand = posedWeapon !== 'returnWrench' || !state.wrenchInFlight;
-  const weaponDrawn = attacking || (state.weaponReadyTimer > 0 && weaponAvailableInHand);
+  const weaponDrawn = attacking
+    || (state.weaponReadyTimer > 0 && weaponAvailableInHand && posedWeapon !== 'impactHammer');
   let weaponAimAngle = localAimAngle;
   let recoil = 0;
   if (attacking && posedWeapon === 'calibrator') {
@@ -2906,8 +2917,14 @@ function updateVisuals(dt, elapsed) {
   } else if (attacking && posedWeapon === 'coreDrill') {
     weaponAimAngle = attackAimAngle + Math.sin(attackProgress * Math.PI * 4) * .045;
   } else if (attacking && posedWeapon === 'impactHammer') {
-    const swingT = THREE.MathUtils.smoothstep(attackProgress, .08, .82);
-    weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(1.35, -1.08, swingT);
+    // The old sword cadence: quick lift, one decisive top-to-bottom arc, then stow.
+    if (attackProgress < .2) {
+      const liftT = THREE.MathUtils.smoothstep(attackProgress, 0, .2);
+      weaponAimAngle = THREE.MathUtils.lerp(.35, 1.3, liftT);
+    } else {
+      const swingT = THREE.MathUtils.smoothstep(attackProgress, .2, .78);
+      weaponAimAngle = THREE.MathUtils.lerp(1.3, -.92, swingT);
+    }
   } else if (attacking && posedWeapon === 'returnWrench') {
     const throwT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
     weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(.48, -.38, throwT);
@@ -3015,7 +3032,7 @@ addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'Digit3') equipWeapon('impactHammer');
   if (!event.repeat && event.code === 'Digit4') equipWeapon('returnWrench');
   if (!event.repeat && event.code === 'KeyJ') {
-    state.attackHeld = true;
+    state.attackHeld = state.equippedWeapon === 'coreDrill';
     tryAttack();
   }
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
@@ -3031,7 +3048,7 @@ addEventListener('keydown', event => {
 addEventListener('pointermove', updatePointerAim);
 addEventListener('pointerdown', event => {
   if (event.button === 0 && event.target === canvas) {
-    state.attackHeld = true;
+    state.attackHeld = state.equippedWeapon === 'coreDrill';
     updatePointerAim(event);
     tryAttack();
   }
@@ -3064,8 +3081,7 @@ if (previewParams.has('boss-preview')) {
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = 9.7;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 0;
-  state.boss.laserUsedThisCycle = false;
+  state.boss.laserTimer = .35;
   if (previewParams.has('phase2-preview')) state.boss.health = state.boss.maxHealth * .48;
   if (previewParams.has('dash-preview')) {
     state.boss.beamPhase = 'dashCharge';
