@@ -3,36 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>零时回响 · 时间切换 MVP</title>
+    <title>零时回响 · 历史交互场景</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <canvas id="game"></canvas>
-    <div class="hud">
-      <section class="brand">
-        <span>ZERO ECHO / MVP 01</span>
-        <h1>零时回响</h1>
-      </section>
-      <section class="era-card">
-        <span>当前时间层</span>
-        <strong id="era-label">现代</strong>
-        <div class="era-track"><i id="era-dot"></i></div>
-      </section>
+    <canvas id="game" aria-label="零时回响时间切换交互场景"></canvas>
+    <div id="time-flash" class="time-flash"></div>
+
+    <main class="hud">
+      <header class="topbar">
+        <section class="brand">
+          <span>ZERO ECHO / PLAYABLE PROTOTYPE</span>
+          <h1>零时回响</h1>
+          <p>同一地点 · 两段历史</p>
+        </section>
+
+        <section class="era-card" aria-live="polite">
+          <div class="era-copy">
+            <span>当前时间层</span>
+            <strong id="era-label">现代 · 2147</strong>
+          </div>
+          <div class="era-track">
+            <i id="era-dot"></i>
+          </div>
+          <div class="era-names"><span>过去</span><span>现代</span></div>
+        </section>
+      </header>
+
+      <aside class="history-panel">
+        <span class="eyebrow">历史因果记录</span>
+        <ol>
+          <li id="event-crate"><i></i><div><b>移动时间箱</b><span>尚未发生</span></div></li>
+          <li id="event-plate"><i></i><div><b>激活压力板</b><span>尚未发生</span></div></li>
+          <li id="event-gate"><i></i><div><b>现代封锁改变</b><span>等待历史</span></div></li>
+        </ol>
+      </aside>
+
       <section class="objective">
-        <span>实验目标</span>
-        <p id="objective">按 Q 回到过去，靠近墙体并按 空格 攻击</p>
+        <span class="eyebrow">当前目标</span>
+        <p id="objective">按 Q 回到过去，寻找封锁门坍塌的原因</p>
       </section>
+
       <section class="controls">
-        <kbd>WASD</kbd><span>移动</span>
-        <kbd>Q</kbd><span>切换时代</span>
-        <kbd>SPACE</kbd><span>攻击</span>
+        <div><kbd>A</kbd><kbd>D</kbd><span>移动 / 推箱子</span></div>
+        <div><kbd>W</kbd><span>跳跃</span></div>
+        <div class="primary"><kbd>Q</kbd><span>切换过去 / 现代</span></div>
+        <div><kbd>R</kbd><span>重置历史</span></div>
       </section>
-      <section class="boss-hud">
-        <div><span>BOX / 守门者</span><b id="boss-value">100%</b></div>
-        <div class="health"><i id="boss-health"></i></div>
-      </section>
-    </div>
-    <div id="toast" class="toast"></div>
+
+      <div id="interaction" class="interaction">
+        <span>靠近箱子继续移动即可推动</span>
+      </div>
+
+      <div class="world-legend">
+        <span><i class="legend-past"></i>过去：温暖、完整、可改写</span>
+        <span><i class="legend-present"></i>现代：冰冷、破败、显示结果</span>
+      </div>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
