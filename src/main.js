@@ -55,7 +55,7 @@ const modernDetonatorX = 58.35;
 const bossTriggerX = 65.0;
 const bossHomeX = 89.0;
 const bossArenaEndX = 116.0;
-const bossCoreY = labGroundY + 2.85;
+const bossCoreY = labGroundY + 2.28;
 const bossPlatforms = [
   { x: 68.0, width: 5.4, top: labGroundY + 1.55 },
   { x: 73.0, width: 5.4, top: labGroundY + 3.15 },
@@ -88,10 +88,13 @@ const state = {
     maxHealth: 360,
     health: 360,
     x: bossHomeX,
+    direction: -1,
+    patrolMinX: 69.5,
+    patrolMaxX: 108.5,
     beamPhase: 'cooldown',
     beamTimer: 1.25,
-    beamOriginX: bossHomeX,
-    beamOriginY: labGroundY + 4.7,
+    beamOriginX: bossHomeX + 1.12,
+    beamOriginY: labGroundY + 3.58,
     beamDirectionX: -1,
     beamDirectionY: 0,
     beamLength: 48,
@@ -220,6 +223,14 @@ function segment(group, x1, y1, x2, y2, color, opacity = 1, z = .1) {
   const object = new THREE.Line(geometry, lineMaterial(color, opacity));
   group.add(object);
   return object;
+}
+
+function thickSegment(group, x1, y1, x2, y2, color, thickness = .2, z = .1, opacity = 1) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const mesh = rectangle(group, Math.hypot(dx, dy), thickness, color, (x1 + x2) * .5, (y1 + y2) * .5, z, opacity);
+  mesh.rotation.z = Math.atan2(dy, dx);
+  return mesh;
 }
 
 function disc(group, radius, color, x, y, z = 0, opacity = 1, segments = 48) {
@@ -482,78 +493,86 @@ function createLabBoss(group, palette, ruined) {
   const boss = new THREE.Group();
   boss.position.set(bossHomeX, labGroundY + .04, -.35);
 
-  // Wide tracked chassis: this is a tunnel-mining machine, not a humanoid robot.
-  rectangle(boss, 8.2, 1.35, palette.bossBody, 0, .72, -.04, .98);
-  rectangle(boss, 7.55, .82, palette.bossShell, 0, .72, .02, .94);
-  for (const x of [-2.85, -1.45, 0, 1.45, 2.85]) {
-    ring(boss, .48, .31, palette.bossTrim, x, .72, .08, .9, 24);
-    disc(boss, .23, palette.bossBody, x, .72, .1, .96, 20);
+  // A compact four-legged sampling rig, not a tank: its legs let it traverse uneven ore galleries.
+  const legs = [];
+  for (const [hipX, footX, phase] of [[-1.15, -2.0, 0], [-.55, -1.15, Math.PI], [.7, 1.2, Math.PI], [1.25, 2.0, 0]]) {
+    const leg = new THREE.Group();
+    leg.position.set(hipX, 1.65, -.02);
+    const localFootX = footX - hipX;
+    thickSegment(leg, 0, 0, localFootX * .55, -.68, palette.bossTrim, .24, .02, .94);
+    thickSegment(leg, localFootX * .55, -.68, localFootX, -1.55, palette.bossShell, .3, .03, .98);
+    disc(leg, .2, palette.bossBody, localFootX * .55, -.68, .08, .98, 18);
+    rectangle(leg, .72, .18, palette.bossTrim, localFootX, -1.59, .05, .96).rotation.z = localFootX < 0 ? -.06 : .06;
+    leg.userData.phase = phase;
+    legs.push(leg);
+    boss.add(leg);
   }
+  boss.userData.legs = legs;
 
   polygon(boss, [
-    [-3.25, 1.2], [2.85, 1.2], [3.45, 2.25], [2.45, 4.15],
-    [.8, 4.72], [-2.45, 4.35], [-3.55, 2.8],
-  ], palette.bossShell, 0, 0, .02, .98);
-  rectangle(boss, 5.15, .22, palette.bossTrim, -.1, 1.42, .08, .82);
-  rectangle(boss, 3.7, .22, palette.bossTrim, .65, 4.08, .08, .72).rotation.z = .12;
+    [-1.8, 1.45], [-1.35, 3.18], [-.55, 3.65], [.9, 3.58], [1.85, 2.8],
+    [1.78, 1.58], [.9, 1.18], [-.95, 1.2],
+  ], palette.bossShell, 0, 0, .04, .98);
+  thickSegment(boss, -1.25, 1.55, 1.35, 1.55, palette.bossTrim, .18, .1, .86);
+  ring(boss, 1.02, .88, palette.bossTrim, .12, 2.33, .1, .82, 32);
 
-  // The cutter wheel bites into crystal-bearing rock and makes “掘脉者” readable at a glance.
+  // The forward cutter still reads as mining equipment, but it is sized for crystal samples rather than tunnelling.
   const cutter = new THREE.Group();
-  cutter.position.set(-3.55, 2.65, .16);
-  ring(cutter, 1.72, 1.28, palette.drill, 0, 0, 0, .98, 40);
-  ring(cutter, 1.08, .42, palette.bossTrim, 0, 0, .03, .9, 32);
-  disc(cutter, .38, palette.bossBody, 0, 0, .05, .98, 28);
-  for (let index = 0; index < 10; index++) {
-    const angle = index * Math.PI / 5;
-    const tooth = polygon(cutter, [[1.35, -.18], [2.05, 0], [1.35, .18]], palette.drill, 0, 0, .02, .96);
+  cutter.position.set(-1.82, 2.33, .16);
+  ring(cutter, 1.02, .7, palette.drill, 0, 0, 0, .98, 36);
+  ring(cutter, .62, .25, palette.bossTrim, 0, 0, .03, .9, 28);
+  disc(cutter, .22, palette.bossBody, 0, 0, .05, .98, 24);
+  for (let index = 0; index < 8; index++) {
+    const angle = index * Math.PI / 4;
+    const tooth = polygon(cutter, [[.78, -.12], [1.22, 0], [.78, .12]], palette.drill, 0, 0, .02, .96);
     tooth.rotation.z = angle;
-    segment(cutter, Math.cos(angle) * .45, Math.sin(angle) * .45, Math.cos(angle) * 1.23, Math.sin(angle) * 1.23, palette.bossTrim, .72, .08);
+    segment(cutter, Math.cos(angle) * .28, Math.sin(angle) * .28, Math.cos(angle) * .72, Math.sin(angle) * .72, palette.bossTrim, .72, .08);
   }
   boss.userData.cutter = cutter;
   boss.add(cutter);
 
-  // Ore conveyor and hopper show what the machine does with the material it digs out.
-  const conveyor = rectangle(boss, 3.25, .55, palette.bossBody, -.15, 3.72, .11, .95);
-  conveyor.rotation.z = .13;
-  for (let index = 0; index < 5; index++) {
-    disc(boss, .14, palette.crystal, -1.4 + index * .62, 3.52 + index * .08, .16, ruined ? .56 : .9, 12);
+  // Sample channel and rear ore capsule make the mining process legible without a tank-like conveyor chassis.
+  const sampleTube = thickSegment(boss, -1.0, 3.2, 1.45, 2.85, palette.bossTrim, .26, .12, .88);
+  sampleTube.rotation.z += .01;
+  for (let index = 0; index < 4; index++) {
+    disc(boss, .12, palette.crystal, -.75 + index * .58, 3.16 - index * .08, .16, ruined ? .58 : .92, 12);
   }
-  polygon(boss, [[-.9, .75], [.9, .75], [.62, -.6], [-.62, -.6]], palette.bossBody, 1.65, 4.15, .1, .98);
-  for (const x of [1.15, 1.65, 2.15]) polygon(boss, [[0, .55], [-.24, -.34], [.24, -.34]], palette.crystal, x, 4.35, .16, ruined ? .82 : .6);
+  polygon(boss, [[-.58, .52], [.58, .52], [.75, -.38], [-.75, -.38]], palette.bossBody, 1.55, 2.72, .13, .98);
+  polygon(boss, [[0, .52], [-.3, -.32], [.3, -.32]], palette.crystal, 1.55, 2.83, .17, ruined ? .8 : .68);
 
   // The visible time-crystal regulation core is both the machine's identity and the player's target.
-  ring(boss, 1.12, .82, palette.bossTrim, .45, 2.72, .18, .96, 40);
-  disc(boss, .76, palette.bossBody, .45, 2.72, .2, .98, 32);
-  const core = polygon(boss, [[0, .82], [-.5, .1], [-.3, -.72], [.3, -.72], [.5, .1]], palette.bossCore, .45, 2.72, .24, ruined ? .98 : .78);
+  ring(boss, .82, .58, palette.bossTrim, .18, 2.28, .18, .96, 36);
+  disc(boss, .54, palette.bossBody, .18, 2.28, .2, .98, 28);
+  const core = polygon(boss, [[0, .58], [-.38, .08], [-.22, -.52], [.22, -.52], [.38, .08]], palette.bossCore, .18, 2.28, .24, ruined ? .98 : .78);
   bossCoreMaterials.push(core.material);
-  for (let index = 0; index < 6; index++) {
-    const angle = index * Math.PI / 3;
-    disc(boss, .08, palette.bossCore, .45 + Math.cos(angle) * .95, 2.72 + Math.sin(angle) * .95, .25, .88, 12);
+  for (let index = 0; index < 5; index++) {
+    const angle = index * Math.PI * 2 / 5;
+    disc(boss, .065, palette.bossCore, .18 + Math.cos(angle) * .69, 2.28 + Math.sin(angle) * .69, .25, .88, 12);
   }
 
   // A swivelling survey emitter becomes the only damaging weapon: telegraphed crystal rays.
   const emitter = new THREE.Group();
-  emitter.position.set(2.45, 4.5, .2);
-  rectangle(emitter, 1.15, .34, palette.bossTrim, 0, 0, 0, .96);
-  ring(emitter, .43, .25, palette.bossCore, .5, 0, .04, .92, 24);
-  rectangle(emitter, .18, .9, palette.bossShell, -.38, -.48, -.02, .9);
+  emitter.position.set(.72, 3.55, .2);
+  rectangle(emitter, .9, .28, palette.bossTrim, 0, 0, 0, .96);
+  ring(emitter, .34, .2, palette.bossCore, .4, 0, .04, .92, 24);
+  rectangle(emitter, .16, .62, palette.bossShell, -.28, -.34, -.02, .9);
   boss.userData.emitter = emitter;
   boss.add(emitter);
 
   // A literal 03 service plate keeps the model name readable inside the world, not only in the HUD.
-  rectangle(boss, 1.72, 1.02, palette.bossBody, 2.25, 2.58, .15, .82);
-  ring(boss, .33, .24, palette.bossTrim, 1.82, 2.58, .2, .92, 24);
-  for (const y of [2.88, 2.58, 2.28]) segment(boss, 2.28, y, 2.72, y, palette.bossTrim, .92, .22);
-  segment(boss, 2.72, 2.28, 2.72, 2.88, palette.bossTrim, .92, .22);
+  rectangle(boss, 1.0, .58, palette.bossBody, 1.13, 1.83, .15, .82);
+  ring(boss, .2, .14, palette.bossTrim, .86, 1.83, .2, .92, 20);
+  for (const y of [2.0, 1.83, 1.66]) segment(boss, 1.16, y, 1.44, y, palette.bossTrim, .92, .22);
+  segment(boss, 1.44, 1.66, 1.44, 2.0, palette.bossTrim, .92, .22);
   if (ruined) {
-    for (const [x, y, scale] of [[-1.5, 4.5, .72], [2.65, 3.7, .58], [.25, 5.0, .65]]) {
+    for (const [x, y, scale] of [[-1.05, 3.62, .45], [1.5, 3.12, .38], [.15, 3.88, .34]]) {
       polygon(boss, [[0, .8 * scale], [-.34 * scale, 0], [.34 * scale, 0]], palette.crystal, x, y, .16, .9);
     }
     modernBoss = boss;
   } else {
-    rectangle(boss, 5.8, .12, palette.cable, 0, 5.45, -.1, .6);
-    segment(boss, -2.1, 5.45, -2.1, 4.35, palette.cable, .65, -.05);
-    segment(boss, 2.1, 5.45, 2.1, 4.35, palette.cable, .65, -.05);
+    rectangle(boss, 4.1, .12, palette.cable, 0, 4.55, -.1, .6);
+    segment(boss, -1.35, 4.55, -1.35, 3.48, palette.cable, .65, -.05);
+    segment(boss, 1.35, 4.55, 1.35, 3.35, palette.cable, .65, -.05);
     pastBoss = boss;
   }
   group.add(boss);
@@ -755,15 +774,21 @@ function buildExpandedMine(group, palette, ruined) {
     pastBossDoor = door;
     group.add(door);
 
+    // This is an ordinary inner lock rail. The player later mills a hidden groove into it;
+    // there is deliberately no pre-existing “explosive slot” in the official door design.
     const sockets = new THREE.Group();
-    for (const y of [labGroundY + 1.0, labGroundY + 2.5, labGroundY + 4.0, labGroundY + 5.5]) {
-      ring(sockets, .16, .1, palette.archGlow, bossDoorX + .72, y, -.55, .95, 18);
-      rectangle(sockets, .3, .08, palette.lever, bossDoorX + .72, y, -.5, .92);
+    rectangle(sockets, .32, 4.7, palette.structure, bossDoorX + .73, labGroundY + 3.22, -.58, .82);
+    rectangle(sockets, .17, 3.25, palette.bulkhead, bossDoorX + .74, labGroundY + 3.22, -.48, .98);
+    for (const y of [labGroundY + 1.15, labGroundY + 2.2, labGroundY + 3.25, labGroundY + 4.3, labGroundY + 5.35]) {
+      disc(sockets, .075, palette.trim, bossDoorX + .74, y, -.4, .82, 14);
     }
+    const concealedTool = rectangle(sockets, .12, 2.75, palette.archGlow, bossDoorX + .74, labGroundY + 3.22, -.34, .78);
+    concealedTool.userData.baseOpacity = .78;
+    sockets.userData.concealedTool = concealedTool;
     pastChargeSockets = sockets;
     group.add(sockets);
 
-    // Powered safety line: the player can reach the inner door panel but not the maintained machine.
+    // Powered safety line: the player can reach the inner lock rail but not the sealed machine bay.
     rectangle(group, .1, 6.5, palette.archGlow, 63.1, labGroundY + 3.4, -.7, .42);
     for (let y = labGroundY + .4; y < labGroundY + 6.6; y += .5) disc(group, .065, palette.lamp, 63.1, y, -.55, .76, 12);
     for (let index = 0; index < 5; index++) {
@@ -1178,10 +1203,10 @@ function showToast(message) {
 }
 
 const maintenanceDialogueLines = [
-  '工单M-03-7721核验通过。你负责防爆门和四个紧急破门槽，我给你开放一次门体维护权限。',
-  '门后那台是03型时晶采掘机“掘脉者”。它进入不稳定矿脉采样，胸口的时相核心负责稳定整条采掘通道。',
-  '你的工单只覆盖门体维修凹槽。黄色时相安全线之后属于Boss维护区，未经授权绝对不能进入。',
-  '最终扫描时所有人员都会撤进隔离观察室，防爆门暂时保持开启。换好四个门框诊断塞后必须回来结束扫描并接受封存验收。',
+  '工号7C-113，工单M-03-7721：03号防爆门锁轨与密封检修。身份和任务都对上了。',
+  '门后是03型时晶采掘机“掘脉者”，负责沿矿脉行走、切取时晶样本。它今天做最后一次断能封存，之后舱门会灌胶，不再启封。',
+  '终检开始后，人员会撤进隔离观察室，防爆门保持开启。你只需要检查门框内侧锁轨和密封条，不要碰封存舱设备。',
+  '维修完成就回控制台结束测试。我只验收门体开闭、锁止和密封数据，合格后立即封门。',
 ];
 
 function closeNpcDialogue() {
@@ -1200,7 +1225,7 @@ function advanceNpcDialogue() {
   npcDialogue.setAttribute('aria-hidden', 'false');
   if (state.npcDialogueStep === maintenanceDialogueLines.length) {
     state.history.bossBriefed = true;
-    showToast('工程师已说明维护流程：到右侧控制台按 E 启动最终时相扫描');
+    showToast('工号与工单核验通过：到右侧控制台按 E 启动防爆门终检');
     updateHud();
   }
 }
@@ -1245,7 +1270,7 @@ function toggleEra() {
     return;
   }
   if (state.bossAwake && !state.boss.defeated) {
-    showToast('Boss的时间扰动场正在封锁时代切换；击败构装体后才能离开');
+    showToast('掘脉者的时间扰动场正在封锁时代切换；强制停机后才能离开');
     return;
   }
   if (state.elevatorRiding) {
@@ -1272,11 +1297,11 @@ function toggleEra() {
 
   const inLab = player.y < -12;
   if (state.eraTarget < .5 && inLab) {
-    showToast('2047年：掘脉者正在接受封存前的最后维护，实验室工作人员仍在现场');
+    showToast('2047年：掘脉者即将永久封存，03号防爆门正在做最后一次检修');
   } else if (state.eraTarget < .5) {
     showToast('固定时间点：2047年，03号矿场仍在正常运行');
   } else if (inLab && state.history.chargesInstalled) {
-    showToast('2147年：四枚时锁破门栓仍藏在门内夹层，外侧接收器已经获得引爆信号');
+    showToast('2147年：你当年暗装的时锁爆破器仍藏在门框内，外侧接收器已经收到信号');
   } else if (inLab) {
     showToast('2147年：Boss防爆门已经锈死成墙；外部记录注明只能从内侧定向爆破');
   } else if (state.history.wheelInstalled) {
@@ -1310,10 +1335,11 @@ function resetHistory() {
   state.attackCooldown = 0;
   state.boss.health = state.boss.maxHealth;
   state.boss.x = bossHomeX;
+  state.boss.direction = -1;
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = 1.25;
-  state.boss.beamOriginX = bossHomeX;
-  state.boss.beamOriginY = labGroundY + 4.7;
+  state.boss.beamOriginX = bossHomeX + 1.12;
+  state.boss.beamOriginY = labGroundY + 3.58;
   state.boss.beamDirectionX = -1;
   state.boss.beamDirectionY = 0;
   state.boss.beamHit = false;
@@ -1399,7 +1425,6 @@ function updateHorizontal(dt) {
   const maxX = lowerLevel ? bossArenaEndX - .55 : 20.25;
   let nextX = THREE.MathUtils.clamp(player.x + player.vx * dt, minX, maxX);
   const playerTop = player.y + player.halfH;
-  const playerBottom = player.y - player.halfH;
 
   if (!lowerLevel) {
     const gateBottom = groundY + (state.eraTarget < .5 ? 0 : state.gateLift * 5.2);
@@ -1424,22 +1449,10 @@ function updateHorizontal(dt) {
       && state.bossAwake
       && !state.boss.defeated
       && overlaps(nextX, player.halfW, 62.45, .34);
-    const blockedByBossBody = state.eraTarget > .5
-      && state.bossAwake
-      && !state.boss.defeated
-      && playerBottom < labGroundY + 4.65
-      && overlaps(nextX, player.halfW, state.boss.x, 5.1);
-    if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate || blockedByBossBody) {
+    if (blockedByPastLabDoor || blockedByPastBossDoor || blockedByPastSafetyLine || blockedByModernBossDoor || blockedByBattleGate) {
       if (blockedByPastSafetyLine && clock.elapsedTime - state.lastNpcWarning > 2.2) {
         state.lastNpcWarning = clock.elapsedTime;
-        showToast('维修工程师警告：停下！你的工单只允许维护防爆门，黄色安全线后是Boss区域，立即离开！');
-      }
-      if (blockedByBossBody) {
-        const side = player.x < state.boss.x ? -1 : 1;
-        nextX = state.boss.x + side * (5.12 + player.halfW);
-        player.vx = side * 2.8;
-        player.x = nextX;
-        return;
+        showToast('林工（广播）：7C-113，维修范围到门框内侧锁轨为止。封存舱已经移交，请退回门边。');
       }
       const obstacleX = blockedByPastLabDoor
         ? labEntranceX
@@ -1544,12 +1557,12 @@ function handleInteraction() {
     if (state.eraTarget > .5 && !state.history.workOrderFound) {
       state.history.workOrderFound = true;
       state.pulse = 1;
-      showToast('从2147年的维护档案中找到：防爆门封存工单 M-03-7721 · 外包门体检修');
+      showToast('残存档案：维修员工号7C-113 · 工单M-03-7721 · 03号防爆门锁轨与密封检修');
       updateHud();
     } else if (state.eraTarget > .5) {
-      showToast('旧档案确认：M-03-7721只授权维护防爆门，不允许进入掘脉者维护区');
+      showToast('档案确认：7C-113当日负责防爆门终检；掘脉者在检修结束后立即永久封存');
     } else if (state.history.workOrderFound) {
-      showToast('2047年的原始工单仍放在工程师桌上；你已经从2147年记住了编号和工作范围');
+      showToast('原始工单仍在桌上；你已经从2147年记住了工号、工单号和维修任务');
     } else {
       showToast('桌上文件属于当日内部资料，外来人员不能直接翻阅；现代残存档案也许保留了内容');
     }
@@ -1558,11 +1571,11 @@ function handleInteraction() {
 
   if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
     if (!state.history.workOrderFound) {
-      showToast('维修工程师：没有工单编号和工作范围，我不能给你开放防爆门维护权限。');
+      showToast('维修工程师：报一下员工工号、工单号和今天的检修项目。');
     } else if (state.history.scanFinalized) {
-      showToast('维修工程师：M-03-7721验收通过。防爆门已经完成最终封存。');
+      showToast('维修工程师：门体数据合格，封存胶已经灌注。03号舱不会再开启。');
     } else if (state.history.bossBriefed) {
-      showToast('工程师：说明都写在维护终端上了。到右侧控制台启动最终扫描。');
+      showToast('工程师：工号核验完了。到右侧控制台启动门体终检。');
     } else {
       state.npcDialogueStep = 0;
       advanceNpcDialogue();
@@ -1579,7 +1592,7 @@ function handleInteraction() {
       state.maintenanceScanActive = false;
       state.history.scanFinalized = true;
       state.pulse = 1;
-      showToast('工程师只读到四个合格诊断塞：M-03-7721验收通过，防爆门重新封存');
+      showToast('门体开闭、锁止与密封数据全部合格；工程师灌注封存胶，暗槽从此无人复检');
       updateHud();
     } else if (!state.maintenanceScanActive) {
       if (state.history.scanFinalized) {
@@ -1587,46 +1600,46 @@ function handleInteraction() {
       } else {
         state.maintenanceScanActive = true;
         state.pulse = 1;
-        showToast('最终时相扫描启动：工作人员撤入隔离室，防爆门保持维护开启');
+        showToast('防爆门终检启动：工作人员撤入隔离室，监控转为门体数据采集，门保持开启');
         updateHud();
       }
     } else {
       showToast(state.history.chargesInstalled
-        ? '先从门体维修凹槽返回控制台，再按 E 结束扫描和封门'
-        : '最终扫描进行中：进入门体维修凹槽检查四个紧急破门槽');
+        ? '从门框内侧返回控制台，再按 E 结束终检并封门'
+        : '终检进行中：进入门框内侧完成官方锁轨检修，并寻找暗装位置');
     }
     return;
   }
 
   if (nearChargeSocket && state.eraTarget < .5) {
     if (!state.maintenanceScanActive) {
-      showToast('内侧爆破面板在门后；必须先启动维护扫描并打开防爆门');
+      showToast('门框内侧锁轨被关闭的防爆门挡住；先启动门体终检');
     } else if (!state.history.chargesInstalled) {
       if (!state.inventory.breachKit) {
-        showToast('时间锚背包中没有破门套件，无法安装');
+        showToast('时间锚背包中没有时锁爆破器，无法暗装');
         return;
       }
       state.inventory.breachKit = false;
       state.history.chargesInstalled = true;
       state.pulse = 1;
-      showToast('破门栓已装入内侧夹层；外壳模拟2047年标准诊断塞，只响应2147年的时间锚信号');
+      showToast('趁监控只采集门体数据，你在锁轨背面铣出暗槽，嵌入时锁爆破器，再用同色封板复原');
       updateHud();
     } else {
-      showToast('四个紧急槽已经封闭，破门栓处于时锁冻结状态');
+      showToast('自制暗槽已被同色封板遮住；时锁爆破器休眠，不向2047年的检测设备发出信号');
     }
     return;
   }
 
   if (nearModernDetonator && state.eraTarget > .5) {
     if (!state.history.chargesInstalled) {
-      showToast('外侧没有安全爆破位置；记录显示紧急破门槽只存在于门内侧');
+      showToast('门体与墙体已经锈结；爆破工具必须预先藏在门框内侧，外部无法安全施工');
     } else if (!state.history.doorBreached) {
       state.history.doorBreached = true;
       state.pulse = 1.8;
-      showToast('2147年时间锚信号确认：四枚破门栓正在向Boss房内部依次切断门框');
+      showToast('2147年时间锚信号确认：暗槽中的爆破器沿预切轨迹从内部切断门框');
       updateHud();
     } else {
-      showToast('防爆门连接已被切断，等待门体完全倒向Boss房内部');
+      showToast('门框已经沿暗槽切断，等待厚重门体完全倒向封存舱内部');
     }
     return;
   }
@@ -1636,8 +1649,8 @@ function handleInteraction() {
       showToast('2047年防爆门受维护权限锁定；先和工程师交谈并启动最终扫描');
     } else if (state.eraTarget < .5 && player.x > bossDoorX + .45) {
       showToast(state.history.chargesInstalled
-        ? '破门栓安装完成；从维护门返回实验室一侧后，再按 Q 回2147年'
-        : '这里是大门内侧的四个紧急破门槽，靠近面板按 E 安装破门栓');
+        ? '暗槽已经伪装完成；返回控制台结束终检，让工作人员按计划永久封门'
+        : '这里是门框内侧锁轨。靠近按 E，完成检修时偷偷加工暗槽并藏入爆破器');
     }
     return;
   }
@@ -1696,7 +1709,7 @@ function checkHistoryEvents() {
     state.pulse = 1;
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 1.15;
-    showToast('掘脉者苏醒：沿维护阶梯躲避扫描射线，用时相校准器攻击暴露核心');
+    showToast('掘脉者解除封存并开始巡行：可穿过机体，沿维护阶梯躲避射线并攻击中央核心');
     updateHud();
   }
 }
@@ -1740,6 +1753,7 @@ function damagePlayer(amount, knockDirection) {
     player.supportY = labGroundY;
     state.boss.health = state.boss.maxHealth;
     state.boss.x = bossHomeX;
+    state.boss.direction = -1;
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 1.3;
     state.boss.beamHit = false;
@@ -1768,8 +1782,8 @@ function damageBoss(amount) {
 function beginBossBeam() {
   state.boss.beamPhase = 'telegraph';
   state.boss.beamTimer = .92;
-  state.boss.beamOriginX = state.boss.x + 2.92;
-  state.boss.beamOriginY = labGroundY + 4.55;
+  state.boss.beamOriginX = state.boss.x + 1.12;
+  state.boss.beamOriginY = labGroundY + 3.58;
   const dx = player.x - state.boss.beamOriginX;
   const dy = player.y - state.boss.beamOriginY;
   const length = Math.max(.001, Math.hypot(dx, dy));
@@ -1810,8 +1824,8 @@ function updateCombat(dt, elapsed) {
     const hitCore = state.bossAwake
       && !state.boss.defeated
       && state.eraTarget > .5
-      && Math.abs(shot.mesh.position.x - (state.boss.x + .45)) < 1.15
-      && Math.abs(shot.mesh.position.y - bossCoreY) < 1.3;
+      && Math.abs(shot.mesh.position.x - (state.boss.x + .18)) < .92
+      && Math.abs(shot.mesh.position.y - bossCoreY) < 1.0;
     if (hitCore) {
       playerShotLayer.remove(shot.mesh);
       playerShots.splice(index, 1);
@@ -1828,6 +1842,21 @@ function updateCombat(dt, elapsed) {
     beamGlowMesh.visible = false;
     beamCoreMesh.visible = false;
     return;
+  }
+
+  // The autonomous sampler walks the room during recovery, then braces its legs before aiming.
+  // It is a visual/combat target only: movement never creates a collision wall or contact damage.
+  if (state.boss.beamPhase === 'cooldown') {
+    const healthRatio = state.boss.health / state.boss.maxHealth;
+    const patrolSpeed = healthRatio < .5 ? 4.4 : 3.0;
+    state.boss.x += state.boss.direction * patrolSpeed * dt;
+    if (state.boss.x <= state.boss.patrolMinX) {
+      state.boss.x = state.boss.patrolMinX;
+      state.boss.direction = 1;
+    } else if (state.boss.x >= state.boss.patrolMaxX) {
+      state.boss.x = state.boss.patrolMaxX;
+      state.boss.direction = -1;
+    }
   }
 
   state.boss.beamTimer -= dt;
@@ -1874,16 +1903,16 @@ function updateHud() {
   eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
   eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
   eventElevator.querySelector('span').textContent = state.history.elevatorUsed ? '已抵达地下实验室' : '等待进入';
-  eventWorkOrder.querySelector('span').textContent = state.history.workOrderFound ? '已记住 M-03-7721' : '等待调查';
-  eventReactor.querySelector('span').textContent = state.history.chargesInstalled ? '四枚内侧破门栓已安装' : '尚未发生';
-  eventFuture.querySelector('span').textContent = state.history.doorBreached ? '门框已从内部切断' : '等待改写';
+  eventWorkOrder.querySelector('span').textContent = state.history.workOrderFound ? '7C-113 / M-03-7721' : '等待调查';
+  eventReactor.querySelector('span').textContent = state.history.chargesInstalled ? '暗槽与爆破器已伪装' : '尚未发生';
+  eventFuture.querySelector('span').textContent = state.history.doorBreached ? '门框已沿暗槽切断' : '等待改写';
 
   const lowerLevel = isLowerLevel();
   const beforeLabEntrance = lowerLevel && player.x < labEntranceX - .75;
   if (state.boss.defeated) {
     objective.textContent = 'Boss已击败：掘脉者被强制停机，时相核心现在可以安全取出';
   } else if (state.bossAwake) {
-    objective.textContent = 'Boss战：沿左右维护阶梯躲开预警射线 · 用时相校准器对准暴露核心按 J 发射 · 接触机体不会受伤';
+    objective.textContent = 'Boss战：掘脉者会在场内行走并停步瞄准 · 沿维护阶梯躲开预警射线 · 对准中央时晶核心按 J 发射 · 可直接穿过机体';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -1893,29 +1922,29 @@ function updateHud() {
   } else if (beforeLabEntrance) {
     objective.textContent = '2147年井底：实验室安全门已经坍塌，向右穿过缺口进入实验室';
   } else if (lowerLevel && state.eraTarget > .5 && !state.history.workOrderFound) {
-    objective.textContent = '2147年实验室：前往时间观察环右侧的旧档案台，按 E 查找防爆门封存维修单';
+    objective.textContent = '2147年实验室：前往旧档案台，按 E 查找当年维修员的工号和防爆门维修任务';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.workOrderFound) {
-    objective.textContent = '2047年：没有工单无法取得门体维护权限。按 Q 回2147年调查时间观察环旁的旧档案';
+    objective.textContent = '2047年：没有员工身份和工单内容无法取得维修权限。按 Q 回2147年调查旧档案';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.bossBriefed) {
-    objective.textContent = '2047年最终维护日：向右找到维修工程师，按 E 报出工单M-03-7721并确认工作范围';
+    objective.textContent = '2047年封存日：向右找到维修工程师，按 E 报出工号7C-113、工单M-03-7721和维修任务';
   } else if (lowerLevel && state.eraTarget < .5 && state.history.scanFinalized) {
-    objective.textContent = '2047年：工程师已经验收并完成封门。按 Q 回2147年激活藏在门内的破门栓';
+    objective.textContent = '2047年：工程师已经验收并永久封门。按 Q 回2147年激活你藏在门框暗槽里的爆破器';
   } else if (lowerLevel && state.eraTarget < .5 && !state.maintenanceScanActive) {
-    objective.textContent = '2047年：工程师已说明流程。到右侧扫描控制台按 E，让人员撤入隔离室并开启防爆门';
+    objective.textContent = '2047年：身份核验通过。到右侧控制台按 E，让人员撤入隔离室并开启防爆门终检';
   } else if (lowerLevel && state.eraTarget < .5 && !state.history.chargesInstalled) {
     objective.textContent = player.x > bossDoorX + .4
-      ? '2047年门内侧：靠近四个紧急破门槽按 E，安装时锁式定向破门栓'
-      : '2047年扫描中：防爆门已经开启，穿过去但不要越过里面的时相安全线';
+      ? '2047年门框内侧：靠近锁轨按 E，在完成检修时偷偷铣出暗槽并藏入时锁爆破器'
+      : '2047年终检中：防爆门已经开启，进入内侧锁轨维修位，但不要越过封存舱警戒线';
   } else if (lowerLevel && state.eraTarget < .5) {
     objective.textContent = player.x > bossDoorX + .4
-      ? '2047年：破门栓安装完成，先从门内侧返回实验室，安全线内无法切换时代'
-      : '2047年：破门栓安装完成。回到扫描控制台按 E 结束扫描，让工程师验收并封门';
+      ? '2047年：暗槽伪装完成，先返回实验室一侧；封存舱警戒区内无法切换时代'
+      : '2047年：暗槽伪装完成。回到控制台按 E 结束终检，让工程师验收并永久封门';
   } else if (lowerLevel && !state.history.chargesInstalled) {
-    objective.textContent = '2147年：防爆门锈死成墙，外侧无法安全爆破。按 Q 回2047年进入门内侧';
+    objective.textContent = '2147年：防爆门锈死成墙，外侧无法施工。按 Q 回2047年，利用合法维修机会接近门框内侧';
   } else if (lowerLevel && !state.history.doorBreached) {
-    objective.textContent = '2147年：门内破门栓已响应。靠近墙左侧的外部接收器按 E 定向爆破';
+    objective.textContent = '2147年：门框暗槽里的时锁爆破器已响应。靠近墙左侧接收器按 E 激活';
   } else if (lowerLevel && state.doorBlast < .82) {
-    objective.textContent = '2147年：四个连接点正在依次断裂，等待厚重门体完全倒向Boss房内部';
+    objective.textContent = '2147年：门框正在沿预切暗槽断裂，等待厚重门体完全倒向封存舱内部';
   } else if (lowerLevel) {
     objective.textContent = '2147年：Boss通道已打开。越过倒塌门体，进入房间取出掘脉者的时相核心';
   } else if (state.exitReached && state.eraTarget > .5) {
@@ -1945,10 +1974,10 @@ function updateHud() {
       doorLock.textContent = state.history.scanFinalized
         ? '防爆门：最终关闭 · 内侧面板已封存'
         : (state.history.chargesInstalled
-          ? '内侧破门槽：已封闭 · 等待扫描验收'
-          : (state.maintenanceScanActive ? '防爆门：维护开启 · 仅限门体凹槽' : '防爆门：权限锁定'));
+          ? '锁轨与密封：数据合格 · 暗槽未被检测'
+          : (state.maintenanceScanActive ? '防爆门：维护开启 · 内侧锁轨可检修' : '防爆门：权限锁定'));
     } else {
-      doorPower.textContent = state.history.chargesInstalled ? '时间锚链路：四个内侧信号在线' : '防爆门：断电 · 门框完全锈死';
+      doorPower.textContent = state.history.chargesInstalled ? '时间锚链路：门框暗槽信号在线' : '防爆门：断电 · 门框完全锈死';
       doorLock.textContent = state.history.doorBreached
         ? '门框：已定向切断 · 门体向内倒塌'
         : (state.history.chargesInstalled ? '外侧接收器：等待引爆指令' : '安全记录：仅允许从内侧破门');
@@ -2008,20 +2037,20 @@ function updateInteractionHint() {
     message = '2147年安全门已经坍塌 · 向右进入实验室';
   } else if (nearWorkOrder && state.eraTarget > .5) {
     message = state.history.workOrderFound
-      ? '旧档案：M-03-7721 · 外包防爆门检修 · 禁止进入Boss维护区'
-      : '按 E 读取2147年残存的防爆门封存维修单';
+      ? '旧档案：工号7C-113 · M-03-7721 · 防爆门锁轨与密封检修'
+      : '按 E 读取2147年残存档案，寻找维修员工号和防爆门任务';
   } else if (nearWorkOrder) {
     message = state.history.workOrderFound
-      ? '2047年原始工单 · 你已从现代档案记住编号和工作范围'
+      ? '2047年原始工单 · 你已从现代档案记住工号、编号和维修任务'
       : '内部文件不可直接翻阅 · 前往2147年寻找废弃档案';
   } else if (nearMaintenanceNpc && state.eraTarget < .5 && !state.maintenanceScanActive) {
     message = !state.history.workOrderFound
-      ? '工程师要求提供门体维护工单号'
+      ? '工程师要求提供员工工号、工单号和检修项目'
       : (state.history.scanFinalized
         ? '按 E 查看工程师的最终封存验收结果'
         : (state.history.bossBriefed
-          ? '工程师已授权门体维护 · 到右侧控制台启动最终扫描'
-          : '按 E 报出M-03-7721 · 确认只维护防爆门，不进入Boss区域'));
+          ? '工号核验通过 · 到右侧控制台启动防爆门终检'
+          : '按 E 报出7C-113、M-03-7721和“锁轨与密封检修”'));
   } else if (nearScanConsole && state.eraTarget < .5) {
     message = !state.history.workOrderFound
       ? '控制台拒绝访问 · 缺少防爆门维护工单'
@@ -2033,25 +2062,25 @@ function updateInteractionHint() {
             ? (state.history.chargesInstalled
               ? '按 E 结束扫描 · 关闭防爆门并让工程师完成验收'
               : '最终扫描进行中 · 人员和监控已进入隔离状态')
-            : '按 E 启动最终时相扫描 · 打开防爆门维护模式')));
+            : '按 E 启动防爆门终检 · 人员撤离并打开门体维护模式')));
   } else if (nearChargeSocket && state.eraTarget < .5) {
     message = state.history.chargesInstalled
-      ? '内侧面板已重新封闭 · 四枚破门栓处于时锁冻结状态'
+      ? '锁轨封板已经复原 · 时锁爆破器处于无信号休眠状态'
       : (state.maintenanceScanActive
-        ? '按 E 将四枚时锁式破门栓装进门内侧的紧急槽'
-        : '内侧面板被防爆门挡住 · 先启动最终扫描');
+        ? '按 E 在检修锁轨时偷偷铣出暗槽，并藏入时锁爆破器'
+        : '内侧锁轨被防爆门挡住 · 先启动门体终检');
   } else if (nearModernDetonator && state.eraTarget > .5) {
     message = !state.history.chargesInstalled
-      ? '外侧无法安全爆破 · 必须在2047年进入门内安装定向破门栓'
+      ? '外侧无法安全施工 · 必须在2047年利用维修身份接近门框内侧'
       : (state.history.doorBreached
-        ? '门框连接已切断 · 厚重门体正在倒向Boss房内部'
-        : '按 E 让2147年的时间锚信号同时激活四枚内侧破门栓');
+        ? '门框已经沿暗槽切断 · 厚重门体正在倒向封存舱内部'
+        : '按 E 向你在2047年暗装的时锁爆破器发送激活信号');
   } else if (nearBossDoor && state.eraTarget < .5) {
     message = state.history.scanFinalized
       ? '最终维护验收完成 · 防爆门已经永久封闭'
       : (state.maintenanceScanActive
-        ? '门体维修凹槽已经开放 · 禁止越过黄色安全线进入Boss区域'
-        : '2047年防爆门权限锁定 · 凭工单取得维护授权并启动扫描');
+        ? '门框内侧锁轨已经开放 · 黄色警戒线之后是即将封存的03号机舱'
+        : '2047年防爆门权限锁定 · 凭员工工号和工单取得门体维护授权');
   } else if (nearBossDoor) {
     message = state.doorBlast >= .82
       ? '门体已经向房间内部倒塌 · Boss通道开放'
@@ -2126,8 +2155,13 @@ function updateHistoryOutcome(dt, elapsed) {
     pastBossDoor.position.y = THREE.MathUtils.damp(pastBossDoor.position.y, doorTargetY, 5.5, dt);
   }
   if (pastChargeSockets) {
-    const socketVisibility = state.maintenanceScanActive ? (state.history.chargesInstalled ? 1 : .42) : 0;
+    const socketVisibility = state.maintenanceScanActive ? 1 : 0;
     setLayerOpacity(pastChargeSockets, pastAmount * socketVisibility);
+    if (pastChargeSockets.userData.concealedTool) {
+      pastChargeSockets.userData.concealedTool.material.opacity = state.history.chargesInstalled
+        ? .78 * pastAmount * socketVisibility
+        : 0;
+    }
   }
   if (modernWorkOrder) setLayerOpacity(modernWorkOrder, state.era * (state.history.workOrderFound ? .58 : 1));
   state.doorBlast = THREE.MathUtils.damp(state.doorBlast, state.history.doorBreached ? 1 : 0, 2.8, dt);
@@ -2147,10 +2181,15 @@ function updateHistoryOutcome(dt, elapsed) {
   if (pastBoss) {
     pastBoss.rotation.z = 0;
     if (pastBoss.userData.cutter) pastBoss.userData.cutter.rotation.z = elapsed * .32;
+    if (pastBoss.userData.legs) {
+      for (const leg of pastBoss.userData.legs) leg.rotation.z = Math.sin(elapsed * .65 + leg.userData.phase) * .015;
+    }
   }
   if (modernBoss) {
     modernBoss.position.x = state.boss.x;
-    const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04;
+    const bossWalking = state.bossAwake && !state.boss.defeated && state.boss.beamPhase === 'cooldown';
+    const gaitBob = bossWalking ? Math.abs(Math.sin(elapsed * 7.2)) * .075 : 0;
+    const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04 + gaitBob;
     modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, 6, dt);
     const bossTargetRotation = state.boss.defeated ? -.08 : 0;
     modernBoss.rotation.z = THREE.MathUtils.damp(modernBoss.rotation.z, bossTargetRotation, 5, dt);
@@ -2158,6 +2197,12 @@ function updateHistoryOutcome(dt, elapsed) {
     modernBoss.scale.setScalar(THREE.MathUtils.damp(modernBoss.scale.x, bossScale, 4.5, dt));
     if (modernBoss.userData.cutter) {
       modernBoss.userData.cutter.rotation.z += dt * (state.bossAwake && !state.boss.defeated ? 4.2 : .18);
+    }
+    if (modernBoss.userData.legs) {
+      for (const leg of modernBoss.userData.legs) {
+        const stride = bossWalking ? Math.sin(elapsed * 7.2 + leg.userData.phase) * .13 : 0;
+        leg.rotation.z = THREE.MathUtils.damp(leg.rotation.z, stride, 10, dt);
+      }
     }
     if (modernBoss.userData.emitter) {
       const emitterAngle = state.boss.beamPhase === 'cooldown'
