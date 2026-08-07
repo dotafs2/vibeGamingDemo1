@@ -59,6 +59,8 @@ const player = {
   jumpSpeed: 10.4,
   grounded: true,
   facing: 1,
+  walkPhase: 0,
+  walkBlend: 0,
 };
 
 const vertexShader = /* glsl */`
@@ -151,6 +153,17 @@ function disc(group, radius, color, x, y, z = 0, opacity = 1, segments = 48) {
   return mesh;
 }
 
+function polygon(group, points, color, x = 0, y = 0, z = 0, opacity = 1) {
+  const shape = new THREE.Shape();
+  shape.moveTo(points[0][0], points[0][1]);
+  for (let index = 1; index < points.length; index++) shape.lineTo(points[index][0], points[index][1]);
+  shape.closePath();
+  const mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material(color, opacity));
+  mesh.position.set(x, y, z);
+  group.add(mesh);
+  return mesh;
+}
+
 function setLayerOpacity(group, amount) {
   group.traverse(object => {
     if (!object.material) return;
@@ -172,96 +185,193 @@ scene.add(pastLayer, presentLayer);
 const pastLampMaterials = [];
 const pastPowerNodeMaterials = [];
 const pastDoorPowerMaterials = [];
+const pastMovingOre = [];
+let pastVentFan = null;
 
 function buildMineLandmarks(group, palette, ruined) {
-  // 相同的三个永久地标：左侧加工厂、中央维修站、右侧闸门机房。
-  rectangle(group, 7.5, 4.55, palette.hall, -9.0, -1.62, -2, ruined ? .72 : .92);
-  rectangle(group, 5.55, 3.72, palette.workshop, -2.15, -2.04, -2, ruined ? .7 : .9);
-  rectangle(group, 3.55, 6.35, palette.gatehouse, 8.35, -1.38, -2.1, ruined ? .68 : .9);
-  rectangle(group, 1.18, 7.25, palette.tower, 12.75, -.92, -2.1, ruined ? .75 : .92);
-  rectangle(group, 2.25, .38, palette.trim, 12.75, 2.55, -1.8, ruined ? .4 : .78);
+  const fade = ruined ? .72 : .96;
 
-  // 同一座圆形储能罐。
-  disc(group, 2.25, palette.tank, -11.05, 3.45, -3, ruined ? .13 : .28);
-  disc(group, 1.55, palette.trim, -11.05, 3.45, -2.9, ruined ? .055 : .12);
+  // 同一座地下03号矿石转运站：破碎区、通风维修区、深井闸门区。
+  rectangle(group, 8.3, 5.0, palette.hall, -9.25, -1.4, -2.6, fade);
+  rectangle(group, 5.7, 4.35, palette.workshop, -2.15, -1.73, -2.6, fade);
+  rectangle(group, 3.55, 6.35, palette.gatehouse, 8.35, -1.38, -2.7, ruined ? .7 : .94);
+  rectangle(group, 5.7, 4.7, palette.shaft, 13.0, -1.75, -3.1, ruined ? .62 : .86);
 
-  const leftSupports = [-12.1, -10.75, -9.4, -8.05, -6.7];
-  for (let index = 0; index < leftSupports.length; index++) {
-    const x = leftSupports[index];
-    if (ruined && index === 2) {
-      segment(group, x, -3.9, x + .35, -1.25, palette.structure, .23);
-    } else {
-      segment(group, x, -3.88, x, ruined && index === 4 ? -.95 : .47, palette.structure, ruined ? .24 : .62);
-    }
-  }
-  segment(group, -12.35, .56, -5.65, .56, palette.trim, ruined ? .22 : .65);
-  segment(group, -12.0, -3.45, -5.95, .32, palette.structure, ruined ? .14 : .28);
-  segment(group, -11.85, .32, -5.85, -3.45, palette.structure, ruined ? .12 : .28);
-
-  const workshopSupports = [-4.45, -3.25, -2.05, -.85, .35];
-  for (let index = 0; index < workshopSupports.length; index++) {
-    const x = workshopSupports[index];
-    if (ruined && index === 3) segment(group, x, -3.82, x + .25, -1.45, palette.structure, .2);
-    else segment(group, x, -3.84, x, -.38, palette.structure, ruined ? .2 : .5);
-  }
-  segment(group, -4.72, -.2, .58, -.2, palette.trim, ruined ? .18 : .55);
-
-  // 同一条从加工厂通向闸门的高架供电管线。
-  if (ruined) {
-    segment(group, -12.35, 1.25, -6.1, 1.25, palette.conduit, .2);
-    segment(group, -5.65, 1.08, -1.25, .72, palette.conduit, .17);
-    segment(group, -.7, .78, 2.45, .92, palette.conduit, .17);
-    segment(group, 3.05, .82, 5.25, 1.2, palette.conduit, .16);
-  } else {
-    segment(group, -12.35, 1.25, 5.25, 1.25, palette.conduit, .76);
-    segment(group, 5.25, 1.25, 7.35, 3.55, palette.conduit, .62);
+  // 岩石顶板是两个时代不变的地理轮廓，避免场景看起来像露天厂房。
+  polygon(group, [
+    [-16, 9], [16, 9], [16, 6.8], [13.8, 6.4], [11.4, 6.75], [8.2, 6.3],
+    [5.5, 6.65], [2.9, 6.25], [.2, 6.7], [-2.7, 6.2], [-5.8, 6.55],
+    [-8.5, 6.05], [-11.2, 6.5], [-13.9, 5.95], [-16, 6.35],
+  ], palette.rock, 0, 0, -4.2, ruined ? .72 : .9);
+  for (const [x, y, radius] of [[-13.7, 5.95, .5], [-6.1, 6.05, .42], [1.1, 6.2, .52], [10.9, 6.2, .45]]) {
+    disc(group, radius, palette.oreVein, x, y, -4, ruined ? .14 : .25, 18);
   }
 
-  const lampXs = [-10.6, -6.5, -2.35, 1.75, 5.15];
-  for (const x of lampXs) {
-    const lamp = disc(group, .13, ruined ? palette.deadLamp : palette.lamp, x, .9, -.9, ruined ? .28 : .95);
-    if (!ruined) pastLampMaterials.push(lamp.material);
+  // 跨时代坐标完全一致的承重柱与顶梁。
+  for (const x of [-13.0, -9.8, -6.0, -4.8, .55, 6.55, 10.15, 12.3, 14.6]) {
+    const support = rectangle(group, .2, 5.15, palette.structure, x, -1.05, -1.95, ruined ? .34 : .78);
+    if (ruined && (x === -9.8 || x === .55)) support.rotation.z = x < 0 ? -.095 : .075;
   }
+  for (const [x, width] of [[-9.5, 7.2], [-2.1, 5.55], [8.35, 3.6]]) {
+    rectangle(group, width, .22, palette.trim, x, 1.48, -1.9, ruined ? .3 : .78);
+  }
+  segment(group, 10.2, .55, 15.7, .55, palette.trim, ruined ? .28 : .68, -2.0);
+  for (const x of [11.0, 13.0, 15.0]) {
+    segment(group, x, groundY + .1, x, .55, palette.structure, ruined ? .28 : .62, -1.85);
+    segment(group, x, .55, x + .55, 1.05, palette.structure, ruined ? .24 : .5, -1.85);
+  }
+  for (const x of [-12.8, -6.25, -4.55, .3, 6.75, 9.9]) {
+    segment(group, x, 1.35, x + .72, .68, palette.structure, ruined ? .25 : .55, -1.75);
+  }
+
+  // 左侧：投料斗、双辊破碎机和矿石输送带。
+  const hopper = polygon(group, [[-1.4, .7], [1.4, .7], [.72, -.65], [-.72, -.65]], palette.machine, -10.4, .03, -1.15, fade);
+  if (ruined) hopper.rotation.z = -.055;
+  rectangle(group, 2.15, .24, palette.trim, -10.4, .82, -1.0, ruined ? .42 : .9);
+  segment(group, -11.25, -.63, -10.75, -1.32, palette.structure, ruined ? .35 : .78, -1.0);
+  segment(group, -9.55, -.63, -10.05, -1.32, palette.structure, ruined ? .35 : .78, -1.0);
+  rectangle(group, 2.3, 1.42, palette.machineDark, -10.4, -2.03, -1.0, fade);
+  const crusherLeft = disc(group, .51, palette.machine, -10.92, -1.92, -.82, ruined ? .6 : .98, 28);
+  const crusherRight = disc(group, .51, palette.machine, -9.88, -1.92, -.82, ruined ? .54 : .98, 28);
+  for (let index = 0; index < 8; index++) {
+    const angle = index * Math.PI / 4;
+    segment(group, -10.92, -1.92, -10.92 + Math.cos(angle) * .45, -1.92 + Math.sin(angle) * .45, palette.trim, ruined ? .25 : .58, -.7);
+    segment(group, -9.88, -1.92, -9.88 + Math.cos(angle) * .45, -1.92 + Math.sin(angle) * .45, palette.trim, ruined ? .22 : .58, -.7);
+  }
+  crusherLeft.rotation.z = ruined ? .14 : 0;
+  crusherRight.rotation.z = ruined ? -.08 : 0;
 
   if (!ruined) {
-    for (let index = 0; index < 12; index++) {
-      const node = disc(group, .055, palette.lamp, -10.8 + index * 1.38, 1.25, -.75, .5);
+    rectangle(group, 6.15, .25, palette.belt, -8.3, -3.16, -.94, .9);
+    segment(group, -11.4, -3.02, -5.2, -3.02, palette.trim, .88, -.78);
+    segment(group, -11.4, -3.34, -5.2, -3.34, palette.structure, .72, -.78);
+    for (let x = -11.15; x <= -5.45; x += .58) disc(group, .12, palette.trim, x, -3.18, -.7, .68, 16);
+    for (let index = 0; index < 7; index++) {
+      const ore = polygon(group, [[-.22, -.12], [-.1, .17], [.17, .2], [.25, -.08]], palette.ore, -10.8 + index * .78, -2.82, -.55, .96);
+      ore.userData.baseX = ore.position.x;
+      pastMovingOre.push(ore);
+    }
+  } else {
+    const beltA = rectangle(group, 2.5, .25, palette.belt, -10.1, -3.15, -.94, .5);
+    const beltB = rectangle(group, 2.45, .25, palette.belt, -6.65, -3.35, -.94, .38);
+    beltA.rotation.z = -.04;
+    beltB.rotation.z = .11;
+    segment(group, -8.8, -3.11, -8.15, -3.55, palette.trim, .42, -.7);
+    segment(group, -7.95, -3.52, -7.2, -3.34, palette.trim, .35, -.7);
+    for (let index = 0; index < 8; index++) {
+      polygon(group, [[-.24, -.13], [-.08, .2], [.2, .15], [.27, -.12]], palette.ore, -11.1 + index * .82, -3.64 - (index % 2) * .16, -.55, .48);
+    }
+  }
+
+  // 中央：大型通风机与维修台，是地下矿场的第二个识别地标。
+  rectangle(group, 3.05, 2.8, palette.machineDark, -2.45, -.92, -1.35, ruined ? .48 : .9);
+  disc(group, 1.1, palette.trim, -2.45, -.78, -1.06, ruined ? .4 : .85, 48);
+  disc(group, .88, palette.fanDark, -2.45, -.78, -.96, .96, 48);
+  const fan = new THREE.Group();
+  fan.position.set(-2.45, -.78, -.82);
+  for (let index = 0; index < 4; index++) {
+    const blade = polygon(fan, [[0, .08], [.66, .2], [.78, .48], [.2, .52]], palette.fan, 0, 0, 0, ruined ? .48 : .9);
+    blade.rotation.z = index * Math.PI / 2;
+  }
+  disc(fan, .18, palette.trim, 0, 0, .05, .95, 20);
+  if (ruined) fan.rotation.z = .28;
+  else pastVentFan = fan;
+  group.add(fan);
+  rectangle(group, 2.8, .3, palette.trim, 1.9, -2.75, -1.0, ruined ? .42 : .85);
+  rectangle(group, .18, 1.05, palette.structure, .75, -3.28, -1.05, ruined ? .38 : .75);
+  rectangle(group, .18, 1.05, palette.structure, 3.05, -3.28, -1.05, ruined ? .32 : .75);
+  for (let index = 0; index < 4; index++) {
+    rectangle(group, .24, .38 + index * .1, palette.tool, 1.15 + index * .5, -2.3, -.82, ruined ? .27 : .72);
+  }
+
+  // 连通三个功能区的矿车轨道，过去完整、现代原位断裂。
+  const railEnd = ruined ? 5.8 : 7.05;
+  if (!ruined) {
+    segment(group, -14.6, groundY + .38, railEnd, groundY + .38, palette.rail, .9, -.35);
+    segment(group, -14.6, groundY + .16, railEnd, groundY + .16, palette.railDark, .8, -.36);
+  } else {
+    segment(group, -14.6, groundY + .38, -1.0, groundY + .38, palette.rail, .5, -.35);
+    segment(group, -.55, groundY + .23, 2.65, groundY + .38, palette.rail, .38, -.35);
+    segment(group, 3.05, groundY + .38, railEnd, groundY + .58, palette.rail, .3, -.35);
+  }
+  for (let x = -14.2; x <= railEnd; x += .72) {
+    const sleeper = rectangle(group, .46, .11, palette.sleeper, x, groundY + .08, -.42, ruined ? .48 : .85);
+    if (ruined && Math.round((x + 14.2) / .72) % 6 === 0) sleeper.rotation.z = .28;
+  }
+
+  const cart = new THREE.Group();
+  cart.position.set(-5.25, groundY + .72, -.18);
+  polygon(cart, [[-1.05, .5], [1.05, .5], [.78, -.38], [-.78, -.38]], palette.cart, 0, 0, 0, ruined ? .58 : .96);
+  segment(cart, -1.03, .5, 1.03, .5, palette.trim, ruined ? .42 : .86, .06);
+  disc(cart, .26, palette.wheel, -.63, -.46, .08, .96, 24);
+  disc(cart, .26, palette.wheel, .63, -.46, .08, .96, 24);
+  if (!ruined) {
+    for (const [x, y, radius] of [[-.58, .58, .32], [-.05, .66, .38], [.52, .58, .3]]) {
+      disc(cart, radius, palette.ore, x, y, -.02, .96, 9);
+    }
+  } else {
+    cart.rotation.z = -.32;
+    cart.position.y -= .18;
+  }
+  group.add(cart);
+
+  // 供电管线与灯具把2047年的正常设备一路连接到通电闸门。
+  if (ruined) {
+    segment(group, -13.0, 2.02, -7.4, 2.02, palette.conduit, .24);
+    segment(group, -6.95, 1.95, -2.1, 1.48, palette.conduit, .2);
+    segment(group, -1.65, 1.4, 2.35, 1.7, palette.conduit, .18);
+    segment(group, 2.85, 1.58, 5.4, 1.1, palette.conduit, .17);
+  } else {
+    segment(group, -13.0, 2.02, 5.35, 2.02, palette.conduit, .82);
+    segment(group, 5.35, 2.02, 7.35, 3.55, palette.conduit, .72);
+  }
+  const lampXs = [-11.6, -7.3, -2.5, 1.85, 5.05];
+  for (const x of lampXs) {
+    segment(group, x, 1.98, x, 1.55, palette.structure, ruined ? .26 : .62, -.65);
+    const lamp = disc(group, .17, ruined ? palette.deadLamp : palette.lamp, x, 1.42, -.58, ruined ? .3 : .98, 20);
+    if (!ruined) pastLampMaterials.push(lamp.material);
+  }
+  if (!ruined) {
+    for (let index = 0; index < 13; index++) {
+      const node = disc(group, .052, palette.lamp, -11.8 + index * 1.4, 2.02, -.52, .55, 16);
       pastPowerNodeMaterials.push(node.material);
     }
-    // 正常运转的输送带与维修台。
-    rectangle(group, 6.25, .28, palette.trim, -9.0, -3.42, -1.2, .56);
-    for (let x = -11.75; x <= -6.25; x += .55) disc(group, .1, palette.lamp, x, -3.42, -1.0, .35);
-    rectangle(group, 2.9, .24, palette.trim, -2.15, -3.5, -1.2, .52);
-  } else {
-    // 原位置的破损输送带、坠落管线和瓦砾。
-    const fallenBelt = rectangle(group, 3.1, .3, palette.trim, -10.15, -3.46, -1.2, .28);
-    fallenBelt.rotation.z = -.08;
-    const fallenPipe = rectangle(group, 2.6, .18, palette.conduit, 1.35, -3.25, -1.1, .22);
-    fallenPipe.rotation.z = .18;
-    for (let index = 0; index < 7; index++) {
-      const chunk = rectangle(group, .32 + (index % 3) * .18, .28 + (index % 2) * .18, palette.debris, -11.5 + index * 1.9, -4.0, -1, .58);
-      chunk.rotation.z = -.4 + index * .13;
+  }
+
+  // 现代损坏只叠加在相同机器上，不改变地图坐标。
+  if (ruined) {
+    const fallenDuct = rectangle(group, 3.0, .24, palette.conduit, 2.25, -.12, -.55, .3);
+    fallenDuct.rotation.z = -.18;
+    for (let index = 0; index < 9; index++) {
+      const chunk = polygon(group, [[-.25, -.14], [-.08, .2], [.22, .13], [.28, -.16]], palette.debris, -12.6 + index * 1.72, groundY + .28 + (index % 3) * .1, -.08, .6);
+      chunk.rotation.z = -.35 + index * .12;
     }
-    segment(group, -11.55, 3.95, -10.3, 2.4, palette.crack, .22);
-    segment(group, -10.3, 2.4, -11.0, 1.7, palette.crack, .18);
-    segment(group, -3.4, -.35, -2.35, -1.5, palette.crack, .2);
-    segment(group, -2.35, -1.5, -2.8, -2.55, palette.crack, .17);
+    segment(group, -12.15, 1.42, -11.3, .55, palette.crack, .35, -.35);
+    segment(group, -11.3, .55, -11.75, -.35, palette.crack, .26, -.35);
+    segment(group, -.25, 1.4, -.9, .28, palette.crack, .3, -.35);
+    segment(group, -.9, .28, -.45, -.65, palette.crack, .24, -.35);
   }
 }
 
 function buildPastScene() {
   buildMineLandmarks(pastLayer, {
-    hall: '#35191a', workshop: '#43201e', gatehouse: '#321819', tower: '#3d1b1a',
+    hall: '#35191a', workshop: '#43201e', gatehouse: '#321819', shaft: '#241316', tower: '#3d1b1a',
     structure: '#a25735', trim: '#d17645', tank: '#6f1f1d', conduit: '#f08b4b',
     lamp: '#ffb15d', deadLamp: '#7d4d37', debris: '#5e2d22', crack: '#bd6845',
+    rock: '#271013', oreVein: '#ff8a43', machine: '#8f4a2f', machineDark: '#51261f',
+    belt: '#2b1718', ore: '#e47a3e', fan: '#c56b3e', fanDark: '#241416', tool: '#e2a169',
+    rail: '#e09358', railDark: '#6d3a2c', sleeper: '#704027', cart: '#9f5232', wheel: '#211619',
   }, false);
 }
 
 function buildPresentScene() {
   buildMineLandmarks(presentLayer, {
-    hall: '#132d34', workshop: '#142e34', gatehouse: '#10282f', tower: '#112c33',
+    hall: '#132d34', workshop: '#142e34', gatehouse: '#10282f', shaft: '#0b1d22', tower: '#112c33',
     structure: '#4c7b82', trim: '#5f9da6', tank: '#397a83', conduit: '#62adba',
     lamp: '#82d9e5', deadLamp: '#54747a', debris: '#28454c', crack: '#75bec8',
+    rock: '#0b2026', oreVein: '#3a8994', machine: '#34575e', machineDark: '#10262c',
+    belt: '#111f23', ore: '#315860', fan: '#47767e', fanDark: '#0b181c', tool: '#58787e',
+    rail: '#557b81', railDark: '#263e43', sleeper: '#284348', cart: '#365b61', wheel: '#111d20',
   }, true);
 }
 
@@ -270,6 +380,48 @@ buildPresentScene();
 
 const commonLayer = new THREE.Group();
 scene.add(commonLayer);
+
+// 地面以下不是空画布，而是可见的岩层剖面与更深一层的排水巷道。
+const bedrockMaterial = material('#122b31', 1);
+const bedrock = new THREE.Mesh(new THREE.PlaneGeometry(38, 8.5), bedrockMaterial);
+bedrock.position.set(0, groundY - 4.5, -5.8);
+commonLayer.add(bedrock);
+
+const strataMaterial = lineMaterial('#3e6870', .34);
+for (let row = 0; row < 6; row++) {
+  const y = groundY - .75 - row * .72;
+  const strata = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(-18, y + .12, -5.4),
+      new THREE.Vector3(-11, y - .08, -5.4),
+      new THREE.Vector3(-4, y + .14, -5.4),
+      new THREE.Vector3(3, y - .12, -5.4),
+      new THREE.Vector3(10, y + .08, -5.4),
+      new THREE.Vector3(18, y - .06, -5.4),
+    ]),
+    strataMaterial,
+  );
+  commonLayer.add(strata);
+}
+
+const undergroundOreMaterial = material('#3b7d86', .55);
+for (const [x, y, radius] of [[-13.8, -5.85, .26], [-12.9, -6.2, .17], [-7.1, -5.62, .21], [-1.6, -6.0, .3], [5.6, -5.7, .2], [13.3, -6.15, .28]]) {
+  const ore = new THREE.Mesh(new THREE.CircleGeometry(radius, 8), undergroundOreMaterial);
+  ore.position.set(x, y, -5.1);
+  ore.rotation.z = x * .13;
+  commonLayer.add(ore);
+}
+
+const lowerTunnelMaterial = material('#081419', .95);
+const lowerTunnel = polygon(commonLayer, [
+  [-5.4, -.8], [-4.8, .55], [-3.8, 1.05], [3.7, 1.05], [4.8, .55], [5.4, -.8],
+], '#081419', 5.2, groundY - 3.25, -4.7, .95);
+lowerTunnel.material = lowerTunnelMaterial;
+for (const x of [1.3, 4.0, 6.7, 9.4]) {
+  segment(commonLayer, x, groundY - 4.1, x, groundY - 2.35, '#38535a', .42, -4.45);
+  segment(commonLayer, x, groundY - 2.35, x + .55, groundY - 1.85, '#38535a', .42, -4.45);
+}
+segment(commonLayer, 1.3, groundY - 2.35, 9.95, groundY - 2.35, '#38535a', .42, -4.44);
 
 const groundMaterial = material('#274048', 1);
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(34, .56), groundMaterial);
@@ -408,20 +560,50 @@ function createPlayer() {
   shadow.scale.y = .24;
   shadow.position.set(0, -.83, -.1);
   group.add(shadow);
+
+  const bodyRig = new THREE.Group();
+  group.add(bodyRig);
   const body = new THREE.Mesh(new THREE.PlaneGeometry(.58, .78), bodyMat);
   body.position.y = -.12;
-  group.add(body);
-  const head = new THREE.Mesh(new THREE.CircleGeometry(.3, 28), bodyMat);
-  head.position.y = .55;
-  group.add(head);
-  rectangle(group, .19, .16, '#0e272d', .12, .58, .08, .95);
-  rectangle(group, .72, .13, '#75cbd6', 0, .18, .05, .78).material = trimMat;
-  segment(group, -.19, -.47, -.32, -.83, '#e9fdff', .95, .08).material = lineMat;
-  segment(group, .19, -.47, .32, -.83, '#e9fdff', .95, .08).material = lineMat;
-  segment(group, -.29, .08, -.53, -.25, '#e9fdff', .9, .08).material = lineMat;
-  segment(group, .29, .08, .53, -.25, '#e9fdff', .9, .08).material = lineMat;
+  bodyRig.add(body);
+  const chestTrim = rectangle(bodyRig, .72, .13, '#75cbd6', 0, .18, .05, .78);
+  chestTrim.material = trimMat;
 
-  group.userData.bodyMaterials = [bodyMat, trimMat, lineMat];
+  const headRig = new THREE.Group();
+  headRig.position.y = .55;
+  const head = new THREE.Mesh(new THREE.CircleGeometry(.3, 28), bodyMat);
+  headRig.add(head);
+  rectangle(headRig, .19, .16, '#0e272d', .12, .03, .08, .95);
+  group.add(headRig);
+
+  function makeLimb(x, y, length, isLeg) {
+    const limb = new THREE.Group();
+    limb.position.set(x, y, .06);
+    const limbLine = segment(limb, 0, 0, 0, -length, '#e9fdff', .95, .08);
+    limbLine.material = lineMat;
+    disc(limb, .055, '#e9fdff', 0, 0, .09, .95, 16).material = bodyMat;
+    if (isLeg) {
+      const foot = rectangle(limb, .25, .075, '#e9fdff', .08, -length, .1, .95);
+      foot.material = bodyMat;
+    }
+    group.add(limb);
+    return limb;
+  }
+
+  const leftLeg = makeLimb(-.18, -.43, .43, true);
+  const rightLeg = makeLimb(.18, -.43, .43, true);
+  const leftArm = makeLimb(-.29, .08, .43, false);
+  const rightArm = makeLimb(.29, .08, .43, false);
+
+  group.userData.bodyMaterials = [bodyMat, lineMat];
+  group.userData.accentMaterials = [trimMat];
+  group.userData.rig = {
+    bodyRig, headRig, shadow, leftLeg, rightLeg, leftArm, rightArm,
+    bodyBaseY: bodyRig.position.y,
+    headBaseY: headRig.position.y,
+    leftArmBaseY: leftArm.position.y,
+    rightArmBaseY: rightArm.position.y,
+  };
   return group;
 }
 
@@ -523,6 +705,8 @@ function resetHistory() {
   player.y = groundY + player.halfH;
   player.vx = 0;
   player.vy = 0;
+  player.walkPhase = 0;
+  player.walkBlend = 0;
   document.body.classList.remove('past');
   eraLabel.textContent = '现代 · 2147';
   flashTime();
@@ -716,6 +900,11 @@ function updateHistoryOutcome(dt, elapsed) {
   for (let index = 0; index < pastDoorPowerMaterials.length; index++) {
     pastDoorPowerMaterials[index].opacity = (.58 + Math.sin(elapsed * 5.1 + index * .7) * .25) * pastAmount;
   }
+  if (pastVentFan) pastVentFan.rotation.z -= dt * 2.15;
+  for (let index = 0; index < pastMovingOre.length; index++) {
+    pastMovingOre[index].position.x = -11.05 + ((elapsed * .72 + index * .83) % 5.9);
+    pastMovingOre[index].position.y = -2.82 + Math.sin(elapsed * 5 + index) * .025;
+  }
 
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;
@@ -736,6 +925,10 @@ function updateVisuals(dt, elapsed) {
   const groundPast = new THREE.Color('#5d2b25');
   const groundPresent = new THREE.Color('#274048');
   groundMaterial.color.copy(groundPast.lerp(groundPresent, state.era));
+  bedrockMaterial.color.copy(new THREE.Color('#351817').lerp(new THREE.Color('#122b31'), state.era));
+  strataMaterial.color.copy(new THREE.Color('#9a5136').lerp(new THREE.Color('#3e6870'), state.era));
+  undergroundOreMaterial.color.copy(new THREE.Color('#b85d32').lerp(new THREE.Color('#3b7d86'), state.era));
+  lowerTunnelMaterial.color.copy(new THREE.Color('#18090c').lerp(new THREE.Color('#081419'), state.era));
   particleMaterial.color.copy(new THREE.Color('#ff9b52').lerp(new THREE.Color('#82d9e5'), state.era));
   particles.rotation.z = Math.sin(elapsed * .08) * .012;
 
@@ -743,6 +936,36 @@ function updateVisuals(dt, elapsed) {
   const playerPresent = new THREE.Color('#dffaff');
   const playerColor = playerPast.lerp(playerPresent, state.era);
   for (const item of playerMesh.userData.bodyMaterials) item.color.copy(playerColor);
+  const accentColor = new THREE.Color('#dc8b4d').lerp(new THREE.Color('#75cbd6'), state.era);
+  for (const item of playerMesh.userData.accentMaterials) item.color.copy(accentColor);
+
+  const rig = playerMesh.userData.rig;
+  const moving = player.grounded ? THREE.MathUtils.clamp(Math.abs(player.vx) / player.speed, 0, 1) : 0;
+  player.walkBlend = THREE.MathUtils.damp(player.walkBlend, moving, moving > player.walkBlend ? 12 : 9, dt);
+  if (moving > .04) player.walkPhase += dt * (7.2 + Math.abs(player.vx) * .8);
+  const stride = Math.sin(player.walkPhase) * .68 * player.walkBlend;
+  const armStride = -stride * .62;
+  const airborne = player.grounded ? 0 : 1;
+  const leftLegTarget = airborne ? -.23 : stride;
+  const rightLegTarget = airborne ? .3 : -stride;
+  const leftArmTarget = airborne ? .22 : armStride;
+  const rightArmTarget = airborne ? -.34 : -armStride;
+  rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
+  rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
+  rig.leftArm.rotation.z = THREE.MathUtils.damp(rig.leftArm.rotation.z, leftArmTarget, 13, dt);
+  rig.rightArm.rotation.z = THREE.MathUtils.damp(rig.rightArm.rotation.z, rightArmTarget, 13, dt);
+
+  const stepBounce = Math.abs(Math.sin(player.walkPhase * 2)) * .045 * player.walkBlend;
+  rig.bodyRig.position.y = rig.bodyBaseY + stepBounce;
+  rig.headRig.position.y = rig.headBaseY + stepBounce * .72;
+  rig.leftArm.position.y = rig.leftArmBaseY + stepBounce;
+  rig.rightArm.position.y = rig.rightArmBaseY + stepBounce;
+  const jumpHeight = Math.max(0, player.y - (groundY + player.halfH));
+  rig.shadow.position.y = -.83 - jumpHeight;
+  rig.shadow.scale.x = 1 - Math.min(.42, jumpHeight * .12) + player.walkBlend * .06;
+  rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
+  rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
+
   playerMesh.position.set(player.x, player.y, 2.2);
   playerMesh.scale.x = player.facing;
   playerMesh.rotation.z = THREE.MathUtils.damp(playerMesh.rotation.z, -player.vx * .008, 12, dt);
