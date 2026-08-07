@@ -470,25 +470,6 @@ kbd {
   border-bottom: 7px solid #8e5c38;
   background: #d49a58;
 }
-.spear-icon::before {
-  content: '';
-  position: absolute;
-  left: 13px;
-  top: 5px;
-  width: 3px;
-  height: 25px;
-  background: #a46a3f;
-}
-.spear-icon::after {
-  content: '';
-  position: absolute;
-  left: 9px;
-  top: 0;
-  width: 11px;
-  height: 11px;
-  background: #cff7fb;
-  clip-path: polygon(50% 0, 100% 70%, 50% 100%, 0 70%);
-}
 .mini-wheel {
   width: 23px;
   height: 23px;

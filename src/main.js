@@ -20,7 +20,6 @@ const doorStatus = document.querySelector('#door-status');
 const doorPower = document.querySelector('#door-power');
 const doorLock = document.querySelector('#door-lock');
 const hotbarSword = document.querySelector('#hotbar-sword');
-const hotbarSpear = document.querySelector('#hotbar-spear');
 const hotbarWheel = document.querySelector('#hotbar-wheel');
 const playerHealthFill = document.querySelector('#player-health-fill');
 const playerHealthCopy = document.querySelector('#player-health-copy');
@@ -58,7 +57,6 @@ const state = {
   elevatorRiding: false,
   elevatorAtBottom: false,
   bossAwake: false,
-  selectedWeapon: 'sword',
   attackTimer: 0,
   attackDuration: 0,
   attackCooldown: 0,
@@ -953,20 +951,11 @@ function createSword() {
   return group;
 }
 
-function createSpear() {
-  const group = new THREE.Group();
-  rectangle(group, 2.35, .07, '#a76e43', 1.0, 0, .2, .98);
-  polygon(group, [[0, -.18], [.52, 0], [0, .18]], '#d8f8fb', 2.18, 0, .22, .98);
-  rectangle(group, .24, .11, '#d39a59', -.18, 0, .22, .95);
-  return group;
-}
-
 const weaponRig = new THREE.Group();
-weaponRig.position.set(.22, -.02, .45);
+weaponRig.position.set(0, -.39, .45);
 const swordMesh = createSword();
-const spearMesh = createSpear();
-weaponRig.add(swordMesh, spearMesh);
-playerMesh.add(weaponRig);
+weaponRig.add(swordMesh);
+playerMesh.userData.rig.rightArm.add(weaponRig);
 const slashMesh = new THREE.Mesh(
   new THREE.RingGeometry(.68, 1.48, 28, 1, -.9, 1.8),
   material('#b8f5fa', .22),
@@ -1008,20 +997,9 @@ function updateInventoryHud() {
   const hasWheel = state.inventory.handwheel;
   handwheelSlot.classList.toggle('empty', !hasWheel);
   hotbarWheel.classList.toggle('empty', !hasWheel);
-  hotbarSword.classList.toggle('selected', state.selectedWeapon === 'sword');
-  hotbarSpear.classList.toggle('selected', state.selectedWeapon === 'spear');
-  if (state.selectedWeapon === 'spear') {
-    inventoryItemName.textContent = '矿用长矛';
-    inventoryItemStatus.textContent = '快捷栏 2 · 较远距离直刺 · 伤害 24 · 不会消耗';
-  } else {
-    inventoryItemName.textContent = '矿用长剑';
-    inventoryItemStatus.textContent = '快捷栏 1 · 近距离横斩 · 伤害 38 · 不会消耗';
-  }
-}
-
-function selectWeapon(weapon) {
-  state.selectedWeapon = weapon;
-  updateHud();
+  hotbarSword.classList.add('selected');
+  inventoryItemName.textContent = '矿用长剑';
+  inventoryItemStatus.textContent = '快捷栏 1 · 从右上向右下挥砍 · 伤害 38 · 不会消耗';
 }
 
 function setInventoryOpen(open) {
@@ -1087,7 +1065,6 @@ function resetHistory() {
   state.elevatorRiding = false;
   state.elevatorAtBottom = false;
   state.bossAwake = false;
-  state.selectedWeapon = 'sword';
   state.attackTimer = 0;
   state.attackDuration = 0;
   state.attackCooldown = 0;
@@ -1351,17 +1328,16 @@ function checkHistoryEvents() {
     state.bossAwake = true;
     state.pulse = 1;
     state.boss.projectileTimer = .8;
-    showToast('异常采掘构装体苏醒：按 1/2 切换长剑与长矛，按 J 或点击鼠标攻击');
+    showToast('异常采掘构装体苏醒：按 J 或点击鼠标，用长剑从上向下挥砍');
     updateHud();
   }
 }
 
 function tryAttack() {
   if (state.inventoryOpen || state.elevatorRiding || state.attackCooldown > 0) return;
-  const sword = state.selectedWeapon === 'sword';
-  state.attackDuration = sword ? .34 : .46;
+  state.attackDuration = .38;
   state.attackTimer = state.attackDuration;
-  state.attackCooldown = sword ? .4 : .54;
+  state.attackCooldown = .44;
   state.attackHit = false;
 }
 
@@ -1401,7 +1377,7 @@ function damageBoss(amount) {
   if (!state.bossAwake || state.boss.defeated || state.eraTarget < .5) return;
   state.boss.health = Math.max(0, state.boss.health - amount);
   state.boss.hitFlash = .16;
-  state.boss.vx += player.facing * (state.selectedWeapon === 'sword' ? 1.8 : 2.6);
+  state.boss.vx += player.facing * 1.8;
   if (state.boss.health <= 0) {
     state.boss.defeated = true;
     state.boss.vx = 0;
@@ -1431,10 +1407,11 @@ function updateCombat(dt, elapsed) {
   state.boss.hitFlash = Math.max(0, state.boss.hitFlash - dt);
   if (state.attackTimer > 0) {
     state.attackTimer = Math.max(0, state.attackTimer - dt);
-    const range = state.selectedWeapon === 'sword' ? 1.85 : 3.05;
-    const damage = state.selectedWeapon === 'sword' ? 38 : 24;
+    const range = 1.85;
+    const damage = 38;
+    const strikeProgress = state.attackDuration > 0 ? 1 - state.attackTimer / state.attackDuration : 1;
     const bossAhead = (state.boss.x - player.x) * player.facing > -.35;
-    if (!state.attackHit && bossAhead && Math.abs(state.boss.x - player.x) < range && Math.abs(player.y - (labGroundY + player.halfH)) < 1.4) {
+    if (!state.attackHit && strikeProgress >= .3 && bossAhead && Math.abs(state.boss.x - player.x) < range && Math.abs(player.y - (labGroundY + player.halfH)) < 1.4) {
       state.attackHit = true;
       damageBoss(damage);
     }
@@ -1501,7 +1478,7 @@ function updateHud() {
   if (state.boss.defeated) {
     objective.textContent = 'Boss已击败：异常采掘构装体停止运行，时间扰动场和战斗封锁已经解除';
   } else if (state.bossAwake) {
-    objective.textContent = `Boss战：${state.selectedWeapon === 'sword' ? '长剑近身横斩' : '长矛保持距离直刺'} · 按 1/2 切换 · J或鼠标攻击`;
+    objective.textContent = 'Boss战：长剑从右上向右下挥砍 · 靠近后按 J 或点击鼠标攻击';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -1751,13 +1728,22 @@ function updateVisuals(dt, elapsed) {
   const gaitPose = gaitFrames[gaitFrame];
   const stride = (gaitPose.leftHip - gaitPose.rightHip) * .5 * player.walkBlend;
   const armStride = -stride * .72;
+  const attacking = state.attackTimer > 0;
+  const attackProgress = attacking && state.attackDuration > 0
+    ? 1 - state.attackTimer / state.attackDuration
+    : 0;
+  const attackEase = attackProgress * attackProgress * (3 - attackProgress * 2);
   const airborne = player.grounded ? 0 : 1;
   const leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
   const rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
   const leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
   const rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
-  const leftArmTarget = airborne ? .22 : armStride;
-  const rightArmTarget = airborne ? -.34 : -armStride;
+  let leftArmTarget = airborne ? .22 : armStride;
+  let rightArmTarget = airborne ? -.34 : -armStride;
+  if (attacking) {
+    rightArmTarget = THREE.MathUtils.lerp(-.22, .62, attackEase);
+    leftArmTarget = THREE.MathUtils.lerp(.12, .46, Math.sin(attackProgress * Math.PI));
+  }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
   rig.leftKnee.rotation.z = THREE.MathUtils.damp(rig.leftKnee.rotation.z, leftKneeTarget, 17, dt);
@@ -1777,23 +1763,12 @@ function updateVisuals(dt, elapsed) {
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
 
-  const attacking = state.attackTimer > 0;
-  const attackProgress = attacking && state.attackDuration > 0
-    ? 1 - state.attackTimer / state.attackDuration
-    : 0;
-  swordMesh.visible = state.selectedWeapon === 'sword';
-  spearMesh.visible = state.selectedWeapon === 'spear';
-  if (state.selectedWeapon === 'sword') {
-    swordMesh.rotation.z = attacking ? -1.02 + attackProgress * 1.92 : -.72;
-    swordMesh.position.set(.02, attacking ? .08 : -.08, 0);
-    slashMesh.visible = attacking;
-    slashMesh.rotation.z = -.25 + attackProgress * .65;
-    slashMesh.material.opacity = attacking ? Math.sin(attackProgress * Math.PI) * .3 : 0;
-  } else {
-    spearMesh.rotation.z = -.16;
-    spearMesh.position.set(attacking ? Math.sin(attackProgress * Math.PI) * .92 : 0, attacking ? .04 : -.12, 0);
-    slashMesh.visible = false;
-  }
+  swordMesh.rotation.z = 0;
+  swordMesh.position.set(0, 0, 0);
+  weaponRig.rotation.z = attacking ? THREE.MathUtils.lerp(1.22, -1.18, attackEase) : -.72;
+  slashMesh.visible = attacking;
+  slashMesh.rotation.z = .62 - attackEase * 1.18;
+  slashMesh.material.opacity = attacking ? Math.sin(attackProgress * Math.PI) * .3 : 0;
 
   if (player.hurtCooldown > .55) {
     for (const item of playerMesh.userData.bodyMaterials) item.color.set('#ff9b8d');
@@ -1837,8 +1812,7 @@ function resize() {
 }
 
 addEventListener('keydown', event => {
-  if (!event.repeat && event.code === 'Digit1') selectWeapon('sword');
-  if (!event.repeat && event.code === 'Digit2') selectWeapon('spear');
+  if (!event.repeat && event.code === 'Digit1') showToast('已装备矿用长剑');
   if (!event.repeat && event.code === 'KeyJ') tryAttack();
   if (!event.repeat && event.code === 'KeyB') toggleInventory();
   if (!event.repeat && event.code === 'Escape' && state.inventoryOpen) setInventoryOpen(false);
@@ -1847,7 +1821,7 @@ addEventListener('keydown', event => {
   if (!event.repeat && event.code === 'KeyE') handleInteraction();
   if (!event.repeat && (event.code === 'KeyW' || event.code === 'Space')) tryJump();
   keys.add(event.code);
-  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1', 'Digit2'].includes(event.code)) event.preventDefault();
+  if (['Space', 'KeyW', 'KeyA', 'KeyB', 'KeyD', 'KeyE', 'KeyJ', 'KeyQ', 'Digit1'].includes(event.code)) event.preventDefault();
 });
 addEventListener('pointerdown', event => {
   if (event.button === 0) tryAttack();
