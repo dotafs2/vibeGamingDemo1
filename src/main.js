@@ -27,12 +27,12 @@ const state = {
   eraTarget: 1,
   pulse: 0,
   lastToggle: -10,
-  gateCollapse: 0,
+  wallCollapse: 0,
   exitReached: false,
   history: {
     crateMoved: false,
-    plateWeighted: false,
-    gateSeen: false,
+    saplingRooted: false,
+    wallSeen: false,
   },
 };
 
@@ -233,15 +233,16 @@ for (let x = -15.5; x <= 15.5; x += 1.05) {
   segment(commonLayer, x, groundY + .01, x + .72, groundY + .01, '#789099', .18, .3);
 }
 
-const pressureGroup = new THREE.Group();
-pressureGroup.position.set(2.75, groundY + .13, .7);
-scene.add(pressureGroup);
-const pressureBaseMaterial = material('#5f3428', .95);
-const pressureGlowMaterial = material('#ffaf5e', .35);
-rectangle(pressureGroup, 2.3, .23, '#6c3527', 0, 0, 0, .95).material = pressureBaseMaterial;
-rectangle(pressureGroup, 1.55, .08, '#ffad5a', 0, .16, .05, .42).material = pressureGlowMaterial;
-segment(pressureGroup, -1.0, .3, -1.0, .8, '#f6a252', .38, .1);
-segment(pressureGroup, 1.0, .3, 1.0, .8, '#f6a252', .38, .1);
+const soilBed = new THREE.Group();
+soilBed.position.set(4.15, groundY + .13, .7);
+scene.add(soilBed);
+const soilMaterial = material('#563326', .95);
+const waterMaterial = material('#69c6d4', .34);
+rectangle(soilBed, 2.45, .25, '#563326', 0, 0, 0, .95).material = soilMaterial;
+rectangle(soilBed, 1.85, .08, '#69c6d4', 0, .16, .05, .34).material = waterMaterial;
+for (let index = 0; index < 5; index++) {
+  segment(soilBed, -.8 + index * .4, .27, -.62 + index * .4, .38, '#8edbe4', .26, .1);
+}
 
 function createCrate(width, height, fill, edge, rune = false) {
   const group = new THREE.Group();
@@ -283,10 +284,10 @@ const boxes = [
     id: 'anchor',
     width: 1.55,
     height: 1.5,
-    pastX: -1.65,
-    presentX: -1.1,
-    initialPastX: -1.65,
-    initialPresentX: -1.1,
+    pastX: -.45,
+    presentX: .05,
+    initialPastX: -.45,
+    initialPresentX: .05,
     presentTouched: false,
     pastMesh: createCrate(1.55, 1.5, '#7f3c24', '#ffb362', true),
     presentMesh: createCrate(1.55, 1.5, '#28515a', '#9ee9f2', true),
@@ -308,6 +309,47 @@ const boxes = [
 for (const box of boxes) {
   scene.add(box.pastMesh, box.presentMesh);
 }
+
+const saplingPast = new THREE.Group();
+segment(saplingPast, 0, 0, 0, .72, '#8bc56b', .92, .1);
+segment(saplingPast, 0, .43, -.34, .7, '#9ed779', .84, .1);
+segment(saplingPast, 0, .52, .36, .83, '#9ed779', .84, .1);
+disc(saplingPast, .19, '#78b85f', -.36, .72, .1, .8, 18);
+disc(saplingPast, .21, '#82c565', .38, .86, .1, .84, 18);
+scene.add(saplingPast);
+
+const futureTree = new THREE.Group();
+futureTree.position.set(soilBed.position.x, groundY, .55);
+rectangle(futureTree, .74, 5.25, '#24474a', 0, 2.55, 0, .96);
+rectangle(futureTree, .32, 4.1, '#38676a', .23, 2.5, .04, .62);
+segment(futureTree, 0, 3.2, -2.0, 5.25, '#4d8584', .72, .08);
+segment(futureTree, .12, 3.55, 2.15, 5.0, '#4d8584', .72, .08);
+segment(futureTree, -.05, 2.1, -1.65, 3.5, '#47797a', .62, .08);
+disc(futureTree, 1.5, '#1d4b4e', -1.65, 5.2, -.1, .88, 36);
+disc(futureTree, 1.75, '#22565a', .1, 5.65, -.12, .9, 36);
+disc(futureTree, 1.45, '#276166', 1.65, 5.1, -.1, .84, 36);
+segment(futureTree, 0, .3, -2.55, -.05, '#6da2a0', .74, .12);
+segment(futureTree, .05, .34, 3.35, .55, '#7db0ad', .86, .12);
+segment(futureTree, .1, .28, 2.8, 1.05, '#638f8e', .7, .12);
+segment(futureTree, -.05, .2, -1.8, .75, '#638f8e', .66, .12);
+scene.add(futureTree);
+
+const pastWall = new THREE.Group();
+pastWall.position.set(7.35, groundY, .82);
+scene.add(pastWall);
+for (let index = 0; index < 4; index++) {
+  const panel = new THREE.Group();
+  rectangle(panel, .72, 4.8, '#663427', 0, 2.4, 0, .94);
+  const edge = new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.PlaneGeometry(.72, 4.8)),
+    lineMaterial('#e39355', .62),
+  );
+  edge.position.y = 2.4;
+  panel.add(edge);
+  panel.position.x = (index - 1.5) * .74;
+  pastWall.add(panel);
+}
+rectangle(pastWall, 3.85, .34, '#7a422d', 0, 5.02, .1, .92);
 
 const gate = new THREE.Group();
 gate.position.set(7.35, groundY, 1);
@@ -407,11 +449,10 @@ function toggleEra() {
 
   if (state.eraTarget < .5) {
     showToast('时间坐标锁定：矿镇建造期 / 2047');
-  } else if (state.history.plateWeighted) {
-    state.history.gateSeen = true;
-    showToast('历史结果载入：百年封锁结构已经坍塌');
+  } else if (state.history.saplingRooted) {
+    showToast('时间推进一百年：幼苗正在长成大树');
   } else {
-    showToast('返回现代：封锁门仍然存在');
+    showToast('返回现代：没有种下幼苗，墙体仍然完整');
   }
   updateHud();
 }
@@ -420,11 +461,11 @@ function resetHistory() {
   state.eraTarget = 1;
   state.era = 1;
   state.pulse = 1;
-  state.gateCollapse = 0;
+  state.wallCollapse = 0;
   state.exitReached = false;
   state.history.crateMoved = false;
-  state.history.plateWeighted = false;
-  state.history.gateSeen = false;
+  state.history.saplingRooted = false;
+  state.history.wallSeen = false;
   for (const box of boxes) {
     box.pastX = box.initialPastX;
     box.presentX = box.initialPresentX;
@@ -451,12 +492,12 @@ function setActiveBoxX(box, value) {
     if (!box.presentTouched) box.presentX = value + .55;
     if (box.id === 'anchor' && Math.abs(box.pastX - box.initialPastX) > .3 && !state.history.crateMoved) {
       state.history.crateMoved = true;
-      showToast('历史事件：时间箱的位置已被改写');
+      showToast('历史事件：育苗箱的位置已被改写');
     }
   } else {
     box.presentX = value;
     box.presentTouched = true;
-    if (box.id === 'anchor') showToast('现代移动只影响现代，不会反向改写过去');
+    if (box.id === 'anchor') showToast('现代只能移动残留物，无法反向改变幼苗的位置');
   }
 }
 
@@ -465,13 +506,14 @@ function overlaps(aCenter, aHalf, bCenter, bHalf) {
 }
 
 function boxCanMove(box, nextX) {
+  if (box.id === 'anchor' && state.history.saplingRooted) return false;
   if (nextX - box.width / 2 < -14.5 || nextX + box.width / 2 > 14.5) return false;
   for (const other of boxes) {
     if (other === box) continue;
     if (overlaps(nextX, box.width / 2, activeBoxX(other), other.width / 2)) return false;
   }
-  const gateBlocking = state.eraTarget > .5 && state.gateCollapse < .62;
-  if (gateBlocking && overlaps(nextX, box.width / 2, gate.position.x, 1.52)) return false;
+  const wallBlocking = state.eraTarget < .5 || state.wallCollapse < .62;
+  if (wallBlocking && overlaps(nextX, box.width / 2, gate.position.x, 1.52)) return false;
   return true;
 }
 
@@ -503,8 +545,8 @@ function updateHorizontal(dt) {
     }
   }
 
-  const gateBlocking = state.eraTarget > .5 && state.gateCollapse < .62;
-  if (gateBlocking && overlaps(nextX, player.halfW, gate.position.x, 1.48) && playerBottom < groundY + 5.0) {
+  const wallBlocking = state.eraTarget < .5 || state.wallCollapse < .62;
+  if (wallBlocking && overlaps(nextX, player.halfW, gate.position.x, 1.48) && playerBottom < groundY + 5.0) {
     nextX = player.x < gate.position.x
       ? gate.position.x - 1.48 - player.halfW
       : gate.position.x + 1.48 + player.halfW;
@@ -549,19 +591,21 @@ function tryJump() {
 
 function checkHistoryEvents() {
   const anchor = boxes[0];
-  const anchorOnPlate = Math.abs(anchor.pastX - pressureGroup.position.x) < .66;
-  if (state.eraTarget < .5 && anchorOnPlate && !state.history.plateWeighted) {
-    state.history.plateWeighted = true;
-    pressureGlowMaterial.opacity = .92;
-    pressureGlowMaterial.userData.baseOpacity = .92;
-    showToast('关键历史已锁定：时间压力板永久启动');
+  const anchorOnSoil = Math.abs(anchor.pastX - soilBed.position.x) < .66;
+  if (state.eraTarget < .5 && anchorOnSoil && !state.history.saplingRooted) {
+    state.history.saplingRooted = true;
+    anchor.pastX = soilBed.position.x;
+    anchor.presentX = soilBed.position.x + .08;
+    waterMaterial.opacity = .82;
+    waterMaterial.userData.baseOpacity = .82;
+    showToast('因果成立：幼苗已经扎入湿土，接下来只需要让时间流逝');
     updateHud();
   }
 
   if (
     state.eraTarget > .5
-    && state.history.plateWeighted
-    && state.gateCollapse > .75
+    && state.history.saplingRooted
+    && state.wallCollapse > .75
     && player.x > 12.15
     && !state.exitReached
   ) {
@@ -573,22 +617,22 @@ function checkHistoryEvents() {
 
 function updateHud() {
   eventCrate.classList.toggle('active', state.history.crateMoved);
-  eventPlate.classList.toggle('active', state.history.plateWeighted);
-  eventGate.classList.toggle('active', state.history.gateSeen);
+  eventPlate.classList.toggle('active', state.history.saplingRooted);
+  eventGate.classList.toggle('active', state.history.wallSeen);
   eventCrate.querySelector('span').textContent = state.history.crateMoved ? '过去位置已改写' : '尚未发生';
-  eventPlate.querySelector('span').textContent = state.history.plateWeighted ? '历史机制已锁定' : '尚未发生';
-  eventGate.querySelector('span').textContent = state.history.gateSeen ? '现代通路已开放' : '等待历史';
+  eventPlate.querySelector('span').textContent = state.history.saplingRooted ? '根系开始生长' : '尚未发生';
+  eventGate.querySelector('span').textContent = state.history.wallSeen ? '同一堵墙已被顶开' : '等待时间';
 
   if (state.exitReached) {
     objective.textContent = '原型验证完成：过去的行动已经为现代打开新道路';
   } else if (state.eraTarget < .5) {
-    objective.textContent = state.history.plateWeighted
-      ? '历史已记录。按 Q 返回现代查看封锁门的结果'
-      : '把带圆形标记的时间箱推到右侧发光压力板上';
-  } else if (state.history.plateWeighted) {
-    objective.textContent = '历史改变成功：现代封锁门已坍塌，前往右侧出口';
+    objective.textContent = state.history.saplingRooted
+      ? '幼苗已经扎根。按 Q 让时间推进一百年，观察它如何改变同一堵墙'
+      : '把带幼苗的种植箱推入墙边蓝色湿润土床';
+  } else if (state.history.saplingRooted) {
+    objective.textContent = '百年树根顶开了同一堵墙，沿着根系穿过现代出口';
   } else {
-    objective.textContent = '现代封锁门仍然完整。按 Q 回到过去改变它的原因';
+    objective.textContent = '现代墙体仍然完整。按 Q 回到过去，在墙边种下一棵树';
   }
 }
 
@@ -600,31 +644,49 @@ function updateInteractionHint() {
   const show = nearest && nearest.distance < 1.65 && player.y < groundY + nearest.box.height + 1.0;
   interaction.classList.toggle('show', Boolean(show));
   if (show) {
-    interaction.querySelector('span').textContent = state.eraTarget < .5
-      ? '继续移动即可推动 · 过去的变化会传到现代'
-      : '继续移动即可推动 · 现代变化不会反向传到过去';
+    if (nearest.box.id === 'anchor' && state.history.saplingRooted) {
+      interaction.querySelector('span').textContent = state.eraTarget < .5
+        ? '幼苗已经扎根，育苗箱被根系固定'
+        : '这就是过去的育苗箱，如今已经与百年树根长在一起';
+    } else {
+      interaction.querySelector('span').textContent = state.eraTarget < .5
+        ? '继续移动即可推动 · 过去的变化会传到现代'
+        : '继续移动即可推动 · 现代变化不会反向传到过去';
+    }
   }
 }
 
-function updateGate(dt, elapsed) {
-  const shouldCollapse = state.history.plateWeighted && state.eraTarget > .5;
-  state.gateCollapse = THREE.MathUtils.damp(state.gateCollapse, shouldCollapse ? 1 : 0, 2.8, dt);
+function updateWallAndTree(dt, elapsed) {
+  const growth = state.history.saplingRooted
+    ? THREE.MathUtils.smoothstep(state.era, .08, .94)
+    : 0;
+  const collapseTarget = THREE.MathUtils.smoothstep(growth, .48, .98);
+  state.wallCollapse = THREE.MathUtils.damp(state.wallCollapse, collapseTarget, 6.5, dt);
+
+  if (growth > .78 && !state.history.wallSeen) {
+    state.history.wallSeen = true;
+    showToast('现代结果：百年根系正在顶开同一堵墙');
+    updateHud();
+  }
 
   for (let index = 0; index < gatePieces.length; index++) {
     const piece = gatePieces[index];
     const delay = index * .08;
-    const progress = THREE.MathUtils.smoothstep(state.gateCollapse, delay, .7 + delay);
+    const progress = THREE.MathUtils.smoothstep(state.wallCollapse, delay, .7 + delay);
     const direction = index < 2 ? -1 : 1;
     piece.position.x = (index - 1.5) * .74 + direction * progress * (1.0 + index * .08);
     piece.position.y = -progress * (1.55 + (index % 2) * .35);
     piece.rotation.z = direction * progress * (.34 + index * .13);
   }
-  gateHeader.position.y = 5.02 - state.gateCollapse * 4.3;
-  gateHeader.rotation.z = state.gateCollapse * .22;
-  gateWarning.material.opacity = .38 * (1 - state.gateCollapse);
+  gateHeader.position.y = 5.02 - state.wallCollapse * 4.3;
+  gateHeader.rotation.z = state.wallCollapse * .22;
+  gateWarning.material.opacity = .38 * (1 - state.wallCollapse);
 
-  exitGlow.material.opacity = .035 + state.gateCollapse * .12 + Math.sin(elapsed * 3.1) * .012;
-  exitCore.material.opacity = .18 + state.gateCollapse * .62;
+  futureTree.scale.set(.18 + growth * .82, .18 + growth * .82, 1);
+  setLayerOpacity(futureTree, state.era * growth);
+
+  exitGlow.material.opacity = .035 + state.wallCollapse * .12 + Math.sin(elapsed * 3.1) * .012;
+  exitCore.material.opacity = .18 + state.wallCollapse * .62;
 }
 
 function updateVisuals(dt, elapsed) {
@@ -636,7 +698,8 @@ function updateVisuals(dt, elapsed) {
 
   setLayerOpacity(pastLayer, 1 - state.era);
   setLayerOpacity(presentLayer, state.era);
-  setLayerOpacity(pressureGroup, .18 + (1 - state.era) * .82);
+  setLayerOpacity(soilBed, .18 + (1 - state.era) * .82);
+  setLayerOpacity(pastWall, 1 - state.era);
   setLayerOpacity(gate, state.era);
   setLayerOpacity(exitGroup, state.era);
 
@@ -650,12 +713,19 @@ function updateVisuals(dt, elapsed) {
     box.pastMesh.position.set(box.pastX, groundY + box.height / 2, 1.1);
     box.presentMesh.position.set(box.presentX, groundY + box.height / 2, 1.2);
     setLayerOpacity(box.pastMesh, 1 - state.era);
-    setLayerOpacity(box.presentMesh, state.era);
+    const presentAmount = box.id === 'anchor' && state.history.saplingRooted ? state.era * .42 : state.era;
+    setLayerOpacity(box.presentMesh, presentAmount);
     const nearPast = state.eraTarget < .5 && Math.abs(player.x - box.pastX) < 1.7;
     const nearPresent = state.eraTarget > .5 && Math.abs(player.x - box.presentX) < 1.7;
     box.pastMesh.userData.edgeMaterial.opacity = (nearPast ? 1 : .78) * (1 - state.era);
     box.presentMesh.userData.edgeMaterial.opacity = (nearPresent ? 1 : .78) * state.era;
   }
+
+  const anchor = boxes[0];
+  saplingPast.position.set(anchor.pastX, groundY + anchor.height, 1.35);
+  const saplingScale = state.history.saplingRooted ? 1.18 : .74;
+  saplingPast.scale.set(saplingScale, saplingScale, 1);
+  setLayerOpacity(saplingPast, 1 - state.era);
 
   const playerPast = new THREE.Color('#ffd8ad');
   const playerPresent = new THREE.Color('#dffaff');
@@ -704,8 +774,8 @@ function animate() {
   updateHorizontal(dt);
   updateVertical(dt);
   checkHistoryEvents();
-  updateGate(dt, elapsed);
   updateVisuals(dt, elapsed);
+  updateWallAndTree(dt, elapsed);
   updateInteractionHint();
   renderer.render(scene, camera);
 }
