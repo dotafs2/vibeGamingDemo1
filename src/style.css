@@ -1,0 +1,50 @@
+:root {
+  color: #f4f4f2;
+  background: #090b0e;
+  font-family: Inter, "Microsoft YaHei", system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #game { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+
+#game { display: block; background: #090b0e; }
+
+.hud { position: fixed; inset: 0; pointer-events: none; }
+
+.brand { position: absolute; left: 28px; top: 22px; }
+.brand span, .era-card span, .objective span { color: #8b929c; font-size: 10px; letter-spacing: .18em; }
+.brand h1 { margin: 4px 0; font-size: 19px; font-weight: 600; letter-spacing: .18em; }
+
+.era-card {
+  position: absolute; right: 28px; top: 24px; width: 150px; padding: 12px 14px;
+  border: 1px solid #ffffff20; background: #11151bd9; backdrop-filter: blur(8px);
+}
+.era-card strong { display: block; margin-top: 4px; font-size: 22px; }
+.era-track { height: 2px; margin-top: 10px; background: linear-gradient(90deg, #ff3f4f 0 48%, #e9f3ff 52%); }
+.era-track i { display: block; width: 8px; height: 8px; border-radius: 50%; background: #fff; transform: translate(132px,-3px); transition: transform .45s ease, background .45s ease; box-shadow: 0 0 12px currentColor; }
+body.past .era-track i { transform: translate(0,-3px); background: #ff4054; }
+
+.objective { position: absolute; left: 28px; bottom: 28px; max-width: 390px; border-left: 2px solid #fff; padding-left: 13px; }
+.objective p { margin: 5px 0 0; color: #d8dce2; font-size: 13px; }
+
+.controls { position: absolute; right: 28px; bottom: 28px; display: grid; grid-template-columns: auto auto; gap: 6px 9px; align-items: center; color: #9ba1aa; font-size: 10px; }
+kbd { min-width: 52px; padding: 4px 7px; border: 1px solid #ffffff30; border-radius: 2px; color: #fff; background: #171b21; text-align: center; font-family: inherit; font-size: 9px; }
+
+.boss-hud { position: absolute; top: 26px; left: 50%; width: min(320px, 36vw); transform: translateX(-50%); }
+.boss-hud > div:first-child { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: .14em; color: #aab0b9; }
+.health { height: 3px; margin-top: 7px; background: #ffffff18; }
+.health i { display: block; width: 100%; height: 100%; background: #f2f4f7; transition: width .2s; }
+
+.toast { position: fixed; left: 50%; top: 18%; transform: translate(-50%, -8px); padding: 9px 15px; border: 1px solid #ffffff24; color: #fff; background: #11151be8; font-size: 12px; letter-spacing: .08em; opacity: 0; transition: .25s ease; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+body.past .objective { border-color: #ff4054; }
+body.past .health i { background: #ff5b68; }
+
+@media (max-width: 650px) {
+  .brand h1 { font-size: 15px; }
+  .boss-hud { top: 92px; width: calc(100% - 56px); }
+  .controls { display: none; }
+}
