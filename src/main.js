@@ -13,6 +13,9 @@ const inventoryPanel = document.querySelector('#inventory-panel');
 const handwheelSlot = document.querySelector('#handwheel-slot');
 const inventoryItemName = document.querySelector('#inventory-item-name');
 const inventoryItemStatus = document.querySelector('#inventory-item-status');
+const doorStatus = document.querySelector('#door-status');
+const doorPower = document.querySelector('#door-power');
+const doorLock = document.querySelector('#door-lock');
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-16, 16, 9, -9, 0.1, 100);
@@ -166,65 +169,100 @@ pastLayer.position.z = -2;
 presentLayer.position.z = -1;
 scene.add(pastLayer, presentLayer);
 
+const pastLampMaterials = [];
+const pastPowerNodeMaterials = [];
+const pastDoorPowerMaterials = [];
+
+function buildMineLandmarks(group, palette, ruined) {
+  // 相同的三个永久地标：左侧加工厂、中央维修站、右侧闸门机房。
+  rectangle(group, 7.5, 4.55, palette.hall, -9.0, -1.62, -2, ruined ? .72 : .92);
+  rectangle(group, 5.55, 3.72, palette.workshop, -2.15, -2.04, -2, ruined ? .7 : .9);
+  rectangle(group, 3.55, 6.35, palette.gatehouse, 8.35, -1.38, -2.1, ruined ? .68 : .9);
+  rectangle(group, 1.18, 7.25, palette.tower, 12.75, -.92, -2.1, ruined ? .75 : .92);
+  rectangle(group, 2.25, .38, palette.trim, 12.75, 2.55, -1.8, ruined ? .4 : .78);
+
+  // 同一座圆形储能罐。
+  disc(group, 2.25, palette.tank, -11.05, 3.45, -3, ruined ? .13 : .28);
+  disc(group, 1.55, palette.trim, -11.05, 3.45, -2.9, ruined ? .055 : .12);
+
+  const leftSupports = [-12.1, -10.75, -9.4, -8.05, -6.7];
+  for (let index = 0; index < leftSupports.length; index++) {
+    const x = leftSupports[index];
+    if (ruined && index === 2) {
+      segment(group, x, -3.9, x + .35, -1.25, palette.structure, .23);
+    } else {
+      segment(group, x, -3.88, x, ruined && index === 4 ? -.95 : .47, palette.structure, ruined ? .24 : .62);
+    }
+  }
+  segment(group, -12.35, .56, -5.65, .56, palette.trim, ruined ? .22 : .65);
+  segment(group, -12.0, -3.45, -5.95, .32, palette.structure, ruined ? .14 : .28);
+  segment(group, -11.85, .32, -5.85, -3.45, palette.structure, ruined ? .12 : .28);
+
+  const workshopSupports = [-4.45, -3.25, -2.05, -.85, .35];
+  for (let index = 0; index < workshopSupports.length; index++) {
+    const x = workshopSupports[index];
+    if (ruined && index === 3) segment(group, x, -3.82, x + .25, -1.45, palette.structure, .2);
+    else segment(group, x, -3.84, x, -.38, palette.structure, ruined ? .2 : .5);
+  }
+  segment(group, -4.72, -.2, .58, -.2, palette.trim, ruined ? .18 : .55);
+
+  // 同一条从加工厂通向闸门的高架供电管线。
+  if (ruined) {
+    segment(group, -12.35, 1.25, -6.1, 1.25, palette.conduit, .2);
+    segment(group, -5.65, 1.08, -1.25, .72, palette.conduit, .17);
+    segment(group, -.7, .78, 2.45, .92, palette.conduit, .17);
+    segment(group, 3.05, .82, 5.25, 1.2, palette.conduit, .16);
+  } else {
+    segment(group, -12.35, 1.25, 5.25, 1.25, palette.conduit, .76);
+    segment(group, 5.25, 1.25, 7.35, 3.55, palette.conduit, .62);
+  }
+
+  const lampXs = [-10.6, -6.5, -2.35, 1.75, 5.15];
+  for (const x of lampXs) {
+    const lamp = disc(group, .13, ruined ? palette.deadLamp : palette.lamp, x, .9, -.9, ruined ? .28 : .95);
+    if (!ruined) pastLampMaterials.push(lamp.material);
+  }
+
+  if (!ruined) {
+    for (let index = 0; index < 12; index++) {
+      const node = disc(group, .055, palette.lamp, -10.8 + index * 1.38, 1.25, -.75, .5);
+      pastPowerNodeMaterials.push(node.material);
+    }
+    // 正常运转的输送带与维修台。
+    rectangle(group, 6.25, .28, palette.trim, -9.0, -3.42, -1.2, .56);
+    for (let x = -11.75; x <= -6.25; x += .55) disc(group, .1, palette.lamp, x, -3.42, -1.0, .35);
+    rectangle(group, 2.9, .24, palette.trim, -2.15, -3.5, -1.2, .52);
+  } else {
+    // 原位置的破损输送带、坠落管线和瓦砾。
+    const fallenBelt = rectangle(group, 3.1, .3, palette.trim, -10.15, -3.46, -1.2, .28);
+    fallenBelt.rotation.z = -.08;
+    const fallenPipe = rectangle(group, 2.6, .18, palette.conduit, 1.35, -3.25, -1.1, .22);
+    fallenPipe.rotation.z = .18;
+    for (let index = 0; index < 7; index++) {
+      const chunk = rectangle(group, .32 + (index % 3) * .18, .28 + (index % 2) * .18, palette.debris, -11.5 + index * 1.9, -4.0, -1, .58);
+      chunk.rotation.z = -.4 + index * .13;
+    }
+    segment(group, -11.55, 3.95, -10.3, 2.4, palette.crack, .22);
+    segment(group, -10.3, 2.4, -11.0, 1.7, palette.crack, .18);
+    segment(group, -3.4, -.35, -2.35, -1.5, palette.crack, .2);
+    segment(group, -2.35, -1.5, -2.8, -2.55, palette.crack, .17);
+  }
+}
+
 function buildPastScene() {
-  disc(pastLayer, 2.5, '#6f1f1d', 10.3, 3.4, -3, .34);
-  disc(pastLayer, 1.72, '#d14f2d', 10.3, 3.4, -2.9, .18);
-
-  rectangle(pastLayer, 7.2, 4.4, '#35191a', -8.8, -1.8, -2, .9);
-  rectangle(pastLayer, 5.1, 3.2, '#4a2020', -2.2, -2.35, -2, .86);
-  rectangle(pastLayer, 3.9, 5.8, '#2d1517', 8.3, -1.2, -2, .92);
-  rectangle(pastLayer, 1.1, 7.5, '#3d1b1a', 12.8, -.75, -2, .92);
-  rectangle(pastLayer, 2.1, .42, '#7b3927', 12.8, 2.75, -1.9, .8);
-
-  for (let x = -11.3; x <= -6.3; x += 1.25) {
-    rectangle(pastLayer, .12, 3.7, '#9e5232', x, -1.5, -1.6, .55);
-  }
-  for (let x = -4.1; x <= 0; x += 1.05) {
-    rectangle(pastLayer, .10, 2.55, '#9e5232', x, -2.4, -1.6, .45);
-  }
-
-  segment(pastLayer, -12.2, .25, -5.4, .25, '#e1844d', .42);
-  segment(pastLayer, -12, -3.2, -5.7, .1, '#9e5232', .32);
-  segment(pastLayer, -11.5, .1, -5.7, -3.2, '#9e5232', .32);
-  segment(pastLayer, -4.6, -1.1, .3, -1.1, '#dc7546', .35);
-
-  for (let i = 0; i < 5; i++) {
-    rectangle(pastLayer, .36, 1.5 + i * .22, '#6b2f25', 5.2 + i * .47, -3.7 + i * .11, -1.8, .78);
-  }
-
-  segment(pastLayer, 8.0, -4.15, 8.0, 1.8, '#bd6540', .38);
-  segment(pastLayer, 9.1, -4.15, 9.1, 1.4, '#bd6540', .38);
-  segment(pastLayer, 7.7, .9, 9.45, .9, '#df8150', .42);
-  segment(pastLayer, 7.7, -.4, 9.45, -.4, '#df8150', .32);
+  buildMineLandmarks(pastLayer, {
+    hall: '#35191a', workshop: '#43201e', gatehouse: '#321819', tower: '#3d1b1a',
+    structure: '#a25735', trim: '#d17645', tank: '#6f1f1d', conduit: '#f08b4b',
+    lamp: '#ffb15d', deadLamp: '#7d4d37', debris: '#5e2d22', crack: '#bd6845',
+  }, false);
 }
 
 function buildPresentScene() {
-  disc(presentLayer, 2.4, '#397a83', -10.7, 3.7, -3, .16);
-  disc(presentLayer, 1.75, '#8fdde4', -10.7, 3.7, -2.9, .08);
-
-  rectangle(presentLayer, 6.8, 2.8, '#132d34', -9.0, -2.65, -2, .95);
-  rectangle(presentLayer, 2.1, 4.1, '#17333a', -5.15, -2.0, -2, .88);
-  rectangle(presentLayer, 4.8, 2.1, '#152c32', -1.9, -3.0, -2, .88);
-  rectangle(presentLayer, 3.5, 3.2, '#10282f', 8.55, -2.4, -2, .92);
-  rectangle(presentLayer, 1.25, 6.1, '#112c33', 12.5, -1.55, -2, .92);
-
-  segment(presentLayer, -12.3, -1.2, -6.0, -.3, '#62adba', .18);
-  segment(presentLayer, -11.6, -.5, -8.4, -3.6, '#62adba', .16);
-  segment(presentLayer, -5.8, -.05, -4.2, -1.1, '#75bec8', .18);
-  segment(presentLayer, -4.0, -1.95, .2, -1.35, '#75bec8', .16);
-  segment(presentLayer, 8.7, -.8, 10.1, -3.55, '#75bec8', .18);
-
-  for (let i = 0; i < 8; i++) {
-    const x = -12 + i * 3.35;
-    segment(presentLayer, x, groundY + .05, x + .35, groundY + .65 + (i % 3) * .25, '#5fa6ae', .22);
-  }
-
-  for (let i = 0; i < 6; i++) {
-    rectangle(presentLayer, .22, 1.3 + i * .13, '#1d444b', 3.9 + i * .45, -3.85 + i * .07, -1.7, .8);
-  }
-
-  segment(presentLayer, 12.0, 1.5, 12.75, 2.35, '#77c6cf', .2);
-  segment(presentLayer, 12.75, 2.35, 13.1, 1.5, '#77c6cf', .2);
+  buildMineLandmarks(presentLayer, {
+    hall: '#132d34', workshop: '#142e34', gatehouse: '#10282f', tower: '#112c33',
+    structure: '#4c7b82', trim: '#5f9da6', tank: '#397a83', conduit: '#62adba',
+    lamp: '#82d9e5', deadLamp: '#54747a', debris: '#28454c', crack: '#75bec8',
+  }, true);
 }
 
 buildPastScene();
@@ -242,46 +280,6 @@ for (let x = -15.5; x <= 15.5; x += 1.05) {
   segment(commonLayer, x, groundY + .01, x + .72, groundY + .01, '#789099', .18, .3);
 }
 
-function createCrate(width, height, fill, edge, rune = false) {
-  const group = new THREE.Group();
-  const fillMaterial = material(fill, .9);
-  const edgeMaterial = lineMaterial(edge, .95);
-  const face = new THREE.Mesh(new THREE.PlaneGeometry(width, height), fillMaterial);
-  group.add(face);
-
-  const outline = new THREE.LineLoop(
-    new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(-width / 2, -height / 2, .02),
-      new THREE.Vector3(width / 2, -height / 2, .02),
-      new THREE.Vector3(width / 2, height / 2, .02),
-      new THREE.Vector3(-width / 2, height / 2, .02),
-    ]),
-    edgeMaterial,
-  );
-  group.add(outline);
-  segment(group, -width * .38, -height * .38, width * .38, height * .38, edge, .62, .04);
-  segment(group, -width * .38, height * .38, width * .38, -height * .38, edge, .62, .04);
-
-  if (rune) {
-    const points = Array.from({ length: 33 }, (_, index) => {
-      const angle = index / 32 * Math.PI * 2;
-      return new THREE.Vector3(Math.cos(angle) * width * .22, Math.sin(angle) * width * .22, .07);
-    });
-    group.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points), lineMaterial(edge, .78)));
-    segment(group, 0, -height * .22, 0, height * .22, edge, .72, .08);
-    segment(group, -width * .14, 0, width * .14, 0, edge, .72, .08);
-  }
-
-  group.userData.fillMaterial = fillMaterial;
-  group.userData.edgeMaterial = edgeMaterial;
-  return group;
-}
-
-const handwheelPickupX = -4.85;
-const toolCratePast = createCrate(1.65, 1.28, '#6d3d22', '#ffb15d');
-toolCratePast.position.set(handwheelPickupX, groundY + .64, 1.0);
-scene.add(toolCratePast);
-
 function createHandwheel(color, opacity = 1) {
   const group = new THREE.Group();
   const ringPoints = Array.from({ length: 49 }, (_, index) => {
@@ -297,10 +295,6 @@ function createHandwheel(color, opacity = 1) {
   return group;
 }
 
-const pastHandwheelPickup = createHandwheel('#ffb15d');
-pastHandwheelPickup.position.set(handwheelPickupX, groundY + 1.62, 1.3);
-scene.add(pastHandwheelPickup);
-
 function addStationNumber(group, color, opacity, yOffset = 0) {
   segment(group, -.72, 3.2 + yOffset, -.72, 4.05 + yOffset, color, opacity, .15);
   segment(group, -.72, 4.05 + yOffset, -.28, 4.05 + yOffset, color, opacity, .15);
@@ -314,6 +308,7 @@ function addStationNumber(group, color, opacity, yOffset = 0) {
 
 const gateX = 8.35;
 const winchSocketX = 5.25;
+const handwheelPickupX = winchSocketX;
 
 function createGate(frameColor, doorColor, edgeColor, powered) {
   const group = new THREE.Group();
@@ -335,6 +330,18 @@ function createGate(frameColor, doorColor, edgeColor, powered) {
 
   const indicator = disc(group, .14, powered ? '#ffac59' : '#648990', -1.0, 5.55, .08, .9);
   segment(group, -1.35, 4.95, -1.35, .75, edgeColor, .3, .06);
+  if (powered) {
+    pastDoorPowerMaterials.push(indicator.material);
+    rectangle(group, .08, 5.1, '#ff9347', -.84, 3.05, .11, .38);
+    rectangle(group, .08, 5.1, '#ff9347', .84, 3.05, .11, .38);
+    for (let index = 0; index < 5; index++) {
+      const lockLight = disc(group, .075, '#ffbd68', -1.32, 4.55 - index * .52, .12, .74);
+      pastDoorPowerMaterials.push(lockLight.material);
+    }
+    segment(group, -1.55, 1.1, -1.12, 1.53, '#ffb15d', .55, .13);
+    segment(group, -1.55, 1.53, -1.12, 1.96, '#ffb15d', .55, .13);
+    segment(group, -1.55, 1.96, -1.12, 2.39, '#ffb15d', .55, .13);
+  }
   scene.add(group);
   return { group, door, indicator };
 }
@@ -371,6 +378,15 @@ function createWinch(baseColor, edgeColor) {
 
 const pastWinch = createWinch('#70402a', '#ffb15d');
 const modernWinch = createWinch('#29464d', '#82d6df');
+const pastHandwheelPickup = createHandwheel('#ffb15d');
+pastHandwheelPickup.position.set(winchSocketX, groundY + .78, 1.24);
+scene.add(pastHandwheelPickup);
+const modernBrokenWheel = createHandwheel('#567076', .52);
+modernBrokenWheel.position.set(winchSocketX, groundY + .78, 1.22);
+modernBrokenWheel.rotation.z = .16;
+segment(modernBrokenWheel, -.42, .3, .05, -.08, '#9ac0c5', .35, .12);
+segment(modernBrokenWheel, .05, -.08, .5, -.45, '#9ac0c5', .28, .12);
+scene.add(modernBrokenWheel);
 const modernInstalledWheel = createHandwheel('#82d6df');
 modernInstalledWheel.position.set(winchSocketX, groundY + .78, 1.24);
 scene.add(modernInstalledWheel);
@@ -570,7 +586,7 @@ function handleInteraction() {
     if (!state.history.wheelCollected && playerNearPickup) {
       state.inventory.handwheel = true;
       state.history.wheelCollected = true;
-      showToast('已拾取03号机械手轮；按 B 可以查看时间锚背包');
+      showToast('已从2047年的闸门机构上拆下手轮；按 B 查看时间锚背包');
       updateHud();
     } else if (playerNearSocket) {
       showToast('2047年的电磁联锁仍在通电；把手轮带到断电的2147年');
@@ -613,7 +629,7 @@ function updateHud() {
   eventCrate.classList.toggle('active', state.history.wheelCollected);
   eventPlate.classList.toggle('active', state.history.wheelCrossed);
   eventGate.classList.toggle('active', state.history.gateOpened);
-  eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已进入背包' : '尚未发生';
+  eventCrate.querySelector('span').textContent = state.history.wheelCollected ? '手轮已从闸门拆下' : '尚未发生';
   eventPlate.querySelector('span').textContent = state.history.wheelCrossed ? '时间锚携带成功' : '等待背包';
   eventGate.querySelector('span').textContent = state.history.gateOpened ? '机械卡扣保持开启' : '等待物品';
 
@@ -622,7 +638,7 @@ function updateHud() {
   } else if (state.eraTarget < .5) {
     objective.textContent = state.history.wheelCollected
       ? '2047年：手轮已在时间锚背包中。按 B 查看，按 Q 把它带回2147年'
-      : '2047年：前往左侧橙色维修箱，靠近完整手轮后按 E 拾取';
+      : '2047年：闸门主电网在线且电磁锁定。靠近门边手轮按 E 拆下';
   } else if (state.history.gateOpened) {
     objective.textContent = '2147年：闸门已经升起并被机械卡扣锁住，前往右侧出口';
   } else if (state.history.wheelInstalled) {
@@ -630,7 +646,20 @@ function updateHud() {
   } else if (state.inventory.handwheel) {
     objective.textContent = '2147年：2047年的手轮就在背包里。靠近门边接口按 E 安装';
   } else {
-    objective.textContent = '2147年：闸门缺少手动开门盘。按 Q 前往固定的2047年寻找零件';
+    objective.textContent = '2147年：闸门断电，但原手轮已经锈死。按 Q 查看2047年的同一机构';
+  }
+  doorStatus.classList.toggle('online', state.eraTarget < .5);
+  if (state.eraTarget < .5) {
+    doorPower.textContent = '主电网：在线 · 供电稳定';
+    doorLock.textContent = state.history.wheelCollected
+      ? '电磁联锁：锁定 · 应急手轮已拆下'
+      : '电磁联锁：锁定 · 手轮无法驱动大门';
+  } else {
+    doorPower.textContent = '主电网：离线 · 无法恢复';
+    if (state.history.gateOpened) doorLock.textContent = '机械卡扣：已锁定开启位置';
+    else if (state.history.wheelInstalled) doorLock.textContent = '电磁联锁：失效 · 新手轮已安装';
+    else if (state.inventory.handwheel) doorLock.textContent = '电磁联锁：失效 · 原接口已空置';
+    else doorLock.textContent = '电磁联锁：失效 · 原手轮锈死';
   }
   updateInventoryHud();
 }
@@ -644,13 +673,13 @@ function updateInteractionHint() {
     message = '';
   } else if (state.eraTarget < .5 && nearPickup) {
     message = state.history.wheelCollected
-      ? '维修箱上的机械手轮已经被你取走'
-      : '按 E 拾取03号机械手轮并放入背包';
+      ? '2047年闸门上的应急手轮已经被你拆下'
+      : '按 E 从闸门绞盘上拆下完整手轮并放入背包';
   } else if (state.eraTarget < .5 && nearSocket) {
     message = '2047年的电磁联锁仍在通电，手轮无法绕过权限';
   } else if (state.eraTarget > .5 && nearSocket) {
     if (!state.history.wheelInstalled && state.inventory.handwheel) message = '按 E 从背包取出手轮并安装';
-    else if (!state.history.wheelInstalled) message = '2147年的手动开门接口缺少手轮';
+    else if (!state.history.wheelInstalled) message = '2147年的原手轮已经锈死，无法转动';
     else if (!state.history.gateOpened) message = '按 E 转动刚刚安装的机械手轮';
     else message = '配重与安全卡扣正在保持闸门开启';
   }
@@ -672,9 +701,21 @@ function updateHistoryOutcome(dt, elapsed) {
   setLayerOpacity(modernSocket, state.era);
   setLayerOpacity(pastWinch.group, 1 - state.era);
   setLayerOpacity(modernWinch.group, state.era);
-  setLayerOpacity(toolCratePast, 1 - state.era);
   setLayerOpacity(pastHandwheelPickup, (1 - state.era) * (state.history.wheelCollected ? 0 : 1));
+  setLayerOpacity(modernBrokenWheel, state.era * (!state.history.wheelCollected && !state.history.wheelInstalled ? 1 : 0));
   setLayerOpacity(modernInstalledWheel, state.era * (state.history.wheelInstalled ? 1 : 0));
+
+  const pastAmount = 1 - state.era;
+  for (let index = 0; index < pastLampMaterials.length; index++) {
+    pastLampMaterials[index].opacity = (.62 + Math.sin(elapsed * 3.2 + index * .8) * .18) * pastAmount;
+  }
+  for (let index = 0; index < pastPowerNodeMaterials.length; index++) {
+    const travelingPulse = .18 + Math.max(0, Math.sin(elapsed * 4.6 - index * .72)) * .76;
+    pastPowerNodeMaterials[index].opacity = travelingPulse * pastAmount;
+  }
+  for (let index = 0; index < pastDoorPowerMaterials.length; index++) {
+    pastDoorPowerMaterials[index].opacity = (.58 + Math.sin(elapsed * 5.1 + index * .7) * .25) * pastAmount;
+  }
 
   modernGate.indicator.material.color.set(state.history.gateOpened ? '#83eff6' : '#648990');
   exitGlow.material.opacity = .035 + state.gateLift * .12 + Math.sin(elapsed * 3.1) * .012;

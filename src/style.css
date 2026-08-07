@@ -230,6 +230,49 @@ body.past .era-track i {
   letter-spacing: .025em;
 }
 
+.door-status {
+  position: absolute;
+  left: 28px;
+  top: 124px;
+  width: 220px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: inset 3px 0 0 #5f747a;
+  transition: .35s ease;
+}
+
+.door-status.online {
+  border-color: rgba(255, 158, 75, .42);
+  box-shadow: inset 3px 0 0 #ff9e4b, 0 0 24px rgba(255, 119, 45, .08);
+}
+
+.door-status span {
+  display: block;
+  color: #73868b;
+  font: 600 8px/1 Inter, sans-serif;
+  letter-spacing: .16em;
+}
+
+.door-status b {
+  display: block;
+  margin-top: 7px;
+  color: #a9bdc1;
+  font-size: 11px;
+}
+
+.door-status.online b { color: #ffad5b; text-shadow: 0 0 9px rgba(255, 145, 65, .42); }
+
+.door-status em {
+  display: block;
+  margin-top: 5px;
+  color: #697d82;
+  font-size: 9px;
+  font-style: normal;
+}
+
+.door-status.online em { color: #c99067; }
+
 .controls {
   position: absolute;
   right: 28px;
@@ -467,6 +510,7 @@ kbd {
   .brand p { display: none; }
   .era-card { width: 185px; }
   .history-panel { right: 17px; top: 105px; width: 185px; }
+  .door-status { display: none; }
   .objective { left: 17px; right: 17px; bottom: 20px; max-width: none; }
   .controls { display: none; }
   .inventory-panel { width: calc(100vw - 34px); }

@@ -34,7 +34,7 @@
       <aside class="history-panel">
         <span class="eyebrow">历史因果记录</span>
         <ol>
-          <li id="event-crate"><i></i><div><b>2047年取得手轮</b><span>尚未发生</span></div></li>
+          <li id="event-crate"><i></i><div><b>2047年拆下手轮</b><span>尚未发生</span></div></li>
           <li id="event-plate"><i></i><div><b>手轮跨越时间</b><span>等待背包</span></div></li>
           <li id="event-gate"><i></i><div><b>2147年开启闸门</b><span>等待物品</span></div></li>
         </ol>
@@ -42,11 +42,17 @@
 
       <section class="objective">
         <span class="eyebrow">当前目标</span>
-        <p id="objective">2147年：03号闸门缺少手动开门盘。按 Q 前往2047年寻找完整零件</p>
+        <p id="objective">2147年：03号闸门手轮已经锈死。按 Q 查看2047年的同一套机构</p>
+      </section>
+
+      <section id="door-status" class="door-status">
+        <span>03 GATE CONTROL</span>
+        <b id="door-power">主电网：离线</b>
+        <em id="door-lock">电磁联锁：失效 · 原手轮锈死</em>
       </section>
 
       <section class="controls">
-        <div><kbd>A</kbd><kbd>D</kbd><span>移动 / 推箱子</span></div>
+        <div><kbd>A</kbd><kbd>D</kbd><span>左右移动</span></div>
         <div><kbd>W</kbd><span>跳跃</span></div>
         <div><kbd>E</kbd><span>拾取 / 安装 / 使用</span></div>
         <div><kbd>B</kbd><span>打开背包</span></div>
@@ -55,7 +61,7 @@
       </section>
 
       <div id="interaction" class="interaction">
-        <span>靠近箱子继续移动即可推动</span>
+        <span>靠近场景装置后按 E 交互</span>
       </div>
 
       <aside id="inventory-panel" class="inventory-panel" aria-hidden="true">
