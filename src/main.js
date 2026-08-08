@@ -157,6 +157,7 @@ const player = {
   standingHalfH: .86,
   crouchHalfH: .5,
   crouching: false,
+  crouchBlend: 0,
   dropThroughTimer: 0,
   speed: 6.2,
   jumpSpeed: 10.4,
@@ -229,7 +230,7 @@ const weaponDefinitions = {
     cooldown: .38,
     range: 2.05,
     damage: 54,
-    activeStart: .24,
+    activeStart: .3,
     activeEnd: .76,
     minDot: .18,
     melee: true,
@@ -1279,6 +1280,9 @@ function createPlayer() {
     bodyRig, headRig, shadow, leftLeg, rightLeg, leftKnee: leftLegRig.knee, rightKnee: rightLegRig.knee, leftArm, rightArm,
     bodyBaseY: bodyRig.position.y,
     headBaseY: headRig.position.y,
+    shadowBaseY: shadow.position.y,
+    leftLegBaseY: leftLeg.position.y,
+    rightLegBaseY: rightLeg.position.y,
     leftArmBaseY: leftArm.position.y,
     rightArmBaseY: rightArm.position.y,
   };
@@ -1607,6 +1611,7 @@ function resetHistory() {
   inventoryPanel.setAttribute('aria-hidden', 'true');
   closeNpcDialogue();
   player.crouching = false;
+  player.crouchBlend = 0;
   player.halfH = player.standingHalfH;
   player.dropThroughTimer = 0;
   player.x = -10.4;
@@ -2006,7 +2011,7 @@ function tryAttack() {
   state.attackCooldown = weapon.cooldown;
   state.weaponReadyTimer = 1.2;
   if (state.attackWeapon === 'impactHammer') {
-    // Sword-style attack: one click commits to one fixed forward arc.
+    // One click commits to a short overhead strike; both shoulders drive the same fixed arc.
     state.attackAimX = player.facing;
     state.attackAimY = 0;
   }
@@ -2082,6 +2087,7 @@ function damagePlayer(amount, knockDirection) {
   if (defeated) {
     player.health = player.maxHealth;
     player.crouching = false;
+    player.crouchBlend = 0;
     player.halfH = player.standingHalfH;
     player.dropThroughTimer = 0;
     player.x = 64.2;
@@ -2176,6 +2182,15 @@ function beginBossDash() {
   state.boss.direction = state.boss.dashDirection;
   state.boss.dashStartX = state.boss.x;
   state.boss.dashHit = false;
+}
+
+function startBossDashActive(dt) {
+  state.boss.beamPhase = 'dashActive';
+  state.boss.beamTimer = .9;
+  state.boss.dashHit = false;
+  state.pulse = Math.max(state.pulse, .32);
+  // The exhaust telegraph ends on this frame and the machine immediately gains forward motion.
+  state.boss.x += state.boss.dashDirection * 19 * Math.min(dt, 1 / 60);
 }
 
 function beginBossSlam() {
@@ -2509,10 +2524,7 @@ function updateCombat(dt, elapsed) {
     beginBossDash();
   } else if (state.boss.beamPhase === 'dashCharge') {
     if (state.boss.beamTimer <= 0) {
-      state.boss.beamPhase = 'dashActive';
-      state.boss.beamTimer = .9;
-      state.boss.dashHit = false;
-      state.pulse = Math.max(state.pulse, .32);
+      startBossDashActive(dt);
     }
   } else if (state.boss.beamPhase === 'dashActive') {
     state.boss.x += state.boss.dashDirection * 19 * dt;
@@ -2982,6 +2994,8 @@ function updateVisuals(dt, elapsed) {
 
   refreshAimDirection();
   const rig = playerMesh.userData.rig;
+  player.crouchBlend = THREE.MathUtils.damp(player.crouchBlend, player.crouching ? 1 : 0, 16, dt);
+  const crouch = player.crouchBlend;
   const moving = player.grounded ? THREE.MathUtils.clamp(Math.abs(player.vx) / player.speed, 0, 1) : 0;
   player.walkBlend = THREE.MathUtils.damp(player.walkBlend, moving, moving > player.walkBlend ? 12 : 9, dt);
   if (moving > .04) player.walkPhase += dt * (7.2 + Math.abs(player.vx) * .8);
@@ -3000,10 +3014,16 @@ function updateVisuals(dt, elapsed) {
     ? 1 - state.attackTimer / state.attackDuration
     : 0;
   const airborne = player.grounded ? 0 : 1;
-  const leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
-  const rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
-  const leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
-  const rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
+  let leftLegTarget = airborne ? -.23 : gaitPose.leftHip * player.walkBlend;
+  let rightLegTarget = airborne ? .3 : gaitPose.rightHip * player.walkBlend;
+  let leftKneeTarget = airborne ? -.32 : gaitPose.leftKnee * player.walkBlend;
+  let rightKneeTarget = airborne ? -.12 : gaitPose.rightKnee * player.walkBlend;
+  if (crouch > .001 && !airborne) {
+    leftLegTarget = THREE.MathUtils.lerp(leftLegTarget, .52, crouch);
+    rightLegTarget = THREE.MathUtils.lerp(rightLegTarget, -.44, crouch);
+    leftKneeTarget = THREE.MathUtils.lerp(leftKneeTarget, -1.08, crouch);
+    rightKneeTarget = THREE.MathUtils.lerp(rightKneeTarget, .94, crouch);
+  }
   let leftArmTarget = airborne ? .22 : armStride;
   let rightArmTarget = airborne ? -.22 : -armStride;
   const localAimAngle = Math.atan2(player.aimY, Math.abs(player.aimX));
@@ -3019,9 +3039,9 @@ function updateVisuals(dt, elapsed) {
   } else if (attacking && posedWeapon === 'coreDrill') {
     weaponAimAngle = attackAimAngle + Math.sin(attackProgress * Math.PI * 4) * .045;
   } else if (attacking && posedWeapon === 'impactHammer') {
-    // Terraria-like overhead swing: one uninterrupted shoulder arc per click, then immediate stow.
-    const swingT = THREE.MathUtils.smoothstep(attackProgress, 0, .88);
-    weaponAimAngle = THREE.MathUtils.lerp(1.55, -.55, swingT);
+    // A readable heavy strike: the hammer appears above the shoulder, cuts one arc, then stows.
+    const swingT = THREE.MathUtils.smoothstep(attackProgress, 0, .72);
+    weaponAimAngle = THREE.MathUtils.lerp(1.24, -.72, swingT);
   } else if (attacking && posedWeapon === 'returnWrench') {
     const throwT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
     weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(.48, -.38, throwT);
@@ -3030,7 +3050,9 @@ function updateVisuals(dt, elapsed) {
   if (attacking && weaponDrawn) {
     leftArmTarget = posedWeapon === 'coreDrill'
       ? rightArmTarget - .34
-      : .12;
+      : posedWeapon === 'impactHammer'
+        ? rightArmTarget - .22
+        : .12;
   }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
@@ -3043,15 +3065,21 @@ function updateVisuals(dt, elapsed) {
   rig.rightArm.rotation.z = THREE.MathUtils.damp(rig.rightArm.rotation.z, rightArmTarget, armResponse, dt);
 
   const stepBounce = Math.abs(Math.sin(player.walkPhase * 2)) * .045 * player.walkBlend;
-  rig.bodyRig.position.y = rig.bodyBaseY + stepBounce;
-  rig.headRig.position.y = rig.headBaseY + stepBounce * .72;
-  const hammerLean = 0;
+  rig.bodyRig.position.y = rig.bodyBaseY + stepBounce - crouch * .18;
+  rig.headRig.position.y = rig.headBaseY + stepBounce * .72 - crouch * .38;
+  rig.leftLeg.position.y = THREE.MathUtils.damp(rig.leftLeg.position.y, rig.leftLegBaseY + crouch * .34, 18, dt);
+  rig.rightLeg.position.y = THREE.MathUtils.damp(rig.rightLeg.position.y, rig.rightLegBaseY + crouch * .34, 18, dt);
+  let hammerLean = 0;
+  if (attacking && posedWeapon === 'impactHammer') {
+    const strikeT = THREE.MathUtils.smoothstep(attackProgress, 0, .72);
+    hammerLean = THREE.MathUtils.lerp(-.07, .14, strikeT);
+  }
   rig.bodyRig.rotation.z = THREE.MathUtils.damp(rig.bodyRig.rotation.z, hammerLean, 18, dt);
   rig.headRig.rotation.z = THREE.MathUtils.damp(rig.headRig.rotation.z, hammerLean * .35, 18, dt);
-  rig.leftArm.position.y = rig.leftArmBaseY + stepBounce;
-  rig.rightArm.position.y = rig.rightArmBaseY + stepBounce;
+  rig.leftArm.position.y = rig.leftArmBaseY + stepBounce - crouch * .25;
+  rig.rightArm.position.y = rig.rightArmBaseY + stepBounce - crouch * .25;
   const jumpHeight = Math.max(0, player.y - (player.supportY + player.halfH));
-  rig.shadow.position.y = -.83 - jumpHeight;
+  rig.shadow.position.y = THREE.MathUtils.lerp(rig.shadowBaseY, -.5, crouch) - jumpHeight;
   rig.shadow.scale.x = 1 - Math.min(.42, jumpHeight * .12) + player.walkBlend * .06;
   rig.shadow.scale.y = .24 - Math.min(.08, jumpHeight * .018) + Math.sin(player.walkPhase * 2) * .015 * player.walkBlend;
   rig.shadow.material.opacity = .24 - Math.min(.13, jumpHeight * .035);
@@ -3087,7 +3115,7 @@ function updateVisuals(dt, elapsed) {
 
   playerMesh.position.set(player.x, player.y, 2.2);
   playerMesh.scale.x = player.facing;
-  playerMesh.scale.y = THREE.MathUtils.damp(playerMesh.scale.y, player.crouching ? .62 : 1, 18, dt);
+  playerMesh.scale.y = THREE.MathUtils.damp(playerMesh.scale.y, 1, 18, dt);
   playerMesh.rotation.z = THREE.MathUtils.damp(playerMesh.rotation.z, -player.vx * .008, 12, dt);
 
   const viewHalfWidth = 9 * (innerWidth / innerHeight);
