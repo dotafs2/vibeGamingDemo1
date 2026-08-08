@@ -2,3 +2,8 @@ node_modules/
 dist/
 .vite/
 *.log
+chrome-*-profile*/
+editor-jobs/*
+!editor-jobs/.gitkeep
+/editor-*.png
+/fracture-preview-test*.png

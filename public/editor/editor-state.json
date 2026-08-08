@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 3,
+  "references": {
+    "past": [
+      {
+        "id": "style-reference-2047",
+        "slot": "past",
+        "name": "零时回响 · 2047 运转基调",
+        "url": "/editor/references/zero-echo-style-reference-2047.png"
+      }
+    ],
+    "present": [
+      {
+        "id": "style-reference-2147",
+        "slot": "present",
+        "name": "零时回响 · 2147 破败基调",
+        "url": "/editor/references/zero-echo-style-reference-2147.png"
+      }
+    ]
+  },
+  "sceneArt": {
+    "enabled": true,
+    "independentComponents": true,
+    "pastImage": "/editor/scene-art/upper-room-background-2047-v1.png",
+    "presentImage": "/editor/scene-art/upper-room-background-2147-v1.png",
+    "x": -1,
+    "y": 1.15,
+    "width": 32,
+    "height": 16.1,
+    "opacity": 1
+  },
+  "sceneComponents": [
+    {
+      "id": "scene-crusher",
+      "name": "投料斗与双辊破碎机",
+      "componentType": "static",
+      "bounds": {
+        "minX": -16.5,
+        "maxX": -8.4,
+        "minY": -4.25,
+        "maxY": 6.6
+      }
+    },
+    {
+      "id": "scene-conveyor",
+      "name": "矿石传送带",
+      "componentType": "static",
+      "bounds": {
+        "minX": -9.2,
+        "maxX": -1.15,
+        "minY": -3.75,
+        "maxY": -0.55
+      }
+    },
+    {
+      "id": "scene-vent-housing",
+      "name": "通风机机壳",
+      "componentType": "static",
+      "bounds": {
+        "minX": -2.2,
+        "maxX": 3.65,
+        "minY": 1.35,
+        "maxY": 7.45
+      }
+    },
+    {
+      "id": "scene-maintenance",
+      "name": "中央维修平台",
+      "componentType": "static",
+      "bounds": {
+        "minX": 2.55,
+        "maxX": 7.35,
+        "minY": -3.65,
+        "maxY": 1.55
+      }
+    },
+    {
+      "id": "scene-gate",
+      "name": "03 号工业闸门",
+      "componentType": "static",
+      "bounds": {
+        "minX": 7.15,
+        "maxX": 13.1,
+        "minY": -4.35,
+        "maxY": 3.45
+      }
+    },
+    {
+      "id": "scene-shaft",
+      "name": "右侧升降井",
+      "componentType": "static",
+      "bounds": {
+        "minX": 12.75,
+        "maxX": 15.25,
+        "minY": -4.5,
+        "maxY": 8.25
+      }
+    },
+    {
+      "id": "scene-rails",
+      "name": "矿车轨道",
+      "componentType": "static",
+      "bounds": {
+        "minX": -16.8,
+        "maxX": 15.1,
+        "minY": -5.25,
+        "maxY": -4
+      }
+    },
+    {
+      "id": "scene-ceiling-cables",
+      "name": "顶部管线与岩层",
+      "componentType": "static",
+      "bounds": {
+        "minX": -16.8,
+        "maxX": 15.1,
+        "minY": 5.65,
+        "maxY": 8.3
+      }
+    }
+  ],
+  "assets": [
+    {
+      "id": "scene-crusher",
+      "name": "投料斗与双辊破碎机",
+      "description": "完整投料斗、双辊破碎机和支撑底座",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-crusher",
+      "x": -12.45,
+      "y": 1.175,
+      "width": 8.1,
+      "height": 10.85,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 8.1,
+        "height": 10.85
+      },
+      "versions": [
+        {
+          "id": "scene-crusher-v1",
+          "pastImage": "/editor/assets/scene-crusher/v1-past.png",
+          "presentImage": "/editor/assets/scene-crusher/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明破碎机总成"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-conveyor",
+      "name": "矿石传送带",
+      "description": "带滚轮、桁架和支腿的长传送带",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-conveyor",
+      "x": -5,
+      "y": -2.5,
+      "width": 8.05,
+      "height": 3.2,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 8.05,
+        "height": 3.2
+      },
+      "versions": [
+        {
+          "id": "scene-conveyor-v1",
+          "pastImage": "/editor/assets/scene-conveyor/v1-past.png",
+          "presentImage": "/editor/assets/scene-conveyor/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明传送带"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-vent-housing",
+      "name": "通风机机壳",
+      "description": "不含转子的风扇机壳、格栅与管线",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-vent-housing",
+      "x": 0.5,
+      "y": 4.5,
+      "width": 5.85,
+      "height": 6.1,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 5.85,
+        "height": 6.1
+      },
+      "versions": [
+        {
+          "id": "scene-vent-housing-v1",
+          "pastImage": "/editor/assets/scene-vent-housing/v1-past.png",
+          "presentImage": "/editor/assets/scene-vent-housing/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明空风扇机壳"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-maintenance",
+      "name": "中央维修平台",
+      "description": "护栏、控制柜、梯子和支腿组成的维修平台",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-maintenance",
+      "x": 3.5,
+      "y": -1.9499999999999997,
+      "width": 4.8,
+      "height": 5.2,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 100,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 4.8,
+        "height": 5.2
+      },
+      "versions": [
+        {
+          "id": "scene-maintenance-v1",
+          "pastImage": "/editor/assets/scene-maintenance/v1-past.png",
+          "presentImage": "/editor/assets/scene-maintenance/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明维修平台"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-gate",
+      "name": "03 号工业闸门",
+      "description": "重型双扇闸门及完整门框",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-gate",
+      "x": 10.125,
+      "y": -0.45,
+      "width": 5.95,
+      "height": 7.8,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 5.95,
+        "height": 7.8
+      },
+      "versions": [
+        {
+          "id": "scene-gate-v1",
+          "pastImage": "/editor/assets/scene-gate/v1-past.png",
+          "presentImage": "/editor/assets/scene-gate/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明工业闸门"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-shaft",
+      "name": "右侧升降井",
+      "description": "导轨、钢架、升降笼和安全梯组成的升降井",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-shaft",
+      "x": 14,
+      "y": 1.875,
+      "width": 2.5,
+      "height": 12.75,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 2.5,
+        "height": 12.75
+      },
+      "versions": [
+        {
+          "id": "scene-shaft-v1",
+          "pastImage": "/editor/assets/scene-shaft/v1-past.png",
+          "presentImage": "/editor/assets/scene-shaft/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明升降井"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-rails",
+      "name": "矿车轨道",
+      "description": "贯穿场景底部的双钢轨与枕木",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-rails",
+      "x": -0.85,
+      "y": -4.625,
+      "width": 31.9,
+      "height": 1.25,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": -2,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 31.9,
+        "height": 1.25
+      },
+      "versions": [
+        {
+          "id": "scene-rails-v1",
+          "pastImage": "/editor/assets/scene-rails/v1-past.png",
+          "presentImage": "/editor/assets/scene-rails/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明矿车轨道"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-ceiling-cables",
+      "name": "顶部管线与支架",
+      "description": "顶部横梁、管线、夹具和接线盒",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-ceiling-cables",
+      "x": -1,
+      "y": 7,
+      "width": 31.9,
+      "height": 2.65,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 0,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 31.9,
+        "height": 2.65
+      },
+      "versions": [
+        {
+          "id": "scene-ceiling-cables-v1",
+          "pastImage": "/editor/assets/scene-ceiling-cables/v1-past.png",
+          "presentImage": "/editor/assets/scene-ceiling-cables/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明顶部管线"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "asset-1786172676762-7yyh4",
+      "name": "这是一个托运煤矿的车",
+      "description": "这是一个托运煤矿的车",
+      "sourceIds": {
+        "past": [
+          "past-00068",
+          "past-00069",
+          "past-00105",
+          "past-00106",
+          "past-00107",
+          "past-00108",
+          "past-00124",
+          "past-00125",
+          "past-00126",
+          "past-00127",
+          "past-00128",
+          "past-00129",
+          "past-00130"
+        ],
+        "present": [
+          "present-00067",
+          "present-00068",
+          "present-00098",
+          "present-00099",
+          "present-00100",
+          "present-00101",
+          "present-00115",
+          "present-00116",
+          "present-00117",
+          "present-00118",
+          "present-00138",
+          "present-00139"
+        ]
+      },
+      "x": 8.698279833418422,
+      "y": -3.5961699895068207,
+      "width": 2.8331584470094437,
+      "height": 1.9076600209863583,
+      "rotation": 0.03490658503988659,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "physics",
+      "physicsType": "pushable",
+      "fracturePieces": 4,
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 2.8331584470094437,
+        "height": 1.9076600209863583
+      },
+      "versions": [
+        {
+          "id": "v-1786172676762",
+          "pastImage": "/editor/assets/asset-1786172676762-7yyh4/v-1786172676762-past.png",
+          "presentImage": "/editor/assets/asset-1786172676762-7yyh4/v-1786172676762-present.png",
+          "completedAt": "2026-08-08T07:09:28.352Z",
+          "promptSummary": "正交侧视煤矿运输车，严格沿用框选白盒的右向梯形车斗、双轮底盘、画布与锚点；2047 版采用完整维护的深灰钢、铜锈橙与工业黄加固件，2147 版保持同一轮廓并转为冷灰青氧化钢、克制锈蚀、磨损和少量青色矿物结晶。两版均为约 24 色、无抖动、Unlit 像素美术与透明背景。"
+        },
+        {
+          "id": "v-1786172676762-direct",
+          "pastImage": "/editor/assets/asset-1786172676762-7yyh4/v-1786172676762-direct-past.png",
+          "presentImage": "/editor/assets/asset-1786172676762-7yyh4/v-1786172676762-direct-present.png",
+          "completedAt": "2026-08-08T07:30:00.000Z",
+          "promptSummary": "保留原始生成画质，仅统一裁掉多余透明留白；不执行像素化、调色板量化、抖动或描边处理。"
+        }
+      ],
+      "activeVersion": 1,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T07:04:36.762Z"
+    },
+    {
+      "id": "asset-1786183509347-huq3u",
+      "name": "中央通风机转子 复制",
+      "description": "中央大型通风机的四叶转子，绕中心持续旋转",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "x": 1,
+      "y": 4.5,
+      "width": 4.2,
+      "height": 4.2,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "animation",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "rotate",
+        "speed": 30,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 4.2,
+        "height": 4.2
+      },
+      "versions": [
+        {
+          "id": "system-vent-fan-v1",
+          "pastImage": "/editor/assets/system-vent-fan/vent-fan-2047.png",
+          "presentImage": "/editor/assets/system-vent-fan/vent-fan-2147.png",
+          "completedAt": "2026-08-08T07:30:00.000Z",
+          "promptSummary": "与整景空风扇机壳配套的四叶独立转子；2047 完整维护，2147 冷灰氧化；中心轴与外轮廓完全一致。"
+        }
+      ],
+      "activeVersion": 0,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T10:05:09.347Z",
+      "fracturePieces": 4,
+      "sourceComponentId": null
+    }
+  ],
+  "editor": {
+    "gridSize": 0.5,
+    "snapEnabled": true
+  }
+}
