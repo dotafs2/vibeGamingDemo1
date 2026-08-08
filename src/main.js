@@ -111,7 +111,7 @@ const state = {
     beamLength: 48,
     beamHit: false,
     laserPhase: 'idle',
-    laserTimer: 4.35,
+    laserTimer: 3.55,
     attackIndex: 0,
     airY: 0,
     jumpStartX: bossHomeX,
@@ -1574,7 +1574,7 @@ function resetHistory() {
   state.boss.beamDirectionY = 0;
   state.boss.beamHit = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 4.35;
+  state.boss.laserTimer = 3.55;
   state.boss.attackIndex = 0;
   state.boss.airY = 0;
   state.boss.jumpStartX = bossHomeX;
@@ -1983,8 +1983,8 @@ function checkHistoryEvents() {
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 10;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 4.35;
-    showToast('掘脉者解除封存：一阶段每5秒锁定激光；半血后改为可躲避的短激光弹幕，并在冲刺后接0.8秒跳钻');
+    state.boss.laserTimer = 3.55;
+    showToast('掘脉者解除封存：一阶段约每4.2秒锁定激光；半血后改为短激光弹幕和更频繁的冲刺跳钻');
     updateHud();
   }
 }
@@ -2064,7 +2064,7 @@ function clearCombatEffects() {
   bossLaserShots.length = 0;
   state.wrenchInFlight = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 4.35;
+  state.boss.laserTimer = 3.55;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -2096,7 +2096,7 @@ function damagePlayer(amount, knockDirection) {
     state.boss.beamTimer = 10;
     state.boss.beamHit = false;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 4.35;
+    state.boss.laserTimer = 3.55;
     state.boss.attackIndex = 0;
     state.boss.airY = 0;
     state.boss.drillLength = 0;
@@ -2127,7 +2127,7 @@ function damageBoss(amount) {
     state.boss.drillLength = 0;
     state.boss.beamPhase = 'cooldown';
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 4.35;
+    state.boss.laserTimer = 3.55;
     state.boss.jumpInvulnerable = false;
     state.pulse = 1;
     clearCombatEffects();
@@ -2164,6 +2164,7 @@ function bossIsJumping() {
 }
 
 function beginBossDash() {
+  clearBossLaserShots();
   state.boss.laserPhase = 'idle';
   state.boss.laserTimer = .45;
   beamTelegraphMesh.visible = false;
@@ -2189,10 +2190,11 @@ function beginBossSlam() {
 }
 
 function finishBossAttack() {
+  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
   state.boss.beamPhase = 'cooldown';
-  state.boss.beamTimer = 10;
+  state.boss.beamTimer = phaseTwo ? 5.6 : 10;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = state.boss.health <= state.boss.maxHealth * .5 ? .5 : 4.35;
+  state.boss.laserTimer = phaseTwo ? .5 : 3.55;
   state.boss.airY = 0;
   state.boss.drillLength = 0;
   state.boss.jumpInvulnerable = false;
@@ -2340,7 +2342,7 @@ function updateBossLaser(dt) {
     }
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'idle';
-      state.boss.laserTimer = 4.35;
+      state.boss.laserTimer = 3.55;
       beamGlowMesh.visible = false;
       beamCoreMesh.visible = false;
     }
@@ -2485,7 +2487,7 @@ function updateCombat(dt, elapsed) {
   if (updateBossLaserShots(dt)) return;
   if (updateBossLaser(dt)) return;
 
-  // Contact is harmless during patrol. Every ten seconds the machine stops, vents, then attacks with the saw.
+  // Contact is harmless during patrol. Phase one uses a 10s saw cadence; phase two shortens the cooldown to 5.6s.
   if (state.boss.beamPhase === 'cooldown' && state.boss.laserPhase === 'idle') {
     const patrolSpeed = state.boss.health <= state.boss.maxHealth * .5 ? 3.8 : 3.0;
     state.boss.x += state.boss.direction * patrolSpeed * dt;
@@ -2498,6 +2500,10 @@ function updateCombat(dt, elapsed) {
     }
   }
 
+  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
+  if (phaseTwo && state.boss.beamPhase === 'cooldown') {
+    state.boss.beamTimer = Math.min(state.boss.beamTimer, 5.6);
+  }
   state.boss.beamTimer -= dt;
   if (state.boss.beamPhase === 'cooldown' && state.boss.beamTimer <= 0) {
     beginBossDash();
@@ -2592,8 +2598,8 @@ function updateHud() {
     objective.textContent = state.boss.jumpInvulnerable
       ? '二阶段：Boss腾空后快速坠落 · 约0.8秒钻头落地 · 立即离开锁定位置'
       : state.boss.health <= state.boss.maxHealth * .5
-        ? '二阶段：测绘器发射高频短光弹 · 光弹不追踪 · 利用移动与平台穿过弹幕'
-        : 'Boss战：测绘激光每5秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
+        ? '二阶段：约5.6秒短激光弹幕 · 清场喷气后锯齿冲刺 · 冲刺后接快速跳钻'
+        : 'Boss战：测绘激光约每4.2秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -3173,7 +3179,7 @@ if (previewParams.has('boss-preview')) {
   state.boss.beamTimer = 9.7;
   state.boss.laserPhase = 'idle';
   if (previewParams.has('phase2-preview')) state.boss.health = state.boss.maxHealth * .48;
-  state.boss.laserTimer = previewParams.has('phase2-preview') ? .35 : 4.35;
+  state.boss.laserTimer = previewParams.has('phase2-preview') ? .35 : 3.55;
   if (previewParams.has('dash-preview')) {
     state.boss.beamPhase = 'dashCharge';
     state.boss.beamTimer = 1.2;
