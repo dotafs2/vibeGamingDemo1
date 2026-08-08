@@ -96,8 +96,8 @@ const state = {
   wrenchInFlight: false,
   attackHeld: false,
   boss: {
-    maxHealth: 720,
-    health: 720,
+    maxHealth: 1440,
+    health: 1440,
     x: bossHomeX,
     direction: -1,
     patrolMinX: 69.5,
@@ -225,8 +225,8 @@ const weaponDefinitions = {
   impactHammer: {
     name: '液压挥击锤',
     detail: '快捷栏 3 · 点击一次从头顶向前劈下一次 · 无额外举起动作 · 54伤害',
-    duration: .32,
-    cooldown: .4,
+    duration: .28,
+    cooldown: .38,
     range: 2.05,
     damage: 54,
     activeStart: .24,
@@ -1300,16 +1300,19 @@ function createCalibrator() {
 
 function createCoreDrill() {
   const group = new THREE.Group();
-  rectangle(group, .64, .34, '#294d54', .3, 0, .2, .98);
-  rectangle(group, .42, .2, '#62c7d0', .32, 0, .22, .82);
-  ring(group, .19, .1, '#a9f4f7', .62, 0, .25, .92, 22);
-  rectangle(group, .16, .42, '#8a5b3d', .1, -.28, .18, .98).rotation.z = -.18;
-  rectangle(group, .14, .38, '#8a5b3d', .48, -.27, .18, .98).rotation.z = .18;
+  rectangle(group, .58, .32, '#294d54', .27, 0, .2, .98);
+  rectangle(group, .38, .18, '#62c7d0', .29, 0, .22, .82);
+  ring(group, .17, .09, '#a9f4f7', .56, 0, .25, .92, 22);
+  rectangle(group, .14, .34, '#8a5b3d', .04, -.22, .18, .98).rotation.z = -.08;
+  rectangle(group, .14, .34, '#8a5b3d', .4, -.22, .18, .98).rotation.z = .08;
+  const rearHand = disc(group, .105, '#dffaff', .04, -.36, .3, .98, 14);
+  const frontHand = disc(group, .105, '#dffaff', .4, -.36, .3, .98, 14);
+  playerMesh.userData.bodyMaterials.push(rearHand.material, frontHand.material);
   const bit = new THREE.Group();
-  bit.position.x = .78;
-  polygon(bit, [[0, .16], [.52, .1], [.8, 0], [.52, -.1], [0, -.16]], '#c8fbff', 0, 0, .26, .98);
+  bit.position.x = .68;
+  polygon(bit, [[0, .15], [.34, .095], [.52, 0], [.34, -.095], [0, -.15]], '#c8fbff', 0, 0, .26, .98);
   const flutes = [];
-  for (const x of [.14, .32, .5]) flutes.push(segment(bit, x, -.13, x + .12, .13, '#55bdc7', .85, .28));
+  for (const x of [.1, .24, .38]) flutes.push(segment(bit, x, -.12, x + .1, .12, '#55bdc7', .85, .28));
   bit.userData.flutes = flutes;
   group.add(bit);
   group.userData.bit = bit;
@@ -1981,7 +1984,7 @@ function checkHistoryEvents() {
     state.boss.beamTimer = 10;
     state.boss.laserPhase = 'idle';
     state.boss.laserTimer = 4.35;
-    showToast('掘脉者解除封存：一阶段每5秒锁定激光；半血后改为可躲避的短光弹幕，并在冲刺后接1秒跳钻');
+    showToast('掘脉者解除封存：一阶段每5秒锁定激光；半血后改为可躲避的短激光弹幕，并在冲刺后接0.8秒跳钻');
     updateHud();
   }
 }
@@ -2225,9 +2228,12 @@ function spawnBossLaserShot() {
   state.boss.direction = state.boss.beamDirectionX < 0 ? -1 : 1;
 
   const mesh = new THREE.Group();
-  rectangle(mesh, 1.35, .22, '#58d5e3', 0, 0, .04, .52);
-  rectangle(mesh, 1.05, .085, '#efffff', 0, 0, .08, .98);
-  polygon(mesh, [[0, .14], [.34, 0], [0, -.14]], '#9ff6ff', .7, 0, .1, .9);
+  rectangle(mesh, 1.25, .2, '#58d5e3', 0, 0, .04, .48);
+  disc(mesh, .1, '#58d5e3', -.625, 0, .04, .48, 18);
+  disc(mesh, .1, '#58d5e3', .625, 0, .04, .48, 18);
+  rectangle(mesh, .98, .07, '#efffff', 0, 0, .08, .98);
+  disc(mesh, .036, '#efffff', -.49, 0, .08, .98, 16);
+  disc(mesh, .036, '#efffff', .49, 0, .08, .98, 16);
   mesh.position.set(originX, originY, 3.08);
   mesh.rotation.z = angle;
   bossAttackLayer.add(mesh);
@@ -2534,16 +2540,16 @@ function updateCombat(dt, elapsed) {
     state.boss.x = THREE.MathUtils.damp(state.boss.x, player.x, 4.2, dt);
     if (state.boss.beamTimer <= 0) {
       state.boss.beamPhase = 'jumpFall';
-      state.boss.beamTimer = .45;
+      state.boss.beamTimer = .24;
       state.boss.jumpStartX = state.boss.x;
       state.boss.jumpTargetX = THREE.MathUtils.clamp(player.x, state.boss.patrolMinX, state.boss.patrolMaxX);
       state.boss.drillLength = 0;
     }
   } else if (state.boss.beamPhase === 'jumpFall') {
-    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .45, 0, 1);
-    state.boss.airY = THREE.MathUtils.lerp(5.8, 0, progress * progress);
+    const progress = THREE.MathUtils.clamp(1 - state.boss.beamTimer / .24, 0, 1);
+    state.boss.airY = THREE.MathUtils.lerp(5.8, 0, Math.pow(progress, .68));
     state.boss.x = THREE.MathUtils.lerp(state.boss.jumpStartX, state.boss.jumpTargetX, THREE.MathUtils.smoothstep(progress, 0, 1));
-    state.boss.drillLength = THREE.MathUtils.lerp(0, 3.5, THREE.MathUtils.smoothstep(progress, .12, .82));
+    state.boss.drillLength = THREE.MathUtils.lerp(0, 2.35, THREE.MathUtils.smoothstep(progress, .08, .72));
     if (state.boss.beamTimer <= 0) {
       state.boss.airY = 0;
       state.boss.beamPhase = 'jumpImpact';
@@ -2557,7 +2563,7 @@ function updateCombat(dt, elapsed) {
       }
     }
   } else if (state.boss.beamPhase === 'jumpImpact') {
-    state.boss.drillLength = 3.5 * THREE.MathUtils.clamp(state.boss.beamTimer / .5, 0, 1);
+    state.boss.drillLength = 2.35 * THREE.MathUtils.clamp(state.boss.beamTimer / .5, 0, 1);
     if (state.boss.beamTimer <= 0) finishBossAttack();
   }
 }
@@ -2584,7 +2590,7 @@ function updateHud() {
     objective.textContent = 'Boss已击败：掘脉者被强制停机，时相核心现在可以安全取出';
   } else if (state.bossAwake) {
     objective.textContent = state.boss.jumpInvulnerable
-      ? '二阶段：Boss起跳后核心无敌 · 1秒后大型钻头落地 · 立即离开锁定位置'
+      ? '二阶段：Boss腾空后快速坠落 · 约0.8秒钻头落地 · 立即离开锁定位置'
       : state.boss.health <= state.boss.maxHealth * .5
         ? '二阶段：测绘器发射高频短光弹 · 光弹不追踪 · 利用移动与平台穿过弹幕'
         : 'Boss战：测绘激光每5秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
@@ -2868,7 +2874,9 @@ function updateHistoryOutcome(dt, elapsed) {
       && state.boss.laserPhase === 'idle';
     const gaitBob = bossWalking ? Math.abs(Math.sin(elapsed * 7.2)) * .075 : 0;
     const bossTargetY = state.boss.defeated ? labGroundY - .08 : labGroundY + .04 + gaitBob + state.boss.airY;
-    const bossVerticalDamp = state.boss.beamPhase.startsWith('jump') ? 16 : 6;
+    const bossVerticalDamp = state.boss.beamPhase === 'jumpFall'
+      ? 30
+      : state.boss.beamPhase.startsWith('jump') ? 18 : 6;
     modernBoss.position.y = THREE.MathUtils.damp(modernBoss.position.y, bossTargetY, bossVerticalDamp, dt);
     const jumpTilt = state.boss.beamPhase === 'jumpRise' ? -.08 : state.boss.beamPhase === 'jumpFall' ? .09 : 0;
     const bossTargetRotation = state.boss.defeated ? -.08 : jumpTilt;
@@ -2898,11 +2906,11 @@ function updateHistoryOutcome(dt, elapsed) {
       const drillAttack = state.boss.beamPhase === 'jumpFall' || state.boss.beamPhase === 'jumpImpact';
       bellyDrill.visible = drillAttack && state.boss.drillLength > .08;
       bellyDrill.rotation.z = -Math.PI * .5;
-      const drillExtension = THREE.MathUtils.clamp(state.boss.drillLength / 3.5, 0, 1);
+      const drillExtension = THREE.MathUtils.clamp(state.boss.drillLength / 2.35, 0, 1);
       bellyDrill.scale.set(1, 1, 1);
       bellyDrill.userData.bit.position.x = .08;
       bellyDrill.userData.bit.rotation.z = 0;
-      bellyDrill.userData.bit.scale.x = .42 + drillExtension * 1.15;
+      bellyDrill.userData.bit.scale.x = .38 + drillExtension * .72;
       bellyDrill.userData.bit.scale.y = drillAttack ? 1.16 + Math.sin(elapsed * 36) * .045 : 1.16;
       const hatchOpen = state.boss.beamPhase === 'jumpHover' || drillAttack;
       bellyDrill.userData.hatch.scale.setScalar(1 + (hatchOpen ? .16 + Math.sin(elapsed * 10) * .05 : 0));
@@ -3005,9 +3013,9 @@ function updateVisuals(dt, elapsed) {
   } else if (attacking && posedWeapon === 'coreDrill') {
     weaponAimAngle = attackAimAngle + Math.sin(attackProgress * Math.PI * 4) * .045;
   } else if (attacking && posedWeapon === 'impactHammer') {
-    // Terraria-like cadence: spawn overhead, sweep forward once, disappear into storage.
-    const swingT = THREE.MathUtils.smoothstep(attackProgress, 0, .78);
-    weaponAimAngle = THREE.MathUtils.lerp(1.32, -.88, swingT);
+    // Terraria-like overhead swing: one uninterrupted shoulder arc per click, then immediate stow.
+    const swingT = THREE.MathUtils.smoothstep(attackProgress, 0, .88);
+    weaponAimAngle = THREE.MathUtils.lerp(1.55, -.55, swingT);
   } else if (attacking && posedWeapon === 'returnWrench') {
     const throwT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
     weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(.48, -.38, throwT);
@@ -3015,14 +3023,16 @@ function updateVisuals(dt, elapsed) {
   if (weaponDrawn) rightArmTarget = weaponAimAngle + Math.PI * .5 - recoil;
   if (attacking && weaponDrawn) {
     leftArmTarget = posedWeapon === 'coreDrill'
-      ? rightArmTarget + .18
-      : posedWeapon === 'impactHammer' ? rightArmTarget - .26 : .12;
+      ? rightArmTarget - .34
+      : .12;
   }
   rig.leftLeg.rotation.z = THREE.MathUtils.damp(rig.leftLeg.rotation.z, leftLegTarget, 15, dt);
   rig.rightLeg.rotation.z = THREE.MathUtils.damp(rig.rightLeg.rotation.z, rightLegTarget, 15, dt);
   rig.leftKnee.rotation.z = THREE.MathUtils.damp(rig.leftKnee.rotation.z, leftKneeTarget, 17, dt);
   rig.rightKnee.rotation.z = THREE.MathUtils.damp(rig.rightKnee.rotation.z, rightKneeTarget, 17, dt);
-  const armResponse = attacking && posedWeapon === 'impactHammer' ? 22 : 13;
+  const armResponse = attacking && posedWeapon === 'impactHammer'
+    ? 52
+    : attacking && posedWeapon === 'coreDrill' ? 30 : 13;
   rig.leftArm.rotation.z = THREE.MathUtils.damp(rig.leftArm.rotation.z, leftArmTarget, armResponse, dt);
   rig.rightArm.rotation.z = THREE.MathUtils.damp(rig.rightArm.rotation.z, rightArmTarget, armResponse, dt);
 
@@ -3173,13 +3183,13 @@ if (previewParams.has('boss-preview')) {
   if (previewParams.has('jump-preview')) {
     state.boss.health = state.boss.maxHealth * .48;
     state.boss.beamPhase = 'jumpFall';
-    state.boss.beamTimer = .16;
+    state.boss.beamTimer = .09;
     state.boss.jumpInvulnerable = true;
     state.boss.jumpStartX = 84;
     state.boss.jumpTargetX = 78.5;
     state.boss.x = 84;
     state.boss.airY = 1.15;
-    state.boss.drillLength = 3.2;
+    state.boss.drillLength = 2.15;
   }
   Object.assign(state.history, {
     wheelCollected: true,
