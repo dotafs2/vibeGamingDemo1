@@ -111,7 +111,7 @@ const state = {
     beamLength: 48,
     beamHit: false,
     laserPhase: 'idle',
-    laserTimer: .8,
+    laserTimer: 4.35,
     attackIndex: 0,
     airY: 0,
     jumpStartX: bossHomeX,
@@ -224,13 +224,13 @@ const weaponDefinitions = {
   },
   impactHammer: {
     name: '液压挥击锤',
-    detail: '快捷栏 3 · 每点击一次完整挥动一次 · 固定朝前劈砸 · 54伤害',
-    duration: .5,
-    cooldown: .58,
+    detail: '快捷栏 3 · 点击一次从头顶向前劈下一次 · 无额外举起动作 · 54伤害',
+    duration: .32,
+    cooldown: .4,
     range: 2.05,
     damage: 54,
-    activeStart: .34,
-    activeEnd: .72,
+    activeStart: .24,
+    activeEnd: .76,
     minDot: .18,
     melee: true,
   },
@@ -1393,6 +1393,7 @@ scene.add(bossBeamLayer);
 
 const bossAttackLayer = new THREE.Group();
 const bossShockwaves = [];
+const bossLaserShots = [];
 scene.add(bossAttackLayer);
 
 const particleCount = 360;
@@ -1570,7 +1571,7 @@ function resetHistory() {
   state.boss.beamDirectionY = 0;
   state.boss.beamHit = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = .8;
+  state.boss.laserTimer = 4.35;
   state.boss.attackIndex = 0;
   state.boss.airY = 0;
   state.boss.jumpStartX = bossHomeX;
@@ -1979,8 +1980,8 @@ function checkHistoryEvents() {
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 10;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = .8;
-    showToast('掘脉者解除封存：测绘激光会锁定射击；锯齿每10秒喷气预警后冲刺；半血后冲刺接1秒跳钻');
+    state.boss.laserTimer = 4.35;
+    showToast('掘脉者解除封存：一阶段每5秒锁定激光；半血后改为可躲避的短光弹幕，并在冲刺后接1秒跳钻');
     updateHud();
   }
 }
@@ -2056,9 +2057,11 @@ function clearCombatEffects() {
   playerShots.length = 0;
   for (const wave of bossShockwaves) bossAttackLayer.remove(wave.mesh);
   bossShockwaves.length = 0;
+  for (const shot of bossLaserShots) bossAttackLayer.remove(shot.mesh);
+  bossLaserShots.length = 0;
   state.wrenchInFlight = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = .8;
+  state.boss.laserTimer = 4.35;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -2090,7 +2093,7 @@ function damagePlayer(amount, knockDirection) {
     state.boss.beamTimer = 10;
     state.boss.beamHit = false;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = .8;
+    state.boss.laserTimer = 4.35;
     state.boss.attackIndex = 0;
     state.boss.airY = 0;
     state.boss.drillLength = 0;
@@ -2121,7 +2124,7 @@ function damageBoss(amount) {
     state.boss.drillLength = 0;
     state.boss.beamPhase = 'cooldown';
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = .8;
+    state.boss.laserTimer = 4.35;
     state.boss.jumpInvulnerable = false;
     state.pulse = 1;
     clearCombatEffects();
@@ -2186,7 +2189,7 @@ function finishBossAttack() {
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = 10;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = state.boss.health <= state.boss.maxHealth * .5 ? .5 : 1.2;
+  state.boss.laserTimer = state.boss.health <= state.boss.maxHealth * .5 ? .5 : 4.35;
   state.boss.airY = 0;
   state.boss.drillLength = 0;
   state.boss.jumpInvulnerable = false;
@@ -2196,9 +2199,8 @@ function finishBossAttack() {
 }
 
 function beginBossLaser() {
-  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
   state.boss.laserPhase = 'telegraph';
-  state.boss.laserTimer = phaseTwo ? .12 : .45;
+  state.boss.laserTimer = .45;
   state.boss.beamHit = false;
   state.boss.direction = Math.sign(player.x - state.boss.x) || state.boss.direction;
   state.boss.beamOriginX = state.boss.x + (state.boss.direction < 0 ? .72 : -.72);
@@ -2210,7 +2212,90 @@ function beginBossLaser() {
   state.boss.beamDirectionY = (targetY - state.boss.beamOriginY) / length;
 }
 
+function spawnBossLaserShot() {
+  state.boss.direction = Math.sign(player.x - state.boss.x) || state.boss.direction;
+  const originX = state.boss.x + (state.boss.direction < 0 ? .72 : -.72);
+  const originY = labGroundY + 3.58;
+  const targetAngle = Math.atan2(player.y + .06 - originY, player.x - originX);
+  const spreadPattern = [0, -.07, .07, -.13, .13];
+  const angle = targetAngle + spreadPattern[state.boss.attackIndex % spreadPattern.length];
+  state.boss.attackIndex += 1;
+  state.boss.beamDirectionX = Math.cos(angle);
+  state.boss.beamDirectionY = Math.sin(angle);
+  state.boss.direction = state.boss.beamDirectionX < 0 ? -1 : 1;
+
+  const mesh = new THREE.Group();
+  rectangle(mesh, 1.35, .22, '#58d5e3', 0, 0, .04, .52);
+  rectangle(mesh, 1.05, .085, '#efffff', 0, 0, .08, .98);
+  polygon(mesh, [[0, .14], [.34, 0], [0, -.14]], '#9ff6ff', .7, 0, .1, .9);
+  mesh.position.set(originX, originY, 3.08);
+  mesh.rotation.z = angle;
+  bossAttackLayer.add(mesh);
+  bossLaserShots.push({
+    mesh,
+    vx: Math.cos(angle) * 10.5,
+    vy: Math.sin(angle) * 10.5,
+    life: 4.2,
+    hit: false,
+  });
+  state.pulse = Math.max(state.pulse, .16);
+}
+
+function clearBossLaserShots() {
+  for (const shot of bossLaserShots) bossAttackLayer.remove(shot.mesh);
+  bossLaserShots.length = 0;
+}
+
+function updateBossLaserShots(dt) {
+  for (let index = bossLaserShots.length - 1; index >= 0; index--) {
+    const shot = bossLaserShots[index];
+    shot.life -= dt;
+    shot.mesh.position.x += shot.vx * dt;
+    shot.mesh.position.y += shot.vy * dt;
+    shot.mesh.scale.y = .92 + Math.sin(shot.life * 28) * .08;
+    if (!shot.hit && Math.hypot(shot.mesh.position.x - player.x, shot.mesh.position.y - player.y) < .62) {
+      shot.hit = true;
+      bossAttackLayer.remove(shot.mesh);
+      bossLaserShots.splice(index, 1);
+      if (damagePlayer(10, Math.sign(shot.vx) || 1)) return true;
+      continue;
+    }
+    const outsideArena = shot.mesh.position.x < 62
+      || shot.mesh.position.x > bossArenaEndX + 1
+      || shot.mesh.position.y < labGroundY - 2
+      || shot.mesh.position.y > labGroundY + 10.5;
+    if (shot.life <= 0 || outsideArena) {
+      bossAttackLayer.remove(shot.mesh);
+      bossLaserShots.splice(index, 1);
+    }
+  }
+  return false;
+}
+
 function updateBossLaser(dt) {
+  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
+  if (phaseTwo) {
+    beamTelegraphMesh.visible = false;
+    beamGlowMesh.visible = false;
+    beamCoreMesh.visible = false;
+    if (state.boss.beamPhase !== 'cooldown') {
+      state.boss.laserPhase = 'idle';
+      return false;
+    }
+    state.boss.laserTimer -= dt;
+    if (state.boss.laserPhase === 'bullet') {
+      if (state.boss.laserTimer <= 0) {
+        state.boss.laserPhase = 'idle';
+        state.boss.laserTimer = .34;
+      }
+    } else if (state.boss.laserTimer <= 0) {
+      spawnBossLaserShot();
+      state.boss.laserPhase = 'bullet';
+      state.boss.laserTimer = .08;
+    }
+    return false;
+  }
+
   if (state.boss.beamPhase !== 'cooldown') {
     state.boss.laserPhase = 'idle';
     beamTelegraphMesh.visible = false;
@@ -2219,7 +2304,6 @@ function updateBossLaser(dt) {
     return false;
   }
 
-  const phaseTwo = state.boss.health <= state.boss.maxHealth * .5;
   if (state.boss.laserPhase === 'idle') {
     state.boss.laserTimer -= dt;
     if (state.boss.laserTimer <= 0) beginBossLaser();
@@ -2237,7 +2321,7 @@ function updateBossLaser(dt) {
     beamCoreMesh.visible = false;
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'active';
-      state.boss.laserTimer = phaseTwo ? .12 : .2;
+      state.boss.laserTimer = .2;
       state.pulse = Math.max(state.pulse, .42);
     }
   } else if (state.boss.laserPhase === 'active') {
@@ -2246,11 +2330,11 @@ function updateBossLaser(dt) {
     setBeamMesh(beamCoreMesh, .085, true);
     if (!state.boss.beamHit && playerDistanceToBeam() < .55) {
       state.boss.beamHit = true;
-      if (damagePlayer(phaseTwo ? 10 : 20, Math.sign(state.boss.beamDirectionX) || 1)) return true;
+      if (damagePlayer(20, Math.sign(state.boss.beamDirectionX) || 1)) return true;
     }
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'idle';
-      state.boss.laserTimer = phaseTwo ? .58 : 2.0;
+      state.boss.laserTimer = 4.35;
       beamGlowMesh.visible = false;
       beamCoreMesh.visible = false;
     }
@@ -2385,12 +2469,14 @@ function updateCombat(dt, elapsed) {
   const fighting = state.bossAwake && !state.boss.defeated && state.eraTarget > .5 && isLowerLevel();
   if (!fighting) {
     state.boss.laserPhase = 'idle';
+    clearBossLaserShots();
     beamTelegraphMesh.visible = false;
     beamGlowMesh.visible = false;
     beamCoreMesh.visible = false;
     return;
   }
 
+  if (updateBossLaserShots(dt)) return;
   if (updateBossLaser(dt)) return;
 
   // Contact is harmless during patrol. Every ten seconds the machine stops, vents, then attacks with the saw.
@@ -2500,8 +2586,8 @@ function updateHud() {
     objective.textContent = state.boss.jumpInvulnerable
       ? '二阶段：Boss起跳后核心无敌 · 1秒后大型钻头落地 · 立即离开锁定位置'
       : state.boss.health <= state.boss.maxHealth * .5
-        ? '二阶段：测绘器高频脉冲射击 · 每次冲刺后接1秒跳钻 · 利用平台持续换位'
-        : 'Boss战：测绘激光约每3秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
+        ? '二阶段：测绘器发射高频短光弹 · 光弹不追踪 · 利用移动与平台穿过弹幕'
+        : 'Boss战：测绘激光每5秒锁定射击 · 每10秒喷气后锯齿冲刺 · S/Ctrl下蹲躲避';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -2827,7 +2913,9 @@ function updateHistoryOutcome(dt, elapsed) {
       if (jetting) modernBoss.userData.dashJets.scale.x = .75 + Math.abs(Math.sin(elapsed * 17)) * .7;
     }
     if (modernBoss.userData.emitter) {
-      const laserAiming = state.boss.laserPhase === 'telegraph' || state.boss.laserPhase === 'active';
+      const laserAiming = state.boss.laserPhase === 'telegraph'
+        || state.boss.laserPhase === 'active'
+        || state.boss.laserPhase === 'bullet';
       const beamAngle = Math.atan2(state.boss.beamDirectionY, state.boss.beamDirectionX);
       const emitterAngle = laserAiming
         ? (state.boss.direction < 0 ? beamAngle : Math.PI - beamAngle)
@@ -2917,14 +3005,9 @@ function updateVisuals(dt, elapsed) {
   } else if (attacking && posedWeapon === 'coreDrill') {
     weaponAimAngle = attackAimAngle + Math.sin(attackProgress * Math.PI * 4) * .045;
   } else if (attacking && posedWeapon === 'impactHammer') {
-    // The old sword cadence: quick lift, one decisive top-to-bottom arc, then stow.
-    if (attackProgress < .2) {
-      const liftT = THREE.MathUtils.smoothstep(attackProgress, 0, .2);
-      weaponAimAngle = THREE.MathUtils.lerp(.35, 1.3, liftT);
-    } else {
-      const swingT = THREE.MathUtils.smoothstep(attackProgress, .2, .78);
-      weaponAimAngle = THREE.MathUtils.lerp(1.3, -.92, swingT);
-    }
+    // Terraria-like cadence: spawn overhead, sweep forward once, disappear into storage.
+    const swingT = THREE.MathUtils.smoothstep(attackProgress, 0, .78);
+    weaponAimAngle = THREE.MathUtils.lerp(1.32, -.88, swingT);
   } else if (attacking && posedWeapon === 'returnWrench') {
     const throwT = THREE.MathUtils.smoothstep(attackProgress, 0, 1);
     weaponAimAngle = attackAimAngle + THREE.MathUtils.lerp(.48, -.38, throwT);
@@ -2946,9 +3029,7 @@ function updateVisuals(dt, elapsed) {
   const stepBounce = Math.abs(Math.sin(player.walkPhase * 2)) * .045 * player.walkBlend;
   rig.bodyRig.position.y = rig.bodyBaseY + stepBounce;
   rig.headRig.position.y = rig.headBaseY + stepBounce * .72;
-  const hammerLean = attacking && posedWeapon === 'impactHammer'
-    ? -Math.sin(attackProgress * Math.PI) * .12
-    : 0;
+  const hammerLean = 0;
   rig.bodyRig.rotation.z = THREE.MathUtils.damp(rig.bodyRig.rotation.z, hammerLean, 18, dt);
   rig.headRig.rotation.z = THREE.MathUtils.damp(rig.headRig.rotation.z, hammerLean * .35, 18, dt);
   rig.leftArm.position.y = rig.leftArmBaseY + stepBounce;
@@ -3081,8 +3162,8 @@ if (previewParams.has('boss-preview')) {
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = 9.7;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = .35;
   if (previewParams.has('phase2-preview')) state.boss.health = state.boss.maxHealth * .48;
+  state.boss.laserTimer = previewParams.has('phase2-preview') ? .35 : 4.35;
   if (previewParams.has('dash-preview')) {
     state.boss.beamPhase = 'dashCharge';
     state.boss.beamTimer = 1.2;
