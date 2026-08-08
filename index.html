@@ -3,36 +3,134 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>零时回响 · 时间切换 MVP</title>
-    <link rel="stylesheet" href="/src/style.css" />
+    <title>零时回响 · 历史交互场景</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/style.css?v=boss-phase-v3" />
   </head>
   <body>
-    <canvas id="game"></canvas>
-    <div class="hud">
-      <section class="brand">
-        <span>ZERO ECHO / MVP 01</span>
-        <h1>零时回响</h1>
-      </section>
-      <section class="era-card">
-        <span>当前时间层</span>
-        <strong id="era-label">现代</strong>
-        <div class="era-track"><i id="era-dot"></i></div>
-      </section>
+    <canvas id="game" aria-label="零时回响时间切换交互场景"></canvas>
+    <div id="time-flash" class="time-flash"></div>
+
+    <main class="hud">
+      <header class="topbar">
+        <section class="brand">
+          <span>ZERO ECHO / PLAYABLE PROTOTYPE</span>
+          <h1>零时回响</h1>
+          <p>地下03号矿石转运站 · 同一地点 · 两段历史</p>
+        </section>
+
+        <section class="era-card" aria-live="polite">
+          <div class="era-copy">
+            <span>当前时间层</span>
+            <strong id="era-label">现代 · 2147</strong>
+          </div>
+          <div class="era-track">
+            <i id="era-dot"></i>
+          </div>
+          <div class="era-names"><span>过去</span><span>现代</span></div>
+        </section>
+      </header>
+
+      <aside class="history-panel">
+        <span class="eyebrow">历史因果记录</span>
+        <ol>
+          <li id="event-crate"><i></i><div><b>2047年拆下手轮</b><span>尚未发生</span></div></li>
+          <li id="event-plate"><i></i><div><b>手轮跨越时间</b><span>等待背包</span></div></li>
+          <li id="event-gate"><i></i><div><b>2147年开启闸门</b><span>等待物品</span></div></li>
+          <li id="event-elevator"><i></i><div><b>乘过去电梯下井</b><span>等待进入</span></div></li>
+          <li id="event-work-order"><i></i><div><b>2147年找到工号与工单</b><span>等待调查</span></div></li>
+          <li id="event-reactor"><i></i><div><b>2047年偷偷加工暗槽</b><span>尚未发生</span></div></li>
+          <li id="event-future"><i></i><div><b>2147年激活暗装爆破器</b><span>等待改写</span></div></li>
+        </ol>
+      </aside>
+
       <section class="objective">
-        <span>实验目标</span>
-        <p id="objective">按 Q 回到过去，靠近墙体并按 空格 攻击</p>
+        <span class="eyebrow">当前目标</span>
+        <p id="objective">2147年：03号闸门手轮已经锈死。按 Q 查看2047年的同一套机构</p>
       </section>
+
+      <section id="door-status" class="door-status">
+        <span>03 GATE CONTROL</span>
+        <b id="door-power">主电网：离线</b>
+        <em id="door-lock">电磁联锁：失效 · 原手轮锈死</em>
+      </section>
+
       <section class="controls">
-        <kbd>WASD</kbd><span>移动</span>
-        <kbd>Q</kbd><span>切换时代</span>
-        <kbd>SPACE</kbd><span>攻击</span>
+        <div><kbd>A</kbd><kbd>D</kbd><span>左右移动</span></div>
+        <div><kbd>W</kbd><span>跳跃</span></div>
+        <div><kbd>S</kbd><kbd>Ctrl</kbd><span>下蹲 / 下平台</span></div>
+        <div><kbd>E</kbd><span>拾取 / 安装 / 使用</span></div>
+        <div><kbd>B</kbd><span>打开背包</span></div>
+        <div><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><span>切换武器</span></div>
+        <div><kbd>J</kbd><span>攻击 · 双手钻可按住</span></div>
+        <div class="primary"><kbd>Q</kbd><span>切换过去 / 现代</span></div>
+        <div><kbd>R</kbd><span>重置历史</span></div>
       </section>
-      <section class="boss-hud">
-        <div><span>BOX / 守门者</span><b id="boss-value">100%</b></div>
-        <div class="health"><i id="boss-health"></i></div>
+
+      <section class="player-health" aria-label="玩家生命">
+        <span>TIME ANCHOR / HP</span>
+        <div><i id="player-health-fill"></i></div>
+        <b id="player-health-copy">100 / 100</b>
       </section>
-    </div>
-    <div id="toast" class="toast"></div>
-    <script type="module" src="/src/main.js"></script>
+
+      <section id="boss-hud" class="boss-hud" aria-hidden="true">
+        <span>03型时晶采掘机 · 掘脉者</span>
+        <div><i id="boss-health-fill"></i></div>
+        <b id="boss-health-copy">720 / 720</b>
+      </section>
+
+      <section class="hotbar" aria-label="快捷栏">
+        <div id="hotbar-calibrator" class="hotbar-cell selected" title="1 小型时相枪"><em>1</em><i class="weapon-icon calibrator-icon"></i></div>
+        <div id="hotbar-drill" class="hotbar-cell" title="2 双手脉冲钻"><em>2</em><i class="weapon-icon drill-icon"></i></div>
+        <div id="hotbar-hammer" class="hotbar-cell" title="3 液压挥击锤"><em>3</em><i class="weapon-icon hammer-icon"></i></div>
+        <div id="hotbar-wrench" class="hotbar-cell" title="4 回弹开口扳手"><em>4</em><i class="weapon-icon wrench-icon"></i></div>
+        <div id="hotbar-wheel" class="hotbar-cell empty" title="5 机械手轮"><em>5</em><div class="mini-wheel"></div></div>
+        <div class="hotbar-cell empty"><em>6</em></div>
+        <div class="hotbar-cell empty"><em>7</em></div>
+        <div class="hotbar-cell empty"><em>8</em></div>
+        <div class="hotbar-cell empty"><em>9</em></div>
+        <div id="hotbar-breach" class="hotbar-cell" title="0 时锁爆破器"><em>0</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div></div>
+      </section>
+
+      <div id="interaction" class="interaction">
+        <span>靠近场景装置后按 E 交互</span>
+      </div>
+
+      <section id="npc-dialogue" class="npc-dialogue" aria-hidden="true">
+        <header><span>2047 / FINAL MAINTENANCE</span><b>维修工程师 · 林</b></header>
+        <p id="npc-dialogue-copy"></p>
+        <em>按 E 继续</em>
+      </section>
+
+      <aside id="inventory-panel" class="inventory-panel" aria-hidden="true">
+        <header><span>TIME-ANCHORED PACK</span><b>时间锚背包</b><kbd>B</kbd></header>
+        <div class="inventory-grid">
+          <div class="inventory-cell"><em>1</em><i class="weapon-icon calibrator-icon"></i><small>时相枪</small></div>
+          <div class="inventory-cell"><em>2</em><i class="weapon-icon drill-icon"></i><small>双手钻</small></div>
+          <div class="inventory-cell"><em>3</em><i class="weapon-icon hammer-icon"></i><small>挥击锤</small></div>
+          <div class="inventory-cell"><em>4</em><i class="weapon-icon wrench-icon"></i><small>开口扳手</small></div>
+          <div id="handwheel-slot" class="inventory-cell empty"><em>5</em><div class="handwheel-icon"><i></i><i></i><i></i><i></i></div><small>机械手轮</small></div>
+          <div class="inventory-cell empty"><em>6</em></div><div class="inventory-cell empty"><em>7</em></div>
+          <div class="inventory-cell empty"><em>8</em></div><div class="inventory-cell empty"><em>9</em></div>
+          <div id="breach-kit-slot" class="inventory-cell"><em>0</em><div class="breach-kit-icon"><i></i><i></i><i></i><i></i></div><small>时锁炸药</small></div>
+          <div class="inventory-cell empty"><em>11</em></div>
+          <div class="inventory-cell empty"><em>12</em></div><div class="inventory-cell empty"><em>13</em></div>
+          <div class="inventory-cell empty"><em>14</em></div><div class="inventory-cell empty"><em>15</em></div>
+          <div class="inventory-cell empty"><em>16</em></div><div class="inventory-cell empty"><em>17</em></div>
+          <div class="inventory-cell empty"><em>18</em></div><div class="inventory-cell empty"><em>19</em></div>
+          <div class="inventory-cell empty"><em>20</em></div>
+        </div>
+        <div class="inventory-detail"><b id="inventory-item-name">时相校准器</b><span id="inventory-item-status">快捷栏 1 · 发射检修脉冲 · 不消耗弹药</span></div>
+        <p>四种武器会一直保留，停止攻击后自动收回腰间、刀鞘或背部；手轮等任务物品消耗后立即移出格子。</p>
+      </aside>
+
+      <div class="world-legend">
+        <span><i class="legend-past"></i>过去：温暖、完整、可改写</span>
+        <span><i class="legend-present"></i>现代：冰冷、破败、显示结果</span>
+      </div>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script type="module" src="/src/main.js?v=combat-balance-v3"></script>
   </body>
 </html>
