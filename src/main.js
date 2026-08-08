@@ -112,7 +112,7 @@ const state = {
     beamLength: 48,
     beamHit: false,
     laserPhase: 'idle',
-    laserTimer: 3.15,
+    laserTimer: 1.85,
     attackIndex: 0,
     airY: 0,
     jumpStartX: bossHomeX,
@@ -214,11 +214,11 @@ const weaponDefinitions = {
   },
   coreDrill: {
     name: '双手脉冲钻',
-    detail: '快捷栏 2 · 双手持握 · 按住连续钻击 · 每次8伤害',
-    duration: .16,
-    cooldown: .12,
+    detail: '快捷栏 2 · 双手持握 · 按住连续钻击 · 每次32伤害',
+    duration: .2,
+    cooldown: .22,
     range: 1.72,
-    damage: 8,
+    damage: 32,
     activeStart: .12,
     activeEnd: .9,
     minDot: .38,
@@ -226,19 +226,19 @@ const weaponDefinitions = {
   },
   impactHammer: {
     name: '液压挥击锤',
-    detail: '快捷栏 3 · 单手与锤柄锁定 · 点击一次完成一段前向圆弧 · 54伤害',
-    duration: .28,
-    cooldown: .38,
+    detail: '快捷栏 3 · 单手与锤柄锁定 · 点击一次完成一段前向圆弧 · 84伤害',
+    duration: .32,
+    cooldown: .52,
     range: 2.05,
-    damage: 54,
-    activeStart: .3,
-    activeEnd: .76,
+    damage: 84,
+    activeStart: .28,
+    activeEnd: .78,
     minDot: .18,
     melee: true,
   },
   returnWrench: {
     name: '回弹开口扳手',
-    detail: '快捷栏 4 · 先做投掷动作再脱手 · 投出后自动返回 · 20伤害',
+    detail: '快捷栏 4 · 脱手后追踪Boss核心 · 命中或超时后自动返回 · 20伤害',
     duration: .36,
     cooldown: .52,
   },
@@ -1580,7 +1580,7 @@ function resetHistory() {
   state.boss.beamDirectionY = 0;
   state.boss.beamHit = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 3.15;
+  state.boss.laserTimer = 1.85;
   state.boss.attackIndex = 0;
   state.boss.airY = 0;
   state.boss.jumpStartX = bossHomeX;
@@ -1990,8 +1990,8 @@ function checkHistoryEvents() {
     state.boss.beamPhase = 'cooldown';
     state.boss.beamTimer = 10;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 3.15;
-    showToast('掘脉者解除封存：一阶段约每3.8秒释放一次锁定激光；半血后改为短激光弹幕和高速冲刺跳钻');
+    state.boss.laserTimer = 1.85;
+    showToast('掘脉者解除封存：一阶段约每2.5秒释放一次锁定激光；半血后改为短激光弹幕和高速冲刺跳钻');
     updateHud();
   }
 }
@@ -2085,7 +2085,7 @@ function clearCombatEffects() {
   state.wrenchInFlight = false;
   state.wrenchReleasePending = false;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = 3.15;
+  state.boss.laserTimer = 1.85;
   beamTelegraphMesh.visible = false;
   beamGlowMesh.visible = false;
   beamCoreMesh.visible = false;
@@ -2118,7 +2118,7 @@ function damagePlayer(amount, knockDirection) {
     state.boss.beamTimer = 10;
     state.boss.beamHit = false;
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 3.15;
+    state.boss.laserTimer = 1.85;
     state.boss.attackIndex = 0;
     state.boss.airY = 0;
     state.boss.drillLength = 0;
@@ -2149,7 +2149,7 @@ function damageBoss(amount) {
     state.boss.drillLength = 0;
     state.boss.beamPhase = 'cooldown';
     state.boss.laserPhase = 'idle';
-    state.boss.laserTimer = 3.15;
+    state.boss.laserTimer = 1.85;
     state.boss.jumpInvulnerable = false;
     state.pulse = 1;
     clearCombatEffects();
@@ -2206,7 +2206,7 @@ function startBossDashActive(dt) {
   state.boss.dashHit = false;
   state.pulse = Math.max(state.pulse, .32);
   // The exhaust telegraph ends on this frame and the machine immediately gains forward motion.
-  const speed = state.boss.health <= state.boss.maxHealth * .5 ? 23 : 19;
+  const speed = state.boss.health <= state.boss.maxHealth * .5 ? 32 : 26;
   state.boss.x += state.boss.dashDirection * speed * Math.min(dt, 1 / 60);
 }
 
@@ -2226,7 +2226,7 @@ function finishBossAttack() {
   state.boss.beamPhase = 'cooldown';
   state.boss.beamTimer = phaseTwo ? 5.6 : 10;
   state.boss.laserPhase = 'idle';
-  state.boss.laserTimer = phaseTwo ? .5 : 3.15;
+  state.boss.laserTimer = phaseTwo ? .5 : 1.85;
   state.boss.airY = 0;
   state.boss.drillLength = 0;
   state.boss.jumpInvulnerable = false;
@@ -2374,7 +2374,7 @@ function updateBossLaser(dt) {
     }
     if (state.boss.laserTimer <= 0) {
       state.boss.laserPhase = 'idle';
-      state.boss.laserTimer = 3.15;
+      state.boss.laserTimer = 1.85;
       beamGlowMesh.visible = false;
       beamCoreMesh.visible = false;
     }
@@ -2457,7 +2457,27 @@ function updateCombat(dt, elapsed) {
     shot.age += dt;
     if (shot.type === 'wrench') {
       shot.mesh.rotation.z -= dt * 13;
-      if (shot.age > .84) shot.returning = true;
+      if (!shot.returning) {
+        const canTrackBoss = state.bossAwake
+          && !state.boss.defeated
+          && state.eraTarget > .5
+          && isLowerLevel();
+        if (canTrackBoss) {
+          const targetX = state.boss.x + .18;
+          const targetY = bossCoreY + state.boss.airY;
+          const currentAngle = Math.atan2(shot.vy, shot.vx);
+          const desiredAngle = Math.atan2(targetY - shot.mesh.position.y, targetX - shot.mesh.position.x);
+          const angleDifference = Math.atan2(
+            Math.sin(desiredAngle - currentAngle),
+            Math.cos(desiredAngle - currentAngle),
+          );
+          const nextAngle = currentAngle + THREE.MathUtils.clamp(angleDifference, -6.2 * dt, 6.2 * dt);
+          const outboundSpeed = Math.max(11.5, Math.hypot(shot.vx, shot.vy));
+          shot.vx = Math.cos(nextAngle) * outboundSpeed;
+          shot.vy = Math.sin(nextAngle) * outboundSpeed;
+        }
+        if (shot.age > 1.3) shot.returning = true;
+      }
       if (shot.returning) {
         const dx = player.x - shot.mesh.position.x;
         const dy = player.y + .12 - shot.mesh.position.y;
@@ -2545,7 +2565,7 @@ function updateCombat(dt, elapsed) {
       startBossDashActive(dt);
     }
   } else if (state.boss.beamPhase === 'dashActive') {
-    const dashSpeed = state.boss.health <= state.boss.maxHealth * .5 ? 23 : 19;
+    const dashSpeed = state.boss.health <= state.boss.maxHealth * .5 ? 32 : 26;
     state.boss.x += state.boss.dashDirection * dashSpeed * dt;
     const reachedWall = state.boss.x <= state.boss.patrolMinX || state.boss.x >= state.boss.patrolMaxX;
     state.boss.x = THREE.MathUtils.clamp(state.boss.x, state.boss.patrolMinX, state.boss.patrolMaxX);
@@ -2630,7 +2650,7 @@ function updateHud() {
       ? '二阶段：Boss腾空后快速坠落 · 约0.8秒钻头落地 · 立即离开锁定位置'
       : state.boss.health <= state.boss.maxHealth * .5
         ? '二阶段：约5.6秒短激光弹幕 · 清场喷气后锯齿冲刺 · 冲刺后接快速跳钻'
-        : 'Boss战：测绘激光约每3.8秒释放一次 · 激光贯穿速度不变 · S/Ctrl下蹲躲避冲刺';
+        : 'Boss战：测绘激光约每2.5秒释放一次 · 激光贯穿速度不变 · S/Ctrl下蹲躲避高速冲刺';
   } else if (state.elevatorRiding) {
     objective.textContent = state.elevatorTargetY === labGroundY
       ? '2047年：升降机正在下降到地下实验室，时间切换暂时受到干扰'
@@ -3220,7 +3240,7 @@ if (previewParams.has('boss-preview')) {
   state.boss.beamTimer = 9.7;
   state.boss.laserPhase = 'idle';
   if (previewParams.has('phase2-preview')) state.boss.health = state.boss.maxHealth * .48;
-  state.boss.laserTimer = previewParams.has('phase2-preview') ? .35 : 3.15;
+  state.boss.laserTimer = previewParams.has('phase2-preview') ? .35 : 1.85;
   if (previewParams.has('dash-preview')) {
     state.boss.beamPhase = 'dashCharge';
     state.boss.beamTimer = 1.2;
