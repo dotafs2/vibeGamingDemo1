@@ -229,27 +229,13 @@ function buildNear(THREE, group, palette, ruined) {
 
 function buildGateProduction(THREE, group) {
   imagePlane(THREE, group, {
-    name: 'gate-surface-production-v2',
-    url: '/art/gate/surface-facility-transition-v2.png',
+    name: 'gate-surface-terrain-v3',
+    url: '/art/gate/surface-terrain-only-v3.png',
     width: 38.2,
     height: 16.1,
     x: -1,
     y: .26,
     z: 0,
-    opacity: 1,
-    color: '#ffffff',
-    parallaxFactor: 0,
-  });
-  // The second authored panorama continues the surface facility over the
-  // elevator headhouse. Its 5.7-unit overlap is hidden by the shaft frame.
-  imagePlane(THREE, group, {
-    name: 'gate-surface-right-extension-v2',
-    url: '/art/gate/surface-facility-right-extension-v2.png',
-    width: 38.2,
-    height: 16.1,
-    x: 31.5,
-    y: .26,
-    z: -.02,
     opacity: 1,
     color: '#ffffff',
     parallaxFactor: 0,
@@ -342,8 +328,9 @@ function setOpacity(group, amount) {
 
 export function createMineParallaxArt({ THREE, scene }) {
   const definitions = [
-    // Gate/lab panoramas replace the legacy whitebox visually, while the
-    // editor assets (z=3) and player (z=12) remain independently interactive.
+    // Surface production art is terrain-only. Every identifiable facility
+    // model is a transparent editor asset, so visual motion and physics share
+    // one runtime driver instead of leaving a duplicate baked into the plate.
     { name: 'gate-production', factorX: 1, factorY: 1, z: .8, presentZOffset: .01, build: buildGateProduction },
     { name: 'elevator-production', factorX: 1, factorY: 1, z: -3.4, presentZOffset: 1, build: buildElevatorProduction },
     // The lab owns the 60.75-64.1 overlap; the boss panorama starts behind it.

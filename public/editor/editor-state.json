@@ -21,14 +21,14 @@
   "sceneArt": {
     "enabled": true,
     "independentComponents": true,
-    "pastImage": "/art/gate/surface-facility-transition-v2.png",
-    "presentImage": "/art/gate/surface-facility-transition-v2.png",
+    "pastImage": "/art/gate/surface-terrain-only-v3.png",
+    "presentImage": "/art/gate/surface-terrain-only-v3.png",
     "x": -1,
     "y": 0.26,
     "width": 38.2,
     "height": 16.1,
     "opacity": 1,
-    "backgroundRevision": "surface-facility-2026-08-10"
+    "backgroundRevision": "surface-terrain-only-model-split-2026-08-10"
   },
   "sceneComponents": [
     {
@@ -77,13 +77,24 @@
     },
     {
       "id": "scene-gate",
-      "name": "03 号工业闸门",
+      "name": "03 ???????",
       "componentType": "static",
       "bounds": {
-        "minX": 7.15,
-        "maxX": 13.1,
-        "minY": -4.35,
-        "maxY": 3.45
+        "minX": 7.2,
+        "maxX": 9.5,
+        "minY": -4.55,
+        "maxY": 1.85
+      }
+    },
+    {
+      "id": "scene-gate-leaf",
+      "name": "03 ???????",
+      "componentType": "animation",
+      "bounds": {
+        "minX": 7.575,
+        "maxX": 9.125,
+        "minY": -4.545,
+        "maxY": 0.605
       }
     },
     {
@@ -122,6 +133,417 @@
   ],
   "assets": [
     {
+      "id": "scene-crusher",
+      "name": "投料斗与双辊破碎机",
+      "description": "完整投料斗、双辊破碎机和支撑底座",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-crusher",
+      "x": -12.45,
+      "y": 1.175,
+      "width": 8.1,
+      "height": 10.85,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 8.1,
+        "height": 10.85
+      },
+      "versions": [
+        {
+          "id": "scene-crusher-v1",
+          "pastImage": "/editor/assets/scene-crusher/v1-past.png",
+          "presentImage": "/editor/assets/scene-crusher/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明破碎机总成"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-crusher/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-crusher/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "???????????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-crusher/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-crusher/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-conveyor",
+      "name": "矿石传送带",
+      "description": "带滚轮、桁架和支腿的长传送带",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-conveyor",
+      "x": -5,
+      "y": -2.5,
+      "width": 8.05,
+      "height": 3.2,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 8.05,
+        "height": 3.2
+      },
+      "versions": [
+        {
+          "id": "scene-conveyor-v1",
+          "pastImage": "/editor/assets/scene-conveyor/v1-past.png",
+          "presentImage": "/editor/assets/scene-conveyor/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明传送带"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-conveyor/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-conveyor/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "???????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-conveyor/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-conveyor/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-vent-housing",
+      "name": "通风机机壳",
+      "description": "不含转子的风扇机壳、格栅与管线",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-vent-housing",
+      "x": 0.5,
+      "y": 4.5,
+      "width": 5.85,
+      "height": 6.1,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 5.85,
+        "height": 6.1
+      },
+      "versions": [
+        {
+          "id": "scene-vent-housing-v1",
+          "pastImage": "/editor/assets/scene-vent-housing/v1-past.png",
+          "presentImage": "/editor/assets/scene-vent-housing/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明空风扇机壳"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-vent-housing/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-vent-housing/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "????????????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-vent-housing/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-vent-housing/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-maintenance",
+      "name": "中央维修平台",
+      "description": "护栏、控制柜、梯子和支腿组成的维修平台",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-maintenance",
+      "x": 3.5,
+      "y": -1.9499999999999997,
+      "width": 4.8,
+      "height": 5.2,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 100,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 4.8,
+        "height": 5.2
+      },
+      "versions": [
+        {
+          "id": "scene-maintenance-v1",
+          "pastImage": "/editor/assets/scene-maintenance/v1-past.png",
+          "presentImage": "/editor/assets/scene-maintenance/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明维修平台"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-maintenance/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-maintenance/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "??????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-maintenance/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-maintenance/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-gate",
+      "name": "03 ???????",
+      "description": "??????????????????????",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-gate",
+      "x": 8.35,
+      "y": -1.35,
+      "width": 2.3,
+      "height": 6.4,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 2.3,
+        "height": 6.4
+      },
+      "versions": [
+        {
+          "id": "scene-gate-v1",
+          "pastImage": "/editor/assets/scene-gate/v1-past.png",
+          "presentImage": "/editor/assets/scene-gate/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明工业闸门"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-gate/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-gate/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "???????????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-gate/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-gate/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-gate-leaf",
+      "name": "03 ???????",
+      "description": "????????????? Y ??????????",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": null,
+      "x": 8.35,
+      "y": -1.97,
+      "width": 1.55,
+      "height": 5.15,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 2,
+      "renderMode": "source-png",
+      "componentType": "animation",
+      "physicsType": "static-visual",
+      "driver": {
+        "id": "surface-gate-lift",
+        "axis": "y",
+        "distance": 5.2
+      },
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 1.55,
+        "height": 5.15
+      },
+      "versions": [
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-gate-leaf/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-gate-leaf/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "???????????????????? surface-gate-lift ?????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-gate-leaf/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-gate-leaf/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 1,
+      "pendingJobId": null,
+      "createdAt": "2026-08-10T10:53:01.498Z",
+      "fracturePieces": 4
+    },
+    {
+      "id": "scene-shaft",
+      "name": "右侧升降井",
+      "description": "导轨、钢架、升降笼和安全梯组成的升降井",
+      "sourceIds": {
+        "past": [],
+        "present": []
+      },
+      "sourceComponentId": "scene-shaft",
+      "x": 14,
+      "y": 1.875,
+      "width": 2.5,
+      "height": 12.75,
+      "rotation": 0,
+      "opacity": 1,
+      "depth": 1,
+      "renderMode": "source-png",
+      "componentType": "static",
+      "physicsType": "static-visual",
+      "animation": {
+        "type": "none",
+        "speed": 0,
+        "phase": 0
+      },
+      "visible": true,
+      "collider": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 2.5,
+        "height": 12.75
+      },
+      "versions": [
+        {
+          "id": "scene-shaft-v1",
+          "pastImage": "/editor/assets/scene-shaft/v1-past.png",
+          "presentImage": "/editor/assets/scene-shaft/v1-present.png",
+          "completedAt": "2026-08-08T08:45:00.000Z",
+          "promptSummary": "双时代独立透明升降井"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-shaft/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-shaft/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "???????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-shaft/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-shaft/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
+        }
+      ],
+      "activeVersion": 2,
+      "pendingJobId": null,
+      "createdAt": "2026-08-08T08:45:00.000Z",
+      "fracturePieces": 4
+    },
+    {
       "id": "scene-rails",
       "name": "矿车轨道",
       "description": "贯穿场景底部的双钢轨与枕木",
@@ -159,9 +581,23 @@
           "presentImage": "/editor/assets/scene-rails/v1-present.png",
           "completedAt": "2026-08-08T08:45:00.000Z",
           "promptSummary": "双时代独立透明矿车轨道"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-rails/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-rails/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "??????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-rails/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-rails/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
         }
       ],
-      "activeVersion": 0,
+      "activeVersion": 2,
       "pendingJobId": null,
       "createdAt": "2026-08-08T08:45:00.000Z",
       "fracturePieces": 4
@@ -204,17 +640,31 @@
           "presentImage": "/editor/assets/scene-ceiling-cables/v1-present.png",
           "completedAt": "2026-08-08T08:45:00.000Z",
           "promptSummary": "双时代独立透明顶部管线"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/scene-ceiling-cables/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-ceiling-cables/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "??????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/scene-ceiling-cables/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/scene-ceiling-cables/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
         }
       ],
-      "activeVersion": 0,
+      "activeVersion": 2,
       "pendingJobId": null,
       "createdAt": "2026-08-08T08:45:00.000Z",
       "fracturePieces": 4
     },
     {
       "id": "asset-1786172676762-7yyh4",
-      "name": "这是一个托运煤矿的车",
-      "description": "这是一个托运煤矿的车",
+      "name": "?????",
+      "description": "?????????????????",
       "sourceIds": {
         "past": [
           "past-00068",
@@ -283,24 +733,38 @@
           "presentImage": "/editor/assets/asset-1786172676762-7yyh4/v-1786172676762-direct-present.png",
           "completedAt": "2026-08-08T07:30:00.000Z",
           "promptSummary": "保留原始生成画质，仅统一裁掉多余透明留白；不执行像素化、调色板量化、抖动或描边处理。"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/asset-1786172676762-7yyh4/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/asset-1786172676762-7yyh4/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "????????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/asset-1786172676762-7yyh4/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/asset-1786172676762-7yyh4/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
         }
       ],
-      "activeVersion": 1,
+      "activeVersion": 3,
       "pendingJobId": null,
       "createdAt": "2026-08-08T07:04:36.762Z"
     },
     {
-      "id": "asset-1786355512721-gmtyb",
-      "name": "中央通风机转子 复制 副本",
+      "id": "asset-1786183509347-huq3u",
+      "name": "???????",
       "description": "中央大型通风机的四叶转子，绕中心持续旋转",
       "sourceIds": {
         "past": [],
         "present": []
       },
-      "x": 1,
-      "y": 5,
-      "width": 4.2,
-      "height": 4.2,
+      "x": 0.5,
+      "y": 4.5,
+      "width": 3.8,
+      "height": 3.8,
       "rotation": 0,
       "opacity": 1,
       "depth": 2,
@@ -316,8 +780,8 @@
       "collider": {
         "offsetX": 0,
         "offsetY": 0,
-        "width": 4.2,
-        "height": 4.2
+        "width": 3.8,
+        "height": 3.8
       },
       "versions": [
         {
@@ -326,11 +790,25 @@
           "presentImage": "/editor/assets/system-vent-fan/vent-fan-2147.png",
           "completedAt": "2026-08-08T07:30:00.000Z",
           "promptSummary": "与整景空风扇机壳配套的四叶独立转子；2047 完整维护，2147 冷灰氧化；中心轴与外轮廓完全一致。"
+        },
+        {
+          "id": "v3-scene-match",
+          "pastImage": "/editor/assets/system-vent-fan/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/system-vent-fan/v3-scene-match-present.png",
+          "completedAt": "2026-08-10T10:53:01.498Z",
+          "promptSummary": "?????????????????????????"
+        },
+        {
+          "id": "v4-dual-era",
+          "pastImage": "/editor/assets/system-vent-fan/v3-scene-match-past.png",
+          "presentImage": "/editor/assets/system-vent-fan/v4-dual-era-present.png",
+          "completedAt": "2026-08-10T14:30:00.000Z",
+          "promptSummary": "?? v3 ??????????????? 2147 ????????"
         }
       ],
-      "activeVersion": 0,
+      "activeVersion": 2,
       "pendingJobId": null,
-      "createdAt": "2026-08-10T09:51:52.721Z",
+      "createdAt": "2026-08-08T10:05:09.347Z",
       "fracturePieces": 4,
       "sourceComponentId": null
     }

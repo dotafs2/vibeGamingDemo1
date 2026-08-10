@@ -7,3 +7,4 @@ editor-jobs/*
 !editor-jobs/.gitkeep
 /editor-*.png
 /fracture-preview-test*.png
+v2-scene-match-*.png

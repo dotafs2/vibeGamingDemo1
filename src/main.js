@@ -1272,6 +1272,10 @@ function createGate(frameColor, doorColor, edgeColor, powered) {
 
 const pastGate = createGate('#77462e', '#4d251f', '#ffad5b', true);
 const modernGate = createGate('#29464d', '#18353c', '#82d6df', false);
+// These groups remain the authoritative gameplay/physics proxy. Their final
+// art is supplied by independent editor assets (fixed frame + driven leaf).
+pastGate.group.visible = false;
+modernGate.group.visible = false;
 
 function createSocket(color, glow) {
   const group = new THREE.Group();
@@ -3064,8 +3068,8 @@ function updateHistoryOutcome(dt, elapsed) {
   modernWinch.drum.rotation.z = state.gateLift * Math.PI * 2.2;
   modernInstalledWheel.rotation.z = -state.gateLift * Math.PI * 3.5;
 
-  setLayerOpacity(pastGate.group, 1 - state.era);
-  setLayerOpacity(modernGate.group, state.era);
+  setLayerOpacity(pastGate.group, 0);
+  setLayerOpacity(modernGate.group, 0);
   setLayerOpacity(pastSocket, 1 - state.era);
   setLayerOpacity(modernSocket, state.era);
   setLayerOpacity(pastWinch.group, 1 - state.era);
@@ -3564,6 +3568,7 @@ assetEditor = createAssetEditor({
   presentLayer,
   getEra: () => state.era,
   getGroundForY: y => y < -12 ? labGroundY : groundY,
+  getDriverValue: id => id === 'surface-gate-lift' ? state.gateLift : 0,
 });
 if (previewParams.has('editor-preview')) assetEditor.setActive(true);
 

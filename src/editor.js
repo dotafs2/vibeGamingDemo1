@@ -4,11 +4,11 @@ import './editor.css';
 const DEFAULT_SCENE_ART = Object.freeze({
   enabled: true,
   independentComponents: true,
-  pastImage: '/editor/scene-art/upper-room-2047.png',
-  presentImage: '/editor/scene-art/upper-room-2147.png',
+  pastImage: '/art/gate/surface-terrain-only-v3.png',
+  presentImage: '/art/gate/surface-terrain-only-v3.png',
   x: -1,
-  y: 1.15,
-  width: 32,
+  y: .26,
+  width: 38.2,
   height: 16.1,
   opacity: 1,
 });
@@ -24,10 +24,11 @@ const DEFAULT_SCENE_COMPONENTS = Object.freeze([
   { id: 'scene-conveyor', name: '矿石传送带', componentType: 'static', bounds: { minX: -9.2, maxX: -1.15, minY: -3.75, maxY: -.55 } },
   { id: 'scene-vent-housing', name: '通风机机壳', componentType: 'static', bounds: { minX: -2.2, maxX: 3.65, minY: 1.35, maxY: 7.45 } },
   { id: 'scene-maintenance', name: '中央维修平台', componentType: 'static', bounds: { minX: 2.55, maxX: 7.35, minY: -3.65, maxY: 1.55 } },
-  { id: 'scene-gate', name: '03 号工业闸门', componentType: 'static', bounds: { minX: 7.15, maxX: 13.1, minY: -4.35, maxY: 3.45 } },
+  { id: 'scene-gate', name: '03 号工业闸门门框', componentType: 'static', bounds: { minX: 7.2, maxX: 9.5, minY: -4.55, maxY: 1.85 } },
+  { id: 'scene-gate-leaf', name: '03 号工业闸门门扇', componentType: 'animation', bounds: { minX: 7.575, maxX: 9.125, minY: -4.545, maxY: .605 } },
   { id: 'scene-shaft', name: '右侧升降井', componentType: 'static', bounds: { minX: 12.75, maxX: 15.25, minY: -4.5, maxY: 8.25 } },
   { id: 'scene-rails', name: '矿车轨道', componentType: 'static', bounds: { minX: -16.8, maxX: 15.1, minY: -5.25, maxY: -4.0 } },
-  { id: 'scene-ceiling-cables', name: '顶部管线与岩层', componentType: 'static', bounds: { minX: -16.8, maxX: 15.1, minY: 5.65, maxY: 8.3 } },
+  { id: 'scene-ceiling-cables', name: '顶部管线与支架', componentType: 'static', bounds: { minX: -16.8, maxX: 15.1, minY: 5.65, maxY: 8.3 } },
 ]);
 
 const COMPONENT_TYPE_LABELS = {
@@ -347,6 +348,7 @@ export function createAssetEditor({
   presentLayer,
   getEra,
   getGroundForY,
+  getDriverValue = () => 0,
 }) {
   const elements = createEditorDom();
   const sceneArtRoot = new THREE.Group();
@@ -906,8 +908,18 @@ export function createAssetEditor({
   function syncAssetTransform(asset) {
     const record = assetGroups.get(asset.id);
     if (!record) return;
-    record.group.position.set(asset.x, asset.y, 3 + asset.depth * 0.01);
-    record.group.rotation.z = asset.rotation;
+    let drivenX = asset.x;
+    let drivenY = asset.y;
+    let drivenRotation = asset.rotation;
+    if (asset.driver?.id) {
+      const value = clamp(Number(getDriverValue(asset.driver.id)) || 0, 0, 1);
+      const distance = Number(asset.driver.distance) || 0;
+      if (asset.driver.axis === 'x') drivenX += value * distance;
+      else if (asset.driver.axis === 'rotation') drivenRotation += value * distance;
+      else drivenY += value * distance;
+    }
+    record.group.position.set(drivenX, drivenY, 3 + asset.depth * 0.01);
+    record.group.rotation.z = drivenRotation;
     record.group.scale.set(asset.width, asset.height, 1);
     record.group.visible = asset.visible !== false;
     record.group.renderOrder = 1000 + asset.depth;
