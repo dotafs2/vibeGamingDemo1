@@ -21,13 +21,14 @@
   "sceneArt": {
     "enabled": true,
     "independentComponents": true,
-    "pastImage": "/editor/scene-art/upper-room-background-2047-v1.png",
-    "presentImage": "/editor/scene-art/upper-room-background-2147-v1.png",
+    "pastImage": "/art/gate/surface-facility-transition-v2.png",
+    "presentImage": "/art/gate/surface-facility-transition-v2.png",
     "x": -1,
-    "y": 1.15,
-    "width": 32,
+    "y": 0.26,
+    "width": 38.2,
     "height": 16.1,
-    "opacity": 1
+    "opacity": 1,
+    "backgroundRevision": "surface-facility-2026-08-10"
   },
   "sceneComponents": [
     {
@@ -444,7 +445,7 @@
         "present": []
       },
       "sourceComponentId": "scene-ceiling-cables",
-      "x": -1,
+      "x": -0.5,
       "y": 7,
       "width": 31.9,
       "height": 2.65,
@@ -515,7 +516,7 @@
           "present-00139"
         ]
       },
-      "x": 8.698279833418422,
+      "x": 9.232371071812793,
       "y": -3.5961699895068207,
       "width": 2.8331584470094437,
       "height": 1.9076600209863583,

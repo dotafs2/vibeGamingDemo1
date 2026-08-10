@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="4096" height="1536" viewBox="0 0 4096 1536" role="img" aria-labelledby="title desc">
+  <title id="title">零时回响：地上闸门至 Boss 大厅连续长卷总布局</title>
+  <desc id="desc">按现有世界坐标绘制的正侧视关卡剖面，包含镜头路径、地面基线、六个功能区、五个接缝锚点和两世界单位重叠区。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071116"/>
+      <stop offset="0.55" stop-color="#0b1518"/>
+      <stop offset="1" stop-color="#130d0d"/>
+    </linearGradient>
+    <linearGradient id="rock" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#35221d"/>
+      <stop offset="0.48" stop-color="#1d1716"/>
+      <stop offset="1" stop-color="#111719"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#64412f"/>
+      <stop offset="0.18" stop-color="#2d2a28"/>
+      <stop offset="0.6" stop-color="#161f21"/>
+      <stop offset="1" stop-color="#452c23"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#72503a"/>
+      <stop offset="0.18" stop-color="#2e3433"/>
+      <stop offset="1" stop-color="#171a1b"/>
+    </linearGradient>
+    <radialGradient id="cyanGlow">
+      <stop offset="0" stop-color="#d1ffff" stop-opacity=".95"/>
+      <stop offset=".25" stop-color="#62d9e6" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#2b8b98" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="strata" width="112" height="54" patternUnits="userSpaceOnUse">
+      <path d="M-10 18 C24 5 49 29 86 14 S126 22 142 7" fill="none" stroke="#765042" stroke-width="5" opacity=".22"/>
+      <path d="M-4 43 C28 31 55 55 101 38 S139 46 152 31" fill="none" stroke="#3e5557" stroke-width="3" opacity=".18"/>
+    </pattern>
+    <pattern id="plate" width="120" height="72" patternUnits="userSpaceOnUse">
+      <rect width="120" height="72" fill="#172124"/>
+      <path d="M0 0H120V72H0Z M60 0V72" fill="none" stroke="#526466" stroke-width="4" opacity=".38"/>
+      <circle cx="8" cy="8" r="3" fill="#9a6b44"/><circle cx="112" cy="64" r="3" fill="#9a6b44"/>
+    </pattern>
+    <filter id="glow" x="-200%" y="-200%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity=".7"/>
+    </filter>
+    <style>
+      .title{font:700 42px 'Microsoft YaHei',sans-serif;fill:#f4e7d4;letter-spacing:2px}
+      .sub{font:500 22px 'Microsoft YaHei',sans-serif;fill:#9fb8b9}
+      .zone{font:700 24px 'Microsoft YaHei',sans-serif;fill:#eef9f7}
+      .small{font:500 17px 'Microsoft YaHei',sans-serif;fill:#a9c3c3}
+      .coord{font:600 16px Consolas,monospace;fill:#73d7df}
+      .beam{fill:url(#metal);stroke:#80523a;stroke-width:5}
+      .brace{fill:none;stroke:#6a4937;stroke-width:10;stroke-linecap:round;opacity:.88}
+      .pipe{fill:none;stroke:#465d60;stroke-width:13;stroke-linecap:round}
+      .pipe2{fill:none;stroke:#9a5c39;stroke-width:7;stroke-linecap:round}
+      .anchor{stroke:#6fe2e8;stroke-width:3;stroke-dasharray:13 10;opacity:.78}
+    </style>
+  </defs>
+
+  <rect width="4096" height="1536" fill="url(#bg)"/>
+  <path d="M0 205 C430 145 810 232 1200 171 S1950 236 2390 164 S3250 244 4096 142 V1536 H0Z" fill="url(#rock)"/>
+  <rect x="0" y="205" width="4096" height="1280" fill="url(#strata)" opacity=".82"/>
+  <path d="M0 214 C540 170 840 256 1230 196 S1960 270 2520 182 S3420 248 4096 163" fill="none" stroke="#7b4a35" stroke-width="22" opacity=".35"/>
+
+  <text x="180" y="82" class="title">零时回响 · 连续长卷总布局 / PRODUCTION MASTER</text>
+  <text x="182" y="124" class="sub">正侧视 · 相机高 18u · 角色高 1.72u · 64 px/u · 地上 Y=-4.55 · 井底 Y=-22.40 · 左上主光 / 青蓝时晶辅光</text>
+
+  <!-- Surface facility skeleton -->
+  <g filter="url(#shadow)">
+    <rect x="180" y="330" width="880" height="382" rx="22" fill="url(#plate)" stroke="#65412f" stroke-width="8"/>
+    <rect x="192" y="696" width="870" height="42" fill="url(#floor)" stroke="#8b6044" stroke-width="5"/>
+    <path d="M230 356H1016 M254 356V696 M436 356V696 M618 356V696 M800 356V696 M982 356V696" class="brace"/>
+    <path d="M254 690L436 360 M436 690L618 360 M618 690L800 360 M800 690L982 360" class="brace" opacity=".55"/>
+    <path d="M213 410H940 C1000 410 1018 450 1018 505" class="pipe"/>
+    <path d="M213 438H924 C982 438 990 470 990 532" class="pipe2"/>
+  </g>
+
+  <!-- Gate silhouette -->
+  <g transform="translate(825 430)" filter="url(#shadow)">
+    <path d="M0 0H196L246 52V282L196 334H0L-50 282V52Z" fill="#111a1d" stroke="#8b5e42" stroke-width="14"/>
+    <path d="M22 35H174L205 68V266L174 298H22L-9 266V68Z" fill="#263033" stroke="#567176" stroke-width="9"/>
+    <path d="M17 73L181 260 M181 73L17 260" class="brace"/>
+    <circle cx="99" cy="167" r="30" fill="#10191b" stroke="#67d7df" stroke-width="8" filter="url(#glow)"/>
+    <text x="99" y="154" text-anchor="middle" class="zone" fill="#d28a55">03</text>
+  </g>
+
+  <!-- Elevator shaft -->
+  <g filter="url(#shadow)">
+    <rect x="1048" y="292" width="248" height="1062" fill="#081114" stroke="#684735" stroke-width="14"/>
+    <rect x="1074" y="304" width="35" height="1038" class="beam"/>
+    <rect x="1235" y="304" width="35" height="1038" class="beam"/>
+    <path d="M1110 320L1235 390L1110 460L1235 530L1110 600L1235 670L1110 740L1235 810L1110 880L1235 950L1110 1020L1235 1090L1110 1160L1235 1230L1110 1310" class="brace"/>
+    <path d="M1146 320V1270 M1198 320V1270" class="pipe"/>
+    <rect x="1100" y="1130" width="145" height="180" rx="7" fill="url(#metal)" stroke="#719296" stroke-width="8"/>
+    <rect x="1118" y="1152" width="109" height="126" fill="#0b171b" stroke="#4bcbd8" stroke-width="4" opacity=".9"/>
+  </g>
+
+  <!-- Lower facility shell -->
+  <g filter="url(#shadow)">
+    <rect x="1240" y="1000" width="2664" height="354" rx="24" fill="url(#plate)" stroke="#5f4435" stroke-width="9"/>
+    <rect x="1240" y="1336" width="2664" height="52" fill="url(#floor)" stroke="#6f9292" stroke-width="5"/>
+    <path d="M1250 1028H3892 M1282 1028V1336 M1504 1028V1336 M1726 1028V1336 M1948 1028V1336 M2170 1028V1336 M2392 1028V1336 M2614 1028V1336 M2836 1028V1336 M3058 1028V1336 M3280 1028V1336 M3502 1028V1336 M3724 1028V1336" class="brace"/>
+    <path d="M1282 1328L1504 1037 M1504 1328L1726 1037 M1726 1328L1948 1037 M1948 1328L2170 1037 M2170 1328L2392 1037 M2392 1328L2614 1037 M2614 1328L2836 1037 M2836 1328L3058 1037 M3058 1328L3280 1037 M3280 1328L3502 1037 M3502 1328L3724 1037" class="brace" opacity=".38"/>
+    <path d="M1260 1068H3870" class="pipe"/>
+    <path d="M1260 1094H3870" class="pipe2"/>
+  </g>
+
+  <!-- Lab entrance and sample racks -->
+  <g transform="translate(1264 1048)" filter="url(#shadow)">
+    <path d="M0 0H136L166 30V288H-30V30Z" fill="#101a1d" stroke="#8a5a3d" stroke-width="10"/>
+    <path d="M18 36H118V265H18Z" fill="#16292d" stroke="#63cbd4" stroke-width="7"/>
+    <path d="M31 60H105 M31 94H105 M31 128H105 M31 162H105 M31 196H105 M31 230H105" stroke="#57d4dd" stroke-width="4" opacity=".62"/>
+    <g transform="translate(205 55)">
+      <rect width="256" height="214" rx="10" fill="#101a1c" stroke="#5d7779" stroke-width="7"/>
+      <path d="M22 30H234 M22 91H234 M22 152H234 M65 20V194 M128 20V194 M191 20V194" stroke="#6d4a37" stroke-width="7"/>
+      <circle cx="65" cy="60" r="20" fill="url(#cyanGlow)"/><circle cx="128" cy="121" r="20" fill="url(#cyanGlow)"/><circle cx="191" cy="60" r="20" fill="url(#cyanGlow)"/>
+    </g>
+  </g>
+
+  <!-- Main lab machinery -->
+  <g transform="translate(1612 1072)" filter="url(#shadow)">
+    <circle cx="238" cy="124" r="102" fill="#0b1519" stroke="#6e4936" stroke-width="18"/>
+    <circle cx="238" cy="124" r="78" fill="none" stroke="#5bd6df" stroke-width="9" opacity=".76"/>
+    <circle cx="238" cy="124" r="34" fill="url(#cyanGlow)"/>
+    <path d="M0 238H650V275H0Z" fill="url(#metal)" stroke="#75503c" stroke-width="7"/>
+    <path d="M400 28H620L650 58V203L620 233H400L370 203V58Z" fill="#132327" stroke="#5b777a" stroke-width="9"/>
+    <path d="M408 51H612V190H408Z" fill="#0c171b" stroke="#55cbd5" stroke-width="6" opacity=".92"/>
+    <path d="M418 168L462 122L505 148L549 78L602 104" fill="none" stroke="#75e5ea" stroke-width="8"/>
+  </g>
+
+  <!-- Blast door -->
+  <g transform="translate(2265 1039)" filter="url(#shadow)">
+    <path d="M0 0H160L200 40V296L160 336H0L-40 296V40Z" fill="#0c1518" stroke="#8a5a3d" stroke-width="13"/>
+    <path d="M25 33H135L165 63V273L135 303H25L-5 273V63Z" fill="url(#metal)" stroke="#587276" stroke-width="9"/>
+    <path d="M15 76H145 M15 126H145 M15 176H145 M15 226H145" stroke="#856149" stroke-width="9"/>
+    <path d="M80 54V282" stroke="#5ccfd8" stroke-width="6" opacity=".58"/>
+  </g>
+
+  <!-- Boss arena volume -->
+  <g transform="translate(2490 1043)" filter="url(#shadow)">
+    <path d="M0 294H1348" stroke="#7b5a43" stroke-width="18"/>
+    <path d="M80 260H350V226H80Z M998 226H1268V260H998Z M235 183H500V149H235Z M848 149H1113V183H848Z" fill="url(#metal)" stroke="#6f8d8f" stroke-width="7"/>
+    <path d="M90 260V294 M330 226V294 M1018 226V294 M1248 260V294 M255 149V294 M480 149V294 M868 149V294 M1093 149V294" class="brace"/>
+    <path d="M546 263 C546 176 615 107 702 107 C789 107 858 176 858 263" fill="none" stroke="#526d70" stroke-width="25" opacity=".65"/>
+    <circle cx="702" cy="201" r="82" fill="#0a1518" stroke="#6b4b38" stroke-width="14"/>
+    <circle cx="702" cy="201" r="46" fill="url(#cyanGlow)" filter="url(#glow)"/>
+    <path d="M702 123L731 186L795 201L731 216L702 279L673 216L609 201L673 186Z" fill="#56d5df" opacity=".68"/>
+  </g>
+
+  <!-- Crystal accents -->
+  <g filter="url(#glow)" opacity=".86">
+    <circle cx="525" cy="304" r="55" fill="url(#cyanGlow)"/><circle cx="1420" cy="950" r="50" fill="url(#cyanGlow)"/>
+    <circle cx="2040" cy="963" r="38" fill="url(#cyanGlow)"/><circle cx="3510" cy="948" r="72" fill="url(#cyanGlow)"/>
+  </g>
+
+  <!-- Ground baselines -->
+  <path d="M180 712H1062" stroke="#f2be78" stroke-width="5"/>
+  <path d="M1240 1354H3904" stroke="#65e1e5" stroke-width="5"/>
+  <text x="188" y="684" class="coord">GROUND Y=-4.55</text>
+  <text x="1254" y="1325" class="coord">LAB GROUND Y=-22.40</text>
+
+  <!-- Seam overlaps: exact 2u bands -->
+  <g opacity=".19" fill="#56dce4">
+    <rect x="992" y="250" width="56" height="1110"/><rect x="1222" y="920" width="56" height="468"/>
+    <rect x="1524" y="920" width="56" height="468"/><rect x="2196" y="920" width="56" height="468"/>
+    <rect x="2420" y="920" width="56" height="468"/>
+  </g>
+  <g class="anchor">
+    <path d="M1020 230V1408"/><path d="M1250 900V1408"/><path d="M1552 900V1408"/>
+    <path d="M2224 900V1408"/><path d="M2448 900V1408"/>
+  </g>
+  <g class="coord">
+    <text x="1028" y="278">S01 X=13</text><text x="1258" y="948">S12 X=20.5</text><text x="1560" y="948">S23 X=32</text>
+    <text x="2232" y="948">S34 X=56</text><text x="2456" y="948">S45 X=64</text>
+  </g>
+
+  <!-- Camera path -->
+  <path d="M628 548 C770 548 930 548 1167 548 C1180 664 1173 1048 1167 1205 C1360 1205 1450 1205 1608 1205 C1820 1205 2050 1205 2342 1205 C2620 1205 2910 1205 3148 1205 C3380 1205 3650 1205 3456 1205" fill="none" stroke="#77e8ec" stroke-width="6" stroke-dasharray="18 13" opacity=".9"/>
+  <g fill="#d8ffff" stroke="#46cbd5" stroke-width="5">
+    <circle cx="628" cy="548" r="13"/><circle cx="1167" cy="548" r="13"/><circle cx="1167" cy="1205" r="13"/>
+    <circle cx="1608" cy="1205" r="13"/><circle cx="2342" cy="1205" r="13"/><circle cx="3148" cy="1205" r="13"/>
+  </g>
+  <text x="640" y="530" class="small">镜头路径</text>
+
+  <!-- Zone labels -->
+  <g>
+    <g transform="translate(180 1430)"><rect width="840" height="76" rx="13" fill="#3a231d" stroke="#8a5a3e" stroke-width="3"/><text x="22" y="31" class="zone">01 地上闸门</text><text x="22" y="57" class="small">X -17…14 / 顶层基线</text></g>
+    <g transform="translate(1020 1430)"><rect width="270" height="76" rx="13" fill="#18292c" stroke="#5aaab0" stroke-width="3"/><text x="18" y="31" class="zone">02 矿井电梯</text><text x="18" y="57" class="small">X 12…21.5</text></g>
+    <g transform="translate(1290 1430)"><rect width="420" height="76" rx="13" fill="#18292c" stroke="#5aaab0" stroke-width="3"/><text x="18" y="31" class="zone">03 实验室入口</text><text x="18" y="57" class="small">X 19.5…34</text></g>
+    <g transform="translate(1710 1430)"><rect width="650" height="76" rx="13" fill="#1d2829" stroke="#6b7f7f" stroke-width="3"/><text x="18" y="31" class="zone">04 实验室主体</text><text x="18" y="57" class="small">X 32…58</text></g>
+    <g transform="translate(2360 1430)"><rect width="300" height="76" rx="13" fill="#28211e" stroke="#8a5a3e" stroke-width="3"/><text x="18" y="31" class="zone">05 防爆门</text><text x="18" y="57" class="small">X 56…66</text></g>
+    <g transform="translate(2660 1430)"><rect width="1244" height="76" rx="13" fill="#15272a" stroke="#54bcc5" stroke-width="3"/><text x="18" y="31" class="zone">06 Boss 大厅</text><text x="18" y="57" class="small">X 64…116 / 最高净空、对称检修平台</text></g>
+  </g>
+
+  <!-- Scale figure -->
+  <g transform="translate(350 545)">
+    <circle cx="0" cy="0" r="12" fill="#e7f0eb"/><path d="M0 12V72 M0 29L-18 48 M0 29L18 48 M0 72L-17 105 M0 72L17 105" stroke="#e7f0eb" stroke-width="8" stroke-linecap="round"/>
+    <path d="M-42 105H42" stroke="#69dce2" stroke-width="3"/><text x="52" y="110" class="coord">1.72u</text>
+  </g>
+</svg>
