@@ -2112,7 +2112,10 @@ export function createAssetEditor({
 
   function update(dt = 0) {
     const era = clamp(getEra(), 0, 1);
-    const sceneOpacity = editorState.sceneArt.enabled ? editorState.sceneArt.opacity : 0;
+    // The editor backdrop is an editing aid only. Runtime scenes use their
+    // production panorama, otherwise this rectangle follows the camera down
+    // the shaft and obscures the elevator/laboratory art.
+    const sceneOpacity = active && editorState.sceneArt.enabled ? editorState.sceneArt.opacity : 0;
     sceneArtRoot.visible = sceneOpacity > .005;
     if (sceneArtRecord.pastBackdrop) {
       sceneArtRecord.pastBackdrop.material.opacity = sceneOpacity * (1 - era);

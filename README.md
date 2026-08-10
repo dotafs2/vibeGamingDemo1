@@ -1,5 +1,7 @@
 # 时间穿梭场景 Demo
 
+> 美术总控：连续长卷、共享比例/色板/接缝规范与任务 1–4 素材审计见 [`docs/ART_DIRECTION_AND_STITCHING.md`](docs/ART_DIRECTION_AND_STITCHING.md) 和 [`docs/ART_ASSET_AUDIT.md`](docs/ART_ASSET_AUDIT.md)。运行时可用 `/?art-tour&era=present` 或 `/?art-tour&era=past` 自动连续巡检全段；定点截图使用 `/?art-stop=gate|elevator|entrance|laboratory|blastdoor|boss&era=present|past`。
+
 这是一个运行在浏览器中的纯 Three.js 2D 白盒 Demo。
 
 完整功能清单见 [`FEATURES.md`](FEATURES.md)，产品方向、当前玩家路径和后续开发顺序见 [`PROJECT_ROADMAP.md`](PROJECT_ROADMAP.md)。

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 
 const MAX_BODY_BYTES = 32 * 1024 * 1024;
+const EDITOR_BACKGROUND_REVISION = 'surface-facility-2026-08-10';
 
 function jsonResponse(response, status, payload) {
   response.statusCode = status;
@@ -66,6 +67,9 @@ async function readEditorState(root) {
 }
 
 async function writeEditorState(root, state) {
+  if (state?.sceneArt?.backgroundRevision !== EDITOR_BACKGROUND_REVISION) {
+    throw new Error('编辑器背景已更新，请刷新此标签后再保存');
+  }
   const serialized = `${JSON.stringify(state, null, 2)}\n`;
   await Promise.all([
     fs.writeFile(path.join(root, 'editor-data', 'editor-state.json'), serialized, 'utf8'),

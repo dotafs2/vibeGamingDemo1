@@ -1,7 +1,10 @@
 import * as THREE from './vendor/three.module.js';
 import { createAssetEditor } from './editor.js';
+import { ART_DIRECTION_SPEC, createMineParallaxArt } from './art-direction.js';
 
 const canvas = document.querySelector('#game');
+const runtimeParams = new URLSearchParams(location.search);
+const lowPowerMode = runtimeParams.has('low-power');
 const eraLabel = document.querySelector('#era-label');
 const objective = document.querySelector('#objective');
 const toast = document.querySelector('#toast');
@@ -41,7 +44,7 @@ const camera = new THREE.OrthographicCamera(-16, 16, 9, -9, 0.1, 100);
 camera.position.z = 20;
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(lowPowerMode ? 1 : Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const clock = new THREE.Clock();
@@ -182,6 +185,35 @@ const pointerAim = {
 };
 
 let assetEditor = null;
+let artTourEnabled = false;
+let artTourStop = null;
+
+const artTourKeyframes = [
+  { time: 0, x: -1, y: 0 },
+  { time: 5, x: 6, y: 0 },
+  { time: 9, x: 18.25, y: 0 },
+  { time: 14, x: 18.25, y: labGroundY + 4.15 },
+  { time: 19, x: 33, y: labGroundY + 4.15 },
+  { time: 25, x: 50, y: labGroundY + 4.15 },
+  { time: 30, x: 60, y: labGroundY + 4.15 },
+  { time: 39, x: 89, y: labGroundY + 4.15 },
+  { time: 45, x: 100, y: labGroundY + 4.15 },
+];
+
+function sampleArtTour(elapsed) {
+  const duration = artTourKeyframes.at(-1).time;
+  const time = elapsed % duration;
+  let nextIndex = artTourKeyframes.findIndex(frame => frame.time >= time);
+  if (nextIndex <= 0) return artTourKeyframes[0];
+  const previous = artTourKeyframes[nextIndex - 1];
+  const next = artTourKeyframes[nextIndex];
+  const raw = (time - previous.time) / Math.max(.001, next.time - previous.time);
+  const eased = raw * raw * (3 - 2 * raw);
+  return {
+    x: THREE.MathUtils.lerp(previous.x, next.x, eased),
+    y: THREE.MathUtils.lerp(previous.y, next.y, eased),
+  };
+}
 
 function refreshAimDirection() {
   if (!pointerAim.initialized) {
@@ -308,6 +340,7 @@ const backgroundMaterial = new THREE.ShaderMaterial({
 const background = new THREE.Mesh(new THREE.PlaneGeometry(180, 70), backgroundMaterial);
 background.position.set(46, -10, -12);
 scene.add(background);
+const mineParallaxArt = createMineParallaxArt({ THREE, scene });
 
 function material(color, opacity = 1) {
   const value = new THREE.MeshBasicMaterial({ color, transparent: true, opacity, depthWrite: opacity >= 1 });
@@ -324,6 +357,33 @@ function lineMaterial(color, opacity = 1) {
 function rectangle(group, width, height, color, x, y, z = 0, opacity = 1) {
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material(color, opacity));
   mesh.position.set(x, y, z);
+  group.add(mesh);
+  return mesh;
+}
+
+const interactionTextureLoader = new THREE.TextureLoader();
+const interactionTextureCache = new Map();
+function imageRectangle(group, url, width, height, x, y, z = 0, opacity = 1) {
+  let texture = interactionTextureCache.get(url);
+  if (!texture) {
+    texture = interactionTextureLoader.load(url);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    interactionTextureCache.set(url, texture);
+  }
+  const imageMaterial = new THREE.MeshBasicMaterial({
+    map: texture,
+    transparent: true,
+    opacity,
+    alphaTest: .01,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  imageMaterial.userData.baseOpacity = opacity;
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
+  mesh.position.set(x, y, z);
+  mesh.renderOrder = 500;
   group.add(mesh);
   return mesh;
 }
@@ -741,6 +801,13 @@ function createMaintenanceNpc(group, palette) {
 }
 
 function buildExpandedMine(group, palette, ruined) {
+  // Runtime interactables live above the production panoramas. Their world
+  // positions and gameplay references are unchanged; only visual depth moves.
+  const interactionLayer = new THREE.Group();
+  interactionLayer.name = ruined ? 'interactive-overlay-2147' : 'interactive-overlay-2047';
+  interactionLayer.position.z = 4;
+  group.add(interactionLayer);
+
   // Gate 03 opens into the same elevator control room in both eras.
   rectangle(group, 8.0, 5.1, palette.surfaceRoom, 17.5, -1.45, -3.1, ruined ? .7 : .94);
   rectangle(group, 7.6, .24, palette.trim, 17.5, 1.15, -2.0, ruined ? .34 : .8);
@@ -765,7 +832,7 @@ function buildExpandedMine(group, palette, ruined) {
     rectangle(group, .07, groundY - labGroundY + 5.8, palette.cable, 17.65, (groundY + labGroundY) / 2 + 1.55, -1.6, .72);
     rectangle(group, .07, groundY - labGroundY + 5.8, palette.cable, 18.85, (groundY + labGroundY) / 2 + 1.55, -1.6, .72);
     const car = new THREE.Group();
-    car.position.set(elevatorX, groundY, -.35);
+    car.position.set(elevatorX, groundY, 0);
     rectangle(car, 3.0, .24, palette.trim, 0, .04, 0, .96);
     rectangle(car, .18, 3.7, palette.structure, -1.42, 1.85, 0, .9);
     rectangle(car, .18, 3.7, palette.structure, 1.42, 1.85, 0, .9);
@@ -775,7 +842,7 @@ function buildExpandedMine(group, palette, ruined) {
     rectangle(car, .42, .8, palette.panel, 1.08, 1.3, .08, .9);
     disc(car, .08, palette.lamp, 1.08, 1.48, .12, .95, 16);
     pastElevatorCar = car;
-    group.add(car);
+    interactionLayer.add(car);
   } else {
     // At the modern shaft mouth the missing car is visible immediately: open void, torn doors and snapped cables.
     rectangle(group, 3.0, 3.65, '#061217', elevatorX, groundY + 1.85, -.72, .98);
@@ -794,13 +861,13 @@ function buildExpandedMine(group, palette, ruined) {
     segment(group, 17.65, groundY + 3.5, 17.65, groundY - 4.1, palette.cable, .34, -1.6);
     segment(group, 18.85, groundY + 3.5, 18.2, groundY - 5.5, palette.cable, .28, -1.6);
     const wreck = new THREE.Group();
-    wreck.position.set(elevatorX, labGroundY + .35, -.4);
+    wreck.position.set(elevatorX, labGroundY + .35, 0);
     wreck.rotation.z = -.12;
     rectangle(wreck, 3.0, .3, palette.trim, 0, .05, 0, .58);
     rectangle(wreck, .22, 2.2, palette.structure, -1.28, 1.0, 0, .45);
     rectangle(wreck, .22, 1.8, palette.structure, 1.15, .8, 0, .38);
     rectangle(wreck, 2.4, .18, palette.cage, 0, 1.5, .02, .28);
-    group.add(wreck);
+    interactionLayer.add(wreck);
   }
 
   // The laboratory leads into a tall, extended mining-machine test chamber.
@@ -825,12 +892,32 @@ function buildExpandedMine(group, palette, ruined) {
     for (let index = 0; index < 4; index++) {
       disc(group, .075, palette.lamp, labEntranceX - 1.2, labGroundY + 5.25 - index * .5, -.7, .88, 14);
     }
+    imageRectangle(
+      interactionLayer,
+      '/editor/assets/scene-gate/v1-past.png',
+      4.65,
+      6.15,
+      labEntranceX,
+      labGroundY + 3.08,
+      0,
+    );
   } else {
     rectangle(group, 1.55, 6.1, '#07161b', labEntranceX, labGroundY + 3.1, -1.02, .98);
     const fallenDoor = rectangle(group, 1.5, 4.2, palette.bulkhead, labEntranceX + .72, labGroundY + .95, -.78, .58);
     fallenDoor.rotation.z = -1.17;
     segment(group, labEntranceX - .55, labGroundY + 5.8, labEntranceX + .35, labGroundY + 4.9, palette.cable, .46, -.65);
     segment(group, labEntranceX + .35, labGroundY + 4.9, labEntranceX + .05, labGroundY + 3.85, palette.cable, .34, -.65);
+    const collapsedEntrance = imageRectangle(
+      interactionLayer,
+      '/editor/assets/scene-gate/v1-present.png',
+      4.35,
+      5.15,
+      labEntranceX + .72,
+      labGroundY + 1.05,
+      0,
+      .9,
+    );
+    collapsedEntrance.rotation.z = -1.17;
   }
 
   // Sample storage area.
@@ -859,7 +946,7 @@ function buildExpandedMine(group, palette, ruined) {
     for (let row = 0; row < 4; row++) rectangle(order, .72 - row * .06, .045, '#6f3728', workOrderX, labGroundY + 1.38 - row * .14, -.62, .72);
     rectangle(order, .42, .1, palette.lever, workOrderX, labGroundY + 1.0, -.6, .9);
     pastWorkOrder = order;
-    group.add(order);
+    interactionLayer.add(order);
   } else {
     const archive = new THREE.Group();
     rectangle(archive, 1.18, .78, '#0b1b20', workOrderX, labGroundY + 1.2, -.7, .96);
@@ -867,19 +954,19 @@ function buildExpandedMine(group, palette, ruined) {
     for (let row = 0; row < 3; row++) rectangle(archive, .62 - row * .08, .045, palette.archGlow, workOrderX, labGroundY + 1.34 - row * .14, -.46, .82);
     disc(archive, .09, palette.lamp, workOrderX + .43, labGroundY + .93, -.44, .9, 14);
     modernWorkOrder = archive;
-    group.add(archive);
+    interactionLayer.add(archive);
   }
 
   // Final-maintenance bay and shielded observation booth.
   rectangle(group, 10.8, 5.5, palette.reactorFrame, 50.7, labGroundY + 3.15, -1.7, ruined ? .46 : .9);
   rectangle(group, 3.5, 3.8, palette.glass, 48.3, labGroundY + 3.15, -1.42, ruined ? .2 : .46);
-  rectangle(group, 1.35, 1.5, palette.panel, scanConsoleX, labGroundY + 1.25, -.9, ruined ? .46 : .94);
-  ring(group, .48, .37, palette.trim, scanConsoleX, labGroundY + 1.55, -.65, ruined ? .38 : .86, 28);
+  rectangle(interactionLayer, 1.35, 1.5, palette.panel, scanConsoleX, labGroundY + 1.25, -.9, ruined ? .46 : .94);
+  ring(interactionLayer, .48, .37, palette.trim, scanConsoleX, labGroundY + 1.55, -.65, ruined ? .38 : .86, 28);
   for (let index = 0; index < 3; index++) {
-    disc(group, .075, ruined ? palette.deadLamp : palette.lamp, scanConsoleX - .34 + index * .34, labGroundY + .82, -.62, ruined ? .34 : .9, 14);
+    disc(interactionLayer, .075, ruined ? palette.deadLamp : palette.lamp, scanConsoleX - .34 + index * .34, labGroundY + .82, -.62, ruined ? .34 : .9, 14);
   }
   if (!ruined) {
-    createMaintenanceNpc(group, palette);
+    createMaintenanceNpc(interactionLayer, palette);
     const scanCore = new THREE.Group();
     scanCore.position.set(50.7, labGroundY + 3.25, -.95);
     ring(scanCore, 1.25, 1.05, palette.archGlow, 0, 0, 0, .74, 42);
@@ -888,12 +975,12 @@ function buildExpandedMine(group, palette, ruined) {
       disc(scanCore, .1, palette.lamp, Math.cos(angle) * 1.15, Math.sin(angle) * 1.15, .04, .92, 14);
     }
     pastScanCore = scanCore;
-    group.add(scanCore);
+    interactionLayer.add(scanCore);
     const boothShutter = new THREE.Group();
     rectangle(boothShutter, 3.25, 2.55, palette.bulkhead, 48.3, labGroundY + 6.2, .32, .72);
     for (let x = 47.0; x <= 49.6; x += .52) segment(boothShutter, x, labGroundY + 5.0, x, labGroundY + 7.35, palette.trim, .48, .4);
     pastScanDoor = boothShutter;
-    group.add(boothShutter);
+    interactionLayer.add(boothShutter);
   } else {
     segment(group, 46.8, labGroundY + 5.4, 49.1, labGroundY + 3.7, palette.cable, .42, -.8);
     segment(group, 49.1, labGroundY + 3.7, 47.5, labGroundY + 1.2, palette.cable, .32, -.8);
@@ -913,8 +1000,17 @@ function buildExpandedMine(group, palette, ruined) {
     for (let y = labGroundY + .75; y <= labGroundY + 5.85; y += 1.02) {
       segment(door, bossDoorX - .62, y, bossDoorX + .62, y, palette.trim, .46, -.7);
     }
+    imageRectangle(
+      door,
+      '/editor/assets/scene-gate/v1-past.png',
+      4.85,
+      6.45,
+      bossDoorX,
+      labGroundY + 3.22,
+      0,
+    );
     pastBossDoor = door;
-    group.add(door);
+    interactionLayer.add(door);
 
     // This is an ordinary inner lock rail. The player later mills a hidden groove into it;
     // there is deliberately no pre-existing “explosive slot” in the official door design.
@@ -928,7 +1024,7 @@ function buildExpandedMine(group, palette, ruined) {
     concealedTool.userData.baseOpacity = .78;
     sockets.userData.concealedTool = concealedTool;
     pastChargeSockets = sockets;
-    group.add(sockets);
+    interactionLayer.add(sockets);
 
     // Powered safety line: the player can reach the inner lock rail but not the sealed machine bay.
     rectangle(group, .1, 6.5, palette.archGlow, 63.1, labGroundY + 3.4, -.7, .42);
@@ -942,7 +1038,7 @@ function buildExpandedMine(group, palette, ruined) {
     rectangle(group, .78, .06, palette.lever, 63.15, labGroundY + 5.68, -.34, .72);
   }
   if (ruined) {
-    rectangle(group, 1.0, 1.45, palette.panel, modernDetonatorX, labGroundY + 1.18, -.85, .56);
+    rectangle(interactionLayer, 1.0, 1.45, palette.panel, modernDetonatorX, labGroundY + 1.18, -.85, .56);
     const sealedDoor = new THREE.Group();
     sealedDoor.position.set(bossDoorX, labGroundY + .1, 0);
     rectangle(sealedDoor, 1.72, 6.45, palette.bulkhead, 0, 3.23, -1.0, .98);
@@ -950,8 +1046,17 @@ function buildExpandedMine(group, palette, ruined) {
     segment(sealedDoor, -.62, 5.6, .42, 4.45, palette.crack, .68, -.56);
     segment(sealedDoor, .42, 4.45, -.25, 3.1, palette.crack, .58, -.56);
     segment(sealedDoor, -.25, 3.1, .55, 1.75, palette.crack, .5, -.56);
+    imageRectangle(
+      sealedDoor,
+      '/editor/assets/scene-gate/v1-present.png',
+      4.85,
+      6.45,
+      0,
+      3.23,
+      0,
+    );
     modernBossDoor = sealedDoor;
-    group.add(sealedDoor);
+    interactionLayer.add(sealedDoor);
 
     const rubble = new THREE.Group();
     for (const [x, width, height, rotation] of [[59.45, .8, .38, -.2], [60.2, 1.05, .45, .14], [61.0, .72, .32, -.12], [61.75, .65, .27, .24]]) {
@@ -959,14 +1064,14 @@ function buildExpandedMine(group, palette, ruined) {
       chunk.rotation.z = rotation;
     }
     modernDoorRubble = rubble;
-    group.add(rubble);
+    interactionLayer.add(rubble);
 
     const blastFx = new THREE.Group();
     blastFx.position.set(bossDoorX, labGroundY + 3.25, 0);
     ring(blastFx, 1.1, .82, palette.archGlow, 0, 0, .15, .85, 36);
     ring(blastFx, 1.85, 1.6, palette.lamp, 0, 0, .14, .48, 36);
     modernBlastFx = blastFx;
-    group.add(blastFx);
+    interactionLayer.add(blastFx);
 
     const battleBarrier = new THREE.Group();
     for (let y = labGroundY + .35; y <= labGroundY + 6.6; y += .48) {
@@ -974,7 +1079,7 @@ function buildExpandedMine(group, palette, ruined) {
     }
     rectangle(battleBarrier, .09, 6.55, palette.archGlow, 62.45, labGroundY + 3.45, -.68, .34);
     bossBattleBarrier = battleBarrier;
-    group.add(battleBarrier);
+    interactionLayer.add(battleBarrier);
   }
   // Symmetrical maintenance stairs: readable jump routes inspired by classic multi-level boss rooms.
   for (const platform of bossPlatforms) {
@@ -1847,7 +1952,7 @@ function handleInteraction() {
     return;
   }
   const lowerLevel = isLowerLevel();
-  const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
+  const nearElevator = Math.abs(player.x - elevatorX) < (lowerLevel ? 2.8 : 1.85);
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
   const nearWorkOrder = lowerLevel && Math.abs(player.x - workOrderX) < 1.35;
   const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
@@ -1859,6 +1964,20 @@ function handleInteraction() {
 
   if (nearElevator) {
     if (state.eraTarget > .5) {
+      if (lowerLevel && state.elevatorAtBottom) {
+        // Avoid a soft lock at the lower seam: interacting with the ruined
+        // lift automatically recalls its intact 2047 counterpart and rides up.
+        state.eraTarget = 0;
+        state.pulse = 1;
+        state.elevatorRiding = true;
+        state.elevatorTargetY = groundY;
+        player.x = elevatorX;
+        player.vx = 0;
+        keys.clear();
+        showToast('时间锚已切回2047年：完整升降机正在返回地面层');
+        updateHud();
+        return;
+      }
       showToast(lowerLevel
         ? '2147年井底只剩坠毁轿厢；按 Q 回2047年，使用完好的轿厢返回地面'
         : '2147年井口是空的：轿厢坠毁、钢缆断裂；回2047年乘完整电梯');
@@ -2845,7 +2964,7 @@ function updateHud() {
 
 function updateInteractionHint() {
   const lowerLevel = isLowerLevel();
-  const nearElevator = Math.abs(player.x - elevatorX) < 1.85;
+  const nearElevator = Math.abs(player.x - elevatorX) < (lowerLevel ? 2.8 : 1.85);
   const nearLabEntrance = lowerLevel && Math.abs(player.x - labEntranceX) < 1.65;
   const nearWorkOrder = lowerLevel && Math.abs(player.x - workOrderX) < 1.35;
   const nearMaintenanceNpc = lowerLevel && Math.abs(player.x - maintenanceNpcX) < 1.45;
@@ -3262,6 +3381,14 @@ function updateVisuals(dt, elapsed) {
     cameraTargetX = THREE.MathUtils.clamp(player.x, -17 + viewHalfWidth, 22 - viewHalfWidth);
     cameraTargetY = 0;
   }
+  if (artTourEnabled) {
+    const tourCamera = sampleArtTour(elapsed);
+    cameraTargetX = tourCamera.x;
+    cameraTargetY = tourCamera.y;
+  } else if (artTourStop) {
+    cameraTargetX = artTourStop.x;
+    cameraTargetY = artTourStop.y;
+  }
   state.cameraX = THREE.MathUtils.damp(state.cameraX, cameraTargetX, state.elevatorRiding ? 3.2 : 5.8, dt);
   state.cameraY = THREE.MathUtils.damp(state.cameraY, cameraTargetY, state.elevatorRiding ? 3.2 : 5.8, dt);
   const cameraShake = state.pulse * Math.sin(elapsed * 58) * .08;
@@ -3327,7 +3454,7 @@ addEventListener('blur', () => {
 addEventListener('resize', resize);
 
 // Development preview: opens directly inside the completed Boss room without changing normal saves or progression.
-const previewParams = new URLSearchParams(location.search);
+const previewParams = runtimeParams;
 if (previewParams.has('boss-preview')) {
   document.body.classList.add('boss-preview-mode');
   state.era = 1;
@@ -3384,6 +3511,48 @@ if (previewParams.has('boss-preview')) {
   state.cameraY = labGroundY + 4.15;
 }
 
+const artPreviewStops = {
+  gate: { x: 1, y: 0, playerX: 8.6, lower: false },
+  elevator: { x: 18.25, y: -9.2, playerX: 18.25, lower: false },
+  entrance: { x: 24, y: labGroundY + 4.15, playerX: 22.8, lower: true },
+  laboratory: { x: 46, y: labGroundY + 4.15, playerX: 46, lower: true },
+  blastdoor: { x: 60, y: labGroundY + 4.15, playerX: 58.4, lower: true },
+  boss: { x: 89, y: labGroundY + 4.15, playerX: 78.5, lower: true },
+};
+const requestedArtStop = previewParams.get('art-stop');
+artTourEnabled = previewParams.has('art-tour');
+artTourStop = requestedArtStop ? artPreviewStops[requestedArtStop] || null : null;
+if (artTourEnabled || artTourStop) {
+  document.body.classList.add('art-preview-mode');
+  const previewEra = previewParams.get('era') === 'past' ? 0 : 1;
+  state.era = previewEra;
+  state.eraTarget = previewEra;
+  state.gateLift = 1;
+  state.doorBlast = 1;
+  state.exitReached = true;
+  state.elevatorAtBottom = true;
+  Object.assign(state.history, {
+    wheelCollected: true,
+    wheelCrossed: true,
+    wheelInstalled: true,
+    gateOpened: true,
+    elevatorUsed: true,
+    workOrderFound: true,
+    bossBriefed: true,
+    chargesInstalled: true,
+    scanFinalized: true,
+    doorBreached: true,
+  });
+  if (artTourStop) {
+    player.x = artTourStop.playerX;
+    player.y = (artTourStop.lower ? labGroundY : groundY) + player.halfH;
+    player.supportY = artTourStop.lower ? labGroundY : groundY;
+    player.grounded = true;
+    state.cameraX = artTourStop.x;
+    state.cameraY = artTourStop.y;
+  }
+}
+
 resize();
 updateHud();
 
@@ -3399,8 +3568,11 @@ assetEditor = createAssetEditor({
 });
 if (previewParams.has('editor-preview')) assetEditor.setActive(true);
 
-function animate() {
+let lastRenderedFrame = 0;
+function animate(frameTime = 0) {
   requestAnimationFrame(animate);
+  if (lowPowerMode && frameTime - lastRenderedFrame < 1000 / 24) return;
+  lastRenderedFrame = frameTime;
   const dt = Math.min(clock.getDelta(), .04);
   const elapsed = clock.elapsedTime;
   if (!assetEditor?.isActive()) {
@@ -3416,8 +3588,15 @@ function animate() {
     updateInteractionHint();
   }
   assetEditor?.update(dt);
+  mineParallaxArt.update(camera.position.x, camera.position.y, state.era);
   enforcePlayerForeground();
   renderer.render(scene, camera);
 }
+
+globalThis.__ZERO_ECHO_ART__ = {
+  spec: ART_DIRECTION_SPEC,
+  tourStops: artPreviewStops,
+  getCamera: () => ({ x: camera.position.x, y: camera.position.y }),
+};
 
 animate();
