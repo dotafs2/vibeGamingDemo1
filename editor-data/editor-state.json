@@ -122,276 +122,6 @@
   ],
   "assets": [
     {
-      "id": "scene-crusher",
-      "name": "投料斗与双辊破碎机",
-      "description": "完整投料斗、双辊破碎机和支撑底座",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-crusher",
-      "x": -12.45,
-      "y": 1.175,
-      "width": 8.1,
-      "height": 10.85,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 1,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 0,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 8.1,
-        "height": 10.85
-      },
-      "versions": [
-        {
-          "id": "scene-crusher-v1",
-          "pastImage": "/editor/assets/scene-crusher/v1-past.png",
-          "presentImage": "/editor/assets/scene-crusher/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明破碎机总成"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
-      "id": "scene-conveyor",
-      "name": "矿石传送带",
-      "description": "带滚轮、桁架和支腿的长传送带",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-conveyor",
-      "x": -5,
-      "y": -2.5,
-      "width": 8.05,
-      "height": 3.2,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 2,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 0,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 8.05,
-        "height": 3.2
-      },
-      "versions": [
-        {
-          "id": "scene-conveyor-v1",
-          "pastImage": "/editor/assets/scene-conveyor/v1-past.png",
-          "presentImage": "/editor/assets/scene-conveyor/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明传送带"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
-      "id": "scene-vent-housing",
-      "name": "通风机机壳",
-      "description": "不含转子的风扇机壳、格栅与管线",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-vent-housing",
-      "x": 0.5,
-      "y": 4.5,
-      "width": 5.85,
-      "height": 6.1,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 1,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 0,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 5.85,
-        "height": 6.1
-      },
-      "versions": [
-        {
-          "id": "scene-vent-housing-v1",
-          "pastImage": "/editor/assets/scene-vent-housing/v1-past.png",
-          "presentImage": "/editor/assets/scene-vent-housing/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明空风扇机壳"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
-      "id": "scene-maintenance",
-      "name": "中央维修平台",
-      "description": "护栏、控制柜、梯子和支腿组成的维修平台",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-maintenance",
-      "x": 3.5,
-      "y": -1.9499999999999997,
-      "width": 4.8,
-      "height": 5.2,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 2,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 100,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 4.8,
-        "height": 5.2
-      },
-      "versions": [
-        {
-          "id": "scene-maintenance-v1",
-          "pastImage": "/editor/assets/scene-maintenance/v1-past.png",
-          "presentImage": "/editor/assets/scene-maintenance/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明维修平台"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
-      "id": "scene-gate",
-      "name": "03 号工业闸门",
-      "description": "重型双扇闸门及完整门框",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-gate",
-      "x": 10.125,
-      "y": -0.45,
-      "width": 5.95,
-      "height": 7.8,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 1,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 0,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 5.95,
-        "height": 7.8
-      },
-      "versions": [
-        {
-          "id": "scene-gate-v1",
-          "pastImage": "/editor/assets/scene-gate/v1-past.png",
-          "presentImage": "/editor/assets/scene-gate/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明工业闸门"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
-      "id": "scene-shaft",
-      "name": "右侧升降井",
-      "description": "导轨、钢架、升降笼和安全梯组成的升降井",
-      "sourceIds": {
-        "past": [],
-        "present": []
-      },
-      "sourceComponentId": "scene-shaft",
-      "x": 14,
-      "y": 1.875,
-      "width": 2.5,
-      "height": 12.75,
-      "rotation": 0,
-      "opacity": 1,
-      "depth": 1,
-      "renderMode": "source-png",
-      "componentType": "static",
-      "physicsType": "static-visual",
-      "animation": {
-        "type": "none",
-        "speed": 0,
-        "phase": 0
-      },
-      "visible": true,
-      "collider": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "width": 2.5,
-        "height": 12.75
-      },
-      "versions": [
-        {
-          "id": "scene-shaft-v1",
-          "pastImage": "/editor/assets/scene-shaft/v1-past.png",
-          "presentImage": "/editor/assets/scene-shaft/v1-present.png",
-          "completedAt": "2026-08-08T08:45:00.000Z",
-          "promptSummary": "双时代独立透明升降井"
-        }
-      ],
-      "activeVersion": 0,
-      "pendingJobId": null,
-      "createdAt": "2026-08-08T08:45:00.000Z",
-      "fracturePieces": 4
-    },
-    {
       "id": "scene-rails",
       "name": "矿车轨道",
       "description": "贯穿场景底部的双钢轨与枕木",
@@ -516,7 +246,7 @@
           "present-00139"
         ]
       },
-      "x": 9.232371071812793,
+      "x": 1.8597705325071758,
       "y": -3.5961699895068207,
       "width": 2.8331584470094437,
       "height": 1.9076600209863583,
@@ -560,15 +290,15 @@
       "createdAt": "2026-08-08T07:04:36.762Z"
     },
     {
-      "id": "asset-1786183509347-huq3u",
-      "name": "中央通风机转子 复制",
+      "id": "asset-1786355512721-gmtyb",
+      "name": "中央通风机转子 复制 副本",
       "description": "中央大型通风机的四叶转子，绕中心持续旋转",
       "sourceIds": {
         "past": [],
         "present": []
       },
       "x": 1,
-      "y": 4.5,
+      "y": 5,
       "width": 4.2,
       "height": 4.2,
       "rotation": 0,
@@ -600,7 +330,7 @@
       ],
       "activeVersion": 0,
       "pendingJobId": null,
-      "createdAt": "2026-08-08T10:05:09.347Z",
+      "createdAt": "2026-08-10T09:51:52.721Z",
       "fracturePieces": 4,
       "sourceComponentId": null
     }

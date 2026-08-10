@@ -3368,17 +3368,16 @@ function updateVisuals(dt, elapsed) {
   playerMesh.scale.y = THREE.MathUtils.damp(playerMesh.scale.y, 1, 18, dt);
   playerMesh.rotation.z = THREE.MathUtils.damp(playerMesh.rotation.z, -player.vx * .008, 12, dt);
 
-  const viewHalfWidth = 9 * (innerWidth / innerHeight);
   let cameraTargetX;
   let cameraTargetY;
   if (state.elevatorRiding) {
-    cameraTargetX = elevatorX;
+    cameraTargetX = player.x;
     cameraTargetY = player.y + 3.0;
   } else if (isLowerLevel()) {
-    cameraTargetX = THREE.MathUtils.clamp(player.x, 17 + viewHalfWidth, bossArenaEndX - viewHalfWidth);
+    cameraTargetX = player.x;
     cameraTargetY = labGroundY + 4.15;
   } else {
-    cameraTargetX = THREE.MathUtils.clamp(player.x, -17 + viewHalfWidth, 22 - viewHalfWidth);
+    cameraTargetX = player.x;
     cameraTargetY = 0;
   }
   if (artTourEnabled) {
