@@ -39,15 +39,21 @@ bool AHearthVillage::IsClearPoint(const FVector& P) const
         if(FMath::Abs(P.X-Obstacle.X)<Obstacle.Z && FMath::Abs(P.Y-Obstacle.Y)<Obstacle.Z) return false;
     // Empty expansion plots reserve their future footprint, keeping permanent paths between buildings.
     for(const auto& Site:ProductionSites)
-        if(FMath::Abs(P.X-Site.Position.X)<Site.Radius+25 && FMath::Abs(P.Y-Site.Position.Y)<Site.Radius+25) return false;
+        if(!(Site.Kind==EHearthSiteKind::Empty && !Site.bExpansion && !Site.bReachable)
+            && FMath::Abs(P.X-Site.Position.X)<Site.Radius+25 && FMath::Abs(P.Y-Site.Position.Y)<Site.Radius+25) return false;
     return true;
 }
 
 bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
 {
-    const int32 Steps=FMath::Max(1,FMath::CeilToInt(FVector::Dist2D(A,B)/80.f));
-    for(int32 I=0;I<=Steps;++I) if(!IsClearPoint(FMath::Lerp(A,B,static_cast<float>(I)/Steps))) return false;
-    return true;
+    // Sparse probes can miss a corner that a later 12 cm movement step hits,
+    // producing an endless replan to the same invalid shortcut. Use exact boxes
+    // and every crossed grid cell for both planning and execution.
+    for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z)) return false;
+    for(const auto& S:ProductionSites)
+        if(!(S.Kind==EHearthSiteKind::Empty && !S.bExpansion && !S.bReachable)
+            && HearthMovement::SegmentHitsBox(A,B,S.Position,S.Radius+25)) return false;
+    return HearthMovement::GridSegmentClear(A,B,HearthPaths::Step,[this](FIntPoint Cell) { return LandGrid.Contains(Cell); });
 }
 
 bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,TArray<FVector>& Out) const

@@ -50,14 +50,14 @@ public:
         ButtonStyle.SetNormal(Normal).SetHovered(Hover).SetPressed(Press);
         auto Panel=SNew(SVerticalBox);
         auto Footer=SNew(SVerticalBox);
-        Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text(FText::FromString(TEXT("三座小屋"))).Font(HearthUI::Font(25,true)).ColorAndOpacity(HearthUI::Ink)];
-        Panel->AddSlot().AutoHeight().Padding(0,3,0,14)[SNew(STextBlock).Text(FText::FromString(TEXT("一个村庄，三种生活。"))).Font(HearthUI::Font(12)).ColorAndOpacity(HearthUI::Muted)];
+        Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text(FText::FromString(TEXT("炉火与王国"))).Font(HearthUI::Font(25,true)).ColorAndOpacity(HearthUI::Ink)];
+        Panel->AddSlot().AutoHeight().Padding(0,3,0,14)[SNew(STextBlock).Text_Lambda([this] { auto* V=Village.Get(); return FText::FromString(FString::Printf(TEXT("%d 位居民，共同生活。"),V?V->Residents.Num():0)); }).Font(HearthUI::Font(12)).ColorAndOpacity(HearthUI::Muted)];
         Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V?V->ProductionSummary():TEXT(""));
         }).Font(HearthUI::Font(12,true)).ColorAndOpacity(HearthUI::Ink).AutoWrapText(true)];
         Panel->AddSlot().AutoHeight().Padding(0,12,0,12)[SNew(SSeparator).ColorAndOpacity(FLinearColor(0.45f,0.44f,0.35f,0.35f))];
         Panel->AddSlot().AutoHeight().Padding(0,0,0,8)[SNew(STextBlock).Text(FText::FromString(TEXT("村民"))).Font(HearthUI::Font(11,true)).ColorAndOpacity(HearthUI::Muted)];
-        for(int32 I=0;I<3;++I) Panel->AddSlot().AutoHeight().Padding(0,0,0,6)[ResidentButton(I)];
+        for(int32 I=0;Village.IsValid() && I<Village->Residents.Num();++I) Panel->AddSlot().AutoHeight().Padding(0,0,0,6)[ResidentButton(I)];
         Panel->AddSlot().AutoHeight().Padding(0,12,0,10)[SNew(SSeparator).ColorAndOpacity(FLinearColor(0.45f,0.44f,0.35f,0.35f))];
         Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].Name+TEXT("的打算"):TEXT(""));
@@ -69,7 +69,7 @@ public:
         Panel->AddSlot().AutoHeight().Padding(0,10,0,6)[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); if(!V || !V->Residents.IsValidIndex(V->SelectedResident)) return FText::GetEmpty();
             const auto& R=V->Residents[V->SelectedResident];
-            return FText::FromString(FString::Printf(TEXT("精力 %.0f / 100 · 社交需求 %.0f / 100"),R.Energy,R.SocialNeed));
+            return FText::FromString(FString::Printf(TEXT("%s · %d 岁\n精力 %.0f · 饥饿 %.0f · 心情 %.0f · 社交需求 %.0f"),*R.Role,R.Age,R.Energy,R.Hunger,R.Mood,R.SocialNeed));
         }).Font(HearthUI::Font(11)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Panel->AddSlot().AutoHeight().Padding(0,8,0,10)[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].Reason:TEXT(""));
@@ -86,6 +86,9 @@ public:
             auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].LatestEvent:TEXT(""));
         }).Font(HearthUI::Font(11)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Footer->AddSlot().AutoHeight().Padding(0,8,0,6)[SNew(SSeparator)];
+        Footer->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
+            auto* V=Village.Get(); return FText::FromString(V?V->WorldSaveStatus:TEXT(""));
+        }).Font(HearthUI::Font(10)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Footer->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V?V->ApiSummary():TEXT(""));
         }).Font(HearthUI::Font(10)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
@@ -130,6 +133,8 @@ public:
                 ]
             ]
         ];
+        Controls->AddSlot().AutoWidth().Padding(0,0,8,0)[ControlButton([] { return FText::FromString(TEXT("保存")); },
+            [this] { if(auto* V=Village.Get()) V->SaveWorld(); })];
         Controls->AddSlot().AutoWidth()[ControlButton([] { return FText::FromString(TEXT("重新开始")); },
             [this] { if(auto* V=Village.Get()) V->RestartVillage(); })];
 
@@ -249,6 +254,8 @@ void AHearthPlayerController::PlayerTick(float DeltaTime)
     if(WasInputKeyJustPressed(EKeys::One)) Village->SelectResident(0);
     if(WasInputKeyJustPressed(EKeys::Two)) Village->SelectResident(1);
     if(WasInputKeyJustPressed(EKeys::Three)) Village->SelectResident(2);
+    const FKey MoreKeys[]={EKeys::Four,EKeys::Five,EKeys::Six,EKeys::Seven,EKeys::Eight,EKeys::Nine,EKeys::Zero};
+    for(int32 I=0;I<7;++I) if(WasInputKeyJustPressed(MoreKeys[I])) Village->SelectResident(I+3);
     if(WasInputKeyJustPressed(EKeys::LeftMouseButton))
     {
         FHitResult Hit;

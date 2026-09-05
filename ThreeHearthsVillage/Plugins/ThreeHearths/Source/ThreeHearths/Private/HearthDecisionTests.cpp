@@ -29,7 +29,7 @@ bool FHearthDecisionValidationTest::RunTest(const FString&)
     TestEqual(TEXT("Preserve chosen plot"),Plot,2);
     TestEqual(TEXT("Preserve returned motivation"),Reason,FString(TEXT("我想节省木材。")));
     TestTrue(TEXT("Tolerate JSON code fences"),HearthDecision::ParsePlan(TEXT("```json\n{\"plot_id\":0,\"reason\":\"树林安静\"}\n```"),Plot,Reason));
-    const TArray<FString> Invalid={TEXT("not json"),TEXT("[]"),TEXT("{\"plot_id\":-1,\"reason\":\"x\"}"),TEXT("{\"plot_id\":3,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0.5,\"reason\":\"x\"}"),TEXT("{\"plot_id\":\"0\",\"reason\":\"x\"}"),TEXT("{\"plot_id\":true,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"reason\":\" \"}"),TEXT("{\"plot_id\":0,\"reason\":4}"),TEXT("{\"plot_id\":0}"),TEXT("{\"plot_id\":0,\"reason\":\"x\",\"wood\":999}")};
+    const TArray<FString> Invalid={TEXT("not json"),TEXT("[]"),TEXT("{\"plot_id\":-1,\"reason\":\"x\"}"),TEXT("{\"plot_id\":10,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0.5,\"reason\":\"x\"}"),TEXT("{\"plot_id\":\"0\",\"reason\":\"x\"}"),TEXT("{\"plot_id\":true,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"reason\":\" \"}"),TEXT("{\"plot_id\":0,\"reason\":4}"),TEXT("{\"plot_id\":0}"),TEXT("{\"plot_id\":0,\"reason\":\"x\",\"wood\":999}")};
     for(int32 I=0;I<Invalid.Num();++I) TestFalse(FString::Printf(TEXT("Reject malformed or invented action %d"),I),HearthDecision::ParsePlan(Invalid[I],Plot,Reason));
     TestFalse(TEXT("Reject oversized rationale"),HearthDecision::ParsePlan(TEXT("{\"plot_id\":0,\"reason\":\"")+FString::ChrN(181,TEXT('x'))+TEXT("\"}"),Plot,Reason));
     TestTrue(TEXT("Accept valid life choice"),HearthDecision::ParseLifePlan(TEXT("{\"action_id\":5,\"reason\":\"我去拜访伯恩。\"}"),Plot,Reason));

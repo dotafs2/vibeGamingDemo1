@@ -34,9 +34,9 @@ void AHearthVillage::InitializeProduction()
 {
     for(const auto& M:ProductionMeshes) if(IsValid(M.Get())) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites.Reset(); ProductionTotals.Reset(); FixedObstacles.Reset();
-    FoodStock=30; StoneStock=0; for(int32 I=0;I<3;++I) { Produced[I]=0; Spent[I]=0; }
+    FoodStock=Residents.Num()*10; StoneStock=0; for(int32 I=0;I<3;++I) { Produced[I]=0; Spent[I]=0; }
     if(!bUseCropoutMap) { ProductionStatus=TEXT("生产与扩建技能在大岛地图开放"); return; }
-    for(int32 I=0;I<3;++I) FixedObstacles.Add(FVector(PlotPositions[I].X,PlotPositions[I].Y,230));
+    for(int32 I=0;I<HousingPlotCount();++I) FixedObstacles.Add(FVector(PlotPositions[I].X,PlotPositions[I].Y,230));
     FixedObstacles.Add(FVector(-1100,-1050,330));
     TArray<UStaticMeshComponent*> Existing; GetComponents(Existing);
     for(auto* M:Existing) if(M->GetStaticMesh())
@@ -85,7 +85,7 @@ void AHearthVillage::InitializeProduction()
 bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
 {
     int32 Site,Op;
-    if(!Residents.IsValidIndex(Index) || CompletedHomes()!=3 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
+    if(!Residents.IsValidIndex(Index) || Residents[Index].BuildProgress<1 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
     const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
@@ -238,7 +238,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         S.Kind=static_cast<EHearthSiteKind>(Op+1); S.Owner=Index; S.Stage=0; S.Units=0;
         if(HearthProduction::IsCrop(S.Kind))
         { const int32 Yields[]={12,14,10,16}; S.Capacity=Yields[Op-1]; Result=TEXT("农田建成，接下来可以播种耕作。"); }
-        else if(Op==5) { S.Stage=2; Result=TEXT("新住宅建成，已占用这块土地并记入村庄建筑。当前人口仍为三人。"); }
+        else if(Op==5) { S.Stage=2; Result=TEXT("新住宅建成，已记录土地用途。新房不会凭空增加人口。"); }
         else
         { S.Capacity=Op==6?18:12; S.GrowDuration=Op==6?180.f:120.f; S.Growth=S.GrowDuration; Result=Op==6?TEXT("树苗已种下，长成后可持续供给木材。"):TEXT("浆果灌木已种下，长成后可以采集食物。"); }
     }
@@ -259,6 +259,7 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
 void AHearthVillage::UpdateSiteVisual(int32 Index)
 {
     auto& S=ProductionSites[Index];
+    if(S.Kind==EHearthSiteKind::Empty && !S.bExpansion && !S.bReachable) return;
     int32 Visual=S.Stage;
     if(S.Growth>0) Visual=S.Growth<S.GrowDuration*.5f?11:10;
     if(S.ReservedBy>=0 && Residents.IsValidIndex(S.ReservedBy) && Residents[S.ReservedBy].ProductionOp==5)
@@ -305,7 +306,7 @@ void AHearthVillage::UpdateSiteVisual(int32 Index)
 void AHearthVillage::RefreshProductionVisuals()
 {
     for(int32 I=0;I<ProductionSites.Num();++I) UpdateSiteVisual(I);
-    if(CompletedHomes()==3) for(int32 I=0;I<3;++I) if(StockMeshes.IsValidIndex(I))
+    for(int32 I=0;I<3;++I) if(StockMeshes.IsValidIndex(I))
     { StockMeshes[I]->SetVisibility(WoodStock[I]>0); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,FMath::Clamp(WoodStock[I]/12.f*.4f,.04f,1.2f))); }
 }
 

@@ -1,6 +1,37 @@
 #include "HearthMovement.h"
 #include "HearthVillage.h"
 
+bool HearthMovement::SegmentHitsBox(const FVector& Start,const FVector& End,const FVector& Center,double Radius)
+{
+    double Enter=0,Leave=1;
+    for(int32 Axis=0;Axis<2;++Axis)
+    {
+        const double A=Start[Axis]-Center[Axis], Delta=End[Axis]-Start[Axis];
+        if(FMath::Abs(Delta)<1e-10) { if(FMath::Abs(A)>=Radius) return false; continue; }
+        const double T1=(-Radius-A)/Delta,T2=(Radius-A)/Delta;
+        Enter=FMath::Max(Enter,FMath::Min(T1,T2)); Leave=FMath::Min(Leave,FMath::Max(T1,T2));
+        if(Leave<=Enter) return false;
+    }
+    return Leave>Enter;
+}
+
+bool HearthMovement::GridSegmentClear(const FVector& Start,const FVector& End,double CellSize,TFunctionRef<bool(FIntPoint)> CellAllowed)
+{
+    auto Cell=[CellSize](const FVector& P) { return FIntPoint(FMath::RoundToInt(P.X/CellSize),FMath::RoundToInt(P.Y/CellSize)); };
+    if(!CellAllowed(Cell(Start)) || !CellAllowed(Cell(End))) return false;
+    TArray<double,TInlineAllocator<32>> Cuts={0,1};
+    for(int32 Axis=0;Axis<2;++Axis)
+    {
+        const double Delta=End[Axis]-Start[Axis]; if(FMath::Abs(Delta)<1e-10) continue;
+        const int32 First=FMath::FloorToInt(FMath::Min(Start[Axis],End[Axis])/CellSize-.5)+1;
+        const int32 Last=FMath::FloorToInt(FMath::Max(Start[Axis],End[Axis])/CellSize-.5);
+        for(int32 I=First;I<=Last;++I) { const double T=((I+.5)*CellSize-Start[Axis])/Delta; if(T>0 && T<1) Cuts.Add(T); }
+    }
+    Cuts.Sort();
+    for(int32 I=1;I<Cuts.Num();++I) if(!CellAllowed(Cell(FMath::Lerp(Start,End,(Cuts[I-1]+Cuts[I])*.5)))) return false;
+    return true;
+}
+
 bool HearthMovement::SegmentClear(const FVector& Start,const FVector& End,TConstArrayView<FVector> People)
 {
     const FVector Delta(End.X-Start.X,End.Y-Start.Y,0);
@@ -78,6 +109,12 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
         const double Distance=Delta.Size();
         if(Distance<0.01) { R.Route.RemoveAt(0); continue; }
         const FVector Next=Start+Delta*(FMath::Min<double>(Distance,Budget)/Distance);
+        if(bUseCropoutMap && !ProductionSites.IsEmpty() && !IsClearSegment(Start,Next))
+        {
+            TArray<FVector> NewRoute;
+            if(FindActivityRoute(Index,R.Route.Last(),NewRoute)) R.Route=MoveTemp(NewRoute);
+            R.MoveRetry=.35f+Index*.05f; R.bMovementBlocked=true; return false;
+        }
         if(!HearthMovement::SegmentClear(Start,Next,People))
         {
             TArray<FVector> Detour;

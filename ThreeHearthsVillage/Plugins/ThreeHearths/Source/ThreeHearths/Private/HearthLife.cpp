@@ -58,7 +58,7 @@ void AHearthVillage::LoadHistory()
         {
             if(Item->Type!=EJson::Object) continue;
             auto J=Item->AsObject(); double Index=-1; J->TryGetNumberField(TEXT("resident"),Index);
-            if(Index<0 || Index>2 || Index!=FMath::FloorToDouble(Index)) continue;
+            if(Index<0 || Index>9 || Index!=FMath::FloorToDouble(Index)) continue;
             FHearthDecisionRecord R; R.Resident=static_cast<int32>(Index);
             J->TryGetStringField(TEXT("run"),R.Run); J->TryGetStringField(TEXT("timestamp"),R.Timestamp);
             J->TryGetNumberField(TEXT("simulation_time"),R.At); J->TryGetStringField(TEXT("kind"),R.Kind);
@@ -119,8 +119,8 @@ void AHearthVillage::StartHistory(int32 Index,bool bLife,const FString& Source)
     FHearthDecisionRecord Record; Record.Resident=Index; Record.Run=CurrentRun;
     Record.Timestamp=FDateTime::Now().ToString(TEXT("%Y-%m-%d %H:%M:%S")); Record.At=Elapsed;
     Record.Kind=bLife?TEXT("life"):TEXT("home"); Record.Source=Source; Record.Model=Source==TEXT("api")?ApiModel:FString();
-    Record.Context=FString::Printf(TEXT("精力 %.0f / 100 · 社交需求 %.0f / 100 · 小屋 %s · 村庄木材 %d · 已建房屋 %d / 3"),
-        Person.Energy,Person.SocialNeed,Person.BuildProgress>=1?TEXT("已完成"):TEXT("未完成"),AvailableWood(),CompletedHomes());
+    Record.Context=FString::Printf(TEXT("精力 %.0f · 饥饿 %.0f · 心情 %.0f · 社交需求 %.0f · 小屋 %s · 村庄木材 %d · 已建房屋 %d / %d"),
+        Person.Energy,Person.Hunger,Person.Mood,Person.SocialNeed,Person.BuildProgress>=1?TEXT("已完成"):TEXT("未完成"),AvailableWood(),CompletedHomes(),Residents.Num());
     Record.Context+=TEXT("\n人设：")+Person.Personality+TEXT("\n当时可选：");
     if(bLife)
     {
@@ -128,8 +128,7 @@ void AHearthVillage::StartHistory(int32 Index,bool bLife,const FString& Source)
     }
     else
     {
-        const TCHAR* Names[]={TEXT("林边小屋"),TEXT("花园小屋"),TEXT("紧凑小屋")};
-        for(int32 P=0;P<3;++P) if(PlotOwners[P]<0) Record.Context+=FString::Printf(TEXT("%s（木材 %d）；"),Names[P],PlotCosts[P]);
+        for(int32 P=0;P<HousingPlotCount();++P) if(PlotOwners[P]<0) Record.Context+=FString::Printf(TEXT("%s（木材 %d）；"),*PlotLabel(P),PlotCosts[P]);
     }
     Record.Context+=FString::Printf(TEXT("\n公共库存：食物 %d、木材 %d、石材 %d。"),FoodStock,AvailableWood(),StoneStock);
     Record.Choice=bLife?TEXT("考虑下一步生活"):TEXT("考虑在哪里建家");
@@ -157,6 +156,7 @@ void AHearthVillage::CompleteHistory(int32 Index,const FString& Result)
 TArray<int32> AHearthVillage::AvailableLifeActions(int32 Index) const
 {
     TArray<int32> Actions={0,1,2};
+    if(FoodStock>0) Actions.Add(50);
     Actions.Append(AvailableProductionActions(Index));
     for(int32 I=0;I<Residents.Num();++I) if(I!=Index && Residents[I].BuildProgress>=1.f) Actions.Add(3+I);
     return Actions;
@@ -168,6 +168,7 @@ FString AHearthVillage::LifeActionName(int32 Index,int32 Action) const
     if(Action==0) return TEXT("回家休息");
     if(Action==1) return TEXT("去农田观察作物");
     if(Action==2) return TEXT("巡查树林与木材站");
+    if(Action==50) return TEXT("去村镇中心吃饭");
     if(Residents.IsValidIndex(Action-3)) return TEXT("拜访")+Residents[Action-3].Name;
     return TEXT("未知行动");
 }
@@ -180,8 +181,9 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
     auto& R=Residents[Index];
     FVector Target=PlotPositions[R.Plot]+FVector(-245,0,0);
     if(Action==1) Target=bUseCropoutMap?FVector(-1850,-2400,8):PlotPositions[1]+FVector(-245,0,0);
-    if(Action==2) Target=WoodPositions[Index]+FVector(80,Index*120-120,0);
-    if(Action>=3) Target=PlotPositions[Residents[Action-3].Plot]+FVector(-245,0,0);
+    if(Action==2) Target=WoodPositions[Index%3]+FVector(80,(Index%3)*120-120,0);
+    if(Action==50) Target=bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,0);
+    if(Residents.IsValidIndex(Action-3)) Target=PlotPositions[Residents[Action-3].Plot]+FVector(-245,0,0);
     if(!bUseCropoutMap && Action!=2) Target.Y+=(Index-1)*120;
     TArray<FVector> Route;
     if(bUseCropoutMap && !ProductionSites.IsEmpty() && !FindActivityRoute(Index,Target,Route)) return false;
@@ -197,7 +199,8 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
 void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
 {
     const auto& Person=Residents[Index]; int32 Action=0;
-    if(Person.Energy<45) Action=0;
+    if(Person.Hunger>=60 && FoodStock>0) Action=50;
+    else if(Person.Energy<45) Action=0;
     else
     {
         const int32 Work=ChooseProductionLocally(Index);
@@ -207,7 +210,7 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
             for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && Residents[Other].BuildProgress>=1 && Person.SocialNeed>60) { Action=Other+3; break; }
         }
     }
-    const FString Reason=Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
+    const FString Reason=Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==50?TEXT("肚子饿了，去吃一份库存里的食物。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
     if(StartLifeAction(Index,Action,Reason,false))
     {
         Residents[Index].DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
@@ -231,6 +234,9 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     auto Context=MakeShared<FJsonObject>();
     auto Person=MakeShared<FJsonObject>(); Person->SetNumberField(TEXT("id"),Index);
     Person->SetStringField(TEXT("name"),R.Name); Person->SetStringField(TEXT("personality"),R.Personality);
+    Person->SetStringField(TEXT("stable_id"),R.StableId); Person->SetStringField(TEXT("role"),R.Role);
+    Person->SetBoolField(TEXT("king"),R.bKing); Person->SetNumberField(TEXT("age"),R.Age);
+    Person->SetNumberField(TEXT("hunger"),R.Hunger); Person->SetNumberField(TEXT("mood"),R.Mood);
     Person->SetNumberField(TEXT("energy"),R.Energy); Person->SetNumberField(TEXT("social_need"),R.SocialNeed);
     Context->SetObjectField(TEXT("resident"),Person); Context->SetNumberField(TEXT("completed_homes"),CompletedHomes());
     Context->SetNumberField(TEXT("available_wood"),AvailableWood());
@@ -271,14 +277,20 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
 {
     auto& R=Residents[Index];
     if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt))
-    { R.Task=EHearthTask::LifeActivity; R.Timer=R.LifeAction==0?20.f:15.f; }
+    { R.Task=EHearthTask::LifeActivity; R.Timer=R.LifeAction==50?5.f:R.LifeAction==0?20.f:15.f; }
     else if(R.Task==EHearthTask::LifeActivity && R.Timer<=0)
     {
-        if(R.LifeAction==0) R.Energy=FMath::Min(100.f,R.Energy+35.f);
-        else if(R.LifeAction>=3) { R.SocialNeed=FMath::Max(0.f,R.SocialNeed-45.f); R.Energy=FMath::Max(0.f,R.Energy-6.f); }
+        FString Extra;
+        if(R.LifeAction==50)
+        {
+            if(FoodStock>0) { --FoodStock; ++Spent[0]; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("吃掉1份食物，已记入消耗。"); }
+            else Extra=TEXT("到达时食物已用完，这次没有吃到饭。");
+        }
+        else if(R.LifeAction==0) R.Energy=FMath::Min(100.f,R.Energy+35.f);
+        else if(Residents.IsValidIndex(R.LifeAction-3)) { R.SocialNeed=FMath::Max(0.f,R.SocialNeed-45.f); R.Energy=FMath::Max(0.f,R.Energy-6.f); }
         else R.Energy=FMath::Max(0.f,R.Energy-10.f);
-        const FString Result=FString::Printf(TEXT("%s已完成。精力 %.0f，社交需求 %.0f。%s"),*LifeActionName(Index,R.LifeAction),R.Energy,R.SocialNeed,
-            R.LifeAction==1||R.LifeAction==2?TEXT("本次只观察，没有改变资源库存。"):TEXT(""));
+        const FString Result=FString::Printf(TEXT("%s已完成。精力 %.0f，饥饿 %.0f，社交需求 %.0f。%s%s"),*LifeActionName(Index,R.LifeAction),R.Energy,R.Hunger,R.SocialNeed,
+            R.LifeAction==1||R.LifeAction==2?TEXT("本次只观察，没有改变资源库存。"):TEXT(""),*Extra);
         R.LatestEvent=Result; CompleteHistory(Index,Result); R.Task=EHearthTask::LifeChoosing;
         VillageEvent=R.Name+TEXT("完成了活动，准备下一次选择。");
     }

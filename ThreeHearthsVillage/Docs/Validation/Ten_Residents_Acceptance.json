@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "date_beijing": "2026-09-06 03:39",
+  "engine": "5.8.1-56057345",
+  "native_tests": {
+    "passed": 9,
+    "failed": 0,
+    "report": "Saved/ThreeHearths/overnight-2026-09-06/native-society-final-tests/index.json"
+  },
+  "fresh_world": {
+    "world_id": "E9B63CA0-446C-87BE-B89B-2CA0913D89E4",
+    "people": 10,
+    "kings": 1,
+    "unique_resident_ids": 10,
+    "unique_home_plots": 10,
+    "completed_homes": 10,
+    "simulation_seconds": 154.90484619140625,
+    "wood_remaining": 30,
+    "food": 100,
+    "traffic_samples": 187,
+    "minimum_sampled_separation_cm": 100.37149526043973
+  },
+  "meal_resume": {
+    "checkpoint_phase": "LifeActivity",
+    "food_after": 99,
+    "food_spent": 1,
+    "identity_inventory_and_people_equal_across_reload": true
+  },
+  "legacy_migration": {
+    "old_schema": 1,
+    "new_schema": 2,
+    "original_people": 3,
+    "people_after": 10,
+    "arrival_food": 70,
+    "arrival_wood": 63,
+    "old_world_people_task_site_ids_retained": true,
+    "reload_does_not_grant_more_supplies": true,
+    "all_ten_homes_completed": true,
+    "food_after": 104,
+    "wood_after": 30
+  },
+  "corner_recovery": {
+    "same_world_and_task_continued": true,
+    "sparse_probe_wall_corner_regression_fixed": true
+  },
+  "paid_model_requests": 0,
+  "art_runtime_status": "initial houses and old character meshes; modular housing and new accessories remain separate integration work",
+  "known_existing_warnings": [
+    "Cropout BP_GI.PlayMusic reads absent Audio under -nosound",
+    "Cropout SKM_Gatherer legacy invalid material index is corrected on load",
+    "ImportPreview.WorldIsolation test reports temporary world without context"
+  ],
+  "evidence": [
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/ten-homes.json",
+      "sha256": "fa3b77da55fa501ecbde3108bb113f8f85e27c7d18458013d51258c6ddc1330a"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/traffic-metrics.json",
+      "sha256": "02da2aa1ae6e6c20f17a8e2760a41c9ba6d119374caa0c0a7c7eb853fd259ff6"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/meal-before-reload.json",
+      "sha256": "b736a9733ba7b82c570a69fc73ee280ea606311fe2a220cdb41af1f92bdb2bbb"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/meal-after-reload.json",
+      "sha256": "b736a9733ba7b82c570a69fc73ee280ea606311fe2a220cdb41af1f92bdb2bbb"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/meal-completed.json",
+      "sha256": "ef7ce5fb9dab270b551f48c28812865925a47232a95d2538f6a26a3a7089e70a"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/corner-recovery.json",
+      "sha256": "48530d4ee5baff04003f8f2e311aeaf245b3b039596aa349b9b232bb989ae03a"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-layout2/TenResidents_InUE.png",
+      "sha256": "1ef6d98a3b60426d4c6f5271c3c17027cacec3a36f73d48c911dd3c4ca365260"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-migration/migrated-reloaded.json",
+      "sha256": "abfcdeecfec1bb2b2b3f5f0d46132337ccdd413b672f24f5f193219b45b71c0f"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/society-migration/all-arrivals-housed.json",
+      "sha256": "4206b9e384280c996ba78a08a42d7107c9b1381a72b2b93253e0e83a46c90f4c"
+    }
+  ]
+}

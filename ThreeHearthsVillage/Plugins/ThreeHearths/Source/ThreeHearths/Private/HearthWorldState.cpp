@@ -54,7 +54,7 @@ namespace HearthWorld
 
     FString Encode(const FHearthWorldImage& W)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),1);
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),2); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
@@ -64,14 +64,18 @@ namespace HearthWorld
 #undef STR
 #undef NUM
 #undef BOOL
-        FArray Plots,People,Sites,History;
-        for(int32 I=0;I<3;++I)
+        FArray Plots,Resources,People,Sites,History;
+        for(int32 I=0;I<W.PlotCount;++I)
         {
             auto P=MakeShared<FJsonObject>(); P->SetStringField(TEXT("id"),W.PlotIds[I]);
-            P->SetField(TEXT("position"),Vec(W.Plots[I])); P->SetField(TEXT("stock_position"),Vec(W.Stocks[I]));
+            P->SetField(TEXT("position"),Vec(W.Plots[I]));
             P->SetNumberField(TEXT("owner"),W.Owners[I]); P->SetNumberField(TEXT("cost"),W.Costs[I]);
-            P->SetNumberField(TEXT("wood"),W.Wood[I]); P->SetNumberField(TEXT("produced"),W.Produced[I]); P->SetNumberField(TEXT("spent"),W.Spent[I]);
             Plots.Add(MakeShared<FJsonValueObject>(P));
+        }
+        for(int32 I=0;I<3;++I)
+        {
+            auto P=MakeShared<FJsonObject>(); P->SetField(TEXT("stock_position"),Vec(W.Stocks[I])); P->SetNumberField(TEXT("wood"),W.Wood[I]);
+            P->SetNumberField(TEXT("produced"),W.Produced[I]); P->SetNumberField(TEXT("spent"),W.Spent[I]); Resources.Add(MakeShared<FJsonValueObject>(P));
         }
         for(const auto& Saved:W.People)
         {
@@ -79,6 +83,7 @@ namespace HearthWorld
 #define STR(Field) P->SetStringField(TEXT(#Field),R.Field)
 #define NUM(Field) P->SetNumberField(TEXT(#Field),R.Field)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
+            STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
             NUM(Plot); NUM(CarriedWood); NUM(DeliveredWood); NUM(BuildProgress); NUM(Energy); NUM(SocialNeed);
             NUM(Source); NUM(Trips); NUM(Timer); NUM(MoveSpeed); NUM(MoveRetry); NUM(HistoryIndex);
             NUM(LifeAction); NUM(ProductionSite); NUM(ProductionOp); NUM(CargoType); NUM(CargoAmount); NUM(WorkDuration);
@@ -113,7 +118,7 @@ namespace HearthWorld
             History.Add(MakeShared<FJsonValueObject>(P));
         }
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
-        J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("people"),People);
+        J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("resources"),Resources); J->SetArrayField(TEXT("people"),People);
         J->SetArrayField(TEXT("sites"),Sites); J->SetArrayField(TEXT("history"),History); return Json(J);
     }
 
@@ -121,30 +126,38 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; int32 Schema=0; C.Num(TEXT("schema"),Schema,1,1);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,2);
+        if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
+        if(W.PlotCount!=3 && W.PlotCount!=10) return false;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
 #define NUM(Field,Min,Max) C.Num(TEXT(#Field),W.Field,Min,Max)
 #define BOOL(Field) C.Bool(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision,0,9007199254740991.0); NUM(Elapsed,0,1e9); NUM(Speed,1,1000); NUM(Remainder,0,300);
-        NUM(Selected,0,2); NUM(LastLife,-1,2); NUM(Food,0,1e8); NUM(Stone,0,1e8);
+        NUM(Selected,0,W.PlotCount-1); NUM(LastLife,-1,W.PlotCount-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
 #undef STR
 #undef NUM
 #undef BOOL
-        const auto& Plots=C.Array(TEXT("plots"),3); if(Plots.Num()!=3) return false;
+        const auto& Plots=C.Array(TEXT("plots"),10); if(Plots.Num()!=W.PlotCount) return false;
         for(int32 I=0;I<Plots.Num();++I)
         {
-            FRead P{Object(Plots[I])}; P.Str(TEXT("id"),W.PlotIds[I]); P.Vector(TEXT("position"),W.Plots[I]); P.Vector(TEXT("stock_position"),W.Stocks[I]);
-            P.Num(TEXT("owner"),W.Owners[I],-1,2); P.Num(TEXT("cost"),W.Costs[I],1,1000000); P.Num(TEXT("wood"),W.Wood[I],0,1e8);
+            FRead P{Object(Plots[I])}; P.Str(TEXT("id"),W.PlotIds[I]); P.Vector(TEXT("position"),W.Plots[I]);
+            P.Num(TEXT("owner"),W.Owners[I],-1,W.PlotCount-1); P.Num(TEXT("cost"),W.Costs[I],1,1000000); C.Good&=P.Good;
+        }
+        const auto& Resources=W.Schema==1?Plots:C.Array(TEXT("resources"),3); if(Resources.Num()!=3) return false;
+        for(int32 I=0;I<3;++I)
+        {
+            FRead P{Object(Resources[I])}; P.Vector(TEXT("stock_position"),W.Stocks[I]); P.Num(TEXT("wood"),W.Wood[I],0,1e8);
             P.Num(TEXT("produced"),W.Produced[I],0,1e8); P.Num(TEXT("spent"),W.Spent[I],0,1e8); C.Good&=P.Good;
         }
-        for(const auto& V:C.Array(TEXT("people"),3))
+        for(const auto& V:C.Array(TEXT("people"),10))
         {
             FHearthSavedResident Saved; auto& R=Saved.Person; FRead P{Object(V)}; int32 Task=0;
 #define STR(Field) P.Str(TEXT(#Field),R.Field)
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),R.Field,Min,Max)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
-            NUM(Plot,-1,2); NUM(CarriedWood,0,3); NUM(DeliveredWood,0,1000000); NUM(BuildProgress,0,1); NUM(Energy,0,100); NUM(SocialNeed,0,100);
+            if(W.Schema>=2) { STR(Role); NUM(Hunger,0,100); NUM(Mood,0,100); NUM(Age,18,120); P.Bool(TEXT("king"),R.bKing); }
+            NUM(Plot,-1,W.PlotCount-1); NUM(CarriedWood,0,3); NUM(DeliveredWood,0,1000000); NUM(BuildProgress,0,1); NUM(Energy,0,100); NUM(SocialNeed,0,100);
             NUM(Source,-1,2); NUM(Trips,0,1e8); NUM(Timer,-1e9,1e6); NUM(MoveSpeed,1,2000); NUM(MoveRetry,0,1e6); NUM(HistoryIndex,-1,49999);
             NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,12); NUM(CargoType,-1,2); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
@@ -161,7 +174,7 @@ namespace HearthWorld
             P.Vector(TEXT("position"),S.Position); P.Vector(TEXT("approach"),S.Approach);
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
             NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,2);
-            NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,2); NUM(Owner,-1,2);
+            NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,W.PlotCount-1); NUM(Owner,-1,W.PlotCount-1);
 #undef NUM
             P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion); C.Good&=P.Good; W.Sites.Add(MoveTemp(S));
         }
@@ -171,19 +184,19 @@ namespace HearthWorld
 #define STR(Field) P.Str(TEXT(#Field),H.Field,32768)
             STR(Run); STR(Timestamp); STR(Kind); STR(Context); STR(Choice); STR(Reason); STR(Result); STR(Source); STR(Model); STR(Status);
 #undef STR
-            P.Num(TEXT("Resident"),H.Resident,0,2); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
+            P.Num(TEXT("Resident"),H.Resident,0,9); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
             P.Bool(TEXT("bHasUsage"),H.bHasUsage); C.Good&=P.Good; W.History.Add(MoveTemp(H));
         }
         const FObject* Totals=nullptr;
         if(!Root->TryGetObjectField(TEXT("totals"),Totals) || (*Totals)->Values.Num()>1000) C.Good=false;
         else for(const auto& Pair:(*Totals)->Values)
         { int32 Count=0; FRead T{*Totals}; T.Num(*Pair.Key,Count,0,1e8); C.Good&=T.Good && Pair.Key.Len()<100; W.Totals.Add(FString(Pair.Key),Count); }
-        if(!C.Good || W.People.Num()!=3 || !Guid(W.Id) || !Guid(W.Run)) return false;
+        if(!C.Good || W.People.Num()!=W.PlotCount || !Guid(W.Id) || !Guid(W.Run)) return false;
         Error=TEXT("世界存档引用、任务或资源守恒校验失败");
         TSet<FString> Ids;
         auto Unique=[&Ids](const FString& Id) { if(!Guid(Id) || Ids.Contains(Id)) return false; Ids.Add(Id); return true; };
         if(!Unique(W.Id)) return false;
-        for(int32 I=0;I<3;++I) if(!Unique(W.PlotIds[I])) return false;
+        for(int32 I=0;I<W.PlotCount;++I) if(!Unique(W.PlotIds[I])) return false;
         int64 Accounted[3]={W.Food+W.Spent[0]-W.Produced[0],W.Wood[0]+W.Wood[1]+W.Wood[2]+W.Spent[1]-W.Produced[1],W.Stone+W.Spent[2]-W.Produced[2]};
         for(int32 I=0;I<W.People.Num();++I)
         {
@@ -193,7 +206,8 @@ namespace HearthWorld
             if(R.Plot>=0 && (W.Owners[R.Plot]!=I || R.DeliveredWood>W.Costs[R.Plot])) return false;
             if(R.Task!=EHearthTask::Choosing && (R.Plot<0 || R.ActiveTaskId.IsEmpty())) return false;
             if(R.Task==EHearthTask::ToWood && R.Source<0) return false;
-            if((R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity) && (R.LifeAction<0 || R.LifeAction>5 || R.LifeAction==3+I)) return false;
+            if((R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity) && R.LifeAction!=50
+                && (R.LifeAction<0 || R.LifeAction>=3+W.People.Num() || R.LifeAction==3+I)) return false;
             if((R.Task>=EHearthTask::Settled) && R.BuildProgress<1.f) return false;
             if(R.Plot<0 && (R.CarriedWood || R.DeliveredWood || R.BuildProgress>0)) return false;
             if(R.BuildProgress>0 && R.DeliveredWood!=W.Costs[R.Plot]) return false;
@@ -205,13 +219,13 @@ namespace HearthWorld
             if(R.CargoType>=0) Accounted[R.CargoType]+=R.CargoAmount;
             Accounted[1]+=R.CarriedWood+R.DeliveredWood;
         }
-        for(int32 I=0;I<3;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
+        for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
         for(int32 I=0;I<W.Sites.Num();++I)
         {
             const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration) return false;
             if(S.ReservedBy>=0 && W.People[S.ReservedBy].Person.ProductionSite!=I) return false;
         }
-        if(Accounted[0]!=30 || Accounted[1]!=36 || Accounted[2]!=0) return false;
+        if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0) return false;
         Out=MoveTemp(W); Error.Empty(); return true;
     }
 

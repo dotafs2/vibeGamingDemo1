@@ -86,6 +86,11 @@ struct FHearthResident
     GENERATED_BODY()
     UPROPERTY(BlueprintReadOnly) FString StableId;
     UPROPERTY(BlueprintReadOnly) FString ActiveTaskId;
+    UPROPERTY(BlueprintReadOnly) FString Role;
+    UPROPERTY(BlueprintReadOnly) float Hunger=15.f;
+    UPROPERTY(BlueprintReadOnly) float Mood=65.f;
+    UPROPERTY(BlueprintReadOnly) int32 Age=30;
+    UPROPERTY(BlueprintReadOnly) bool bKing=false;
     UPROPERTY(BlueprintReadOnly) FString Name;
     UPROPERTY(BlueprintReadOnly) FString Personality;
     UPROPERTY(BlueprintReadOnly) FString Reason;
@@ -175,14 +180,17 @@ public:
     FString PlotNameFor(int32 Resident) const;
     FString StatusFor(int32 Resident) const;
     FLinearColor ResidentColor(int32 Index) const;
+    int32 HousingPlotCount() const { return bUseCropoutMap?10:3; }
+    FString PlotLabel(int32 Plot) const;
 private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HouseMeshes;
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
     friend class FHearthWorldPersistenceTest;
     friend class FHearthWorldRecoveryTest;
+    friend class FHearthSocietyPopulationTest;
     FString WorldPath;
-    FString PlotIds[3];
+    FString PlotIds[10];
     TSharedPtr<IFileHandle> WorldLease;
     int64 WorldRevision=0;
     float WorldSaveTimer=0;
@@ -190,6 +198,9 @@ private:
     void InitializeWorldPersistence();
     void ResetVillageState();
     bool ApplyWorldState(const FString& Text, FString& Error);
+    void InitializeResidentIdentity(int32 Index,FHearthResident& Resident) const;
+    void AdvanceNeeds(float Dt);
+    bool MigrateWorldPopulation(struct FHearthWorldImage& Image,FString& Error) const;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> StockMeshes;
     UPROPERTY() TObjectPtr<UMaterialInterface> TintMaterial;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ProductionMeshes;
@@ -218,11 +229,11 @@ private:
     void BuildLandGrid();
     bool ChooseSiteApproach(int32 Site);
     bool FindActivityRoute(int32 Index,const FVector& Target,TArray<FVector>& Route) const;
-    FVector PlotPositions[3];
+    FVector PlotPositions[10];
     FVector WoodPositions[3];
-    int32 PlotOwners[3] = {-1,-1,-1};
+    int32 PlotOwners[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
     int32 WoodStock[3] = {12,12,12};
-    int32 PlotCosts[3] = {12,9,6};
+    int32 PlotCosts[10] = {12,9,6,6,6,6,6,6,6,6};
     float SnapshotTimer = 0.f;
     double SimulationRemainder = 0;
     void AdvanceSimulation(float Dt);
@@ -234,7 +245,7 @@ private:
     bool bApiBudgeted = false;
     FString ApiBudgetLedger;
     double ApiBudgetSpent = 0, ApiBudgetReserved = 0, ApiBudgetRemaining = 0;
-    float LifeDecisionInterval = 6.f;
+    float LifeDecisionInterval = 60.f;
     int32 LastLifeResident = -1;
     FString HistoryPath;
     FString ApiBackend;

@@ -31,14 +31,15 @@ void AHearthVillage::InitializeWorldPersistence()
 FString AHearthVillage::ExportWorldState() const
 {
     FHearthWorldImage W; W.Id=WorldId; W.Run=CurrentRun; W.Revision=WorldRevision;
+    W.PlotCount=HousingPlotCount();
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
     W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
     W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock;
     for(int32 I=0;I<3;++I)
     {
-        W.Wood[I]=WoodStock[I]; W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I];
-        W.Plots[I]=PlotPositions[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
+        W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
     }
+    for(int32 I=0;I<W.PlotCount;++I) { W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; }
     const double Now=FPlatformTime::Seconds();
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -68,10 +69,12 @@ bool AHearthVillage::SaveWorld()
 bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
 {
     FHearthWorldImage W; if(!HearthWorld::Decode(Text,W,Error)) return false;
-    if(W.bIsland!=bUseCropoutMap || W.People.Num()!=Residents.Num())
-    { Error=TEXT("存档的地图或人口版本与当前场景不匹配"); return false; }
-    for(int32 I=0;I<3;++I) if(!W.Plots[I].Equals(PlotPositions[I],.01) || !W.Stocks[I].Equals(WoodPositions[I],.01) || W.Costs[I]!=PlotCosts[I])
+    const bool Migrating=W.People.Num()!=Residents.Num();
+    if(W.bIsland!=bUseCropoutMap) { Error=TEXT("存档的地图与当前场景不匹配"); return false; }
+    if(!MigrateWorldPopulation(W,Error)) return false;
+    for(int32 I=0;I<HousingPlotCount();++I) if(!W.Plots[I].Equals(PlotPositions[I],.01) || W.Costs[I]!=PlotCosts[I])
     { Error=TEXT("地图布局已变化，须先迁移存档"); return false; }
+    for(int32 I=0;I<3;++I) if(!W.Stocks[I].Equals(WoodPositions[I],.01)) { Error=TEXT("材料站布局与存档不匹配"); return false; }
     for(const auto& R:Residents) if(!IsValid(R.Actor)) { Error=TEXT("居民表现对象未准备好"); return false; }
     // Everything above is read-only. Apply the validated image together on the game thread.
     StopDecisionRequests(); LoadApiConfig();
@@ -81,17 +84,19 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     FoodStock=W.Food; StoneStock=W.Stone; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
     for(int32 I=0;I<3;++I)
     {
-        WoodStock[I]=W.Wood[I]; PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
-        if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false);
+        WoodStock[I]=W.Wood[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
         if(StockMeshes.IsValidIndex(I))
         { StockMeshes[I]->SetVisibility(WoodStock[I]>0); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,FMath::Clamp(WoodStock[I]/12.f*.4f,.04f,1.2f))); }
     }
+    for(int32 I=0;I<HousingPlotCount();++I)
+    { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
     PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
     const double Now=FPlatformTime::Seconds();
     for(int32 I=0;I<Residents.Num();++I)
     {
         auto* Actor=Residents[I].Actor.Get(); const auto& S=W.People[I]; Residents[I]=S.Person; auto& R=Residents[I];
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
+        if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
         R.NextLifeDecision=Now+S.DecisionDelay;
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
         if(S.bPending)
@@ -107,6 +112,18 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(auto& M:ProductionMeshes) if(IsValid(M)) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites=MoveTemp(W.Sites); ProductionTotals=MoveTemp(W.Totals);
     for(auto& S:ProductionSites) { S.VisualStage=-99; S.Meshes.Reset(); S.Soil.Reset(); }
+    if(Migrating) for(auto& R:Residents) if(!IsClearPoint(R.Actor->GetActorLocation()))
+    {
+        const FVector Before=R.Actor->GetActorLocation(); FVector Best=Before; double Distance=DBL_MAX;
+        for(const auto& Cell:LandGrid)
+        {
+            const FVector Point(Cell.X*300,Cell.Y*300,8); const double D=FVector::DistSquared2D(Point,Before);
+            if(D>=Distance || !IsClearPoint(Point)) continue;
+            bool Occupied=false; for(const auto& Other:Residents) if(&Other!=&R && FVector::Dist2D(Other.Actor->GetActorLocation(),Point)<120) Occupied=true;
+            if(!Occupied) { Best=Point; Distance=D; }
+        }
+        R.Actor->SetActorLocation(Best); R.LatestEvent=TEXT("新住宅地块划定后，移到附近空地继续原任务。");
+    }
     RefreshProductionVisuals(); SelectResident(W.Selected); bHistoryOpen=false;
     if(Interrupted) { bApiDisabledThisRun=true; ApiStatus=TEXT("已恢复世界；未确认请求不重试，本轮使用本地规则"); }
     SaveHistory(); WorldSaveTimer=0; return true;

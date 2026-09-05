@@ -190,12 +190,13 @@ void AHearthVillage::BuildIslandVillage()
     // Keep props clear of the walking lanes and retain the terrain's own materials.
     const FLinearColor Plinth(0.43f,0.36f,0.22f);
     AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2130,0,3.6f),FVector(3.4f,52.f,0.012f),&Hearth::Path);
-    for(int32 I=0;I<3;++I)
+    const FVector AddedPlots[]={FVector(-2800,-1900,8),FVector(-2800,0,8),FVector(-2800,1900,8),
+        FVector(400,-1900,8),FVector(-2800,-950,8),FVector(-2800,950,8),FVector(-1000,950,8)};
+    for(int32 I=0;I<HousingPlotCount();++I)
     {
-        PlotPositions[I]=FVector(-1000,-1900+I*1900,8);
-        WoodPositions[I]=FVector(-3600,-1900+I*1900,8);
+        PlotPositions[I]=I<3?FVector(-1000,-1900+I*1900,8):AddedPlots[I-3];
         const FVector P=PlotPositions[I];
-        AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2450,P.Y,3.8f),FVector(23.f,1.8f,0.014f),&Hearth::Path);
+        AddMesh(Hearth::Shapes+TEXT("Cube"),FVector((-2130+P.X)*.5f,P.Y,3.8f),FVector(FMath::Abs(P.X+2130)/100.f,1.5f,.014f),&Hearth::Path);
         AddMesh(Hearth::Shapes+TEXT("Cube"),P+FVector(0,0,-3),FVector(5.4f,5.4f,0.025f),&Plinth);
         const FLinearColor Marker=ResidentColor(I);
         for(int32 Side=-1;Side<=1;Side+=2)
@@ -205,6 +206,10 @@ void AHearthVillage::BuildIslandVillage()
         }
         auto* House=AddMesh(Hearth::Houses+TEXT("SM_House_01"),P,FVector(1));
         HouseMeshes.Add(House); House->SetVisibility(false);
+    }
+    for(int32 I=0;I<3;++I)
+    {
+        WoodPositions[I]=FVector(-3600,-1900+I*1900,8);
         auto* Stock=AddMesh(Hearth::Shapes+TEXT("Cube"),WoodPositions[I]+FVector(-15,0,20),FVector(1.1f,1.2f,0.4f),&Hearth::Wood);
         StockMeshes.Add(Stock);
     }
@@ -223,7 +228,7 @@ void AHearthVillage::BuildIslandVillage()
     FRandomStream Scatter(583);
     for(int32 X=-6500;X<=6500;X+=1000) for(int32 Y=-6500;Y<=6500;Y+=1000)
     {
-        if(X>-5200 && X<300 && Y>-3800 && Y<4000) continue;
+        if(X>-5200 && X<2500 && Y>-3800 && Y<4000) continue;
         const FVector P(X+Scatter.FRandRange(-240,240),Y+Scatter.FRandRange(-240,240),0);
         const int32 Kind=Scatter.RandRange(0,4);
         const FString Asset=Kind<3?Crops+(Kind%2?TEXT("SM_Tree_01"):TEXT("SM_Tree_02")):
@@ -249,8 +254,9 @@ void AHearthVillage::BeginPlay()
 
 FLinearColor AHearthVillage::ResidentColor(int32 I) const
 {
-    const FLinearColor Colors[]={FLinearColor(0.36f,0.72f,0.64f),FLinearColor(0.95f,0.62f,0.24f),FLinearColor(0.66f,0.51f,0.85f)};
-    return Colors[FMath::Clamp(I,0,2)];
+    const FLinearColor Colors[]={FLinearColor(.36f,.72f,.64f),FLinearColor(.95f,.62f,.24f),FLinearColor(.66f,.51f,.85f),FLinearColor(.9f,.75f,.2f),
+        FLinearColor(.3f,.62f,.85f),FLinearColor(.82f,.42f,.33f),FLinearColor(.45f,.5f,.6f),FLinearColor(.76f,.48f,.66f),FLinearColor(.45f,.67f,.28f),FLinearColor(.85f,.65f,.5f)};
+    return Colors[FMath::Clamp(I,0,9)];
 }
 
 void AHearthVillage::ResetVillageState()
@@ -265,31 +271,32 @@ void AHearthVillage::ResetVillageState()
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; bReportedComplete=false; bSimulationPaused=false;
-    for (int32 I=0;I<3;++I)
+    for(int32 I=0;I<3;++I)
     {
-        PlotOwners[I]=-1; WoodStock[I]=12;
+        WoodStock[I]=bUseCropoutMap?33:12;
+        if(StockMeshes.IsValidIndex(I)) { StockMeshes[I]->SetVisibility(true); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,.4f)); }
+    }
+    for (int32 I=0;I<HousingPlotCount();++I)
+    {
+        PlotOwners[I]=-1;
         PlotIds[I]=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if (HouseMeshes.IsValidIndex(I)) { HouseMeshes[I]->SetVisibility(false); HouseMeshes[I]->SetWorldScale3D(FVector(1)); }
-        if (StockMeshes.IsValidIndex(I)) { StockMeshes[I]->SetVisibility(true); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,0.4f)); }
         FHearthResident R;
         R.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-        const TCHAR* Names[]={TEXT("林恩"),TEXT("米拉"),TEXT("伯恩")};
-        const TCHAR* Personas[]={TEXT("内向木匠 · 喜欢树林"),TEXT("热心农民 · 喜欢邻居"),TEXT("节俭工匠 · 够住就好")};
-        R.Name=Names[I]; R.Personality=Personas[I];
-        R.SocialNeed=I==1?65.f:25.f;
+        InitializeResidentIdentity(I,R);
         R.Reason=TEXT("先看看村庄里哪些地块适合自己。");
         R.LatestEvent=TEXT("带着自己的想法来到村庄。");
         R.Timer=1.5f+I*1.4f;
-        R.Actor=GetWorld()->SpawnActor<AHearthVillager>(AHearthVillager::StaticClass(),FVector(bUseCropoutMap?-2100.f:-60.f,-180+I*180,8),FRotator(0,180,0));
+        R.Actor=GetWorld()->SpawnActor<AHearthVillager>(AHearthVillager::StaticClass(),FVector(bUseCropoutMap?-2100.f:-60.f,bUseCropoutMap?-850+I*180:-180+I*180,8),FRotator(0,180,0));
         R.Actor->ResidentIndex=I;
         const TCHAR* Hats[]={TEXT("SKM_Woodcutter"),TEXT("SKM_Farmer"),TEXT("SKM_Miner")};
-        if (auto* Hat=LoadObject<USkeletalMesh>(nullptr,*(FString(TEXT("/Game/Characters/Meshes/Hats/"))+Hats[I])))
+        if (auto* Hat=LoadObject<USkeletalMesh>(nullptr,*(FString(TEXT("/Game/Characters/Meshes/Hats/"))+Hats[I%3])))
         {
             R.Actor->Hat->SetSkeletalMesh(Hat);
             R.Actor->Hat->SetLeaderPoseComponent(R.Actor->Body,true);
         }
         const TCHAR* Outfits[]={TEXT("MI_WoodCut"),TEXT("MI_Farming"),TEXT("MI_Builder")};
-        if (auto* Outfit=LoadObject<UMaterialInterface>(nullptr,*(FString(TEXT("/Game/Characters/Materials/"))+Outfits[I]))) R.Actor->Body->SetMaterial(0,Outfit);
+        if (auto* Outfit=LoadObject<UMaterialInterface>(nullptr,*(FString(TEXT("/Game/Characters/Materials/"))+Outfits[I%3]))) R.Actor->Body->SetMaterial(0,Outfit);
         if (TintMaterial)
         {
             auto* M=UMaterialInstanceDynamic::Create(TintMaterial,this);
@@ -305,8 +312,8 @@ void AHearthVillage::ResetVillageState()
     InitializeProduction();
     SelectResident(0);
     bHistoryOpen=false;
-    VillageEvent=TEXT("三位村民抵达了。让我们看看，他们会把家建在哪里。");
-    UE_LOG(LogThreeHearths,Display,TEXT("SESSION_STARTED residents=3 wood=36 required=27 backend=%s"),bApiReady?*ApiBackend:TEXT("local"));
+    VillageEvent=FString::Printf(TEXT("%d位居民抵达了。每个人都带着自己的想法，准备在这里安家。"),Residents.Num());
+    UE_LOG(LogThreeHearths,Display,TEXT("SESSION_STARTED residents=%d wood=%d backend=%s"),Residents.Num(),AvailableWood(),bApiReady?*ApiBackend:TEXT("local"));
     WriteSnapshot();
 }
 
@@ -344,18 +351,19 @@ void AHearthVillage::DecideLocally(int32 Index, const FString& Failure)
     auto& R=Residents[Index];
     // All candidates are validated locally. Personality supplies preference, not world mutations.
     int32 Best=-1; float BestScore=-FLT_MAX;
-    for(int32 P=0;P<3;++P)
+    for(int32 P=0;P<HousingPlotCount();++P)
     {
         if(PlotOwners[P]!=-1) continue;
         float Score=0;
         if(Index==0) Score=P==0?100.f:10.f; // Quiet woodland edge.
         if(Index==1) Score=100.f-FMath::Abs(PlotPositions[P].Y)*0.1f; // Shared garden / center.
         if(Index==2) Score=100.f-PlotCosts[P]*5.f; // Low material budget.
+        if(Index>=3) Score=100.f-FMath::Abs(P-Index)*12.f-PlotCosts[P]*2.f;
         if(Score>BestScore) { BestScore=Score; Best=P; }
     }
     if(Best<0) { R.Timer=2.f; R.Reason=TEXT("暂时没有空地，等一会儿再看看。"); return; }
     const TCHAR* Reasons[]={TEXT("树林边安静，离木材也近。多花一点木料，我也想住这里。"),TEXT("我想住在花园和邻居旁边。以后大家见面、互相帮忙都方便。"),TEXT("先建一间够住的小屋。只要六份木材，余下的留给村庄。")};
-    FString Reason=Best==Index?Reasons[Index]:FString::Printf(TEXT("最想要的地块已经有人了。我先选这块空地，准备 %d 份木材来建家。"),PlotCosts[Best]);
+    FString Reason=Best==Index && Index<3?Reasons[Index]:FString::Printf(TEXT("我想在%s安家，准备好 %d 份木材，再慢慢添置我喜欢的东西。"),*PlotLabel(Best),PlotCosts[Best]);
     if(ReservePlot(Index,Best,Reason,false))
     {
         R.DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
@@ -369,7 +377,13 @@ void AHearthVillage::DecideLocally(int32 Index, const FString& Failure)
 
 bool AHearthVillage::ReservePlot(int32 Index,int32 Plot,const FString& Reason,bool bFromApi)
 {
-    if(!Residents.IsValidIndex(Index) || Plot<0 || Plot>=3 || PlotOwners[Plot]!=-1) return false;
+    if(!Residents.IsValidIndex(Index) || Plot<0 || Plot>=HousingPlotCount() || PlotOwners[Plot]!=-1) return false;
+    if(bUseCropoutMap)
+    {
+        const FVector P=PlotPositions[Plot];
+        if(!IsLand(P) || !IsLand(P+FVector(230,230,0)) || !IsLand(P+FVector(-230,230,0))
+            || !IsLand(P+FVector(230,-230,0)) || !IsLand(P-FVector(230,230,0)) || !IsClearPoint(P-FVector(245,0,0))) return false;
+    }
     auto& R=Residents[Index];
     if(R.Plot!=-1 || R.Task!=EHearthTask::Choosing) return false;
     if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,false,bFromApi?TEXT("api"):TEXT("local"));
@@ -389,6 +403,11 @@ void AHearthVillage::SetRoute(int32 Index,const FVector& Target)
 {
     auto& R=Residents[Index]; R.Route.Empty(); R.MoveRetry=0; R.bMovementBlocked=false;
     const FVector Start=R.Actor->GetActorLocation();
+    if(bUseCropoutMap && !ProductionSites.IsEmpty())
+    {
+        if(FindActivityRoute(Index,Target,R.Route)) return;
+        R.Route={Target}; R.MoveRetry=.5f; R.bMovementBlocked=true; return;
+    }
     const float Lane=(bUseCropoutMap?-2200.f:-170.f)+Index*70.f;
     R.Route.Add(FVector(Lane,Start.Y,Start.Z));
     R.Route.Add(FVector(Lane,Target.Y,Target.Z));
@@ -406,7 +425,7 @@ void AHearthVillage::SeekWood(int32 Index)
     }
     if(Best<0) { R.Timer=1.f; R.Task=EHearthTask::Chopping; R.Source=-1; R.LatestEvent=TEXT("木材暂时不足，等待补充。"); return; }
     R.Source=Best; R.Task=EHearthTask::ToWood;
-    SetRoute(Index,WoodPositions[Best]+FVector(80,Index*120-120,0));
+    SetRoute(Index,WoodPositions[Best]+FVector(80,(Index%3)*120-120,0));
 }
 
 void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)
@@ -462,6 +481,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
 void AHearthVillage::AdvanceSimulation(float Dt)
 {
     Elapsed+=Dt;
+    AdvanceNeeds(Dt);
     AdvanceProductionWorld(Dt);
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -547,11 +567,11 @@ void AHearthVillage::AdvanceSimulation(float Dt)
         default: break;
         }
     }
-    if(!bReportedComplete && CompletedHomes()==3)
+    if(!bReportedComplete && CompletedHomes()==Residents.Num())
     {
         bReportedComplete=true;
-        VillageEvent=TEXT("三座小屋都建好了。村民们开始安排接下来的生活。");
-        UE_LOG(LogThreeHearths,Display,TEXT("DEMO_COMPLETE homes=3 wood_remaining=%d t=%.1f"),AvailableWood(),Elapsed);
+        VillageEvent=TEXT("所有人的小屋都建好了。大家开始安排接下来的生活。");
+        UE_LOG(LogThreeHearths,Display,TEXT("DEMO_COMPLETE homes=%d wood_remaining=%d t=%.1f"),CompletedHomes(),AvailableWood(),Elapsed);
         WriteSnapshot();
     }
 }
@@ -562,8 +582,7 @@ int32 AHearthVillage::CostFor(int32 I) const { return Residents.IsValidIndex(I) 
 FString AHearthVillage::PlotNameFor(int32 I) const
 {
     if(!Residents.IsValidIndex(I)||Residents[I].Plot<0) return TEXT("正在选址");
-    const TCHAR* Names[]={TEXT("林边地块"),TEXT("花园旁地块"),TEXT("紧凑地块")};
-    return Names[Residents[I].Plot];
+    return PlotLabel(Residents[I].Plot);
 }
 FString AHearthVillage::StatusFor(int32 I) const
 {
@@ -640,6 +659,8 @@ FString AHearthVillage::GetSnapshot() const
         const auto& R=Residents[I]; auto J=MakeShared<FJsonObject>();
         J->SetNumberField(TEXT("id"),I); J->SetStringField(TEXT("name"),R.Name);
         J->SetStringField(TEXT("stable_id"),R.StableId); J->SetStringField(TEXT("task_id"),R.ActiveTaskId);
+        J->SetStringField(TEXT("role"),R.Role); J->SetBoolField(TEXT("king"),R.bKing); J->SetNumberField(TEXT("age"),R.Age);
+        J->SetNumberField(TEXT("hunger"),R.Hunger); J->SetNumberField(TEXT("mood"),R.Mood);
         J->SetStringField(TEXT("reason"),R.Reason); J->SetStringField(TEXT("status"),StatusFor(I));
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);

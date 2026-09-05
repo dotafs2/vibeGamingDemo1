@@ -25,6 +25,13 @@ bool FHearthMovementGeometryTest::RunTest(const FString&)
     }
     auto Narrow=[](const FVector& A,const FVector& B) { return FMath::Abs(A.Y)<40 && FMath::Abs(B.Y)<40; };
     TestFalse(TEXT("Wait when a narrow passage has no room to pass"),HearthMovement::FindDetour(FVector(-300,0,8),FVector(300,0,8),People,Narrow,Route));
+    const FVector Stuck(-1213.16,1339.14,8),Door(-1245,950,8),House(-1000,950,8);
+    TestTrue(TEXT("Real island house corner missed by 80 cm probes is blocked"),HearthMovement::SegmentHitsBox(Stuck,Door,House,230));
+    TestTrue(TEXT("Corner collision is independent of travel direction"),HearthMovement::SegmentHitsBox(Door,Stuck,House,230));
+    TestFalse(TEXT("Door standing lane remains outside house"),HearthMovement::SegmentHitsBox(FVector(-1245,1400,8),Door,House,230));
+    auto Allowed=[](FIntPoint C) { return C!=FIntPoint(1,0); };
+    TestFalse(TEXT("A sub-centimeter crossing into a blocked grid corner is detected"),HearthMovement::GridSegmentClear(FVector(0,-.2,0),FVector(300,300,0),300,Allowed));
+    TestTrue(TEXT("A clear parallel grid segment is allowed"),HearthMovement::GridSegmentClear(FVector(0,0,0),FVector(0,600,0),300,Allowed));
     return true;
 }
 

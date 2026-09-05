@@ -59,7 +59,7 @@ namespace HearthDecision
         Reason.ReplaceInline(TEXT("\r"),TEXT(" ")); Reason.ReplaceInline(TEXT("\n"),TEXT(" "));
         Plot=static_cast<int32>(Number); return true;
     }
-    bool ParsePlan(FString Text,int32& Plot,FString& Reason) { return ParseChoice(Text,TEXT("plot_id"),2,Plot,Reason); }
+    bool ParsePlan(FString Text,int32& Plot,FString& Reason) { return ParseChoice(Text,TEXT("plot_id"),9,Plot,Reason); }
     bool ParseLifePlan(FString Text,int32& Action,FString& Reason) { return ParseChoice(Text,TEXT("action_id"),10000,Action,Reason); }
 }
 
@@ -100,7 +100,7 @@ void AHearthVillage::LoadApiConfig()
     bApiReady=false; bApiConfigured=false; bApiDisabledThisRun=false; bHasApiUsage=false;
     bApiBudgeted=false; ApiBudgetLedger.Empty(); ApiBudgetSpent=0; ApiBudgetReserved=0; ApiBudgetRemaining=0;
     ApiRequests=0; ApiSuccesses=0; ApiTokens=0;
-    bAutonomousLifeEnabled=true; LifeDecisionInterval=6.f; ApiMaxRequests=600;
+    bAutonomousLifeEnabled=true; LifeDecisionInterval=60.f; ApiMaxRequests=600;
     ApiBackend=TEXT("local"); ApiKey.Empty(); ApiModel.Empty();
     ApiStatus=TEXT("尚未配置模型 · 本地人设规则");
     FString ConfigPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/api-config.json");
@@ -109,7 +109,7 @@ void AHearthVillage::LoadApiConfig()
     if(!FFileHelper::LoadFileToString(Text,*ConfigPath)) return;
     if(Text.Len()>16384 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Config) || !Config.IsValid()) { ApiStatus=TEXT("API 配置格式有误 · 使用本地规则"); return; }
     Config->TryGetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
-    double Interval=6; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
+    double Interval=60; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
     if(FMath::IsFinite(Interval)) LifeDecisionInterval=FMath::Clamp(static_cast<float>(Interval),1.f,120.f);
     bool Enabled=false; Config->TryGetBoolField(TEXT("enabled"),Enabled);
     if(!Enabled) { ApiStatus=TEXT("API 已关闭 · 本地人设规则"); return; }
@@ -176,14 +176,16 @@ void AHearthVillage::RequestDecision(int32 Index)
     if(bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) { DecideLocally(Index,TEXT("本轮调用已停止或达到上限")); return; }
     auto Context=MakeShared<FJsonObject>(); auto Person=MakeShared<FJsonObject>();
     Person->SetNumberField(TEXT("id"),Index); Person->SetStringField(TEXT("name"),Residents[Index].Name); Person->SetStringField(TEXT("personality"),Residents[Index].Personality);
+    Person->SetStringField(TEXT("stable_id"),Residents[Index].StableId); Person->SetStringField(TEXT("role"),Residents[Index].Role);
+    Person->SetBoolField(TEXT("king"),Residents[Index].bKing);
     Context->SetObjectField(TEXT("resident"),Person);
     Context->SetNumberField(TEXT("available_wood"),AvailableWood());
     TArray<TSharedPtr<FJsonValue>> Plots;
     const TCHAR* Descriptions[]={TEXT("安静的林边，较大的小屋"),TEXT("公共花园旁，方便拜访邻居"),TEXT("紧凑的小屋，节约木材")};
-    for(int32 P=0;P<3;++P) if(PlotOwners[P]<0)
+    for(int32 P=0;P<HousingPlotCount();++P) if(PlotOwners[P]<0)
     {
         auto Plot=MakeShared<FJsonObject>(); Plot->SetNumberField(TEXT("id"),P); Plot->SetNumberField(TEXT("wood_cost"),PlotCosts[P]);
-        Plot->SetStringField(TEXT("description"),Descriptions[P]); Plots.Add(MakeShared<FJsonValueObject>(Plot));
+        Plot->SetStringField(TEXT("description"),P<3?FString(Descriptions[P]):PlotLabel(P)); Plots.Add(MakeShared<FJsonValueObject>(Plot));
     }
     if(Plots.IsEmpty()) { DecideLocally(Index); return; }
     Context->SetArrayField(TEXT("available_plots"),Plots);
