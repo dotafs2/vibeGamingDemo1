@@ -1,0 +1,193 @@
+{
+  "status": "passed",
+  "scope": "exported static accessories and measured fitting contracts",
+  "asset_count": 16,
+  "adult_look_count": 10,
+  "minimum_adult_age": 23,
+  "assets": [
+    {
+      "asset": "hair_cropped_dark.glb",
+      "bytes": 66176,
+      "triangles": 2688,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 1.0,
+      "sha256": "c66e793a8a745753cdaefe915aaac8dc4f5001699a82483b627fdd8c159ee359"
+    },
+    {
+      "asset": "hair_waves_chestnut.glb",
+      "bytes": 87012,
+      "triangles": 3248,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 1.0,
+      "sha256": "31949079e541422d0707b082d2044c4a608c18d4825477195f7c65c0c47fe5c9"
+    },
+    {
+      "asset": "hair_braid_auburn.glb",
+      "bytes": 96408,
+      "triangles": 3356,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.9678188319427891,
+      "sha256": "6500fa053cc3c646383b615e6f381a8ebddf83b5c5730680f26d165a6724acc5"
+    },
+    {
+      "asset": "hair_bun_dark.glb",
+      "bytes": 77772,
+      "triangles": 2876,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.9624478442280946,
+      "sha256": "b4dc8929290f90fbcbb6a41f6ac96b59d2f6d236c6baba79dd32a24b1749f29b"
+    },
+    {
+      "asset": "hair_swept_silver.glb",
+      "bytes": 80720,
+      "triangles": 3088,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 1.0,
+      "sha256": "d8e97d1c3b09c46d034b171b757b09e8d22ec4f8fd69a2455505c9e56b5fdc3c"
+    },
+    {
+      "asset": "beard_neat_silver.glb",
+      "bytes": 23432,
+      "triangles": 560,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 1.0,
+      "sha256": "b0fcce52f3032e7440704e1d3de5cec4e1415d7e42f02b8d3c4f0acb9698b6da"
+    },
+    {
+      "asset": "headwrap_sage.glb",
+      "bytes": 84256,
+      "triangles": 2984,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.9276139410187667,
+      "sha256": "a9b53a4bd9eb6992fc9d37715a38f5e393fd5a1b071ae0dcae62c6b4052e549d"
+    },
+    {
+      "asset": "hat_straw_wide.glb",
+      "bytes": 53292,
+      "triangles": 1344,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5714285714285714,
+      "sha256": "dfacaac384c6e8d77ee68a341a679c45a86126d69a1151e668aeb15825f0ae1b"
+    },
+    {
+      "asset": "cap_merchant_plum.glb",
+      "bytes": 42180,
+      "triangles": 1232,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.7922077922077922,
+      "sha256": "fb7be070ce8ce7313cd0e0e1a83bf365e9a4db73ed5c455225ed52598cb4f2f8"
+    },
+    {
+      "asset": "bag_crossbody_leather.glb",
+      "bytes": 55528,
+      "triangles": 756,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "0518fbc2534bdf00aecd537b15c1b8fa713ca428674d2394525f958ce934ffe8"
+    },
+    {
+      "asset": "backpack_bedroll.glb",
+      "bytes": 77192,
+      "triangles": 1052,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "8f1a7900216d27f0770872ee8a8969188cd05b0536dab6c63c22c077bc5e13fc"
+    },
+    {
+      "asset": "apron_linen_short.glb",
+      "bytes": 25888,
+      "triangles": 336,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "819d1b0aa5ad40283640b4bf6a3f260f2822bc96d6e95034484ef9ec562f0b69"
+    },
+    {
+      "asset": "cape_royal_blue.glb",
+      "bytes": 21084,
+      "triangles": 276,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.14492753623188406,
+      "sha256": "8f7eb63f4644e855555f8452abfc0a3439421b342802f69f9de847fbaa43d6b6"
+    },
+    {
+      "asset": "shawl_ochre.glb",
+      "bytes": 86016,
+      "triangles": 2584,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.8328173374613003,
+      "sha256": "e376d12641859bfa1be3fc7d0a5086f144544776be950d47e6e71ef90eef4cb6"
+    },
+    {
+      "asset": "pouch_belt_double.glb",
+      "bytes": 47288,
+      "triangles": 648,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "31f724362f00152f8d54feff5225cfbc84bec5701e2a4ff688c1746a13a97ac9"
+    },
+    {
+      "asset": "scarf_red.glb",
+      "bytes": 30388,
+      "triangles": 472,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "ab05ae4c3067586decf11fa945b6e57fc2afedc5cab396c46fc70fad040657e6"
+    }
+  ],
+  "referenced_existing_assets": [
+    {
+      "file": "SocietyKit/modules/regalia_king_crown.glb",
+      "sha256": "f20f798b8e346401d01288ff5026df64b0f93e030caab512d243dd8da7de6208"
+    },
+    {
+      "file": "SocietyKit/modules/tool_carpenter_hammer.glb",
+      "sha256": "4c9f1b6cdb612f132e43fb59c5f2758b29ec84b839bf4134762780f70cf62412"
+    },
+    {
+      "file": "SocietyKit/modules/tool_mason_chisel.glb",
+      "sha256": "bedfc549a6570f38baeff8aef37a81930ebb28e26a9399ff74542586675a8cc0"
+    },
+    {
+      "file": "SocietyKit/modules/profession_smith_apron.glb",
+      "sha256": "bd192e549ed5c815d939f74eb4ab2b6005ce63b2a47744431df8484c183ce826"
+    }
+  ],
+  "all_bones_exist": true,
+  "ue_attachment_conversion_verified": false,
+  "animation_binding_verified": false,
+  "reference_pose_visual_review_required": false,
+  "total_triangles": 27500,
+  "max_asset_triangles": 3356
+}

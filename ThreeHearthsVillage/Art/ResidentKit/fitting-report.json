@@ -1,0 +1,213 @@
+{
+  "scope": "existing Cropout reference-pose visual fit",
+  "looks": [
+    {
+      "look_id": "king_01",
+      "adult_age": 56,
+      "attachments": [
+        {
+          "id": "hair_swept_silver",
+          "bone": "head"
+        },
+        {
+          "id": "beard_neat_silver",
+          "bone": "head"
+        },
+        {
+          "id": "cape_royal_blue",
+          "bone": "spine_02"
+        },
+        {
+          "id": "regalia_king_crown",
+          "kit": "SocietyKit",
+          "bone": "head"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "carpenter_01",
+      "adult_age": 32,
+      "attachments": [
+        {
+          "id": "hair_cropped_dark",
+          "bone": "head"
+        },
+        {
+          "id": "pouch_belt_double",
+          "bone": "pelvis"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "farmer_01",
+      "adult_age": 27,
+      "attachments": [
+        {
+          "id": "hair_braid_auburn",
+          "bone": "head"
+        },
+        {
+          "id": "hat_straw_wide",
+          "bone": "head"
+        },
+        {
+          "id": "apron_linen_short",
+          "bone": "spine_02"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "mason_01",
+      "adult_age": 48,
+      "attachments": [
+        {
+          "id": "hair_waves_chestnut",
+          "bone": "head"
+        },
+        {
+          "id": "scarf_red",
+          "bone": "neck"
+        },
+        {
+          "id": "pouch_belt_double",
+          "bone": "pelvis"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "smith_01",
+      "adult_age": 41,
+      "attachments": [
+        {
+          "id": "hair_bun_dark",
+          "bone": "head"
+        },
+        {
+          "id": "scarf_red",
+          "bone": "neck"
+        },
+        {
+          "id": "profession_smith_apron",
+          "kit": "SocietyKit",
+          "bone": "spine_02"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "merchant_01",
+      "adult_age": 35,
+      "attachments": [
+        {
+          "id": "hair_cropped_dark",
+          "bone": "head"
+        },
+        {
+          "id": "cap_merchant_plum",
+          "bone": "head"
+        },
+        {
+          "id": "bag_crossbody_leather",
+          "bone": "spine_02"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "potter_01",
+      "adult_age": 29,
+      "attachments": [
+        {
+          "id": "headwrap_sage",
+          "bone": "head"
+        },
+        {
+          "id": "apron_linen_short",
+          "bone": "spine_02"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "herbalist_01",
+      "adult_age": 62,
+      "attachments": [
+        {
+          "id": "hair_swept_silver",
+          "bone": "head"
+        },
+        {
+          "id": "shawl_ochre",
+          "bone": "spine_02"
+        },
+        {
+          "id": "bag_crossbody_leather",
+          "bone": "spine_02"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "courier_01",
+      "adult_age": 23,
+      "attachments": [
+        {
+          "id": "hair_waves_chestnut",
+          "bone": "head"
+        },
+        {
+          "id": "backpack_bedroll",
+          "bone": "spine_02"
+        },
+        {
+          "id": "scarf_red",
+          "bone": "neck"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    },
+    {
+      "look_id": "baker_01",
+      "adult_age": 45,
+      "attachments": [
+        {
+          "id": "hair_bun_dark",
+          "bone": "head"
+        },
+        {
+          "id": "apron_linen_short",
+          "bone": "spine_02"
+        },
+        {
+          "id": "pouch_belt_double",
+          "bone": "pelvis"
+        }
+      ],
+      "reference_pose_only": true,
+      "animation_binding_verified": false
+    }
+  ],
+  "views": {
+    "front": {
+      "preview": "previews/ResidentKit_TenAdults_front.png",
+      "seconds": 11.121
+    },
+    "back": {
+      "preview": "previews/ResidentKit_TenAdults_back.png",
+      "seconds": 10.892
+    }
+  }
+}

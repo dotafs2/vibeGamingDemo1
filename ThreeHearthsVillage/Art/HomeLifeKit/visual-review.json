@@ -1,0 +1,35 @@
+{
+  "scope": "Original module and static living-space visual review",
+  "reviewed_at_utc": "2026-09-05T19:35:44.208866+00:00",
+  "overview_and_two_layouts_reviewed": true,
+  "source_blend_sha256": "7bf9a610339350f60fcd7fb76a48dbb105ee9a7c542cbe9aed2caa9fba66f67a",
+  "reviewed_images": [
+    {
+      "file": "previews/HomeLifeKit_cabin_living_4x4m.png",
+      "sha256": "da377a5fb0103525c63c96c16a276eb563874604163b1c93861c2ac152fc46ff"
+    },
+    {
+      "file": "previews/HomeLifeKit_common_meal_10_seats.png",
+      "sha256": "bd13f59d734283c0f39aec4eec79f2dc65dc1abb553a597953d44166646d928d"
+    },
+    {
+      "file": "previews/HomeLifeKit_overview.png",
+      "sha256": "198a538564aeb18c9ec516a9b787ac7a46e9b57280469fcb337dac8ee0427530"
+    }
+  ],
+  "observations": [
+    "All twelve originals were visually reviewed together at consistent scale.",
+    "Single and double beds, wide seat surfaces and tabletop food displays retain the existing warm Cropout palette.",
+    "The hollow empty basket and the separately filled berry basket are visually distinct.",
+    "The 4x4m cabin keeps a central circulation gap; reference shell rotation and its .16m structural-to-finished-floor datum were corrected.",
+    "The communal corner has ten seat contact markers. Its woodpile was moved outside the central route after static access-grid checking found a blockage.",
+    "Standing rings and height rulers are preview annotations only; overlapping approach pairs require runtime reservations."
+  ],
+  "remaining_integration_checks": [
+    "UE navigation",
+    "Sitting and lying animations",
+    "Carry grips and IK",
+    "Collision and capsule policies",
+    "Authoritative inventory binding"
+  ]
+}

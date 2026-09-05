@@ -1,0 +1,298 @@
+{
+  "status": "passed",
+  "map": "/Game/ThreeHearths/Maps/L_ResidentKit_Showcase",
+  "template_read_only": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+  "lighting": "copied village island lighting",
+  "native_assets_verified": 16,
+  "origin_and_dimensions_verified": true,
+  "pbr_and_uv_verified": true,
+  "skeletal_binding_and_animation_verified": false,
+  "collision_and_navigation_enabled": false,
+  "camera": {
+    "position_cm": [
+      -970.0,
+      -1510.0,
+      1100.0
+    ],
+    "rotation": {
+      "pitch": -32.661046913627025,
+      "yaw": 48.91824886406738,
+      "roll": 2.045011166871203e-07
+    }
+  },
+  "placements": [
+    {
+      "id": "hair_cropped_dark",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_cropped_dark/hair_cropped_dark.hair_cropped_dark",
+      "actor_position_cm": [
+        -345,
+        -40,
+        9.721136093139648
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.0061054229736328125,
+        -1.886575698852539,
+        16.647032737731934
+      ]
+    },
+    {
+      "id": "hair_waves_chestnut",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_waves_chestnut/hair_waves_chestnut.hair_waves_chestnut",
+      "actor_position_cm": [
+        -115,
+        -40,
+        9.721136093139648
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -4.216836929321289,
+        16.647032737731934
+      ]
+    },
+    {
+      "id": "hair_braid_auburn",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_braid_auburn/hair_braid_auburn.hair_braid_auburn",
+      "actor_position_cm": [
+        115,
+        -40,
+        50.10000228881836
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.0061054229736328125,
+        -9.516836166381836,
+        -3.542400360107422
+      ]
+    },
+    {
+      "id": "hair_bun_dark",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_bun_dark/hair_bun_dark.hair_bun_dark",
+      "actor_position_cm": [
+        345,
+        -40,
+        10.200000762939453
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.0061054229736328125,
+        -8.516838073730469,
+        16.40760040283203
+      ]
+    },
+    {
+      "id": "hair_swept_silver",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_swept_silver/hair_swept_silver.hair_swept_silver",
+      "actor_position_cm": [
+        -345,
+        -265,
+        9.721136093139648
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.0061054229736328125,
+        -1.886575698852539,
+        16.889431953430176
+      ]
+    },
+    {
+      "id": "beard_neat_silver",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/beard_neat_silver/beard_neat_silver.beard_neat_silver",
+      "actor_position_cm": [
+        -115,
+        -265,
+        29.500001907348633
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        23.964999198913574,
+        -8.500001013278961
+      ]
+    },
+    {
+      "id": "headwrap_sage",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/headwrap_sage/headwrap_sage.headwrap_sage",
+      "actor_position_cm": [
+        115,
+        -265,
+        34.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.0061779022216796875,
+        -6.661556243896484,
+        4.507656097412109
+      ]
+    },
+    {
+      "id": "hat_straw_wide",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hat_straw_wide/hat_straw_wide.hat_straw_wide",
+      "actor_position_cm": [
+        345,
+        -265,
+        -7.899999618530273
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        0.0,
+        29.449999809265137
+      ]
+    },
+    {
+      "id": "cap_merchant_plum",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/cap_merchant_plum/cap_merchant_plum.cap_merchant_plum",
+      "actor_position_cm": [
+        -345,
+        -490,
+        -6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        2.0000009536743164,
+        -1.1999998092651367,
+        31.30000114440918
+      ]
+    },
+    {
+      "id": "bag_crossbody_leather",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/bag_crossbody_leather.bag_crossbody_leather",
+      "actor_position_cm": [
+        -115,
+        -490,
+        33.5
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        16.574999809265137,
+        -1.3630180358886719,
+        3.3554553985595703
+      ]
+    },
+    {
+      "id": "backpack_bedroll",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/backpack_bedroll/backpack_bedroll.backpack_bedroll",
+      "actor_position_cm": [
+        115,
+        -490,
+        34.5
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -16.019705772399902,
+        12.30000114440918
+      ]
+    },
+    {
+      "id": "apron_linen_short",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/apron_linen_short/apron_linen_short.apron_linen_short",
+      "actor_position_cm": [
+        345,
+        -490,
+        50.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        28.063742637634277,
+        -3.232603073120117
+      ]
+    },
+    {
+      "id": "cape_royal_blue",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/cape_royal_blue/cape_royal_blue.cape_royal_blue",
+      "actor_position_cm": [
+        -345,
+        -715,
+        50.25975036621094
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -12.851635932922363,
+        -3.5575103759765625
+      ]
+    },
+    {
+      "id": "shawl_ochre",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/shawl_ochre/shawl_ochre.shawl_ochre",
+      "actor_position_cm": [
+        -115,
+        -715,
+        19.865708351135254
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -0.005977630615234375,
+        1.8549880981445312,
+        15.423228740692139
+      ]
+    },
+    {
+      "id": "pouch_belt_double",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/pouch_belt_double/pouch_belt_double.pouch_belt_double",
+      "actor_position_cm": [
+        115,
+        -715,
+        10.000000476837158
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        31.799999237060547,
+        11.250000715255737
+      ]
+    },
+    {
+      "id": "scarf_red",
+      "mesh": "/Game/ThreeHearths/Generated/ResidentKit/scarf_red/scarf_red.scarf_red",
+      "actor_position_cm": [
+        345,
+        -715,
+        40.76203918457031
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        6.058765411376953,
+        -13.631019592285156
+      ]
+    }
+  ],
+  "scope": "Dedicated native art review map; no world simulation actor"
+}

@@ -1,0 +1,866 @@
+{
+  "schema_version": 1,
+  "kit_id": "resident_kit_01",
+  "blender_version": "5.2.0 LTS",
+  "source_body_height_m": 1.557142,
+  "modules": [
+    {
+      "id": "hair_cropped_dark",
+      "file": "modules/hair_cropped_dark.glb",
+      "bone": "head",
+      "triangles": 2688,
+      "bounds_min_m": [
+        -0.250038,
+        -0.230663,
+        0.022789
+      ],
+      "bounds_max_m": [
+        0.249916,
+        0.268395,
+        0.310152
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Dark"
+      ],
+      "bytes": 66176
+    },
+    {
+      "id": "hair_waves_chestnut",
+      "file": "modules/hair_waves_chestnut.glb",
+      "bone": "head",
+      "triangles": 3248,
+      "bounds_min_m": [
+        -0.288811,
+        -0.230663,
+        0.022789
+      ],
+      "bounds_max_m": [
+        0.288811,
+        0.315,
+        0.310152
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Chestnut"
+      ],
+      "bytes": 87012
+    },
+    {
+      "id": "hair_braid_auburn",
+      "file": "modules/hair_braid_auburn.glb",
+      "bone": "head",
+      "triangles": 3356,
+      "bounds_min_m": [
+        -0.250038,
+        -0.230663,
+        -0.381
+      ],
+      "bounds_max_m": [
+        0.249916,
+        0.421,
+        0.310152
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Auburn",
+        "RK_Sage_Cloth"
+      ],
+      "bytes": 96408
+    },
+    {
+      "id": "hair_bun_dark",
+      "file": "modules/hair_bun_dark.glb",
+      "bone": "head",
+      "triangles": 2876,
+      "bounds_min_m": [
+        -0.250038,
+        -0.230663,
+        0.018
+      ],
+      "bounds_max_m": [
+        0.249916,
+        0.401,
+        0.310152
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Dark",
+        "RK_Warm_Oak_Light"
+      ],
+      "bytes": 77772
+    },
+    {
+      "id": "hair_swept_silver",
+      "file": "modules/hair_swept_silver.glb",
+      "bone": "head",
+      "triangles": 3088,
+      "bounds_min_m": [
+        -0.250038,
+        -0.230663,
+        0.022789
+      ],
+      "bounds_max_m": [
+        0.249916,
+        0.268395,
+        0.315
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Silver",
+        "RK_Hair_Silver_Edge"
+      ],
+      "bytes": 80720
+    },
+    {
+      "id": "beard_neat_silver",
+      "file": "modules/beard_neat_silver.glb",
+      "bone": "head",
+      "triangles": 560,
+      "bounds_min_m": [
+        -0.172063,
+        -0.3153,
+        -0.175
+      ],
+      "bounds_max_m": [
+        0.172063,
+        -0.164,
+        0.005
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Hair_Silver",
+        "RK_Hair_Silver_Edge"
+      ],
+      "bytes": 23432
+    },
+    {
+      "id": "headwrap_sage",
+      "file": "modules/headwrap_sage.glb",
+      "bone": "head",
+      "triangles": 2984,
+      "bounds_min_m": [
+        -0.249941,
+        -0.226769,
+        -0.22
+      ],
+      "bounds_max_m": [
+        0.249817,
+        0.36,
+        0.310153
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Sage_Cloth"
+      ],
+      "bytes": 84256
+    },
+    {
+      "id": "hat_straw_wide",
+      "file": "modules/hat_straw_wide.glb",
+      "bone": "head",
+      "triangles": 1344,
+      "bounds_min_m": [
+        -0.425,
+        -0.4505,
+        0.199
+      ],
+      "bounds_max_m": [
+        0.425,
+        0.4505,
+        0.39
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Golden_Straw",
+        "RK_Chestnut_Leather"
+      ],
+      "bytes": 53292
+    },
+    {
+      "id": "cap_merchant_plum",
+      "file": "modules/cap_merchant_plum.glb",
+      "bone": "head",
+      "triangles": 1232,
+      "bounds_min_m": [
+        -0.261855,
+        -0.27985,
+        0.18
+      ],
+      "bounds_max_m": [
+        0.301855,
+        0.30385,
+        0.446
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.016597,
+        1.27277
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.034429,
+          0.99940717,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99940717,
+          -0.034429,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Plum_Cloth",
+        "RK_Dark_Leather"
+      ],
+      "bytes": 42180
+    },
+    {
+      "id": "bag_crossbody_leather",
+      "file": "modules/bag_crossbody_leather.glb",
+      "bone": "spine_02",
+      "triangles": 756,
+      "bounds_min_m": [
+        -0.2335,
+        -0.361218,
+        -0.215
+      ],
+      "bounds_max_m": [
+        0.565,
+        0.388478,
+        0.282109
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.00204,
+        0.807131
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          0.017782,
+          0.99984193,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99984193,
+          0.017782,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Chestnut_Leather",
+        "RK_Dark_Leather",
+        "RK_Brass"
+      ],
+      "bytes": 55528
+    },
+    {
+      "id": "backpack_bedroll",
+      "file": "modules/backpack_bedroll.glb",
+      "bone": "spine_02",
+      "triangles": 1052,
+      "bounds_min_m": [
+        -0.29,
+        -0.296106,
+        -0.225
+      ],
+      "bounds_max_m": [
+        0.29,
+        0.6165,
+        0.471
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.00204,
+        0.807131
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          0.017782,
+          0.99984193,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99984193,
+          0.017782,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Chestnut_Leather",
+        "RK_Dark_Leather",
+        "RK_Brass",
+        "RK_Cream_Linen"
+      ],
+      "bytes": 77192
+    },
+    {
+      "id": "apron_linen_short",
+      "file": "modules/apron_linen_short.glb",
+      "bone": "spine_02",
+      "triangles": 336,
+      "bounds_min_m": [
+        -0.29,
+        -0.3925,
+        -0.38
+      ],
+      "bounds_max_m": [
+        0.29,
+        -0.168775,
+        0.315348
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.00204,
+        0.807131
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          0.017782,
+          0.99984193,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99984193,
+          0.017782,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Cream_Linen",
+        "RK_Golden_Straw"
+      ],
+      "bytes": 25888
+    },
+    {
+      "id": "cape_royal_blue",
+      "file": "modules/cape_royal_blue.glb",
+      "bone": "spine_02",
+      "triangles": 276,
+      "bounds_min_m": [
+        -0.35,
+        -0.192967,
+        -0.382598
+      ],
+      "bounds_max_m": [
+        0.35,
+        0.45,
+        0.311447
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.00204,
+        0.807131
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          0.017782,
+          0.99984193,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99984193,
+          0.017782,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Royal_Blue",
+        "RK_Brass"
+      ],
+      "bytes": 21084
+    },
+    {
+      "id": "shawl_ochre",
+      "file": "modules/shawl_ochre.glb",
+      "bone": "spine_02",
+      "triangles": 2584,
+      "bounds_min_m": [
+        -0.562758,
+        -0.39457,
+        -0.078657
+      ],
+      "bounds_max_m": [
+        0.562639,
+        0.35747,
+        0.387122
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        -0.00204,
+        0.807131
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          0.017782,
+          0.99984193,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99984193,
+          0.017782,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Ochre_Cloth"
+      ],
+      "bytes": 86016
+    },
+    {
+      "id": "pouch_belt_double",
+      "file": "modules/pouch_belt_double.glb",
+      "bone": "pelvis",
+      "triangles": 648,
+      "bounds_min_m": [
+        -0.425,
+        -0.391,
+        0.02
+      ],
+      "bounds_max_m": [
+        0.425,
+        -0.245,
+        0.205
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        0.002338,
+        0.492759
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.02523002,
+          0.99968171,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.99968165,
+          -0.02522999,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Chestnut_Leather",
+        "RK_Dark_Leather",
+        "RK_Brass"
+      ],
+      "bytes": 47288
+    },
+    {
+      "id": "scarf_red",
+      "file": "modules/scarf_red.glb",
+      "bone": "neck",
+      "triangles": 472,
+      "bounds_min_m": [
+        -0.194,
+        -0.334575,
+        -0.28762
+      ],
+      "bounds_max_m": [
+        0.194,
+        0.2134,
+        0.015
+      ],
+      "bone_reference_position_m": [
+        4e-06,
+        0.004122,
+        1.153571
+      ],
+      "attachment_reference_to_bone_rotation_blender_rows": [
+        [
+          0.0,
+          -0.17125303,
+          0.98522711,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.98522711,
+          -0.17125303,
+          0.0
+        ],
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          -0.0,
+          1.0
+        ]
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "RK_Muted_Red_Cloth"
+      ],
+      "bytes": 30388
+    }
+  ],
+  "animation_binding_verified": false,
+  "total_module_triangles": 27500,
+  "original_accessory_source_only": true,
+  "armature_datablock_count": 0,
+  "generation_seconds": 0.439,
+  "scalp_fitting": {
+    "source": "Saved Cropout reference triangles",
+    "successful_surface_rays": 4038,
+    "outer_vertex_surface_clearance_m": 0.026,
+    "misses": 0
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "status": "passed",
+  "map": "/Game/ThreeHearths/Maps/L_HomeLifeKit_Showcase",
+  "template_read_only": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+  "lighting": "copied village island lighting",
+  "native_assets_verified": 14,
+  "origin_and_dimensions_verified": true,
+  "pbr_and_uv_verified": true,
+  "skeletal_binding_and_animation_verified": false,
+  "collision_and_navigation_enabled": false,
+  "camera": {
+    "position_cm": [
+      -2050.0,
+      -2540.0,
+      2040.0
+    ],
+    "rotation": {
+      "pitch": -30.39875515645836,
+      "yaw": 51.73788859475085,
+      "roll": 2.0280103387656576e-07
+    }
+  },
+  "placements": [
+    {
+      "id": "example__cabin_living_4x4m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/cabin_living_4x4m.cabin_living_4x4m",
+      "actor_position_cm": [
+        -640,
+        740,
+        28.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -0.09999847412109375,
+        104.00000762939453
+      ]
+    },
+    {
+      "id": "example__common_meal_10_seats",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/common_meal_10_seats.common_meal_10_seats",
+      "actor_position_cm": [
+        640,
+        740,
+        12.00000149011612
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -18.5,
+        -64.0,
+        59.49999925494194
+      ]
+    },
+    {
+      "id": "bed_single_1_1x2m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/bed_single_1_1x2m.bed_single_1_1x2m",
+      "actor_position_cm": [
+        -525,
+        -180,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        1.9073486328125e-06,
+        7.62939453125e-06,
+        44.750003814697266
+      ]
+    },
+    {
+      "id": "bed_double_2x2m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/bed_double_2x2m.bed_double_2x2m",
+      "actor_position_cm": [
+        -175,
+        -180,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        7.62939453125e-06,
+        7.62939453125e-06,
+        44.750003814697266
+      ]
+    },
+    {
+      "id": "chair_oak_wide",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/chair_oak_wide.chair_oak_wide",
+      "actor_position_cm": [
+        175,
+        -180,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -3.499998092651367,
+        54.000003814697266
+      ]
+    },
+    {
+      "id": "bench_backed_1_8m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/bench_backed_1_8m.bench_backed_1_8m",
+      "actor_position_cm": [
+        525,
+        -180,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        3.814697265625e-06,
+        -3.499998092651367,
+        54.000003814697266
+      ]
+    },
+    {
+      "id": "table_dining_1_2m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/table_dining_1_2m.table_dining_1_2m",
+      "actor_position_cm": [
+        -525,
+        -530,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        0.0,
+        39.0
+      ]
+    },
+    {
+      "id": "table_communal_2_6m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/table_communal_2_6m.table_communal_2_6m",
+      "actor_position_cm": [
+        -175,
+        -530,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        0.0,
+        39.0
+      ]
+    },
+    {
+      "id": "food_tray_bread",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/food_tray_bread.food_tray_bread",
+      "actor_position_cm": [
+        175,
+        -530,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        0.0,
+        6.450000286102295
+      ]
+    },
+    {
+      "id": "basket_berries",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/basket_berries/basket_berries.basket_berries",
+      "actor_position_cm": [
+        525,
+        -530,
+        10.5
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -9.5367431640625e-07,
+        21.250001907348633
+      ]
+    },
+    {
+      "id": "basket_empty",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/basket_empty/basket_empty.basket_empty",
+      "actor_position_cm": [
+        -525,
+        -880,
+        10.5
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        -9.5367431640625e-07,
+        19.900001525878906
+      ]
+    },
+    {
+      "id": "grain_chest",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/grain_chest/grain_chest.grain_chest",
+      "actor_position_cm": [
+        -175,
+        -880,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        0.0,
+        1.200002670288086,
+        33.19999694824219
+      ]
+    },
+    {
+      "id": "firewood_stack",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/firewood_stack/firewood_stack.firewood_stack",
+      "actor_position_cm": [
+        175,
+        -880,
+        12.00000149011612
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        3.814697265625e-06,
+        -9.5367431640625e-07,
+        25.200001925230026
+      ]
+    },
+    {
+      "id": "fence_low_2m",
+      "mesh": "/Game/ThreeHearths/Generated/HomeLifeKit/fence_low_2m/fence_low_2m.fence_low_2m",
+      "actor_position_cm": [
+        525,
+        -880,
+        12.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1,
+      "imported_asset_origin_changed": false,
+      "native_origin_cm": [
+        -3.814697265625e-06,
+        0.0,
+        38.0
+      ]
+    }
+  ],
+  "scope": "Dedicated native art review map; no world simulation actor"
+}

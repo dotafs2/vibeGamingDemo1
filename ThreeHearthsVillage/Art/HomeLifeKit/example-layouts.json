@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "examples": [
+    {
+      "id": "cabin_living_4x4m",
+      "interior_bounds_m": [
+        [
+          -2,
+          -2,
+          0
+        ],
+        [
+          2,
+          2,
+          2.4
+        ]
+      ],
+      "placements": [
+        {
+          "instance_id": "bed",
+          "module_id": "bed_single_1_1x2m",
+          "position_m": [
+            -1.25,
+            0.72,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "chest",
+          "module_id": "grain_chest",
+          "position_m": [
+            1.35,
+            1.4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "table",
+          "module_id": "table_dining_1_2m",
+          "position_m": [
+            0.95,
+            -0.65,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "chair",
+          "module_id": "chair_oak_wide",
+          "position_m": [
+            0.95,
+            -1.52,
+            0
+          ],
+          "yaw_degrees": 180
+        },
+        {
+          "instance_id": "breakfast",
+          "module_id": "food_tray_bread",
+          "position_m": [
+            0.95,
+            -0.65,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "table"
+        },
+        {
+          "instance_id": "empty_basket",
+          "module_id": "basket_empty",
+          "position_m": [
+            -1.47,
+            -1.35,
+            0
+          ],
+          "yaw_degrees": 0
+        }
+      ],
+      "nominal_central_aisle_width_m": 1.05,
+      "entry_m": [
+        -0.15,
+        -1.52,
+        0
+      ],
+      "notes": "One bed, one dining seat, compact storage. Front and right walls omitted for a cutaway review."
+    },
+    {
+      "id": "common_meal_10_seats",
+      "interior_bounds_m": [
+        [
+          -4.9,
+          -2.8,
+          0
+        ],
+        [
+          4.9,
+          3.0,
+          2.4
+        ]
+      ],
+      "placements": [
+        {
+          "instance_id": "left_table",
+          "module_id": "table_communal_2_6m",
+          "position_m": [
+            -2.1,
+            0,
+            0
+          ],
+          "yaw_degrees": 0,
+          "disabled_interactions": [
+            "service_left"
+          ]
+        },
+        {
+          "instance_id": "left_bench_front",
+          "module_id": "bench_backed_1_8m",
+          "position_m": [
+            -2.1,
+            -1.27,
+            0
+          ],
+          "yaw_degrees": 180
+        },
+        {
+          "instance_id": "left_bench_back",
+          "module_id": "bench_backed_1_8m",
+          "position_m": [
+            -2.1,
+            1.27,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "left_chair",
+          "module_id": "chair_oak_wide",
+          "position_m": [
+            -3.97,
+            0,
+            0
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "left_tray_-1",
+          "module_id": "food_tray_bread",
+          "position_m": [
+            -2.77,
+            -0.21,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "left_table"
+        },
+        {
+          "instance_id": "left_tray_1",
+          "module_id": "food_tray_bread",
+          "position_m": [
+            -1.4300000000000002,
+            -0.21,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "left_table"
+        },
+        {
+          "instance_id": "left_fruit",
+          "module_id": "basket_berries",
+          "position_m": [
+            -2.1,
+            0.18,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "left_table"
+        },
+        {
+          "instance_id": "right_table",
+          "module_id": "table_communal_2_6m",
+          "position_m": [
+            2.1,
+            0,
+            0
+          ],
+          "yaw_degrees": 0,
+          "disabled_interactions": [
+            "service_right"
+          ]
+        },
+        {
+          "instance_id": "right_bench_front",
+          "module_id": "bench_backed_1_8m",
+          "position_m": [
+            2.1,
+            -1.27,
+            0
+          ],
+          "yaw_degrees": 180
+        },
+        {
+          "instance_id": "right_bench_back",
+          "module_id": "bench_backed_1_8m",
+          "position_m": [
+            2.1,
+            1.27,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "right_chair",
+          "module_id": "chair_oak_wide",
+          "position_m": [
+            3.97,
+            0,
+            0
+          ],
+          "yaw_degrees": -90
+        },
+        {
+          "instance_id": "right_tray_-1",
+          "module_id": "food_tray_bread",
+          "position_m": [
+            1.4300000000000002,
+            -0.21,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "right_table"
+        },
+        {
+          "instance_id": "right_tray_1",
+          "module_id": "food_tray_bread",
+          "position_m": [
+            2.77,
+            -0.21,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "right_table"
+        },
+        {
+          "instance_id": "right_fruit",
+          "module_id": "basket_berries",
+          "position_m": [
+            2.1,
+            0.18,
+            0.78
+          ],
+          "yaw_degrees": 0,
+          "support_instance": "right_table"
+        },
+        {
+          "instance_id": "fuel",
+          "module_id": "firewood_stack",
+          "position_m": [
+            -4.35,
+            2.4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "fence_left",
+          "module_id": "fence_low_2m",
+          "position_m": [
+            -3,
+            2.9,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "fence_right",
+          "module_id": "fence_low_2m",
+          "position_m": [
+            3,
+            2.9,
+            0
+          ],
+          "yaw_degrees": 0
+        }
+      ],
+      "seat_capacity": 10,
+      "entry_m": [
+        0,
+        -2.25,
+        0
+      ],
+      "notes": "Ten seats: four two-person benches plus two wide chairs. Food meshes are visual examples of existing stock only."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HomeLifeKit\\create_home_life_kit.py',run_name='__main__')",
+    "user_prompt": "按真实居民尺寸制作12件生活与聚餐家具"
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "kit_id": "home_life_kit_01",
+  "blender_version": "5.2.0 LTS",
+  "units": "metres",
+  "modules": [
+    {
+      "id": "bed_single_1_1x2m",
+      "file": "modules/bed_single_1_1x2m.glb",
+      "triangles": 3472,
+      "bounds_min_m": [
+        -0.554455,
+        -1.008,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.554455,
+        1.008,
+        0.895
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Cut_Edge",
+        "HL_Warm_Oak",
+        "HL_Timber_Recess",
+        "HL_Cream_Linen",
+        "HL_Sage_Blanket",
+        "HL_Linen_Stitch"
+      ],
+      "uv_layers": 1,
+      "bytes": 234296
+    },
+    {
+      "id": "bed_double_2x2m",
+      "file": "modules/bed_double_2x2m.glb",
+      "triangles": 3688,
+      "bounds_min_m": [
+        -1.004455,
+        -1.008,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.004455,
+        1.008,
+        0.895
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Cut_Edge",
+        "HL_Warm_Oak",
+        "HL_Timber_Recess",
+        "HL_Cream_Linen",
+        "HL_Blue_Blanket",
+        "HL_Linen_Stitch"
+      ],
+      "uv_layers": 1,
+      "bytes": 249460
+    },
+    {
+      "id": "chair_oak_wide",
+      "file": "modules/chair_oak_wide.glb",
+      "triangles": 2288,
+      "bounds_min_m": [
+        -0.475,
+        -0.36,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.475,
+        0.43,
+        1.08
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Warm_Oak",
+        "HL_Timber_Recess",
+        "HL_Cut_Edge"
+      ],
+      "uv_layers": 1,
+      "bytes": 162412
+    },
+    {
+      "id": "bench_backed_1_8m",
+      "file": "modules/bench_backed_1_8m.glb",
+      "triangles": 3044,
+      "bounds_min_m": [
+        -0.925,
+        -0.36,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.925,
+        0.43,
+        1.08
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Warm_Oak",
+        "HL_Timber_Recess",
+        "HL_Cut_Edge"
+      ],
+      "uv_layers": 1,
+      "bytes": 215344
+    },
+    {
+      "id": "table_dining_1_2m",
+      "file": "modules/table_dining_1_2m.glb",
+      "triangles": 1296,
+      "bounds_min_m": [
+        -0.6,
+        -0.396,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.6,
+        0.396,
+        0.78
+      ],
+      "materials": [
+        "HL_Cut_Edge",
+        "HL_Warm_Oak",
+        "HL_Honey_Plank",
+        "HL_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "bytes": 93580
+    },
+    {
+      "id": "table_communal_2_6m",
+      "file": "modules/table_communal_2_6m.glb",
+      "triangles": 1512,
+      "bounds_min_m": [
+        -1.3,
+        -0.546,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.3,
+        0.546,
+        0.78
+      ],
+      "materials": [
+        "HL_Cut_Edge",
+        "HL_Warm_Oak",
+        "HL_Honey_Plank",
+        "HL_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "bytes": 110076
+    },
+    {
+      "id": "food_tray_bread",
+      "file": "modules/food_tray_bread.glb",
+      "triangles": 1916,
+      "bounds_min_m": [
+        -0.231,
+        -0.161,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.231,
+        0.161,
+        0.129
+      ],
+      "materials": [
+        "HL_Warm_Oak",
+        "HL_Cut_Edge",
+        "HL_Glazed_Cream_Bowl",
+        "HL_Stew",
+        "HL_Bread_Crust",
+        "HL_Bread_Score"
+      ],
+      "uv_layers": 1,
+      "bytes": 125084
+    },
+    {
+      "id": "basket_berries",
+      "file": "modules/basket_berries.glb",
+      "triangles": 6244,
+      "bounds_min_m": [
+        -0.244,
+        -0.235432,
+        0.015
+      ],
+      "bounds_max_m": [
+        0.244,
+        0.235432,
+        0.41
+      ],
+      "materials": [
+        "HL_Golden_Wicker",
+        "HL_Wicker_Weave",
+        "HL_Berry_Blue",
+        "HL_Berry_Burgundy",
+        "HL_Berry_Leaf"
+      ],
+      "uv_layers": 1,
+      "bytes": 310792
+    },
+    {
+      "id": "basket_empty",
+      "file": "modules/basket_empty.glb",
+      "triangles": 3844,
+      "bounds_min_m": [
+        -0.244,
+        -0.235432,
+        0.015
+      ],
+      "bounds_max_m": [
+        0.244,
+        0.235432,
+        0.383
+      ],
+      "materials": [
+        "HL_Golden_Wicker",
+        "HL_Wicker_Weave"
+      ],
+      "uv_layers": 1,
+      "bytes": 219284
+    },
+    {
+      "id": "grain_chest",
+      "file": "modules/grain_chest.glb",
+      "triangles": 2964,
+      "bounds_min_m": [
+        -0.5,
+        -0.314,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.5,
+        0.29,
+        0.664
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Warm_Oak",
+        "HL_Timber_Recess",
+        "HL_Cut_Edge",
+        "HL_Forged_Iron",
+        "HL_Brass"
+      ],
+      "uv_layers": 1,
+      "bytes": 197172
+    },
+    {
+      "id": "firewood_stack",
+      "file": "modules/firewood_stack.glb",
+      "triangles": 3348,
+      "bounds_min_m": [
+        -0.42,
+        -0.256,
+        -0.0
+      ],
+      "bounds_max_m": [
+        0.42,
+        0.256,
+        0.504
+      ],
+      "materials": [
+        "HL_Firewood_Bark",
+        "HL_Cut_Edge",
+        "HL_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "bytes": 227348
+    },
+    {
+      "id": "fence_low_2m",
+      "file": "modules/fence_low_2m.glb",
+      "triangles": 972,
+      "bounds_min_m": [
+        -1.0,
+        -0.08,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.08,
+        0.76
+      ],
+      "materials": [
+        "HL_Honey_Plank",
+        "HL_Warm_Oak",
+        "HL_Cut_Edge"
+      ],
+      "uv_layers": 1,
+      "bytes": 69924
+    }
+  ],
+  "creates_inventory": false,
+  "navigation_and_animation_verified": false,
+  "total_triangles": 34588,
+  "generation_seconds": 1.267,
+  "source_meshes_are_original_only": true
+}

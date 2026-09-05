@@ -1,0 +1,298 @@
+{
+  "status": "passed",
+  "reviewed_at_utc": "2026-09-05T20:11:33.500776+00:00",
+  "map": "/Game/ThreeHearths/Maps/L_ResidentKit_Showcase",
+  "images": [
+    {
+      "file": "previews/ResidentKit_InUE.png",
+      "sha256": "086c386b715c2fd9fbc3cbb46e95b9606171734dd542efb554df039d4c1c564f",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "view": "overview",
+      "reviewed": true,
+      "fov_degrees": 58,
+      "camera_exposure_bias": 0
+    }
+  ],
+  "native_mesh_count": 16,
+  "native_material_asset_count": 31,
+  "native_full_geometry_triangles": 27500,
+  "source_geometry_triangles": 27500,
+  "all_meshes_full_geometry_matches_source": true,
+  "maximum_bounds_origin_or_extent_error_cm": 1.9073486328125e-06,
+  "native_uv_and_pbr_verified": true,
+  "nonzero_attachment_roots_preserved": true,
+  "display_scale": 1,
+  "checks": [
+    "Actual native UE screenshots inspected",
+    "No missing material slots",
+    "All source linear PBR factors preserved",
+    "Bounds origins and extents match axis-converted source vertices",
+    "Full Nanite triangles match source; LOD0 fallback recorded separately",
+    "Source independent validators cover normals and degenerate faces"
+  ],
+  "observations": [
+    "Sixteen accessories visible separately beside existing Cropout body reference",
+    "Accessory attachment roots retained in assets; display actor transforms only ground the presentation",
+    "No skeletal binding or animation claim"
+  ],
+  "limitations": [
+    "Dedicated static art display only",
+    "Display collisions disabled",
+    "Runtime animation, navigation and gameplay integration not validated"
+  ],
+  "offline_run": {
+    "api_config": "Saved/ThreeHearths/import-preview/offline.json",
+    "enabled": false,
+    "world_persistence_disabled": true,
+    "main_map_edited": false,
+    "world_simulation_actor_in_review_map": false,
+    "editor_pid": 27248,
+    "editor_cleanly_closed": true,
+    "no_unreal_processes_verified_at_utc": "2026-09-05T20:10:15Z"
+  },
+  "native_artifacts": [
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/apron_linen_short/apron_linen_short.uasset",
+      "bytes": 43585,
+      "sha256": "4d2fcd2974ff135e27ba65bb465ad836697c0ebd9517d82d9f5522edf314ca8c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/apron_linen_short/RK_Cream_Linen.uasset",
+      "bytes": 21384,
+      "sha256": "a0c58df4a9e20011dcbfab80c769a67e4c42c7cdb3fc0892237a35514d15c106"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/apron_linen_short/RK_Golden_Straw.uasset",
+      "bytes": 21395,
+      "sha256": "16a226139b238f236c9b73d9c800e8012b5c277d17f92ea8876e8dff3a556f7f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/backpack_bedroll/backpack_bedroll.uasset",
+      "bytes": 63961,
+      "sha256": "ca615b977fffb1985e34452a3c044de8d1adde6dfc7023c3123ecedd4646401c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/backpack_bedroll/RK_Brass.uasset",
+      "bytes": 21304,
+      "sha256": "805ff45626291b99db554368ef30d45786174faaae80bec74bd9d46667971afe"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/backpack_bedroll/RK_Chestnut_Leather.uasset",
+      "bytes": 21425,
+      "sha256": "bdade875ffaa9de9d664d13982ba01f9177ab44582f0cf8634b9b412706cbe42"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/backpack_bedroll/RK_Cream_Linen.uasset",
+      "bytes": 21370,
+      "sha256": "e0c90a08ff9dffe04e596034b00d8f484eb7b0efc0a3024fe66381bc3211fe14"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/backpack_bedroll/RK_Dark_Leather.uasset",
+      "bytes": 21381,
+      "sha256": "8940d703e796ff86dfdb93688fcc11b342b9005ee3268670b50ad4033e3a3a18"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/bag_crossbody_leather.uasset",
+      "bytes": 57453,
+      "sha256": "c77f7c9ea16f94da59282a0ed7d8ee84e0121eb28cf277bc1712abd0e1cd8811"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/RK_Brass.uasset",
+      "bytes": 21359,
+      "sha256": "359908b585dc6a8d0eb074b57094de755593afd4973aa88d143a36ec1d826bae"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/RK_Chestnut_Leather.uasset",
+      "bytes": 21480,
+      "sha256": "14c1c07f90763c43e812c056eea16cf2b46903d370512845b1bb9b944511ba17"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/RK_Dark_Leather.uasset",
+      "bytes": 21436,
+      "sha256": "8dcd9013ae762d644271916d7244c0b8bab71c0a96ae3b23e727faa1faa9670a"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/beard_neat_silver/beard_neat_silver.uasset",
+      "bytes": 47897,
+      "sha256": "36961943450a62d3ee242fd4267845c5b13488b4eec09cb4fa285242782937ce"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/beard_neat_silver/RK_Hair_Silver.uasset",
+      "bytes": 21370,
+      "sha256": "5e466aec82f237d7347a01bbbad970081c0dcc3548a4050866542e9bf9032ee7"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/beard_neat_silver/RK_Hair_Silver_Edge.uasset",
+      "bytes": 21425,
+      "sha256": "2a9152e150084f4d9efb2dd04a50bad7a5a362e590820d6e29abf9d64446d2ef"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cap_merchant_plum/cap_merchant_plum.uasset",
+      "bytes": 62816,
+      "sha256": "90842a99db5b50118a0f4a6fcf297219c195c27cfc6481bc8ad0b47793a411a0"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cap_merchant_plum/RK_Dark_Leather.uasset",
+      "bytes": 21392,
+      "sha256": "9f249fc7849aa5d2a729c6c33d5841edf6a96e7503ef464d24b74ddf348bbccb"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cap_merchant_plum/RK_Plum_Cloth.uasset",
+      "bytes": 21370,
+      "sha256": "c5a5072fcd1cfd70ad1d87d3d5c052528a961b706dc3c29d06e62c4d060aedda"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cape_royal_blue/cape_royal_blue.uasset",
+      "bytes": 41123,
+      "sha256": "41b6a5efd92f88e88e00f0f01a752dca622d9ab55452af951c5891d0ce9f8bcf"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cape_royal_blue/RK_Brass.uasset",
+      "bytes": 21296,
+      "sha256": "33c0405682cb9919aaa8515b48038f6bd52d8c5423b0772143bead1c3c1c0f2b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/cape_royal_blue/RK_Royal_Blue.uasset",
+      "bytes": 21351,
+      "sha256": "5640d744838ed7c69a58dc750e76d57b4cb4127bcd0976fd1de1077170c9984d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_braid_auburn/hair_braid_auburn.uasset",
+      "bytes": 107612,
+      "sha256": "03ec52eb3e2cabf610e84860219172faa7dd90286606e0d2760af375b6e37fbb"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_braid_auburn/RK_Hair_Auburn.uasset",
+      "bytes": 21370,
+      "sha256": "056acc6ad25decb2df9e1aa75e5d51035bdf64ce5b9f10dc6161e0cad9570a29"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_braid_auburn/RK_Sage_Cloth.uasset",
+      "bytes": 21359,
+      "sha256": "62a979f7a248c2ea8dd344428e05393aa79c6daf8c4b0950c491cec07f773e89"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_bun_dark/hair_bun_dark.uasset",
+      "bytes": 113165,
+      "sha256": "0d353fca599bfdb52e15c0059765bad900d219236cebcc7a7c31d89dc4f05e64"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_bun_dark/RK_Hair_Dark.uasset",
+      "bytes": 21304,
+      "sha256": "72817409e9df2eacea9ea100cbf6f4e25be5707e861e2e5e86cf15328231498e"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_bun_dark/RK_Warm_Oak_Light.uasset",
+      "bytes": 21359,
+      "sha256": "12e4ef7349637cfcc7ef487e03168903c7d5a7de1ea258ac4bd77d151de18a87"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_cropped_dark/hair_cropped_dark.uasset",
+      "bytes": 99099,
+      "sha256": "4f64a7c427b8338663396e9ae6be1f3f3540cb6e9878d8d606a21858311d572d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_cropped_dark/RK_Hair_Dark.uasset",
+      "bytes": 21348,
+      "sha256": "6d4ee1bfa0bf39aef1c6b67ba557dd912ece684faf803180182568b784c21d30"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_swept_silver/hair_swept_silver.uasset",
+      "bytes": 116043,
+      "sha256": "93b7b5338e92b7ae7283979eb2d6d3e84183fbf34be66a1fc22d8e2e51201cba"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_swept_silver/RK_Hair_Silver.uasset",
+      "bytes": 21370,
+      "sha256": "a28d09898086f8bca01f39c2d79c92ee0d7bbaa9c799da4bb2e5e9f9a46c3b2d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_swept_silver/RK_Hair_Silver_Edge.uasset",
+      "bytes": 21425,
+      "sha256": "ca1b136f1c2598320bb2f33b97263e97f5d8ca8467393734a83b7b231939cd64"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_waves_chestnut/hair_waves_chestnut.uasset",
+      "bytes": 113564,
+      "sha256": "1c83e4df710a4d31afc2228ce3f794c11ba04e0dc5e093ff44138af1934884e3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hair_waves_chestnut/RK_Hair_Chestnut.uasset",
+      "bytes": 21414,
+      "sha256": "1c2e818eef6aaaf6b66a071090633da11da36ceca591b98943336bbb3c3e56d6"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hat_straw_wide/hat_straw_wide.uasset",
+      "bytes": 63698,
+      "sha256": "461aab9aa751476e32f8d32713f6303571606267dc3b30ed71a9d10c33320aa0"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hat_straw_wide/RK_Chestnut_Leather.uasset",
+      "bytes": 21403,
+      "sha256": "92fc1d1893afb7564b4c2de95337986e507402135a37bc1f35e23a33789c1e50"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/hat_straw_wide/RK_Golden_Straw.uasset",
+      "bytes": 21359,
+      "sha256": "61f21b9b0d92cfa8a8c77e5e29e89133146f1d27e175f3eef13c436dfc74a50d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/headwrap_sage/headwrap_sage.uasset",
+      "bytes": 111860,
+      "sha256": "124d89bdfc996761d1c78691db907b19a99dc6e7268ea24352ea840eb796f9f8"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/headwrap_sage/RK_Sage_Cloth.uasset",
+      "bytes": 21326,
+      "sha256": "29ce39af62ad88310febff1b9331b59fbbf3f225d0440647ec9c2d53adbc079d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/pouch_belt_double/pouch_belt_double.uasset",
+      "bytes": 51109,
+      "sha256": "fe922f184de3deeef9702fe80bbab1e6aeaf55b2c151fc658ab34cbe70c1c46f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/pouch_belt_double/RK_Brass.uasset",
+      "bytes": 21318,
+      "sha256": "04c845965f228aebf5914dd99015f3bbbb761da8fcaec72c820e2f4b6961cfd2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/pouch_belt_double/RK_Chestnut_Leather.uasset",
+      "bytes": 21439,
+      "sha256": "69b4651f9d0e207802f062f52a6430563bb9cfdcdf1f95d1ae020bac3a4ab9fc"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/pouch_belt_double/RK_Dark_Leather.uasset",
+      "bytes": 21395,
+      "sha256": "7ef22d9e690a2d9dedae7ed2d7e3879c1247cb379bf4fd3680240bdd8d63b30f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/scarf_red/RK_Muted_Red_Cloth.uasset",
+      "bytes": 21340,
+      "sha256": "b776e920734e56d8959201e74329de1feeebf73faad908bcf57180e4e8e403da"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/scarf_red/scarf_red.uasset",
+      "bytes": 43299,
+      "sha256": "b6f187e367816b123d4bf9bbd2ed0b48e6df4152ba78dbd4e89f1bd75486c72b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/shawl_ochre/RK_Ochre_Cloth.uasset",
+      "bytes": 21318,
+      "sha256": "98a41e2ad458552bf27c855f3eac137d9fbe8fd8a7527b0221b5146424d43702"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/ResidentKit/shawl_ochre/shawl_ochre.uasset",
+      "bytes": 99822,
+      "sha256": "338fe1b1d54d99c4261f9afed82f17a014f373de49db619476258491c81cc7ef"
+    },
+    {
+      "file": "Content/ThreeHearths/Maps/L_ResidentKit_Showcase.umap",
+      "bytes": 551688,
+      "sha256": "cc28265fd47d29ce2a1dc56b9e3c940fdf0fa6556ed8ae98c691435d14937558"
+    }
+  ]
+}

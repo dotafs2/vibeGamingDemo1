@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "user_prompt": "检查居民生活家具及实际站位布局",
+    "code": "import runpy, sys; sys.argv=['preview_home_life_kit.py','--','cabin_living_4x4m']; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HomeLifeKit\\preview_home_life_kit.py',run_name='__main__')"
+  }
+}

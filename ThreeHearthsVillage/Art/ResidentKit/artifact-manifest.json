@@ -1,0 +1,216 @@
+{
+  "kit_id": "resident_kit_01",
+  "artifacts": [
+    {
+      "file": "modules/hair_cropped_dark.glb",
+      "sha256": "c66e793a8a745753cdaefe915aaac8dc4f5001699a82483b627fdd8c159ee359",
+      "bytes": 66176
+    },
+    {
+      "file": "modules/hair_waves_chestnut.glb",
+      "sha256": "31949079e541422d0707b082d2044c4a608c18d4825477195f7c65c0c47fe5c9",
+      "bytes": 87012
+    },
+    {
+      "file": "modules/hair_braid_auburn.glb",
+      "sha256": "6500fa053cc3c646383b615e6f381a8ebddf83b5c5730680f26d165a6724acc5",
+      "bytes": 96408
+    },
+    {
+      "file": "modules/hair_bun_dark.glb",
+      "sha256": "b4dc8929290f90fbcbb6a41f6ac96b59d2f6d236c6baba79dd32a24b1749f29b",
+      "bytes": 77772
+    },
+    {
+      "file": "modules/hair_swept_silver.glb",
+      "sha256": "d8e97d1c3b09c46d034b171b757b09e8d22ec4f8fd69a2455505c9e56b5fdc3c",
+      "bytes": 80720
+    },
+    {
+      "file": "modules/beard_neat_silver.glb",
+      "sha256": "b0fcce52f3032e7440704e1d3de5cec4e1415d7e42f02b8d3c4f0acb9698b6da",
+      "bytes": 23432
+    },
+    {
+      "file": "modules/headwrap_sage.glb",
+      "sha256": "a9b53a4bd9eb6992fc9d37715a38f5e393fd5a1b071ae0dcae62c6b4052e549d",
+      "bytes": 84256
+    },
+    {
+      "file": "modules/hat_straw_wide.glb",
+      "sha256": "dfacaac384c6e8d77ee68a341a679c45a86126d69a1151e668aeb15825f0ae1b",
+      "bytes": 53292
+    },
+    {
+      "file": "modules/cap_merchant_plum.glb",
+      "sha256": "fb7be070ce8ce7313cd0e0e1a83bf365e9a4db73ed5c455225ed52598cb4f2f8",
+      "bytes": 42180
+    },
+    {
+      "file": "modules/bag_crossbody_leather.glb",
+      "sha256": "0518fbc2534bdf00aecd537b15c1b8fa713ca428674d2394525f958ce934ffe8",
+      "bytes": 55528
+    },
+    {
+      "file": "modules/backpack_bedroll.glb",
+      "sha256": "8f1a7900216d27f0770872ee8a8969188cd05b0536dab6c63c22c077bc5e13fc",
+      "bytes": 77192
+    },
+    {
+      "file": "modules/apron_linen_short.glb",
+      "sha256": "819d1b0aa5ad40283640b4bf6a3f260f2822bc96d6e95034484ef9ec562f0b69",
+      "bytes": 25888
+    },
+    {
+      "file": "modules/cape_royal_blue.glb",
+      "sha256": "8f7eb63f4644e855555f8452abfc0a3439421b342802f69f9de847fbaa43d6b6",
+      "bytes": 21084
+    },
+    {
+      "file": "modules/shawl_ochre.glb",
+      "sha256": "e376d12641859bfa1be3fc7d0a5086f144544776be950d47e6e71ef90eef4cb6",
+      "bytes": 86016
+    },
+    {
+      "file": "modules/pouch_belt_double.glb",
+      "sha256": "31f724362f00152f8d54feff5225cfbc84bec5701e2a4ff688c1746a13a97ac9",
+      "bytes": 47288
+    },
+    {
+      "file": "modules/scarf_red.glb",
+      "sha256": "ab05ae4c3067586decf11fa945b6e57fc2afedc5cab396c46fc70fad040657e6",
+      "bytes": 30388
+    }
+  ],
+  "source_and_preview_artifacts": [
+    {
+      "file": "attachment-reference.json",
+      "sha256": "e57dc3fa3c029ffb4a8e60d32ff886de596edc35e931f92587a008bfc7de5ef3",
+      "bytes": 33608
+    },
+    {
+      "file": "create_resident_kit.py",
+      "sha256": "30f59805674cbfe653bc53a4c90a8d07b0d6e3462dde2e12d9e02fb0266d531e",
+      "bytes": 14879
+    },
+    {
+      "file": "export_resident_reference.py",
+      "sha256": "51fd1bb7402f9a39fdad85f48aad6cc0746a03a60516aa978ba26c0dfc98f573",
+      "bytes": 1526
+    },
+    {
+      "file": "fitting-report.json",
+      "sha256": "cb082bdc6db6d51cb510e13d0f0f4bd22813203d9f24bf76dd69a3a56e73e6ff",
+      "bytes": 4744
+    },
+    {
+      "file": "inspect_reference.py",
+      "sha256": "01b281df49ba441f15a44a7490a42613f49ba9c761442967f4cff813dff180b1",
+      "bytes": 2485
+    },
+    {
+      "file": "looks.json",
+      "sha256": "b9cfcf4ffb75c4f10d86ba017f059f7871ec80de5bba7226bae22c1dc6e1241e",
+      "bytes": 3473
+    },
+    {
+      "file": "model-report.json",
+      "sha256": "b079b553849a89177ed7eba0c6fe5332c8bed65d59d7066f6ea111e1ecc29b1b",
+      "bytes": 16509
+    },
+    {
+      "file": "module-specs.json",
+      "sha256": "6473132d15d18eeb8005f8aed94dc81ddfc2559f9d1ade46d6399daa590d3d36",
+      "bytes": 2686
+    },
+    {
+      "file": "preview_accessories.py",
+      "sha256": "24a73bab938b59459b72ef2f69a1b9260ce17f3289b2a3454ee4970fb5583e49",
+      "bytes": 3315
+    },
+    {
+      "file": "preview_resident_kit.py",
+      "sha256": "ccdb53d95d268846b066151ffa30e07b6585172c9d07bbbf6debe22a55ac4548",
+      "bytes": 7915
+    },
+    {
+      "file": "previews/ResidentKit_Accessories.png",
+      "sha256": "159ab58227a6743f58541f075d965c78a6ace8f53c8279756ff00b401eebb1db",
+      "bytes": 3299662
+    },
+    {
+      "file": "previews/ResidentKit_InUE.png",
+      "sha256": "086c386b715c2fd9fbc3cbb46e95b9606171734dd542efb554df039d4c1c564f",
+      "bytes": 1205862
+    },
+    {
+      "file": "previews/ResidentKit_TenAdults_back.png",
+      "sha256": "e06c36f8bf5650726398555eede1002b859e33863bda256f37591b85b5bac9d7",
+      "bytes": 3390717
+    },
+    {
+      "file": "previews/ResidentKit_TenAdults_front.png",
+      "sha256": "ab179d12ff724a5bce6278d09b27ad4569dcc8a5f315fe689afd2704d30efee9",
+      "bytes": 3472459
+    },
+    {
+      "file": "README.md",
+      "sha256": "25b29f65107e8b2f169599d437f68bef0bd331ee834540205ed26d149ac4fe82",
+      "bytes": 9238
+    },
+    {
+      "file": "resident_geometry.py",
+      "sha256": "998c1e43db974ddc458fb02559c044a809f19c592b547c56a7bccf19b148edd2",
+      "bytes": 5563
+    },
+    {
+      "file": "ResidentKit.blend",
+      "sha256": "90d42a9bcfc315db604bf19dd9871e9f55238dedca2c3227bd8b647c6beea4d9",
+      "bytes": 364055
+    },
+    {
+      "file": "UE_Import_Report.json",
+      "sha256": "0046b12a1029eb02c69be6cff11a5b4aa748cd9d7a22d32ec5d6936a9c4b340c",
+      "bytes": 33702
+    },
+    {
+      "file": "UE_Showcase_Report.json",
+      "sha256": "b0c041af0abdbebc61f9b2fe90876f320187f6a462859a7a2ce39a9ac8a2fafc",
+      "bytes": 8202
+    },
+    {
+      "file": "UE_Visual_Review.json",
+      "sha256": "152231fe9734fee925385c1672742792e7705a9a77888e17fbd482fa262ecad8",
+      "bytes": 12754
+    },
+    {
+      "file": "validate_resident_kit.py",
+      "sha256": "2b6f036b4983493790dd7a43c37da39406afc246992f8995a499c2f5c5955a7f",
+      "bytes": 4078
+    },
+    {
+      "file": "visual-review.json",
+      "sha256": "5072b5830baeb0b0c900bcf8b965f6fca06931b4e6947480e37a8618678f5397",
+      "bytes": 1715
+    }
+  ],
+  "referenced_existing_assets": [
+    {
+      "file": "SocietyKit/modules/regalia_king_crown.glb",
+      "sha256": "f20f798b8e346401d01288ff5026df64b0f93e030caab512d243dd8da7de6208"
+    },
+    {
+      "file": "SocietyKit/modules/tool_carpenter_hammer.glb",
+      "sha256": "4c9f1b6cdb612f132e43fb59c5f2758b29ec84b839bf4134762780f70cf62412"
+    },
+    {
+      "file": "SocietyKit/modules/tool_mason_chisel.glb",
+      "sha256": "bedfc549a6570f38baeff8aef37a81930ebb28e26a9399ff74542586675a8cc0"
+    },
+    {
+      "file": "SocietyKit/modules/profession_smith_apron.glb",
+      "sha256": "bd192e549ed5c815d939f74eb4ab2b6005ce63b2a47744431df8484c183ce826"
+    }
+  ],
+  "byte_identical_regeneration_guaranteed": false
+}

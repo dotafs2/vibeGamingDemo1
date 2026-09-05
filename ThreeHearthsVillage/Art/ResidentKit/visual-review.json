@@ -1,0 +1,34 @@
+{
+  "scope": "Visual review of static accessories on the existing Cropout reference pose",
+  "reviewed_at_utc": "2026-09-05T19:02:28.274844+00:00",
+  "reference_pose_front_and_back_reviewed": true,
+  "original_accessory_overview_reviewed": true,
+  "source_blend_sha256": "90d42a9bcfc315db604bf19dd9871e9f55238dedca2c3227bd8b647c6beea4d9",
+  "reviewed_images": [
+    {
+      "file": "previews/ResidentKit_Accessories.png",
+      "sha256": "159ab58227a6743f58541f075d965c78a6ace8f53c8279756ff00b401eebb1db"
+    },
+    {
+      "file": "previews/ResidentKit_TenAdults_back.png",
+      "sha256": "e06c36f8bf5650726398555eede1002b859e33863bda256f37591b85b5bac9d7"
+    },
+    {
+      "file": "previews/ResidentKit_TenAdults_front.png",
+      "sha256": "ab179d12ff724a5bce6278d09b27ad4569dcc8a5f315fe689afd2704d30efee9"
+    }
+  ],
+  "observations": [
+    "Five hairstyles and the headwrap follow the actual rounded-square Cropout head; earlier temple skin wedges are corrected.",
+    "Ten adult appearance proposals were inspected from front and back; original crown and leather apron were reused by reference.",
+    "Backpack, bedroll, braid, cape, shawl and complete crossbody strap have visible reference-pose placements.",
+    "Shawl shoulder folds connect the rear cloth to both front falls. Shoulder cut edges expose the original sleeves.",
+    "Physical attachment roots and bounds are recorded; all new GLBs remain static accessories with no skin weights."
+  ],
+  "integration_checks_outstanding": [
+    "UE coordinate and bone rotation conversion",
+    "Animated walk/chop/carry intersections",
+    "Rigid garment behaviour during animation",
+    "Hand-tool grip placement"
+  ]
+}

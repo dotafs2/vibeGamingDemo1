@@ -1,0 +1,197 @@
+{
+  "kit_id": "home_life_kit_01",
+  "artifacts": [
+    {
+      "file": "create_home_life_kit.py",
+      "bytes": 13221,
+      "sha256": "930adf60354a94e81069ca0a9e5367f25aa73916894da676e4ada0f54e52f503"
+    },
+    {
+      "file": "example-layouts.json",
+      "bytes": 6803,
+      "sha256": "9c1507412f2e4c7e92ac4fb00b09bc36d6223295670b92748b5221edbfc876b8"
+    },
+    {
+      "file": "examples/cabin_living_4x4m.blend",
+      "bytes": 759208,
+      "sha256": "a92c2672d5ec36a6a2731e4fe800149a98f52170899f89162054f85e5770b9b1"
+    },
+    {
+      "file": "examples/cabin_living_4x4m.glb",
+      "bytes": 1524224,
+      "sha256": "42420d5603cbf9c2054bb3a451f76cc8b25c263154262e6118a37a9036ccc06b"
+    },
+    {
+      "file": "examples/common_meal_10_seats.blend",
+      "bytes": 693847,
+      "sha256": "db9e5ac10081d9bb2faa19437b120a993273c9e78d2ba1484271cd0cf6fa1441"
+    },
+    {
+      "file": "examples/common_meal_10_seats.glb",
+      "bytes": 1203520,
+      "sha256": "de90cd29384eba9dac81500bc7a3535998194bfa4831e6b745956b29cab545f3"
+    },
+    {
+      "file": "home_geometry.py",
+      "bytes": 5563,
+      "sha256": "e8abe42ed245047ca4d9f786d9ecf84d15910d0420af7a9629f4aa8ebba314e4"
+    },
+    {
+      "file": "HomeLifeKit.blend",
+      "bytes": 437167,
+      "sha256": "7bf9a610339350f60fcd7fb76a48dbb105ee9a7c542cbe9aed2caa9fba66f67a"
+    },
+    {
+      "file": "model-report.json",
+      "bytes": 6082,
+      "sha256": "7cb7359852b25100c99de599301a2d71aec696066d07dca4e85f147c8b8364ae"
+    },
+    {
+      "file": "module-specs.json",
+      "bytes": 14138,
+      "sha256": "b7a8722226702792f4f7eccb3da3abd69c4db288404d5fd51a939cd44de14d20"
+    },
+    {
+      "file": "modules/basket_berries.glb",
+      "bytes": 310792,
+      "sha256": "405da7ca7dfb69b454257edc80565a4477b77dc2ae144876f6d56b0a159aaec6"
+    },
+    {
+      "file": "modules/basket_empty.glb",
+      "bytes": 219284,
+      "sha256": "c0e59857dc34e3a197767112ccc209249aa78d07657d9f74aded0bd4a876eb8e"
+    },
+    {
+      "file": "modules/bed_double_2x2m.glb",
+      "bytes": 249460,
+      "sha256": "f12f85f78ef58bc48fac72f04b268a45d4df481eb49f069f4e5255d58be33b84"
+    },
+    {
+      "file": "modules/bed_single_1_1x2m.glb",
+      "bytes": 234296,
+      "sha256": "752488c9b425acf16ad026183e1ec6eb11537f1f9a9846849a8aaaf26d33a3c8"
+    },
+    {
+      "file": "modules/bench_backed_1_8m.glb",
+      "bytes": 215344,
+      "sha256": "2c69bf9b64210dbde821026634b0ba99a61f15c88fc5c3525cb635875f6cdd30"
+    },
+    {
+      "file": "modules/chair_oak_wide.glb",
+      "bytes": 162412,
+      "sha256": "5778d2fb450ef3ea608fc63bcdac91f502e95d7337b99e5837735b766236af80"
+    },
+    {
+      "file": "modules/fence_low_2m.glb",
+      "bytes": 69924,
+      "sha256": "b488479c436ac0270ef8979f7361870fae6965c455ba0a457c636c24b65b7c20"
+    },
+    {
+      "file": "modules/firewood_stack.glb",
+      "bytes": 227348,
+      "sha256": "da972ff72c0e5e32945acd3a6b0e083b45404bd7cdfd1f453b5a0da698a7fdc1"
+    },
+    {
+      "file": "modules/food_tray_bread.glb",
+      "bytes": 125084,
+      "sha256": "aac271915d7868d0b2769e411e6c42b290966f19af97cb42321411fcc3ec70ea"
+    },
+    {
+      "file": "modules/grain_chest.glb",
+      "bytes": 197172,
+      "sha256": "56264fa912858bb781da6d5eee679395be7a2328581f0ecb2f479b50da46ee48"
+    },
+    {
+      "file": "modules/table_communal_2_6m.glb",
+      "bytes": 110076,
+      "sha256": "b0ea6771d216421948d5758665e471941121211e29587c977024ed9a977cc962"
+    },
+    {
+      "file": "modules/table_dining_1_2m.glb",
+      "bytes": 93580,
+      "sha256": "b451d56c1a6e4b63dfd5704b327ed9b672a71093a35056ad19cbd839279cf8d5"
+    },
+    {
+      "file": "preview-report.json",
+      "bytes": 4539,
+      "sha256": "26615deb57dbbe9cda496a359217db0fe8e1aff04fa91988f0aedd7ab887f5bc"
+    },
+    {
+      "file": "preview_home_life_kit.py",
+      "bytes": 8765,
+      "sha256": "bec073fb6de81885c693bb1c405ded4cad55c933e0594bc1583eaaf91de8e00b"
+    },
+    {
+      "file": "previews/HomeLifeKit_cabin_InUE.png",
+      "bytes": 1896695,
+      "sha256": "4ccb9a45bcea8754e4b285cfc00cf6b8268a3783f68fb353ac491b410792f6e2"
+    },
+    {
+      "file": "previews/HomeLifeKit_cabin_living_4x4m.png",
+      "bytes": 3728278,
+      "sha256": "da377a5fb0103525c63c96c16a276eb563874604163b1c93861c2ac152fc46ff"
+    },
+    {
+      "file": "previews/HomeLifeKit_common_meal_10_seats.png",
+      "bytes": 4044181,
+      "sha256": "bd13f59d734283c0f39aec4eec79f2dc65dc1abb553a597953d44166646d928d"
+    },
+    {
+      "file": "previews/HomeLifeKit_InUE.png",
+      "bytes": 1369715,
+      "sha256": "a2984d6655817704152f32345f8576800fca0c01fe4aa863ce435788cb0f2595"
+    },
+    {
+      "file": "previews/HomeLifeKit_meal_InUE.png",
+      "bytes": 1555535,
+      "sha256": "c6fe32eb89fcbd42a0f5aad951c8c4577b6cb9ef646d912e6e30c151ae073ff2"
+    },
+    {
+      "file": "previews/HomeLifeKit_overview.png",
+      "bytes": 4634756,
+      "sha256": "198a538564aeb18c9ec516a9b787ac7a46e9b57280469fcb337dac8ee0427530"
+    },
+    {
+      "file": "README.md",
+      "bytes": 10710,
+      "sha256": "4288bff726eb4d10b1d0671ee8e1fa6e94ee07ece02a7ce0784700bbb1a6baec"
+    },
+    {
+      "file": "UE_Import_Report.json",
+      "bytes": 64663,
+      "sha256": "990e8ef228f6d4cc7cacc483afa3f59d41c33c7696f05a69b4bc8496a495de3f"
+    },
+    {
+      "file": "UE_Showcase_Report.json",
+      "bytes": 7038,
+      "sha256": "96c30d042d2034c5ed7b2ebdf1cc47195a2df5c8c8e33d696082e3a57e8b9726"
+    },
+    {
+      "file": "UE_Visual_Review.json",
+      "bytes": 31442,
+      "sha256": "e5a0b680304b5d6e74d9b7fbf5f0b89c766258a27d687e9bc8092d1289cc8625"
+    },
+    {
+      "file": "validate_home_life_kit.py",
+      "bytes": 11809,
+      "sha256": "0696bfa2e32743bebca328dfe89ff729ec98fb183fc7ae7621af6c981b044c07"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 10720,
+      "sha256": "b78e7edb5a09b6824df7779294f675ee475713f3fc62e66e0bf9e6e5bed8bd41"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 1736,
+      "sha256": "334d2f44d7ff65fa681c4ba36f5c431c3d8ff156243cdbb6df5bb072214db262"
+    },
+    {
+      "file": "write_contracts.py",
+      "bytes": 7246,
+      "sha256": "f246df206bde997d1329d49b75c8e1540eca624fd6225356617ae00089663f49"
+    }
+  ],
+  "navigation_and_animation_verified": false,
+  "spawning_visuals_must_not_create_stock": true
+}

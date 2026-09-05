@@ -1,0 +1,399 @@
+{
+  "status": "passed",
+  "asset_count": 12,
+  "assets": [
+    {
+      "asset": "bed_single_1_1x2m.glb",
+      "bytes": 234296,
+      "triangles": 3472,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.09216589861751152,
+      "sha256": "752488c9b425acf16ad026183e1ec6eb11537f1f9a9846849a8aaaf26d33a3c8"
+    },
+    {
+      "asset": "bed_double_2x2m.glb",
+      "bytes": 249460,
+      "triangles": 3688,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.08676789587852494,
+      "sha256": "f12f85f78ef58bc48fac72f04b268a45d4df481eb49f069f4e5255d58be33b84"
+    },
+    {
+      "asset": "chair_oak_wide.glb",
+      "bytes": 162412,
+      "triangles": 2288,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "5778d2fb450ef3ea608fc63bcdac91f502e95d7337b99e5837735b766236af80"
+    },
+    {
+      "asset": "bench_backed_1_8m.glb",
+      "bytes": 215344,
+      "triangles": 3044,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "2c69bf9b64210dbde821026634b0ba99a61f15c88fc5c3525cb635875f6cdd30"
+    },
+    {
+      "asset": "table_dining_1_2m.glb",
+      "bytes": 93580,
+      "triangles": 1296,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "b451d56c1a6e4b63dfd5704b327ed9b672a71093a35056ad19cbd839279cf8d5"
+    },
+    {
+      "asset": "table_communal_2_6m.glb",
+      "bytes": 110076,
+      "triangles": 1512,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "b0ea6771d216421948d5758665e471941121211e29587c977024ed9a977cc962"
+    },
+    {
+      "asset": "food_tray_bread.glb",
+      "bytes": 125084,
+      "triangles": 1916,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.20876826722338204,
+      "sha256": "aac271915d7868d0b2769e411e6c42b290966f19af97cb42321411fcc3ec70ea"
+    },
+    {
+      "asset": "basket_berries.glb",
+      "bytes": 310792,
+      "triangles": 6244,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.6098654708520179,
+      "sha256": "405da7ca7dfb69b454257edc80565a4477b77dc2ae144876f6d56b0a159aaec6"
+    },
+    {
+      "asset": "basket_empty.glb",
+      "bytes": 219284,
+      "triangles": 3844,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.36628511966701355,
+      "sha256": "c0e59857dc34e3a197767112ccc209249aa78d07657d9f74aded0bd4a876eb8e"
+    },
+    {
+      "asset": "grain_chest.glb",
+      "bytes": 197172,
+      "triangles": 2964,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.16194331983805668,
+      "sha256": "56264fa912858bb781da6d5eee679395be7a2328581f0ecb2f479b50da46ee48"
+    },
+    {
+      "asset": "firewood_stack.glb",
+      "bytes": 227348,
+      "triangles": 3348,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "da972ff72c0e5e32945acd3a6b0e083b45404bd7cdfd1f453b5a0da698a7fdc1"
+    },
+    {
+      "asset": "fence_low_2m.glb",
+      "bytes": 69924,
+      "triangles": 972,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "b488479c436ac0270ef8979f7361870fae6965c455ba0a457c636c24b65b7c20"
+    }
+  ],
+  "total_triangles": 34588,
+  "max_asset_triangles": 6244,
+  "empty_basket_opening_verified": true,
+  "seat_bed_table_support_surfaces_verified": true,
+  "layout_checks": [
+    {
+      "example_id": "cabin_living_4x4m",
+      "no_furniture_footprint_overlap": true,
+      "active_standing_points_clear": 4,
+      "seat_capacity": 1,
+      "world_approach_points": [
+        {
+          "instance_id": "bed",
+          "point_id": "approach_right",
+          "world_position_m": [
+            -0.18999999999999995,
+            0.72,
+            0
+          ]
+        },
+        {
+          "instance_id": "chest",
+          "point_id": "access_front",
+          "world_position_m": [
+            1.35,
+            0.5599999999999999,
+            0
+          ]
+        },
+        {
+          "instance_id": "table",
+          "point_id": "service_left",
+          "world_position_m": [
+            -0.18999999999999995,
+            -0.65,
+            0
+          ]
+        },
+        {
+          "instance_id": "chair",
+          "point_id": "approach_side",
+          "world_position_m": [
+            -0.07000000000000006,
+            -1.5199999999999998,
+            0
+          ]
+        }
+      ],
+      "static_2d_access_from_entry_verified": true,
+      "clearance_grid_step_m": 0.05,
+      "overlapping_approaches_require_reservation": [
+        {
+          "a": [
+            "table",
+            "service_left"
+          ],
+          "b": [
+            "chair",
+            "approach_side"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        }
+      ],
+      "exported_example_transforms_verified": true
+    },
+    {
+      "example_id": "common_meal_10_seats",
+      "no_furniture_footprint_overlap": true,
+      "active_standing_points_clear": 15,
+      "seat_capacity": 10,
+      "world_approach_points": [
+        {
+          "instance_id": "left_table",
+          "point_id": "service_right",
+          "world_position_m": [
+            -0.28,
+            0.0,
+            0
+          ]
+        },
+        {
+          "instance_id": "left_bench_front",
+          "point_id": "approach_left",
+          "world_position_m": [
+            -0.6400000000000001,
+            -1.2700000000000002,
+            0
+          ]
+        },
+        {
+          "instance_id": "left_bench_front",
+          "point_id": "approach_right",
+          "world_position_m": [
+            -3.56,
+            -1.2699999999999998,
+            0
+          ]
+        },
+        {
+          "instance_id": "left_bench_back",
+          "point_id": "approach_left",
+          "world_position_m": [
+            -3.56,
+            1.27,
+            0
+          ]
+        },
+        {
+          "instance_id": "left_bench_back",
+          "point_id": "approach_right",
+          "world_position_m": [
+            -0.6400000000000001,
+            1.27,
+            0
+          ]
+        },
+        {
+          "instance_id": "left_chair",
+          "point_id": "approach_side",
+          "world_position_m": [
+            -3.97,
+            1.02,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_table",
+          "point_id": "service_left",
+          "world_position_m": [
+            0.28,
+            0.0,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_bench_front",
+          "point_id": "approach_left",
+          "world_position_m": [
+            3.56,
+            -1.2700000000000002,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_bench_front",
+          "point_id": "approach_right",
+          "world_position_m": [
+            0.6400000000000001,
+            -1.2699999999999998,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_bench_back",
+          "point_id": "approach_left",
+          "world_position_m": [
+            0.6400000000000001,
+            1.27,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_bench_back",
+          "point_id": "approach_right",
+          "world_position_m": [
+            3.56,
+            1.27,
+            0
+          ]
+        },
+        {
+          "instance_id": "right_chair",
+          "point_id": "approach_side",
+          "world_position_m": [
+            3.97,
+            -1.02,
+            0
+          ]
+        },
+        {
+          "instance_id": "fuel",
+          "point_id": "access_front",
+          "world_position_m": [
+            -4.35,
+            1.6099999999999999,
+            0
+          ]
+        },
+        {
+          "instance_id": "fence_left",
+          "point_id": "repair_front",
+          "world_position_m": [
+            -3.0,
+            2.29,
+            0
+          ]
+        },
+        {
+          "instance_id": "fence_right",
+          "point_id": "repair_front",
+          "world_position_m": [
+            3.0,
+            2.29,
+            0
+          ]
+        }
+      ],
+      "static_2d_access_from_entry_verified": true,
+      "clearance_grid_step_m": 0.05,
+      "overlapping_approaches_require_reservation": [
+        {
+          "a": [
+            "left_table",
+            "service_right"
+          ],
+          "b": [
+            "right_table",
+            "service_left"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        },
+        {
+          "a": [
+            "left_bench_back",
+            "approach_left"
+          ],
+          "b": [
+            "left_chair",
+            "approach_side"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        },
+        {
+          "a": [
+            "left_bench_back",
+            "approach_left"
+          ],
+          "b": [
+            "fuel",
+            "access_front"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        },
+        {
+          "a": [
+            "left_chair",
+            "approach_side"
+          ],
+          "b": [
+            "fuel",
+            "access_front"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        },
+        {
+          "a": [
+            "right_bench_front",
+            "approach_left"
+          ],
+          "b": [
+            "right_chair",
+            "approach_side"
+          ],
+          "required_policy": "mutually_exclusive_approach_reservations"
+        }
+      ],
+      "exported_example_transforms_verified": true
+    }
+  ],
+  "creates_inventory": false,
+  "navigation_and_animation_verified": false,
+  "visual_review_verified": true,
+  "scope": "Independent exported GLB, reference dimensions, static support points and standing clearance circles"
+}

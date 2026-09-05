@@ -1,0 +1,36 @@
+{
+  "schema_version":1,
+  "kit_id":"resident_kit_01",
+  "units":"metres",
+  "up_axis":"+Z",
+  "front_axis":"-Y",
+  "fitted_to":"/Game/Characters/Meshes/SKM_Villager",
+  "attachment_kind":"static_mesh_bone_attachment_candidate",
+  "animation_binding_verified":false,
+  "conventions":{
+    "origin":"Each root is the measured reference-pose bone position; asset axes remain parallel to Blender body axes. Bone rotation must be compensated with attachment_reference_to_bone matrices before UE axis conversion.",
+    "head":"head bone at source (0,-0.016597,1.272770)m; head skin width0.449723m, head top1.557142m. These are Cropout proportions, not a human-sized .25m hat assumption.",
+    "existing_hat":"Existing AHearthVillager.Hat is SkeletalMesh+LeaderPose. Hide it before adding these static hats/hair; do not pass these GLBs to SetSkeletalMesh.",
+    "rigidity":"Accessories are static. Reference-pose fit is checked; walk/chop/carry animation intersections and socket conversion must be tested in UE before enabling live attachment.",
+    "slots":"Use one head_cover and one back item at most. Hair/hat combinations are explicit in looks.json; do not stack arbitrary hats.",
+    "reference_ownership":"Original Cropout body FBX/blend remains in Saved/ThreeHearths/ResidentKitReference. ResidentKit GLBs contain original attachments only."
+  },
+  "modules":[
+    {"id":"hair_cropped_dark","category":"hair","bone":"head","slot":"hair"},
+    {"id":"hair_waves_chestnut","category":"hair","bone":"head","slot":"hair"},
+    {"id":"hair_braid_auburn","category":"hair","bone":"head","slot":"hair"},
+    {"id":"hair_bun_dark","category":"hair","bone":"head","slot":"hair"},
+    {"id":"hair_swept_silver","category":"hair","bone":"head","slot":"hair"},
+    {"id":"beard_neat_silver","category":"face_hair","bone":"head","slot":"face_hair"},
+    {"id":"headwrap_sage","category":"head_cover","bone":"head","slot":"head_cover"},
+    {"id":"hat_straw_wide","category":"head_cover","bone":"head","slot":"head_cover"},
+    {"id":"cap_merchant_plum","category":"head_cover","bone":"head","slot":"head_cover"},
+    {"id":"bag_crossbody_leather","category":"bag","bone":"spine_02","slot":"crossbody"},
+    {"id":"backpack_bedroll","category":"bag","bone":"spine_02","slot":"back"},
+    {"id":"apron_linen_short","category":"clothing","bone":"spine_02","slot":"front"},
+    {"id":"cape_royal_blue","category":"clothing","bone":"spine_02","slot":"back"},
+    {"id":"shawl_ochre","category":"clothing","bone":"spine_02","slot":"shoulders"},
+    {"id":"pouch_belt_double","category":"bag","bone":"pelvis","slot":"belt"},
+    {"id":"scarf_red","category":"clothing","bone":"neck","slot":"neck"}
+  ]
+}

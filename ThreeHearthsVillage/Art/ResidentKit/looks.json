@@ -1,0 +1,18 @@
+{
+  "schema_version":1,
+  "all_initial_residents_are_adults":true,
+  "role_labels_are_visual_suggestions_not_runtime_assignments":true,
+  "external_assets_referenced_without_copying":true,
+  "looks":[
+    {"id":"king_01","display_name":"国王候选","adult_age":56,"presentation":"male","body_color":"3F667F","skin_color":"D6AB86","attachments":["hair_swept_silver","beard_neat_silver","cape_royal_blue"],"references":[{"kit":"SocietyKit","id":"regalia_king_crown","bone":"head","position_m":[0,0,0.235],"scale":2.0}],"notes":"银发短须、蓝披风；皇冠复用旧库并适配大头比例。"},
+    {"id":"carpenter_01","display_name":"木匠候选","adult_age":32,"presentation":"female","body_color":"628B7A","skin_color":"BA875F","attachments":["hair_cropped_dark","pouch_belt_double"],"references":[{"kit":"SocietyKit","id":"tool_carpenter_hammer","bone":"hand_r","display_only":true}],"notes":"短发、腰包；手工具仅记录引用，未绑定持握动画。"},
+    {"id":"farmer_01","display_name":"农民候选","adult_age":27,"presentation":"female","body_color":"B39159","skin_color":"DAB58E","attachments":["hair_braid_auburn","hat_straw_wide","apron_linen_short"],"references":[],"notes":"后辫与宽草帽组合，短围裙避开膝部。"},
+    {"id":"mason_01","display_name":"石匠候选","adult_age":48,"presentation":"male","body_color":"817B6D","skin_color":"A97652","attachments":["hair_waves_chestnut","scarf_red","pouch_belt_double"],"references":[{"kit":"SocietyKit","id":"tool_mason_chisel","bone":"hand_r","display_only":true}],"notes":"栗色卷发、红围巾，工具引用旧库。"},
+    {"id":"smith_01","display_name":"铁匠候选","adult_age":41,"presentation":"female","body_color":"695655","skin_color":"8C6049","attachments":["hair_bun_dark","scarf_red"],"references":[{"kit":"SocietyKit","id":"profession_smith_apron","bone":"spine_02","position_m":[0,-0.36,0.285],"scale":0.68}],"notes":"束发和旧库皮围裙；围裙通过位置与比例适配。"},
+    {"id":"merchant_01","display_name":"商人候选","adult_age":35,"presentation":"male","body_color":"756785","skin_color":"CB9874","attachments":["hair_cropped_dark","cap_merchant_plum","bag_crossbody_leather"],"references":[],"notes":"软帽、斜挎包，与工匠的轮廓区别明显。"},
+    {"id":"potter_01","display_name":"制陶者候选","adult_age":29,"presentation":"female","body_color":"B07862","skin_color":"BF8B68","attachments":["headwrap_sage","apron_linen_short"],"references":[],"notes":"青绿头巾与浅围裙，头巾独占头部覆盖槽。"},
+    {"id":"herbalist_01","display_name":"草药师候选","adult_age":62,"presentation":"female","body_color":"71835D","skin_color":"D6AD8D","attachments":["hair_swept_silver","shawl_ochre","bag_crossbody_leather"],"references":[],"notes":"银发、赭色披肩、小包；年龄为成年外观建议。"},
+    {"id":"courier_01","display_name":"信使候选","adult_age":23,"presentation":"male","body_color":"638493","skin_color":"A77955","attachments":["hair_waves_chestnut","backpack_bedroll","scarf_red"],"references":[],"notes":"背包与铺盖卷形成清晰后侧轮廓。"},
+    {"id":"baker_01","display_name":"面包师候选","adult_age":45,"presentation":"female","body_color":"A88464","skin_color":"E0BA93","attachments":["hair_bun_dark","apron_linen_short","pouch_belt_double"],"references":[],"notes":"深色发髻、浅围裙与腰包；全部初始角色为成年。"}
+  ]
+}

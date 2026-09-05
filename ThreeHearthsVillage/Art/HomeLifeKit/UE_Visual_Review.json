@@ -1,0 +1,714 @@
+{
+  "status": "passed",
+  "reviewed_at_utc": "2026-09-05T20:11:33.514800+00:00",
+  "map": "/Game/ThreeHearths/Maps/L_HomeLifeKit_Showcase",
+  "images": [
+    {
+      "file": "previews/HomeLifeKit_InUE.png",
+      "sha256": "a2984d6655817704152f32345f8576800fca0c01fe4aa863ce435788cb0f2595",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "view": "overview",
+      "reviewed": true,
+      "fov_degrees": 58,
+      "camera_exposure_bias": 0
+    },
+    {
+      "file": "previews/HomeLifeKit_cabin_InUE.png",
+      "sha256": "4ccb9a45bcea8754e4b285cfc00cf6b8268a3783f68fb353ac491b410792f6e2",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "view": "cabin",
+      "reviewed": true,
+      "fov_degrees": 52,
+      "camera_exposure_bias": 0
+    },
+    {
+      "file": "previews/HomeLifeKit_meal_InUE.png",
+      "sha256": "c6fe32eb89fcbd42a0f5aad951c8c4577b6cb9ef646d912e6e30c151ae073ff2",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "view": "meal",
+      "reviewed": true,
+      "fov_degrees": 55,
+      "camera_exposure_bias": 0
+    }
+  ],
+  "native_mesh_count": 14,
+  "native_material_asset_count": 111,
+  "native_full_geometry_triangles": 103040,
+  "source_geometry_triangles": 103040,
+  "all_meshes_full_geometry_matches_source": true,
+  "maximum_bounds_origin_or_extent_error_cm": 1.3146792440466015e-05,
+  "native_uv_and_pbr_verified": true,
+  "nonzero_attachment_roots_preserved": true,
+  "display_scale": 1,
+  "checks": [
+    "Actual native UE screenshots inspected",
+    "No missing material slots",
+    "All source linear PBR factors preserved",
+    "Bounds origins and extents match axis-converted source vertices",
+    "Full Nanite triangles match source; LOD0 fallback recorded separately",
+    "Source independent validators cover normals and degenerate faces"
+  ],
+  "observations": [
+    "Twelve modules visible in overview",
+    "Open cabin interior and 4m furniture layout readable in close view",
+    "All ten meal seats visible; tabletops support trays and baskets",
+    "Empty basket mouth visibly open",
+    "No visible furniture interpenetration in the inspected static layouts"
+  ],
+  "limitations": [
+    "Dedicated static art display only",
+    "Display collisions disabled",
+    "Runtime animation, navigation and gameplay integration not validated"
+  ],
+  "offline_run": {
+    "api_config": "Saved/ThreeHearths/import-preview/offline.json",
+    "enabled": false,
+    "world_persistence_disabled": true,
+    "main_map_edited": false,
+    "world_simulation_actor_in_review_map": false,
+    "editor_pid": 27248,
+    "editor_cleanly_closed": true,
+    "no_unreal_processes_verified_at_utc": "2026-09-05T20:10:15Z"
+  },
+  "native_artifacts": [
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/basket_berries.uasset",
+      "bytes": 151231,
+      "sha256": "0591765b99f2ff84e5df4512eee9c14e51fd5b2f301c25b47b051e5753496021"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/HL_Berry_Blue.uasset",
+      "bytes": 21337,
+      "sha256": "07b1174b13695873ea517dfb69f4f16c1e9335563dc92740cafe4348d258e392"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/HL_Berry_Burgundy.uasset",
+      "bytes": 21381,
+      "sha256": "10e3642513ba49e7490575eea303c43465682e5f3d8df748451c67c4688424f5"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/HL_Berry_Leaf.uasset",
+      "bytes": 21337,
+      "sha256": "aea8014b1109e1e7cbc2180bd6c88df907c6643b56104596ee38b63d07602f11"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/HL_Golden_Wicker.uasset",
+      "bytes": 21370,
+      "sha256": "c5e38020b41b4a01f0fd86070a3a6c6eb7f6ff2638d1501ee523e0f168263b89"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_berries/HL_Wicker_Weave.uasset",
+      "bytes": 21359,
+      "sha256": "1c69d7e84d4601bd3ef070a466741cbe01acda9604ca39113cc4024c911d8e58"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_empty/basket_empty.uasset",
+      "bytes": 105958,
+      "sha256": "e1ded741b47d47926f0b9888abac8e1265200a5d62f7f6c91ad290862b4e78cb"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_empty/HL_Golden_Wicker.uasset",
+      "bytes": 21348,
+      "sha256": "9a5078e0cbd66069bccd10aa2695556b4afa0b13106800086906e158e8c040b9"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/basket_empty/HL_Wicker_Weave.uasset",
+      "bytes": 21337,
+      "sha256": "4f63e1f1ba7fb430841a1fc5d0249b08820d3d041756ea19221162d3597bb6c9"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/bed_double_2x2m.uasset",
+      "bytes": 100151,
+      "sha256": "3ed57ac714d3111bb21145a7f9e9dd096a683baf0c29817361c61e83e984ac28"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Blue_Blanket.uasset",
+      "bytes": 21359,
+      "sha256": "ebe721a5ca13c683eba3e8a0328bbc31c20a02b6901e1b7b67da3b9a7f1f9481"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Cream_Linen.uasset",
+      "bytes": 21348,
+      "sha256": "faf7d0eff873cd8252266c8d8d8c00b5645cd5a6593ac839901b0c2ce792cd9e"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Cut_Edge.uasset",
+      "bytes": 21315,
+      "sha256": "c56fd87ece1e45f0e84bdce232493132cc9dae5f9436687fdf8b2a72ed3d59a4"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Honey_Plank.uasset",
+      "bytes": 21348,
+      "sha256": "8aaaf32410814d191d5a3abc0f2bd23275c4ce97ed32b920fb697dbb049fe4df"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Linen_Stitch.uasset",
+      "bytes": 21359,
+      "sha256": "7566887504316fd0521f1ef6306a54d02a203a30505b040b3903efa6c4b26baf"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Timber_Recess.uasset",
+      "bytes": 21370,
+      "sha256": "75f8a84f403c6a328f3207940b5d8fb79e876a2b799c150202f1e0385ab66a22"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_double_2x2m/HL_Warm_Oak.uasset",
+      "bytes": 21315,
+      "sha256": "efb931a1a2ef16552a7d67b8c535168456ba205786b96bdb0c876a22d772f240"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/bed_single_1_1x2m.uasset",
+      "bytes": 115221,
+      "sha256": "ffcb510ede4033f75fdc40f33577aeb827e4c2a6e61c18fc78b307975535e5ba"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Cream_Linen.uasset",
+      "bytes": 21370,
+      "sha256": "e700371ca56178d24b6644ceb4307ebc6c0b7866dca94dd9925a4293deb070a3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Cut_Edge.uasset",
+      "bytes": 21337,
+      "sha256": "02374ff9a4756d910ac8770c04b2e23bed9c224465c6f610d11e0a3cc3df38c2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Honey_Plank.uasset",
+      "bytes": 21370,
+      "sha256": "06f024cb586923ad6c58acdfc8f33a48716124d5ddaa12b834246b075e52457f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Linen_Stitch.uasset",
+      "bytes": 21381,
+      "sha256": "4c091400d1e3e1e3357e96f27d7e17f47c6c312b2ca32ff6f4ea2435ea5b605f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Sage_Blanket.uasset",
+      "bytes": 21381,
+      "sha256": "581c2883a941e08787dc7b4db22fb35e864d6c5cbeca583419f76713b8e6bd1d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Timber_Recess.uasset",
+      "bytes": 21392,
+      "sha256": "e14c3bdb5b336dac729e90f7ee6f9e0fbfe129dd2d887e5a10b5b2576713ecb2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bed_single_1_1x2m/HL_Warm_Oak.uasset",
+      "bytes": 21337,
+      "sha256": "4f7483b6f62a427e40c03e54946e61639796b11250ffd4f1edaa96bca6db4180"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/bench_backed_1_8m.uasset",
+      "bytes": 91596,
+      "sha256": "791270cfaf71b8a24ff9f55c347ddfff987974c8c19881dc3ae4efa1a0b44fa8"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/HL_Cut_Edge.uasset",
+      "bytes": 21337,
+      "sha256": "a5da0153519b992e7603ebbe5c09fd13bdd2d61ca70478393dffe14758336fff"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/HL_Honey_Plank.uasset",
+      "bytes": 21370,
+      "sha256": "829ca71a2ed7f9513ba3da4c55f509dddcc68b76331aca89a3262ff3a39c10cb"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/HL_Timber_Recess.uasset",
+      "bytes": 21392,
+      "sha256": "50ca46b825ff3756dfea33b4b9bd064b39f18889f16ef9dddbc9f2b057958115"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/bench_backed_1_8m/HL_Warm_Oak.uasset",
+      "bytes": 21337,
+      "sha256": "63e7f991f0bed8fdd93f26f7f01e05ca590305388ea12cd5e24ee146d3c288a0"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/chair_oak_wide.uasset",
+      "bytes": 81016,
+      "sha256": "27573032a01bba66624178cfaa205ba957e55493951832944460c00f502b99a8"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/HL_Cut_Edge.uasset",
+      "bytes": 21304,
+      "sha256": "772d4bf20fe65847c759b3aa2a3e94e16cf7a2ac4e381b3c5c153f275d119d32"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/HL_Honey_Plank.uasset",
+      "bytes": 21337,
+      "sha256": "a3c4a28fa6e26123e24182d0ece6293cd7256d9265ff76053c9eb4ded7cefd95"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/HL_Timber_Recess.uasset",
+      "bytes": 21359,
+      "sha256": "c603a9a4612053219bd6700b25602a322753f16dcad693be643054e8ca61f5d4"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/chair_oak_wide/HL_Warm_Oak.uasset",
+      "bytes": 21304,
+      "sha256": "830137f3a6041b154f369529141cd31cb376cf8fda0e82b39cc03af6e0b373f8"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/cabin_living_4x4m.uasset",
+      "bytes": 491609,
+      "sha256": "057d0dcbf6caab53de380bdaaf132ece63c3ff3d26308f46f0d5c5d7868dc7a2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Brass_005.uasset",
+      "bytes": 21421,
+      "sha256": "c709753d6f5c99653d96464b41e9522f761d93befeb5fc8115279d3f01768045"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Bread_Crust_005.uasset",
+      "bytes": 21484,
+      "sha256": "d8adeb5cdd2e1dc5da4a7accc730aa721dff4ff6bfca0a8a266028fbd12de9f6"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Bread_Score_005.uasset",
+      "bytes": 21487,
+      "sha256": "5e2e28411966a348092f83a900386a691c69dc08a7b37e128fb6f4d697e1a375"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Cream_Linen_005.uasset",
+      "bytes": 21484,
+      "sha256": "40bd31b3df1a6f303c90933ba66e3d7d95d1f4d1573452126cbb97f2088e881a"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Cut_Edge_005.uasset",
+      "bytes": 21451,
+      "sha256": "10c3ef9570dc687704ac313d4fd2eef1e0d7f9957d55b024838c9bbda2530a8d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Forged_Iron_005.uasset",
+      "bytes": 21487,
+      "sha256": "9d71a0bf0e391c94f1b86831489eca1b8d273dccf4280fb96aa87e813b827290"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Glazed_Cream_Bowl_005.uasset",
+      "bytes": 21550,
+      "sha256": "c366605d3146a18c881b540f17d8add3569076e623cc009d43207838d570d0c8"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Golden_Wicker_005.uasset",
+      "bytes": 21509,
+      "sha256": "503403e6c6d24da92b2bc895b45e4ea62f8cea9225c75c6af01adc22ef063ff3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Honey_Plank_005.uasset",
+      "bytes": 21484,
+      "sha256": "b5a0da07db56d10f5c7cf548b3d09728c315b1e73e885cf217067f7f1e438677"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Linen_Stitch_005.uasset",
+      "bytes": 21495,
+      "sha256": "22a81e375cface6597b58d7557f1f9ec145afa90f6c3786819984ebbe4a46af9"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Sage_Blanket_005.uasset",
+      "bytes": 21495,
+      "sha256": "c1ef661baea00d6feda38d0f5ecc144c9b1030460902d1b0358fae4437a59c18"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Stew_005.uasset",
+      "bytes": 21407,
+      "sha256": "fb62fde6a32e908afda02c36d51e1ebaf16f0115e8ceb73ec4654db474c54917"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Timber_Recess_005.uasset",
+      "bytes": 21506,
+      "sha256": "7f8f25fb2c24aeef3ec8dc5d965138062520c6ebf3389c9346be3f99bff65002"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Warm_Oak_005.uasset",
+      "bytes": 21451,
+      "sha256": "32c13e6671886495586ff549f861cbbde7a83c130cb9dbccaed7168b2c75ec22"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/HL_Wicker_Weave_005.uasset",
+      "bytes": 21498,
+      "sha256": "cb968216dc45679a417aca584be13badfba9ce5f462f3bb8f93b44f99a358b08"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_018.uasset",
+      "bytes": 21454,
+      "sha256": "a431c82603fa12af7e87b6dc6f9803e5bad33fb11bb6dc7014e42abb2b5a95a3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_019.uasset",
+      "bytes": 21454,
+      "sha256": "8a1e76313de14e714bc9ed2e2dad6931e87c9a373826e42e20c5521ee98703ad"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_020.uasset",
+      "bytes": 21454,
+      "sha256": "d0c9071564f800b7c916cb1fa5054c7dbaaa30fbb16ba76052a6ad3031eeeeed"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_021.uasset",
+      "bytes": 21454,
+      "sha256": "0ef5eb417b73d3ba785ffc0512605ca782f44bf23697067c3cf267d30f49bb6f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_022.uasset",
+      "bytes": 21454,
+      "sha256": "0373fa4a3e04ec22228a9cc3e8ecec322669471746e5518ab7c4f9620c395c53"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_023.uasset",
+      "bytes": 21454,
+      "sha256": "d25fa6424fe2cee26b3473eb3850e6239b157fb5adbee96afc85d65af5b14aa5"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_024.uasset",
+      "bytes": 21454,
+      "sha256": "db7ddacdb0616ea055cac2cba9437a670eb84211066ffaef549d9dfd397f48da"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_025.uasset",
+      "bytes": 21454,
+      "sha256": "0ed8e41314f76883eade4652955c47c23c047bdf2a5725317cb7eb5a0046dd5c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Chestnut_026.uasset",
+      "bytes": 21454,
+      "sha256": "a789fe788f1974d50bfcc94d0421623684d315ab4ac4aade724255a9b4b0d4bf"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cream_Lime_008.uasset",
+      "bytes": 21476,
+      "sha256": "042d480cd1a7fb8f27f99ed079611c1b6073c5708e7545ce84e681e5353668c7"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cream_Lime_009.uasset",
+      "bytes": 21476,
+      "sha256": "f824f02b76810770ba7743dae10f6380232038447b963f2e6afb52ec85bfc016"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cream_Lime_010.uasset",
+      "bytes": 21476,
+      "sha256": "04be7f83a087df9fd68dd85c6e32cd8500ba156cdde789a922d7f11991924e88"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cream_Lime_011.uasset",
+      "bytes": 21476,
+      "sha256": "35c0f422dfe5746140e2a75c623c892ad6a896c1334e1d249ab8c5b37ad434a2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_012.uasset",
+      "bytes": 21443,
+      "sha256": "8946b159976cdc7ed7c061bec5d5b97bb07c436867fb52fa024c57e691591629"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_013.uasset",
+      "bytes": 21443,
+      "sha256": "8e2bf7e6513fcad2ec710ab723d3d888151b0c08a2f14f7b2b3a765e7b05ce56"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_014.uasset",
+      "bytes": 21443,
+      "sha256": "7c8fba43219dcbdc3243903f1b08b288557d929dbf81c58e53e00dba11795bd5"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_015.uasset",
+      "bytes": 21443,
+      "sha256": "3b2dafc7c0e814c25b1dd6004941f63dd9d6313bc4af7e5eef0d20eaf01107a0"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_016.uasset",
+      "bytes": 21443,
+      "sha256": "7b6c9a5f5c2ffcbe000a387292cd404cd65774a6a83ef124d5d0c0bfae87725c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Cut_Oak_017.uasset",
+      "bytes": 21443,
+      "sha256": "68cea2ab5d26c8e86d2c6d94b19b4b9f30f760c36d089e9f7c13ca534c9d1a61"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Honey_Plank_008.uasset",
+      "bytes": 21487,
+      "sha256": "eb63e44be9f8f60eeee4583bfe60916062ac28c9e4fde4e9f902fc4e2227077a"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Honey_Plank_009.uasset",
+      "bytes": 21487,
+      "sha256": "b0056e8bebb651fc5efe2f156b2fd220f20c9b2dd4b954f3040980ad23938180"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Honey_Plank_010.uasset",
+      "bytes": 21487,
+      "sha256": "41f913298a771a3ff30e2b402cf80661cb254cb4e9c8d3d6882399a1659ba12f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Honey_Plank_011.uasset",
+      "bytes": 21487,
+      "sha256": "9af5dd7185ab8d7c40d9316de2d69d987f2005f337b863be6effc457d81834b6"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Opaque_Window_004.uasset",
+      "bytes": 21509,
+      "sha256": "5418da76d549cd468ab061313ebfbbfe08986bf30aed37d9f4f2cd78687b6383"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Opaque_Window_005.uasset",
+      "bytes": 21509,
+      "sha256": "95d4bfbb577c14bddfcd75da90d32f7d9afaf63c7bd4a5e6cdefe2143b2ad5f1"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Stone_Edge_004.uasset",
+      "bytes": 21476,
+      "sha256": "cb64059360ff074cecdcff5b0456a267e0aa3eedc730f9eb972bd841bfca50fe"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__cabin_living_4x4m/VK_Stone_Edge_005.uasset",
+      "bytes": 21476,
+      "sha256": "4aae60810ab4c3a6a5b8ad9311dc8d6b4e46c2bee67d418ef969a20b9e4d2b13"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/common_meal_10_seats.uasset",
+      "bytes": 677090,
+      "sha256": "cab44d23aa4733cb2c5be4fd5f27c9d682ad3dba08e90232ed1ee968c5dbb1d3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Berry_Blue_006.uasset",
+      "bytes": 21506,
+      "sha256": "8900e196e0c20ec88f9cf9c8a15a33cb35a37b0f677ed9779c5bb3e5a2c0432f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Berry_Burgundy_006.uasset",
+      "bytes": 21550,
+      "sha256": "2478bcf1c18d2a99cfa20033ff896ae52bba586e9a8a1c80a5a9b274a8e41ed6"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Berry_Leaf_006.uasset",
+      "bytes": 21506,
+      "sha256": "26f5f9c2ec54e373faa5f24f2f1c28aeca3aeff954cc33cb96024d84d934749d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Bread_Crust_006.uasset",
+      "bytes": 21520,
+      "sha256": "4761256ff13e6436f43ff2c6aa576ccba559f61b1b886b95af54a00ff4740828"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Bread_Score_006.uasset",
+      "bytes": 21520,
+      "sha256": "fc0e6bb738b0761ec8ce5163a104406f0dc4c4d868ded8e56698653402924d18"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Cut_Edge_006.uasset",
+      "bytes": 21484,
+      "sha256": "fcdefb26efea55281d703cae9a7ee7cfda8be3f58aaa247f216ad6ecf176e03b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Firewood_Bark_006.uasset",
+      "bytes": 21539,
+      "sha256": "c2e5c564a137da76c594df59074d1a07786ac27156f024f3c46f057f67a939d2"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Glazed_Cream_Bowl_006.uasset",
+      "bytes": 21586,
+      "sha256": "fdd69826e227e712324d9d022ef01de84333c8d72181e93789a5e112d475f95b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Golden_Wicker_006.uasset",
+      "bytes": 21539,
+      "sha256": "c5386e1f0b6a313b4b3bf9293eed1143291552778251552f942a19effc2d0cff"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Honey_Plank_006.uasset",
+      "bytes": 21517,
+      "sha256": "d1210c4665864089c996759ca150ff9d16e48dbdd7a870c663dcd3bc85a8876f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Stew_006.uasset",
+      "bytes": 21443,
+      "sha256": "3e264c67d91ae9173d52a7c2389e9c198ba28418b05238da85b1fe3c288976fa"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Timber_Recess_006.uasset",
+      "bytes": 21539,
+      "sha256": "ba3f3869ece5d1876369a5564b431e5616c75027f15a5b364e45fe6d64d666af"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Warm_Oak_006.uasset",
+      "bytes": 21484,
+      "sha256": "5f23bc498b8d7a51fee1885a577f64f1661b06440ea94ec371ec7221c1ea341c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/example__common_meal_10_seats/HL_Wicker_Weave_006.uasset",
+      "bytes": 21528,
+      "sha256": "32c70315c0a3dcd4ede4381f2f805037ada02800147329e1e4c8fcfe270cf489"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/fence_low_2m/fence_low_2m.uasset",
+      "bytes": 54647,
+      "sha256": "de065e5a9d03e89d9dfac10f04c1a39cf121d86be0865add2e087cc11cf788fd"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/fence_low_2m/HL_Cut_Edge.uasset",
+      "bytes": 21296,
+      "sha256": "e3a8b901e00e9b23b9f7d8c781145d519605491ad7726f17e342861d90dd6f63"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/fence_low_2m/HL_Honey_Plank.uasset",
+      "bytes": 21329,
+      "sha256": "b7692ef56c1239c9c79983efafc7e21016e0e008c86d59c178f6828e823f0d8b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/fence_low_2m/HL_Warm_Oak.uasset",
+      "bytes": 21296,
+      "sha256": "93483c7561025b5e1b08bee0d2ce2c4c5e03a2bdc60030d0e5110ad2cf4c100d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/firewood_stack/firewood_stack.uasset",
+      "bytes": 89957,
+      "sha256": "fdbc155de036ec4028f90604abf697ef7570693cd110030ec26924cbc3b241de"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/firewood_stack/HL_Cut_Edge.uasset",
+      "bytes": 21318,
+      "sha256": "c98824372d0a5faf7c50a179978e062c84322c11bdf747da5a2380ee664934fe"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/firewood_stack/HL_Firewood_Bark.uasset",
+      "bytes": 21373,
+      "sha256": "c750790b32ae9a7dd98ef862b5d6235dab5e7b56d15dfcd0b71c8fc18c7606ec"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/firewood_stack/HL_Timber_Recess.uasset",
+      "bytes": 21373,
+      "sha256": "5c9276617f5158c3ed93b6f610416f3594a702953f335c0bdca996e3c91476da"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/food_tray_bread.uasset",
+      "bytes": 89891,
+      "sha256": "7c34522b1742ca75f68260c918f891fd6b884a6dcff6440c3f089c5e4394f374"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Bread_Crust.uasset",
+      "bytes": 21359,
+      "sha256": "680b2137066b889f24358f33d6c45df38344894fd99e6375c330d67ddb20d16b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Bread_Score.uasset",
+      "bytes": 21359,
+      "sha256": "c7275933450ec30b7fe733942596eab37db5f53734e782658675e4eb6aa6341b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Cut_Edge.uasset",
+      "bytes": 21326,
+      "sha256": "ab686aef881ae55c8891d6c2929a18af4acc81146c2854966f351b75a81956d3"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Glazed_Cream_Bowl.uasset",
+      "bytes": 21425,
+      "sha256": "c0df6f084181c13229a610782f3eb882632887ba17a081c5e510af2b1879dc2b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Stew.uasset",
+      "bytes": 21282,
+      "sha256": "9f836a3a1accfcfe1c524077389adc47a5a59094c08794f233e6e9b9c884140a"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/food_tray_bread/HL_Warm_Oak.uasset",
+      "bytes": 21326,
+      "sha256": "f26b0afce200d2f71d2c7712d8eac3a3d3231e111b67327f04c57ad6094b0b24"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/grain_chest.uasset",
+      "bytes": 95344,
+      "sha256": "b1c7c7ca9c348ec4d3152064a0fa2c0e27e31bd64da12918e76f31ed0a7242ce"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Brass.uasset",
+      "bytes": 21249,
+      "sha256": "f7347d6926f0b9b8763a680b6a24c9337c4d210da66ec8d103b10b8e5e3e6b4b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Cut_Edge.uasset",
+      "bytes": 21282,
+      "sha256": "abd96d67b01f8d28371915ca904e417a6888bb1136bd482ccd9c87afadf06e5c"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Forged_Iron.uasset",
+      "bytes": 21315,
+      "sha256": "df569a1d1396ec9e7997a054146a012132cd6abdba04f1ad726b522834f6e7ab"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Honey_Plank.uasset",
+      "bytes": 21315,
+      "sha256": "ca9c6a07893d13b9ff52fb9f705135257fe01b5eeeede8a7745380e240e4158b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Timber_Recess.uasset",
+      "bytes": 21337,
+      "sha256": "7b66c73aa78095a7f148b0d1b843281587c1d715f5290ddfa68db2e5045de2cd"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/grain_chest/HL_Warm_Oak.uasset",
+      "bytes": 21282,
+      "sha256": "2ad7c81a6cf83083b3bbfd827549e2dd2a8b8c5361b9d4ef2225dd15a657e595"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/HL_Cut_Edge.uasset",
+      "bytes": 21370,
+      "sha256": "e9f25936b585aad14ba250c58011ae85405fb762e12f24501463e828560f368b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/HL_Honey_Plank.uasset",
+      "bytes": 21403,
+      "sha256": "c9d6a9ead02c856f3e4257180af4f335188f6aa62a87a51785b990174f0810dc"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/HL_Timber_Recess.uasset",
+      "bytes": 21425,
+      "sha256": "7dc02a4d00aa15784dc51f5d109f04471f8257ce379e14a61a6e3a3fecdfb1ae"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/HL_Warm_Oak.uasset",
+      "bytes": 21370,
+      "sha256": "2401fe2a2fa462b7c6bb9a4bd18af699ec6e28026eac776c99abab9a56a89f00"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_communal_2_6m/table_communal_2_6m.uasset",
+      "bytes": 69740,
+      "sha256": "dca04929c7bcd057f1f3c0f2f930a8b70f8e5c3d8e65fdf2ac12c900b3ac34e1"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/HL_Cut_Edge.uasset",
+      "bytes": 21337,
+      "sha256": "668477d9b7fdfc8612f49168c061044d2fec2bfd862210453cab17c652916981"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/HL_Honey_Plank.uasset",
+      "bytes": 21370,
+      "sha256": "bc5ec9688a2687bbd2944b842079ebfbd7ca9e5646d43c33cc7d67633a6b00ff"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/HL_Timber_Recess.uasset",
+      "bytes": 21392,
+      "sha256": "3e7df603abd18f0072559df6810cd6ab83a62c57a0acc1a08a09b2c92f11ff72"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/HL_Warm_Oak.uasset",
+      "bytes": 21337,
+      "sha256": "53b31241f5410f8471f30da1b217bbbb2cc54d53fe1c778eb356bc7a0b25866e"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HomeLifeKit/table_dining_1_2m/table_dining_1_2m.uasset",
+      "bytes": 63199,
+      "sha256": "3b748a3d1cedb5865d2ae976f6f0061438e9bd8954d554c1e8bae352083634fe"
+    },
+    {
+      "file": "Content/ThreeHearths/Maps/L_HomeLifeKit_Showcase.umap",
+      "bytes": 540063,
+      "sha256": "56f8226ebf770d7d1da3eb3e1d4460a18b3111e5b3000610175bb7e5522ec78f"
+    }
+  ]
+}
