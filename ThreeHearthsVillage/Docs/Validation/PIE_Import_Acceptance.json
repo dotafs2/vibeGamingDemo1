@@ -1,0 +1,143 @@
+{
+  "status": "passed",
+  "validated_date": "2026-09-06",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "Known local cottage GLB in Windows editor PIE using an isolated editor worker",
+  "source": "Art/HearthCottage/HearthCottage_SharedUV.glb",
+  "source_sha256": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91",
+  "source_bytes": 1200576,
+  "build": "Succeeded",
+  "offline_tests_passed": 12,
+  "native_tests": {
+    "ThreeHearths.Decisions.OneSlotPerResident": "Success",
+    "ThreeHearths.Decisions.ValidateModelOutput": "Success",
+    "ThreeHearths.ImportPreview.WorldIsolation": "Success",
+    "ThreeHearths.Movement.ResidentTraffic": "Success",
+    "ThreeHearths.Movement.SweptSeparation": "Success"
+  },
+  "native_test_warning": "WorldIsolation temporary world has no engine context during actor cleanup; test result Success",
+  "cases": [
+    {
+      "name": "success",
+      "state": "ready",
+      "outcome": "ready",
+      "worker_count": 0,
+      "import_wall_seconds": 6.686999999976251,
+      "ticks_while_loading": 200,
+      "max_tick_gap_seconds": 0.0470000000204891,
+      "simulation_advanced_seconds": 6.650010168552399,
+      "material_slots": 19,
+      "bounds_extent_cm": [
+        219.7750015258789,
+        212.7750015258789,
+        189.75000023841858
+      ],
+      "collision": "original cottage collision retained"
+    },
+    {
+      "name": "restore_after_success",
+      "state": "stopped",
+      "outcome": "ready",
+      "worker_count": 0,
+      "import_wall_seconds": 6.686999999976251,
+      "ticks_while_loading": 200,
+      "max_tick_gap_seconds": 0.0470000000204891,
+      "material_slots": 19,
+      "bounds_extent_cm": [
+        219.7750015258789,
+        212.7750015258789,
+        189.75000023841858
+      ],
+      "collision": "original cottage collision retained",
+      "cleanup_reason": "Stopped by operator"
+    },
+    {
+      "name": "missing",
+      "state": "fallback",
+      "outcome": "fallback",
+      "worker_count": 0,
+      "import_wall_seconds": 0.0,
+      "ticks_while_loading": 0,
+      "max_tick_gap_seconds": 0.0
+    },
+    {
+      "name": "truncated",
+      "state": "fallback",
+      "outcome": "fallback",
+      "worker_count": 0,
+      "import_wall_seconds": 0.0,
+      "ticks_while_loading": 0,
+      "max_tick_gap_seconds": 0.0
+    },
+    {
+      "name": "empty_geometry",
+      "state": "fallback",
+      "outcome": "fallback",
+      "worker_count": 0,
+      "import_wall_seconds": 5.5939999999827705,
+      "ticks_while_loading": 167,
+      "max_tick_gap_seconds": 0.0470000000204891
+    },
+    {
+      "name": "timeout_and_worker_cleanup",
+      "state": "fallback",
+      "outcome": "fallback",
+      "worker_count": 0,
+      "import_wall_seconds": 0.1559999999590218,
+      "ticks_while_loading": 5,
+      "max_tick_gap_seconds": 0.03200000000651926
+    },
+    {
+      "name": "duplicate_rejected_and_cancel_cleanup",
+      "state": "stopped",
+      "outcome": null,
+      "worker_count": 0,
+      "ticks_while_loading": 0,
+      "max_tick_gap_seconds": 0.0,
+      "cleanup_reason": "Stopped by operator"
+    },
+    {
+      "name": "village_restart",
+      "state": "stopped",
+      "outcome": null,
+      "worker_count": 0,
+      "ticks_while_loading": 0,
+      "max_tick_gap_seconds": 0.0,
+      "cleanup_reason": "PIE ended or the village restarted"
+    },
+    {
+      "name": "pie_exit",
+      "state": "stopped",
+      "outcome": null,
+      "worker_count": 0,
+      "ticks_while_loading": 0,
+      "max_tick_gap_seconds": 0.0,
+      "cleanup_reason": "PIE ended or the village restarted"
+    },
+    {
+      "name": "reject_editor_world",
+      "state": "passed"
+    },
+    {
+      "name": "success_after_new_pie",
+      "state": "ready",
+      "outcome": "ready",
+      "worker_count": 0,
+      "import_wall_seconds": 6.811999999976251,
+      "ticks_while_loading": 204,
+      "max_tick_gap_seconds": 0.0470000000204891,
+      "simulation_advanced_seconds": 6.950008392333984,
+      "material_slots": 19,
+      "bounds_extent_cm": [
+        219.7750015258789,
+        212.7750015258789,
+        189.75000023841858
+      ],
+      "collision": "original cottage collision retained"
+    }
+  ],
+  "visual_check": "Passed; see PIE_Import_Cottage.png",
+  "interaction_check": "Residents continued moving; selecting Mira opened her history panel",
+  "model_api_calls": 0,
+  "report_note": "Summary preserves acceptance measurements; per-run paths and verbose error messages remain in Saved logs."
+}
