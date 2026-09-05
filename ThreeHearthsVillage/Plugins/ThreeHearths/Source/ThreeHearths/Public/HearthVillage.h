@@ -14,6 +14,7 @@ class UAnimSequence;
 class UCameraComponent;
 class IHttpRequest;
 class FJsonObject;
+class IFileHandle;
 
 UENUM(BlueprintType)
 enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit };
@@ -22,6 +23,7 @@ enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering,
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone };
 struct FHearthSite
 {
+    FString StableId;
     EHearthSiteKind Kind=EHearthSiteKind::Empty;
     FVector Position=FVector::ZeroVector, Approach=FVector::ZeroVector;
     float Radius=270.f, Growth=0.f, GrowDuration=120.f, Progress=0.f;
@@ -44,6 +46,7 @@ struct FHearthDecisionRecord
 // Each resident owns one request slot; replies never share mutable decision data.
 struct FHearthPendingDecision
 {
+    FString OperationId;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
     bool bActive=false, bReturned=false, bLife=false, bHasUsage=false;
@@ -81,6 +84,8 @@ USTRUCT(BlueprintType)
 struct FHearthResident
 {
     GENERATED_BODY()
+    UPROPERTY(BlueprintReadOnly) FString StableId;
+    UPROPERTY(BlueprintReadOnly) FString ActiveTaskId;
     UPROPERTY(BlueprintReadOnly) FString Name;
     UPROPERTY(BlueprintReadOnly) FString Personality;
     UPROPERTY(BlueprintReadOnly) FString Reason;
@@ -121,6 +126,11 @@ public:
     virtual void Tick(float DeltaSeconds) override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
     UFUNCTION(BlueprintCallable) void RestartVillage();
+    UFUNCTION(BlueprintCallable) bool SaveWorld();
+    UFUNCTION(BlueprintCallable) bool LoadWorld();
+    UFUNCTION(BlueprintCallable) FString ExportWorldState() const;
+    UPROPERTY(BlueprintReadOnly) FString WorldId;
+    UPROPERTY(BlueprintReadOnly) FString WorldSaveStatus;
     UFUNCTION(BlueprintCallable) void TogglePause();
     UFUNCTION(BlueprintCallable) void CycleSpeed();
     UFUNCTION(BlueprintCallable) void SetSimulationSpeed(float Speed);
@@ -169,6 +179,17 @@ private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HouseMeshes;
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
+    friend class FHearthWorldPersistenceTest;
+    friend class FHearthWorldRecoveryTest;
+    FString WorldPath;
+    FString PlotIds[3];
+    TSharedPtr<IFileHandle> WorldLease;
+    int64 WorldRevision=0;
+    float WorldSaveTimer=0;
+    bool bWorldPersistenceEnabled=false, bWorldWriteBlocked=false;
+    void InitializeWorldPersistence();
+    void ResetVillageState();
+    bool ApplyWorldState(const FString& Text, FString& Error);
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> StockMeshes;
     UPROPERTY() TObjectPtr<UMaterialInterface> TintMaterial;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ProductionMeshes;

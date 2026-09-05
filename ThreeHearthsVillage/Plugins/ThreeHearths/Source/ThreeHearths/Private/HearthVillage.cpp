@@ -243,7 +243,8 @@ void AHearthVillage::BeginPlay()
     Super::BeginPlay();
     BuildEnvironment();
     LoadHistory();
-    RestartVillage();
+    ResetVillageState();
+    InitializeWorldPersistence();
 }
 
 FLinearColor AHearthVillage::ResidentColor(int32 I) const
@@ -252,11 +253,13 @@ FLinearColor AHearthVillage::ResidentColor(int32 I) const
     return Colors[FMath::Clamp(I,0,2)];
 }
 
-void AHearthVillage::RestartVillage()
+void AHearthVillage::ResetVillageState()
 {
     CloseHistoryRun(TEXT("重新开始了新一轮，旧任务已结束。"));
     StopDecisionRequests();
     CurrentRun=FGuid::NewGuid().ToString(EGuidFormats::Digits);
+    WorldId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    WorldRevision=0; WorldSaveTimer=0;
     LastLifeResident=-1;
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
@@ -265,9 +268,11 @@ void AHearthVillage::RestartVillage()
     for (int32 I=0;I<3;++I)
     {
         PlotOwners[I]=-1; WoodStock[I]=12;
+        PlotIds[I]=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if (HouseMeshes.IsValidIndex(I)) { HouseMeshes[I]->SetVisibility(false); HouseMeshes[I]->SetWorldScale3D(FVector(1)); }
         if (StockMeshes.IsValidIndex(I)) { StockMeshes[I]->SetVisibility(true); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,0.4f)); }
         FHearthResident R;
+        R.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         const TCHAR* Names[]={TEXT("林恩"),TEXT("米拉"),TEXT("伯恩")};
         const TCHAR* Personas[]={TEXT("内向木匠 · 喜欢树林"),TEXT("热心农民 · 喜欢邻居"),TEXT("节俭工匠 · 够住就好")};
         R.Name=Names[I]; R.Personality=Personas[I];
@@ -369,6 +374,7 @@ bool AHearthVillage::ReservePlot(int32 Index,int32 Plot,const FString& Reason,bo
     if(R.Plot!=-1 || R.Task!=EHearthTask::Choosing) return false;
     if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,false,bFromApi?TEXT("api"):TEXT("local"));
     PlotOwners[Plot]=Index; R.Plot=Plot; R.Reason=Reason;
+    R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
     AcceptHistory(Index,TEXT("在")+PlotNameFor(Index)+TEXT("建家"),Reason,R.DecisionSource);
     R.LatestEvent=FString::Printf(TEXT("选中了%s，需要 %d 份木材。"),*PlotNameFor(Index),CostFor(Index));
@@ -439,6 +445,11 @@ void AHearthVillage::Tick(float DeltaSeconds)
         if(SnapshotTimer>=0.5f) { SnapshotTimer=0; WriteSnapshot(); }
     }
     RefreshProductionVisuals();
+    if(bWorldPersistenceEnabled && !bWorldWriteBlocked)
+    {
+        WorldSaveTimer+=RealDt;
+        if(WorldSaveTimer>=30.f) { WorldSaveTimer=0; SaveWorld(); }
+    }
     for(auto& R:Residents) if(IsValid(R.Actor))
     {
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:R.Task,bSimulationPaused?0.f:SimulationSpeed,R.ProductionOp);
@@ -571,6 +582,9 @@ FString AHearthVillage::StatusFor(int32 I) const
 FString AHearthVillage::GetSnapshot() const
 {
     auto Root=MakeShared<FJsonObject>();
+    Root->SetStringField(TEXT("world_id"),WorldId);
+    Root->SetNumberField(TEXT("world_revision"),WorldRevision);
+    Root->SetStringField(TEXT("world_save_status"),WorldSaveStatus);
     Root->SetStringField(TEXT("backend"),bApiReady?ApiBackend:TEXT("local_personality_policy"));
     Root->SetStringField(TEXT("api_status"),ApiStatus);
     Root->SetStringField(TEXT("model"),ApiModel);
@@ -625,6 +639,7 @@ FString AHearthVillage::GetSnapshot() const
     {
         const auto& R=Residents[I]; auto J=MakeShared<FJsonObject>();
         J->SetNumberField(TEXT("id"),I); J->SetStringField(TEXT("name"),R.Name);
+        J->SetStringField(TEXT("stable_id"),R.StableId); J->SetStringField(TEXT("task_id"),R.ActiveTaskId);
         J->SetStringField(TEXT("reason"),R.Reason); J->SetStringField(TEXT("status"),StatusFor(I));
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);
@@ -656,8 +671,10 @@ void AHearthVillage::WriteSnapshot() const
 }
 void AHearthVillage::EndPlay(const EEndPlayReason::Type Reason)
 {
-    CloseHistoryRun(TEXT("本次播放已结束，任务在此中断。"));
+    if(bWorldPersistenceEnabled) SaveWorld();
+    else CloseHistoryRun(TEXT("本次播放已结束，任务在此中断。"));
     StopDecisionRequests();
+    WorldLease.Reset();
     WriteSnapshot();
     Super::EndPlay(Reason);
 }

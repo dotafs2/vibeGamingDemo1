@@ -206,6 +206,7 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(!ApiThinkingMode.IsEmpty()) { auto Thinking=MakeShared<FJsonObject>(); Thinking->SetStringField(TEXT("type"),ApiThinkingMode); Body->SetObjectField(TEXT("thinking"),Thinking); }
     if(ApiFormat==TEXT("json_object")) { auto Format=MakeShared<FJsonObject>(); Format->SetStringField(TEXT("type"),TEXT("json_object")); Body->SetObjectField(TEXT("response_format"),Format); }
     auto& Pending=PendingDecisions[Index]; Pending=FHearthPendingDecision();
+    Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     Pending.bActive=true; Pending.bLife=bLife; Pending.StartedAt=FPlatformTime::Seconds();
     Pending.Serial=++DecisionSerial;
     Pending.AllowedActions=bLife?AvailableLifeActions(Index):TArray<int32>();
@@ -223,8 +224,8 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(!ApiKey.IsEmpty()) Request->SetHeader(TEXT("Authorization"),TEXT("Bearer ")+ApiKey);
     if(bApiBudgeted)
     {
-        Request->SetHeader(TEXT("X-Hearth-Operation"),FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens));
-        Request->SetHeader(TEXT("X-Hearth-Resident"),FString::Printf(TEXT("resident-%d"),Index));
+        Request->SetHeader(TEXT("X-Hearth-Operation"),Pending.OperationId);
+        Request->SetHeader(TEXT("X-Hearth-Resident"),Residents[Index].StableId);
     }
     Request->SetContentAsString(HearthDecision::Json(Body)); Request->SetTimeout(ApiTimeout); Request->SetActivityTimeout(ApiTimeout);
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
@@ -273,6 +274,10 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         if(!Refusal.IsEmpty() || !(*Message)->TryGetStringField(TEXT("content"),Content) || !(bLife?HearthDecision::ParseLifePlan(Content,Reply.Choice,Reply.Reason):HearthDecision::ParsePlan(Content,Reply.Choice,Reply.Reason))) { Reply.Error=TEXT("模型选择不符合格式要求"); return; }
         V->ApiStatus=TEXT("已收到模型选择，等待执行");
     });
+    // Persist the operation ID before a paid request can leave the process. A restart
+    // recognizes the interrupted operation and never sends a second paid attempt.
+    if(bApiBudgeted && bWorldPersistenceEnabled && !SaveWorld())
+    { Request->OnProcessRequestComplete().Unbind(); Pending.Request.Reset(); Pending.Error=TEXT("世界存档失败，未发送付费请求"); Pending.bReturned=true; bApiDisabledThisRun=true; return; }
     if(!Request->ProcessRequest()) { Request->OnProcessRequestComplete().Unbind(); Pending.Request.Reset(); Pending.Error=TEXT("请求未能发出"); Pending.bReturned=true; }
     WriteSnapshot();
 }

@@ -51,6 +51,7 @@ void AHearthVillage::InitializeProduction()
         if(!IsLand(Position) || !IsLand(Position+FVector(Radius,Radius,0)) || !IsLand(Position-FVector(Radius,Radius,0))
             || !IsLand(Position+FVector(-Radius,Radius,0)) || !IsLand(Position+FVector(Radius,-Radius,0))) return;
         FHearthSite Site; Site.Kind=Kind; Site.Position=Position; Site.Radius=Radius; Site.bExpansion=Expansion;
+        Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if(Kind==EHearthSiteKind::Tree) { Site.Stage=2; Site.Units=Site.Capacity=18; Site.GrowDuration=180; }
         if(Kind==EHearthSiteKind::Shrub) { Site.Stage=2; Site.Units=Site.Capacity=12; Site.GrowDuration=120; }
         if(Kind==EHearthSiteKind::Stone) { Site.Stage=2; Site.Units=Site.Capacity=36; }
@@ -163,6 +164,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     FoodStock-=F; StoneStock-=T; Spent[0]+=F; Spent[1]+=W; Spent[2]+=T;
     for(int32 I=0;I<3 && W>0;++I) { const int32 Used=FMath::Min(W,WoodStock[I]); WoodStock[I]-=Used; W-=Used; }
     S.ReservedBy=Index; S.Progress=0;
+    R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     R.ProductionSite=Site; R.ProductionOp=Op; R.CargoAmount=0; R.CargoType=-1;
     R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
     R.Route=MoveTemp(Route); R.Task=EHearthTask::ProductionTravel; R.LatestEvent=Label;
@@ -316,6 +318,7 @@ FString AHearthVillage::GetProductionState() const
     for(int32 I=0;I<ProductionSites.Num();++I)
     {
         const auto& S=ProductionSites[I]; auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("id"),I);
+        J->SetStringField(TEXT("stable_id"),S.StableId);
         J->SetStringField(TEXT("kind"),HearthProduction::KindKeys[static_cast<int32>(S.Kind)]); J->SetStringField(TEXT("name"),HearthProduction::KindNames[static_cast<int32>(S.Kind)]);
         J->SetNumberField(TEXT("stage"),S.Stage); J->SetNumberField(TEXT("units"),S.Units); J->SetNumberField(TEXT("growth_seconds"),S.Growth);
         J->SetNumberField(TEXT("reserved_by"),S.ReservedBy); J->SetNumberField(TEXT("owner"),S.Owner); J->SetBoolField(TEXT("reachable"),S.bReachable);

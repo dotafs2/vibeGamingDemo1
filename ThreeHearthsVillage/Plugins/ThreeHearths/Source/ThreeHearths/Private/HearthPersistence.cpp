@@ -1,0 +1,143 @@
+#include "HearthWorldState.h"
+#include "Dom/JsonObject.h"
+#include "Components/StaticMeshComponent.h"
+#include "HAL/PlatformFileManager.h"
+#include "HAL/PlatformTime.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
+#include "Misc/Paths.h"
+
+void AHearthVillage::InitializeWorldPersistence()
+{
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthNoWorldPersistence")))
+    { WorldSaveStatus=TEXT("隔离测试：不保存世界"); return; }
+    WorldPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/World/current-world.json");
+    FParse::Value(FCommandLine::Get(),TEXT("HearthWorld="),WorldPath);
+    WorldPath=FPaths::ConvertRelativePathToFull(WorldPath);
+    bWorldPersistenceEnabled=true;
+    auto& Files=FPlatformFileManager::Get().GetPlatformFile(); Files.CreateDirectoryTree(*FPaths::GetPath(WorldPath));
+    // Exclusive open blocks a second PIE/editor process from advancing this same world.
+    WorldLease=MakeShareable(Files.OpenWrite(*(WorldPath+TEXT(".lock")),false,false));
+    if(!WorldLease.IsValid())
+    {
+        bWorldWriteBlocked=true; bSimulationPaused=true; bApiReady=false;
+        WorldSaveStatus=TEXT("此世界正在另一个进程中运行，当前模拟已暂停"); return;
+    }
+    if(Files.FileExists(*WorldPath) || Files.FileExists(*(WorldPath+TEXT(".bak"))))
+    { if(!LoadWorld()) { bWorldWriteBlocked=true; bSimulationPaused=true; bApiReady=false; } }
+    else SaveWorld();
+}
+
+FString AHearthVillage::ExportWorldState() const
+{
+    FHearthWorldImage W; W.Id=WorldId; W.Run=CurrentRun; W.Revision=WorldRevision;
+    W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
+    W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
+    W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock;
+    for(int32 I=0;I<3;++I)
+    {
+        W.Wood[I]=WoodStock[I]; W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I];
+        W.Plots[I]=PlotPositions[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
+    }
+    const double Now=FPlatformTime::Seconds();
+    for(int32 I=0;I<Residents.Num();++I)
+    {
+        FHearthSavedResident S; S.Person=Residents[I]; S.Person.Actor=nullptr;
+        if(IsValid(Residents[I].Actor)) { S.Position=Residents[I].Actor->GetActorLocation(); S.Yaw=Residents[I].Actor->GetActorRotation().Yaw; }
+        S.DecisionDelay=FMath::Max(0.0,Residents[I].NextLifeDecision-Now);
+        if(PendingDecisions.IsValidIndex(I)) { S.bPending=PendingDecisions[I].bActive; S.PendingOperation=PendingDecisions[I].OperationId; }
+        W.People.Add(MoveTemp(S));
+    }
+    W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
+    return HearthWorld::Encode(W);
+}
+
+bool AHearthVillage::SaveWorld()
+{
+    if(!bWorldPersistenceEnabled || WorldPath.IsEmpty() || bWorldWriteBlocked || !WorldLease.IsValid()) return false;
+    ++WorldRevision; FString Error;
+    if(!HearthWorld::Write(WorldPath,ExportWorldState(),Error))
+    {
+        --WorldRevision; WorldSaveStatus=TEXT("存档失败：")+Error;
+        bApiDisabledThisRun=true; bSimulationPaused=true; return false;
+    }
+    WorldSaveStatus=FString::Printf(TEXT("世界已保存 · 第 %lld 版 · 每 30 秒自动保存"),WorldRevision);
+    WorldSaveTimer=0; return true;
+}
+
+bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
+{
+    FHearthWorldImage W; if(!HearthWorld::Decode(Text,W,Error)) return false;
+    if(W.bIsland!=bUseCropoutMap || W.People.Num()!=Residents.Num())
+    { Error=TEXT("存档的地图或人口版本与当前场景不匹配"); return false; }
+    for(int32 I=0;I<3;++I) if(!W.Plots[I].Equals(PlotPositions[I],.01) || !W.Stocks[I].Equals(WoodPositions[I],.01) || W.Costs[I]!=PlotCosts[I])
+    { Error=TEXT("地图布局已变化，须先迁移存档"); return false; }
+    for(const auto& R:Residents) if(!IsValid(R.Actor)) { Error=TEXT("居民表现对象未准备好"); return false; }
+    // Everything above is read-only. Apply the validated image together on the game thread.
+    StopDecisionRequests(); LoadApiConfig();
+    WorldId=W.Id; CurrentRun=W.Run; WorldRevision=W.Revision; VillageEvent=W.Event; Elapsed=W.Elapsed;
+    SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
+    bAutonomousLifeEnabled=W.bAutonomy; bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
+    FoodStock=W.Food; StoneStock=W.Stone; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
+    for(int32 I=0;I<3;++I)
+    {
+        WoodStock[I]=W.Wood[I]; PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
+        if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false);
+        if(StockMeshes.IsValidIndex(I))
+        { StockMeshes[I]->SetVisibility(WoodStock[I]>0); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,FMath::Clamp(WoodStock[I]/12.f*.4f,.04f,1.2f))); }
+    }
+    PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
+    const double Now=FPlatformTime::Seconds();
+    for(int32 I=0;I<Residents.Num();++I)
+    {
+        auto* Actor=Residents[I].Actor.Get(); const auto& S=W.People[I]; Residents[I]=S.Person; auto& R=Residents[I];
+        R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
+        R.NextLifeDecision=Now+S.DecisionDelay;
+        if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
+        if(S.bPending)
+        {
+            Interrupted=true; R.DecisionSource=TEXT("local_fallback");
+            R.DecisionNote=TEXT("重启时有未确认请求：")+S.PendingOperation+TEXT("；不自动重试，费用以独立账本为准");
+            R.Timer=FMath::Min(R.Timer,1.f); R.NextLifeDecision=Now+LifeDecisionInterval;
+            if(DecisionHistory.IsValidIndex(R.HistoryIndex))
+            { auto& H=DecisionHistory[R.HistoryIndex]; H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
+        }
+        PendingDecisions[I]=FHearthPendingDecision();
+    }
+    for(auto& M:ProductionMeshes) if(IsValid(M)) M->DestroyComponent();
+    ProductionMeshes.Reset(); ProductionSites=MoveTemp(W.Sites); ProductionTotals=MoveTemp(W.Totals);
+    for(auto& S:ProductionSites) { S.VisualStage=-99; S.Meshes.Reset(); S.Soil.Reset(); }
+    RefreshProductionVisuals(); SelectResident(W.Selected); bHistoryOpen=false;
+    if(Interrupted) { bApiDisabledThisRun=true; ApiStatus=TEXT("已恢复世界；未确认请求不重试，本轮使用本地规则"); }
+    SaveHistory(); WorldSaveTimer=0; return true;
+}
+
+bool AHearthVillage::LoadWorld()
+{
+    if(!bWorldPersistenceEnabled || !WorldLease.IsValid()) return false;
+    FString Payload,Error; bool Backup=false;
+    if(!HearthWorld::Read(WorldPath,Payload,Error))
+    {
+        if(!HearthWorld::Read(WorldPath+TEXT(".bak"),Payload,Error)) { WorldSaveStatus=TEXT("主存档与备份均无法恢复：")+Error; return false; }
+        Backup=true;
+    }
+    // Keep the invalid file verbatim before restoring the previous complete checkpoint.
+    if(Backup && !HearthWorld::Archive(WorldPath,Error)) { WorldSaveStatus=Error; return false; }
+    if(!ApplyWorldState(Payload,Error)) { WorldSaveStatus=Error; return false; }
+    bWorldWriteBlocked=false;
+    if(Backup && !SaveWorld()) return false;
+    WorldSaveStatus=Backup?TEXT("已保留损坏文件并恢复上一版完整世界"):TEXT("已恢复世界、材料、任务与历史");
+    WriteSnapshot(); return true;
+}
+
+void AHearthVillage::RestartVillage()
+{
+    if(bWorldPersistenceEnabled)
+    {
+        if(!WorldLease.IsValid()) { WorldSaveStatus=TEXT("无法新建：世界由另一个进程持有"); return; }
+        FString Error;
+        if(!HearthWorld::Archive(WorldPath,Error) || !HearthWorld::Archive(WorldPath+TEXT(".bak"),Error)) { WorldSaveStatus=Error; return; }
+    }
+    bWorldWriteBlocked=false; ResetVillageState();
+    if(bWorldPersistenceEnabled) SaveWorld();
+}

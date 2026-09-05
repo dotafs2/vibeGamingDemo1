@@ -186,6 +186,7 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
     TArray<FVector> Route;
     if(bUseCropoutMap && !ProductionSites.IsEmpty() && !FindActivityRoute(Index,Target,Route)) return false;
     R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
+    R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     R.MoveRetry=0; R.bMovementBlocked=false;
     R.Task=EHearthTask::LifeTravel; R.LatestEvent=LifeActionName(Index,Action)+TEXT("。");
     AcceptHistory(Index,LifeActionName(Index,Action),Reason,R.DecisionSource);

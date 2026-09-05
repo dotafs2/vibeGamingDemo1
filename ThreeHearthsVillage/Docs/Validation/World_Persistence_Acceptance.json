@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "world_schema": 1,
+  "native_tests": {
+    "passed": 8,
+    "failed": 0,
+    "build_passed": true,
+    "process_exit_code": 0,
+    "new_suites": [
+      "ThreeHearths.Persistence.ResumeMaterialsAndTasks",
+      "ThreeHearths.Persistence.CorruptionAndExclusiveWorld"
+    ],
+    "coverage": [
+      "five in-progress home phases",
+      "production travel and partially completed prepaid work",
+      "cargo and deposit",
+      "growth countdown",
+      "duplicate post-completion execution",
+      "persistent pending request without retry",
+      "unique IDs and links",
+      "resource conservation",
+      "corrupt current and backup",
+      "unknown schema",
+      "exclusive world lease"
+    ]
+  },
+  "real_ue": {
+    "map": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+    "world_id": "C260DAFE-4195-6C46-C25C-FFBB9F14D258",
+    "forced_process_exit": true,
+    "first_editor_pid": 20840,
+    "restored_editor_pid": 65568,
+    "crash_checkpoint_revision": 4,
+    "all_logical_fields_equal_after_process_restart": true,
+    "excluded_save_metadata": [
+      "Revision (periodic autosave continues while paused)"
+    ],
+    "carried_home_materials_at_checkpoint": [
+      3,
+      2,
+      0
+    ],
+    "homes_finished_after_restart": 3,
+    "production_payload_equal_after_reload": true,
+    "cargo_food_before_deposit": 4,
+    "public_food_after_deposit": 34,
+    "gathering_completions": 1,
+    "accounted_food": 30,
+    "accounted_wood": 36,
+    "model_requests": 0
+  },
+  "known_template_warnings": [
+    "Cropout BP_GI Play Music accesses missing Audio with -nosound",
+    "Cropout SKM_Gatherer fixes its legacy material slot on load",
+    "existing ImportPreview.WorldIsolation cleanup has no world context"
+  ],
+  "evidence_directory": "Saved/ThreeHearths/overnight-2026-09-06/persistence-acceptance",
+  "scope": "Three-resident baseline. No ten-resident migration, offline time advance, or social economy claimed."
+}
