@@ -1,0 +1,353 @@
+{
+  "status": "passed",
+  "map": "/Game/ThreeHearths/Maps/L_SocietyKit_Showcase",
+  "template": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+  "native_meshes_verified": 34,
+  "source_hashes_verified": 34,
+  "module_dimensions_verified": 32,
+  "upright_placements_verified": 34,
+  "lighting": "same village island lights",
+  "placements": [
+    {
+      "id": "example__kings_gate_courtyard",
+      "position_cm": [
+        -1000,
+        1350,
+        6.000001490116119
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "example__guild_market_yard",
+      "position_cm": [
+        1300,
+        1350,
+        7.250000715255737
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_wall_stone_2m",
+      "position_cm": [
+        -1700,
+        -450,
+        5.699999392032623
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_wall_battlement_2m",
+      "position_cm": [
+        -1080,
+        -450,
+        5.699999392032623
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_gate_arch_4m",
+      "position_cm": [
+        -460,
+        -450,
+        5.999995529651642
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_gate_oak_pair",
+      "position_cm": [
+        160,
+        -450,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_tower_storey_4m",
+      "position_cm": [
+        780,
+        -450,
+        5.699999392032623
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_tower_battlement_cap_4m",
+      "position_cm": [
+        1400,
+        -450,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_buttress_stone",
+      "position_cm": [
+        2020,
+        -450,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "castle_walkway_timber_2m",
+      "position_cm": [
+        2640,
+        -450,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "kingdom_banner_blue",
+      "position_cm": [
+        -1700,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "kingdom_banner_red",
+      "position_cm": [
+        -1080,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "market_stall_blue_2m",
+      "position_cm": [
+        -460,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "market_stall_red_2m",
+      "position_cm": [
+        160,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "market_crate_oak",
+      "position_cm": [
+        780,
+        -1090,
+        6.000001490116119
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "market_barrel_oak",
+      "position_cm": [
+        1400,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "village_notice_board",
+      "position_cm": [
+        2020,
+        -1090,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "village_lantern_post",
+      "position_cm": [
+        2640,
+        -1090,
+        6.00000074505806
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "workshop_carpenter_station",
+      "position_cm": [
+        -1700,
+        -1730,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "workshop_mason_station",
+      "position_cm": [
+        -1080,
+        -1730,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "workshop_tile_kiln",
+      "position_cm": [
+        -460,
+        -1730,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "workshop_blacksmith_forge",
+      "position_cm": [
+        160,
+        -1730,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "goods_planks_bundle",
+      "position_cm": [
+        780,
+        -1730,
+        7.250000238418579
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "goods_beams_bundle",
+      "position_cm": [
+        1400,
+        -1730,
+        7.250000715255737
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "goods_bricks_tiles_crate",
+      "position_cm": [
+        2020,
+        -1730,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "goods_paint_pails",
+      "position_cm": [
+        2640,
+        -1730,
+        4.000000476837158
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 1
+    },
+    {
+      "id": "regalia_king_crown",
+      "position_cm": [
+        -1700,
+        -2370,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "profession_carpenter_cap",
+      "position_cm": [
+        -1080,
+        -2370,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "profession_mason_hood",
+      "position_cm": [
+        -460,
+        -2370,
+        36.27066707611084
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "profession_smith_apron",
+      "position_cm": [
+        160,
+        -2370,
+        291.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "tool_carpenter_hammer",
+      "position_cm": [
+        780,
+        -2370,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "tool_carpenter_saw",
+      "position_cm": [
+        1400,
+        -2370,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "tool_mason_chisel",
+      "position_cm": [
+        2020,
+        -2370,
+        6.000004470348358
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    },
+    {
+      "id": "tool_mason_trowel",
+      "position_cm": [
+        2640,
+        -2370,
+        6.0
+      ],
+      "yaw_degrees": 90,
+      "display_scale": 3
+    }
+  ],
+  "scope": "Art review; NPC jobs, ownership, collisions and navigation are separate runtime work"
+}

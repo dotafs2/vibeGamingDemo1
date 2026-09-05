@@ -1,0 +1,517 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "native art assets; functional economy and navigation remain separate",
+  "assets": [
+    {
+      "id": "castle_wall_stone_2m",
+      "source": "Art/SocietyKit/modules/castle_wall_stone_2m.glb",
+      "source_sha256": "43317cfd1e3132d74e498dbb7857f8a067435ecdd8c5fb0180d1bc698753c92a",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_stone_2m/castle_wall_stone_2m.castle_wall_stone_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        99.69999694824219,
+        20.0,
+        119.70000579953194
+      ],
+      "import_seconds": 4.141000000061467,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_wall_battlement_2m",
+      "source": "Art/SocietyKit/modules/castle_wall_battlement_2m.glb",
+      "source_sha256": "ce176ea7197553f074a8c510475e537a83436439e6704e1e9896f07858e1b04e",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        101.0,
+        26.0,
+        155.0999996960163
+      ],
+      "import_seconds": 0.515999999945052,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_gate_arch_4m",
+      "source": "Art/SocietyKit/modules/castle_gate_arch_4m.glb",
+      "source_sha256": "88b2e68218e0fbcfa63788cab052a6ead47143c2b4c0431107504e7b966da75e",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_arch_4m/castle_gate_arch_4m.castle_gate_arch_4m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        200.0,
+        38.5,
+        193.99999776482582
+      ],
+      "import_seconds": 1.359000000054948,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_gate_oak_pair",
+      "source": "Art/SocietyKit/modules/castle_gate_oak_pair.glb",
+      "source_sha256": "735d116f70820a14bf255698889ce6b8e2c6047b920085657a814a5667b05682",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_oak_pair/castle_gate_oak_pair.castle_gate_oak_pair",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        99.99999618530273,
+        46.700003147125244,
+        115.0
+      ],
+      "import_seconds": 0.5470000000204891,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_tower_storey_4m",
+      "source": "Art/SocietyKit/modules/castle_tower_storey_4m.glb",
+      "source_sha256": "5d1fd63bcf8ee9c3f2a7c23c312c0df091f85816627c8b07fb74600b0a6fe95a",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        200.0,
+        200.0,
+        119.70000579953194
+      ],
+      "import_seconds": 2.280999999959022,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_tower_battlement_cap_4m",
+      "source": "Art/SocietyKit/modules/castle_tower_battlement_cap_4m.glb",
+      "source_sha256": "f99690cf9c9ed4ef12c3b42849f4dfb22f9702f2bd336d270441cba194e25d03",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_battlement_cap_4m/castle_tower_battlement_cap_4m.castle_tower_battlement_cap_4m",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        202.50001525878906,
+        202.50001525878906,
+        50.0
+      ],
+      "import_seconds": 1.0310000000754371,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_buttress_stone",
+      "source": "Art/SocietyKit/modules/castle_buttress_stone.glb",
+      "source_sha256": "e84b8569bdc6744535ed3dc0ce1f6e8d41cfeafe6fa209e8402890cdcec57d65",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_buttress_stone/castle_buttress_stone.castle_buttress_stone",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        35.0,
+        35.0,
+        119.99999237060547
+      ],
+      "import_seconds": 0.2339999999385327,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "castle_walkway_timber_2m",
+      "source": "Art/SocietyKit/modules/castle_walkway_timber_2m.glb",
+      "source_sha256": "ed947e16b5e342e864c1db77400000bd116664de49145536364c0def42e2ce4a",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        100.0,
+        100.0,
+        12.0
+      ],
+      "import_seconds": 0.375,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "kingdom_banner_blue",
+      "source": "Art/SocietyKit/modules/kingdom_banner_blue.glb",
+      "source_sha256": "ac46bd1ff3f38df7ae6f2bc894bd4da7dd5b84fd4513a9a37108664426f7b65d",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_blue/kingdom_banner_blue.kingdom_banner_blue",
+      "material_slots": 4,
+      "bounds_extent_cm": [
+        40.0,
+        3.875000834465027,
+        89.0
+      ],
+      "import_seconds": 0.2339999999385327,
+      "saved_assets": 5,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "kingdom_banner_red",
+      "source": "Art/SocietyKit/modules/kingdom_banner_red.glb",
+      "source_sha256": "83a040f48ff56c7b83c5413d57ee3b84bd4fa9328f49c3eb7643029b2341a960",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_red/kingdom_banner_red.kingdom_banner_red",
+      "material_slots": 4,
+      "bounds_extent_cm": [
+        40.0,
+        3.875000834465027,
+        89.0
+      ],
+      "import_seconds": 0.2190000000409782,
+      "saved_assets": 5,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "market_stall_blue_2m",
+      "source": "Art/SocietyKit/modules/market_stall_blue_2m.glb",
+      "source_sha256": "83ebf209d5efc6cfc40cb811cef4729d281e9b0b35bf3b45fa8320e953fb1384",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_blue_2m/market_stall_blue_2m.market_stall_blue_2m",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        100.0,
+        95.75000381469727,
+        120.00000762939453
+      ],
+      "import_seconds": 0.9220000000204891,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "market_stall_red_2m",
+      "source": "Art/SocietyKit/modules/market_stall_red_2m.glb",
+      "source_sha256": "bf32a2b01052a6d4d1004327e11f6ae3fc1bba3b98c162d62e8d8b64cd74a341",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_red_2m/market_stall_red_2m.market_stall_red_2m",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        100.0,
+        95.75000381469727,
+        120.00000762939453
+      ],
+      "import_seconds": 0.9059999999590218,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "market_crate_oak",
+      "source": "Art/SocietyKit/modules/market_crate_oak.glb",
+      "source_sha256": "3500eb09f6797fd1d18b53cc83cc248ec264a7ea4a8a059a988c6e3e0bab8eec",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_crate_oak/market_crate_oak.market_crate_oak",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        50.0,
+        35.0,
+        32.50000074505806
+      ],
+      "import_seconds": 0.6719999999040738,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "market_barrel_oak",
+      "source": "Art/SocietyKit/modules/market_barrel_oak.glb",
+      "source_sha256": "aac1300298945a752a824ac6dee570caaf9ca3ff7b7ddd988b82ddbbf81bd6c8",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_barrel_oak/market_barrel_oak.market_barrel_oak",
+      "material_slots": 4,
+      "bounds_extent_cm": [
+        32.499202728271484,
+        32.499202728271484,
+        45.29999923706055
+      ],
+      "import_seconds": 0.2970000000204891,
+      "saved_assets": 5,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "village_notice_board",
+      "source": "Art/SocietyKit/modules/village_notice_board.glb",
+      "source_sha256": "040669568449ff99eff635d506eefba896688d569a0f26e945a7f9b481a5929f",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_notice_board/village_notice_board.village_notice_board",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        80.00000381469727,
+        23.0000057220459,
+        101.50000762939453
+      ],
+      "import_seconds": 0.375,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "village_lantern_post",
+      "source": "Art/SocietyKit/modules/village_lantern_post.glb",
+      "source_sha256": "7d6a6d3d9af6915bb10706695be3e73e5d6673087004e1e6f975ab891fdb2dff",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_lantern_post/village_lantern_post.village_lantern_post",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        37.50000190734863,
+        16.0,
+        120.00000800192356
+      ],
+      "import_seconds": 0.40700000000651926,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "workshop_carpenter_station",
+      "source": "Art/SocietyKit/modules/workshop_carpenter_station.glb",
+      "source_sha256": "e0b15f7ab462fd8e7a3289eebe2aa66b67494da66f80741b45fecf22f062ffdb",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_carpenter_station/workshop_carpenter_station.workshop_carpenter_station",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        92.5,
+        76.92499542236328,
+        87.0
+      ],
+      "import_seconds": 0.7970000000204891,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "workshop_mason_station",
+      "source": "Art/SocietyKit/modules/workshop_mason_station.glb",
+      "source_sha256": "c3e1fd42278dcd5b29ddda1c31d9d0aafaf3e6503a4f1e1d8af14d4cf53efe45",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_mason_station/workshop_mason_station.workshop_mason_station",
+      "material_slots": 4,
+      "bounds_extent_cm": [
+        93.0,
+        78.24999809265137,
+        62.5
+      ],
+      "import_seconds": 0.4529999999795109,
+      "saved_assets": 5,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "workshop_tile_kiln",
+      "source": "Art/SocietyKit/modules/workshop_tile_kiln.glb",
+      "source_sha256": "e7754379b77efd113247420a5b7fd1aa222237cf7f0a232f3d5700327e04a5e4",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_tile_kiln/workshop_tile_kiln.workshop_tile_kiln",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        90.0,
+        103.50000381469727,
+        129.0
+      ],
+      "import_seconds": 0.5940000000409782,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "workshop_blacksmith_forge",
+      "source": "Art/SocietyKit/modules/workshop_blacksmith_forge.glb",
+      "source_sha256": "0b560d21c131a53f50982a9892cc6ac49d78e5a349a4775ce8ae65e4f3d15385",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_blacksmith_forge/workshop_blacksmith_forge.workshop_blacksmith_forge",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        83.0,
+        89.5,
+        126.0
+      ],
+      "import_seconds": 0.4059999999590218,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_planks_bundle",
+      "source": "Art/SocietyKit/modules/goods_planks_bundle.glb",
+      "source_sha256": "a6fa6816b1ae7efa845a2b2bc9133055d8ffab0b35c14641f5b1b1710fd2f5c6",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_planks_bundle/goods_planks_bundle.goods_planks_bundle",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        45.0,
+        20.750000953674316,
+        11.75000011920929
+      ],
+      "import_seconds": 0.375,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_beams_bundle",
+      "source": "Art/SocietyKit/modules/goods_beams_bundle.glb",
+      "source_sha256": "91d0a1f84ce842b096ca724e67e4402afce295e96e09980b61ad764beb76f675",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle.goods_beams_bundle",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        60.000003814697266,
+        22.75,
+        13.749999403953552
+      ],
+      "import_seconds": 0.3440000000409782,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_bricks_tiles_crate",
+      "source": "Art/SocietyKit/modules/goods_bricks_tiles_crate.glb",
+      "source_sha256": "0725d65fc41b87e6ed32298d35fffe0d545bec3e06ee72b4431b944fa452a9e8",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_bricks_tiles_crate/goods_bricks_tiles_crate.goods_bricks_tiles_crate",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        32.5,
+        22.5,
+        21.200000762939453
+      ],
+      "import_seconds": 0.8279999999795109,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_paint_pails",
+      "source": "Art/SocietyKit/modules/goods_paint_pails.glb",
+      "source_sha256": "b65b8f1279d1b41a1a5daec15688eb38baa62819f25091a3d5f5a8f89cb522e7",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_paint_pails/goods_paint_pails.goods_paint_pails",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        32.0,
+        14.623919486999512,
+        22.700002908706665
+      ],
+      "import_seconds": 0.4529999999795109,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "regalia_king_crown",
+      "source": "Art/SocietyKit/modules/regalia_king_crown.glb",
+      "source_sha256": "f20f798b8e346401d01288ff5026df64b0f93e030caab512d243dd8da7de6208",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/regalia_king_crown/regalia_king_crown.regalia_king_crown",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        14.267735481262207,
+        14.171407699584961,
+        7.500000476837158
+      ],
+      "import_seconds": 0.1410000000614673,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "profession_carpenter_cap",
+      "source": "Art/SocietyKit/modules/profession_carpenter_cap.glb",
+      "source_sha256": "b6b7780583c196f2e4f8bb8935116adaedf86ca28fe019160ce3c0c15bd27d3f",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_carpenter_cap/profession_carpenter_cap.profession_carpenter_cap",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        15.199999809265137,
+        18.59999990463257,
+        7.25
+      ],
+      "import_seconds": 0.14099999994505197,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "profession_mason_hood",
+      "source": "Art/SocietyKit/modules/profession_mason_hood.glb",
+      "source_sha256": "7ee645e1a559e55837b2f91a79983b74c7376394c5ee9f5a56ecd97b581f103d",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_mason_hood/profession_mason_hood.profession_mason_hood",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        15.965743064880371,
+        14.319611549377441,
+        17.795111179351807
+      ],
+      "import_seconds": 0.15600000007543713,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "profession_smith_apron",
+      "source": "Art/SocietyKit/modules/profession_smith_apron.glb",
+      "source_sha256": "bd192e549ed5c815d939f74eb4ab2b6005ce63b2a47744431df8484c183ce826",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_smith_apron/profession_smith_apron.profession_smith_apron",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        26.0,
+        3.5250003933906555,
+        50.09687376022339
+      ],
+      "import_seconds": 0.1869999999180436,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_carpenter_hammer",
+      "source": "Art/SocietyKit/modules/tool_carpenter_hammer.glb",
+      "source_sha256": "4c9f1b6cdb612f132e43fb59c5f2758b29ec84b839bf4134762780f70cf62412",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_carpenter_hammer/tool_carpenter_hammer.tool_carpenter_hammer",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        12.0,
+        4.25,
+        20.125001907348633
+      ],
+      "import_seconds": 0.1410000000614673,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_carpenter_saw",
+      "source": "Art/SocietyKit/modules/tool_carpenter_saw.glb",
+      "source_sha256": "367d86dcd2bcd9eeff3674f5019a9951a39efabafd7de5cd58a70b75e2829e53",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_carpenter_saw/tool_carpenter_saw.tool_carpenter_saw",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        27.875,
+        3.0,
+        11.5
+      ],
+      "import_seconds": 0.1559999999590218,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_mason_chisel",
+      "source": "Art/SocietyKit/modules/tool_mason_chisel.glb",
+      "source_sha256": "bedfc549a6570f38baeff8aef37a81930ebb28e26a9399ff74542586675a8cc0",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_mason_chisel/tool_mason_chisel.tool_mason_chisel",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        3.0999999046325684,
+        3.0999999046325684,
+        14.500001698732376
+      ],
+      "import_seconds": 0.1720000000204891,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_mason_trowel",
+      "source": "Art/SocietyKit/modules/tool_mason_trowel.glb",
+      "source_sha256": "9bff21cc340e35b62d03d872810e6cd32c563d4a777007cc770dbc1457f18d0d",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_mason_trowel/tool_mason_trowel.tool_mason_trowel",
+      "material_slots": 2,
+      "bounds_extent_cm": [
+        7.500000476837158,
+        15.25,
+        6.25
+      ],
+      "import_seconds": 0.10999999998603016,
+      "saved_assets": 3,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "example__kings_gate_courtyard",
+      "source": "Art/SocietyKit/examples/kings_gate_courtyard.glb",
+      "source_sha256": "d092e7a31027d489843185f7a80beb2f924ee705581d22ef1f591c9d36734e4b",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/example__kings_gate_courtyard/kings_gate_courtyard.kings_gate_courtyard",
+      "material_slots": 13,
+      "bounds_extent_cm": [
+        626.0,
+        476.0,
+        290.00000074505806
+      ],
+      "import_seconds": 21.20299999997951,
+      "saved_assets": 14,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "example__guild_market_yard",
+      "source": "Art/SocietyKit/examples/guild_market_yard.glb",
+      "source_sha256": "34c02ecc0098072b0092af6ca0515a4538607fe4dd04158ce523ad8c49a95803",
+      "mesh": "/Game/ThreeHearths/Generated/SocietyKit/example__guild_market_yard/guild_market_yard.guild_market_yard",
+      "material_slots": 21,
+      "bounds_extent_cm": [
+        496.9417724609375,
+        353.2496032714844,
+        129.62500035762787
+      ],
+      "import_seconds": 4.375,
+      "saved_assets": 22,
+      "collision": "not_generated_requires_gameplay_template"
+    }
+  ]
+}

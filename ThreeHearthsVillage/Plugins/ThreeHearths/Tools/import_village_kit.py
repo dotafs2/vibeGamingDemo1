@@ -14,12 +14,12 @@ KIT=ROOT/'Art/VillageKit'
 DEST='/Game/ThreeHearths/Generated/VillageKit'
 REPORT=KIT/'UE_Import_Report.json'
 
-def import_one(source,asset_id,previous,replace_changed=False):
+def import_one(source,asset_id,previous,replace_changed=False,destination_root=DEST):
     checksum=hashlib.sha256(source.read_bytes()).hexdigest()
     old=previous.get(asset_id)
     if old and old['source_sha256']==checksum and ue.load_asset(old['mesh']):
         return old
-    destination=DEST+'/'+asset_id
+    destination=destination_root+'/'+asset_id
     replacing=bool(old and replace_changed and old['mesh'].startswith(destination+'/'))
     if ue.EditorAssetLibrary.does_directory_exist(destination) and not replacing:
         raise RuntimeError('Existing asset cache requires review before replacing: '+destination)

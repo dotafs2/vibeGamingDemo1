@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "units": "metres",
+  "examples": [
+    {
+      "id": "kings_gate_courtyard",
+      "placements": [
+        {
+          "instance_id": "kings_gate_courtyard_001",
+          "module_id": "castle_gate_arch_4m",
+          "position_m": [
+            0,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_002",
+          "module_id": "castle_gate_oak_pair",
+          "position_m": [
+            0,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_003",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -3,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_004",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -5,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_005",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -6,
+            -3,
+            0
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_006",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -6,
+            -1,
+            0
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_007",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            -4,
+            2,
+            0.0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_008",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            -4,
+            2,
+            2.4
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_009",
+          "module_id": "castle_tower_battlement_cap_4m",
+          "position_m": [
+            -4,
+            2,
+            4.8
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_010",
+          "module_id": "castle_buttress_stone",
+          "position_m": [
+            -5.65,
+            -3.7,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_011",
+          "module_id": "kingdom_banner_blue",
+          "position_m": [
+            -1.5,
+            -4.39,
+            1.5
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_012",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            -1.7,
+            -5.1,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_013",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            3,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_014",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            5,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_015",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            6,
+            -3,
+            0
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_016",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            6,
+            -1,
+            0
+          ],
+          "yaw_degrees": 90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_017",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            4,
+            2,
+            0.0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_018",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            4,
+            2,
+            2.4
+          ],
+          "yaw_degrees": -90
+        },
+        {
+          "instance_id": "kings_gate_courtyard_019",
+          "module_id": "castle_tower_battlement_cap_4m",
+          "position_m": [
+            4,
+            2,
+            4.8
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_020",
+          "module_id": "castle_buttress_stone",
+          "position_m": [
+            5.65,
+            -3.7,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_021",
+          "module_id": "kingdom_banner_blue",
+          "position_m": [
+            1.5,
+            -4.39,
+            1.5
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_022",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            1.7,
+            -5.1,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_023",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -1,
+            4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_024",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            1,
+            4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_025",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            -3,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_026",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            -1,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_027",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            1,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_028",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            3,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_029",
+          "module_id": "village_notice_board",
+          "position_m": [
+            -2.7,
+            -1.9,
+            0
+          ],
+          "yaw_degrees": 20
+        },
+        {
+          "instance_id": "kings_gate_courtyard_030",
+          "module_id": "market_barrel_oak",
+          "position_m": [
+            2.8,
+            -1.4,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "kings_gate_courtyard_031",
+          "module_id": "market_crate_oak",
+          "position_m": [
+            3.4,
+            -0.4,
+            0
+          ],
+          "yaw_degrees": 0
+        }
+      ],
+      "npc_execution_ready": false
+    },
+    {
+      "id": "guild_market_yard",
+      "placements": [
+        {
+          "instance_id": "guild_market_yard_001",
+          "module_id": "workshop_carpenter_station",
+          "position_m": [
+            -3.3,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_002",
+          "module_id": "workshop_mason_station",
+          "position_m": [
+            0,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_003",
+          "module_id": "workshop_tile_kiln",
+          "position_m": [
+            2.3,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_004",
+          "module_id": "workshop_blacksmith_forge",
+          "position_m": [
+            4.2,
+            0.1,
+            0
+          ],
+          "yaw_degrees": 20
+        },
+        {
+          "instance_id": "guild_market_yard_005",
+          "module_id": "market_stall_blue_2m",
+          "position_m": [
+            -2.0,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_006",
+          "module_id": "market_stall_red_2m",
+          "position_m": [
+            1.0,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_007",
+          "module_id": "village_notice_board",
+          "position_m": [
+            -4.0,
+            -1.8,
+            0
+          ],
+          "yaw_degrees": 25
+        },
+        {
+          "instance_id": "guild_market_yard_008",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            3.5,
+            -3.0,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_009",
+          "module_id": "market_barrel_oak",
+          "position_m": [
+            -0.3,
+            -3.1,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_010",
+          "module_id": "market_crate_oak",
+          "position_m": [
+            4,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_011",
+          "module_id": "goods_planks_bundle",
+          "position_m": [
+            -3.6,
+            1.2,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_012",
+          "module_id": "goods_beams_bundle",
+          "position_m": [
+            -2.5,
+            1.2,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_013",
+          "module_id": "goods_bricks_tiles_crate",
+          "position_m": [
+            3.2,
+            1.1,
+            0
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_014",
+          "module_id": "goods_paint_pails",
+          "position_m": [
+            -1.8,
+            -1.7,
+            0.99
+          ],
+          "yaw_degrees": 0
+        },
+        {
+          "instance_id": "guild_market_yard_015",
+          "module_id": "tool_carpenter_hammer",
+          "position_m": [
+            -3.45,
+            2.4,
+            0.98
+          ],
+          "yaw_degrees": 20
+        },
+        {
+          "instance_id": "guild_market_yard_016",
+          "module_id": "tool_mason_trowel",
+          "position_m": [
+            0.25,
+            2.6,
+            0.98
+          ],
+          "yaw_degrees": 15
+        }
+      ],
+      "npc_execution_ready": false
+    }
+  ]
+}

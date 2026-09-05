@@ -1,0 +1,35 @@
+{
+  "castle": {
+    "source": "SocietyKit_kings_gate_courtyard.blend",
+    "preview": "previews/SocietyKit_kings_gate_courtyard.png",
+    "seconds": 19.968,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      2000,
+      1400
+    ]
+  },
+  "market": {
+    "source": "SocietyKit_guild_market_yard.blend",
+    "preview": "previews/SocietyKit_guild_market_yard.png",
+    "seconds": 17.767,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      2000,
+      1400
+    ]
+  },
+  "modules": {
+    "source": "SocietyKit.blend",
+    "preview": "previews/SocietyKit_Modules.png",
+    "seconds": 13.076,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      2600,
+      1600
+    ]
+  }
+}

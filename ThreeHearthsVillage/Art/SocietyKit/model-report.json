@@ -1,0 +1,1095 @@
+{
+  "schema_version": 1,
+  "kit_id": "society_kit_01",
+  "blender_version": "5.2.0 LTS",
+  "modules": [
+    {
+      "id": "castle_wall_stone_2m",
+      "file": "modules/castle_wall_stone_2m.glb",
+      "bytes": 123496,
+      "triangles": 1584,
+      "vertices": 864,
+      "bounds_min_m": [
+        -0.997,
+        -0.2,
+        0.003
+      ],
+      "bounds_max_m": [
+        0.997,
+        0.2,
+        2.397
+      ],
+      "dimensions_m": [
+        1.994,
+        0.4,
+        2.394
+      ],
+      "materials": [
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Shadow"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_wall_battlement_2m",
+      "file": "modules/castle_wall_battlement_2m.glb",
+      "bytes": 176376,
+      "triangles": 2340,
+      "vertices": 1256,
+      "bounds_min_m": [
+        -1.01,
+        -0.26,
+        0.003
+      ],
+      "bounds_max_m": [
+        1.01,
+        0.26,
+        3.105
+      ],
+      "dimensions_m": [
+        2.02,
+        0.52,
+        3.102
+      ],
+      "materials": [
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Shadow"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_gate_arch_4m",
+      "file": "modules/castle_gate_arch_4m.glb",
+      "bytes": 463220,
+      "triangles": 6284,
+      "vertices": 3352,
+      "bounds_min_m": [
+        -2.0,
+        -0.43,
+        0.0
+      ],
+      "bounds_max_m": [
+        2.0,
+        0.34,
+        3.88
+      ],
+      "dimensions_m": [
+        4.0,
+        0.77,
+        3.88
+      ],
+      "materials": [
+        "SK_Stone_Shadow",
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_gate_oak_pair",
+      "file": "modules/castle_gate_oak_pair.glb",
+      "bytes": 146332,
+      "triangles": 2072,
+      "vertices": 1072,
+      "bounds_min_m": [
+        -1.0,
+        -0.038,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.896,
+        2.3
+      ],
+      "dimensions_m": [
+        2.0,
+        0.934,
+        2.3
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Honey_Plank",
+        "SK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_tower_storey_4m",
+      "file": "modules/castle_tower_storey_4m.glb",
+      "bytes": 917288,
+      "triangles": 12056,
+      "vertices": 6576,
+      "bounds_min_m": [
+        -2.0,
+        -2.0,
+        0.003
+      ],
+      "bounds_max_m": [
+        2.0,
+        2.0,
+        2.397
+      ],
+      "dimensions_m": [
+        4.0,
+        4.0,
+        2.394
+      ],
+      "materials": [
+        "SK_Stone_Shadow",
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_tower_battlement_cap_4m",
+      "file": "modules/castle_tower_battlement_cap_4m.glb",
+      "bytes": 183816,
+      "triangles": 2592,
+      "vertices": 1344,
+      "bounds_min_m": [
+        -2.025,
+        -2.025,
+        0.0
+      ],
+      "bounds_max_m": [
+        2.025,
+        2.025,
+        1.0
+      ],
+      "dimensions_m": [
+        4.05,
+        4.05,
+        1.0
+      ],
+      "materials": [
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_buttress_stone",
+      "file": "modules/castle_buttress_stone.glb",
+      "bytes": 32656,
+      "triangles": 432,
+      "vertices": 224,
+      "bounds_min_m": [
+        -0.35,
+        -0.35,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.35,
+        0.35,
+        2.4
+      ],
+      "dimensions_m": [
+        0.7,
+        0.7,
+        2.4
+      ],
+      "materials": [
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Edge"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "castle_walkway_timber_2m",
+      "file": "modules/castle_walkway_timber_2m.glb",
+      "bytes": 77960,
+      "triangles": 1080,
+      "vertices": 560,
+      "bounds_min_m": [
+        -1.0,
+        -1.0,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        1.0,
+        0.24
+      ],
+      "dimensions_m": [
+        2.0,
+        2.0,
+        0.24
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "kingdom_banner_blue",
+      "file": "modules/kingdom_banner_blue.glb",
+      "bytes": 50716,
+      "triangles": 664,
+      "vertices": 346,
+      "bounds_min_m": [
+        -0.4,
+        -0.03,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.4,
+        0.0475,
+        1.78
+      ],
+      "dimensions_m": [
+        0.8,
+        0.0775,
+        1.78
+      ],
+      "materials": [
+        "SK_Royal_Blue",
+        "SK_Cut_Oak",
+        "SK_Forged_Iron",
+        "SK_Royal_Gold"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "kingdom_banner_red",
+      "file": "modules/kingdom_banner_red.glb",
+      "bytes": 50712,
+      "triangles": 664,
+      "vertices": 346,
+      "bounds_min_m": [
+        -0.4,
+        -0.03,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.4,
+        0.0475,
+        1.78
+      ],
+      "dimensions_m": [
+        0.8,
+        0.0775,
+        1.78
+      ],
+      "materials": [
+        "SK_Royal_Red",
+        "SK_Cut_Oak",
+        "SK_Forged_Iron",
+        "SK_Royal_Gold"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "market_stall_blue_2m",
+      "file": "modules/market_stall_blue_2m.glb",
+      "bytes": 264836,
+      "triangles": 3724,
+      "vertices": 1944,
+      "bounds_min_m": [
+        -1.0,
+        -0.965,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.95,
+        2.4
+      ],
+      "dimensions_m": [
+        2.0,
+        1.915,
+        2.4
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Cut_Oak",
+        "SK_Cream_Lime",
+        "SK_Royal_Blue",
+        "SK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "market_stall_red_2m",
+      "file": "modules/market_stall_red_2m.glb",
+      "bytes": 264832,
+      "triangles": 3724,
+      "vertices": 1944,
+      "bounds_min_m": [
+        -1.0,
+        -0.965,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.95,
+        2.4
+      ],
+      "dimensions_m": [
+        2.0,
+        1.915,
+        2.4
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Cut_Oak",
+        "SK_Cream_Lime",
+        "SK_Royal_Red",
+        "SK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "market_crate_oak",
+      "file": "modules/market_crate_oak.glb",
+      "bytes": 162080,
+      "triangles": 2268,
+      "vertices": 1176,
+      "bounds_min_m": [
+        -0.5,
+        -0.35,
+        -0.0
+      ],
+      "bounds_max_m": [
+        0.5,
+        0.35,
+        0.65
+      ],
+      "dimensions_m": [
+        1.0,
+        0.7,
+        0.65
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Cut_Oak",
+        "SK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "market_barrel_oak",
+      "file": "modules/market_barrel_oak.glb",
+      "bytes": 80264,
+      "triangles": 1184,
+      "vertices": 632,
+      "bounds_min_m": [
+        -0.32499,
+        -0.32499,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.32499,
+        0.32499,
+        0.906
+      ],
+      "dimensions_m": [
+        0.64998,
+        0.64998,
+        0.906
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Honey_Plank",
+        "SK_Forged_Iron",
+        "SK_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "village_notice_board",
+      "file": "modules/village_notice_board.glb",
+      "bytes": 92780,
+      "triangles": 1248,
+      "vertices": 664,
+      "bounds_min_m": [
+        -0.8,
+        -0.23,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.8,
+        0.23,
+        2.03
+      ],
+      "dimensions_m": [
+        1.6,
+        0.46,
+        2.03
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Honey_Plank",
+        "SK_Cut_Oak",
+        "SK_Parchment",
+        "SK_Timber_Recess",
+        "SK_Brass"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "village_lantern_post",
+      "file": "modules/village_lantern_post.glb",
+      "bytes": 95180,
+      "triangles": 1296,
+      "vertices": 672,
+      "bounds_min_m": [
+        -0.16,
+        -0.16,
+        -0.0
+      ],
+      "bounds_max_m": [
+        0.59,
+        0.16,
+        2.4
+      ],
+      "dimensions_m": [
+        0.75,
+        0.32,
+        2.4
+      ],
+      "materials": [
+        "SK_Stone_Edge",
+        "SK_Chestnut",
+        "SK_Cut_Oak",
+        "SK_Amber_Lantern",
+        "SK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "workshop_carpenter_station",
+      "file": "modules/workshop_carpenter_station.glb",
+      "bytes": 181968,
+      "triangles": 2564,
+      "vertices": 1328,
+      "bounds_min_m": [
+        -0.925,
+        -0.8435,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.925,
+        0.695,
+        1.74
+      ],
+      "dimensions_m": [
+        1.85,
+        1.5385,
+        1.74
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Chestnut",
+        "SK_Honey_Plank",
+        "SK_Timber_Recess",
+        "SK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "workshop_mason_station",
+      "file": "modules/workshop_mason_station.glb",
+      "bytes": 76324,
+      "triangles": 1080,
+      "vertices": 560,
+      "bounds_min_m": [
+        -0.93,
+        -0.525,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.93,
+        1.04,
+        1.25
+      ],
+      "dimensions_m": [
+        1.86,
+        1.565,
+        1.25
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Shadow"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "workshop_tile_kiln",
+      "file": "modules/workshop_tile_kiln.glb",
+      "bytes": 93228,
+      "triangles": 1444,
+      "vertices": 760,
+      "bounds_min_m": [
+        -0.9,
+        -1.17,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.9,
+        0.9,
+        2.58
+      ],
+      "dimensions_m": [
+        1.8,
+        2.07,
+        2.58
+      ],
+      "materials": [
+        "SK_Stone_Shadow",
+        "SK_Terracotta_3",
+        "SK_Terracotta_1",
+        "SK_Terracotta_2",
+        "SK_Stone_Edge",
+        "SK_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 96
+    },
+    {
+      "id": "workshop_blacksmith_forge",
+      "file": "modules/workshop_blacksmith_forge.glb",
+      "bytes": 79700,
+      "triangles": 1108,
+      "vertices": 574,
+      "bounds_min_m": [
+        -0.83,
+        -0.87,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.83,
+        0.92,
+        2.52
+      ],
+      "dimensions_m": [
+        1.66,
+        1.79,
+        2.52
+      ],
+      "materials": [
+        "SK_Stone_Shadow",
+        "SK_Charcoal",
+        "SK_BlueGrey_Stone",
+        "SK_Forged_Iron",
+        "SK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "goods_planks_bundle",
+      "file": "modules/goods_planks_bundle.glb",
+      "bytes": 94080,
+      "triangles": 1296,
+      "vertices": 672,
+      "bounds_min_m": [
+        -0.45,
+        -0.2075,
+        -0.0125
+      ],
+      "bounds_max_m": [
+        0.45,
+        0.2075,
+        0.2225
+      ],
+      "dimensions_m": [
+        0.9,
+        0.415,
+        0.235
+      ],
+      "materials": [
+        "SK_Honey_Plank",
+        "SK_Cut_Oak",
+        "SK_Hemp_Rope"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "goods_beams_bundle",
+      "file": "modules/goods_beams_bundle.glb",
+      "bytes": 77516,
+      "triangles": 1080,
+      "vertices": 560,
+      "bounds_min_m": [
+        -0.6,
+        -0.2275,
+        -0.0125
+      ],
+      "bounds_max_m": [
+        0.6,
+        0.2275,
+        0.2625
+      ],
+      "dimensions_m": [
+        1.2,
+        0.455,
+        0.275
+      ],
+      "materials": [
+        "SK_Honey_Plank",
+        "SK_Cut_Oak",
+        "SK_Hemp_Rope"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "goods_bricks_tiles_crate",
+      "file": "modules/goods_bricks_tiles_crate.glb",
+      "bytes": 215520,
+      "triangles": 3120,
+      "vertices": 1620,
+      "bounds_min_m": [
+        -0.325,
+        -0.225,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.325,
+        0.225,
+        0.424
+      ],
+      "dimensions_m": [
+        0.65,
+        0.45,
+        0.424
+      ],
+      "materials": [
+        "SK_Chestnut",
+        "SK_Cut_Oak",
+        "SK_Honey_Plank",
+        "SK_Terracotta_1",
+        "SK_Terracotta_2",
+        "SK_Terracotta_3"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 48
+    },
+    {
+      "id": "goods_paint_pails",
+      "file": "modules/goods_paint_pails.glb",
+      "bytes": 113872,
+      "triangles": 1672,
+      "vertices": 856,
+      "bounds_min_m": [
+        -0.32,
+        -0.14624,
+        0.02
+      ],
+      "bounds_max_m": [
+        0.32,
+        0.14624,
+        0.474
+      ],
+      "dimensions_m": [
+        0.64,
+        0.29248,
+        0.454
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Forged_Iron",
+        "SK_Sage_Paint",
+        "SK_Timber_Recess",
+        "SK_Cream_Lime"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "regalia_king_crown",
+      "file": "modules/regalia_king_crown.glb",
+      "bytes": 29980,
+      "triangles": 400,
+      "vertices": 224,
+      "bounds_min_m": [
+        -0.14268,
+        -0.14171,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.14268,
+        0.14171,
+        0.15
+      ],
+      "dimensions_m": [
+        0.28536,
+        0.28342,
+        0.15
+      ],
+      "materials": [
+        "SK_Royal_Gold",
+        "SK_Royal_Red",
+        "SK_Royal_Blue"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "profession_carpenter_cap",
+      "file": "modules/profession_carpenter_cap.glb",
+      "bytes": 26140,
+      "triangles": 466,
+      "vertices": 248,
+      "bounds_min_m": [
+        -0.152,
+        -0.22,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.152,
+        0.152,
+        0.145
+      ],
+      "dimensions_m": [
+        0.304,
+        0.372,
+        0.145
+      ],
+      "materials": [
+        "SK_Sage_Paint",
+        "SK_Leather"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 72
+    },
+    {
+      "id": "profession_mason_hood",
+      "file": "modules/profession_mason_hood.glb",
+      "bytes": 25208,
+      "triangles": 488,
+      "vertices": 250,
+      "bounds_min_m": [
+        -0.15966,
+        -0.12639,
+        -0.1009
+      ],
+      "bounds_max_m": [
+        0.15966,
+        0.16,
+        0.255
+      ],
+      "dimensions_m": [
+        0.31932,
+        0.28639,
+        0.3559
+      ],
+      "materials": [
+        "SK_Cream_Lime",
+        "SK_Hemp_Rope"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 152
+    },
+    {
+      "id": "profession_smith_apron",
+      "file": "modules/profession_smith_apron.glb",
+      "bytes": 39496,
+      "triangles": 524,
+      "vertices": 274,
+      "bounds_min_m": [
+        -0.26,
+        -0.053,
+        -0.95
+      ],
+      "bounds_max_m": [
+        0.26,
+        0.0175,
+        0.05194
+      ],
+      "dimensions_m": [
+        0.52,
+        0.0705,
+        1.00194
+      ],
+      "materials": [
+        "SK_Leather",
+        "SK_Timber_Recess",
+        "SK_Brass"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "tool_carpenter_hammer",
+      "file": "modules/tool_carpenter_hammer.glb",
+      "bytes": 24496,
+      "triangles": 324,
+      "vertices": 168,
+      "bounds_min_m": [
+        -0.12,
+        -0.0425,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.12,
+        0.0425,
+        0.4025
+      ],
+      "dimensions_m": [
+        0.24,
+        0.085,
+        0.4025
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Forged_Iron",
+        "SK_Leather"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "tool_carpenter_saw",
+      "file": "modules/tool_carpenter_saw.glb",
+      "bytes": 38476,
+      "triangles": 536,
+      "vertices": 278,
+      "bounds_min_m": [
+        -0.3175,
+        -0.03,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.24,
+        0.03,
+        0.23
+      ],
+      "dimensions_m": [
+        0.5575,
+        0.06,
+        0.23
+      ],
+      "materials": [
+        "SK_Forged_Iron",
+        "SK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "tool_mason_chisel",
+      "file": "modules/tool_mason_chisel.glb",
+      "bytes": 28576,
+      "triangles": 388,
+      "vertices": 200,
+      "bounds_min_m": [
+        -0.031,
+        -0.031,
+        -0.0
+      ],
+      "bounds_max_m": [
+        0.031,
+        0.031,
+        0.29
+      ],
+      "dimensions_m": [
+        0.062,
+        0.062,
+        0.29
+      ],
+      "materials": [
+        "SK_Cut_Oak",
+        "SK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "tool_mason_trowel",
+      "file": "modules/tool_mason_trowel.glb",
+      "bytes": 19860,
+      "triangles": 256,
+      "vertices": 134,
+      "bounds_min_m": [
+        -0.075,
+        -0.18,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.075,
+        0.125,
+        0.125
+      ],
+      "dimensions_m": [
+        0.15,
+        0.305,
+        0.125
+      ],
+      "materials": [
+        "SK_Forged_Iron",
+        "SK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    }
+  ],
+  "examples": [
+    {
+      "id": "kings_gate_courtyard",
+      "file": "examples/kings_gate_courtyard.glb",
+      "bytes": 2463996,
+      "module_instances": 31,
+      "npc_execution_ready": false
+    },
+    {
+      "id": "guild_market_yard",
+      "file": "examples/guild_market_yard.glb",
+      "bytes": 1867876,
+      "module_instances": 16,
+      "npc_execution_ready": false
+    }
+  ],
+  "npc_execution_ready": false,
+  "units": "metres",
+  "total_module_triangles": 59958,
+  "elapsed_seconds": 6.765,
+  "materials": [
+    {
+      "name": "SK_Chestnut",
+      "roughness": 0.48,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Cut_Oak",
+      "roughness": 0.43,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Timber_Recess",
+      "roughness": 0.56,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Honey_Plank",
+      "roughness": 0.46,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Cream_Lime",
+      "roughness": 0.57,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_BlueGrey_Stone",
+      "roughness": 0.52,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Stone_Edge",
+      "roughness": 0.47,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Stone_Shadow",
+      "roughness": 0.57,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Forged_Iron",
+      "roughness": 0.34,
+      "metallic": 0.65
+    },
+    {
+      "name": "SK_Royal_Gold",
+      "roughness": 0.27,
+      "metallic": 0.8
+    },
+    {
+      "name": "SK_Brass",
+      "roughness": 0.3,
+      "metallic": 0.7
+    },
+    {
+      "name": "SK_Sage_Paint",
+      "roughness": 0.41,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Royal_Blue",
+      "roughness": 0.52,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Royal_Red",
+      "roughness": 0.52,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Hemp_Rope",
+      "roughness": 0.62,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Leather",
+      "roughness": 0.48,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Charcoal",
+      "roughness": 0.64,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Warm_Ember",
+      "roughness": 0.42,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Amber_Lantern",
+      "roughness": 0.24,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Parchment",
+      "roughness": 0.63,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Terracotta_1",
+      "roughness": 0.34,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Terracotta_2",
+      "roughness": 0.38,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Terracotta_3",
+      "roughness": 0.36,
+      "metallic": 0.0
+    },
+    {
+      "name": "SK_Terracotta_4",
+      "roughness": 0.4,
+      "metallic": 0.0
+    }
+  ],
+  "rendered_during_generation": false
+}

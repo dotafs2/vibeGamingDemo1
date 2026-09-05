@@ -1,0 +1,1452 @@
+{
+  "schema_version": 1,
+  "kit_id": "society_kit_01",
+  "status": "offline_catalog_not_live_economy",
+  "units": "metres",
+  "grid_m": 2,
+  "storey_height_m": 2.4,
+  "resource_balance": "proposed game balance; not applied to any saved world",
+  "execution_levels": [
+    "inventory item or carry batch",
+    "single site installation",
+    "multi-installation building plan"
+  ],
+  "modules": [
+    {
+      "id": "castle_wall_stone_2m",
+      "category": "structure",
+      "role": "wall",
+      "nominal_size_m": [
+        2,
+        0.4,
+        2.4
+      ],
+      "asset_glb": "modules/castle_wall_stone_2m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_stone_2m/castle_wall_stone_2m.castle_wall_stone_2m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 12,
+        "plaster": 2
+      }
+    },
+    {
+      "id": "castle_wall_battlement_2m",
+      "category": "structure",
+      "role": "battlement_wall",
+      "nominal_size_m": [
+        2,
+        0.5,
+        3.1
+      ],
+      "asset_glb": "modules/castle_wall_battlement_2m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 16,
+        "plaster": 2
+      }
+    },
+    {
+      "id": "castle_gate_arch_4m",
+      "category": "structure",
+      "role": "gate_frame",
+      "nominal_size_m": [
+        4,
+        0.6,
+        3.8
+      ],
+      "opening_width_m": 1.8,
+      "asset_glb": "modules/castle_gate_arch_4m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_arch_4m/castle_gate_arch_4m.castle_gate_arch_4m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 24,
+        "plaster": 4
+      }
+    },
+    {
+      "id": "castle_gate_oak_pair",
+      "category": "fixture",
+      "role": "gate_leaves",
+      "nominal_size_m": [
+        2,
+        1.8,
+        2.3
+      ],
+      "pose": "open90_degrees",
+      "asset_glb": "modules/castle_gate_oak_pair.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_oak_pair/castle_gate_oak_pair.castle_gate_oak_pair",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 10,
+        "iron": 2
+      }
+    },
+    {
+      "id": "castle_tower_storey_4m",
+      "category": "structure",
+      "role": "tower_layer",
+      "nominal_size_m": [
+        4,
+        4,
+        2.4
+      ],
+      "hollow": true,
+      "asset_glb": "modules/castle_tower_storey_4m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 48,
+        "planks": 6,
+        "plaster": 6
+      }
+    },
+    {
+      "id": "castle_tower_battlement_cap_4m",
+      "category": "structure",
+      "role": "tower_cap",
+      "nominal_size_m": [
+        4,
+        4,
+        1.0
+      ],
+      "roof_hatch_m": [
+        1,
+        1
+      ],
+      "asset_glb": "modules/castle_tower_battlement_cap_4m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_battlement_cap_4m/castle_tower_battlement_cap_4m.castle_tower_battlement_cap_4m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 24,
+        "planks": 12
+      }
+    },
+    {
+      "id": "castle_buttress_stone",
+      "category": "structure",
+      "role": "buttress",
+      "nominal_size_m": [
+        0.7,
+        0.7,
+        2.4
+      ],
+      "asset_glb": "modules/castle_buttress_stone.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_buttress_stone/castle_buttress_stone.castle_buttress_stone",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 8,
+        "plaster": 1
+      }
+    },
+    {
+      "id": "castle_walkway_timber_2m",
+      "category": "structure",
+      "role": "walkway",
+      "nominal_size_m": [
+        2,
+        2,
+        0.24
+      ],
+      "asset_glb": "modules/castle_walkway_timber_2m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 6,
+        "beams": 2
+      }
+    },
+    {
+      "id": "kingdom_banner_blue",
+      "category": "fixture",
+      "role": "banner",
+      "nominal_size_m": [
+        0.75,
+        0.15,
+        1.8
+      ],
+      "asset_glb": "modules/kingdom_banner_blue.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_blue/kingdom_banner_blue.kingdom_banner_blue",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "fabric": 2,
+        "wood": 1
+      }
+    },
+    {
+      "id": "kingdom_banner_red",
+      "category": "fixture",
+      "role": "banner",
+      "nominal_size_m": [
+        0.75,
+        0.15,
+        1.8
+      ],
+      "asset_glb": "modules/kingdom_banner_red.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_red/kingdom_banner_red.kingdom_banner_red",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "fabric": 2,
+        "wood": 1
+      }
+    },
+    {
+      "id": "market_stall_blue_2m",
+      "category": "facility",
+      "role": "market_stall",
+      "nominal_size_m": [
+        2,
+        2,
+        2.4
+      ],
+      "asset_glb": "modules/market_stall_blue_2m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_blue_2m/market_stall_blue_2m.market_stall_blue_2m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 12,
+        "beams": 4,
+        "fabric": 6
+      }
+    },
+    {
+      "id": "market_stall_red_2m",
+      "category": "facility",
+      "role": "market_stall",
+      "nominal_size_m": [
+        2,
+        2,
+        2.4
+      ],
+      "asset_glb": "modules/market_stall_red_2m.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_red_2m/market_stall_red_2m.market_stall_red_2m",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 12,
+        "beams": 4,
+        "fabric": 6
+      }
+    },
+    {
+      "id": "market_crate_oak",
+      "category": "fixture",
+      "role": "storage_crate",
+      "nominal_size_m": [
+        1,
+        0.7,
+        0.65
+      ],
+      "asset_glb": "modules/market_crate_oak.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_crate_oak/market_crate_oak.market_crate_oak",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 4
+      }
+    },
+    {
+      "id": "market_barrel_oak",
+      "category": "fixture",
+      "role": "storage_barrel",
+      "nominal_size_m": [
+        0.65,
+        0.65,
+        0.9
+      ],
+      "asset_glb": "modules/market_barrel_oak.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_barrel_oak/market_barrel_oak.market_barrel_oak",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 6,
+        "iron": 1
+      }
+    },
+    {
+      "id": "village_notice_board",
+      "category": "facility",
+      "role": "social_notice_board",
+      "nominal_size_m": [
+        1.5,
+        0.35,
+        2.0
+      ],
+      "asset_glb": "modules/village_notice_board.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_notice_board/village_notice_board.village_notice_board",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 6,
+        "wood": 2
+      }
+    },
+    {
+      "id": "village_lantern_post",
+      "category": "fixture",
+      "role": "street_light",
+      "nominal_size_m": [
+        0.6,
+        0.5,
+        2.4
+      ],
+      "asset_glb": "modules/village_lantern_post.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_lantern_post/village_lantern_post.village_lantern_post",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 3,
+        "iron": 1
+      }
+    },
+    {
+      "id": "workshop_carpenter_station",
+      "category": "facility",
+      "role": "woodworking",
+      "nominal_size_m": [
+        2,
+        1.7,
+        1.8
+      ],
+      "asset_glb": "modules/workshop_carpenter_station.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_carpenter_station/workshop_carpenter_station.workshop_carpenter_station",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 12,
+        "beams": 4,
+        "iron": 2
+      }
+    },
+    {
+      "id": "workshop_mason_station",
+      "category": "facility",
+      "role": "stoneworking",
+      "nominal_size_m": [
+        2,
+        1.7,
+        1.6
+      ],
+      "asset_glb": "modules/workshop_mason_station.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_mason_station/workshop_mason_station.workshop_mason_station",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 10,
+        "beams": 4
+      }
+    },
+    {
+      "id": "workshop_tile_kiln",
+      "category": "facility",
+      "role": "tile_firing",
+      "nominal_size_m": [
+        2,
+        2,
+        2.6
+      ],
+      "opening_is_geometry": true,
+      "asset_glb": "modules/workshop_tile_kiln.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_tile_kiln/workshop_tile_kiln.workshop_tile_kiln",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 12,
+        "tiles": 20,
+        "plaster": 4
+      }
+    },
+    {
+      "id": "workshop_blacksmith_forge",
+      "category": "facility",
+      "role": "metalworking",
+      "nominal_size_m": [
+        2,
+        1.8,
+        2.5
+      ],
+      "opening_is_geometry": true,
+      "asset_glb": "modules/workshop_blacksmith_forge.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_blacksmith_forge/workshop_blacksmith_forge.workshop_blacksmith_forge",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 16,
+        "iron": 6
+      }
+    },
+    {
+      "id": "goods_planks_bundle",
+      "category": "goods",
+      "resource": "planks",
+      "nominal_size_m": [
+        0.9,
+        0.4,
+        0.28
+      ],
+      "asset_glb": "modules/goods_planks_bundle.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_planks_bundle/goods_planks_bundle.goods_planks_bundle",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_inventory_carry_batch",
+      "represented_resource": "planks",
+      "pack_capacity": 6,
+      "resource_inputs": null,
+      "creates_inventory": false
+    },
+    {
+      "id": "goods_beams_bundle",
+      "category": "goods",
+      "resource": "timber_beams",
+      "nominal_size_m": [
+        1.2,
+        0.45,
+        0.3
+      ],
+      "asset_glb": "modules/goods_beams_bundle.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle.goods_beams_bundle",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_inventory_carry_batch",
+      "represented_resource": "beams",
+      "pack_capacity": 4,
+      "resource_inputs": null,
+      "creates_inventory": false
+    },
+    {
+      "id": "goods_bricks_tiles_crate",
+      "category": "goods",
+      "resource": "bricks_and_tiles",
+      "nominal_size_m": [
+        0.65,
+        0.45,
+        0.45
+      ],
+      "asset_glb": "modules/goods_bricks_tiles_crate.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_bricks_tiles_crate/goods_bricks_tiles_crate.goods_bricks_tiles_crate",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_inventory_carry_batch",
+      "represented_resource": "tiles",
+      "pack_capacity": 6,
+      "resource_inputs": null,
+      "creates_inventory": false
+    },
+    {
+      "id": "goods_paint_pails",
+      "category": "goods",
+      "resource": "pigment_and_lime",
+      "nominal_size_m": [
+        0.65,
+        0.35,
+        0.48
+      ],
+      "asset_glb": "modules/goods_paint_pails.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_paint_pails/goods_paint_pails.goods_paint_pails",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_inventory_carry_batch",
+      "represented_resource": "plaster",
+      "pack_capacity": 4,
+      "resource_inputs": null,
+      "creates_inventory": false
+    },
+    {
+      "id": "regalia_king_crown",
+      "category": "wearable",
+      "role": "king_identity",
+      "nominal_size_m": [
+        0.27,
+        0.27,
+        0.16
+      ],
+      "fitting_anchor": "head_contact_plane",
+      "asset_glb": "modules/regalia_king_crown.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/regalia_king_crown/regalia_king_crown.regalia_king_crown",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "gold": 2
+      }
+    },
+    {
+      "id": "profession_carpenter_cap",
+      "category": "wearable",
+      "role": "carpenter_identity",
+      "nominal_size_m": [
+        0.34,
+        0.35,
+        0.15
+      ],
+      "fitting_anchor": "head_contact_plane",
+      "asset_glb": "modules/profession_carpenter_cap.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_carpenter_cap/profession_carpenter_cap.profession_carpenter_cap",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "fabric": 2
+      }
+    },
+    {
+      "id": "profession_mason_hood",
+      "category": "wearable",
+      "role": "mason_identity",
+      "nominal_size_m": [
+        0.34,
+        0.33,
+        0.33
+      ],
+      "fitting_anchor": "head_contact_plane",
+      "asset_glb": "modules/profession_mason_hood.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_mason_hood/profession_mason_hood.profession_mason_hood",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "fabric": 3
+      }
+    },
+    {
+      "id": "profession_smith_apron",
+      "category": "wearable",
+      "role": "blacksmith_identity",
+      "nominal_size_m": [
+        0.52,
+        0.1,
+        0.95
+      ],
+      "fitting_anchor": "neck_attachment_origin_extends_down",
+      "asset_glb": "modules/profession_smith_apron.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/profession_smith_apron/profession_smith_apron.profession_smith_apron",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "leather": 3
+      }
+    },
+    {
+      "id": "tool_carpenter_hammer",
+      "category": "tool",
+      "role": "hammer",
+      "nominal_size_m": [
+        0.24,
+        0.09,
+        0.42
+      ],
+      "asset_glb": "modules/tool_carpenter_hammer.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_carpenter_hammer/tool_carpenter_hammer.tool_carpenter_hammer",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "wood": 1,
+        "iron": 1
+      }
+    },
+    {
+      "id": "tool_carpenter_saw",
+      "category": "tool",
+      "role": "saw",
+      "nominal_size_m": [
+        0.55,
+        0.07,
+        0.22
+      ],
+      "asset_glb": "modules/tool_carpenter_saw.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_carpenter_saw/tool_carpenter_saw.tool_carpenter_saw",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "wood": 1,
+        "iron": 2
+      }
+    },
+    {
+      "id": "tool_mason_chisel",
+      "category": "tool",
+      "role": "chisel",
+      "nominal_size_m": [
+        0.06,
+        0.06,
+        0.3
+      ],
+      "asset_glb": "modules/tool_mason_chisel.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_mason_chisel/tool_mason_chisel.tool_mason_chisel",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "wood": 1,
+        "iron": 1
+      }
+    },
+    {
+      "id": "tool_mason_trowel",
+      "category": "tool",
+      "role": "trowel",
+      "nominal_size_m": [
+        0.15,
+        0.3,
+        0.12
+      ],
+      "asset_glb": "modules/tool_mason_trowel.glb",
+      "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_mason_trowel/tool_mason_trowel.tool_mason_trowel",
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "npc_handheld": true,
+      "execution_unit": "one_manufactured_item",
+      "resource_inputs": {
+        "wood": 1,
+        "iron": 1
+      }
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "kings_gate_courtyard",
+      "execution_unit": "ordered_site_plan",
+      "npc_handheld": false,
+      "installation_material_total": {
+        "beams": 8,
+        "fabric": 4,
+        "iron": 5,
+        "planks": 98,
+        "plaster": 50,
+        "stone": 440,
+        "wood": 10
+      },
+      "goods_packs_are_inventory_displays_not_free_stock": true,
+      "placements": [
+        {
+          "instance_id": "kings_gate_courtyard_001",
+          "module_id": "castle_gate_arch_4m",
+          "position_m": [
+            0,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 24,
+            "plaster": 4
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_arch_4m/castle_gate_arch_4m.castle_gate_arch_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_002",
+          "module_id": "castle_gate_oak_pair",
+          "position_m": [
+            0,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 10,
+            "iron": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_gate_oak_pair/castle_gate_oak_pair.castle_gate_oak_pair"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_003",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -3,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_004",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -5,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_005",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -6,
+            -3,
+            0
+          ],
+          "yaw_degrees": 90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_006",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -6,
+            -1,
+            0
+          ],
+          "yaw_degrees": 90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_007",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            -4,
+            2,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 48,
+            "planks": 6,
+            "plaster": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_008",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            -4,
+            2,
+            2.4
+          ],
+          "yaw_degrees": 90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 48,
+            "planks": 6,
+            "plaster": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_009",
+          "module_id": "castle_tower_battlement_cap_4m",
+          "position_m": [
+            -4,
+            2,
+            4.8
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 24,
+            "planks": 12
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_battlement_cap_4m/castle_tower_battlement_cap_4m.castle_tower_battlement_cap_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_010",
+          "module_id": "castle_buttress_stone",
+          "position_m": [
+            -5.65,
+            -3.7,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 8,
+            "plaster": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_buttress_stone/castle_buttress_stone.castle_buttress_stone"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_011",
+          "module_id": "kingdom_banner_blue",
+          "position_m": [
+            -1.5,
+            -4.39,
+            1.5
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "fabric": 2,
+            "wood": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_blue/kingdom_banner_blue.kingdom_banner_blue"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_012",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            -1.7,
+            -5.1,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "wood": 3,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_lantern_post/village_lantern_post.village_lantern_post"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_013",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            3,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_014",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            5,
+            -4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_015",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            6,
+            -3,
+            0
+          ],
+          "yaw_degrees": 90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_016",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            6,
+            -1,
+            0
+          ],
+          "yaw_degrees": 90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_017",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            4,
+            2,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 48,
+            "planks": 6,
+            "plaster": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_018",
+          "module_id": "castle_tower_storey_4m",
+          "position_m": [
+            4,
+            2,
+            2.4
+          ],
+          "yaw_degrees": -90,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 48,
+            "planks": 6,
+            "plaster": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_storey_4m/castle_tower_storey_4m.castle_tower_storey_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_019",
+          "module_id": "castle_tower_battlement_cap_4m",
+          "position_m": [
+            4,
+            2,
+            4.8
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 24,
+            "planks": 12
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_tower_battlement_cap_4m/castle_tower_battlement_cap_4m.castle_tower_battlement_cap_4m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_020",
+          "module_id": "castle_buttress_stone",
+          "position_m": [
+            5.65,
+            -3.7,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 8,
+            "plaster": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_buttress_stone/castle_buttress_stone.castle_buttress_stone"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_021",
+          "module_id": "kingdom_banner_blue",
+          "position_m": [
+            1.5,
+            -4.39,
+            1.5
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "fabric": 2,
+            "wood": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/kingdom_banner_blue/kingdom_banner_blue.kingdom_banner_blue"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_022",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            1.7,
+            -5.1,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "wood": 3,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_lantern_post/village_lantern_post.village_lantern_post"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_023",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            -1,
+            4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_024",
+          "module_id": "castle_wall_battlement_2m",
+          "position_m": [
+            1,
+            4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "plaster": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_wall_battlement_2m/castle_wall_battlement_2m.castle_wall_battlement_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_025",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            -3,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "beams": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_026",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            -1,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "beams": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_027",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            1,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "beams": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_028",
+          "module_id": "castle_walkway_timber_2m",
+          "position_m": [
+            3,
+            2,
+            2.16
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "beams": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/castle_walkway_timber_2m/castle_walkway_timber_2m.castle_walkway_timber_2m"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_029",
+          "module_id": "village_notice_board",
+          "position_m": [
+            -2.7,
+            -1.9,
+            0
+          ],
+          "yaw_degrees": 20,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "wood": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_notice_board/village_notice_board.village_notice_board"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_030",
+          "module_id": "market_barrel_oak",
+          "position_m": [
+            2.8,
+            -1.4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_barrel_oak/market_barrel_oak.market_barrel_oak"
+        },
+        {
+          "instance_id": "kings_gate_courtyard_031",
+          "module_id": "market_crate_oak",
+          "position_m": [
+            3.4,
+            -0.4,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 4
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_crate_oak/market_crate_oak.market_crate_oak"
+        }
+      ]
+    },
+    {
+      "id": "guild_market_yard",
+      "execution_unit": "ordered_site_plan",
+      "npc_handheld": false,
+      "installation_material_total": {
+        "beams": 16,
+        "fabric": 12,
+        "iron": 12,
+        "planks": 52,
+        "plaster": 4,
+        "stone": 38,
+        "tiles": 20,
+        "wood": 7
+      },
+      "goods_packs_are_inventory_displays_not_free_stock": true,
+      "placements": [
+        {
+          "instance_id": "guild_market_yard_001",
+          "module_id": "workshop_carpenter_station",
+          "position_m": [
+            -3.3,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 12,
+            "beams": 4,
+            "iron": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_carpenter_station/workshop_carpenter_station.workshop_carpenter_station"
+        },
+        {
+          "instance_id": "guild_market_yard_002",
+          "module_id": "workshop_mason_station",
+          "position_m": [
+            0,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 10,
+            "beams": 4
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_mason_station/workshop_mason_station.workshop_mason_station"
+        },
+        {
+          "instance_id": "guild_market_yard_003",
+          "module_id": "workshop_tile_kiln",
+          "position_m": [
+            2.3,
+            2.6,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 12,
+            "tiles": 20,
+            "plaster": 4
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_tile_kiln/workshop_tile_kiln.workshop_tile_kiln"
+        },
+        {
+          "instance_id": "guild_market_yard_004",
+          "module_id": "workshop_blacksmith_forge",
+          "position_m": [
+            4.2,
+            0.1,
+            0
+          ],
+          "yaw_degrees": 20,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "stone": 16,
+            "iron": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/workshop_blacksmith_forge/workshop_blacksmith_forge.workshop_blacksmith_forge"
+        },
+        {
+          "instance_id": "guild_market_yard_005",
+          "module_id": "market_stall_blue_2m",
+          "position_m": [
+            -2.0,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 12,
+            "beams": 4,
+            "fabric": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_blue_2m/market_stall_blue_2m.market_stall_blue_2m"
+        },
+        {
+          "instance_id": "guild_market_yard_006",
+          "module_id": "market_stall_red_2m",
+          "position_m": [
+            1.0,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 12,
+            "beams": 4,
+            "fabric": 6
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_stall_red_2m/market_stall_red_2m.market_stall_red_2m"
+        },
+        {
+          "instance_id": "guild_market_yard_007",
+          "module_id": "village_notice_board",
+          "position_m": [
+            -4.0,
+            -1.8,
+            0
+          ],
+          "yaw_degrees": 25,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "wood": 2
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_notice_board/village_notice_board.village_notice_board"
+        },
+        {
+          "instance_id": "guild_market_yard_008",
+          "module_id": "village_lantern_post",
+          "position_m": [
+            3.5,
+            -3.0,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "wood": 3,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/village_lantern_post/village_lantern_post.village_lantern_post"
+        },
+        {
+          "instance_id": "guild_market_yard_009",
+          "module_id": "market_barrel_oak",
+          "position_m": [
+            -0.3,
+            -3.1,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 6,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_barrel_oak/market_barrel_oak.market_barrel_oak"
+        },
+        {
+          "instance_id": "guild_market_yard_010",
+          "module_id": "market_crate_oak",
+          "position_m": [
+            4,
+            -1.5,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_site_installation",
+          "resource_inputs": {
+            "planks": 4
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/market_crate_oak/market_crate_oak.market_crate_oak"
+        },
+        {
+          "instance_id": "guild_market_yard_011",
+          "module_id": "goods_planks_bundle",
+          "position_m": [
+            -3.6,
+            1.2,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_inventory_carry_batch",
+          "resource_inputs": null,
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_planks_bundle/goods_planks_bundle.goods_planks_bundle"
+        },
+        {
+          "instance_id": "guild_market_yard_012",
+          "module_id": "goods_beams_bundle",
+          "position_m": [
+            -2.5,
+            1.2,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_inventory_carry_batch",
+          "resource_inputs": null,
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle.goods_beams_bundle"
+        },
+        {
+          "instance_id": "guild_market_yard_013",
+          "module_id": "goods_bricks_tiles_crate",
+          "position_m": [
+            3.2,
+            1.1,
+            0
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_inventory_carry_batch",
+          "resource_inputs": null,
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_bricks_tiles_crate/goods_bricks_tiles_crate.goods_bricks_tiles_crate"
+        },
+        {
+          "instance_id": "guild_market_yard_014",
+          "module_id": "goods_paint_pails",
+          "position_m": [
+            -1.8,
+            -1.7,
+            0.99
+          ],
+          "yaw_degrees": 0,
+          "execution_unit": "one_inventory_carry_batch",
+          "resource_inputs": null,
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/goods_paint_pails/goods_paint_pails.goods_paint_pails"
+        },
+        {
+          "instance_id": "guild_market_yard_015",
+          "module_id": "tool_carpenter_hammer",
+          "position_m": [
+            -3.45,
+            2.4,
+            0.98
+          ],
+          "yaw_degrees": 20,
+          "execution_unit": "one_manufactured_item",
+          "resource_inputs": {
+            "wood": 1,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_carpenter_hammer/tool_carpenter_hammer.tool_carpenter_hammer"
+        },
+        {
+          "instance_id": "guild_market_yard_016",
+          "module_id": "tool_mason_trowel",
+          "position_m": [
+            0.25,
+            2.6,
+            0.98
+          ],
+          "yaw_degrees": 15,
+          "execution_unit": "one_manufactured_item",
+          "resource_inputs": {
+            "wood": 1,
+            "iron": 1
+          },
+          "native_mesh": "/Game/ThreeHearths/Generated/SocietyKit/tool_mason_trowel/tool_mason_trowel.tool_mason_trowel"
+        }
+      ]
+    }
+  ]
+}
