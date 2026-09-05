@@ -1,0 +1,379 @@
+{
+  "status": "saved",
+  "map": "/Game/ThreeHearths/Maps/L_VillageKit_Showcase",
+  "template": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+  "lighting": "copied from current village template",
+  "placements": [
+    {
+      "id": "example__cottage_terracotta",
+      "location_cm": [
+        -1200,
+        1000,
+        36
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "example__longhouse_slateblue",
+      "location_cm": [
+        0,
+        1000,
+        36
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "example__townhouse_terracotta",
+      "location_cm": [
+        1200,
+        1000,
+        36
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "foundation_stone_2m",
+      "location_cm": [
+        -1100,
+        -50,
+        36
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "floor_timber_2m",
+      "location_cm": [
+        -680,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "frame_timber_2m",
+      "location_cm": [
+        -260,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "post_timber_2_4m",
+      "location_cm": [
+        160,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "beam_timber_2m",
+      "location_cm": [
+        580,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_plaster_2m",
+      "location_cm": [
+        1000,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_timber_2m",
+      "location_cm": [
+        1420,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_stone_2m",
+      "location_cm": [
+        1840,
+        -50,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_door_plaster_2m",
+      "location_cm": [
+        -1100,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_door_timber_2m",
+      "location_cm": [
+        -680,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_window_plaster_2m",
+      "location_cm": [
+        -260,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_window_timber_2m",
+      "location_cm": [
+        160,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_door_stone_2m",
+      "location_cm": [
+        580,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "wall_window_stone_2m",
+      "location_cm": [
+        1000,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "gable_plaster_4m",
+      "location_cm": [
+        1420,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "gable_timber_4m",
+      "location_cm": [
+        1840,
+        -470,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "gable_stone_4m",
+      "location_cm": [
+        -1100,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "location_cm": [
+        -680,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "location_cm": [
+        -260,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "location_cm": [
+        160,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "location_cm": [
+        580,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "porch_post_timber",
+      "location_cm": [
+        1000,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "porch_steps_stone_2m",
+      "location_cm": [
+        1420,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "railing_timber_2m",
+      "location_cm": [
+        1840,
+        -890,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "location_cm": [
+        -1100,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "location_cm": [
+        -680,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "floor_opening_2m",
+      "location_cm": [
+        -260,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "stairs_switchback_2x4m",
+      "location_cm": [
+        160,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "carry_logs",
+      "location_cm": [
+        580,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "carry_planks",
+      "location_cm": [
+        1000,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "carry_stones",
+      "location_cm": [
+        1420,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "carry_tiles",
+      "location_cm": [
+        1840,
+        -1310,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "carry_plaster",
+      "location_cm": [
+        -1100,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "table_communal",
+      "location_cm": [
+        -680,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "bench_timber",
+      "location_cm": [
+        -260,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "workbench_carpenter",
+      "location_cm": [
+        160,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "door_oak",
+      "location_cm": [
+        580,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    },
+    {
+      "id": "shutter_sage",
+      "location_cm": [
+        1000,
+        -1730,
+        12
+      ],
+      "yaw_degrees": 90
+    }
+  ],
+  "reference_mesh": "/Game/Environment/Meshes/Building/SM_House_04",
+  "purpose": "art review; collision, NPC navigation and construction are not enabled"
+}

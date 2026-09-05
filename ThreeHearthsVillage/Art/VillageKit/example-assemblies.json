@@ -1,0 +1,2472 @@
+{
+  "cottage_terracotta": [
+    {
+      "instance_id": "cottage_terracotta_001",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_002",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_003",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_004",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_005",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_006",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_007",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_008",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_009",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_010",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_011",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_012",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_013",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_014",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_015",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_016",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_017",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_018",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_019",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_020",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_021",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_022",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_023",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_024",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_025",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_026",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_027",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_028",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_029",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_030",
+      "module_id": "wall_window_plaster_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_031",
+      "module_id": "wall_plaster_2m",
+      "position_m": [
+        -2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_032",
+      "module_id": "wall_door_plaster_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_033",
+      "module_id": "door_oak",
+      "position_m": [
+        -1.467477,
+        -2.468364,
+        0.16
+      ],
+      "yaw_degrees": -95,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_034",
+      "module_id": "wall_window_plaster_2m",
+      "position_m": [
+        1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_035",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        -2.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_036",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        -2.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_037",
+      "module_id": "wall_window_plaster_2m",
+      "position_m": [
+        2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_038",
+      "module_id": "wall_plaster_2m",
+      "position_m": [
+        2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_039",
+      "module_id": "wall_window_plaster_2m",
+      "position_m": [
+        -1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_040",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -1.7,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_041",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -0.3,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_042",
+      "module_id": "wall_window_plaster_2m",
+      "position_m": [
+        1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_043",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_044",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_045",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_046",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_047",
+      "module_id": "roof_ridge_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_048",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_049",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_050",
+      "module_id": "roof_ridge_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_051",
+      "module_id": "gable_plaster_4m",
+      "position_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_052",
+      "module_id": "gable_plaster_4m",
+      "position_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "cottage_terracotta_053",
+      "module_id": "table_communal",
+      "position_m": [
+        0,
+        0,
+        0.16
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_054",
+      "module_id": "bench_timber",
+      "position_m": [
+        0,
+        -0.8,
+        0.16
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "cottage_terracotta_055",
+      "module_id": "porch_steps_stone_2m",
+      "position_m": [
+        -1,
+        -2.48,
+        -0.24
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    }
+  ],
+  "longhouse_slateblue": [
+    {
+      "instance_id": "longhouse_slateblue_001",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_002",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        0.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_003",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        2.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_004",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        -2.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_005",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        0.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_006",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        2.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_007",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_008",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_009",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_010",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_011",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_012",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_013",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        -3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_014",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_015",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_016",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_017",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        -3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_018",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_019",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_020",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_021",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        -3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_022",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_023",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_024",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_025",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        -3.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_026",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_027",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_028",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        3.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_029",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        -3.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_030",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_031",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_032",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        3.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_033",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_034",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_035",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_036",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_037",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_038",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_039",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_040",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_041",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_042",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        -2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_043",
+      "module_id": "wall_timber_2m",
+      "position_m": [
+        -2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_044",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        -2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_045",
+      "module_id": "wall_door_timber_2m",
+      "position_m": [
+        -1,
+        -3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_046",
+      "module_id": "door_oak",
+      "position_m": [
+        -1.467477,
+        -3.468364,
+        0.16
+      ],
+      "yaw_degrees": -95,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_047",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        1,
+        -3.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_048",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        -3.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_049",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        -3.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_050",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_051",
+      "module_id": "wall_timber_2m",
+      "position_m": [
+        2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_052",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_053",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        -1,
+        3.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_054",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -1.7,
+        3.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_055",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -0.3,
+        3.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_056",
+      "module_id": "wall_window_timber_2m",
+      "position_m": [
+        1,
+        3.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_057",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        3.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_058",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        3.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_059",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_060",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_061",
+      "module_id": "roof_ridge_slateblue_2m",
+      "position_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_062",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_063",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_064",
+      "module_id": "roof_ridge_slateblue_2m",
+      "position_m": [
+        0,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_065",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_066",
+      "module_id": "roof_slope_slateblue_2m",
+      "position_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_067",
+      "module_id": "roof_ridge_slateblue_2m",
+      "position_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_068",
+      "module_id": "gable_timber_4m",
+      "position_m": [
+        0,
+        -3.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_069",
+      "module_id": "gable_timber_4m",
+      "position_m": [
+        0,
+        3.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "longhouse_slateblue_070",
+      "module_id": "table_communal",
+      "position_m": [
+        0,
+        0,
+        0.16
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_071",
+      "module_id": "bench_timber",
+      "position_m": [
+        0,
+        -0.8,
+        0.16
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "longhouse_slateblue_072",
+      "module_id": "porch_steps_stone_2m",
+      "position_m": [
+        -1,
+        -3.48,
+        -0.24
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    }
+  ],
+  "townhouse_terracotta": [
+    {
+      "instance_id": "townhouse_terracotta_001",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_002",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        -1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_003",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_004",
+      "module_id": "foundation_stone_2m",
+      "position_m": [
+        1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_005",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_006",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        -1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_007",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_008",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_009",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_010",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_011",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_012",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_013",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_014",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_015",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_016",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_017",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_018",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_019",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_020",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_021",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_022",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_023",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_024",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_025",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_026",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_027",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_028",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_029",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_030",
+      "module_id": "wall_stone_2m",
+      "position_m": [
+        -2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_031",
+      "module_id": "wall_door_stone_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_032",
+      "module_id": "door_oak",
+      "position_m": [
+        -1.467477,
+        -2.468364,
+        0.16
+      ],
+      "yaw_degrees": -95,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_033",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_034",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        -2.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_035",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        -2.13,
+        1.01
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_036",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_037",
+      "module_id": "wall_stone_2m",
+      "position_m": [
+        2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_038",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        -1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_039",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -1.7,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_040",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -0.3,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_041",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_042",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_043",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        2.13,
+        1.01
+      ],
+      "yaw_degrees": 180,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_044",
+      "module_id": "floor_opening_2m",
+      "position_m": [
+        -1,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_045",
+      "module_id": "floor_opening_2m",
+      "position_m": [
+        -1,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_046",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_047",
+      "module_id": "floor_timber_2m",
+      "position_m": [
+        1,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_048",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_049",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_050",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        -2,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_051",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_052",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_053",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_054",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_055",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        0.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_056",
+      "module_id": "post_timber_2_4m",
+      "position_m": [
+        2,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_057",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_058",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        0.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_059",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -1,
+        2.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_060",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        -2.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_061",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        0.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_062",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        1,
+        2.0,
+        4.6
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_063",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_064",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        -2,
+        1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_065",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        -1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_066",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        0,
+        1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_067",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        -1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_068",
+      "module_id": "beam_timber_2m",
+      "position_m": [
+        2,
+        1.0,
+        4.6
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_069",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        -2,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": -90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_070",
+      "module_id": "wall_stone_2m",
+      "position_m": [
+        -2,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": -90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_071",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_072",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -1.7,
+        -2.13,
+        3.41
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_073",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -0.3,
+        -2.13,
+        3.41
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_074",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        1,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_075",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        -2.13,
+        3.41
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_076",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        -2.13,
+        3.41
+      ],
+      "yaw_degrees": 0,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_077",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        2,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_078",
+      "module_id": "wall_stone_2m",
+      "position_m": [
+        2,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 90,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_079",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        -1,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_080",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -1.7,
+        2.13,
+        3.41
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_081",
+      "module_id": "shutter_sage",
+      "position_m": [
+        -0.3,
+        2.13,
+        3.41
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_082",
+      "module_id": "wall_window_stone_2m",
+      "position_m": [
+        1,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_083",
+      "module_id": "shutter_sage",
+      "position_m": [
+        0.3,
+        2.13,
+        3.41
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_084",
+      "module_id": "shutter_sage",
+      "position_m": [
+        1.7,
+        2.13,
+        3.41
+      ],
+      "yaw_degrees": 180,
+      "level": 1
+    },
+    {
+      "instance_id": "townhouse_terracotta_085",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        4.8
+      ],
+      "yaw_degrees": 0,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_086",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        4.8
+      ],
+      "yaw_degrees": 180,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_087",
+      "module_id": "roof_ridge_terracotta_2m",
+      "position_m": [
+        0,
+        -1.0,
+        4.8
+      ],
+      "yaw_degrees": 0,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_088",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        4.8
+      ],
+      "yaw_degrees": 0,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_089",
+      "module_id": "roof_slope_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        4.8
+      ],
+      "yaw_degrees": 180,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_090",
+      "module_id": "roof_ridge_terracotta_2m",
+      "position_m": [
+        0,
+        1.0,
+        4.8
+      ],
+      "yaw_degrees": 0,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_091",
+      "module_id": "gable_stone_4m",
+      "position_m": [
+        0,
+        -2.0,
+        4.8
+      ],
+      "yaw_degrees": 0,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_092",
+      "module_id": "gable_stone_4m",
+      "position_m": [
+        0,
+        2.0,
+        4.8
+      ],
+      "yaw_degrees": 180,
+      "level": 2
+    },
+    {
+      "instance_id": "townhouse_terracotta_093",
+      "module_id": "stairs_switchback_2x4m",
+      "position_m": [
+        -1,
+        0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_094",
+      "module_id": "canopy_terracotta_2m",
+      "position_m": [
+        -1,
+        -2.0,
+        2.1
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_095",
+      "module_id": "porch_post_timber",
+      "position_m": [
+        -1.95,
+        -3.15,
+        -0.25
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_096",
+      "module_id": "porch_post_timber",
+      "position_m": [
+        -0.05,
+        -3.15,
+        -0.25
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    },
+    {
+      "instance_id": "townhouse_terracotta_097",
+      "module_id": "porch_steps_stone_2m",
+      "position_m": [
+        -1,
+        -2.48,
+        -0.24
+      ],
+      "yaw_degrees": 0,
+      "level": 0
+    }
+  ]
+}

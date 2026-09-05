@@ -1,0 +1,871 @@
+{
+  "schema_version": 1,
+  "kit_id": "three_hearths_village_kit_01",
+  "units": "metres",
+  "front_axis": "-Y",
+  "up_axis": "+Z",
+  "grid_m": 2.0,
+  "floor_to_floor_m": 2.4,
+  "status": "art_assets_and_offline_construction_contract",
+  "resource_balance": "draft_not_applied_to_live_inventory",
+  "resources": {
+    "wood": {
+      "label": "木材",
+      "carry_asset": "carry_logs",
+      "pack_capacity": 6,
+      "current_inventory": true
+    },
+    "stone": {
+      "label": "石材",
+      "carry_asset": "carry_stones",
+      "pack_capacity": 6,
+      "current_inventory": true
+    },
+    "planks": {
+      "label": "木板",
+      "carry_asset": "carry_planks",
+      "pack_capacity": 6,
+      "current_inventory": false
+    },
+    "tiles": {
+      "label": "屋瓦",
+      "carry_asset": "carry_tiles",
+      "pack_capacity": 6,
+      "current_inventory": false
+    },
+    "plaster": {
+      "label": "灰泥",
+      "carry_asset": "carry_plaster",
+      "pack_capacity": 4,
+      "current_inventory": false
+    }
+  },
+  "conventions": {
+    "foundation": "Origin at centre of top surface Z=0; extends down to -0.24.",
+    "floor": "Origin at floor structural datum; deck extends Z=0..0.16.",
+    "frame": "Standalone frame prototype only; origin bay centre, Z=0; posts X/Y=+/-1, top Z=2.4. Multi-bay assemblies instead use post_timber_2_4m and beam_timber_2m placed once per grid vertex/edge.",
+    "post": "Origin centre bottom; .18m square section, Z=0..2.4.",
+    "beam": "Origin centre underside; longitudinal axis +X, actual span X=-.91..+.91 to fit between .18m posts on2m grid; Z=0..0.2. Place underside at storey datum+2.2, rotate90 degrees for Y edges.",
+    "wall": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
+    "roof_slope": "Origin at ridge projection on wall-top datum; ridge along Y at Z=1.20, slope towards +X to eave X=2.18/Z=0. A matching half rotates 180 degrees about Z. Along Y every panel is exactly 2m; place centres 2m apart.",
+    "ridge": "Origin on wall-top datum, ridge along Y, bottom Z=1.20; span2m.",
+    "gable": "Origin centre on 4m-wide end wall top; front -Y; apex Z=1.2.",
+    "floor_opening": "Two side trimmers X=+/-0.95 only; ends are open so two consecutive pieces form an uninterrupted 1.8x4m stairwell. Never add a transverse beam through the opening.",
+    "stairs": "Switchback in a2x4m two-bay stairwell; two .84m-wide flights with .20m risers/.24m treads, .90m-deep rear turn landing and .90m-deep upper exit landing. Climbs finished deck Z=.16 to2.56. Entrance X=-.48/Y=-1.02; upper exit landing X=.48/Y=-1.47 connects rightward to the upper floor. Use two floor_opening_2m at Y=+/-1, omit the first-floor transverse beam through Y=0. Collision and navigation require engine-authored treatment.",
+    "carry": "Only carry-category packs are NPC-portable; building pieces are construction results, never hand-held whole walls or floors.",
+    "exports": "Each modules/<id>.glb contains one joined mesh in local coordinates. GLTF uses standard +Y-up conversion; Blender source and these specs are +Z-up."
+  },
+  "design_choices": {
+    "blueprint": [
+      "cottage_terracotta",
+      "longhouse_slateblue",
+      "townhouse_terracotta"
+    ],
+    "wall_material": [
+      "plaster",
+      "timber",
+      "stone"
+    ],
+    "roof_material": [
+      "terracotta",
+      "slateblue"
+    ]
+  },
+  "blueprints": [
+    {
+      "id": "cottage_terracotta",
+      "footprint_m": [
+        4,
+        4
+      ],
+      "storeys": 1,
+      "wall": "plaster",
+      "roof": "terracotta"
+    },
+    {
+      "id": "longhouse_slateblue",
+      "footprint_m": [
+        4,
+        6
+      ],
+      "storeys": 1,
+      "wall": "timber",
+      "roof": "slateblue"
+    },
+    {
+      "id": "townhouse_terracotta",
+      "footprint_m": [
+        4,
+        4
+      ],
+      "storeys": 2,
+      "wall": "stone",
+      "roof": "terracotta",
+      "upper_stair_bays_m": [
+        [
+          -1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      "status": "assembly_candidate_requires_UE_collision_and_navigation"
+    }
+  ],
+  "modules": [
+    {
+      "id": "foundation_stone_2m",
+      "category": "foundation",
+      "nominal_size_m": [
+        2,
+        2,
+        0.24
+      ],
+      "asset_glb": "modules/foundation_stone_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 6
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "floor_timber_2m",
+      "category": "floor",
+      "nominal_size_m": [
+        2,
+        2,
+        0.16
+      ],
+      "asset_glb": "modules/floor_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "frame_timber_2m",
+      "category": "frame",
+      "nominal_size_m": [
+        2,
+        2,
+        2.4
+      ],
+      "asset_glb": "modules/frame_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 12
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "post_timber_2_4m",
+      "category": "post",
+      "nominal_size_m": [
+        0.18,
+        0.18,
+        2.4
+      ],
+      "asset_glb": "modules/post_timber_2_4m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "beam_timber_2m",
+      "category": "beam",
+      "nominal_size_m": [
+        2,
+        0.18,
+        0.2
+      ],
+      "asset_glb": "modules/beam_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_plaster_2m",
+      "category": "wall",
+      "material_family": "plaster",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "asset_glb": "modules/wall_plaster_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "plaster": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_timber_2m",
+      "category": "wall",
+      "material_family": "timber",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "asset_glb": "modules/wall_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_stone_2m",
+      "category": "wall",
+      "material_family": "stone",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "asset_glb": "modules/wall_stone_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "stone": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_door_plaster_2m",
+      "category": "wall_door",
+      "material_family": "plaster",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.94,
+        1.9
+      ],
+      "asset_glb": "modules/wall_door_plaster_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "plaster": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_door_timber_2m",
+      "category": "wall_door",
+      "material_family": "timber",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.94,
+        1.9
+      ],
+      "asset_glb": "modules/wall_door_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "planks": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_window_plaster_2m",
+      "category": "wall_window",
+      "material_family": "plaster",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.9,
+        0.9
+      ],
+      "asset_glb": "modules/wall_window_plaster_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "plaster": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_window_timber_2m",
+      "category": "wall_window",
+      "material_family": "timber",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.9,
+        0.9
+      ],
+      "asset_glb": "modules/wall_window_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "planks": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_door_stone_2m",
+      "category": "wall_door",
+      "material_family": "stone",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.94,
+        1.9
+      ],
+      "asset_glb": "modules/wall_door_stone_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "stone": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "wall_window_stone_2m",
+      "category": "wall_window",
+      "material_family": "stone",
+      "nominal_size_m": [
+        2,
+        0.16,
+        2.4
+      ],
+      "opening_m": [
+        0.9,
+        0.9
+      ],
+      "asset_glb": "modules/wall_window_stone_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "stone": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "gable_plaster_4m",
+      "category": "gable",
+      "material_family": "plaster",
+      "nominal_size_m": [
+        4,
+        0.16,
+        1.2
+      ],
+      "asset_glb": "modules/gable_plaster_4m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "plaster": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "gable_timber_4m",
+      "category": "gable",
+      "material_family": "timber",
+      "nominal_size_m": [
+        4,
+        0.16,
+        1.2
+      ],
+      "asset_glb": "modules/gable_timber_4m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "gable_stone_4m",
+      "category": "gable",
+      "material_family": "stone",
+      "nominal_size_m": [
+        4,
+        0.16,
+        1.2
+      ],
+      "asset_glb": "modules/gable_stone_4m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 1,
+        "stone": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "category": "roof_slope",
+      "material_family": "terracotta",
+      "nominal_size_m": [
+        2.18,
+        2,
+        1.2
+      ],
+      "asset_glb": "modules/roof_slope_terracotta_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 6
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "category": "roof_slope",
+      "material_family": "slateblue",
+      "nominal_size_m": [
+        2.18,
+        2,
+        1.2
+      ],
+      "asset_glb": "modules/roof_slope_slateblue_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 6
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "category": "ridge",
+      "material_family": "terracotta",
+      "nominal_size_m": [
+        0.3,
+        2,
+        0.18
+      ],
+      "asset_glb": "modules/roof_ridge_terracotta_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "category": "ridge",
+      "material_family": "slateblue",
+      "nominal_size_m": [
+        0.3,
+        2,
+        0.18
+      ],
+      "asset_glb": "modules/roof_ridge_slateblue_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "porch_post_timber",
+      "category": "porch",
+      "nominal_size_m": [
+        0.28,
+        0.28,
+        2.4
+      ],
+      "asset_glb": "modules/porch_post_timber.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "porch_steps_stone_2m",
+      "category": "steps",
+      "nominal_size_m": [
+        2,
+        0.9,
+        0.4
+      ],
+      "asset_glb": "modules/porch_steps_stone_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "railing_timber_2m",
+      "category": "railing",
+      "nominal_size_m": [
+        2,
+        0.14,
+        0.9
+      ],
+      "asset_glb": "modules/railing_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "category": "canopy",
+      "material_family": "terracotta",
+      "nominal_size_m": [
+        2.2,
+        1.25,
+        0.55
+      ],
+      "asset_glb": "modules/canopy_terracotta_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "category": "canopy",
+      "material_family": "slateblue",
+      "nominal_size_m": [
+        2.2,
+        1.25,
+        0.55
+      ],
+      "asset_glb": "modules/canopy_slateblue_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "tiles": 3
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "floor_opening_2m",
+      "category": "floor_opening",
+      "nominal_size_m": [
+        2,
+        2,
+        0.16
+      ],
+      "opening_m": [
+        1.8,
+        2
+      ],
+      "open_ends_along": "Y",
+      "asset_glb": "modules/floor_opening_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 2,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "stairs_switchback_2x4m",
+      "category": "stairs",
+      "nominal_size_m": [
+        2,
+        4,
+        3.36
+      ],
+      "floor_rise_m": 2.4,
+      "includes_upper_handrail": true,
+      "asset_glb": "modules/stairs_switchback_2x4m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 6,
+        "planks": 8
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "carry_logs",
+      "category": "carry",
+      "resource": "wood",
+      "nominal_size_m": [
+        0.75,
+        0.4,
+        0.38
+      ],
+      "asset_glb": "modules/carry_logs.glb",
+      "npc_handheld": true,
+      "execution_unit": "material_delivery",
+      "resource_inputs": {},
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "carry_planks",
+      "category": "carry",
+      "resource": "planks",
+      "nominal_size_m": [
+        0.78,
+        0.36,
+        0.25
+      ],
+      "asset_glb": "modules/carry_planks.glb",
+      "npc_handheld": true,
+      "execution_unit": "material_delivery",
+      "resource_inputs": {},
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "carry_stones",
+      "category": "carry",
+      "resource": "stone",
+      "nominal_size_m": [
+        0.6,
+        0.42,
+        0.38
+      ],
+      "asset_glb": "modules/carry_stones.glb",
+      "npc_handheld": true,
+      "execution_unit": "material_delivery",
+      "resource_inputs": {},
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "carry_tiles",
+      "category": "carry",
+      "resource": "tiles",
+      "nominal_size_m": [
+        0.58,
+        0.4,
+        0.42
+      ],
+      "asset_glb": "modules/carry_tiles.glb",
+      "npc_handheld": true,
+      "execution_unit": "material_delivery",
+      "resource_inputs": {},
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "carry_plaster",
+      "category": "carry",
+      "resource": "plaster",
+      "nominal_size_m": [
+        0.36,
+        0.36,
+        0.48
+      ],
+      "asset_glb": "modules/carry_plaster.glb",
+      "npc_handheld": true,
+      "execution_unit": "material_delivery",
+      "resource_inputs": {},
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "table_communal",
+      "category": "facility",
+      "nominal_size_m": [
+        2,
+        0.86,
+        0.8
+      ],
+      "asset_glb": "modules/table_communal.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 4,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "bench_timber",
+      "category": "facility",
+      "nominal_size_m": [
+        1.8,
+        0.4,
+        0.46
+      ],
+      "asset_glb": "modules/bench_timber.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 4,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "workbench_carpenter",
+      "category": "facility",
+      "nominal_size_m": [
+        1.6,
+        0.7,
+        0.86
+      ],
+      "asset_glb": "modules/workbench_carpenter.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "wood": 4,
+        "planks": 4
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "door_oak",
+      "category": "fixture",
+      "nominal_size_m": [
+        0.86,
+        0.09,
+        1.83
+      ],
+      "asset_glb": "modules/door_oak.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "shutter_sage",
+      "category": "fixture",
+      "nominal_size_m": [
+        0.38,
+        0.06,
+        0.8
+      ],
+      "asset_glb": "modules/shutter_sage.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2
+      },
+      "runtime_binding": "pending",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh"
+    }
+  ]
+}

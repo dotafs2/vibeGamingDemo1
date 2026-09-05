@@ -1,0 +1,713 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "native renderable assets, source hashes, module scale, roof parameters and upright showcase placement",
+  "native_meshes": 41,
+  "module_scale_checks": 38,
+  "npc_runtime_execution_verified": false,
+  "collision_navigation_verified": false,
+  "assets": [
+    {
+      "id": "foundation_stone_2m",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        200.0,
+        200.0,
+        24.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "floor_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        200.0,
+        200.0,
+        16.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "frame_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 2,
+      "dimensions_cm": [
+        217.99999237060547,
+        219.19998931884766,
+        240.00001525878906
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "post_timber_2_4m",
+      "source_hash_current": true,
+      "material_slots": 1,
+      "dimensions_cm": [
+        18.0,
+        18.0,
+        240.00001525878906
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "beam_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 1,
+      "dimensions_cm": [
+        182.0,
+        18.0,
+        20.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_plaster_2m",
+      "source_hash_current": true,
+      "material_slots": 1,
+      "dimensions_cm": [
+        182.0,
+        16.0,
+        207.99999237060547
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 2,
+      "dimensions_cm": [
+        181.1999969482422,
+        16.0,
+        207.99999237060547
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_stone_2m",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        180.80001068115234,
+        16.0,
+        206.79999542236328
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_door_plaster_2m",
+      "source_hash_current": true,
+      "material_slots": 2,
+      "dimensions_cm": [
+        182.0,
+        21.999999046325684,
+        211.50003051757812
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_door_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 2,
+      "dimensions_cm": [
+        181.1999969482422,
+        21.999999046325684,
+        211.50003051757812
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_window_plaster_2m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        182.0,
+        36.20000171661377,
+        208.00000381469727
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_window_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        181.1999969482422,
+        36.20000171661377,
+        208.00000381469727
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_door_stone_2m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        180.80001068115234,
+        21.999999046325684,
+        210.89999675750732
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "wall_window_stone_2m",
+      "source_hash_current": true,
+      "material_slots": 5,
+      "dimensions_cm": [
+        180.8000030517578,
+        36.20000171661377,
+        206.79999542236328
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "gable_plaster_4m",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        405.24176025390625,
+        25.50000762939453,
+        129.7008023262024
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "gable_timber_4m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        405.24176025390625,
+        25.50000762939453,
+        129.7008023262024
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "gable_stone_4m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        405.24176025390625,
+        25.50000762939453,
+        129.7008023262024
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "source_hash_current": true,
+      "material_slots": 6,
+      "dimensions_cm": [
+        229.34004497528076,
+        200.0,
+        141.41004276275635
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "source_hash_current": true,
+      "material_slots": 6,
+      "dimensions_cm": [
+        229.34004497528076,
+        200.0,
+        141.41004276275635
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        30.000001907348633,
+        200.0,
+        18.900009155273438
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        30.000001907348633,
+        200.0,
+        18.900009155273438
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "porch_post_timber",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        28.0,
+        28.0,
+        240.00001525878906
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "porch_steps_stone_2m",
+      "source_hash_current": true,
+      "material_slots": 1,
+      "dimensions_cm": [
+        200.0,
+        90.0,
+        39.999996930360794
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "railing_timber_2m",
+      "source_hash_current": true,
+      "material_slots": 2,
+      "dimensions_cm": [
+        203.00000762939453,
+        17.0,
+        95.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "source_hash_current": true,
+      "material_slots": 6,
+      "dimensions_cm": [
+        220.0,
+        133.54039597511292,
+        64.2152829170227
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "source_hash_current": true,
+      "material_slots": 6,
+      "dimensions_cm": [
+        220.0,
+        133.54039597511292,
+        64.2152829170227
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "floor_opening_2m",
+      "source_hash_current": true,
+      "material_slots": 1,
+      "dimensions_cm": [
+        199.99999237060547,
+        200.0,
+        16.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "stairs_switchback_2x4m",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        186.99998474121094,
+        327.50001525878906,
+        322.3973379135132
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "carry_logs",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        77.35160064697266,
+        40.40000534057617,
+        37.40000620484352
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "carry_planks",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        78.0,
+        37.09999656677246,
+        24.60000205039978
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "carry_stones",
+      "source_hash_current": true,
+      "material_slots": 6,
+      "dimensions_cm": [
+        60.000003814697266,
+        42.5,
+        39.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "carry_tiles",
+      "source_hash_current": true,
+      "material_slots": 7,
+      "dimensions_cm": [
+        58.000003814697266,
+        41.75,
+        35.400001525878906
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "carry_plaster",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        32.70000076293945,
+        33.0,
+        49.10000276565552
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "table_communal",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        200.0,
+        85.0,
+        76.82860374450684
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "bench_timber",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        180.0,
+        39.29999923706055,
+        46.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "workbench_carpenter",
+      "source_hash_current": true,
+      "material_slots": 5,
+      "dimensions_cm": [
+        160.0,
+        96.84999465942383,
+        98.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "door_oak",
+      "source_hash_current": true,
+      "material_slots": 4,
+      "dimensions_cm": [
+        85.29999542236328,
+        15.25,
+        183.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "shutter_sage",
+      "source_hash_current": true,
+      "material_slots": 3,
+      "dimensions_cm": [
+        38.64721870422363,
+        8.499999523162842,
+        80.0
+      ],
+      "upright_placement": true,
+      "tile_materials": []
+    },
+    {
+      "id": "example__cottage_terracotta",
+      "source_hash_current": true,
+      "material_slots": 16,
+      "dimensions_cm": [
+        454.0000305175781,
+        520.0,
+        404.9000244140625
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "example__longhouse_slateblue",
+      "source_hash_current": true,
+      "material_slots": 15,
+      "dimensions_cm": [
+        454.0000305175781,
+        720.0,
+        404.9000244140625
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "id": "example__townhouse_terracotta",
+      "source_hash_current": true,
+      "material_slots": 15,
+      "dimensions_cm": [
+        454.0000305175781,
+        558.0,
+        645.9000244140625
+      ],
+      "upright_placement": true,
+      "tile_materials": [
+        {
+          "material": "VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0
+        },
+        {
+          "material": "VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0
+        }
+      ]
+    }
+  ]
+}

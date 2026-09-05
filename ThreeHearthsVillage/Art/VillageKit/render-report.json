@@ -1,0 +1,46 @@
+{
+  "roof": {
+    "source": "VillageKit_RoofStudy.blend",
+    "preview": "previews/VillageKit_RoofMaterials.png",
+    "seconds": 17.005,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      1600,
+      1000
+    ]
+  },
+  "houses": {
+    "source": "VillageKit_Examples.blend",
+    "preview": "previews/VillageKit_HouseChoices.png",
+    "seconds": 29.345,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      2000,
+      1200
+    ]
+  },
+  "construction": {
+    "source": "VillageKit_Examples.blend",
+    "preview": "previews/VillageKit_Stairwell.png",
+    "seconds": 24.505,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      1600,
+      1200
+    ]
+  },
+  "modules": {
+    "source": "VillageKit.blend",
+    "preview": "previews/VillageKit_Modules.png",
+    "seconds": 51.79,
+    "engine": "CYCLES",
+    "samples": 24,
+    "resolution": [
+      2400,
+      1500
+    ]
+  }
+}

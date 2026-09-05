@@ -1,0 +1,554 @@
+{
+  "status": "passed",
+  "scope": "independent exported GLB and offline construction-contract checks",
+  "asset_count": 38,
+  "design_combinations_checked": 18,
+  "assets": [
+    {
+      "asset": "foundation_stone_2m.glb",
+      "bytes": 126348,
+      "triangles": 1836,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "6898bb09a0213b2ab2efacf8744b7a94445c879b0ff3bc3e144c48ee728524fc"
+    },
+    {
+      "asset": "floor_timber_2m.glb",
+      "bytes": 78768,
+      "triangles": 1080,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "04d19de6c2df4d629991d251027229fafe518a9f4e18df3bdc4c41cb5659032c"
+    },
+    {
+      "asset": "frame_timber_2m.glb",
+      "bytes": 108168,
+      "triangles": 1512,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "78a7712a689a4d827a0553715b68581142fb2dbd6ab812b67a9dd4a4e6223888"
+    },
+    {
+      "asset": "post_timber_2_4m.glb",
+      "bytes": 8948,
+      "triangles": 108,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "d37e8d67e0d4d3b0a9088d57fb8e7517b4f4c1c0ff751ebb6d66782232ed3559"
+    },
+    {
+      "asset": "beam_timber_2m.glb",
+      "bytes": 8940,
+      "triangles": 108,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921"
+    },
+    {
+      "asset": "wall_plaster_2m.glb",
+      "bytes": 8956,
+      "triangles": 108,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "23fd0a392e44560c1425c3e7a19d1bc8cff6091d0879e70c2e016c55a782e4a0"
+    },
+    {
+      "asset": "wall_timber_2m.glb",
+      "bytes": 62824,
+      "triangles": 864,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "f65b37c567b0c3bb3c458db40219c698616b5ea57e0f52754f5a13b1877ab77a"
+    },
+    {
+      "asset": "wall_stone_2m.glb",
+      "bytes": 231060,
+      "triangles": 3348,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "2f926df7faee11bd6f009a21c404de4aa946310d4d73748512ae837d82eaac69"
+    },
+    {
+      "asset": "wall_door_plaster_2m.glb",
+      "bytes": 47696,
+      "triangles": 648,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "0b8b30fd835a2f2d2be3bdef7e452c2816068767ad8ff272df01e17a080950d8"
+    },
+    {
+      "asset": "wall_door_timber_2m.glb",
+      "bytes": 85512,
+      "triangles": 1188,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "0bae324426cb30195d54ded5d663e799869c10f865279ad0f715d88c60e9cfd5"
+    },
+    {
+      "asset": "wall_window_plaster_2m.glb",
+      "bytes": 87416,
+      "triangles": 1188,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "b5c3ae18009e24c238be384a8ed43f8417fe72aa58cb98b3eba1c0080eb7f0b8"
+    },
+    {
+      "asset": "wall_window_timber_2m.glb",
+      "bytes": 147916,
+      "triangles": 2052,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "2f7c42495d688b84bdbfd9e14b78afd6d85503ea3796c6a0e719dcb9161d587a"
+    },
+    {
+      "asset": "wall_door_stone_2m.glb",
+      "bytes": 196164,
+      "triangles": 2808,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "6d878bb89f38c0e6063f27f870d71ff3ae5c5550d2d8a95ac736c8306ca1f4b1"
+    },
+    {
+      "asset": "wall_window_stone_2m.glb",
+      "bytes": 277408,
+      "triangles": 3888,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "44232b2e6d9ad440daf183a68e73ea3d73b46968d61b4eadc487d661e0a07169"
+    },
+    {
+      "asset": "gable_plaster_4m.glb",
+      "bytes": 46724,
+      "triangles": 620,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "e972423f82170d781da8e5a08925e412985f63607df524fa3bda34f1ab3cfdc8"
+    },
+    {
+      "asset": "gable_timber_4m.glb",
+      "bytes": 59436,
+      "triangles": 788,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "7447ab6ffa3ff0b0e8a4fb98d88c693912cc3d575ebd9df509cd1437ecee0600"
+    },
+    {
+      "asset": "gable_stone_4m.glb",
+      "bytes": 50156,
+      "triangles": 656,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "8774b623d4d854f75855376f052f76b013ed7d92ea49a252a23a07f62fa66439"
+    },
+    {
+      "asset": "roof_slope_terracotta_2m.glb",
+      "bytes": 149872,
+      "triangles": 3452,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.4542294322132097,
+      "sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559"
+    },
+    {
+      "asset": "roof_slope_slateblue_2m.glb",
+      "bytes": 149864,
+      "triangles": 3452,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.4542294322132097,
+      "sha256": "131f0a6ebbfcc9b6d686aea2b8658c21df08460546bf3023fc948d292775ac8b"
+    },
+    {
+      "asset": "roof_ridge_terracotta_2m.glb",
+      "bytes": 20528,
+      "triangles": 408,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204"
+    },
+    {
+      "asset": "roof_ridge_slateblue_2m.glb",
+      "bytes": 20524,
+      "triangles": 408,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "sha256": "84c36710c698ee352df9dffe324b0df5f1e7124ecb95891fa827056a91a9a14f"
+    },
+    {
+      "asset": "porch_post_timber.glb",
+      "bytes": 24368,
+      "triangles": 324,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "f89a555f283fe2fa12ce7f5ad31baf4e9ffb01a77b3e035e083372275aeaad6d"
+    },
+    {
+      "asset": "porch_steps_stone_2m.glb",
+      "bytes": 24060,
+      "triangles": 324,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "87ac5f8ec6ed2fff6bface4d690ec78e8eeeeffeba1f8ada0a0a09aea94f1c24"
+    },
+    {
+      "asset": "railing_timber_2m.glb",
+      "bytes": 93060,
+      "triangles": 1296,
+      "materials": 2,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "36748667d9021323d71285d267098e222e05eaeaff952f1dfc1f2d0436a05a53"
+    },
+    {
+      "asset": "canopy_terracotta_2m.glb",
+      "bytes": 88560,
+      "triangles": 2024,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.4426877470355731,
+      "sha256": "7a4b6d1fa6f9a0d20d2d5deedd0aafe5a1bceb4a8ad27d0010aa5f432e6ad038"
+    },
+    {
+      "asset": "canopy_slateblue_2m.glb",
+      "bytes": 88556,
+      "triangles": 2024,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.4426877470355731,
+      "sha256": "d7f1a849578fbefd9e4e2ba71627c8d4b8484979798a66092572148659f29924"
+    },
+    {
+      "asset": "floor_opening_2m.glb",
+      "bytes": 16464,
+      "triangles": 216,
+      "materials": 1,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "9988f53b6691d6b8fe8e7c7ff2b8483a582dbbc7656b1843f8fe7f6aab1311fd"
+    },
+    {
+      "asset": "stairs_switchback_2x4m.glb",
+      "bytes": 343512,
+      "triangles": 4860,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "33dc7e1b1ab2e6c915dca5d60f023ace361ede49b25a84b11d87b65cf57dbfdb"
+    },
+    {
+      "asset": "carry_logs.glb",
+      "bytes": 194728,
+      "triangles": 2820,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "22081c8c7a4dc62d972524b6d262d852e9e597f659581cafc766285e71dc042e"
+    },
+    {
+      "asset": "carry_planks.glb",
+      "bytes": 94020,
+      "triangles": 1296,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "7e6408af8b50f96b9a3bd01f33fc3ddc0be6fdfa0c5feed648e24bec205d4ed2"
+    },
+    {
+      "asset": "carry_stones.glb",
+      "bytes": 128664,
+      "triangles": 1764,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "e47d231ca303d807b9c40ca6a08d4c86ee78bb34207ca0f71d46f01a0426abbe"
+    },
+    {
+      "asset": "carry_tiles.glb",
+      "bytes": 115584,
+      "triangles": 1676,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.07637231503579953,
+      "sha256": "bc6c1662b8806b43c2e32ac276839625075db28bca4dbd92a7310b4e84845c95"
+    },
+    {
+      "asset": "carry_plaster.glb",
+      "bytes": 78048,
+      "triangles": 1100,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "7c00072f4d4aea9183116cbac1aad08f5c6d976a5f7b91885921126557ef1177"
+    },
+    {
+      "asset": "table_communal.glb",
+      "bytes": 86408,
+      "triangles": 1188,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "0eef427db2026d8119fb97b9473d348f228670dc9daca0ac8a9ece61ad1b9d76"
+    },
+    {
+      "asset": "bench_timber.glb",
+      "bytes": 39632,
+      "triangles": 540,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "8c65e74f06cabf3c77787901dba62b8aaf5fef58d104c230ba3adc27cbf84db5"
+    },
+    {
+      "asset": "workbench_carpenter.glb",
+      "bytes": 112936,
+      "triangles": 1552,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "1d967fc22e77e9e3980768f98c4282b173ffee9cdef545503533e0b5cd2b1294"
+    },
+    {
+      "asset": "door_oak.glb",
+      "bytes": 88380,
+      "triangles": 1252,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "456f1041dd2e6486369a29a309cdbf9fb14c4d1a4e3eabe013ec65e789cd3883"
+    },
+    {
+      "asset": "shutter_sage.glb",
+      "bytes": 64116,
+      "triangles": 880,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "2b9f4c149d512b0b710bd464fa2576da493c98da44665c263bbd2a50892bf75d"
+    }
+  ],
+  "design_checks": [
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "plaster",
+        "roof_material": "terracotta"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "plaster",
+        "roof_material": "slateblue"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "timber",
+        "roof_material": "terracotta"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "timber",
+        "roof_material": "slateblue"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "stone",
+        "roof_material": "terracotta"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "cottage_terracotta",
+        "wall_material": "stone",
+        "roof_material": "slateblue"
+      },
+      "installations": 55,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "plaster",
+        "roof_material": "terracotta"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "plaster",
+        "roof_material": "slateblue"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "timber",
+        "roof_material": "terracotta"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "timber",
+        "roof_material": "slateblue"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "stone",
+        "roof_material": "terracotta"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "longhouse_slateblue",
+        "wall_material": "stone",
+        "roof_material": "slateblue"
+      },
+      "installations": 72,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "plaster",
+        "roof_material": "terracotta"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "plaster",
+        "roof_material": "slateblue"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "timber",
+        "roof_material": "terracotta"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "timber",
+        "roof_material": "slateblue"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "stone",
+        "roof_material": "terracotta"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    },
+    {
+      "design": {
+        "blueprint": "townhouse_terracotta",
+        "wall_material": "stone",
+        "roof_material": "slateblue"
+      },
+      "installations": 97,
+      "balanced_delivery_quantities": true
+    }
+  ],
+  "invalid_choice_rejected": true,
+  "npc_runtime_execution_verified": false
+}

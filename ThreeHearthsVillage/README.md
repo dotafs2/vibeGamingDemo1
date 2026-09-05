@@ -10,6 +10,8 @@
 
 原创低多边形小屋已导入默认村庄地图，位于北侧主路旁。场景对象名为 `Hearth Cottage - Shared UV`；修正后的 Blender 源文件、GLB、共享瓦片 UV、生成脚本及导入验证见 [房屋模型说明](Art/HearthCottage/README.md)。目前是带碰撞的场景外观，还未注册为 NPC 可入住的设施。
 
+新增模块住宅美术包见 [VillageKit](Art/VillageKit/README.md)：结构、三种墙材、两种屋瓦、材料包和公共设施，可组合为不同房型。[NPC 最小施工单元](Docs/Modular_Housing.md) 说明搬运、安装与选材数据；这批资产尚未接入村民的实时建造逻辑。
+
 ## 启动
 
 1. 安装 Unreal Engine 5.8，以及可编译 UE C++ 插件的 Visual Studio 2022 C++ 工具链和 Windows SDK。

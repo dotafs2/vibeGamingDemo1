@@ -1,0 +1,1277 @@
+{
+  "schema_version": 1,
+  "generator": "create_village_kit.py",
+  "blender_version": "5.2.0 LTS",
+  "units": "metres",
+  "front_axis": "-Y",
+  "modules": [
+    {
+      "id": "foundation_stone_2m",
+      "file": "modules/foundation_stone_2m.glb",
+      "bytes": 126348,
+      "triangles": 1836,
+      "vertices": 952,
+      "bounds_min_m": [
+        -1.0,
+        -1.0,
+        -0.24
+      ],
+      "bounds_max_m": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "dimensions_m": [
+        2.0,
+        2.0,
+        0.24
+      ],
+      "materials": [
+        "VK_Stone_Shadow",
+        "VK_BlueGrey_Stone",
+        "VK_Stone_Edge"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "floor_timber_2m",
+      "file": "modules/floor_timber_2m.glb",
+      "bytes": 78768,
+      "triangles": 1080,
+      "vertices": 560,
+      "bounds_min_m": [
+        -1.0,
+        -1.0,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        1.0,
+        0.16
+      ],
+      "dimensions_m": [
+        2.0,
+        2.0,
+        0.16
+      ],
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Cut_Oak",
+        "VK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "frame_timber_2m",
+      "file": "modules/frame_timber_2m.glb",
+      "bytes": 108168,
+      "triangles": 1512,
+      "vertices": 784,
+      "bounds_min_m": [
+        -1.09,
+        -1.102,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.09,
+        1.09,
+        2.4
+      ],
+      "dimensions_m": [
+        2.18,
+        2.192,
+        2.4
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "post_timber_2_4m",
+      "file": "modules/post_timber_2_4m.glb",
+      "bytes": 8948,
+      "triangles": 108,
+      "vertices": 56,
+      "bounds_min_m": [
+        -0.09,
+        -0.09,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.09,
+        0.09,
+        2.4
+      ],
+      "dimensions_m": [
+        0.18,
+        0.18,
+        2.4
+      ],
+      "materials": [
+        "VK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "beam_timber_2m",
+      "file": "modules/beam_timber_2m.glb",
+      "bytes": 8940,
+      "triangles": 108,
+      "vertices": 56,
+      "bounds_min_m": [
+        -0.91,
+        -0.09,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.91,
+        0.09,
+        0.2
+      ],
+      "dimensions_m": [
+        1.82,
+        0.18,
+        0.2
+      ],
+      "materials": [
+        "VK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_plaster_2m",
+      "file": "modules/wall_plaster_2m.glb",
+      "bytes": 8956,
+      "triangles": 108,
+      "vertices": 56,
+      "bounds_min_m": [
+        -0.91,
+        -0.08,
+        0.16
+      ],
+      "bounds_max_m": [
+        0.91,
+        0.08,
+        2.24
+      ],
+      "dimensions_m": [
+        1.82,
+        0.16,
+        2.08
+      ],
+      "materials": [
+        "VK_Cream_Lime"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_timber_2m",
+      "file": "modules/wall_timber_2m.glb",
+      "bytes": 62824,
+      "triangles": 864,
+      "vertices": 448,
+      "bounds_min_m": [
+        -0.906,
+        -0.08,
+        0.16
+      ],
+      "bounds_max_m": [
+        0.906,
+        0.08,
+        2.24
+      ],
+      "dimensions_m": [
+        1.812,
+        0.16,
+        2.08
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_stone_2m",
+      "file": "modules/wall_stone_2m.glb",
+      "bytes": 231060,
+      "triangles": 3348,
+      "vertices": 1736,
+      "bounds_min_m": [
+        -0.904,
+        -0.08,
+        0.166
+      ],
+      "bounds_max_m": [
+        0.904,
+        0.08,
+        2.234
+      ],
+      "dimensions_m": [
+        1.808,
+        0.16,
+        2.068
+      ],
+      "materials": [
+        "VK_Stone_Edge",
+        "VK_Stone_Shadow",
+        "VK_BlueGrey_Stone"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_door_plaster_2m",
+      "file": "modules/wall_door_plaster_2m.glb",
+      "bytes": 47696,
+      "triangles": 648,
+      "vertices": 336,
+      "bounds_min_m": [
+        -0.91,
+        -0.128,
+        0.125
+      ],
+      "bounds_max_m": [
+        0.91,
+        0.092,
+        2.24
+      ],
+      "dimensions_m": [
+        1.82,
+        0.22,
+        2.115
+      ],
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_door_timber_2m",
+      "file": "modules/wall_door_timber_2m.glb",
+      "bytes": 85512,
+      "triangles": 1188,
+      "vertices": 616,
+      "bounds_min_m": [
+        -0.906,
+        -0.128,
+        0.125
+      ],
+      "bounds_max_m": [
+        0.906,
+        0.092,
+        2.24
+      ],
+      "dimensions_m": [
+        1.812,
+        0.22,
+        2.115
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_window_plaster_2m",
+      "file": "modules/wall_window_plaster_2m.glb",
+      "bytes": 87416,
+      "triangles": 1188,
+      "vertices": 616,
+      "bounds_min_m": [
+        -0.91,
+        -0.27,
+        0.16
+      ],
+      "bounds_max_m": [
+        0.91,
+        0.092,
+        2.24
+      ],
+      "dimensions_m": [
+        1.82,
+        0.362,
+        2.08
+      ],
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Cut_Oak",
+        "VK_Stone_Edge",
+        "VK_Opaque_Window"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_window_timber_2m",
+      "file": "modules/wall_window_timber_2m.glb",
+      "bytes": 147916,
+      "triangles": 2052,
+      "vertices": 1064,
+      "bounds_min_m": [
+        -0.906,
+        -0.27,
+        0.16
+      ],
+      "bounds_max_m": [
+        0.906,
+        0.092,
+        2.24
+      ],
+      "dimensions_m": [
+        1.812,
+        0.362,
+        2.08
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_Stone_Edge",
+        "VK_Opaque_Window"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_door_stone_2m",
+      "file": "modules/wall_door_stone_2m.glb",
+      "bytes": 196164,
+      "triangles": 2808,
+      "vertices": 1456,
+      "bounds_min_m": [
+        -0.904,
+        -0.128,
+        0.125
+      ],
+      "bounds_max_m": [
+        0.904,
+        0.092,
+        2.234
+      ],
+      "dimensions_m": [
+        1.808,
+        0.22,
+        2.109
+      ],
+      "materials": [
+        "VK_Stone_Edge",
+        "VK_BlueGrey_Stone",
+        "VK_Stone_Shadow",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "wall_window_stone_2m",
+      "file": "modules/wall_window_stone_2m.glb",
+      "bytes": 277408,
+      "triangles": 3888,
+      "vertices": 2016,
+      "bounds_min_m": [
+        -0.904,
+        -0.27,
+        0.166
+      ],
+      "bounds_max_m": [
+        0.904,
+        0.092,
+        2.234
+      ],
+      "dimensions_m": [
+        1.808,
+        0.362,
+        2.068
+      ],
+      "materials": [
+        "VK_Stone_Edge",
+        "VK_BlueGrey_Stone",
+        "VK_Stone_Shadow",
+        "VK_Cut_Oak",
+        "VK_Opaque_Window"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "gable_plaster_4m",
+      "file": "modules/gable_plaster_4m.glb",
+      "bytes": 46724,
+      "triangles": 620,
+      "vertices": 322,
+      "bounds_min_m": [
+        -2.02621,
+        -0.175,
+        -0.0485
+      ],
+      "bounds_max_m": [
+        2.02621,
+        0.08,
+        1.2485
+      ],
+      "dimensions_m": [
+        4.05242,
+        0.255,
+        1.297
+      ],
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Chestnut",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "gable_timber_4m",
+      "file": "modules/gable_timber_4m.glb",
+      "bytes": 59436,
+      "triangles": 788,
+      "vertices": 434,
+      "bounds_min_m": [
+        -2.02621,
+        -0.175,
+        -0.0485
+      ],
+      "bounds_max_m": [
+        2.02621,
+        0.08,
+        1.2485
+      ],
+      "dimensions_m": [
+        4.05242,
+        0.255,
+        1.297
+      ],
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "gable_stone_4m",
+      "file": "modules/gable_stone_4m.glb",
+      "bytes": 50156,
+      "triangles": 656,
+      "vertices": 346,
+      "bounds_min_m": [
+        -2.02621,
+        -0.175,
+        -0.0485
+      ],
+      "bounds_max_m": [
+        2.02621,
+        0.08,
+        1.2485
+      ],
+      "dimensions_m": [
+        4.05242,
+        0.255,
+        1.297
+      ],
+      "materials": [
+        "VK_BlueGrey_Stone",
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Stone_Shadow"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "file": "modules/roof_slope_terracotta_2m.glb",
+      "bytes": 149872,
+      "triangles": 3452,
+      "vertices": 1828,
+      "bounds_min_m": [
+        -0.0434,
+        -1.0,
+        -0.13
+      ],
+      "bounds_max_m": [
+        2.25,
+        1.0,
+        1.2841
+      ],
+      "dimensions_m": [
+        2.2934,
+        2.0,
+        1.4141
+      ],
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 784
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "file": "modules/roof_slope_slateblue_2m.glb",
+      "bytes": 149864,
+      "triangles": 3452,
+      "vertices": 1828,
+      "bounds_min_m": [
+        -0.0434,
+        -1.0,
+        -0.13
+      ],
+      "bounds_max_m": [
+        2.25,
+        1.0,
+        1.2841
+      ],
+      "dimensions_m": [
+        2.2934,
+        2.0,
+        1.4141
+      ],
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_SlateBlue_1",
+        "VK_SlateBlue_2",
+        "VK_SlateBlue_3",
+        "VK_SlateBlue_4",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 784
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "file": "modules/roof_ridge_terracotta_2m.glb",
+      "bytes": 20528,
+      "triangles": 408,
+      "vertices": 216,
+      "bounds_min_m": [
+        -0.15,
+        -1.0,
+        1.22
+      ],
+      "bounds_max_m": [
+        0.15,
+        1.0,
+        1.409
+      ],
+      "dimensions_m": [
+        0.3,
+        2.0,
+        0.189
+      ],
+      "materials": [
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 96
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "file": "modules/roof_ridge_slateblue_2m.glb",
+      "bytes": 20524,
+      "triangles": 408,
+      "vertices": 216,
+      "bounds_min_m": [
+        -0.15,
+        -1.0,
+        1.22
+      ],
+      "bounds_max_m": [
+        0.15,
+        1.0,
+        1.409
+      ],
+      "dimensions_m": [
+        0.3,
+        2.0,
+        0.189
+      ],
+      "materials": [
+        "VK_SlateBlue_1",
+        "VK_SlateBlue_2",
+        "VK_SlateBlue_3",
+        "VK_SlateBlue_4"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 96
+    },
+    {
+      "id": "porch_post_timber",
+      "file": "modules/porch_post_timber.glb",
+      "bytes": 24368,
+      "triangles": 324,
+      "vertices": 168,
+      "bounds_min_m": [
+        -0.14,
+        -0.14,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.14,
+        0.14,
+        2.4
+      ],
+      "dimensions_m": [
+        0.28,
+        0.28,
+        2.4
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Stone_Edge",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "porch_steps_stone_2m",
+      "file": "modules/porch_steps_stone_2m.glb",
+      "bytes": 24060,
+      "triangles": 324,
+      "vertices": 168,
+      "bounds_min_m": [
+        -1.0,
+        -0.45,
+        -0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.45,
+        0.4
+      ],
+      "dimensions_m": [
+        2.0,
+        0.9,
+        0.4
+      ],
+      "materials": [
+        "VK_Stone_Edge"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "railing_timber_2m",
+      "file": "modules/railing_timber_2m.glb",
+      "bytes": 93060,
+      "triangles": 1296,
+      "vertices": 672,
+      "bounds_min_m": [
+        -1.015,
+        -0.085,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.015,
+        0.085,
+        0.95
+      ],
+      "dimensions_m": [
+        2.03,
+        0.17,
+        0.95
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "file": "modules/canopy_terracotta_2m.glb",
+      "bytes": 88560,
+      "triangles": 2024,
+      "vertices": 1072,
+      "bounds_min_m": [
+        -1.1,
+        -1.31,
+        -0.055
+      ],
+      "bounds_max_m": [
+        1.1,
+        0.0254,
+        0.58715
+      ],
+      "dimensions_m": [
+        2.2,
+        1.3354,
+        0.64215
+      ],
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 448
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "file": "modules/canopy_slateblue_2m.glb",
+      "bytes": 88556,
+      "triangles": 2024,
+      "vertices": 1072,
+      "bounds_min_m": [
+        -1.1,
+        -1.31,
+        -0.055
+      ],
+      "bounds_max_m": [
+        1.1,
+        0.0254,
+        0.58715
+      ],
+      "dimensions_m": [
+        2.2,
+        1.3354,
+        0.64215
+      ],
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_SlateBlue_1",
+        "VK_SlateBlue_2",
+        "VK_SlateBlue_3",
+        "VK_SlateBlue_4",
+        "VK_Cut_Oak"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 448
+    },
+    {
+      "id": "floor_opening_2m",
+      "file": "modules/floor_opening_2m.glb",
+      "bytes": 16464,
+      "triangles": 216,
+      "vertices": 112,
+      "bounds_min_m": [
+        -1.0,
+        -1.0,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        1.0,
+        0.16
+      ],
+      "dimensions_m": [
+        2.0,
+        2.0,
+        0.16
+      ],
+      "materials": [
+        "VK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "stairs_switchback_2x4m",
+      "file": "modules/stairs_switchback_2x4m.glb",
+      "bytes": 343512,
+      "triangles": 4860,
+      "vertices": 2520,
+      "bounds_min_m": [
+        -0.935,
+        -1.92,
+        0.115
+      ],
+      "bounds_max_m": [
+        0.935,
+        1.355,
+        3.33897
+      ],
+      "dimensions_m": [
+        1.87,
+        3.275,
+        3.22397
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_Chestnut"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "carry_logs",
+      "file": "modules/carry_logs.glb",
+      "bytes": 194728,
+      "triangles": 2820,
+      "vertices": 1456,
+      "bounds_min_m": [
+        -0.38676,
+        -0.202,
+        0.003
+      ],
+      "bounds_max_m": [
+        0.38676,
+        0.202,
+        0.377
+      ],
+      "dimensions_m": [
+        0.77352,
+        0.404,
+        0.374
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_Hemp_Rope"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "carry_planks",
+      "file": "modules/carry_planks.glb",
+      "bytes": 94020,
+      "triangles": 1296,
+      "vertices": 672,
+      "bounds_min_m": [
+        -0.39,
+        -0.1855,
+        0.005
+      ],
+      "bounds_max_m": [
+        0.39,
+        0.1855,
+        0.251
+      ],
+      "dimensions_m": [
+        0.78,
+        0.371,
+        0.246
+      ],
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Cut_Oak",
+        "VK_Hemp_Rope"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "carry_stones",
+      "file": "modules/carry_stones.glb",
+      "bytes": 128664,
+      "triangles": 1764,
+      "vertices": 920,
+      "bounds_min_m": [
+        -0.3,
+        -0.2125,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.3,
+        0.2125,
+        0.39
+      ],
+      "dimensions_m": [
+        0.6,
+        0.425,
+        0.39
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_BlueGrey_Stone",
+        "VK_Stone_Edge",
+        "VK_Stone_Shadow"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "carry_tiles",
+      "file": "modules/carry_tiles.glb",
+      "bytes": 115584,
+      "triangles": 1676,
+      "vertices": 872,
+      "bounds_min_m": [
+        -0.29,
+        -0.215,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.29,
+        0.2025,
+        0.354
+      ],
+      "dimensions_m": [
+        0.58,
+        0.4175,
+        0.354
+      ],
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 64
+    },
+    {
+      "id": "carry_plaster",
+      "file": "modules/carry_plaster.glb",
+      "bytes": 78048,
+      "triangles": 1100,
+      "vertices": 564,
+      "bounds_min_m": [
+        -0.1635,
+        -0.165,
+        0.035
+      ],
+      "bounds_max_m": [
+        0.1635,
+        0.165,
+        0.526
+      ],
+      "dimensions_m": [
+        0.327,
+        0.33,
+        0.491
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Forged_Iron",
+        "VK_Cream_Lime",
+        "VK_Timber_Recess"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "table_communal",
+      "file": "modules/table_communal.glb",
+      "bytes": 86408,
+      "triangles": 1188,
+      "vertices": 616,
+      "bounds_min_m": [
+        -1.0,
+        -0.425,
+        0.03171
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.425,
+        0.8
+      ],
+      "dimensions_m": [
+        2.0,
+        0.85,
+        0.76829
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Chestnut",
+        "VK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "bench_timber",
+      "file": "modules/bench_timber.glb",
+      "bytes": 39632,
+      "triangles": 540,
+      "vertices": 280,
+      "bounds_min_m": [
+        -0.9,
+        -0.1965,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.9,
+        0.1965,
+        0.46
+      ],
+      "dimensions_m": [
+        1.8,
+        0.393,
+        0.46
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Chestnut",
+        "VK_Honey_Plank"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "workbench_carpenter",
+      "file": "modules/workbench_carpenter.glb",
+      "bytes": 112936,
+      "triangles": 1552,
+      "vertices": 804,
+      "bounds_min_m": [
+        -0.8,
+        -0.6125,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.8,
+        0.356,
+        0.98
+      ],
+      "dimensions_m": [
+        1.6,
+        0.9685,
+        0.98
+      ],
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Chestnut",
+        "VK_Honey_Plank",
+        "VK_Timber_Recess",
+        "VK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "door_oak",
+      "file": "modules/door_oak.glb",
+      "bytes": 88380,
+      "triangles": 1252,
+      "vertices": 648,
+      "bounds_min_m": [
+        -0.4265,
+        -0.11,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.4265,
+        0.0425,
+        1.83
+      ],
+      "dimensions_m": [
+        0.853,
+        0.1525,
+        1.83
+      ],
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Cut_Oak",
+        "VK_Forged_Iron",
+        "VK_Brass"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    },
+    {
+      "id": "shutter_sage",
+      "file": "modules/shutter_sage.glb",
+      "bytes": 64116,
+      "triangles": 880,
+      "vertices": 456,
+      "bounds_min_m": [
+        -0.19997,
+        -0.0575,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.1865,
+        0.0275,
+        0.8
+      ],
+      "dimensions_m": [
+        0.38647,
+        0.085,
+        0.8
+      ],
+      "materials": [
+        "VK_Sage_Paint",
+        "VK_Cut_Oak",
+        "VK_Forged_Iron"
+      ],
+      "uv_layers": 1,
+      "smooth_polygons": 0
+    }
+  ],
+  "examples": [
+    {
+      "id": "cottage_terracotta",
+      "file": "examples/cottage_terracotta.glb",
+      "bytes": 866940,
+      "module_instances": 55,
+      "has_stairs": false,
+      "status": "visual_assembly_candidate"
+    },
+    {
+      "id": "longhouse_slateblue",
+      "file": "examples/longhouse_slateblue.glb",
+      "bytes": 1034340,
+      "module_instances": 72,
+      "has_stairs": false,
+      "status": "visual_assembly_candidate"
+    },
+    {
+      "id": "townhouse_terracotta",
+      "file": "examples/townhouse_terracotta.glb",
+      "bytes": 1776520,
+      "module_instances": 97,
+      "has_stairs": true,
+      "status": "assembly_candidate_requires_UE_collision_and_navigation"
+    }
+  ],
+  "material_design": "Portable constant PBR with controlled variants; no hidden Blender-only procedural shader.",
+  "materials": [
+    {
+      "name": "VK_Chestnut",
+      "roughness": 0.48,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Cut_Oak",
+      "roughness": 0.43,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Timber_Recess",
+      "roughness": 0.56,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Honey_Plank",
+      "roughness": 0.46,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Cream_Lime",
+      "roughness": 0.57,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Warm_Lime",
+      "roughness": 0.59,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_BlueGrey_Stone",
+      "roughness": 0.52,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Stone_Edge",
+      "roughness": 0.47,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Stone_Shadow",
+      "roughness": 0.57,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Forged_Iron",
+      "roughness": 0.34,
+      "metallic": 0.65
+    },
+    {
+      "name": "VK_Brass",
+      "roughness": 0.3,
+      "metallic": 0.7
+    },
+    {
+      "name": "VK_Sage_Paint",
+      "roughness": 0.41,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Opaque_Window",
+      "roughness": 0.24,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Hemp_Rope",
+      "roughness": 0.62,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Terracotta_1",
+      "roughness": 0.34,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Terracotta_2",
+      "roughness": 0.38,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Terracotta_3",
+      "roughness": 0.36,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_Terracotta_4",
+      "roughness": 0.4,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_SlateBlue_1",
+      "roughness": 0.34,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_SlateBlue_2",
+      "roughness": 0.38,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_SlateBlue_3",
+      "roughness": 0.36,
+      "metallic": 0.0
+    },
+    {
+      "name": "VK_SlateBlue_4",
+      "roughness": 0.4,
+      "metallic": 0.0
+    }
+  ],
+  "total_module_triangles": 55656,
+  "elapsed_seconds": 2.656,
+  "rendered": false,
+  "notes": [
+    "UVs exist on every module; curved tile surfaces smooth, tile ends remain hard.",
+    "Frame module is a standalone prototype; examples use unique post and beam modules at each grid vertex/edge.",
+    "Switchback stairs and floor opening are geometric candidates. No claim of UE collision/navigation acceptance.",
+    "Portable materials are hand-sized packs. Walls/floors/frames are on-site construction outputs."
+  ]
+}
