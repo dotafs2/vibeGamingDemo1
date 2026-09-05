@@ -1,0 +1,279 @@
+{
+  "source": "HearthCottage.blend",
+  "output": "HearthCottage_UV.blend",
+  "original_meshes_with_uv": 35,
+  "original_meshes_without_uv": 10,
+  "source_uv_status": "incomplete primitive UVs; custom roof geometry was not unwrapped",
+  "uv_method": "Smart UV Project + average island scale + global AABB packing",
+  "uv_layer": "UV_Main_Auto",
+  "uv_meshes": 45,
+  "triangles": 16788,
+  "faces": 9388,
+  "uv_bounds": {
+    "min": [
+      0.001999888801947236,
+      0.0019999423529952765
+    ],
+    "max": [
+      0.9979930520057678,
+      0.9968250393867493
+    ]
+  },
+  "degenerate_uv_triangles": 0,
+  "summed_uv_triangle_area": 0.4954356742508278,
+  "packing_margin": 0.002,
+  "production_hand_authored_uv": false,
+  "source_sha256": "ee3298a56741abbf07faab467fa7b881f6c00c299793d4107d242edb86efff71",
+  "original_uvs": [
+    {
+      "name": "Foundation | solid plinth",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Foundation | top course",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Walls | lime plaster",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Gable | plaster",
+      "uv_layers": []
+    },
+    {
+      "name": "Gable | plaster.001",
+      "uv_layers": []
+    },
+    {
+      "name": "Structure | timber frame",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | timber roof bed",
+      "uv_layers": []
+    },
+    {
+      "name": "Roof | main curved tiles",
+      "uv_layers": []
+    },
+    {
+      "name": "Main roof | bargeboard",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | bargeboard.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | eave",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | timber roof bed.001",
+      "uv_layers": []
+    },
+    {
+      "name": "Main roof | bargeboard.002",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | bargeboard.003",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Main roof | eave.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Roof | main ridge caps",
+      "uv_layers": []
+    },
+    {
+      "name": "Door | oak and iron",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | landing",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | lower step",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | middle step",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | post shoe",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | oak post",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | diagonal brace",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | post shoe.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | oak post.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | diagonal brace.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch | front header",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | timber roof bed",
+      "uv_layers": []
+    },
+    {
+      "name": "Roof | porch curved tiles",
+      "uv_layers": []
+    },
+    {
+      "name": "Porch roof | bargeboard",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | bargeboard.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | eave",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | timber roof bed.001",
+      "uv_layers": []
+    },
+    {
+      "name": "Porch roof | bargeboard.002",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | bargeboard.003",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Porch roof | eave.001",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Roof | porch ridge caps",
+      "uv_layers": []
+    },
+    {
+      "name": "Front left window",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Front right window",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "East window",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "East rear window",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Rear window",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Chimney | masonry",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Props | firewood",
+      "uv_layers": [
+        "UVMap"
+      ]
+    },
+    {
+      "name": "Props | rain barrel",
+      "uv_layers": [
+        "UVMap"
+      ]
+    }
+  ]
+}

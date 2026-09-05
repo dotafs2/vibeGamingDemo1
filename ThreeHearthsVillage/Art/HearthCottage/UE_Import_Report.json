@@ -1,0 +1,256 @@
+{
+  "status": "placed_and_saved",
+  "source": "F:\\CropoutSampleProject\\Art\\HearthCottage\\HearthCottage_SharedUV.glb",
+  "source_sha256": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91",
+  "destination": "/Game/ThreeHearths/Generated/HearthCottage",
+  "started": 1788611686.0231285,
+  "started_async": true,
+  "finished": 1788611689.5201166,
+  "objects": [
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/06___soft_blue-grey_stone.06___soft_blue-grey_stone",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/07___stone_edge.07___stone_edge",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/08___chimney_opening.08___chimney_opening",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/05___timber_recess.05___timber_recess",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/04___cut_timber_and_door.04___cut_timber_and_door",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/03___chestnut_timber.03___chestnut_timber",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/12___forged_iron.12___forged_iron",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/10___opaque_blue_glass.10___opaque_blue_glass",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/09___sage-blue_shutters.09___sage-blue_shutters",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/16___planter_earth.16___planter_earth",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/14___sunlit_foliage.14___sunlit_foliage",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/15___marigold.15___marigold",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/13___sage_foliage.13___sage_foliage",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/02___gable_cream.02___gable_cream",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/Roof___4.Roof___4",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/Roof___3.Roof___3",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/Roof___2.Roof___2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/Roof___1.Roof___1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/01___warm_lime_plaster.01___warm_lime_plaster",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/ThreeHearths/Generated/HearthCottage/SM_HearthCottage_SharedUV.SM_HearthCottage_SharedUV",
+      "class": "StaticMesh"
+    }
+  ],
+  "map_before_sha256": "0c3c82af8a9fe476f5cc6f8ea7c45a8e18e08905109ddabd652946f7281c34a8",
+  "portable_map_matches_before": true,
+  "map": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage",
+  "actor": "/Game/ThreeHearths/Maps/L_ThreeHearthsVillage.L_ThreeHearthsVillage:PersistentLevel.StaticMeshActor_4",
+  "actor_label": "Hearth Cottage - Shared UV",
+  "location_cm": [
+    -1500.0,
+    1200.0,
+    2.8000004768370426
+  ],
+  "yaw_degrees": 90,
+  "mesh_dimensions_cm": [
+    439.5500030517578,
+    425.5500030517578,
+    379.50000047683716
+  ],
+  "triangles": 16788,
+  "materials": 19,
+  "uv_channels": 1,
+  "roof_uv_triangles": 7228,
+  "distinct_roof_uv_triangles": 280,
+  "max_reused_roof_uv_triangle": 146,
+  "shared_roof_uv_verified_in_ue": true,
+  "simple_collision_count": 1,
+  "ground_samples": [
+    [
+      -1500.0,
+      1200.0,
+      2.7999999999998844
+    ],
+    [
+      -1750.0,
+      950.0,
+      2.799999999999998
+    ],
+    [
+      -1750.0,
+      1450.0,
+      2.7999999999998844
+    ],
+    [
+      -1250.0,
+      950.0,
+      2.799999999999998
+    ],
+    [
+      -1250.0,
+      1450.0,
+      2.7999999999998844
+    ],
+    [
+      -1500.0,
+      950.0,
+      2.799999999999998
+    ],
+    [
+      -1500.0,
+      1450.0,
+      2.7999999999998844
+    ],
+    [
+      -1750.0,
+      1200.0,
+      2.7999999999998844
+    ],
+    [
+      -1250.0,
+      1200.0,
+      2.7999999999998844
+    ]
+  ],
+  "blocks_village_land_probe": true,
+  "scene_saved": true,
+  "mesh_path": "/Game/ThreeHearths/Generated/HearthCottage/SM_HearthCottage_SharedUV.SM_HearthCottage_SharedUV",
+  "map_after_sha256": "a347226963d57e1908a6398cfc33089493b3b1cd392eebc1f1da4d2ad865e3a9",
+  "ue_import_verified": true,
+  "verification_scope": "UE 5.8.2 editor async GLB import, material and UV retention, placement, collision, and saved map. Packaged runtime import and NPC home registration are outside this check.",
+  "async_import_seconds": 3.497,
+  "live_project": "F:\\CropoutSampleProject\\CropoutSampleProject.uproject",
+  "portable_project_directory": "C:\\vibeGamingDemo1\\ThreeHearthsVillage",
+  "portable_map_synced": true,
+  "portable_assets": [
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/06___soft_blue-grey_stone.uasset",
+      "sha256": "f8cbc101caa2789204ef5aa383fb4b06e2abc68b9b4443704b016af7343b4abd"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/07___stone_edge.uasset",
+      "sha256": "2d135ea9049fdc3cd6877c15e60d9ead447213ec3ed19074860394b206015be0"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/08___chimney_opening.uasset",
+      "sha256": "f6fd2e278b90af328983395f1491f79259bd81a427a1663edc68887f89bf9e19"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/05___timber_recess.uasset",
+      "sha256": "44f94004192cd437354f84f48c0fe8bdb70c9478b5807ff37a75de5f711616bc"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/04___cut_timber_and_door.uasset",
+      "sha256": "7aa326fc4ab2f8d1466386fb60bcf9ca48707d49d428fc2545bfa351b3f1db9f"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/03___chestnut_timber.uasset",
+      "sha256": "c3ba4b9f3e6f4562ad32f910e1d9aafdc515cf7a7ab2233b16189f7e50810ea4"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/12___forged_iron.uasset",
+      "sha256": "c36b410c036dc2bdd9b75ccf1b6b24775721265883d41475d267c5c0e2980217"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/10___opaque_blue_glass.uasset",
+      "sha256": "44996b0bc9302b571b9d4273f4aa949c194e160d0ea5ec863929d113e93d71ac"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/09___sage-blue_shutters.uasset",
+      "sha256": "6c7641e6235acfa27b2f8ad96098a7d1a6641eaa3ac16d41a8bd864dfd0644f0"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/16___planter_earth.uasset",
+      "sha256": "ff7a87fa93026b62766f036257fe3fbd6099892468a6d08998ea9b0afc12b9e7"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/14___sunlit_foliage.uasset",
+      "sha256": "25a8d8192c4d5b4eb6c993208da37fc8041963a27798f8b5b5ed072be47300bf"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/15___marigold.uasset",
+      "sha256": "3230c1a9490004c6fde539975a0aa8269a808f3a6ed30154fed1a9c3e669e522"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/13___sage_foliage.uasset",
+      "sha256": "e638cb0f147b2df4830e5de8d9c98b3032539f87b8f1db36c4d3fce6d3fe4764"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/02___gable_cream.uasset",
+      "sha256": "8b2f06687908cff1bb74c422a310a40e3293edf86fb3ed494567ebbd9c3528f6"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/Roof___4.uasset",
+      "sha256": "13b4201f23a45b251209b6777a27a7e711fd05cbdff65cd4965054b4855b28b5"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/Roof___3.uasset",
+      "sha256": "f6af690eb30f44b6a04711e6174e304d72cf8bd84e06d59f227baadd344d5a8b"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/Roof___2.uasset",
+      "sha256": "8ecd5ac3c0aa769f858b2e8992c958e75cfb437c9d96e53ae813edd0dacb75e0"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/Roof___1.uasset",
+      "sha256": "c813b09cfd3a06e3c4a59f5af68e7a036665adb1bccc2ffc7a9ecde578ac07a9"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/01___warm_lime_plaster.uasset",
+      "sha256": "574ddeda7fbe11864cbc9b82a7b63c938f250f3d5400fdecff5d1ef357242035"
+    },
+    {
+      "path": "Content/ThreeHearths/Generated/HearthCottage/SM_HearthCottage_SharedUV.uasset",
+      "sha256": "15041e96437d9b119654adfcb19a7542cc7a1e46f5bf62e467bf43ac7b39d732"
+    }
+  ],
+  "preview": "HearthCottage_InUE.png",
+  "visual_check": "UE editor screenshot checked: roof, timber, plaster, shutters and props visible; base rests on terrain; entrance faces main road."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "glb_bytes": 1200576,
+  "reimported_triangles": 16788,
+  "reimported_mesh_objects": 45,
+  "reimported_materials": 19,
+  "degenerate_triangles": 0,
+  "bounding_box_matches_metres": true,
+  "no_external_dependencies": true,
+  "presentation_excluded": true,
+  "ue_import_verified": false
+}

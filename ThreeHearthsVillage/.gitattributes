@@ -1,0 +1,17 @@
+*.uasset binary
+*.umap binary
+*.ubulk binary
+*.uexp binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.blend binary
+*.glb binary
+*.cpp text eol=lf
+*.h text eol=lf
+*.cs text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.ini text eol=lf
+*.ps1 text eol=crlf

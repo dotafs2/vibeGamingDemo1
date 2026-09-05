@@ -1,0 +1,11 @@
+{
+  "FileVersion": 3,
+  "Version": 2,
+  "VersionName": "0.2.0",
+  "FriendlyName": "Three Hearths",
+  "Description": "A small autonomous village with local Codex Spark or compatible model API decisions.",
+  "Category": "Gameplay",
+  "CanContainContent": false,
+  "EnabledByDefault": true,
+  "Modules": [{"Name": "ThreeHearths", "Type": "Runtime", "LoadingPhase": "Default"}]
+}

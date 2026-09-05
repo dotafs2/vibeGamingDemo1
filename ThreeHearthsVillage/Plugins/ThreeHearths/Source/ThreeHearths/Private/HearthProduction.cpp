@@ -1,0 +1,386 @@
+#include "HearthVillage.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonSerializer.h"
+
+namespace HearthProduction
+{
+    const FString Crops=TEXT("/Game/Environment/Meshes/Crops/");
+    const FString Buildings=TEXT("/Game/Environment/Meshes/Building/");
+    const TCHAR* KindNames[]={TEXT("未开发空地"),TEXT("已开垦土地"),TEXT("玉米田"),TEXT("小麦田"),TEXT("生菜田"),TEXT("南瓜田"),TEXT("住宅"),TEXT("树木"),TEXT("浆果灌木"),TEXT("石矿")};
+    const TCHAR* KindKeys[]={TEXT("empty"),TEXT("land"),TEXT("corn"),TEXT("wheat"),TEXT("lettuce"),TEXT("pumpkin"),TEXT("house"),TEXT("tree"),TEXT("shrub"),TEXT("stone")};
+    const TCHAR* OpKeys[]={TEXT("claim_land"),TEXT("build_corn"),TEXT("build_wheat"),TEXT("build_lettuce"),TEXT("build_pumpkin"),TEXT("build_house"),TEXT("plant_tree"),TEXT("plant_shrub"),TEXT("sow"),TEXT("harvest"),TEXT("chop"),TEXT("quarry"),TEXT("gather")};
+    const TCHAR* ResourceNames[]={TEXT("食物"),TEXT("木材"),TEXT("石材")};
+    bool IsCrop(EHearthSiteKind K) { return K>=EHearthSiteKind::Corn && K<=EHearthSiteKind::Pumpkin; }
+    int32 Action(int32 Site,int32 Op) { return 100+Site*16+Op; }
+    bool Decode(int32 Action,int32& Site,int32& Op)
+    { if(Action<100) return false; Site=(Action-100)/16; Op=(Action-100)%16; return Op<=12; }
+    void Cost(int32 Op,int32& Food,int32& Wood,int32& Stone)
+    {
+        Food=Wood=Stone=0;
+        if(Op>=1 && Op<=4) { Food=10; Wood=10; }
+        else if(Op==5) { Wood=50; Stone=5; }
+        else if(Op==6) { Food=2; Wood=5; }
+        else if(Op==7) { Food=5; Wood=2; }
+        else if(Op==8) Food=1;
+    }
+    FString Json(const TSharedRef<FJsonObject>& Object) { FString S; FJsonSerializer::Serialize(Object,TJsonWriterFactory<>::Create(&S)); return S; }
+}
+
+void AHearthVillage::InitializeProduction()
+{
+    for(const auto& M:ProductionMeshes) if(IsValid(M.Get())) M->DestroyComponent();
+    ProductionMeshes.Reset(); ProductionSites.Reset(); ProductionTotals.Reset(); FixedObstacles.Reset();
+    FoodStock=30; StoneStock=0; for(int32 I=0;I<3;++I) { Produced[I]=0; Spent[I]=0; }
+    if(!bUseCropoutMap) { ProductionStatus=TEXT("生产与扩建技能在大岛地图开放"); return; }
+    for(int32 I=0;I<3;++I) FixedObstacles.Add(FVector(PlotPositions[I].X,PlotPositions[I].Y,230));
+    FixedObstacles.Add(FVector(-1100,-1050,330));
+    TArray<UStaticMeshComponent*> Existing; GetComponents(Existing);
+    for(auto* M:Existing) if(M->GetStaticMesh())
+    {
+        const FString N=M->GetStaticMesh()->GetName();
+        if(N.StartsWith(TEXT("SM_Tree")) || N.StartsWith(TEXT("SM_Stone")) || N.StartsWith(TEXT("SM_Shrub")))
+        { const FVector P=M->GetComponentLocation(); FixedObstacles.Add(FVector(P.X,P.Y,N.StartsWith(TEXT("SM_Tree"))?150:100)); }
+    }
+    BuildLandGrid();
+    auto AddSite=[this](EHearthSiteKind Kind,FVector Position,float Radius,bool Expansion=false)
+    {
+        if(!IsLand(Position) || !IsLand(Position+FVector(Radius,Radius,0)) || !IsLand(Position-FVector(Radius,Radius,0))
+            || !IsLand(Position+FVector(-Radius,Radius,0)) || !IsLand(Position+FVector(Radius,-Radius,0))) return;
+        FHearthSite Site; Site.Kind=Kind; Site.Position=Position; Site.Radius=Radius; Site.bExpansion=Expansion;
+        if(Kind==EHearthSiteKind::Tree) { Site.Stage=2; Site.Units=Site.Capacity=18; Site.GrowDuration=180; }
+        if(Kind==EHearthSiteKind::Shrub) { Site.Stage=2; Site.Units=Site.Capacity=12; Site.GrowDuration=120; }
+        if(Kind==EHearthSiteKind::Stone) { Site.Stage=2; Site.Units=Site.Capacity=36; }
+        if(HearthProduction::IsCrop(Kind)) { const int32 Yields[]={12,14,10,16}; Site.Capacity=Yields[static_cast<int32>(Kind)-2]; }
+        ProductionSites.Add(MoveTemp(Site));
+    };
+    for(int32 I=0;I<4;++I) AddSite(static_cast<EHearthSiteKind>(I+2),FVector(-1460+(I%2)*650,-3150+(I/2)*650,8),245);
+    for(int32 I=0;I<3;++I) AddSite(EHearthSiteKind::Tree,FVector(-4300,-1900+I*1900,8),160);
+    for(int32 I=0;I<3;++I) AddSite(EHearthSiteKind::Stone,FVector(-1000+I*800,3100,8),145);
+    AddSite(EHearthSiteKind::Shrub,FVector(-3300,-2800,8),120);
+    AddSite(EHearthSiteKind::Shrub,FVector(-2900,-3400,8),120);
+    AddSite(EHearthSiteKind::Shrub,FVector(-3700,-3400,8),120);
+    int32 Plots=0;
+    TArray<FVector> Candidates;
+    for(int32 X=-6000;X<=5700;X+=900) for(int32 Y=-6000;Y<=5700;Y+=900) Candidates.Add(FVector(X,Y,8));
+    Candidates.Sort([](const FVector& A,const FVector& B) { return FVector::DistSquared2D(A,FVector(-1100,-1050,8))<FVector::DistSquared2D(B,FVector(-1100,-1050,8)); });
+    for(const FVector& P:Candidates)
+    {
+        if(Plots>=18) break;
+        bool Clear=true;
+        for(const auto& S:ProductionSites) if(FMath::Abs(P.X-S.Position.X)<S.Radius+350 && FMath::Abs(P.Y-S.Position.Y)<S.Radius+350) Clear=false;
+        for(const auto& O:FixedObstacles) if(FMath::Abs(P.X-O.X)<O.Z+350 && FMath::Abs(P.Y-O.Y)<O.Z+350) Clear=false;
+        if(!Clear) continue;
+        const int32 Before=ProductionSites.Num(); AddSite(EHearthSiteKind::Empty,P,260,true); Plots+=ProductionSites.Num()>Before;
+    }
+    int32 Reachable=0;
+    for(int32 I=0;I<ProductionSites.Num();++I) { if(ChooseSiteApproach(I)) ++Reachable; UpdateSiteVisual(I); }
+    ProductionStatus=FString::Printf(TEXT("可达生产点 / 地块 %d / %d · 全员拥有全部技能"),Reachable,ProductionSites.Num());
+}
+
+bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
+{
+    int32 Site,Op;
+    if(!Residents.IsValidIndex(Index) || CompletedHomes()!=3 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
+    const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0) return false;
+    int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
+    if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
+    if(Op==0) return S.Kind==EHearthSiteKind::Empty;
+    if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land;
+    if(Op==8) return HearthProduction::IsCrop(S.Kind) && S.Stage==0;
+    if(Op==9) return HearthProduction::IsCrop(S.Kind) && S.Stage==2 && S.Units>0;
+    if(Op==10) return S.Kind==EHearthSiteKind::Tree && S.Stage==2 && S.Units>0;
+    if(Op==11) return S.Kind==EHearthSiteKind::Stone && S.Units>0;
+    if(Op==12) return S.Kind==EHearthSiteKind::Shrub && S.Stage==2 && S.Units>0;
+    return false;
+}
+
+TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
+{
+    TArray<int32> Actions;
+    if(!Residents.IsValidIndex(Index) || !IsValid(Residents[Index].Actor)) return Actions;
+    // Keep model input compact: offer two nearby alternatives for each operation.
+    for(int32 Op=0;Op<=12;++Op)
+    {
+        TArray<int32> Candidates;
+        for(int32 S=0;S<ProductionSites.Num();++S) if(IsProductionAllowed(Index,HearthProduction::Action(S,Op))) Candidates.Add(S);
+        const FVector P=Residents[Index].Actor->GetActorLocation();
+        Candidates.Sort([this,P](int32 A,int32 B) { return FVector::DistSquared2D(P,ProductionSites[A].Approach)<FVector::DistSquared2D(P,ProductionSites[B].Approach); });
+        for(int32 I=0;I<FMath::Min(2,Candidates.Num());++I) Actions.Add(HearthProduction::Action(Candidates[I],Op));
+    }
+    return Actions;
+}
+
+FString AHearthVillage::ProductionActionName(int32 Action) const
+{
+    int32 Site,Op; if(!HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return TEXT("不可用生产任务");
+    const auto& S=ProductionSites[Site];
+    const TCHAR* Verbs[]={TEXT("开垦新土地"),TEXT("建设玉米田"),TEXT("建设小麦田"),TEXT("建设生菜田"),TEXT("建设南瓜田"),TEXT("建造新住宅"),TEXT("栽种树木"),TEXT("种植浆果灌木"),TEXT("播种耕作"),TEXT("收获作物并运回"),TEXT("伐木并运回"),TEXT("采石并运回"),TEXT("采集浆果并运回")};
+    FString Name=FString::Printf(TEXT("%s · %d号%s"),Verbs[Op],Site+1,HearthProduction::KindNames[static_cast<int32>(S.Kind)]);
+    int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
+    if(F+W+T>0) Name+=FString::Printf(TEXT("（食物%d / 木材%d / 石材%d）"),F,W,T);
+    return Name;
+}
+
+int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
+{
+    const auto Options=AvailableProductionActions(Index); int32 Best=-1; float BestScore=-FLT_MAX;
+    for(int32 Action:Options)
+    {
+        int32 Site,Op; HearthProduction::Decode(Action,Site,Op); float Score=5;
+        if(Op==9 || Op==12) Score=FoodStock<20?180:35;
+        if(Op==10) Score=AvailableWood()<60?150:20;
+        if(Op==11) Score=StoneStock<10?140:15;
+        if(Op==8) Score=FoodStock<40?125:45;
+        if(Op==0) { int32 Ready=0; for(const auto& S:ProductionSites) Ready+=S.Kind==EHearthSiteKind::Land; Score=Ready<2?90:2; }
+        if(Op>=1 && Op<=7)
+        {
+            const FString Key=HearthProduction::OpKeys[Op]; Score=ProductionTotals.FindRef(Key)==0?100:10;
+            if(Op==5 && AvailableWood()<70) Score-=50;
+        }
+        if(Index==0 && (Op==10 || Op==6)) Score+=10;
+        if(Index==1 && (Op==8 || Op==9 || (Op>=1 && Op<=4))) Score+=10;
+        if(Index==2 && (Op==11 || Op==5)) Score+=10;
+        Score-=FVector::Dist2D(Residents[Index].Actor->GetActorLocation(),ProductionSites[Site].Approach)/2000.f;
+        if(Score>BestScore) { BestScore=Score; Best=Action; }
+    }
+    return Best;
+}
+
+bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Reason,bool bFromApi)
+{
+    if(!IsProductionAllowed(Index,Action)) return false;
+    int32 Site,Op; HearthProduction::Decode(Action,Site,Op);
+    TArray<FVector> Route;
+    if(!FindActivityRoute(Index,ProductionSites[Site].Approach,Route)) return false;
+    auto& R=Residents[Index]; auto& S=ProductionSites[Site];
+    if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,true,bFromApi?TEXT("api"):TEXT("local"));
+    const FString Label=ProductionActionName(Action);
+    int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
+    FoodStock-=F; StoneStock-=T; Spent[0]+=F; Spent[1]+=W; Spent[2]+=T;
+    for(int32 I=0;I<3 && W>0;++I) { const int32 Used=FMath::Min(W,WoodStock[I]); WoodStock[I]-=Used; W-=Used; }
+    S.ReservedBy=Index; S.Progress=0;
+    R.ProductionSite=Site; R.ProductionOp=Op; R.CargoAmount=0; R.CargoType=-1;
+    R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
+    R.Route=MoveTemp(Route); R.Task=EHearthTask::ProductionTravel; R.LatestEvent=Label;
+    R.MoveRetry=0; R.bMovementBlocked=false;
+    R.WorkDuration=Op==5?45.f:Op==0?20.f:Op<=7?25.f:Op==8?20.f:12.f;
+    const TCHAR* Hat=(Op==10 || Op==6)?TEXT("SKM_Woodcutter"):Op==11?TEXT("SKM_Miner"):(Op==0 || Op==8 || Op==9)?TEXT("SKM_Farmer"):Op==12?TEXT("SKM_Gatherer"):TEXT("SKP_Builder");
+    if(auto* Asset=LoadObject<USkeletalMesh>(nullptr,*(FString(TEXT("/Game/Characters/Meshes/Hats/"))+Hat))) { R.Actor->Hat->SetSkeletalMesh(Asset); R.Actor->Hat->SetLeaderPoseComponent(R.Actor->Body,true); }
+    AcceptHistory(Index,Label,Reason,R.DecisionSource); DecisionHistory[R.HistoryIndex].Kind=TEXT("production");
+    DecisionHistory[R.HistoryIndex].Context+=TEXT("\n材料在开工时预扣；收获搬回村镇中心后才入库。");
+    ++HistoryRevision; SaveHistory();
+    VillageEvent=R.Name+TEXT("：")+Label; return true;
+}
+
+void AHearthVillage::AdvanceProductionWorld(float Dt)
+{
+    for(auto& S:ProductionSites) if(S.Growth>0 && S.ReservedBy<0)
+    {
+        S.Growth=FMath::Max(0.f,S.Growth-Dt);
+        if(S.Growth<=0) { S.Stage=2; S.Units=S.Capacity; }
+    }
+}
+
+void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
+{
+    auto& R=Residents[Index]; if(!ProductionSites.IsValidIndex(R.ProductionSite)) return;
+    auto& S=ProductionSites[R.ProductionSite]; const int32 Op=R.ProductionOp;
+    if(R.Task==EHearthTask::ProductionTravel)
+    {
+        if(MoveResident(Index,Dt)) { R.Task=EHearthTask::ProductionWork; R.Timer=R.WorkDuration; }
+        return;
+    }
+    if(R.Task==EHearthTask::ProductionDeliver)
+    {
+        if(MoveResident(Index,Dt)) { R.Task=EHearthTask::ProductionDeposit; R.Timer=1.f; }
+        return;
+    }
+    if(R.Task==EHearthTask::ProductionDeposit && R.Timer<=0)
+    {
+        const int32 Amount=R.CargoAmount;
+        if(R.CargoType==0) FoodStock+=Amount;
+        if(R.CargoType==1) WoodStock[0]+=Amount;
+        if(R.CargoType==2) StoneStock+=Amount;
+        const FString Result=FString::Printf(TEXT("已将 %d 份%s送达村镇中心并计入公共库存。"),Amount,HearthProduction::ResourceNames[FMath::Clamp(R.CargoType,0,2)]);
+        R.CargoAmount=0; R.CargoType=-1; FinishProduction(Index,Result); return;
+    }
+    if(R.Task!=EHearthTask::ProductionWork) return;
+    S.Progress=FMath::Clamp(1.f-R.Timer/FMath::Max(1.f,R.WorkDuration),0.f,1.f);
+    if(R.Timer>0) return;
+    if(Op>=9)
+    {
+        // Reserve and validate the return path before touching any resource amount.
+        TArray<FVector> Home;
+        if(!FindActivityRoute(Index,FVector(-1650,-1050+(Index-1)*120,8),Home))
+        { R.Timer=3.f; R.LatestEvent=TEXT("交付路线暂不可用，保留资源并等待。"); return; }
+        R.CargoType=Op==10?1:Op==11?2:0;
+        R.CargoAmount=FMath::Min(Op==12?4:6,S.Units); S.Units-=R.CargoAmount; Produced[R.CargoType]+=R.CargoAmount;
+        if(S.Units==0)
+        {
+            S.Stage=0;
+            if(S.Kind==EHearthSiteKind::Tree || S.Kind==EHearthSiteKind::Shrub) S.Growth=S.GrowDuration;
+        }
+        R.Route=MoveTemp(Home); R.Task=EHearthTask::ProductionDeliver;
+        R.MoveRetry=0; R.bMovementBlocked=false;
+        R.LatestEvent=FString::Printf(TEXT("携带 %d 份%s回村镇中心，尚未入库。"),R.CargoAmount,HearthProduction::ResourceNames[R.CargoType]);
+        auto& H=DecisionHistory[R.HistoryIndex]; H.Result=R.LatestEvent; ++HistoryRevision; SaveHistory(); return;
+    }
+    FString Result;
+    if(Op==0) { S.Kind=EHearthSiteKind::Land; S.Owner=Index; Result=TEXT("空地已开垦，可以建农田、房屋或种植树木、灌木。"); }
+    else if(Op>=1 && Op<=7)
+    {
+        S.Kind=static_cast<EHearthSiteKind>(Op+1); S.Owner=Index; S.Stage=0; S.Units=0;
+        if(HearthProduction::IsCrop(S.Kind))
+        { const int32 Yields[]={12,14,10,16}; S.Capacity=Yields[Op-1]; Result=TEXT("农田建成，接下来可以播种耕作。"); }
+        else if(Op==5) { S.Stage=2; Result=TEXT("新住宅建成，已占用这块土地并记入村庄建筑。当前人口仍为三人。"); }
+        else
+        { S.Capacity=Op==6?18:12; S.GrowDuration=Op==6?180.f:120.f; S.Growth=S.GrowDuration; Result=Op==6?TEXT("树苗已种下，长成后可持续供给木材。"):TEXT("浆果灌木已种下，长成后可以采集食物。"); }
+    }
+    else if(Op==8) { S.Stage=1; S.Growth=S.GrowDuration; Result=TEXT("播种耕作完成，作物开始生长；成熟后可收获并运回粮食。"); }
+    FinishProduction(Index,Result);
+}
+
+void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
+{
+    auto& R=Residents[Index]; auto& S=ProductionSites[R.ProductionSite];
+    S.ReservedBy=-1; S.Progress=1.f; R.Energy=FMath::Max(0.f,R.Energy-8.f);
+    ProductionTotals.FindOrAdd(HearthProduction::OpKeys[R.ProductionOp])++;
+    const FString Outcome=Result+FString::Printf(TEXT(" 当前库存：食物 %d、木材 %d、石材 %d。"),FoodStock,AvailableWood(),StoneStock);
+    R.LatestEvent=Outcome; CompleteHistory(Index,Outcome); R.Task=EHearthTask::LifeChoosing;
+    R.ProductionSite=-1; R.ProductionOp=-1; VillageEvent=R.Name+TEXT("：")+Result;
+}
+
+void AHearthVillage::UpdateSiteVisual(int32 Index)
+{
+    auto& S=ProductionSites[Index];
+    int32 Visual=S.Stage;
+    if(S.Growth>0) Visual=S.Growth<S.GrowDuration*.5f?11:10;
+    if(S.ReservedBy>=0 && Residents.IsValidIndex(S.ReservedBy) && Residents[S.ReservedBy].ProductionOp==5)
+        Visual=20+FMath::Min(3,FMath::FloorToInt(S.Progress*4));
+    const int32 Key=static_cast<int32>(S.Kind)*100+Visual;
+    if(S.VisualStage==Key) return; S.VisualStage=Key;
+    if(!S.Soil.IsValid())
+    {
+        const FLinearColor Soil(0.30f,0.22f,0.12f);
+        if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(0,0,-3),FVector(S.Radius*2/100,S.Radius*2/100,.018f),&Soil))
+        { S.Soil=M; ProductionMeshes.Add(M); }
+        if(S.bExpansion)
+        {
+            const FLinearColor Edge(.62f,.65f,.35f);
+            for(int32 Side=-1;Side<=1;Side+=2)
+            {
+                if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(0,Side*S.Radius,0),FVector(S.Radius*2/100,.07f,.025f),&Edge)) ProductionMeshes.Add(M);
+                if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(Side*S.Radius,0,0),FVector(.07f,S.Radius*2/100,.025f),&Edge)) ProductionMeshes.Add(M);
+            }
+        }
+    }
+    if(S.Soil.IsValid()) S.Soil->SetVisibility(S.Kind!=EHearthSiteKind::Empty);
+    FString Path; float Scale=1.f;
+    if(HearthProduction::IsCrop(S.Kind))
+    {
+        const TCHAR* Types[]={TEXT("Corn"),TEXT("Wheat"),TEXT("Lettuce"),TEXT("Pumpkin")}; const int32 Type=static_cast<int32>(S.Kind)-2;
+        const int32 Stage=S.Stage==2?3:S.Growth>0?(Visual==11?2:1):4;
+        Path=HearthProduction::Crops+FString::Printf(TEXT("SM_Crop_%s_%02d"),Types[Type],Stage);
+        Scale=Type==0?.7f:Type==3?.85f:.95f;
+    }
+    else if(S.Kind==EHearthSiteKind::House || Visual>=20)
+    { Path=HearthProduction::Buildings+FString::Printf(TEXT("SM_House_%02d"),Visual>=20?Visual-19:4); Scale=.95f; }
+    else if(S.Kind==EHearthSiteKind::Tree) { Path=HearthProduction::Crops+TEXT("SM_Tree_01"); Scale=S.Growth>0?(Visual==11?.65f:.35f):.9f; }
+    else if(S.Kind==EHearthSiteKind::Shrub) { Path=HearthProduction::Crops+TEXT("SM_Shrub_01"); Scale=S.Growth>0?.45f:1.f; }
+    else if(S.Kind==EHearthSiteKind::Stone) { Path=HearthProduction::Crops+TEXT("SM_Stone_02"); Scale=S.Units>0?1.f:.3f; }
+    if(!Path.IsEmpty())
+    {
+        if(S.Meshes.IsEmpty()) if(auto* M=AddMesh(Path,S.Position,FVector(Scale))) { S.Meshes.Add(M); ProductionMeshes.Add(M); }
+        for(const auto& Weak:S.Meshes) if(auto* M=Weak.Get())
+        { if(auto* Asset=LoadObject<UStaticMesh>(nullptr,*Path)) M->SetStaticMesh(Asset); M->SetWorldScale3D(FVector(Scale)); M->SetVisibility(true); }
+    }
+}
+
+void AHearthVillage::RefreshProductionVisuals()
+{
+    for(int32 I=0;I<ProductionSites.Num();++I) UpdateSiteVisual(I);
+    if(CompletedHomes()==3) for(int32 I=0;I<3;++I) if(StockMeshes.IsValidIndex(I))
+    { StockMeshes[I]->SetVisibility(WoodStock[I]>0); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,FMath::Clamp(WoodStock[I]/12.f*.4f,.04f,1.2f))); }
+}
+
+FString AHearthVillage::GetProductionState() const
+{
+    auto Root=MakeShared<FJsonObject>();
+    Root->SetNumberField(TEXT("food"),FoodStock); Root->SetNumberField(TEXT("wood"),AvailableWood()); Root->SetNumberField(TEXT("stone"),StoneStock);
+    Root->SetStringField(TEXT("status"),ProductionStatus); Root->SetNumberField(TEXT("land_grid_cells"),LandGrid.Num());
+    TArray<TSharedPtr<FJsonValue>> Sites;
+    for(int32 I=0;I<ProductionSites.Num();++I)
+    {
+        const auto& S=ProductionSites[I]; auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("id"),I);
+        J->SetStringField(TEXT("kind"),HearthProduction::KindKeys[static_cast<int32>(S.Kind)]); J->SetStringField(TEXT("name"),HearthProduction::KindNames[static_cast<int32>(S.Kind)]);
+        J->SetNumberField(TEXT("stage"),S.Stage); J->SetNumberField(TEXT("units"),S.Units); J->SetNumberField(TEXT("growth_seconds"),S.Growth);
+        J->SetNumberField(TEXT("reserved_by"),S.ReservedBy); J->SetNumberField(TEXT("owner"),S.Owner); J->SetBoolField(TEXT("reachable"),S.bReachable);
+        J->SetNumberField(TEXT("x"),S.Position.X); J->SetNumberField(TEXT("y"),S.Position.Y); J->SetNumberField(TEXT("radius"),S.Radius);
+        J->SetStringField(TEXT("approach"),S.Approach.ToString()); Sites.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("sites"),Sites);
+    auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:ProductionTotals) Totals->SetNumberField(Pair.Key,Pair.Value); Root->SetObjectField(TEXT("completed_operations"),Totals);
+    for(int32 Type=0;Type<3;++Type)
+    {
+        int32 Carry=0; for(const auto& R:Residents) if(R.CargoType==Type) Carry+=R.CargoAmount;
+        const int32 Stock=Type==0?FoodStock:Type==1?AvailableWood():StoneStock;
+        int32 Accounted=Stock+Carry+Spent[Type]-Produced[Type];
+        if(Type==1) for(const auto& R:Residents) Accounted+=R.CarriedWood+R.DeliveredWood;
+        const TCHAR* Keys[]={TEXT("food"),TEXT("wood"),TEXT("stone")};
+        Root->SetNumberField(FString(TEXT("accounted_"))+Keys[Type],Accounted);
+        Root->SetNumberField(FString(TEXT("produced_"))+Keys[Type],Produced[Type]);
+        Root->SetNumberField(FString(TEXT("spent_"))+Keys[Type],Spent[Type]);
+        Root->SetNumberField(FString(TEXT("in_transit_"))+Keys[Type],Carry);
+    }
+    return HearthProduction::Json(Root);
+}
+
+void AHearthVillage::AppendProductionContext(const TSharedRef<FJsonObject>& Context) const
+{
+    auto Stock=MakeShared<FJsonObject>(); Stock->SetNumberField(TEXT("food"),FoodStock); Stock->SetNumberField(TEXT("wood"),AvailableWood()); Stock->SetNumberField(TEXT("stone"),StoneStock);
+    Context->SetObjectField(TEXT("inventory"),Stock);
+    auto Counts=MakeShared<FJsonObject>();
+    for(int32 Kind=0;Kind<=9;++Kind)
+    { int32 Count=0; for(const auto& S:ProductionSites) if(S.bReachable && static_cast<int32>(S.Kind)==Kind) ++Count; Counts->SetNumberField(HearthProduction::KindKeys[Kind],Count); }
+    Context->SetObjectField(TEXT("production_sites"),Counts);
+    auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:ProductionTotals) Totals->SetNumberField(Pair.Key,Pair.Value);
+    Context->SetObjectField(TEXT("completed_production_operations"),Totals);
+}
+
+FString AHearthVillage::GetAvailableActivities(int32 Index) const
+{
+    auto Root=MakeShared<FJsonObject>(); Root->SetBoolField(TEXT("can_assign"),CanAssignActivity(Index));
+    TArray<TSharedPtr<FJsonValue>> Values;
+    for(int32 Action:AvailableLifeActions(Index))
+    { auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("id"),Action); J->SetStringField(TEXT("description"),LifeActionName(Index,Action)); Values.Add(MakeShared<FJsonValueObject>(J)); }
+    Root->SetArrayField(TEXT("actions"),Values); return HearthProduction::Json(Root);
+}
+
+bool AHearthVillage::CanAssignActivity(int32 Index) const
+{ return Residents.IsValidIndex(Index) && Residents[Index].Task==EHearthTask::LifeChoosing && !IsDecisionPending(Index); }
+bool AHearthVillage::AssignActivity(int32 Index,int32 Action)
+{
+    if(!CanAssignActivity(Index) || !StartLifeAction(Index,Action,TEXT("按照你的安排，执行这项工作。"),false)) return false;
+    auto& R=Residents[Index]; R.DecisionSource=TEXT("player"); R.DecisionNote=TEXT("你安排的任务");
+    auto& H=DecisionHistory[R.HistoryIndex]; H.Source=TEXT("player"); ++HistoryRevision; SaveHistory(); WriteSnapshot(); return true;
+}
+
+FString AHearthVillage::ProductionSummary() const
+{
+    int32 Land=0,Fields=0,Houses=0,Empty=0;
+    for(const auto& S:ProductionSites)
+    { Land+=S.Kind==EHearthSiteKind::Land; Empty+=S.Kind==EHearthSiteKind::Empty && S.bReachable; Fields+=HearthProduction::IsCrop(S.Kind); Houses+=S.Kind==EHearthSiteKind::House; }
+    return FString::Printf(TEXT("食物 %d · 木材 %d · 石材 %d\n农田 %d · 新住宅 %d · 空地 %d / 已开垦 %d"),FoodStock,AvailableWood(),StoneStock,Fields,Houses,Empty,Land);
+}
+
+FString AHearthVillage::CargoSummary(int32 Index) const
+{
+    if(!Residents.IsValidIndex(Index)) return FString(); const auto& R=Residents[Index];
+    if(R.CargoAmount>0) return FString::Printf(TEXT("携带 %d 份%s · 运往村镇中心"),R.CargoAmount,HearthProduction::ResourceNames[FMath::Clamp(R.CargoType,0,2)]);
+    if(R.ProductionSite>=0) return FString::Printf(TEXT("正在处理 %d 号地块 · 材料已预扣"),R.ProductionSite+1);
+    return FString::Printf(TEXT("%s · 建房木材 %d / %d"),*PlotNameFor(Index),R.DeliveredWood,CostFor(Index));
+}

@@ -1,0 +1,15 @@
+{
+  "enabled": false,
+  "backend": "openai_compatible",
+  "base_url": "https://api.moonshot.cn/v1",
+  "api_key": "",
+  "model": "kimi-k2.6",
+  "timeout_seconds": 30,
+  "max_output_tokens": 256,
+  "token_limit_field": "max_tokens",
+  "response_format": "json_object",
+  "thinking_mode": "disabled",
+  "max_requests_per_run": 600,
+  "autonomous_life": true,
+  "life_decision_interval_seconds": 6
+}

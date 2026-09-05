@@ -1,0 +1,53 @@
+{
+  "uv_layer": "UV_Material",
+  "texture_uv_index": 0,
+  "roof_uv_policy": "two shared prototype unwraps; size variants use cropped chart regions",
+  "intentional_texture_overlap": true,
+  "lightmap_uv": false,
+  "families": {
+    "tile": {
+      "instances": 182,
+      "master_unwraps": 1,
+      "charts_per_master": 6,
+      "size_variants": 6,
+      "identical_size_uvs_match": true,
+      "variant_instance_counts": [
+        134,
+        28,
+        6,
+        6,
+        4,
+        4
+      ]
+    },
+    "ridge": {
+      "instances": 13,
+      "master_unwraps": 1,
+      "charts_per_master": 6,
+      "size_variants": 2,
+      "identical_size_uvs_match": true,
+      "variant_instance_counts": [
+        10,
+        3
+      ]
+    }
+  },
+  "roof_master_unwraps": 2,
+  "roof_master_charts": 12,
+  "mesh_objects": 45,
+  "triangles": 16788,
+  "degenerate_uv_triangles": 0,
+  "uv_bounds": {
+    "min": [
+      0.0029999935068190098,
+      0.0029999499674886465
+    ],
+    "max": [
+      0.9957977533340454,
+      0.9942538142204285
+    ]
+  },
+  "geometry_and_materials_unchanged": true,
+  "source_blend": "HearthCottage.blend",
+  "source_sha256": "ee3298a56741abbf07faab467fa7b881f6c00c299793d4107d242edb86efff71"
+}

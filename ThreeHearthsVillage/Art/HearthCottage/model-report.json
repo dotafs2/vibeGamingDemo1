@@ -1,0 +1,34 @@
+{
+  "asset": "HearthCottage",
+  "blender_version": "5.2.1 LTS",
+  "triangles": 16788,
+  "mesh_objects": 45,
+  "materials": 19,
+  "bounds_metres": {
+    "min": [
+      -2.2899999618530273,
+      -2.450000047683716,
+      0.0
+    ],
+    "max": [
+      2.1054999828338623,
+      1.8055000305175781,
+      3.7950000762939453
+    ],
+    "size": [
+      4.39549994468689,
+      4.255500078201294,
+      3.7950000762939453
+    ]
+  },
+  "root_at_ground": true,
+  "front_axis_blender": "-Y",
+  "glb_uses_gltf_y_up": true,
+  "external_textures": false,
+  "ue_import_verified": false,
+  "notes": [
+    "Exterior visual only; door does not open.",
+    "UE assigns collision, navigation and interaction.",
+    "Presentation floor, cameras and lights excluded from GLB."
+  ]
+}

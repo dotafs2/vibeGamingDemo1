@@ -1,0 +1,14 @@
+{
+  "enabled": false,
+  "backend": "openai_compatible",
+  "base_url": "https://api.openai.com/v1",
+  "api_key": "",
+  "model": "",
+  "timeout_seconds": 30,
+  "max_output_tokens": 256,
+  "token_limit_field": "max_completion_tokens",
+  "response_format": "json_object",
+  "max_requests_per_run": 600,
+  "autonomous_life": true,
+  "life_decision_interval_seconds": 6
+}

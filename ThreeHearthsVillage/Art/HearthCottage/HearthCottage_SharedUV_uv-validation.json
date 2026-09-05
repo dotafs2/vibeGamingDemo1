@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "saved_blend_matches_glb_texture_uv0": true,
+  "intentional_overlap_preserved": true,
+  "roof_meshes": {
+    "Roof | main curved tiles": {
+      "uv_triangles": 5256,
+      "distinct_uv_triangles": 100,
+      "max_identical_uv_triangle_copies": 146,
+      "matches_saved_blend": true
+    },
+    "Roof | main ridge caps": {
+      "uv_triangles": 520,
+      "distinct_uv_triangles": 52,
+      "max_identical_uv_triangle_copies": 10,
+      "matches_saved_blend": true
+    },
+    "Roof | porch curved tiles": {
+      "uv_triangles": 1296,
+      "distinct_uv_triangles": 100,
+      "max_identical_uv_triangle_copies": 36,
+      "matches_saved_blend": true
+    },
+    "Roof | porch ridge caps": {
+      "uv_triangles": 156,
+      "distinct_uv_triangles": 52,
+      "max_identical_uv_triangle_copies": 3,
+      "matches_saved_blend": true
+    }
+  }
+}
