@@ -12,6 +12,8 @@
 
 新增模块住宅美术包见 [VillageKit](Art/VillageKit/README.md)：结构、三种墙材、两种屋瓦、材料包和公共设施，可组合为不同房型。[NPC 最小施工单元](Docs/Modular_Housing.md) 说明搬运、安装与选材数据；这批资产尚未接入村民的实时建造逻辑。
 
+最新持续开发目标为 [中世纪AI社会](Docs/Medieval_Society.md)。真实Kimi调用必须先启动 [持久人民币预算门禁](Docs/Kimi_Budget.md)；当前夜间授权100元、95元可分配，跨世界/重启共用账本，UE已禁止直连付费上游。
+
 ## 启动
 
 1. 安装 Unreal Engine 5.8，以及可编译 UE C++ 插件的 Visual Studio 2022 C++ 工具链和 Windows SDK。

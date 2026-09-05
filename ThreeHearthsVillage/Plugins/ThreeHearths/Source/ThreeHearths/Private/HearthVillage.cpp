@@ -606,6 +606,12 @@ FString AHearthVillage::GetSnapshot() const
     Root->SetStringField(TEXT("run"),CurrentRun);
     Root->SetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
     Root->SetNumberField(TEXT("api_request_limit"),ApiMaxRequests);
+    Root->SetBoolField(TEXT("api_budget_gateway"),bApiBudgeted);
+    Root->SetStringField(TEXT("api_budget_ledger"),ApiBudgetLedger);
+    Root->SetNumberField(TEXT("api_budget_settled_cny"),ApiBudgetSpent);
+    Root->SetNumberField(TEXT("api_budget_reserved_cny"),ApiBudgetReserved);
+    Root->SetNumberField(TEXT("api_budget_remaining_cny"),ApiBudgetRemaining);
+    Root->SetStringField(TEXT("api_budget_values_scope"),TEXT("last_received_gateway_snapshot; authoritative totals are in persistent ledger"));
     Root->SetNumberField(TEXT("history_records"),DecisionHistory.Num());
     Root->SetStringField(TEXT("history_status"),HistorySaveStatus);
     TArray<TSharedPtr<FJsonValue>> People;

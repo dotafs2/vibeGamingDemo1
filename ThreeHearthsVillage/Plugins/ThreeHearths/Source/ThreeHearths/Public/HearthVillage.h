@@ -210,6 +210,9 @@ private:
     bool bApiConfigured = false;
     bool bApiDisabledThisRun = false;
     bool bHasApiUsage = false;
+    bool bApiBudgeted = false;
+    FString ApiBudgetLedger;
+    double ApiBudgetSpent = 0, ApiBudgetReserved = 0, ApiBudgetRemaining = 0;
     float LifeDecisionInterval = 6.f;
     int32 LastLifeResident = -1;
     FString HistoryPath;

@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "python_offline_tests": {
+    "passed": 14,
+    "failed": 0,
+    "command": "python Plugins/ThreeHearths/Tools/test_kimi_budget.py",
+    "duration_seconds": 2.813
+  },
+  "native_tests": {
+    "passed": 6,
+    "failed": 0,
+    "build_passed": true,
+    "process_exit_code": 0,
+    "known_warning": "Existing ImportPreview.WorldIsolation cleanup: World has no context"
+  },
+  "real_ue": {
+    "requests": 3,
+    "accepted_decisions": 3,
+    "total_tokens": 729,
+    "prompt_tokens": 643,
+    "completion_tokens": 86,
+    "cached_tokens": 0,
+    "daily_decision_interval_seconds": 60,
+    "all_requests_via_fixed_loopback_gateway": true,
+    "usage_rows": [
+      {
+        "resident": "resident-0",
+        "state": "settled",
+        "prompt_tokens": 250,
+        "output_tokens": 29,
+        "cached_tokens": 0,
+        "charge_nanoyuan": 2408000
+      },
+      {
+        "resident": "resident-1",
+        "state": "settled",
+        "prompt_tokens": 214,
+        "output_tokens": 28,
+        "cached_tokens": 0,
+        "charge_nanoyuan": 2147000
+      },
+      {
+        "resident": "resident-2",
+        "state": "settled",
+        "prompt_tokens": 179,
+        "output_tokens": 29,
+        "cached_tokens": 0,
+        "charge_nanoyuan": 1946500
+      }
+    ]
+  },
+  "account_balance_delta_cny": "0.00000",
+  "budget": {
+    "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+    "model": "kimi-k2.6",
+    "authorized_cny": 100.0,
+    "allocation_cap_cny": 95.0,
+    "settled_cny": 0.0065015,
+    "prior_unverified_cny": 0.01,
+    "reserved_cny": 0.0,
+    "liability_cny": 0.0165015,
+    "remaining_allocatable_cny": 94.9834985,
+    "counts": {
+      "settled": 3
+    },
+    "halted": "",
+    "deadline_utc": 1788658200
+  },
+  "price_source": "https://platform.kimi.com/",
+  "price_cny_per_million": {
+    "uncached_input": 6.5,
+    "cached_input": 1.1,
+    "output": 27
+  },
+  "max_reservation_cny_at_512_output": 1.71776,
+  "first_ue_attempt": "OS proxy blocked loopback before gateway received request; no reservation/provider call. Fixed project HttpNoProxy.",
+  "runtime_scope": "Controlled three-resident UE smoke. Initial ten-person society and persistent world are subsequent work."
+}

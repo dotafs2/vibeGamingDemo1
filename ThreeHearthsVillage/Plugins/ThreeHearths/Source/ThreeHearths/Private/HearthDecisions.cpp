@@ -16,6 +16,23 @@ DEFINE_LOG_CATEGORY_STATIC(LogHearthDecision, Log, All);
 
 namespace HearthDecision
 {
+    const FString BudgetBase=TEXT("http://127.0.0.1:18766/v1");
+    bool RequiresBudgetGateway(const FString& Base,const FString& Model)
+    { return Base.StartsWith(TEXT("https://")) || Model.StartsWith(TEXT("kimi-")); }
+    bool ReadBudgetDescriptor(const FString& Text,FString& Token,FString& Ledger)
+    {
+        TSharedPtr<FJsonObject> Object;
+        FString Base,Model,Hash; double Version=0,Cap=0;
+        if(Text.Len()>4096 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Object) || !Object.IsValid()) return false;
+        Object->TryGetStringField(TEXT("base_url"),Base); Object->TryGetStringField(TEXT("model"),Model);
+        Object->TryGetStringField(TEXT("api_key"),Token); Object->TryGetStringField(TEXT("ledger_id"),Ledger);
+        Object->TryGetStringField(TEXT("policy_sha256"),Hash);
+        Object->TryGetNumberField(TEXT("schema_version"),Version); Object->TryGetNumberField(TEXT("allocation_cap_cny"),Cap);
+        FGuid Id;
+        if(Base!=BudgetBase || Model!=TEXT("kimi-k2.6") || Version!=1 || Cap!=95 || Token.Len()!=64 || Hash.Len()!=64 || !FGuid::Parse(Ledger,Id)) return false;
+        for(TCHAR C:Token+Hash) if(!FChar::IsHexDigit(C)) return false;
+        return true;
+    }
     FString Json(const TSharedRef<FJsonObject>& Object)
     {
         FString Text; auto Writer=TJsonWriterFactory<>::Create(&Text);
@@ -70,17 +87,18 @@ int32 AHearthVillage::PendingDecisionCount() const
 { int32 Count=0; for(const auto& Pending:PendingDecisions) Count+=Pending.bActive; return Count; }
 
 int32 AHearthVillage::DecisionConcurrencyLimit() const
-{ return ApiBackend==TEXT("codex_spark")?1:Residents.Num(); }
+{ return ApiBackend==TEXT("codex_spark")?1:FMath::Min(10,Residents.Num()); }
 
 bool AHearthVillage::HasDecisionCapacity(int32 Index) const
 {
     return Residents.IsValidIndex(Index) && PendingDecisions.IsValidIndex(Index)
-        && !IsDecisionPending(Index) && (ApiBackend!=TEXT("codex_spark") || PendingDecisionCount()==0);
+        && !IsDecisionPending(Index) && PendingDecisionCount()<DecisionConcurrencyLimit();
 }
 
 void AHearthVillage::LoadApiConfig()
 {
     bApiReady=false; bApiConfigured=false; bApiDisabledThisRun=false; bHasApiUsage=false;
+    bApiBudgeted=false; ApiBudgetLedger.Empty(); ApiBudgetSpent=0; ApiBudgetReserved=0; ApiBudgetRemaining=0;
     ApiRequests=0; ApiSuccesses=0; ApiTokens=0;
     bAutonomousLifeEnabled=true; LifeDecisionInterval=6.f; ApiMaxRequests=600;
     ApiBackend=TEXT("local"); ApiKey.Empty(); ApiModel.Empty();
@@ -119,6 +137,23 @@ void AHearthVillage::LoadApiConfig()
     ApiThinkingMode.Empty(); Config->TryGetStringField(TEXT("thinking_mode"),ApiThinkingMode);
     if(!ApiThinkingMode.IsEmpty() && ApiThinkingMode!=TEXT("disabled") && ApiThinkingMode!=TEXT("enabled")) { ApiStatus=TEXT("思考模式配置有误 · 使用本地规则"); return; }
     if((ApiTokenField!=TEXT("max_tokens") && ApiTokenField!=TEXT("max_completion_tokens")) || (ApiFormat!=TEXT("json_object") && ApiFormat!=TEXT("prompt_only"))) { ApiStatus=TEXT("API 参数配置有误 · 使用本地规则"); return; }
+    if(HearthDecision::RequiresBudgetGateway(Base,ApiModel))
+    {
+        // All HTTPS providers are blocked except the verified Kimi profile, which
+        // is rerouted to the fixed, separately running persistent budget gateway.
+        if(ApiModel!=TEXT("kimi-k2.6") || (Base!=TEXT("https://api.moonshot.cn/v1") && Base!=HearthDecision::BudgetBase))
+        { ApiStatus=TEXT("该付费模型尚无已授权预算门禁 · 本地规则"); ApiKey.Empty(); return; }
+        FString Descriptor;
+        const FString Path=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/Budget/gateway-endpoint.json");
+        ApiKey.Empty(); // The upstream secret never leaves UE on the network.
+        if(!FFileHelper::LoadFileToString(Descriptor,*Path) || !HearthDecision::ReadBudgetDescriptor(Descriptor,ApiKey,ApiBudgetLedger))
+        { ApiStatus=TEXT("人民币预算门禁未启动 · 停止付费调用"); return; }
+        bApiBudgeted=true;
+        ApiEndpoint=HearthDecision::BudgetBase+TEXT("/chat/completions");
+        ApiThinkingMode=TEXT("disabled"); ApiTokenField=TEXT("max_tokens"); ApiFormat=TEXT("json_object");
+        ApiMaxTokens=FMath::Min(ApiMaxTokens,512); ApiTimeout=60.f;
+        LifeDecisionInterval=FMath::Max(LifeDecisionInterval,60.f);
+    }
     if(ApiBackend==TEXT("codex_spark"))
     {
         // This private bridge is only for the currently signed-in user's local prototype.
@@ -132,7 +167,7 @@ void AHearthVillage::LoadApiConfig()
         if(!BridgeProcess.IsValid()) { ApiStatus=TEXT("Spark 本机程序未能启动 · 使用本地规则"); return; }
         UE_LOG(LogHearthDecision,Display,TEXT("LOCAL_BRIDGE_STARTED pid=%u"),Pid);
     }
-    bApiReady=true; ApiStatus=ApiBackend==TEXT("codex_spark")?TEXT("5.3 Spark 已准备 · 等待村民选择"):TEXT("API 已配置 · 等待村民选择");
+    bApiReady=true; ApiStatus=bApiBudgeted?TEXT("Kimi 预算门禁已连接 · 每人独立决策"):(ApiBackend==TEXT("codex_spark")?TEXT("5.3 Spark 已准备 · 等待村民选择"):TEXT("API 已配置 · 等待村民选择"));
 }
 
 void AHearthVillage::RequestDecision(int32 Index)
@@ -159,6 +194,9 @@ void AHearthVillage::RequestDecision(int32 Index)
 void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife)
 {
     if(bSimulationPaused || !HasDecisionCapacity(Index) || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) return;
+    // Defense at the actual dispatch site: never issue a direct paid HTTPS call.
+    if(ApiEndpoint.StartsWith(TEXT("https://")) || (ApiModel.StartsWith(TEXT("kimi-")) && (!bApiBudgeted || ApiEndpoint!=HearthDecision::BudgetBase+TEXT("/chat/completions"))))
+    { bApiDisabledThisRun=true; ApiStatus=TEXT("已阻止绕过人民币预算的请求"); return; }
     auto System=MakeShared<FJsonObject>(); System->SetStringField(TEXT("role"),TEXT("system"));
     System->SetStringField(TEXT("content"),Prompt);
     auto User=MakeShared<FJsonObject>(); User->SetStringField(TEXT("role"),TEXT("user")); User->SetStringField(TEXT("content"),HearthDecision::Json(Context));
@@ -183,6 +221,11 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     auto Request=FHttpModule::Get().CreateRequest(); Pending.Request=Request;
     Request->SetURL(ApiEndpoint); Request->SetVerb(TEXT("POST")); Request->SetHeader(TEXT("Content-Type"),TEXT("application/json"));
     if(!ApiKey.IsEmpty()) Request->SetHeader(TEXT("Authorization"),TEXT("Bearer ")+ApiKey);
+    if(bApiBudgeted)
+    {
+        Request->SetHeader(TEXT("X-Hearth-Operation"),FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens));
+        Request->SetHeader(TEXT("X-Hearth-Resident"),FString::Printf(TEXT("resident-%d"),Index));
+    }
     Request->SetContentAsString(HearthDecision::Json(Body)); Request->SetTimeout(ApiTimeout); Request->SetActivityTimeout(ApiTimeout);
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
     Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
@@ -192,16 +235,25 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         Reply.Request.Reset(); Reply.bReturned=true;
         Reply.Latency=FPlatformTime::Seconds()-Reply.StartedAt;
         if(V->DecisionHistory.IsValidIndex(Reply.HistoryIndex)) V->DecisionHistory[Reply.HistoryIndex].Latency=Reply.Latency;
-        if(!bOk || !Response.IsValid()) { Reply.Error=TEXT("连接失败或请求超时"); return; }
+        if(!bOk || !Response.IsValid()) { Reply.Error=TEXT("连接失败或请求超时"); if(V->bApiBudgeted) V->bApiDisabledThisRun=true; return; }
         const int32 Code=Response->GetResponseCode();
         if(Code<200 || Code>=300)
         {
             Reply.Error=FString::Printf(TEXT("接口返回 HTTP %d"),Code);
-            if(Code==401 || Code==403 || Code==429 || Code==503) V->bApiDisabledThisRun=true;
+            if(Code==401 || Code==403 || Code==429 || Code==503 || (V->bApiBudgeted && (Code==402 || Code==502))) V->bApiDisabledThisRun=true;
             return;
         }
         TSharedPtr<FJsonObject> Envelope;
         if(Response->GetContent().Num()>65536 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Response->GetContentAsString()),Envelope) || !Envelope.IsValid()) { Reply.Error=TEXT("接口返回格式无效"); return; }
+        if(V->bApiBudgeted)
+        {
+            const TSharedPtr<FJsonObject>* Budget=nullptr; FString Ledger;
+            if(!Envelope->TryGetObjectField(TEXT("_hearth_budget"),Budget) || !(*Budget)->TryGetStringField(TEXT("ledger_id"),Ledger) || Ledger!=V->ApiBudgetLedger)
+            { V->bApiDisabledThisRun=true; Reply.Error=TEXT("预算回执无效，已停止付费调用"); return; }
+            (*Budget)->TryGetNumberField(TEXT("settled_cny"),V->ApiBudgetSpent);
+            (*Budget)->TryGetNumberField(TEXT("reserved_cny"),V->ApiBudgetReserved);
+            (*Budget)->TryGetNumberField(TEXT("remaining_allocatable_cny"),V->ApiBudgetRemaining);
+        }
         const TSharedPtr<FJsonObject>* Usage=nullptr;
         if(Envelope->TryGetObjectField(TEXT("usage"),Usage))
         {
@@ -236,6 +288,7 @@ void AHearthVillage::ConsumeDecision()
         {
             if(Slot.Request.IsValid()) { Slot.Request->OnProcessRequestComplete().Unbind(); Slot.Request->CancelRequest(); Slot.Request.Reset(); }
             Slot.Error=TEXT("等待模型超时"); Slot.bReturned=true; Slot.Latency=FPlatformTime::Seconds()-Slot.StartedAt;
+            if(bApiBudgeted) bApiDisabledThisRun=true;
         }
         if(!Slot.bReturned) continue;
         auto Reply=MoveTemp(Slot); Slot=FHearthPendingDecision();
