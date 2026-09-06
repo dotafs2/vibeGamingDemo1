@@ -1,0 +1,61 @@
+{
+  "reviewed_at_utc": "2026-09-06T13:50:19.5297519Z",
+  "reviewed_commit": "f8493e4",
+  "verdict": "core_runtime_slice_verified; overall_art_and_autonomous_town_goal_remains_active",
+  "verification_owner": "root coordinator; read-only source/log/save/image review; no duplicate UE run",
+  "evidence": {
+    "before": "Saved/ThreeHearths/Acceptance/ten-npc-three-plans-state.json",
+    "after": "Saved/ThreeHearths/Acceptance/ten-npc-three-plans-restarted-state.json",
+    "save": "Saved/ThreeHearths/Acceptance/ten-npc-neighborhood.json",
+    "overview": "Saved/ThreeHearths/Acceptance/ten-npc-three-plans.png",
+    "tests": "Saved/Logs/FinalFullAcceptance.log"
+  },
+  "independently_verified": {
+    "resident_count": 10,
+    "same_world_id_after_restart": true,
+    "world_revision_before_and_after": 10,
+    "save_schema": 9,
+    "all_three_exported_plan_records_equal_after_restart": true,
+    "all_component_records_equal_after_restart": true,
+    "installed_component_total": 93,
+    "houses": [
+      {
+        "owner": 3,
+        "rooms": 3,
+        "installed": 46,
+        "planned": 46,
+        "extension_ids": 2
+      },
+      {
+        "owner": 5,
+        "rooms": 2,
+        "installed": 31,
+        "planned": 31,
+        "extension_ids": 1
+      },
+      {
+        "owner": 1,
+        "rooms": 1,
+        "installed": 16,
+        "planned": 16,
+        "extension_ids": 0
+      }
+    ],
+    "coins_plus_active_escrow_before": 620,
+    "coins_plus_active_escrow_after": 620,
+    "duplicate_transaction_ids_in_either_snapshot": 0,
+    "duplicate_transaction_kind_task_pairs_in_either_snapshot": 0,
+    "tests_success": 31,
+    "tests_failed": 0,
+    "test_process_exit_code": 0,
+    "backend": "local_personality_policy",
+    "api_requests": 0
+  },
+  "limits_and_followup": [
+    "Saved plan records demonstrate one/two/three rooms with stable instances; they do not alone prove every earlier construction trajectory. Engine evidence and focused lifecycle tests remain complementary.",
+    "No new paid Kimi-authored building behavior is claimed by this local run.",
+    "The overview shows connected roads and the new timber homes, but still includes Preparing Shaders/Static Meshes messages over the HUD. Capture stable rendered frames after preparation, without hiding an underlying renderer problem.",
+    "Add progressive construction close-ups and NPC-selected component material/style choices with real available resources. The manager has already continued this work automatically.",
+    "Room-count differences alone are not the user's complete free-composition castle/workshop/camp goal. Retain broader emergent-town and social requirements."
+  ]
+}
