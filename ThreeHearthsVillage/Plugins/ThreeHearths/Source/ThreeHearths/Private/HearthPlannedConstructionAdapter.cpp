@@ -27,6 +27,11 @@ namespace
             OutRule = {CatalogId.StartsWith(TEXT("roof_"))?4:3, 2, TEXT("stone")};
             return true;
         }
+        if (CatalogId == TEXT("roof_slope_terracotta_2m"))
+        {
+            OutRule = {4, 6, TEXT("tiles")};
+            return true;
+        }
         return false;
     }
 

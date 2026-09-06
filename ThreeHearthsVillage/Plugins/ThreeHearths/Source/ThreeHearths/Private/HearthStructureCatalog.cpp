@@ -141,7 +141,7 @@ namespace HearthStructureCatalog
     bool HasFoundationToRoofSupportChain(FString* OutError)
     {
         auto Fail = [&](const FString& Error) { if (OutError) *OutError = Error; return false; };
-        const TCHAR* Required[] = { TEXT("foundation_stone_2m"), TEXT("floor_timber_2m"), TEXT("post_timber_2_4m"), TEXT("beam_timber_2m"), TEXT("wall_timber_2m"), TEXT("wall_door_timber_2m"), TEXT("roof_slope_timber_2m") };
+        const TCHAR* Required[] = { TEXT("foundation_stone_2m"), TEXT("floor_timber_2m"), TEXT("post_timber_2_4m"), TEXT("beam_timber_2m"), TEXT("wall_timber_2m"), TEXT("wall_door_timber_2m"), TEXT("roof_slope_timber_2m"), TEXT("roof_slope_terracotta_2m") };
         for (const TCHAR* Id : Required) if (!Find(Id)) return Fail(FString::Printf(TEXT("missing_chain_entry:%s"), Id));
         auto HasContact = [&](const TCHAR* Child, const TCHAR* Parent, const TCHAR* ParentSocket, const TCHAR* ChildSocket)
         {
@@ -154,6 +154,7 @@ namespace HearthStructureCatalog
         if (!HasContact(TEXT("beam_timber_2m"), TEXT("post_timber_2_4m"), TEXT("top"), TEXT("end_x_minus"))) return Fail(TEXT("post_beam_contact_missing"));
         if (!HasContact(TEXT("wall_timber_2m"), TEXT("floor_timber_2m"), TEXT("support_top"), TEXT("base"))) return Fail(TEXT("floor_wall_contact_missing"));
         if (!HasContact(TEXT("roof_slope_timber_2m"), TEXT("beam_timber_2m"), TEXT("end_x_plus"), TEXT("ridge"))) return Fail(TEXT("beam_roof_contact_missing"));
+        if (!HasContact(TEXT("roof_slope_terracotta_2m"), TEXT("beam_timber_2m"), TEXT("end_x_plus"), TEXT("ridge"))) return Fail(TEXT("beam_terracotta_roof_contact_missing"));
         const auto* Door = Find(TEXT("wall_door_timber_2m"));
         if (!Door || !Door->bHasDoorClearance) return Fail(TEXT("door_clearance_missing"));
         return true;

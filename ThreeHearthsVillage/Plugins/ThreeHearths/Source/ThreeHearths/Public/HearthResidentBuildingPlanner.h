@@ -22,6 +22,7 @@ struct THREEHEARTHS_API FHearthResidentBuildingInput
     int32 Planks = 0;
     int32 Beams = 0;
     int32 Stone = 0;
+    int32 Tiles = 0;
 };
 
 struct THREEHEARTHS_API FHearthResidentExpansionProposal

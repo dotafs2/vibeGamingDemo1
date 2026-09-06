@@ -4,8 +4,8 @@
 namespace
 {
     FHearthStructureMaterialQuantity Mat(const TCHAR* Id) { FHearthStructureMaterialQuantity M; M.MaterialId=Id; M.Quantity=1; return M; }
-    FHearthStructureMaterialRecipe Recipe(const TCHAR* Id,const TCHAR* Catalog,const TCHAR* MaterialId)
-    { FHearthStructureMaterialRecipe R; R.RecipeId=Id; R.CatalogId=Catalog; R.Inputs.Add(Mat(MaterialId)); return R; }
+    FHearthStructureMaterialRecipe Recipe(const TCHAR* Id,const TCHAR* Catalog,const TCHAR* MaterialId,int32 Quantity=1)
+    { FHearthStructureMaterialRecipe R; R.RecipeId=Id; R.CatalogId=Catalog; R.Inputs.Add(Mat(MaterialId)); R.Inputs.Last().Quantity=Quantity; return R; }
     struct FHearthHouseStyle
     {
         FString RequestedWall,RequestedRoof,WallChoice,RoofChoice,WallCatalog,DoorCatalog,RoofCatalog,WallResource,RoofResource,Substitution;
@@ -15,12 +15,12 @@ namespace
         FHearthHouseStyle S;
         S.RequestedWall=I.WallMaterial.ToLower(); S.RequestedRoof=I.RoofMaterial.ToLower();
         S.WallChoice=S.RequestedWall==TEXT("stone")?TEXT("stone"):TEXT("timber");
-        S.RoofChoice=TEXT("timber");
+        S.RoofChoice=S.RequestedRoof==TEXT("terracotta") && I.Tiles>=12?TEXT("terracotta"):TEXT("timber");
         if(S.RequestedWall==TEXT("plaster")) S.Substitution=TEXT("plaster preference deferred: no plaster production inventory; executable timber selected");
-        if(S.RequestedRoof==TEXT("terracotta"))
+        if(S.RequestedRoof==TEXT("terracotta") && S.RoofChoice!=TEXT("terracotta"))
         {
             if(!S.Substitution.IsEmpty()) S.Substitution+=TEXT("; ");
-            S.Substitution+=TEXT("terracotta preference deferred: no tile production inventory; executable timber selected");
+            S.Substitution+=FString::Printf(TEXT("terracotta preference deferred: need 12 tiles for one room, have %d; executable timber selected"),FMath::Max(0,I.Tiles));
         }
         else if(S.RequestedRoof==TEXT("slateblue"))
         {
@@ -31,17 +31,17 @@ namespace
         S.DoorCatalog=TEXT("wall_door_")+S.WallChoice+TEXT("_2m");
         S.RoofCatalog=TEXT("roof_slope_")+S.RoofChoice+TEXT("_2m");
         S.WallResource=S.WallChoice==TEXT("timber")?TEXT("plank"):TEXT("stone");
-        S.RoofResource=S.RoofChoice==TEXT("timber")?TEXT("plank"):TEXT("stone");
+        S.RoofResource=S.RoofChoice==TEXT("terracotta")?TEXT("tiles"):TEXT("plank");
         return S;
     }
-    bool MakeSpec(const TCHAR* Catalog,const FString& Key,const FVector& Base,float Yaw,const FString& RecipeId,const TCHAR* MaterialId,int32 Cost,bool Support,const TCHAR* Parent,FHearthStructureComponentSpec& Out)
+    bool MakeSpec(const TCHAR* Catalog,const FString& Key,const FVector& Base,float Yaw,const FString& RecipeId,const TCHAR* MaterialId,int32 Cost,bool Support,const TCHAR* Parent,FHearthStructureComponentSpec& Out,int32 Quantity=1)
     {
         const FHearthStructureCatalogEntry* E=HearthStructureCatalog::Find(Catalog); if(!E) return false;
         const FVector Bounds=(E->BoundsMax-E->BoundsMin)*100.f; const FVector BoundsMin=E->BoundsMin*100.f; if(Bounds.X<=0||Bounds.Y<=0||Bounds.Z<=0) return false;
         Out=FHearthStructureComponentSpec(); Out.CatalogId=Catalog; Out.SemanticKey=Key; Out.Offset=Base;
         Out.Height=Bounds.Z; Out.Size=FVector2D(Bounds.X,Bounds.Y); Out.BoundsMin=BoundsMin; Out.BoundsMax=E->BoundsMax*100.f;
         Out.Orientation=E->DefaultRotation+FRotator(0,Yaw,0);
-        Out.RecipeId=RecipeId; Out.Materials.Add(Mat(MaterialId)); Out.MaterialCost=Cost; Out.CollisionRadius=FMath::Max(Bounds.X,Bounds.Y)*.5f; Out.bRequiresSupport=Support; Out.SupportsComponentKey=Parent; return true;
+        Out.RecipeId=RecipeId; Out.Materials.Add(Mat(MaterialId)); Out.Materials.Last().Quantity=Quantity; Out.MaterialCost=Cost; Out.CollisionRadius=FMath::Max(Bounds.X,Bounds.Y)*.5f; Out.bRequiresSupport=Support; Out.SupportsComponentKey=Parent; return true;
     }
     void Register(FHearthStructurePlan& P,const FHearthHouseStyle& S)
     {
@@ -52,7 +52,7 @@ namespace
         const FString WallRecipe=TEXT("wall_")+S.WallChoice,DoorRecipe=TEXT("door_")+S.WallChoice,RoofRecipe=TEXT("roof_")+S.RoofChoice;
         HearthStructurePlan::RegisterRecipe(P,Recipe(*WallRecipe,*S.WallCatalog,*S.WallResource));
         HearthStructurePlan::RegisterRecipe(P,Recipe(*DoorRecipe,*S.DoorCatalog,*S.WallResource));
-        HearthStructurePlan::RegisterRecipe(P,Recipe(*RoofRecipe,*S.RoofCatalog,*S.RoofResource));
+        HearthStructurePlan::RegisterRecipe(P,Recipe(*RoofRecipe,*S.RoofCatalog,*S.RoofResource,S.RoofChoice==TEXT("terracotta")?6:1));
     }
     bool Add(FHearthStructurePlan& P,int32 N,float RoadYaw,const FString& Ext,const FHearthHouseStyle& Style)
     {
@@ -85,8 +85,9 @@ namespace
         if(!Put(*Style.DoorCatalog,K+TEXT("_door"),FVector(X,-100,0),0,DoorRecipe,*Style.WallResource,true,K+TEXT("_floor"))) return Fail();
         FHearthStructureOpening O; O.Offset=FVector2D(X,-100); O.AccessDirection=FVector2D(0,-1); O.Width=94; O.bDoor=true;
         if(!HearthStructurePlan::AppendOpening(P,K+TEXT("_front_door"),K,O,Ext)) return Fail();
-        if(!Put(*Style.RoofCatalog,K+TEXT("_roof_back"),FVector(X,0,Top+13.1f),90,RoofRecipe,*Style.RoofResource,true,K+TEXT("_beam_back"))) return Fail();
-        if(!Put(*Style.RoofCatalog,K+TEXT("_roof_front"),FVector(X,0,Top+13.1f),270,RoofRecipe,*Style.RoofResource,true,K+TEXT("_beam_front"))) return Fail();
+        const int32 RoofQuantity=Style.RoofChoice==TEXT("terracotta")?6:1;
+        if(!MakeSpec(*Style.RoofCatalog,K+TEXT("_roof_back"),FVector(X,0,Top+13.1f),90,RoofRecipe,*Style.RoofResource,1,true,*(K+TEXT("_beam_back")),S,RoofQuantity)||!HearthStructurePlan::AppendComponent(P,S,Ext)) return Fail();
+        if(!MakeSpec(*Style.RoofCatalog,K+TEXT("_roof_front"),FVector(X,0,Top+13.1f),270,RoofRecipe,*Style.RoofResource,1,true,*(K+TEXT("_beam_front")),S,RoofQuantity)||!HearthStructurePlan::AppendComponent(P,S,Ext)) return Fail();
 
         const TPair<FString,FString> Links[]={
             {K+TEXT("_floor"),K+TEXT("_foundation")},
@@ -133,6 +134,7 @@ namespace
                 if(Used.MaterialId==TEXT("stone")) R.Stone=FMath::Max(0,R.Stone-Used.Quantity);
                 else if(Used.MaterialId==TEXT("plank")) R.Planks=FMath::Max(0,R.Planks-Used.Quantity);
                 else if(Used.MaterialId==TEXT("beam")) R.Beams=FMath::Max(0,R.Beams-Used.Quantity);
+                else if(Used.MaterialId==TEXT("tiles")) R.Tiles=FMath::Max(0,R.Tiles-Used.Quantity);
             }
         }
         return R;
@@ -141,7 +143,7 @@ namespace
 
 FHearthStructureValidationContext HearthResidentBuildingPlanner::ValidationContext(const FHearthResidentBuildingInput& I)
 {
-    FHearthStructureValidationContext C; C.AvailableBudget=FMath::Max(0,I.Budget); C.bRoadAccessible=I.bRoadAccessible; C.AvailableMaterials.Add(Mat(TEXT("stone"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Stone); C.AvailableMaterials.Add(Mat(TEXT("plank"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Planks); C.AvailableMaterials.Add(Mat(TEXT("beam"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Beams); return C;
+    FHearthStructureValidationContext C; C.AvailableBudget=FMath::Max(0,I.Budget); C.bRoadAccessible=I.bRoadAccessible; C.AvailableMaterials.Add(Mat(TEXT("stone"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Stone); C.AvailableMaterials.Add(Mat(TEXT("plank"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Planks); C.AvailableMaterials.Add(Mat(TEXT("beam"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Beams); C.AvailableMaterials.Add(Mat(TEXT("tiles"))); C.AvailableMaterials.Last().Quantity=FMath::Max(0,I.Tiles); return C;
 }
 
 FHearthResidentBuildingPlan HearthResidentBuildingPlanner::Build(const FHearthResidentBuildingInput& I)
@@ -150,9 +152,11 @@ FHearthResidentBuildingPlan HearthResidentBuildingPlanner::Build(const FHearthRe
     const FHearthHouseStyle Style=StyleFor(I);
     const int32 StonePerRoom=1+(Style.WallResource==TEXT("stone")?4:0)+(Style.RoofResource==TEXT("stone")?2:0);
     const int32 PlanksPerRoom=1+(Style.WallResource==TEXT("plank")?4:0)+(Style.RoofResource==TEXT("plank")?2:0);
-    const int32 Affordable=FMath::Min(I.Stone/StonePerRoom,FMath::Min(I.Planks/PlanksPerRoom,FMath::Min(I.Beams/8,I.Budget/16)));
+    const int32 TilesPerRoom=Style.RoofResource==TEXT("tiles")?12:0;
+    const int32 TileAffordable=TilesPerRoom>0?I.Tiles/TilesPerRoom:2;
+    const int32 Affordable=FMath::Min(I.Stone/StonePerRoom,FMath::Min(I.Planks/PlanksPerRoom,FMath::Min(I.Beams/8,FMath::Min(TileAffordable,I.Budget/16))));
     const int32 Rooms=FMath::Clamp(FMath::Min(Desired,Affordable),0,2);
-    FHearthStructureFootprint F; F.Origin=I.Origin; F.Size=FVector2D(FMath::Max(500.f,2.f*((Rooms-1)*200.f+230.f)),480.f); F.Orientation=FRotator(0,I.RoadYaw,0); FHearthStructureReasonFields R; R.Need=I.Need; R.Occupation=I.Occupation; R.Budget=FString::Printf(TEXT("budget=%d; affordable_rooms=%d; preferred wall=%s roof=%s; executable wall=%s roof=%s; conserved inputs stone=%d plank=%d beam=8 per room"),I.Budget,Rooms,*Style.RequestedWall,*Style.RequestedRoof,*Style.WallChoice,*Style.RoofChoice,StonePerRoom,PlanksPerRoom); if(!Style.Substitution.IsEmpty()) R.Budget+=TEXT("; ")+Style.Substitution; R.Relationship=FString::Printf(TEXT("friends_nearby=%d"),I.FriendsNearby); R.RoadAccess=I.bRoadAccessible?TEXT("road-accessible"):TEXT("road-inaccessible"); O.Plan=HearthStructurePlan::MakePlan(Id,Seed,F,R); Register(O.Plan,Style);
+    FHearthStructureFootprint F; F.Origin=I.Origin; F.Size=FVector2D(FMath::Max(500.f,2.f*((Rooms-1)*200.f+230.f)),480.f); F.Orientation=FRotator(0,I.RoadYaw,0); FHearthStructureReasonFields R; R.Need=I.Need; R.Occupation=I.Occupation; R.Budget=FString::Printf(TEXT("budget=%d; affordable_rooms=%d; preferred wall=%s roof=%s; executable wall=%s roof=%s; conserved inputs stone=%d plank=%d beam=8 tiles=%d per room"),I.Budget,Rooms,*Style.RequestedWall,*Style.RequestedRoof,*Style.WallChoice,*Style.RoofChoice,StonePerRoom,PlanksPerRoom,TilesPerRoom); if(!Style.Substitution.IsEmpty()) R.Budget+=TEXT("; ")+Style.Substitution; R.Relationship=FString::Printf(TEXT("friends_nearby=%d"),I.FriendsNearby); R.RoadAccess=I.bRoadAccessible?TEXT("road-accessible"):TEXT("road-inaccessible"); O.Plan=HearthStructurePlan::MakePlan(Id,Seed,F,R); Register(O.Plan,Style);
     if(!I.bRoadAccessible) O.Reason=TEXT("No buildable plan: the resident has no verified road access."); else if(Rooms==0) O.Reason=TEXT("No buildable plan: current stone, planks, beams, or budget cannot fund one core room."); else {const FHearthStructurePlan Before=O.Plan; bool Good=true;for(int32 N=0;N<Rooms;++N)if(!Add(O.Plan,N,I.RoadYaw,FString(),Style)){Good=false;break;}if(!Good){O.Plan=Before;O.Reason=TEXT("Plan assembly failed and was rolled back atomically.");}else{const auto V=HearthStructurePlan::Validate(O.Plan,ValidationContext(I));O.bBuildable=V.bValid;O.Reason=V.bValid?FString::Printf(TEXT("Built %d room(s) with %s walls and %s roof; stone=%d; planks=%d; beams=%d from finite current resources using native catalog parts."),Rooms,*Style.WallChoice,*Style.RoofChoice,I.Stone,I.Planks,I.Beams):TEXT("Plan rejected by structural validation: ")+Issues(V);}}
     O.Expansion.ExtensionKey=I.ExtensionKey.IsEmpty()?TEXT("resident_extension_1"):I.ExtensionKey; O.Expansion.Reason=TEXT("Reserve one adjoining catalog-sized bay for later household growth."); O.Expansion.ResultingPlan=O.Plan; if(O.bBuildable)AppendExpansion(O,RemainingAfter(I,O.Plan)); return O;
 }
@@ -163,7 +167,7 @@ bool HearthResidentBuildingPlanner::AppendExpansion(FHearthResidentBuildingPlan&
     const FString Trace=FString::Printf(TEXT("extension[%s] room_%d"),*K,N);
     Candidate.Reasons.Need+=FString::Printf(TEXT(" | %s need=%s"),*Trace,*I.Need);
     Candidate.Reasons.Occupation+=FString::Printf(TEXT(" | %s occupation=%s"),*Trace,*I.Occupation);
-    Candidate.Reasons.Budget+=FString::Printf(TEXT(" | %s budget=%d stone=%d planks=%d beams=%d preferred wall=%s roof=%s executable wall=%s roof=%s"),*Trace,I.Budget,I.Stone,I.Planks,I.Beams,*Style.RequestedWall,*Style.RequestedRoof,*Style.WallChoice,*Style.RoofChoice);
+    Candidate.Reasons.Budget+=FString::Printf(TEXT(" | %s budget=%d stone=%d planks=%d beams=%d tiles=%d preferred wall=%s roof=%s executable wall=%s roof=%s"),*Trace,I.Budget,I.Stone,I.Planks,I.Beams,I.Tiles,*Style.RequestedWall,*Style.RequestedRoof,*Style.WallChoice,*Style.RoofChoice);
     if(!Style.Substitution.IsEmpty()) Candidate.Reasons.Budget+=TEXT("; ")+Style.Substitution;
     Candidate.Reasons.Relationship+=FString::Printf(TEXT(" | %s friends_nearby=%d household=%d"),*Trace,I.FriendsNearby,I.HouseholdSize);
     Candidate.Reasons.RoadAccess+=FString::Printf(TEXT(" | %s %s"),*Trace,I.bRoadAccessible?TEXT("road-accessible"):TEXT("road-inaccessible"));

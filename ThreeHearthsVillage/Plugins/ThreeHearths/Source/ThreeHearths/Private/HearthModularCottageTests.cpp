@@ -117,6 +117,10 @@ bool FHearthModularCottageTest::RunTest(const FString&)
             }
             for(const auto& Value:LegacyRoot->GetArrayField(TEXT("wage_payables"))) Value->AsObject()->RemoveField(TEXT("funder"));
             LegacyRoot->SetNumberField(TEXT("schema"),4);
+            LegacyRoot->SetArrayField(TEXT("sites"),LegacyRoot->GetArrayField(TEXT("sites")).FilterByPredicate([](const TSharedPtr<FJsonValue>& Value)
+            {
+                const auto Object=Value->AsObject(); return Object.IsValid() && Object->GetNumberField(TEXT("kind"))<=static_cast<int32>(EHearthSiteKind::Carpenter);
+            }));
             for(const auto& Value:LegacyRoot->GetArrayField(TEXT("sites"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("cottage_components"));
             for(const auto& Value:LegacyRoot->GetArrayField(TEXT("people"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("ProductionComponentId"));
             FString LegacyText; const auto Writer=TJsonWriterFactory<>::Create(&LegacyText); FJsonSerializer::Serialize(LegacyRoot.ToSharedRef(),Writer);

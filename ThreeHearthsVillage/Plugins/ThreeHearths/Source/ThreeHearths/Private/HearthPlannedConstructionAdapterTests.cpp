@@ -78,6 +78,13 @@ bool FHearthPlannedConstructionAdapterTest::RunTest(const FString&)
     for (int32 Index = 0; Index < Once.Components.Num(); ++Index)
         TestTrue(TEXT("old fields survive later extension"), Same(Twice.Components[Index], Once.Components[Index]));
 
+    FHearthStructurePlan Terracotta = Base;
+    Terracotta.Components.Add(Component(TEXT("roof-tile"), TEXT("roof_slope_terracotta_2m"), TEXT("tiles"), 6, FVector(80, 20, 248), 180.f));
+    const auto TerracottaResult = HearthPlannedConstructionAdapter::Convert(Terracotta, 7, First.Components);
+    TestTrue(TEXT("terracotta roof conversion is accepted"), TerracottaResult.bAccepted);
+    TestTrue(TEXT("terracotta roof maps tiles to cargo type 6 at stage 4"), TerracottaResult.Components.ContainsByPredicate([](const FHearthCottageComponent& Part)
+    { return Part.AssetId == TEXT("roof_slope_terracotta_2m") && Part.Stage == 4 && Part.MaterialType == 6 && Part.MaterialAmount == 6; }));
+
     FHearthStructurePlan Unknown = Base;
     Unknown.Components[0].Materials[0].MaterialId = TEXT("tiles");
     const auto UnknownResult = HearthPlannedConstructionAdapter::Convert(Unknown, 7, First.Components);

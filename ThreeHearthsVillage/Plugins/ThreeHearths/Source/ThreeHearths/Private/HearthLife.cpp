@@ -6,6 +6,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "HAL/FileManager.h"
+#include "HAL/PlatformTime.h"
 
 namespace HearthLife
 {
@@ -97,10 +98,18 @@ void AHearthVillage::LoadHistory()
 void AHearthVillage::SaveHistory()
 {
     if(HistoryPath.IsEmpty()) return;
+    const double Now=FPlatformTime::Seconds();
+    // At high simulation speeds several residents can finish decisions in one
+    // rendered frame. Batch the separate audit archive instead of serializing
+    // the entire accumulated history once per resident; the world checkpoint
+    // still contains every in-memory record and keeps its 30-real-second cadence.
+    if(SimulationSpeed>10.f && LastHistoryDiskWriteAt>=0.0 && Now-LastHistoryDiskWriteAt<2.0)
+    { HistorySaveStatus=TEXT("历史有更新 · 正在批量写入"); return; }
     IFileManager::Get().MakeDirectory(*FPaths::GetPath(HistoryPath),true);
     const FString Temp=HistoryPath+TEXT(".tmp");
     const bool bSaved=FFileHelper::SaveStringToFile(GetDecisionHistory(),*Temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)
         && IFileManager::Get().Move(*HistoryPath,*Temp,true,true);
+    if(bSaved) LastHistoryDiskWriteAt=Now;
     HistorySaveStatus=bSaved?TEXT("历史已保存到本机 · 重开仍保留"):TEXT("历史保存失败，请检查磁盘与目录权限");
 }
 
@@ -198,12 +207,37 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
 
 void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
 {
-    const auto& Person=Residents[Index]; int32 Action=0;
+    const auto& Person=Residents[Index]; int32 Action=0; FString LocalReason;
     if(Person.Hunger>=60 && FoodStock>0 && Person.Coins>0) Action=50;
     else if(Person.Energy<45) Action=0;
     else
     {
-        if(Person.PersonalPlanks>1)
+        const auto HasOpenTileOrder=[](const TArray<FHearthTileOrder>& Orders,int32 Resident)
+        {
+            return Orders.ContainsByPredicate([Resident](const FHearthTileOrder& O)
+            {
+                return (O.Customer==Resident || O.Potter==Resident) && (O.Status==TEXT("active") || O.Status==TEXT("delivering"));
+            });
+        };
+        if(ClayStock>=4 && AvailableWood()>=2 && !HasOpenTileOrder(TileOrders,Index))
+        {
+            const bool bPotter=Person.Role.Contains(TEXT("陶工"));
+            for(int32 Other=0;Other<Residents.Num();++Other)
+            {
+                if(Other==Index || !IsSociallyAvailable(Other) || HasOpenTileOrder(TileOrders,Other)) continue;
+                const auto& Candidate=Residents[Other];
+                const bool bMatchingCustomer=bPotter && Candidate.RoofMaterial==TEXT("terracotta") && Candidate.PersonalTiles<12 && Candidate.Coins>=4;
+                const bool bMatchingPotter=!bPotter && Person.RoofMaterial==TEXT("terracotta") && Person.PersonalTiles<12 && Person.Coins>=4 && Candidate.Role.Contains(TEXT("陶工"));
+                if(!bMatchingCustomer && !bMatchingPotter) continue;
+                const auto* Bond=Person.Bonds.Find(Candidate.StableId);
+                if(Bond && Bond->Trust<35.f) continue;
+                Action=Other+3;
+                LocalReason=bPotter?TEXT("邻居需要陶瓦，我去按库存、价格和彼此信任报价。")
+                                   :TEXT("我的陶瓦还不够，我去找可信的陶工谈一笔真实订单。");
+                break;
+            }
+        }
+        if(Action==0 && Person.PersonalPlanks>1)
             for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2 && IsSociallyAvailable(Other)) { Action=Other+3; break; }
         if(Action==0 && Person.SocialNeed>55)
         {
@@ -217,7 +251,7 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
         }
         if(Action==0) { const int32 Work=ChooseProductionLocally(Index); if(Work>=0) Action=Work; }
     }
-    const FString Reason=Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==50?TEXT("肚子饿了，去吃一份库存里的食物。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
+    const FString Reason=!LocalReason.IsEmpty()?LocalReason:Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==50?TEXT("肚子饿了，去吃一份库存里的食物。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
     if(StartLifeAction(Index,Action,Reason,false))
     {
         Residents[Index].DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
@@ -319,7 +353,7 @@ FString AHearthVillage::LifeSummary() const
 {
     if(!bAutonomousLifeEnabled) return TEXT("自主生活已关闭 · 已开始的行动仍会完成");
     TArray<FString> Thinking;
-    for(int32 I=0;I<Residents.Num();++I) if(IsDecisionPending(I)) Thinking.Add(Residents[I].Name);
+    for(int32 I=0;I<Residents.Num();++I) if(IsDecisionPending(I) && !PendingDecisions[I].bGameplayReleased) Thinking.Add(Residents[I].Name);
     if(!Thinking.IsEmpty()) return FString::Join(Thinking,TEXT("、"))+TEXT("正在各自思考，回复后独立执行");
     if(ApiRequests>=ApiMaxRequests && bApiReady) return TEXT("本轮模型预算已用完 · 后续采用本地规则");
     const float RealWait=LifeDecisionInterval/FMath::Max(1.f,SimulationSpeed);

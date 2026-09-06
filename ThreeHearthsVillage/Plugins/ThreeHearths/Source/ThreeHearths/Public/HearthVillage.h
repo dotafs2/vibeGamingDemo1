@@ -21,7 +21,7 @@ UENUM(BlueprintType)
 enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover };
 
 // Stable operation IDs: each site offers only the operations its current state permits.
-enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter };
+enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter, ClayPit, TileKiln };
 struct FHearthCottageComponent
 {
     FString Id, AssetId, Status=TEXT("waiting_material"), Source=TEXT("public_depot"), SupplyPolicy=TEXT("village_construction_grant");
@@ -59,7 +59,7 @@ struct FHearthPendingDecision
     FString OperationId, ConversationId;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
-    bool bActive=false, bReturned=false, bLife=false, bSocial=false, bHasUsage=false;
+    bool bActive=false, bReturned=false, bGameplayReleased=false, bLife=false, bSocial=false, bHasUsage=false;
     int32 Choice=-1, HouseStyle=-1, Tokens=0, HistoryIndex=-1;
     double StartedAt=0, StartedAtSimulation=0, Latency=0;
     FString Reason, Error;
@@ -115,6 +115,14 @@ struct FHearthTradeOffer
 {
     FString Id, ConversationId, Status=TEXT("proposed"), Result;
     int32 Seller=-1, Buyer=-1, Quantity=1, Price=2, ReservedQuantity=0;
+    float Remaining=0;
+};
+
+struct FHearthTileOrder
+{
+    FString Id, ConversationId, Status=TEXT("proposed"), Result;
+    int32 Customer=-1, Potter=-1, ClayQuantity=4, TileQuantity=6, Price=4;
+    int32 ReservedClay=0, ReservedTiles=0, Escrow=0;
     float Remaining=0;
 };
 
@@ -204,6 +212,7 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) float SocialNeed = 30.f;
     UPROPERTY(BlueprintReadOnly) int32 Coins = 12;
     UPROPERTY(BlueprintReadOnly) int32 PersonalPlanks = 0;
+    UPROPERTY(BlueprintReadOnly) int32 PersonalTiles = 0;
     UPROPERTY() TObjectPtr<AHearthVillager> Actor;
     int32 Source = -1;
     int32 Trips = 0;
@@ -279,6 +288,8 @@ public:
     UPROPERTY(BlueprintReadOnly) int32 StoneStock=0;
     UPROPERTY(BlueprintReadOnly) int32 PlankStock=0;
     UPROPERTY(BlueprintReadOnly) int32 BeamStock=0;
+    UPROPERTY(BlueprintReadOnly) int32 ClayStock=0;
+    UPROPERTY(BlueprintReadOnly) int32 TileStock=0;
     UPROPERTY(BlueprintReadOnly) int32 TreasuryCoins=500;
     UPROPERTY(BlueprintReadOnly) int32 TaxProjectCoins=0;
     UPROPERTY(BlueprintReadOnly) int32 TaxReleasedCoins=0;
@@ -291,6 +302,7 @@ public:
     FString PublicWorksSummary() const;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
+    TArray<FHearthTileOrder> TileOrders;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Village") bool bUseCropoutMap = false;
     UPROPERTY(BlueprintReadOnly) TArray<FHearthResident> Residents;
     UPROPERTY(BlueprintReadOnly) int32 SelectedResident = 0;
@@ -314,6 +326,7 @@ public:
     FString PlotLabel(int32 Plot) const;
 private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HouseMeshes;
+    friend class AHearthPlayerController;
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
     friend class FHearthWorldPersistenceTest;
@@ -333,6 +346,9 @@ private:
     friend class FHearthTownLayoutRuntimeTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
+    friend class FHearthTileProductionTest;
+    friend class FHearthPrivateTileConstructionTest;
+    friend class FHearthTileOrderTest;
     FString WorldPath;
     FString PlotIds[10];
     TSharedPtr<IFileHandle> WorldLease;
@@ -356,6 +372,7 @@ private:
     TMap<FString,int32> ProductionTotals;
     int32 Produced[3]={0,0,0}, Spent[3]={0,0,0}; // Food, Wood, Stone.
     int32 Manufactured[2]={0,0}, ManufacturedSpent[2]={0,0}; // Planks, beams.
+    int32 ProducedClay=0, SpentClay=0, ProducedTiles=0, SpentTiles=0;
     FString ProductionStatus;
     void InitializeProduction();
     void AdvanceProductionWorld(float Dt);
@@ -386,6 +403,11 @@ private:
     bool SettleSupplyOrder(FHearthSupplyOrder& Order);
     bool CancelSupplyOrder(int32 Seller);
     void AdvanceSupplyWorker(int32 Seller,float Dt);
+    bool StartTileOrder(int32 Customer,int32 Potter,const FString& ConversationId);
+    bool RejectTileOrder(int32 Customer,int32 Potter,const FString& ConversationId);
+    bool CancelTileOrder(const FString& OrderId);
+    void AdvanceTileOrders(float Dt);
+    bool SettleTileOrder(FHearthTileOrder& Order);
     bool StartPublicPart(int32 Worker);
     void AdvancePublicWorks(float Dt);
     void AdvancePublicWorker(int32 Worker,float Dt);
@@ -427,6 +449,7 @@ private:
     float LifeDecisionInterval = 6.f;
     int32 LastLifeResident = -1;
     FString HistoryPath;
+    double LastHistoryDiskWriteAt = -1.0;
     FString ApiBackend;
     FString ApiEndpoint;
     FString ApiKey;

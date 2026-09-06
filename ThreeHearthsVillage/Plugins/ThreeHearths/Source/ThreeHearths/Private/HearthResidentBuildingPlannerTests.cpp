@@ -53,7 +53,14 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestTrue(TEXT("Unsupported finish preference still yields an honest executable plan"),Plaster.bBuildable);
     TestTrue(TEXT("Plaster preference defers to supplied timber wall"),Plaster.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("wall_timber_2m") && C.Materials.Num()==1 && C.Materials[0].MaterialId==TEXT("plank");}));
     TestTrue(TEXT("Terracotta preference defers to supplied timber roof"),Plaster.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("roof_slope_timber_2m") && C.Materials.Num()==1 && C.Materials[0].MaterialId==TEXT("plank");}));
-    TestTrue(TEXT("Deferred finish reason distinguishes preference from installed material"),Plaster.Plan.Reasons.Budget.Contains(TEXT("preferred wall=plaster roof=terracotta")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("no plaster production inventory")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("no tile production inventory")));
+    TestTrue(TEXT("Deferred finish reason distinguishes preference from installed material"),Plaster.Plan.Reasons.Budget.Contains(TEXT("preferred wall=plaster roof=terracotta")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("no plaster production inventory")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("need 12 tiles for one room, have 0")));
+    auto TerracottaInput=Inputs(1,TEXT("potter"),0); TerracottaInput.RoofMaterial=TEXT("terracotta"); TerracottaInput.Tiles=12;
+    const auto Terracotta=HearthResidentBuildingPlanner::Build(TerracottaInput);
+    TestTrue(TEXT("Available tile stock makes the preferred terracotta roof executable"),Terracotta.bBuildable);
+    TestEqual(TEXT("One room consumes two six-tile roof batches"),Terracotta.Plan.Components.FilterByPredicate([](const auto& C){return C.CatalogId==TEXT("roof_slope_terracotta_2m") && C.Materials.Num()==1 && C.Materials[0].MaterialId==TEXT("tiles") && C.Materials[0].Quantity==6;}).Num(),2);
+    TestTrue(TEXT("Terracotta plan validates against finite tile stock"),HearthStructurePlan::Validate(Terracotta.Plan,HearthResidentBuildingPlanner::ValidationContext(TerracottaInput)).bValid);
+    const auto TerracottaRuntime=HearthPlannedConstructionAdapter::Convert(Terracotta.Plan,2,{});
+    TestTrue(TEXT("Terracotta plan converts to executable cargo records"),TerracottaRuntime.bAccepted && TerracottaRuntime.Components.ContainsByPredicate([](const FHearthCottageComponent& C){return C.AssetId==TEXT("roof_slope_terracotta_2m") && C.Stage==4 && C.MaterialType==6 && C.MaterialAmount==6;}));
     auto StoneInput=Inputs(1,TEXT("mason"),0); StoneInput.WallMaterial=TEXT("stone"); StoneInput.RoofMaterial=TEXT("slateblue");
     const auto Stone=HearthResidentBuildingPlanner::Build(StoneInput);
     TestTrue(TEXT("Stone and slate choice is buildable"),Stone.bBuildable);

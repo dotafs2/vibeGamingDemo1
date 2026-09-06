@@ -19,6 +19,15 @@ bool FHearthStructureCatalogTest::RunTest(const FString&)
         TestTrue(FString::Printf(TEXT("Native asset exists: %s"), *Entry.CatalogId), Mesh != nullptr);
         TestTrue(FString::Printf(TEXT("Sockets exist: %s"), *Entry.CatalogId), Entry.Sockets.Num() > 0);
     }
+    const auto* TerracottaRoof = HearthStructureCatalog::Find(TEXT("roof_slope_terracotta_2m"));
+    TestNotNull(TEXT("Terracotta roof catalog entry exists"), TerracottaRoof);
+    if (TerracottaRoof)
+    {
+        TestEqual(TEXT("Terracotta roof uses its native mesh"), TerracottaRoof->AssetPath, FString(TEXT("/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.roof_slope_terracotta_2m")));
+        TestTrue(TEXT("Terracotta roof keeps measured bounds"), TerracottaRoof->BoundsMin.Equals(FVector(-.04340045f, -1.f, -.13000008f), KINDA_SMALL_NUMBER) && TerracottaRoof->BoundsMax.Equals(FVector(2.25f, 1.f, 1.2841004f), KINDA_SMALL_NUMBER));
+        TestTrue(TEXT("Terracotta roof declares beam support"), TerracottaRoof->SupportContacts.ContainsByPredicate([](const FHearthStructureSupportContact& Contact)
+        { return Contact.ParentCatalogId == TEXT("beam_timber_2m") && Contact.ParentSocket == TEXT("end_x_plus") && Contact.ChildSocket == TEXT("ridge"); }));
+    }
     const auto* Door = HearthStructureCatalog::Find(TEXT("wall_door_timber_2m"));
     TestNotNull(TEXT("Timber door catalog entry exists"), Door);
     if (Door)

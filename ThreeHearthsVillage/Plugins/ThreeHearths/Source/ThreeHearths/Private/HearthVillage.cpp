@@ -285,6 +285,9 @@ void AHearthVillage::BuildIslandVillage()
     // This verified land corridor belongs to the copied /Game/Village island.
     // Keep props clear of the walking lanes and retain the terrain's own materials.
     AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2130,0,3.6f),FVector(3.4f,52.f,0.012f),&Hearth::Path);
+    // The west craft spur makes a visible T-shaped workshop lane shared by the
+    // carpenter, kiln and depot instead of placing facilities along one line.
+    AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2465,-1050,3.7f),FVector(6.7f,1.5f,0.013f),&Hearth::Path);
     const FVector AddedPlots[]={FVector(-2800,-1900,8),FVector(-2800,0,8),FVector(-2800,1900,8),
         FVector(400,-1900,8),FVector(-2800,-950,8),FVector(-2800,950,8),FVector(-1000,950,8)};
     for(int32 I=0;I<HousingPlotCount();++I)
@@ -342,6 +345,8 @@ void AHearthVillage::BeginPlay()
     float RequestedSpeed=0;
     if(FParse::Value(FCommandLine::Get(),TEXT("HearthSimulationSpeed="),RequestedSpeed) && FMath::IsFinite(RequestedSpeed))
         SetSimulationSpeed(RequestedSpeed);
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthUnpaused"))) bSimulationPaused=false;
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthPaused"))) bSimulationPaused=true;
 }
 
 FLinearColor AHearthVillage::ResidentColor(int32 I) const
@@ -590,7 +595,12 @@ void AHearthVillage::Tick(float DeltaSeconds)
     if(!bSimulationPaused && RealDt>0.f)
     {
         constexpr double Step=0.05;
-        SimulationRemainder+=static_cast<double>(RealDt)*SimulationSpeed;
+        // Do not turn a startup/render hitch into thousands of synchronous
+        // simulation iterations. A normal 30 Hz frame still advances the full
+        // requested multiplier (300x => 200 fixed steps); only missed wall time
+        // caused by a stalled frame is discarded so the UI can recover.
+        const float SimulationFrameDt=SimulationSpeed>10.f?FMath::Min(RealDt,1.f/30.f):RealDt;
+        SimulationRemainder+=static_cast<double>(SimulationFrameDt)*SimulationSpeed;
         const int32 Steps=FMath::Min(5000,FMath::FloorToInt(SimulationRemainder/Step));
         SimulationRemainder-=Steps*Step;
         for(int32 I=0;I<Steps;++I)
@@ -625,7 +635,9 @@ void AHearthVillage::Tick(float DeltaSeconds)
         const TCHAR* CargoMesh=(bTradeCargo || bSupplyCargo)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
             R.CargoType==3?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):
             R.CargoType==2?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_stones/carry_stones"):
-            R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):TEXT("/Engine/BasicShapes/Cube");
+            R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):
+            R.CargoType==5?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_stones/carry_stones"):
+            R.CargoType==6?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_tiles/carry_tiles"):TEXT("/Engine/BasicShapes/Cube");
         if(auto* Asset=LoadObject<UStaticMesh>(nullptr,CargoMesh); Asset && R.Actor->Bundle->GetStaticMesh()!=Asset)
         {
             R.Actor->Bundle->SetStaticMesh(Asset);

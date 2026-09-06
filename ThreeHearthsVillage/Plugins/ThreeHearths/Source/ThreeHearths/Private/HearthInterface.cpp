@@ -262,6 +262,13 @@ void AHearthPlayerController::BeginPlay()
         CameraZoom=bIslandCamera?.075f:.45f;
         UpdateCamera();
     }
+    int32 AcceptanceSite=-1;
+    if(Village.IsValid() && FParse::Value(FCommandLine::Get(),TEXT("HearthFocusSite="),AcceptanceSite) && Village->ProductionSites.IsValidIndex(AcceptanceSite))
+    {
+        CameraCenter=Village->ProductionSites[AcceptanceSite].Position;
+        CameraZoom=bIslandCamera?.14f:.6f;
+        UpdateCamera();
+    }
 }
 void AHearthPlayerController::PlayerTick(float DeltaTime)
 {

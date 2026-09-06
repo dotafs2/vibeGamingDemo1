@@ -50,7 +50,7 @@ void AHearthVillage::CommitIncomeTax(const FHearthTaxAssessment& A)
 bool AHearthVillage::AssessIncomeTax(int32 Resident,const FString& SourceId)
 {
     const auto* Source=Transactions.FindByPredicate([&](const auto& T){ return T.Id==SourceId; });
-    if(!Source || Source->To!=Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade") && Source->Kind!=TEXT("public_purchase"))) return false;
+    if(!Source || Source->To!=Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade") && Source->Kind!=TEXT("public_purchase") && Source->Kind!=TEXT("tile_order"))) return false;
     FHearthTaxAssessment A; if(!PrepareIncomeTax(Resident,Source->Amount,SourceId,true,A)) return false;
     CommitIncomeTax(A); return true;
 }

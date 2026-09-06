@@ -275,9 +275,10 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         Request->SetHeader(TEXT("X-Hearth-Operation"),Pending.OperationId);
         Request->SetHeader(TEXT("X-Hearth-Resident"),Residents[Index].StableId);
     }
-    // The village owns the decision deadline on its simulation clock below. Do not
-    // also install a per-request wall-clock deadline: that would keep ageing while
-    // the simulation is paused and make a paused request fail as soon as play resumes.
+    // Gameplay waiting is released on the simulation clock below. The transport
+    // itself keeps a real-time lifetime so a paused game still receives a budget
+    // receipt or a definite network failure instead of leaking an in-flight slot.
+    Request->SetTimeout(ApiTimeout);
     Request->SetContentAsString(HearthDecision::Json(Body));
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
     Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
@@ -341,15 +342,40 @@ void AHearthVillage::ConsumeDecision()
         auto& Slot=PendingDecisions[Index];
         if(!Slot.bActive) continue;
         const bool bSimulationDeadline=HearthDecision::RequestExceededSimulationDeadline(Elapsed,Slot.StartedAtSimulation,ApiTimeout);
-        if(!Slot.bReturned && bSimulationDeadline)
+        if(!Slot.bReturned && !Slot.bGameplayReleased && bSimulationDeadline)
         {
-            if(Slot.Request.IsValid()) { Slot.Request->OnProcessRequestComplete().Unbind(); Slot.Request->CancelRequest(); Slot.Request.Reset(); }
-            Slot.Error=TEXT("模型未赶上当前游戏倍速，已采用本地规则");
-            Slot.bReturned=true; Slot.Latency=FPlatformTime::Seconds()-Slot.StartedAt;
-            if(bApiBudgeted) bApiDisabledThisRun=true;
+            Slot.bGameplayReleased=true;
+            const FString Reason=TEXT("模型未赶上当前游戏倍速；居民先按本地规则继续，真实请求仍在等待回执。");
+            if(DecisionHistory.IsValidIndex(Slot.HistoryIndex))
+            {
+                auto& H=DecisionHistory[Slot.HistoryIndex]; H.Status=TEXT("waiting_receipt"); H.Result=Reason;
+                ++HistoryRevision; SaveHistory();
+            }
+            if(Slot.bSocial)
+            {
+                if(Residents.IsValidIndex(Index) && Residents[Index].ConversationId==Slot.ConversationId) DecideSocialLocally(Index,Reason);
+            }
+            else if(Residents.IsValidIndex(Index) && Residents[Index].Task==(Slot.bLife?EHearthTask::LifeChoosing:EHearthTask::Choosing))
+            {
+                if(Slot.bLife) DecideLifeLocally(Index,Reason); else DecideLocally(Index,Reason);
+            }
+            ApiStatus=Reason;
+            WriteSnapshot();
         }
         if(!Slot.bReturned) continue;
         auto Reply=MoveTemp(Slot); Slot=FHearthPendingDecision();
+        if(Reply.bGameplayReleased)
+        {
+            if(DecisionHistory.IsValidIndex(Reply.HistoryIndex))
+            {
+                auto& H=DecisionHistory[Reply.HistoryIndex]; H.Latency=Reply.Latency; H.Tokens=Reply.Tokens; H.bHasUsage=Reply.bHasUsage;
+                H.Status=Reply.Error.IsEmpty()?TEXT("completed_late"):TEXT("failed_late");
+                H.Result=Reply.Error.IsEmpty()?TEXT("真实模型回执已记录；居民已继续生活，迟到选择未执行。"):Reply.Error;
+                ++HistoryRevision; SaveHistory();
+            }
+            ApiStatus=Reply.Error.IsEmpty()?TEXT("迟到模型回执已记账，未改写当前世界"):Reply.Error+TEXT(" · 居民已按本地规则继续");
+            WriteSnapshot(); continue;
+        }
         if(Reply.bSocial)
         {
             if(!Residents.IsValidIndex(Index) || Residents[Index].ConversationId!=Reply.ConversationId) continue;
@@ -405,7 +431,7 @@ FString AHearthVillage::ApiSummary() const
 {
     if(!bApiReady) return ApiStatus;
     const FString Usage=bHasApiUsage?FString::Printf(TEXT(" · %d tokens"),ApiTokens):TEXT("");
-    return FString::Printf(TEXT("%s · 本轮调用 %d / %d%s\n同时思考 %d / %d · %s"),ApiBackend==TEXT("codex_spark")?TEXT("5.3 Spark"):*ApiModel,ApiRequests,ApiMaxRequests,*Usage,PendingDecisionCount(),DecisionConcurrencyLimit(),*ApiStatus);
+    return FString::Printf(TEXT("%s · 本轮调用 %d / %d%s\n真实在途请求 %d / %d · %s"),ApiBackend==TEXT("codex_spark")?TEXT("5.3 Spark"):*ApiModel,ApiRequests,ApiMaxRequests,*Usage,PendingDecisionCount(),DecisionConcurrencyLimit(),*ApiStatus);
 }
 FString AHearthVillage::DecisionLabel(int32 Index) const
 {

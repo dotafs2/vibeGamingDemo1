@@ -83,7 +83,15 @@ bool FHearthParallelCapacityTest::RunTest(const FString&)
     TestTrue(TEXT("Wall time alone cannot expire a simulation-clock request"),Village->PendingDecisions[0].bActive);
     Village->Elapsed=31.1f;
     Village->ConsumeDecision();
-    TestFalse(TEXT("Accelerated simulation releases the request slot at its world-time deadline"),Village->PendingDecisions[0].bActive);
+    TestTrue(TEXT("Accelerated simulation keeps the real request tracked"),Village->PendingDecisions[0].bActive);
+    TestTrue(TEXT("Accelerated simulation releases only gameplay waiting"),Village->PendingDecisions[0].bGameplayReleased);
+    TestFalse(TEXT("Simulation deadline alone does not disable the paid API"),Village->bApiDisabledThisRun);
+    const EHearthTask TaskAfterFallback=Village->Residents[0].Task;
+    Village->PendingDecisions[0].bReturned=true;
+    Village->PendingDecisions[0].Choice=0;
+    Village->ConsumeDecision();
+    TestFalse(TEXT("Real completion finally frees the resident's request slot"),Village->PendingDecisions[0].bActive);
+    TestEqual(TEXT("A late choice cannot rewrite the resident's newer task"),Village->Residents[0].Task,TaskAfterFallback);
     World->DestroyWorld(false);
     return true;
 }

@@ -4,8 +4,45 @@
 
 namespace HearthSocial
 {
-    const TCHAR* IntentNames[]={TEXT("回应与闲聊"),TEXT("邀请一起吃饭"),TEXT("请求采集帮助"),TEXT("接受提议"),TEXT("婉拒提议"),TEXT("告别"),TEXT("出售一块自有木板")};
+    const TCHAR* IntentNames[]={TEXT("回应与闲聊"),TEXT("邀请一起吃饭"),TEXT("请求采集帮助"),TEXT("接受提议"),TEXT("婉拒提议"),TEXT("告别"),TEXT("出售一块自有木板"),TEXT("委托陶工制作一箱陶瓦"),TEXT("向有需要的居民提出制瓦报价")};
     FString Json(const TSharedRef<FJsonObject>& J) { FString Text; FJsonSerializer::Serialize(J,TJsonWriterFactory<>::Create(&Text)); return Text; }
+
+    bool HasTileNeed(const FHearthResident& Customer)
+    {
+        // One modeled room uses two six-tile roof slopes. A first delivered
+        // batch remains useful private property, but the customer may order a
+        // second batch until the complete roof recipe is executable.
+        return Customer.RoofMaterial==TEXT("terracotta") && Customer.PersonalTiles<12;
+    }
+
+    bool IsOpenTileOrder(const FHearthTileOrder& Order)
+    {
+        return Order.Status!=TEXT("completed") && Order.Status!=TEXT("cancelled") && Order.Status!=TEXT("rejected") && Order.Status!=TEXT("broken");
+    }
+
+    bool TileParties(const AHearthVillage& Village,const FHearthConversation& Conversation,int32& Customer,int32& Potter)
+    {
+        if(!Village.Residents.IsValidIndex(Conversation.First) || !Village.Residents.IsValidIndex(Conversation.Second)) return false;
+        const bool FirstPotter=Village.Residents[Conversation.First].Role==TEXT("陶工");
+        const bool SecondPotter=Village.Residents[Conversation.Second].Role==TEXT("陶工");
+        if(FirstPotter==SecondPotter) return false;
+        Potter=FirstPotter?Conversation.First:Conversation.Second;
+        Customer=FirstPotter?Conversation.Second:Conversation.First;
+        return true;
+    }
+
+    bool CanOfferTiles(const AHearthVillage& Village,const FHearthConversation& Conversation)
+    {
+        int32 Customer=-1,Potter=-1;
+        if(!TileParties(Village,Conversation,Customer,Potter)) return false;
+        const auto& Buyer=Village.Residents[Customer]; const auto& Maker=Village.Residents[Potter];
+        const auto* Bond=Buyer.Bonds.Find(Maker.StableId);
+        const float Trust=Bond?Bond->Trust:50.f;
+        const bool Busy=Village.TileOrders.ContainsByPredicate([&](const FHearthTileOrder& Order)
+        { return IsOpenTileOrder(Order) && (Order.Customer==Customer || Order.Potter==Potter || Order.ConversationId==Conversation.Id); });
+        return HasTileNeed(Buyer) && Maker.Role.Contains(TEXT("陶工")) && Buyer.Coins>=4 && Maker.Energy>=25.f && Trust>=35.f
+            && Village.ClayStock>=4 && Village.AvailableWood()>=2 && !Busy;
+    }
 }
 
 bool AHearthVillage::IsSociallyAvailable(int32 Index) const
@@ -62,7 +99,8 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
         const int32 Other=S->First==Index?S->Second:S->First;
         const auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); });
         if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))
-            || (S->Offer==3 && Trade && Trade->Buyer==Index && Residents[Index].PersonalPlanks==0 && Residents[Index].Coins>=Trade->Price)) Choices.Insert(3,0);
+            || (S->Offer==3 && Trade && Trade->Buyer==Index && Residents[Index].PersonalPlanks==0 && Residents[Index].Coins>=Trade->Price)
+            || (S->Offer==4 && HearthSocial::CanOfferTiles(*this,*S))) Choices.Insert(3,0);
         return Choices;
     }
     TArray<int32> Choices={0,5};
@@ -72,6 +110,11 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
         if(FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) Choices.Add(1);
         if(FindHelpActivity(Other)>=0) Choices.Add(2);
         if(Residents[Index].PersonalPlanks>1 && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2) Choices.Add(6);
+        if(HearthSocial::CanOfferTiles(*this,*S))
+        {
+            int32 Customer=-1,Potter=-1; HearthSocial::TileParties(*this,*S,Customer,Potter);
+            Choices.Add(Index==Customer?7:8);
+        }
     }
     return Choices;
 }
@@ -84,12 +127,21 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
     const int32 Other=S->First==Index?S->Second:S->First;
     if(FVector::Dist2D(Residents[Index].Actor->GetActorLocation(),Residents[Other].Actor->GetActorLocation())>300) return false;
     auto& R=Residents[Index]; auto& Listener=Residents[Other]; FHearthTradeOffer* PendingTrade=nullptr;
+    int32 TileCustomer=-1,TilePotter=-1;
     if(Intent==6 && (R.PersonalPlanks<=1 || Listener.PersonalPlanks!=0 || Listener.Coins<2
         || TradeOffers.ContainsByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id; }))) return false;
     if(Intent==3 && S->Offer==3)
     {
         PendingTrade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); });
         if(!PendingTrade || PendingTrade->Buyer!=Index || R.PersonalPlanks!=0 || R.Coins<PendingTrade->Price) return false;
+    }
+    if((Intent==7 || Intent==8) && (!HearthSocial::CanOfferTiles(*this,*S) || !HearthSocial::TileParties(*this,*S,TileCustomer,TilePotter)
+        || (Intent==7 && Index!=TileCustomer) || (Intent==8 && Index!=TilePotter))) return false;
+    if((Intent==3 || Intent==4) && S->Offer==4)
+    {
+        if(!HearthSocial::TileParties(*this,*S,TileCustomer,TilePotter)) return false;
+        if(Intent==3 && (!HearthSocial::CanOfferTiles(*this,*S) || !StartTileOrder(TileCustomer,TilePotter,S->Id))) return false;
+        if(Intent==4 && !RejectTileOrder(TileCustomer,TilePotter,S->Id)) return false;
     }
     FHearthDialogueLine Line; Line.Speaker=Index; Line.Intent=Intent; Line.Text=Words; Line.Source=Source; Line.At=Elapsed;
     S->Lines.Add(MoveTemp(Line));
@@ -110,6 +162,10 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
         T.Seller=Index; T.Buyer=Other; T.ReservedQuantity=1; T.Result=R.Name+TEXT("提出以2枚钱出售1块自有木板，木板已预留。"); TradeOffers.Add(MoveTemp(T));
         S->Offer=3; S->Proposer=Index; S->OfferAction=-1;
     }
+    else if(Intent==7 || Intent==8)
+    {
+        S->Offer=4; S->Proposer=Index; S->OfferAction=-1;
+    }
     else if(Intent==3)
     {
         S->bAccepted=true;
@@ -117,6 +173,10 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
         {
             PendingTrade->Status=TEXT("accepted"); PendingTrade->Result=Index==PendingTrade->Buyer?TEXT("买方同意价格，卖方将在谈话后送货。"):TEXT("交易已接受。");
             S->Outcome=TEXT("双方同意以2枚钱交易1块自有木板。");
+        }
+        else if(S->Offer==4)
+        {
+            S->Outcome=TEXT("双方同意制瓦订单；客户钱款已托管，陶土与燃料只在真实开工时扣除，陶瓦交付后才结算。");
         }
         else
         {
@@ -134,8 +194,16 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
     {
         if(S->Offer==3) if(auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); }))
         { Residents[Trade->Seller].PersonalPlanks+=Trade->ReservedQuantity; Trade->ReservedQuantity=0; Trade->Status=TEXT("cancelled"); Trade->Result=TEXT("买方拒绝，预留木板已退回卖方。"); }
+        if(S->Offer==4)
+        {
+            auto& CustomerBond=Residents[TileCustomer].Bonds.FindOrAdd(Residents[TilePotter].StableId);
+            auto& PotterBond=Residents[TilePotter].Bonds.FindOrAdd(Residents[TileCustomer].StableId);
+            CustomerBond.Trust=FMath::Max(0.f,CustomerBond.Trust-1.f);
+            CustomerBond.Memory=TEXT("这次制瓦合作没有谈成；没有预留或转移钱和陶土。"); PotterBond.Memory=CustomerBond.Memory;
+            S->Outcome=TEXT("制瓦提议被拒绝；没有预留钱或陶土，双方记住了这次未谈成的合作。");
+        }
         Reciprocal.Affinity=FMath::Max(-100.f,Reciprocal.Affinity-.5f);
-        Listener.Mood=FMath::Max(0.f,Listener.Mood-1.f); S->Outcome=TEXT("提议被婉拒，双方保留自己的安排。");
+        Listener.Mood=FMath::Max(0.f,Listener.Mood-1.f); if(S->Offer!=4) S->Outcome=TEXT("提议被婉拒，双方保留自己的安排。");
         S->Offer=-1; S->Proposer=-1; S->OfferAction=-1;
         CloseConversation(*S,S->Outcome); ++SocialRevision; return true;
     }
@@ -215,11 +283,13 @@ void AHearthVillage::DecideSocialLocally(int32 Index,const FString& Failure)
         const auto* B=Residents[Index].Bonds.Find(Residents[Other].StableId);
         const bool WillAccept=Choices.Contains(3) && Residents[Index].Energy>=25 && (!B || B->Trust>=35);
         Intent=WillAccept?3:4;
-        Words=WillAccept?(S->Offer==1?TEXT("好啊，一起去吃饭。我也想歇一会儿。"):S->Offer==3?TEXT("两枚钱可以，我等你把木板送来再付款。"):TEXT("好，我来做这项采集，把东西运回村里。")):TEXT("抱歉，我现在有些累，这次先不答应了。");
+        Words=WillAccept?(S->Offer==1?TEXT("好啊，一起去吃饭。我也想歇一会儿。"):S->Offer==3?TEXT("两枚钱可以，我等你把木板送来再付款。"):S->Offer==4?TEXT("四枚钱可以，按订单把陶土制成陶瓦后再交付吧。"):TEXT("好，我来做这项采集，把东西运回村里。")):TEXT("抱歉，我现在有些累，这次先不答应了。");
     }
     else if(S->Lines.Num()==0) Words=Residents[Other].Name+TEXT("，最近过得怎么样？新家住得还习惯吗？");
     else if(S->Lines.Num()==1) Words=TEXT("还不错，家已经安顿好了。谢谢你过来，见到邻居真好。");
     else if(Choices.Contains(6)) { Intent=6; Words=TEXT("我有一块自己的木板，两枚钱卖给你，需要吗？"); }
+    else if(Choices.Contains(7)) { Intent=7; Words=TEXT("我需要一箱陶瓦，四枚钱请你用四份陶土制作六片，可以吗？"); }
+    else if(Choices.Contains(8)) { Intent=8; Words=TEXT("你家需要陶瓦的话，四枚钱我可以把四份陶土制成六片。"); }
     else if(Choices.Contains(2) && AvailableWood()<60) { Intent=2; Words=TEXT("村里还需要材料，你愿意帮忙采集一趟、运回来吗？"); }
     else if(Choices.Contains(1)) { Intent=1; Words=TEXT("我们一起去村镇中心吃点东西，边走边聊吧？"); }
     else { Intent=5; Words=TEXT("聊得很开心，我先去忙了，下次再见。"); }
@@ -241,7 +311,8 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
         P->SetNumberField(TEXT("id"),I); P->SetStringField(TEXT("stable_id"),R.StableId); P->SetStringField(TEXT("name"),R.Name);
         P->SetStringField(TEXT("role"),R.Role); P->SetStringField(TEXT("personality"),R.Personality); P->SetNumberField(TEXT("age"),R.Age);
         P->SetNumberField(TEXT("energy"),R.Energy); P->SetNumberField(TEXT("hunger"),R.Hunger); P->SetNumberField(TEXT("mood"),R.Mood);
-        P->SetNumberField(TEXT("coins"),R.Coins); P->SetNumberField(TEXT("personally_owned_planks"),R.PersonalPlanks);
+        P->SetNumberField(TEXT("coins"),R.Coins); P->SetNumberField(TEXT("personally_owned_planks"),R.PersonalPlanks); P->SetNumberField(TEXT("personally_owned_tiles"),R.PersonalTiles);
+        P->SetStringField(TEXT("roof_material_need"),R.RoofMaterial);
         P->SetBoolField(TEXT("home_completed"),R.BuildProgress>=1.f); P->SetStringField(TEXT("home_plot"),PlotLabel(R.Plot));
         P->SetStringField(TEXT("latest_event"),R.LatestEvent);
         P->SetStringField(TEXT("relationships"),RelationshipSummary(I)); People.Add(MakeShared<FJsonValueObject>(P));
@@ -252,11 +323,20 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
     for(const auto& Line:S->Lines)
     { auto L=MakeShared<FJsonObject>(); L->SetStringField(TEXT("speaker"),Residents[Line.Speaker].Name); L->SetNumberField(TEXT("intent_id"),Line.Intent); L->SetStringField(TEXT("words"),Line.Text); Lines.Add(MakeShared<FJsonValueObject>(L)); }
     Context->SetArrayField(TEXT("allowed_intents"),Choices); Context->SetArrayField(TEXT("conversation_so_far"),Lines);
-    Context->SetStringField(TEXT("pending_offer"),S->Offer<0?TEXT("无提议"):S->Offer==1?TEXT("一起去吃饭，每人消耗1份库存食物"):S->Offer==3?TEXT("卖方以2枚钱出售1块自有木板，交货后付款"):ProductionActionName(S->OfferAction));
+    Context->SetStringField(TEXT("pending_offer"),S->Offer<0?TEXT("无提议"):S->Offer==1?TEXT("一起去吃饭，每人消耗1份库存食物"):S->Offer==3?TEXT("卖方以2枚钱出售1块自有木板，交货后付款"):S->Offer==4?TEXT("制瓦订单：公共库存提供4份有来源陶土和2份原木燃料，客户托管4枚钱，陶工真实制作并交付6片陶瓦后结算"):ProductionActionName(S->OfferAction));
+    Context->SetNumberField(TEXT("village_clay_stock"),ClayStock);
+    Context->SetStringField(TEXT("tile_order_source"),TEXT("陶土和原木燃料来自村庄已记账库存；陶瓦只由订单的真实制作阶段产生；货币只在交付结算后成为陶工收入。"));
+    if(const auto* Order=TileOrders.FindByPredicate([&](const FHearthTileOrder& Candidate){return Candidate.ConversationId==S->Id;}))
+    {
+        Context->SetStringField(TEXT("tile_order_status"),Order->Status); Context->SetStringField(TEXT("tile_order_result"),Order->Result);
+        Context->SetNumberField(TEXT("tile_order_reserved_clay"),Order->ReservedClay); Context->SetNumberField(TEXT("tile_order_reserved_tiles"),Order->ReservedTiles);
+        Context->SetNumberField(TEXT("tile_order_escrow"),Order->Escrow);
+    }
+    else Context->SetStringField(TEXT("tile_order_status"),S->Offer==4?TEXT("awaiting_response"):TEXT("none"));
     const int32 HelpAction=FindHelpActivity(Other);
     Context->SetStringField(TEXT("available_help_job"),HelpAction<0?TEXT("无可用采集工作"):ProductionActionName(HelpAction));
     AppendProductionContext(Context);
-    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed home already belongs to its resident; do not claim they still need their first home. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye; 6=offer one personally owned plank for exactly two coins. Previous words alone do not create an offer. Accepted plank sales require the seller to travel and deliver before payment. Do not claim completed work or transferred resources before it occurs. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
+    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed home already belongs to its resident; a terracotta roof may still create demand for owned replacement tiles. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye; 6=offer one personally owned plank for exactly two coins; 7=as the customer, commission the potter to turn four village-stock clay and two village-stock logs into six tiles for four coins; 8=as the potter, quote those same fixed terms to a customer with a terracotta tile roof need. Previous words alone do not create an offer. An accepted tile order only reserves customer escrow; real production later consumes recorded clay and logs, creates the tiles, and delivery settles payment. Do not claim completed work, income, ownership or transferred resources before the real order state records it. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
     SendDecisionRequest(Index,Context,Prompt,true,true);
 }
 
@@ -295,7 +375,7 @@ FString AHearthVillage::RelationshipSummary(int32 Index) const
 
 FString AHearthVillage::GetSocialState(int32 Index) const
 {
-    auto Root=MakeShared<FJsonObject>(); TArray<TSharedPtr<FJsonValue>> Chats,Promises;
+    auto Root=MakeShared<FJsonObject>(); TArray<TSharedPtr<FJsonValue>> Chats,Promises,Orders;
     Root->SetStringField(TEXT("relationships"),Index>=0?RelationshipSummary(Index):TEXT(""));
     for(const auto& S:Conversations) if(Index<0 || S.First==Index || S.Second==Index)
     {
@@ -307,5 +387,11 @@ FString AHearthVillage::GetSocialState(int32 Index) const
     }
     for(const auto& P:Commitments) if(Index<0 || P.Worker==Index || P.Beneficiary==Index)
     { auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),P.Id); J->SetNumberField(TEXT("worker"),P.Worker); J->SetNumberField(TEXT("beneficiary"),P.Beneficiary); J->SetNumberField(TEXT("action"),P.Action); J->SetStringField(TEXT("status"),P.Status); J->SetStringField(TEXT("result"),P.Result); Promises.Add(MakeShared<FJsonValueObject>(J)); }
-    Root->SetArrayField(TEXT("conversations"),Chats); Root->SetArrayField(TEXT("commitments"),Promises); return HearthSocial::Json(Root);
+    for(const auto& O:TileOrders) if(Index<0 || O.Customer==Index || O.Potter==Index)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),O.Id); J->SetStringField(TEXT("conversation_id"),O.ConversationId); J->SetStringField(TEXT("status"),O.Status); J->SetStringField(TEXT("result"),O.Result);
+        J->SetNumberField(TEXT("customer"),O.Customer); J->SetNumberField(TEXT("potter"),O.Potter); J->SetNumberField(TEXT("clay_quantity"),O.ClayQuantity); J->SetNumberField(TEXT("tile_quantity"),O.TileQuantity); J->SetNumberField(TEXT("price"),O.Price);
+        J->SetNumberField(TEXT("reserved_clay"),O.ReservedClay); J->SetNumberField(TEXT("reserved_tiles"),O.ReservedTiles); J->SetNumberField(TEXT("escrow"),O.Escrow); J->SetStringField(TEXT("source"),TEXT("村庄陶土和原木库存 → 陶工制瓦 → 客户个人陶瓦；客户托管款在交付后结算")); Orders.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("conversations"),Chats); Root->SetArrayField(TEXT("commitments"),Promises); Root->SetArrayField(TEXT("tile_orders"),Orders); return HearthSocial::Json(Root);
 }

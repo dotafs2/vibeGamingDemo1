@@ -14,16 +14,17 @@ struct FHearthSavedResident
 struct FHearthWorldImage
 {
     FString Id, Run, Event;
-    int32 Schema=9, PlotCount=3;
+    int32 Schema=10, PlotCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;
     bool bIsland=false, bPaused=false, bAutonomy=true, bComplete=false;
-    int32 Selected=0, LastLife=-1, Food=30, Stone=0, Planks=0, Beams=0, TreasuryCoins=500, TaxProjectCoins=0, TaxReleasedCoins=0, TaxRatePercent=25;
+    int32 Selected=0, LastLife=-1, Food=30, Stone=0, Planks=0, Beams=0, Clay=0, Tiles=0, TreasuryCoins=500, TaxProjectCoins=0, TaxReleasedCoins=0, TaxRatePercent=25;
     int32 TaxRemainders[10]={0,0,0,0,0,0,0,0,0,0};
     int32 Wood[3]={12,12,12}, Owners[10]={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}, Costs[10]={12,9,6,6,6,6,6,6,6,6};
     int32 Produced[3]={0,0,0}, Spent[3]={0,0,0};
     int32 Manufactured[2]={0,0}, ManufacturedSpent[2]={0,0};
+    int32 ProducedClay=0, SpentClay=0, ProducedTiles=0, SpentTiles=0;
     FString PlotIds[10];
     FVector Plots[10], Stocks[3];
     TArray<FHearthSavedResident> People;
@@ -37,6 +38,7 @@ struct FHearthWorldImage
     FHearthPublicProject PublicProject;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
+    TArray<FHearthTileOrder> TileOrders;
     TArray<FHearthStructurePlan> StructurePlans;
 };
 namespace HearthWorld

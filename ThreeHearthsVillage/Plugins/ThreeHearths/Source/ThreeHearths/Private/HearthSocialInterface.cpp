@@ -47,7 +47,7 @@ public:
     virtual void Tick(const FGeometry& Geometry,const double Time,const float Dt) override
     {
         SCompoundWidget::Tick(Geometry,Time,Dt);
-        auto* V=Village.Get(); if(V && (Revision!=V->SocialRevision || Selected!=V->SelectedResident)) Refresh();
+        auto* V=Village.Get(); if(V && (Revision!=V->SocialRevision || Selected!=V->SelectedResident || TileRevision!=CurrentTileRevision(*V))) Refresh();
     }
 private:
     TWeakObjectPtr<AHearthVillage> Village;
@@ -56,15 +56,37 @@ private:
     FTableViewStyle ListStyle;
     FTableRowStyle RowStyle;
     int32 Revision=-1,Selected=-1;
+    uint32 TileRevision=MAX_uint32;
+    uint32 CurrentTileRevision(const AHearthVillage& V) const
+    {
+        uint32 Hash=GetTypeHash(V.TileOrders.Num());
+        for(const auto& O:V.TileOrders)
+        {
+            Hash=HashCombine(Hash,GetTypeHash(O.Id)); Hash=HashCombine(Hash,GetTypeHash(O.Status)); Hash=HashCombine(Hash,GetTypeHash(O.Result));
+            Hash=HashCombine(Hash,GetTypeHash(O.ReservedClay)); Hash=HashCombine(Hash,GetTypeHash(O.ReservedTiles)); Hash=HashCombine(Hash,GetTypeHash(O.Escrow));
+        }
+        return Hash;
+    }
     void Refresh()
     {
-        auto* V=Village.Get(); if(!V) return; Revision=V->SocialRevision; Selected=V->SelectedResident;
+        auto* V=Village.Get(); if(!V) return; Revision=V->SocialRevision; Selected=V->SelectedResident; TileRevision=CurrentTileRevision(*V);
         Rows.Reset(); Rows.Add(MakeShared<FString>(V->RelationshipSummary(Selected)));
         for(int32 I=V->Commitments.Num()-1;I>=0;--I)
         {
             const auto& P=V->Commitments[I]; if(P.Worker!=Selected && P.Beneficiary!=Selected) continue;
             const FString Status=P.Status==TEXT("fulfilled")?TEXT("已履行"):P.Status==TEXT("broken")?TEXT("未履行"):P.Status==TEXT("active")?TEXT("正在履行"):TEXT("已约定");
             Rows.Add(MakeShared<FString>(TEXT("约定 · ")+Status+TEXT("\n")+V->Residents[P.Worker].Name+TEXT(" → ")+V->Residents[P.Beneficiary].Name+TEXT("：")+V->LifeActionName(P.Worker,P.Action)+TEXT("\n")+P.Result));
+        }
+        for(int32 I=V->TileOrders.Num()-1;I>=0;--I)
+        {
+            const auto& O=V->TileOrders[I]; if(O.Customer!=Selected && O.Potter!=Selected) continue;
+            const FString Status=O.Status==TEXT("completed")?TEXT("已交付结算"):O.Status==TEXT("delivering")?TEXT("陶瓦待交付")
+                :O.Status==TEXT("producing") || O.Status==TEXT("active")?TEXT("正在制瓦"):O.Status==TEXT("accepted")?TEXT("已接受并预留")
+                :O.Status==TEXT("rejected")?TEXT("已拒绝"):O.Status==TEXT("cancelled")?TEXT("已取消"):O.Status==TEXT("broken")?TEXT("未履行"):TEXT("已提出");
+            const FString Customer=V->Residents.IsValidIndex(O.Customer)?V->Residents[O.Customer].Name:TEXT("未知客户");
+            const FString Potter=V->Residents.IsValidIndex(O.Potter)?V->Residents[O.Potter].Name:TEXT("未知陶工");
+            Rows.Add(MakeShared<FString>(FString::Printf(TEXT("制瓦订单 · %s\n%s 委托 %s：村庄陶土 %d 份 → 个人陶瓦 %d 片，价格 %d 枚钱\n当前预留：陶土 %d、陶瓦 %d、托管款 %d。%s"),
+                *Status,*Customer,*Potter,O.ClayQuantity,O.TileQuantity,O.Price,O.ReservedClay,O.ReservedTiles,O.Escrow,*O.Result)));
         }
         bool Found=false;
         for(int32 I=V->Conversations.Num()-1;I>=0;--I)
