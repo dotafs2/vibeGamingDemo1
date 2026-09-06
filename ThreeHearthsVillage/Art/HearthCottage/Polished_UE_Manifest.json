@@ -1,0 +1,157 @@
+{
+  "status": "frozen",
+  "native_artifacts": [
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/01___warm_lime_plaster.uasset",
+      "bytes": 21823,
+      "sha256": "03b06f6fcc2962913c3114aa10eb1104b1fb9a549ba5249ad5da0e410195aa42"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/02___gable_cream.uasset",
+      "bytes": 21757,
+      "sha256": "2858c632654583912ab8b10261f3f20efa418ebad98a0c61ce00dd6a381ab6ca"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/03___chestnut_timber.uasset",
+      "bytes": 21798,
+      "sha256": "d31febb6a7cb5b4c716d5f1dcf78d79227841ef6cd958f9d8168b34c2dc2f007"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/04___cut_timber_and_door.uasset",
+      "bytes": 21842,
+      "sha256": "223e6c689803f5e6aece2a4db18f6e3c168fcdb53fc19c777a03731ea63afa97"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/05___timber_recess.uasset",
+      "bytes": 21776,
+      "sha256": "83f125c7cb8072bb1ee5fea89568c3ff9ed099d87dbdb77d42ebb141d49548f0"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/06___soft_blue-grey_stone.uasset",
+      "bytes": 21853,
+      "sha256": "5f4b0b7be36aa96f996c7b70c44ab1eb11e0df3903de04d733a7b7dd99a224ff"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/07___stone_edge.uasset",
+      "bytes": 21743,
+      "sha256": "fe8c92bc8d76adae28bec5017f91faff322b9c6df849ffb18357f05e10fa4b6b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/08___chimney_opening.uasset",
+      "bytes": 21798,
+      "sha256": "486cbb1f36619d1fcad0868a9be80b1b379e584662c54e427ac470570932b056"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/09___sage-blue_shutters.uasset",
+      "bytes": 21831,
+      "sha256": "3bc8da1fb1afcddda12568578ce3ca73a8afc44cb5e5985ae42bcdfc24245cb7"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/10___opaque_blue_glass.uasset",
+      "bytes": 21820,
+      "sha256": "1abcf572558cc61aedf2aa16996b47203e0f5dc9f4190cad708b5dc9ef4e015b"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/12___forged_iron.uasset",
+      "bytes": 21754,
+      "sha256": "ba6388c59d395df6098ef34c49e68455edbcae8bf7aadd01841df982ad595e36"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/13___sage_foliage.uasset",
+      "bytes": 21768,
+      "sha256": "3b9400f2d5cbcc7ad156f0515b277d79ec4525a0f1f44f3ee9821248498eda07"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/14___sunlit_foliage.uasset",
+      "bytes": 21790,
+      "sha256": "aebd24e35fe030b31ddc7010e2e63ff9a97539ba6494f99ed1e428fc85528204"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/15___marigold.uasset",
+      "bytes": 21724,
+      "sha256": "d839d3fddd25b747a278e9728f85bf66b1565e20b935debbf356cdf767c499fe"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/16___planter_earth.uasset",
+      "bytes": 21776,
+      "sha256": "a17eff7ac44d3472578d230d4992e9055e577f371e37bca4df1f3fd2d1c080aa"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/HearthCottage_SharedUV_Polished.uasset",
+      "bytes": 380431,
+      "sha256": "5d6f27a9f11670bbc2e7b541055ddfbbab968c10db8b8b4a8feab6b550a07e3f"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___1.uasset",
+      "bytes": 21665,
+      "sha256": "13678ae47386c48e78df56b4325296b61778fa4866b000a59e04961c998944c6"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___2.uasset",
+      "bytes": 21665,
+      "sha256": "079571923542931db1bb2f084d59f28ba633a6e5deb6c984653209bcc38c5f8d"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___3.uasset",
+      "bytes": 21665,
+      "sha256": "d036ef2dcba8d83db3bb3df22538a019e596b6004fb694e3ce5ea7f2e92f2060"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___4.uasset",
+      "bytes": 21665,
+      "sha256": "06227e352a2ada098ba426edfea38a4f6d5e71e9235700f40a63f80fcf1df482"
+    },
+    {
+      "file": "Content/ThreeHearths/Maps/L_HearthCottagePolished_Compare.umap",
+      "bytes": 487321,
+      "sha256": "668a08970bae231409df51e5d449a408205361728574ad3e560e4c241ff689e7"
+    }
+  ],
+  "art_reports_and_images": [
+    {
+      "file": "Polished_UE_house_original.png",
+      "bytes": 2465884,
+      "sha256": "2c0fd9c315ccf51e7445ddfef8d6927c90ec222549baa531675681f5675aa149"
+    },
+    {
+      "file": "Polished_UE_house_polished.png",
+      "bytes": 2516142,
+      "sha256": "629ff7169bd2d6adb21b5dfe7b6795b1fb18adaa61b429c0c78b39fcb6415bec"
+    },
+    {
+      "file": "Polished_UE_Import.json",
+      "bytes": 18482,
+      "sha256": "497d100374b85114969daf7fd0fde779dff29c94e413ac9f84d43053990fde67"
+    },
+    {
+      "file": "Polished_UE_README.md",
+      "bytes": 2897,
+      "sha256": "983f1a9af503e777fe9b912d0138ff8e92f84f8937b63fe574a09eea98e81a33"
+    },
+    {
+      "file": "Polished_UE_roof_original.png",
+      "bytes": 2478145,
+      "sha256": "e9c1c9c60c466cf982e31c59888c619a9c15ecc78883cbf650bfef5422bfeea9"
+    },
+    {
+      "file": "Polished_UE_roof_polished.png",
+      "bytes": 2573260,
+      "sha256": "1f85d5c1454c8af9cabfcb05dfadee10bd30fa76e01350417bcd69441f405f5f"
+    },
+    {
+      "file": "Polished_UE_Visual_Review.json",
+      "bytes": 8899,
+      "sha256": "80abf19312679ad4022ae3fb2875fce094adf265bcc9dffbb7a40d476472e7e3"
+    }
+  ],
+  "tools": [
+    {
+      "file": "Plugins/ThreeHearths/Tools/import_polished_cottage.py",
+      "sha256": "52cc2c5cfd1f33738b543cd2addee9499a96075f4cc586f7eeb09e745ecab912"
+    },
+    {
+      "file": "Plugins/ThreeHearths/Tools/capture_polished_cottage.py",
+      "sha256": "832dc8916a47f7cde8de4a4c4085328262b2d640c2c1c17300e764ab585a3f57"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "asset": "HearthCottage_SharedUV_Polished",
+  "status": "frozen",
+  "source_variant_only": true,
+  "files": [
+    {
+      "file": "HearthCottage_Polished_Comparison.html",
+      "bytes": 3384,
+      "sha256": "385203e8e89a803eff1c8c910221b59df425d3e67b6219bb38429c3ed405e2c8"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished.blend",
+      "bytes": 317393,
+      "sha256": "40a25bd6a222dbdde50c4f285381ec983a126f4871c5020868a702a9e361a089"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished.glb",
+      "bytes": 1122488,
+      "sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_diagnosis.json",
+      "bytes": 11781,
+      "sha256": "f16d050cbb6422267d3d58b64d33370ad2e6a9e4ea1b29b845fc71b8c3fbe108"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_house_original.png",
+      "bytes": 1767256,
+      "sha256": "1cbabb28e43bdcc382285c80dfe2524e279511daf031b9b0709639e212336137"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_house_original_render.json",
+      "bytes": 3738,
+      "sha256": "8bd424f034283d11bea51b774f20bbd8caf3ad1afd21464c164bc2ad8b62ce87"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_house_polished.png",
+      "bytes": 1780130,
+      "sha256": "366ab7ab56323ca5c60b749b3d184453b1721977ba8a29ab3129fb5a6dea745a"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_house_polished_render.json",
+      "bytes": 3736,
+      "sha256": "b8cb756802374113c912a2bd62848bcacfccea9022bb2bf5e01ad90eb4043d6c"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_repair-report.json",
+      "bytes": 9668,
+      "sha256": "97a46c0a9b266c01f4078a529d579596b87d4a87b349e1580e2674e53aaa591f"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_finish_only.png",
+      "bytes": 1473161,
+      "sha256": "2dcc4d58b7225253c99d5891ac394bd91635e217313c29c7b5f7f3d2a13d70bf"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_finish_only_render.json",
+      "bytes": 3742,
+      "sha256": "c9b2ff689508c842cb49066a7bf6adf7e771804be93b726cc9fcb776b95bd5d6"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_original.png",
+      "bytes": 1470014,
+      "sha256": "52729e1065311da9e90ea4bc66851254331383e3dc53337147013c0d000d4b01"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_original_render.json",
+      "bytes": 3737,
+      "sha256": "b148222231c076401220049a94d3c8b7fe1d32e6dcad708df4a48f4f3d40c247"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_polished.png",
+      "bytes": 1486582,
+      "sha256": "f298c288b5cd7b793ceb4f18abb1ee93e06d47075ab6333bd5e950037b4a46df"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_roof_polished_render.json",
+      "bytes": 3735,
+      "sha256": "28d5955e41f2fa246b7ecdac23d1b6fd708a4e1a8a39db82f936fccf592a1855"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_validation.json",
+      "bytes": 5318,
+      "sha256": "bbcd36b7edb94de7e8b84ee803899f429278187106f55176d92e1a3e99e77a84"
+    },
+    {
+      "file": "HearthCottage_SharedUV_Polished_visual-review.json",
+      "bytes": 2617,
+      "sha256": "13b31da4a1ab02430e1f657e8ef3af1b3b3a96aa1b4a8e98883fa46680a23380"
+    },
+    {
+      "file": "polish_cottage_roof.py",
+      "bytes": 12736,
+      "sha256": "1ea691fa7586bb4b075a2b7d78da080245607f72236b0aa0360370a71229c8c9"
+    },
+    {
+      "file": "README.md",
+      "bytes": 8560,
+      "sha256": "bbe45479fded42b64f7a41076b548342534212790b0ae3d4a4f8c2afdce1c03d"
+    },
+    {
+      "file": "validate_polished_cottage.py",
+      "bytes": 7585,
+      "sha256": "14517d9821623f6605c6fff5819b6932bcac6b0c07e935e007379f4dc7f63045"
+    }
+  ],
+  "original_files": {
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.blend": "27e6e900fff101fef2f2f85b0e4be2c27a46eb1cf8e4157cc0321a2336dcda60",
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.glb": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91"
+  }
+}

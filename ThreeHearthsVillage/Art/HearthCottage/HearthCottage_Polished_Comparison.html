@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>炉边小屋 · 陶瓦修复对比</title>
+<style>
+:root{color-scheme:dark;font:16px/1.6 system-ui,sans-serif;background:#172321;color:#eee8d9}body{max-width:1280px;margin:32px auto;padding:0 22px}h1{font-size:28px;margin-bottom:4px}p{color:#c7c8b9;max-width:960px}button{font:inherit;cursor:pointer;padding:10px 18px;border:1px solid #75877b;border-radius:8px;background:#273c35;color:inherit}button[aria-pressed=true]{background:#bd735e;color:#171d19;border-color:#db9d83}nav{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 12px}img{display:block;width:100%;border-radius:12px;background:#35443b}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0}figcaption{margin:10px 0 20px;color:#d9d3c3}.note{padding:16px 20px;background:#22382f;border-radius:10px}a{color:#e4ad87}@media(max-width:720px){.pair{grid-template-columns:1fr}}
+</style>
+<h1>炉边小屋 · 陶瓦修复对比</h1>
+<p>同一模型、同一灯光、同一相机和曝光。先分离粗糙度与法线修复，再看与 VillageKit 一致的陶瓦底色。图像为 Blender 实际渲染，未做后期改色。</p>
+<nav aria-label="屋顶状态">
+<button data-state="original" aria-pressed="false">原版 · 0.78 / 平面法线</button>
+<button data-state="finish_only" aria-pressed="false">仅修高光 · 旧底色</button>
+<button data-state="polished" aria-pressed="true">最终陶瓦 · 统一底色</button>
+</nav>
+<figure><img id="roof" src="HearthCottage_SharedUV_Polished_roof_polished.png" alt="修复后的弧形陶瓦屋顶"><figcaption id="caption">粗糙度 0.34–0.40，金属度 0；弧面法线连续，端面保硬。底色与现有 VillageKit 陶瓦一致。</figcaption></figure>
+<div class="pair">
+<figure><img src="HearthCottage_SharedUV_Polished_house_original.png" alt="原版全屋"><figcaption>原版全屋</figcaption></figure>
+<figure><img src="HearthCottage_SharedUV_Polished_house_polished.png" alt="修复后全屋"><figcaption>Polished 变体</figcaption></figure>
+</div>
+<p class="note">16,788 个三角面、45 个网格、19 个材质。原始文件保留；没有新增几何，全部共享 UV 和非屋顶材质/法线保持一致。这里验收的是源资产，UE 导入与主地图替换尚未完成。</p>
+<p><a href="HearthCottage_SharedUV_Polished_validation.json">独立 GLB 检查</a> · <a href="HearthCottage_SharedUV_Polished_diagnosis.json">源文件测量</a> · <a href="HearthCottage_SharedUV_Polished_repair-report.json">修正记录</a></p>
+<script>
+const captions={original:'原始粗糙度 0.78；瓦面全部是平面法线，反光宽而断续。旧陶瓦底色保留。',finish_only:'只降低粗糙度并平滑曲面法线；底色保持旧值，可单独比较反光变化。',polished:'粗糙度 0.34–0.40，金属度 0；弧面法线连续，端面保硬。底色与现有 VillageKit 陶瓦一致。'};
+document.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.getElementById('roof').src='HearthCottage_SharedUV_Polished_roof_'+button.dataset.state+'.png';document.getElementById('caption').textContent=captions[button.dataset.state];}));
+</script>
+</html>

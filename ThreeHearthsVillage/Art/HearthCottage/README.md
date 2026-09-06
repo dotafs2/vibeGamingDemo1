@@ -2,7 +2,7 @@
 
 为 ThreeHearths 小镇制作的原创低多边形外观模型：奶油色灰泥墙、陶红弧形瓦片、粗木梁、灰蓝色石基与烟囱、蓝绿色百叶窗、小门廊、花箱、柴堆及木桶。
 
-**当前修正版：`HearthCottage_SharedUV.blend` 与 `HearthCottage_SharedUV.glb`。** 修复了重复瓦片各占一块 UV 的问题，模型几何与原有纯色材质保持一致。早期模型及打开窗口中的未保存操作已保留；请使用修正版继续编辑。
+**共享 UV 基线：`HearthCottage_SharedUV.blend` 与 `HearthCottage_SharedUV.glb`。陶瓦外观新变体：`HearthCottage_SharedUV_Polished.blend` 与 `HearthCottage_SharedUV_Polished.glb`。** 基线保留原始材质与法线，供比较和回退；Polished 修复了陶瓦反光的材质和曲面法线。旧基线文件没有覆盖。新变体尚未经过 UE 导入验收，主地图目前仍使用旧版。
 
 - `HearthCottage.blend`：可编辑源文件，模型按结构分组，附正交相机和展示灯光。
 - `HearthCottage.glb`：只包含房屋与附属小道具，不包含展示地面、灯光及相机；材质为简单 PBR 纯色，不依赖外部贴图。
@@ -60,3 +60,35 @@ blender --background --factory-startup --threads 4 --python-exit-code 1 --python
 ```
 
 仅重建模型、不渲染预览时，在建模命令末尾增加 `-- --no-render`。脚本会覆盖本目录中对应的模型与预览输出，手工修改后请先另存源文件。
+
+## 陶瓦高光修正 / Polished
+
+从实际保存的 SharedUV 源文件测得，4 个屋顶材质的 Roughness 均为 0.78，Metallic 均为 0；182 片普通瓦和 13 片屋脊的所有表面都使用平面法线。前者把反射摊得很宽，后者让每个弧面分段拥有突变的法线，缺少沿瓦面移动的连续反光。Normal 和 Roughness 输入也没有贴图，但纯色 PBR 本身完全可以产生正确高光，不能把缺少贴图当作唯一原因。旧屋顶底色比现有 VillageKit 陶瓦更浅、更粉，这属于另一个外观差异。
+
+`polish_cottage_roof.py` 从保留的 SharedUV `.blend` 开始，只进行以下修正：
+
+- 4 个陶瓦粗糙度改为 0.34、0.38、0.36、0.40，金属度仍为 0。
+- 普通瓦的上下弧面和屋脊内外弧面使用平滑法线；端面、侧边保留硬边，并明确标记边界。未新增圆角或任何几何。
+- 屋顶底色使用现有 VillageKit 的 `BB695F / CA7C6F / AF6059 / D28B79`。仅屋顶改色，其余材质完全保留。
+- IOR、Specular IOR Level、Coat Weight、灯光、世界环境、曝光和色彩管理保持原值，没有用金属或额外涂层伪造反射。
+
+几何仍为 45 个网格、19 个材质、16,788 个三角面。全部顶点、三角形材质分配、节点变换、包围盒与共享 UV0 均与基线一致；不重新展开、不复制独占瓦片 UV。`validate_polished_cottage.py` 独立读取两个 GLB 字节流，按每个三角形的坐标、UV 和材质对照，并检查单位法线、退化面、非屋顶法线及材质不变。检查结果和原文件 SHA-256 分别记录在 `*_validation.json`、`*_repair-report.json`、`*_diagnosis.json`。
+
+对比图是原模型自带三盏灯、同一世界环境、同一相机/曝光的 Blender Cycles 实际渲染，没有修改图片像素：
+
+- `*_house_original.png` 与 `*_house_polished.png`：全屋前后。
+- `*_roof_original.png`：原始粗糙度、原始平面法线与旧颜色。
+- `*_roof_finish_only.png`：只修粗糙度与法线，仍保留旧颜色，隔离高光改善效果。
+- `*_roof_polished.png`：相同修正再加与 VillageKit 一致的陶瓦底色。
+
+这里的 `*` 为 `HearthCottage_SharedUV_Polished`。每张图附有 `_render.json`，记录相同灯光哈希、几何/UV 指纹、相机、样本数与输出哈希。全屋和屋顶近景是两个固定机位；每组内部相机不变。`HearthCottage_Polished_Comparison.html` 可在本地切换三个屋顶状态，并同时查看全屋前后。原生 UE 光照下的最终效果由后续导入单独验收。
+
+通过 Blender MCP `execute_blender_code` 执行以下代码生成变体；该步骤不会渲染，也不会覆盖原 SharedUV 文件：
+
+```python
+import runpy
+repair = runpy.run_path('D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/HearthCottage/polish_cottage_roof.py')
+repair['build']()
+```
+
+每个渲染单独一次 MCP 调用：`repair['render'](STATE, VIEW)`，STATE 为 `original / finish_only / polished`，VIEW 为 `house / roof`。渲染同样从原文件重读，避免把上一次状态带入下一次对比。最后用普通 Python 执行 `validate_polished_cottage.py`。现有 `create_cottage.py` 与旧 UV 修复入口没有修改；它们继续生成原始基线，Polished 由新脚本派生。

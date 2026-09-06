@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "reviewed_at_utc": "2026-09-05T20:48:12.407746+00:00",
+  "images": [
+    {
+      "view": "house",
+      "state": "original",
+      "file": "HearthCottage_SharedUV_Polished_house_original.png",
+      "sha256": "1cbabb28e43bdcc382285c80dfe2524e279511daf031b9b0709639e212336137"
+    },
+    {
+      "view": "house",
+      "state": "polished",
+      "file": "HearthCottage_SharedUV_Polished_house_polished.png",
+      "sha256": "366ab7ab56323ca5c60b749b3d184453b1721977ba8a29ab3129fb5a6dea745a"
+    },
+    {
+      "view": "roof",
+      "state": "original",
+      "file": "HearthCottage_SharedUV_Polished_roof_original.png",
+      "sha256": "52729e1065311da9e90ea4bc66851254331383e3dc53337147013c0d000d4b01"
+    },
+    {
+      "view": "roof",
+      "state": "finish_only",
+      "file": "HearthCottage_SharedUV_Polished_roof_finish_only.png",
+      "sha256": "2dcc4d58b7225253c99d5891ac394bd91635e217313c29c7b5f7f3d2a13d70bf"
+    },
+    {
+      "view": "roof",
+      "state": "polished",
+      "file": "HearthCottage_SharedUV_Polished_roof_polished.png",
+      "sha256": "f298c288b5cd7b793ceb4f18abb1ee93e06d47075ab6333bd5e950037b4a46df"
+    }
+  ],
+  "observations": [
+    "Original roof has broad diffuse-looking response and clear flat facets, including its ridge caps",
+    "Finish-only view retains old base colours while continuous reflection bands appear across curved tile surfaces",
+    "Final palette matches current VillageKit terracotta and avoids the old comparatively pale pink base factors",
+    "Tile ends, thick side profiles, joints and all non-roof building details remain clear",
+    "Same source studio lights, world environment, colour management, camera within each view and exposure are preserved",
+    "Full-house before/after images preserve silhouette and placement"
+  ],
+  "image_pixels_edited": false,
+  "paid_services_used": false,
+  "ue_operated": false,
+  "ue_import_verified": false,
+  "geometry_added": false,
+  "old_source_files_preserved": {
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.blend": "27e6e900fff101fef2f2f85b0e4be2c27a46eb1cf8e4157cc0321a2336dcda60",
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.glb": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91"
+  },
+  "blender_mcp": {
+    "protocol": 5,
+    "addon": [
+      1,
+      6
+    ],
+    "blender": "5.2.0 LTS",
+    "owned_pid": 39664,
+    "host": "127.0.0.1",
+    "port": 9877,
+    "clean_quit_requested": true
+  }
+}

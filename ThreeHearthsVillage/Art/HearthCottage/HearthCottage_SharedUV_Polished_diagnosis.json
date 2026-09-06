@@ -1,0 +1,432 @@
+{
+  "source": "HearthCottage_SharedUV",
+  "source_files": {
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.blend": "27e6e900fff101fef2f2f85b0e4be2c27a46eb1cf8e4157cc0321a2336dcda60",
+    "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\HearthCottage\\HearthCottage_SharedUV.glb": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91"
+  },
+  "roof": [
+    {
+      "name": "Roof | main curved tiles",
+      "kind": "tile",
+      "pieces": 146,
+      "faces": 2628,
+      "smooth_faces": 0,
+      "triangles": 5256,
+      "sharp_edges": 0,
+      "uv_name": "UV_Material",
+      "materials": [
+        {
+          "name": "Roof | 4",
+          "base_color_linear": [
+            0.6307571530342102,
+            0.32314321398735046,
+            0.25015828013420105,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 3",
+          "base_color_linear": [
+            0.4969329833984375,
+            0.18782077729701996,
+            0.14995978772640228,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 2",
+          "base_color_linear": [
+            0.672443151473999,
+            0.28744083642959595,
+            0.22322796285152435,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 1",
+          "base_color_linear": [
+            0.5840784311294556,
+            0.22696587443351746,
+            0.177888423204422,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        }
+      ]
+    },
+    {
+      "name": "Roof | porch curved tiles",
+      "kind": "tile",
+      "pieces": 36,
+      "faces": 648,
+      "smooth_faces": 0,
+      "triangles": 1296,
+      "sharp_edges": 0,
+      "uv_name": "UV_Material",
+      "materials": [
+        {
+          "name": "Roof | 2",
+          "base_color_linear": [
+            0.672443151473999,
+            0.28744083642959595,
+            0.22322796285152435,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 1",
+          "base_color_linear": [
+            0.5840784311294556,
+            0.22696587443351746,
+            0.177888423204422,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 4",
+          "base_color_linear": [
+            0.6307571530342102,
+            0.32314321398735046,
+            0.25015828013420105,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 3",
+          "base_color_linear": [
+            0.4969329833984375,
+            0.18782077729701996,
+            0.14995978772640228,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        }
+      ]
+    },
+    {
+      "name": "Roof | main ridge caps",
+      "kind": "ridge",
+      "pieces": 10,
+      "faces": 260,
+      "smooth_faces": 0,
+      "triangles": 520,
+      "sharp_edges": 0,
+      "uv_name": "UV_Material",
+      "materials": [
+        {
+          "name": "Roof | 1",
+          "base_color_linear": [
+            0.5840784311294556,
+            0.22696587443351746,
+            0.177888423204422,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 2",
+          "base_color_linear": [
+            0.672443151473999,
+            0.28744083642959595,
+            0.22322796285152435,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 3",
+          "base_color_linear": [
+            0.4969329833984375,
+            0.18782077729701996,
+            0.14995978772640228,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 4",
+          "base_color_linear": [
+            0.6307571530342102,
+            0.32314321398735046,
+            0.25015828013420105,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        }
+      ]
+    },
+    {
+      "name": "Roof | porch ridge caps",
+      "kind": "ridge",
+      "pieces": 3,
+      "faces": 78,
+      "smooth_faces": 0,
+      "triangles": 156,
+      "sharp_edges": 0,
+      "uv_name": "UV_Material",
+      "materials": [
+        {
+          "name": "Roof | 1",
+          "base_color_linear": [
+            0.5840784311294556,
+            0.22696587443351746,
+            0.177888423204422,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 2",
+          "base_color_linear": [
+            0.672443151473999,
+            0.28744083642959595,
+            0.22322796285152435,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        },
+        {
+          "name": "Roof | 3",
+          "base_color_linear": [
+            0.4969329833984375,
+            0.18782077729701996,
+            0.14995978772640228,
+            1.0
+          ],
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "ior": 1.5,
+          "specular_ior_level": 0.5,
+          "coat_weight": 0.0,
+          "roughness_linked": false,
+          "normal_linked": false
+        }
+      ]
+    }
+  ],
+  "lights_and_color_management": {
+    "lights": [
+      {
+        "name": "Fill | soft sky",
+        "matrix": [
+          [
+            0.24253547191619873,
+            -0.6380682587623596,
+            0.7307841777801514,
+            4.0
+          ],
+          [
+            0.9701425433158875,
+            0.15951694548130035,
+            -0.1826959252357483,
+            -1.0
+          ],
+          [
+            1.0586773235843339e-08,
+            0.7532750368118286,
+            0.6577056646347046,
+            5.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "type": "AREA",
+        "energy": 260.0,
+        "color": [
+          0.7799999713897705,
+          0.8700000047683716,
+          1.0
+        ],
+        "size": 5.0
+      },
+      {
+        "name": "Key | warm morning",
+        "matrix": [
+          [
+            0.7999999523162842,
+            0.447562575340271,
+            -0.3996095359325409,
+            -3.0
+          ],
+          [
+            -0.6000000238418579,
+            0.5967500805854797,
+            -0.5328125953674316,
+            -4.0
+          ],
+          [
+            4.4027039791671996e-08,
+            0.6660158038139343,
+            0.7459376454353333,
+            7.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "type": "AREA",
+        "energy": 550.0,
+        "color": [
+          1.0,
+          0.8799999952316284,
+          0.7300000190734863
+        ],
+        "size": 4.5
+      },
+      {
+        "name": "Rim | afternoon",
+        "matrix": [
+          [
+            -0.9805806875228882,
+            0.1313662976026535,
+            -0.1456173062324524,
+            -1.0
+          ],
+          [
+            -0.19611606001853943,
+            -0.6568319201469421,
+            0.7280867695808411,
+            5.0
+          ],
+          [
+            -3.796344927309292e-08,
+            0.742505669593811,
+            0.6698397397994995,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "type": "AREA",
+        "energy": 450.0,
+        "color": [
+          1.0,
+          0.9300000071525574,
+          0.7799999713897705
+        ],
+        "size": 3.5
+      }
+    ],
+    "world_color": [
+      0.7200000286102295,
+      0.7900000214576721,
+      0.8799999952316284,
+      1.0
+    ],
+    "world_strength": 0.3799999952316284,
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0.0,
+    "gamma": 1.0
+  },
+  "geometry_and_uv_fingerprint": "c0d45da42c479e3b3b62204a0825e73d3562bd30d6382d2daf7cca68713a4a59",
+  "non_roof_fingerprint": "7483f793e58c020389259f3ea5ac71b795bb2208e719066367c8fc726180d12d",
+  "diagnosis": [
+    "All four roof materials use inherited roughness 0.78 and metallic 0",
+    "All curved tile and ridge faces have flat shading, so reflections break at each polygon",
+    "Normal and roughness inputs are unlinked; no micro-normal or roughness texture is supplied",
+    "Old roof base colours are lighter/pinker than the current VillageKit terracotta palette",
+    "Missing textures alone do not prevent highlights; roughness and surface-normal continuity are the direct repair targets"
+  ]
+}
