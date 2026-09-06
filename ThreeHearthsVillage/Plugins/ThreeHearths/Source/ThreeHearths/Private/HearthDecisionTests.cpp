@@ -73,6 +73,14 @@ bool FHearthParallelCapacityTest::RunTest(const FString&)
         Village->PendingDecisions[I].bActive=true;
     }
     TestFalse(TEXT("An eleventh request waits for capacity"),Village->HasDecisionCapacity(10));
+    for(auto& Pending:Village->PendingDecisions) Pending=FHearthPendingDecision();
+    Village->Residents[0].Task=EHearthTask::Settled;
+    Village->Elapsed=1.f; Village->ApiTimeout=30.f;
+    Village->PendingDecisions[0].bActive=true;
+    Village->PendingDecisions[0].StartedAt=-100000.0;
+    Village->PendingDecisions[0].StartedAtSimulation=0.0;
+    Village->ConsumeDecision();
+    TestTrue(TEXT("Wall time alone cannot expire a simulation-clock request"),Village->PendingDecisions[0].bActive);
     World->DestroyWorld(false);
     return true;
 }

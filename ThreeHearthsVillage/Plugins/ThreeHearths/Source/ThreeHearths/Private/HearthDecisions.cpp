@@ -275,7 +275,10 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         Request->SetHeader(TEXT("X-Hearth-Operation"),Pending.OperationId);
         Request->SetHeader(TEXT("X-Hearth-Resident"),Residents[Index].StableId);
     }
-    Request->SetContentAsString(HearthDecision::Json(Body)); Request->SetTimeout(ApiTimeout); Request->SetActivityTimeout(ApiTimeout);
+    // The village owns the decision deadline on its simulation clock below. Do not
+    // also install a per-request wall-clock deadline: that would keep ageing while
+    // the simulation is paused and make a paused request fail as soon as play resumes.
+    Request->SetContentAsString(HearthDecision::Json(Body));
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
     Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
         auto* V=WeakThis.Get();
@@ -338,11 +341,10 @@ void AHearthVillage::ConsumeDecision()
         auto& Slot=PendingDecisions[Index];
         if(!Slot.bActive) continue;
         const bool bSimulationDeadline=HearthDecision::RequestExceededSimulationDeadline(Elapsed,Slot.StartedAtSimulation,ApiTimeout);
-        const bool bWallDeadline=FPlatformTime::Seconds()-Slot.StartedAt>ApiTimeout+2;
-        if(!Slot.bReturned && (bSimulationDeadline || bWallDeadline))
+        if(!Slot.bReturned && bSimulationDeadline)
         {
             if(Slot.Request.IsValid()) { Slot.Request->OnProcessRequestComplete().Unbind(); Slot.Request->CancelRequest(); Slot.Request.Reset(); }
-            Slot.Error=bSimulationDeadline?TEXT("模型未赶上当前游戏倍速，已采用本地规则"):TEXT("等待模型超时");
+            Slot.Error=TEXT("模型未赶上当前游戏倍速，已采用本地规则");
             Slot.bReturned=true; Slot.Latency=FPlatformTime::Seconds()-Slot.StartedAt;
             if(bApiBudgeted) bApiDisabledThisRun=true;
         }
