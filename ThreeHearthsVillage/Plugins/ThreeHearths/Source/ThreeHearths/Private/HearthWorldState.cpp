@@ -398,7 +398,7 @@ namespace HearthWorld
             P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion);
             if(W.Schema>=5)
             {
-                for(const auto& Value:P.Array(TEXT("cottage_components"),45))
+                for(const auto& Value:P.Array(TEXT("cottage_components"),10000))
                 {
                     FHearthCottageComponent Part; FRead Q{Object(Value)}; Q.Str(TEXT("id"),Part.Id); Q.Str(TEXT("asset_id"),Part.AssetId);
                     Q.Str(TEXT("status"),Part.Status); Q.Str(TEXT("source"),Part.Source); Q.Str(TEXT("supply_policy"),Part.SupplyPolicy);
@@ -640,7 +640,9 @@ namespace HearthWorld
                 Completed+=Done; Active+=Reserved||Transporting||Installing;
                 if(Reserved) { if(Part.MaterialType==2) Accounted[2]+=Part.MaterialAmount; else AccountedManufactured[Part.MaterialType-3]+=Part.MaterialAmount; }
             }
-            if(!S.CottageComponents.IsEmpty() && (S.Units!=Completed || Active!=(S.ReservedBy>=0?1:0) || (S.Kind==EHearthSiteKind::House)!=(Completed==S.CottageComponents.Num()))) return false;
+            if(!S.CottageComponents.IsEmpty() && (S.Units!=Completed || Active!=(S.ReservedBy>=0?1:0)
+                || (bNativePlan ? (Completed==S.CottageComponents.Num() && S.Kind!=EHearthSiteKind::House)
+                    : (S.Kind==EHearthSiteKind::House)!=(Completed==S.CottageComponents.Num())))) return false;
         }
         TSet<FString> ActivePeople,ChatIds;
         Error=TEXT("世界存档校验失败：居民对话");

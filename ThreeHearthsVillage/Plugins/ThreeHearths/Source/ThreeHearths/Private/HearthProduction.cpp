@@ -71,6 +71,18 @@ namespace HearthProduction
         Input.Beams=FMath::Max(0,Beams);
         return Input;
     }
+
+    bool PrepareExpansion(const FHearthResident& Resident,const FHearthSite& Site,const FHearthStructurePlan& Current,
+        int32 Stone,int32 Planks,int32 Beams,int32 Budget,FHearthStructurePlan& OutPlan,FHearthPlannedConstructionResult& OutComponents)
+    {
+        FHearthResidentBuildingPlan Existing; Existing.Plan=Current; Existing.Expansion.ResultingPlan=Current; Existing.bBuildable=true;
+        FHearthResidentBuildingInput Input=PlanningInput(Resident,Site,Stone,Planks,Beams,Budget);
+        Input.ExtensionKey=FString::Printf(TEXT("%s:extension:%d"),*Current.PlanId,Current.Rooms.Num());
+        if(!HearthResidentBuildingPlanner::AppendExpansion(Existing,Input)) return false;
+        OutPlan=Existing.Expansion.ResultingPlan;
+        OutComponents=HearthPlannedConstructionAdapter::Convert(OutPlan,Site.Owner,Site.CottageComponents);
+        return OutComponents.bAccepted && OutComponents.Components.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");});
+    }
 }
 
 void HearthCottage::Populate(FHearthSite& S)
@@ -200,6 +212,12 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
             const auto Converted=HearthPlannedConstructionAdapter::Convert(*Plan,S.Owner,CandidateComponents);
             if(!Converted.bAccepted) return false;
             CandidateComponents=Converted.Components;
+            if(!CandidateComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
+            {
+                FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
+                if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,GeneralFunds(),Expanded,ExpansionComponents)) return false;
+                CandidateComponents=MoveTemp(ExpansionComponents.Components);
+            }
         }
         const auto* Part=CandidateComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
         if(!Part) return false;
@@ -314,6 +332,8 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     FHearthResidentBuildingPlan ProposedPlan;
     FHearthPlannedConstructionResult ProposedComponents;
     const bool bNeedsNewPlan=Op==5 && S.BuildPlanId.IsEmpty();
+    bool bNeedsExpansion=false;
+    int32 ExpansionPlanIndex=INDEX_NONE;
     if(bNeedsNewPlan)
     {
         ProposedPlan=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(R,S,StoneStock,PlankStock,BeamStock,GeneralFunds()));
@@ -324,6 +344,13 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
         }
         ProposedComponents=HearthPlannedConstructionAdapter::Convert(ProposedPlan.Plan,Index,{});
         if(!ProposedComponents.bAccepted) { R.LatestEvent=ProposedComponents.Reason; return false; }
+    }
+    else if(Op==5 && !S.CottageComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
+    {
+        ExpansionPlanIndex=StructurePlans.IndexOfByPredicate([&](const FHearthStructurePlan& P){return P.PlanId==S.BuildPlanId;});
+        if(!StructurePlans.IsValidIndex(ExpansionPlanIndex) || !HearthProduction::PrepareExpansion(R,S,StructurePlans[ExpansionPlanIndex],StoneStock,PlankStock,BeamStock,GeneralFunds(),ProposedPlan.Plan,ProposedComponents))
+        { R.LatestEvent=TEXT("当前真实库存或预算不足以扩建住宅。"); return false; }
+        bNeedsExpansion=true;
     }
     if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,true,bFromApi?TEXT("api"):TEXT("local"));
     const FString Label=ProductionActionName(Action);
@@ -348,6 +375,12 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
             S.CottageComponents=MoveTemp(ProposedComponents.Components);
             S.Capacity=S.CottageComponents.Num();
             S.Units=0;
+        }
+        else if(bNeedsExpansion)
+        {
+            StructurePlans[ExpansionPlanIndex]=ProposedPlan.Plan;
+            S.CottageComponents=MoveTemp(ProposedComponents.Components);
+            S.Capacity=S.CottageComponents.Num();
         }
         EnsureCottageComponents(S); auto* Part=S.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
         if(!Part) { ReturnTool(Index); CancelWage(R.ActiveTaskId); R.ActiveTaskId.Empty(); return false; }

@@ -40,7 +40,7 @@ namespace
         Result.Id = Spec.Id;
         Result.AssetId = Spec.CatalogId;
         Result.Offset = Plan.Footprint.Orientation.RotateVector(Spec.Offset);
-        Result.Yaw = Plan.Footprint.Orientation.Yaw + Spec.Orientation.Yaw;
+        Result.Yaw = FRotator::NormalizeAxis(Plan.Footprint.Orientation.Yaw + Spec.Orientation.Yaw);
         Result.Stage = Rule.Stage;
         Result.MaterialType = Rule.MaterialType;
         Result.MaterialAmount = Material.Quantity;

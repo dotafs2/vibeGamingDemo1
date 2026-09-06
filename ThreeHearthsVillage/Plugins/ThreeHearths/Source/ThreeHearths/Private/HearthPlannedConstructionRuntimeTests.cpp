@@ -22,7 +22,8 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     Village->bAutonomousLifeEnabled=false; Village->bApiDisabledThisRun=true;
     auto& Resident=Village->Residents[0];
     Village->PlotOwners[0]=0; Resident.Plot=0; Resident.DeliveredWood=Village->CostFor(0);
-    Resident.BuildProgress=1.f; Resident.Task=EHearthTask::LifeChoosing; Resident.Role=TEXT("carpenter"); Resident.Coins=100;
+    Village->WoodStock[0]-=Resident.DeliveredWood;
+    Resident.BuildProgress=1.f; Resident.Task=EHearthTask::LifeChoosing; Resident.Role=TEXT("carpenter");
     Resident.Actor->SetActorLocation(FVector(-400,0,8)); Resident.Route.Reset();
 
     Village->ProductionSites.Reset(); Village->LandGrid.Reset();
@@ -37,7 +38,7 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     const int32 StoneBefore=Village->StoneStock;
     FHearthResidentBuildingInput DiagnosticInput; DiagnosticInput.ResidentId=Resident.StableId;
     DiagnosticInput.StableSeed=Resident.StableId+TEXT("|")+Resident.Personality+TEXT("|")+Resident.Role;
-    DiagnosticInput.Need=TEXT("shelter"); DiagnosticInput.Occupation=Resident.Role; DiagnosticInput.Budget=Resident.Coins;
+    DiagnosticInput.Need=TEXT("shelter"); DiagnosticInput.Occupation=Resident.Role; DiagnosticInput.Budget=Village->GeneralFunds();
     DiagnosticInput.bRoadAccessible=true; DiagnosticInput.RoadYaw=180.f; DiagnosticInput.Origin=Village->ProductionSites[0].Position;
     DiagnosticInput.Stone=Village->StoneStock; DiagnosticInput.Planks=Village->PlankStock; DiagnosticInput.Beams=Village->BeamStock;
     const auto DiagnosticPlan=HearthResidentBuildingPlanner::Build(DiagnosticInput);
@@ -53,8 +54,9 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     TestEqual(TEXT("First planned component is reserved for its choosing resident"),RuntimeSite.CottageComponents[0].ReservedBy,0);
     TestEqual(TEXT("Only the first real material unit is reserved"),Village->StoneStock,StoneBefore-RuntimeSite.CottageComponents[0].MaterialAmount);
     FHearthWorldImage SavedDuringFirstHaul; FString SaveError;
-    TestTrue(TEXT("Schema9 accepts a native non-GUID plan and dynamic component count"),
-        HearthWorld::Decode(Village->ExportWorldState(),SavedDuringFirstHaul,SaveError));
+    if(!TestTrue(TEXT("Schema9 accepts a native non-GUID plan and dynamic component count"),
+        HearthWorld::Decode(Village->ExportWorldState(),SavedDuringFirstHaul,SaveError)))
+    { AddError(SaveError); return false; }
     TestEqual(TEXT("In-progress native plan survives the save image"),SavedDuringFirstHaul.StructurePlans.Num(),1);
     TestEqual(TEXT("Reserved component list survives the save image"),SavedDuringFirstHaul.Sites[0].CottageComponents.Num(),Plan.Components.Num());
 
@@ -68,6 +70,57 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     TestTrue(TEXT("The exact transported component is installed"),Installed && Installed->Status==TEXT("completed"));
     TestEqual(TEXT("Piecewise execution advances by exactly one component"),Village->ProductionSites[0].Units,1);
     TestEqual(TEXT("Installed material leaves resident cargo"),Resident.CargoAmount,0);
+
+    auto CompleteCurrentPlan=[&](AHearthVillage* Active)
+    {
+        for(int32 PartGuard=0;PartGuard<100;++PartGuard)
+        {
+            auto& ActiveSite=Active->ProductionSites[0];
+            if(!ActiveSite.CottageComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
+                return ActiveSite.Kind==EHearthSiteKind::House;
+            auto& Worker=Active->Residents[0];
+            if(Worker.Task==EHearthTask::LifeChoosing && !Active->StartProduction(0,Action,TEXT("continue resident plan"),false))
+            { AddError(TEXT("Could not reserve next component: ")+Worker.LatestEvent); return false; }
+            for(int32 Step=0;Step<3000 && Worker.Task==EHearthTask::ProductionTravel;++Step) Active->AdvanceSimulation(.05f);
+            if(Worker.Task!=EHearthTask::ProductionWork)
+            { AddError(FString::Printf(TEXT("Worker did not reach install state: task=%d route=%d cargo=%d event=%s"),static_cast<int32>(Worker.Task),Worker.Route.Num(),Worker.CargoAmount,*Worker.LatestEvent)); return false; }
+            Worker.Timer=0; Active->AdvanceProduction(0,.05f);
+        }
+        return false;
+    };
+    auto Preserves=[&](const TArray<FHearthCottageComponent>& Before,const TArray<FHearthCottageComponent>& After)
+    {
+        for(const auto& Old:Before) if(!After.ContainsByPredicate([&](const auto& Current)
+            {return Current.Id==Old.Id&&Current.AssetId==Old.AssetId&&Current.Offset==Old.Offset&&Current.Yaw==Old.Yaw&&Current.Stage==Old.Stage&&Current.MaterialType==Old.MaterialType&&Current.MaterialAmount==Old.MaterialAmount&&Current.Owner==Old.Owner&&Current.Status==Old.Status;})) return false;
+        return true;
+    };
+
+    if(!TestTrue(TEXT("NPC completes every remaining base component through real haul/install work"),CompleteCurrentPlan(Village))) return false;
+    const TArray<FHearthCottageComponent> BaseParts=Village->ProductionSites[0].CottageComponents;
+    const int32 BaseRooms=Village->StructurePlans[0].Rooms.Num();
+    Village->Residents[0].SocialNeed=85.f;
+    if(!TestTrue(TEXT("Later social need starts the first material-backed expansion"),Village->StartProduction(0,Action,TEXT("household needs another room"),false))) return false;
+    TestEqual(TEXT("First runtime expansion appends one room"),Village->StructurePlans[0].Rooms.Num(),BaseRooms+1);
+    TestTrue(TEXT("First runtime expansion preserves every installed base field"),Preserves(BaseParts,Village->ProductionSites[0].CottageComponents));
+    const FString FirstExpansionSave=Village->ExportWorldState();
+    auto* Reloaded=World->SpawnActor<AHearthVillage>(); Reloaded->BuildEnvironment(); Reloaded->ResetVillageState(); Reloaded->bApiDisabledThisRun=true;
+    FString ReloadError;
+    if(!TestTrue(TEXT("Partially built first expansion reloads"),Reloaded->ApplyWorldState(FirstExpansionSave,ReloadError))) { AddError(ReloadError); return false; }
+    Reloaded->bAutonomousLifeEnabled=false;
+    Reloaded->LandGrid.Reset(); for(int32 X=-30;X<=30;++X) for(int32 Y=-30;Y<=30;++Y) Reloaded->LandGrid.Add(FIntPoint(X,Y));
+    TestEqual(TEXT("Reload keeps first expansion room"),Reloaded->StructurePlans[0].Rooms.Num(),BaseRooms+1);
+    TestTrue(TEXT("Reload keeps all base component fields"),Preserves(BaseParts,Reloaded->ProductionSites[0].CottageComponents));
+    if(!TestTrue(TEXT("NPC completes the first expansion after reload"),CompleteCurrentPlan(Reloaded))) return false;
+
+    const TArray<FHearthCottageComponent> FirstExpansionParts=Reloaded->ProductionSites[0].CottageComponents;
+    Reloaded->Residents[0].SocialNeed=20.f; Reloaded->Residents[0].Hunger=85.f;
+    if(!TestTrue(TEXT("A later urgent need starts the second material-backed expansion"),Reloaded->StartProduction(0,Action,TEXT("food access changes the household need"),false))) return false;
+    TestEqual(TEXT("Second runtime expansion appends another room"),Reloaded->StructurePlans[0].Rooms.Num(),BaseRooms+2);
+    TestTrue(TEXT("Second runtime expansion preserves the entire first expansion"),Preserves(FirstExpansionParts,Reloaded->ProductionSites[0].CottageComponents));
+    FHearthWorldImage SecondExpansionImage; FString SecondExpansionError;
+    if(!TestTrue(TEXT("Partially built second expansion is schema9-valid"),HearthWorld::Decode(Reloaded->ExportWorldState(),SecondExpansionImage,SecondExpansionError)))
+    { AddError(SecondExpansionError); return false; }
+    TestEqual(TEXT("Second expansion persistence keeps all three rooms"),SecondExpansionImage.StructurePlans[0].Rooms.Num(),BaseRooms+2);
     return true;
 }
 #endif
