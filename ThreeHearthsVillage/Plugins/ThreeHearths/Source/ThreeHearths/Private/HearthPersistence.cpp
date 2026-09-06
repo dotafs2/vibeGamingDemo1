@@ -34,7 +34,7 @@ FString AHearthVillage::ExportWorldState() const
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
     W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
     W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock; W.Planks=PlankStock; W.Beams=BeamStock; W.TreasuryCoins=TreasuryCoins;
-    W.TaxProjectCoins=TaxProjectCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<10;++I) W.TaxRemainders[I]=TaxRemainders[I];
+    W.TaxProjectCoins=TaxProjectCoins; W.TaxReleasedCoins=TaxReleasedCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<10;++I) W.TaxRemainders[I]=TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
@@ -105,7 +105,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
     PublicProject=MoveTemp(W.PublicProject);
     StructurePlans=MoveTemp(W.StructurePlans);
-    TaxProjectCoins=W.TaxProjectCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
+    TaxProjectCoins=W.TaxProjectCoins; TaxReleasedCoins=W.TaxReleasedCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         WoodStock[I]=W.Wood[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];

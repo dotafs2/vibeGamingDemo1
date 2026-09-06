@@ -364,7 +364,7 @@ void AHearthVillage::ResetVillageState()
     for(auto& Mesh:PublicMeshes) if(IsValid(Mesh.Get())) Mesh->DestroyComponent();
     PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); StructurePlans.Reset(); PublicVisualCount=-1; PublicScheduleTimer=0;
     Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
-    TreasuryCoins=500; TaxProjectCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
+    TreasuryCoins=500; TaxProjectCoins=0; TaxReleasedCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
     bSocialOpen=false; ++SocialRevision;
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; NextTradeAt=8.f; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
@@ -864,6 +864,7 @@ FString AHearthVillage::GetSnapshot() const
     Root->SetNumberField(TEXT("treasury_coins"),TreasuryCoins);
     Root->SetNumberField(TEXT("tax_rate_percent"),TaxRatePercent);
     Root->SetNumberField(TEXT("tax_project_coins"),TaxProjectCoins);
+    Root->SetNumberField(TEXT("tax_released_coins"),TaxReleasedCoins);
     Root->SetNumberField(TEXT("tax_assessments"),TaxAssessments.Num());
     TArray<TSharedPtr<FJsonValue>> Economy;
     for(const auto& T:Transactions)

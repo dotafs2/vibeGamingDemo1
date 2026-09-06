@@ -281,6 +281,7 @@ public:
     UPROPERTY(BlueprintReadOnly) int32 BeamStock=0;
     UPROPERTY(BlueprintReadOnly) int32 TreasuryCoins=500;
     UPROPERTY(BlueprintReadOnly) int32 TaxProjectCoins=0;
+    UPROPERTY(BlueprintReadOnly) int32 TaxReleasedCoins=0;
     UPROPERTY(BlueprintReadOnly) int32 TaxRatePercent=25;
     TArray<FHearthTransaction> Transactions;
     TArray<FHearthTaxAssessment> TaxAssessments;

@@ -193,9 +193,18 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
         if (!SettleWage(Worker, R.ActiveTaskId)) { R.Timer = 0.1f; return; }
         for (int32 M = 0; M < 3; ++M) { if (M == 0) Spent[2] += Part->Delivered[M]; else ManufacturedSpent[M - 1] += Part->Delivered[M]; Part->Delivered[M] = 0; }
         Part->Status = TEXT("completed"); Part->Worker = -1; ++PublicProject.Completed;
-        R.LatestEvent = TEXT("公共城墙构件已安装并结算税收工资。");
+        int32 Released = 0;
+        if (PublicProject.Completed >= PublicProject.Parts.Num())
+        {
+            PublicProject.Status = TEXT("completed");
+            Released = TaxProjectCoins;
+            TaxReleasedCoins += TaxProjectCoins;
+            TaxProjectCoins = 0;
+        }
+        R.LatestEvent = Released>0
+            ? FString::Printf(TEXT("公共城墙构件已安装，项目 %s 完工；%d 枚未用税金解除专款保护。"),*PublicProject.Id,Released)
+            : TEXT("公共城墙构件已安装并结算税收工资。");
         CompleteHistory(Worker,R.LatestEvent); ReturnTool(Worker); ClearPublicResident(R);
-        if (PublicProject.Completed >= PublicProject.Parts.Num()) PublicProject.Status = TEXT("completed");
         VillageEvent = R.Name + TEXT("：") + R.LatestEvent; return;
     }
 }

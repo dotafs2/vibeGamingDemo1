@@ -128,7 +128,7 @@ namespace HearthWorld
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision); NUM(Elapsed); NUM(Speed); NUM(Remainder);
         NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone); NUM(Planks); NUM(Beams); NUM(TreasuryCoins);
-        if(W.Schema>=6) { NUM(TaxProjectCoins); NUM(TaxRatePercent); }
+        if(W.Schema>=6) { NUM(TaxProjectCoins); NUM(TaxReleasedCoins); NUM(TaxRatePercent); }
         J->SetNumberField(TEXT("ProducedPlanks"),W.Manufactured[0]); J->SetNumberField(TEXT("ProducedBeams"),W.Manufactured[1]);
         J->SetNumberField(TEXT("SpentPlanks"),W.ManufacturedSpent[0]); J->SetNumberField(TEXT("SpentBeams"),W.ManufacturedSpent[1]);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
@@ -311,6 +311,7 @@ namespace HearthWorld
         FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,9);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         const bool HasTaxes=W.Schema>=6 || Root->HasField(TEXT("tax_assessments"));
+        const bool HasTaxReleaseField=Root->HasField(TEXT("TaxReleasedCoins"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
         if(W.PlotCount!=3 && W.PlotCount!=10) return false;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
@@ -321,7 +322,7 @@ namespace HearthWorld
         if(W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"))) NUM(TreasuryCoins,0,1e8);
         if(HasTaxes)
         {
-            NUM(TaxProjectCoins,0,1e8); NUM(TaxRatePercent,0,100);
+            NUM(TaxProjectCoins,0,1e8); if(HasTaxReleaseField) NUM(TaxReleasedCoins,0,1e8); NUM(TaxRatePercent,0,100);
             const auto& Remainders=C.Array(TEXT("tax_remainders"),10); if(Remainders.Num()!=W.PlotCount) return false;
             for(int32 I=0;I<W.PlotCount;++I) { double N=0; if(!Remainders[I]->TryGetNumber(N) || N<0 || N>=100 || N!=FMath::FloorToDouble(N)) return false; W.TaxRemainders[I]=static_cast<int32>(N); }
         }
@@ -513,6 +514,14 @@ namespace HearthWorld
             C.Good&=P.Good;
         }
         else if(W.Schema>=8) C.Good=false;
+        // Saves written before tax-release accounting kept completed-project
+        // reserves protected forever. Reclassify that existing cash on load;
+        // treasury does not change because this is only a fund designation.
+        if(HasTaxes && !HasTaxReleaseField && W.PublicProject.Status==TEXT("completed"))
+        {
+            W.TaxReleasedCoins=W.TaxProjectCoins;
+            W.TaxProjectCoins=0;
+        }
         if(W.Schema>=9)
         {
             for(const auto& V:C.Array(TEXT("structure_plans"),100))
@@ -876,7 +885,9 @@ namespace HearthWorld
         if(W.Schema>=4) for(const auto& T:W.Transactions) if(T.Kind==TEXT("plank_trade") && !TradeIds.Contains(T.TaskId)) return false;
         if(HasEconomy)
         {
-            if(W.TreasuryCoins!=ExpectedTreasury || (HasTaxes && (W.TaxProjectCoins!=CollectedTax || W.TaxProjectCoins>W.TreasuryCoins))) return Reject(FString::Printf(TEXT("资金守恒：国库 %d/%lld，项目税金 %d/%lld"),W.TreasuryCoins,ExpectedTreasury,W.TaxProjectCoins,CollectedTax));
+            const int64 AccountedTax=static_cast<int64>(W.TaxProjectCoins)+W.TaxReleasedCoins;
+            if(W.TreasuryCoins!=ExpectedTreasury || (HasTaxes && (AccountedTax!=CollectedTax || W.TaxProjectCoins>W.TreasuryCoins)))
+                return Reject(FString::Printf(TEXT("资金守恒：国库 %d/%lld，项目税金 %d + 已释放 %d/%lld"),W.TreasuryCoins,ExpectedTreasury,W.TaxProjectCoins,W.TaxReleasedCoins,CollectedTax));
             for(int32 I=0;I<W.PlotCount;++I) if(W.People[I].Person.Coins!=ExpectedWallets[I]) return Reject(FString::Printf(TEXT("居民资金守恒 %d：%d/%lld"),I,W.People[I].Person.Coins,ExpectedWallets[I]));
         }
         if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0

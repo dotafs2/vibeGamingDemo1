@@ -64,6 +64,25 @@ bool FHearthPublicWallTest::RunTest(const FString&)
     Village->AdvancePublicWorker(0, 0.f);
     TestEqual(TEXT("Malformed return phase cancels instead of taking phantom cargo"), Village->Residents[0].Task, EHearthTask::LifeChoosing);
     TestEqual(TEXT("Malformed return phase refunds stock"), Village->PublicProject.Stock[0], 1);
+
+    // Completing the final part must unlock every unspent project-tax coin for
+    // ordinary village production. The release is a reclassification, so it
+    // cannot change the treasury balance.
+    auto& FinalPart = Village->PublicProject.Parts[0];
+    const FString FinalTask = FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    Village->PublicProject.Status = TEXT("building"); Village->PublicProject.Completed = 0;
+    Village->TaxProjectCoins = 4; Village->TaxReleasedCoins = 0;
+    TestTrue(TEXT("Final public wage reserves from protected tax"), Village->ReserveWage(0, FinalTask, 2, true));
+    FinalPart.Status = TEXT("installing"); FinalPart.Worker = 0; FinalPart.TaskId = FinalTask;
+    FinalPart.Reserved[0] = 0; FinalPart.Delivered[0] = 1;
+    Village->Residents[0].Task = EHearthTask::PublicWork; Village->Residents[0].ActiveTaskId = FinalTask; Village->Residents[0].Timer = 0.f;
+    const int32 TreasuryBeforeCompletion = Village->TreasuryCoins;
+    Village->AdvancePublicWorker(0, 0.f);
+    TestEqual(TEXT("Final part completes the public project"), Village->PublicProject.Status, FString(TEXT("completed")));
+    TestEqual(TEXT("No completed-project tax remains protected"), Village->TaxProjectCoins, 0);
+    TestEqual(TEXT("Unspent project tax becomes released tax"), Village->TaxReleasedCoins, 2);
+    TestEqual(TEXT("Tax release itself does not mint or destroy treasury cash"), Village->TreasuryCoins, TreasuryBeforeCompletion);
+    TestEqual(TEXT("Released cash is available to general production"), Village->GeneralFunds(), Village->TreasuryCoins);
     return true;
 }
 #endif

@@ -10,8 +10,9 @@ bool AHearthVillage::PrepareIncomeTax(int32 Resident,int32 Gross,const FString& 
     const int64 Accrued=static_cast<int64>(Gross)*25+TaxRemainders[Resident];
     const int32 Tax=static_cast<int32>(Accrued/100);
     const int32 Required=(bIncomeRecorded?0:1)+(Tax>0?1:0);
-    if(Transactions.Num()>100000-Required || TreasuryCoins<0 || TaxProjectCoins<0
-        || static_cast<int64>(TreasuryCoins)+Tax>100000000 || static_cast<int64>(TaxProjectCoins)+Tax>100000000
+    const int32& ReceivingTaxFund=PublicProject.Status==TEXT("completed")?TaxReleasedCoins:TaxProjectCoins;
+    if(Transactions.Num()>100000-Required || TreasuryCoins<0 || TaxProjectCoins<0 || TaxReleasedCoins<0
+        || static_cast<int64>(TreasuryCoins)+Tax>100000000 || static_cast<int64>(ReceivingTaxFund)+Tax>100000000
         || static_cast<int64>(Residents[Resident].Coins)+(bIncomeRecorded?0:Gross)>100000000
         || (bIncomeRecorded && Residents[Resident].Coins<Tax)) return false;
     Out.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Out.SourceTransactionId=SourceId;
@@ -33,10 +34,11 @@ void AHearthVillage::CommitIncomeTax(const FHearthTaxAssessment& A)
         || TaxAssessments.ContainsByPredicate([&](const auto& Existing)
             { return Existing.Id==A.Id || Existing.SourceTransactionId==A.SourceTransactionId; })
         || Residents[A.Resident].Coins<A.Tax
-        || TreasuryCoins<0 || TaxProjectCoins<0
+        || TreasuryCoins<0 || TaxProjectCoins<0 || TaxReleasedCoins<0
         || static_cast<int64>(TreasuryCoins)+A.Tax>100000000
-        || static_cast<int64>(TaxProjectCoins)+A.Tax>100000000) return;
-    Residents[A.Resident].Coins-=A.Tax; TreasuryCoins+=A.Tax; TaxProjectCoins+=A.Tax;
+        || static_cast<int64>(PublicProject.Status==TEXT("completed")?TaxReleasedCoins:TaxProjectCoins)+A.Tax>100000000) return;
+    Residents[A.Resident].Coins-=A.Tax; TreasuryCoins+=A.Tax;
+    if(PublicProject.Status==TEXT("completed")) TaxReleasedCoins+=A.Tax; else TaxProjectCoins+=A.Tax;
     TaxRemainders[A.Resident]=A.RemainderAfter; TaxAssessments.Add(A);
     if(A.Tax>0)
     {
