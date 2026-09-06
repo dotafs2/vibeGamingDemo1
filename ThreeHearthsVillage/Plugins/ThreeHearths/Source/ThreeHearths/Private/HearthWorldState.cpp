@@ -190,6 +190,7 @@ namespace HearthWorld
         {
             auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),P.Id); Entry->SetStringField(TEXT("task_id"),P.TaskId);
             Entry->SetStringField(TEXT("status"),P.Status); Entry->SetNumberField(TEXT("worker"),P.Worker); Entry->SetNumberField(TEXT("amount"),P.Amount);
+            if(W.Schema>=7) Entry->SetBoolField(TEXT("tax_funded"),P.bTaxFunded);
             Payables.Add(MakeShared<FJsonValueObject>(Entry));
         }
         for(const auto& T:W.TradeOffers)
@@ -212,7 +213,7 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,6);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,7);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         const bool HasTaxes=W.Schema>=6 || Root->HasField(TEXT("tax_assessments"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
@@ -380,7 +381,8 @@ namespace HearthWorld
                 for(const auto& V:C.Array(TEXT("wage_payables"),100000))
                 {
                     FHearthWagePayable S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("task_id"),S.TaskId); P.Str(TEXT("status"),S.Status);
-                    P.Num(TEXT("worker"),S.Worker,0,W.PlotCount-1); P.Num(TEXT("amount"),S.Amount,1,1000); C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
+                    P.Num(TEXT("worker"),S.Worker,0,W.PlotCount-1); P.Num(TEXT("amount"),S.Amount,1,1000);
+                    if(W.Schema>=7) P.Bool(TEXT("tax_funded"),S.bTaxFunded); C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
                 }
                 for(const auto& V:C.Array(TEXT("trade_offers"),100000))
                 {
@@ -544,8 +546,10 @@ namespace HearthWorld
             if(T.To<0) ExpectedTreasury+=T.Amount; else ExpectedWallets[T.To]+=T.Amount;
             if(ExpectedTreasury<0 || ExpectedWallets.ContainsByPredicate([](int64 Balance) { return Balance<0; })) return false;
         }
+        int64 CollectedTax=0;
         if(HasTaxes)
         {
+            if(W.TaxRatePercent!=25) return false;
             TSet<FString> AssessedSources; int32 ExpectedRemainders[10]={0,0,0,0,0,0,0,0,0,0}; int64 Collected=0;
             for(const auto& A:W.TaxAssessments)
             {
@@ -561,13 +565,14 @@ namespace HearthWorld
             }
             if(W.Schema>=6) for(const auto& T:W.Transactions) if((T.Kind==TEXT("wage") || T.Kind==TEXT("plank_trade")) && !AssessedSources.Contains(T.Id)) return false;
             for(int32 I=0;I<W.PlotCount;++I) if(W.TaxRemainders[I]!=ExpectedRemainders[I]) return false;
-            if(W.TaxProjectCoins!=Collected) return false;
+            CollectedTax=Collected;
         }
         TMap<FString,const FHearthWagePayable*> PayableByTask;
         for(const auto& P:W.WagePayables)
         {
             if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=W.PlotCount
-                || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("unfunded") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid"))) return false;
+                || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("unfunded") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid") && !(P.bTaxFunded && P.Status==TEXT("cancelled")))) return false;
+            if(P.bTaxFunded && (P.Status==TEXT("reserved") || P.Status==TEXT("paid"))) CollectedTax-=P.Amount;
             PayableByTask.Add(P.TaskId,&P);
             const auto* Wage=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Kind==TEXT("wage") && T.TaskId==P.TaskId; });
             if(P.Status==TEXT("paid") && (!Wage || Wage->To!=P.Worker || Wage->Amount!=P.Amount)) return false;
@@ -613,7 +618,7 @@ namespace HearthWorld
         if(W.Schema>=4) for(const auto& T:W.Transactions) if(T.Kind==TEXT("plank_trade") && !TradeIds.Contains(T.TaskId)) return false;
         if(HasEconomy)
         {
-            if(W.TreasuryCoins!=ExpectedTreasury) return false;
+            if(W.TreasuryCoins!=ExpectedTreasury || (HasTaxes && (W.TaxProjectCoins!=CollectedTax || W.TaxProjectCoins>W.TreasuryCoins))) return false;
             for(int32 I=0;I<W.PlotCount;++I) if(W.People[I].Person.Coins!=ExpectedWallets[I]) return false;
         }
         if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0

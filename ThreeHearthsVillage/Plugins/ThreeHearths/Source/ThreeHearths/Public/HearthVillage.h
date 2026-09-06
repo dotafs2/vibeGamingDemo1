@@ -108,6 +108,7 @@ struct FHearthWagePayable
 {
     FString Id, TaskId, Status=TEXT("reserved");
     int32 Worker=-1, Amount=0;
+    bool bTaxFunded=false;
 };
 struct FHearthTradeOffer
 {
@@ -283,6 +284,8 @@ private:
     friend class FHearthToolOwnershipTest;
     friend class FHearthDerivedMaterialsTest;
     friend class FHearthEconomyPersistenceTest;
+    friend class FHearthProjectFinanceTest;
+    friend class FHearthPublicWallTest;
     friend class FHearthLegacyUnfundedWageTest;
     friend class FHearthModularCottageTest;
     friend class FHearthSocietyPopulationTest;
@@ -328,8 +331,12 @@ private:
     void EnsureCottageComponents(FHearthSite& Site) const;
     bool TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity);
     bool AssessIncomeTax(int32 Resident,const FString& SourceTransactionId);
+    bool PrepareIncomeTax(int32 Resident,int32 Gross,const FString& SourceId,bool bIncomeRecorded,FHearthTaxAssessment& Out) const;
+    void CommitIncomeTax(const FHearthTaxAssessment& Assessment);
+    int32 GeneralFunds() const { return FMath::Max(0,TreasuryCoins-TaxProjectCoins); }
+    bool CancelWage(const FString& TaskId);
     int32 WageForOperation(int32 Operation) const;
-    bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount);
+    bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded=false);
     bool SettleWage(int32 Worker,const FString& TaskId);
     void AdvanceEconomy(float Dt);
     void AppendProductionContext(const TSharedRef<FJsonObject>& Context) const;

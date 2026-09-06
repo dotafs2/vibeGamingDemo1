@@ -143,12 +143,12 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     R.Task=EHearthTask::ProductionWork; R.ProductionSite=0; R.ProductionOp=10; R.WorkDuration=10.f;
     const FString ActiveTask=R.ActiveTaskId; const int32 ActiveWage=V->WageForOperation(R.ProductionOp);
     if(!TestTrue(TEXT("Legacy worker has a reserved wage before conversion"),V->ReserveWage(0,ActiveTask,ActiveWage))) return false;
-    while(V->TreasuryCoins>=3)
+    while(V->GeneralFunds()>=3)
     {
         const FString Task=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if(!V->ReserveWage(1,Task,3) || !V->SettleWage(1,Task)) return false;
     }
-    while(V->TreasuryCoins>=2)
+    while(V->GeneralFunds()>=2)
     {
         const FString Task=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if(!V->ReserveWage(1,Task,2) || !V->SettleWage(1,Task)) return false;
@@ -161,7 +161,7 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     Old.Transactions.Add(LegacySpend); Old.People[1].Person.Coins+=ActiveWage;
     FHearthWagePayable LegacyPaid; LegacyPaid.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); LegacyPaid.TaskId=LegacySpend.TaskId;
     LegacyPaid.Worker=1; LegacyPaid.Amount=ActiveWage; LegacyPaid.Status=TEXT("paid"); Old.WagePayables.Add(LegacyPaid);
-    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":6"),TEXT("\"schema\":3"));
+    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":7"),TEXT("\"schema\":3"));
     if(!TestTrue(TEXT("Valid schema-3 world migrates"),V->ApplyWorldState(Legacy,Error))) { AddError(Error); return false; }
     auto* Payable=V->WagePayables.FindByPredicate([&](const FHearthWagePayable& P){ return P.TaskId==ActiveTask; });
     if(!TestNotNull(TEXT("Migration creates a payable for unfinished work"),Payable)) return false;

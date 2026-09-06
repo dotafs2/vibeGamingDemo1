@@ -13,7 +13,7 @@ struct FHearthSavedResident
 struct FHearthWorldImage
 {
     FString Id, Run, Event;
-    int32 Schema=6, PlotCount=3;
+    int32 Schema=7, PlotCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;

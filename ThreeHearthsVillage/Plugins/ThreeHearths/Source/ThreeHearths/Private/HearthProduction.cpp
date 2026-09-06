@@ -264,7 +264,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     {
         if(S.BuildPlanId.IsEmpty()) { S.BuildPlanId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); S.Owner=Index; }
         EnsureCottageComponents(S); auto* Part=S.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
-        if(!Part) { ReturnTool(Index); TreasuryCoins+=WageForOperation(Op); WagePayables.RemoveAll([&](const auto& P){return P.TaskId==R.ActiveTaskId;}); R.ActiveTaskId.Empty(); return false; }
+        if(!Part) { ReturnTool(Index); CancelWage(R.ActiveTaskId); R.ActiveTaskId.Empty(); return false; }
         const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount; Part->Status=TEXT("reserved"); Part->ReservedBy=Index; Part->Owner=S.Owner;
         R.ProductionComponentId=Part->Id;
         if(Type==2) StoneStock-=Amount; else if(Type==3) PlankStock-=Amount; else BeamStock-=Amount;
@@ -417,11 +417,7 @@ bool AHearthVillage::CancelProduction(int32 Index)
     const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount;
     if(Type==2) StoneStock+=Amount; else if(Type==3) PlankStock+=Amount; else if(Type==4) BeamStock+=Amount;
     Part->Status=TEXT("waiting_material"); Part->ReservedBy=-1;
-    if(auto* Payable=WagePayables.FindByPredicate([&](const auto& P){ return P.TaskId==R.ActiveTaskId; }))
-    {
-        if(Payable->Status==TEXT("reserved")) TreasuryCoins+=Payable->Amount;
-        if(Payable->Status!=TEXT("paid")) WagePayables.RemoveAll([&](const auto& P){ return P.TaskId==R.ActiveTaskId; });
-    }
+    CancelWage(R.ActiveTaskId);
     S.ReservedBy=-1; S.Progress=0; R.CargoType=-1; R.CargoAmount=0; R.ProductionComponentId.Empty(); R.Route.Reset(); ReturnTool(Index);
     R.Task=EHearthTask::LifeChoosing; R.ProductionSite=-1; R.ProductionOp=-1; R.WorkDuration=0; R.NextLifeDecision=Elapsed+LifeDecisionInterval;
     R.LatestEvent=TEXT("施工取消：未安装构件已退回公共库存，未赚取的工资也已解除预留。");
@@ -442,87 +438,14 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
     R.ProductionSite=-1; R.ProductionOp=-1; R.ProductionComponentId.Empty(); R.WorkDuration=0; VillageEvent=R.Name+TEXT("：")+Result;
 }
 
-bool AHearthVillage::TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity)
-{
-    FGuid ParsedTask;
-    const bool Purchase=Kind==TEXT("food_purchase") && From>=0 && To==-1 && Item==TEXT("food") && Quantity==1 && Amount==1;
-    const bool Trade=Kind==TEXT("plank_trade") && From>=0 && To>=0 && Item==TEXT("plank") && Quantity==1 && Amount==2;
-    if(!FGuid::Parse(TaskId,ParsedTask) || !ParsedTask.IsValid() || From<-1 || To<-1 || From==To || From>=Residents.Num() || To>=Residents.Num()
-        || (!Purchase && !Trade) || Transactions.Num()>=100000) return false;
-    if(Transactions.ContainsByPredicate([&](const FHearthTransaction& T) { return T.Kind==Kind && T.TaskId==TaskId; })) return false;
-    const int32 Balance=From<0?TreasuryCoins:Residents[From].Coins;
-    if(Balance<Amount) return false;
-    if(From<0) TreasuryCoins-=Amount; else Residents[From].Coins-=Amount;
-    if(To<0) TreasuryCoins+=Amount; else Residents[To].Coins+=Amount;
-    FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=Kind; T.TaskId=TaskId;
-    T.From=From; T.To=To; T.Amount=Amount; T.Item=Item; T.Quantity=Quantity; T.At=Elapsed; const FString SourceId=T.Id; Transactions.Add(MoveTemp(T));
-    if(Trade && !AssessIncomeTax(To,SourceId)) return false;
-    return true;
-}
-
-bool AHearthVillage::AssessIncomeTax(int32 Resident,const FString& SourceTransactionId)
-{
-    if(!Residents.IsValidIndex(Resident) || TaxRatePercent<0 || TaxRatePercent>100 || TaxAssessments.Num()>=100000) return false;
-    if(TaxAssessments.ContainsByPredicate([&](const FHearthTaxAssessment& T) { return T.SourceTransactionId==SourceTransactionId; })) return false;
-    const auto* Source=Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Id==SourceTransactionId; });
-    if(!Source || Source->To!=Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade")) || Source->Amount<=0) return false;
-    const int32 Gross=Source->Amount,Before=TaxRemainders[Resident];
-    const int64 Accrued=static_cast<int64>(Gross)*TaxRatePercent+Before;
-    const int32 Tax=static_cast<int32>(Accrued/100),After=static_cast<int32>(Accrued%100);
-    if(Tax>Residents[Resident].Coins) return false;
-    Residents[Resident].Coins-=Tax; TreasuryCoins+=Tax; TaxProjectCoins+=Tax; TaxRemainders[Resident]=After;
-    FHearthTaxAssessment A; A.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); A.SourceTransactionId=SourceTransactionId;
-    A.Resident=Resident; A.Gross=Gross; A.Tax=Tax; A.Net=Gross-Tax; A.RemainderBefore=Before; A.RemainderAfter=After; A.At=Elapsed;
-    TaxAssessments.Add(MoveTemp(A));
-    if(Tax>0)
-    {
-        FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=TEXT("income_tax"); T.TaskId=SourceTransactionId;
-        T.From=Resident; T.To=-1; T.Amount=Tax; T.Item=TEXT("income_tax"); T.Quantity=1; T.At=Elapsed; Transactions.Add(MoveTemp(T));
-    }
-    return true;
-}
-
-int32 AHearthVillage::WageForOperation(int32 Operation) const { return Operation>=13?3:2; }
-
-bool AHearthVillage::ReserveWage(int32 Worker,const FString& TaskId,int32 Amount)
-{
-    FGuid ParsedTask;
-    if(!Residents.IsValidIndex(Worker) || !FGuid::Parse(TaskId,ParsedTask) || !ParsedTask.IsValid() || (Amount!=2 && Amount!=3) || TreasuryCoins<Amount
-        || WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P) { return P.TaskId==TaskId; })) return false;
-    TreasuryCoins-=Amount;
-    FHearthWagePayable P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); P.TaskId=TaskId; P.Worker=Worker; P.Amount=Amount;
-    WagePayables.Add(MoveTemp(P)); return true;
-}
-
-bool AHearthVillage::SettleWage(int32 Worker,const FString& TaskId)
-{
-    auto* P=WagePayables.FindByPredicate([&](const FHearthWagePayable& X) { return X.TaskId==TaskId; });
-    if(!P || P->Worker!=Worker || !Residents.IsValidIndex(Worker) || Transactions.Num()>=100000) return false;
-    if(P->Status==TEXT("unfunded"))
-    {
-        if(TreasuryCoins<P->Amount) { P->Status=TEXT("owed"); return false; }
-        TreasuryCoins-=P->Amount; P->Status=TEXT("reserved");
-    }
-    if(P->Status==TEXT("owed"))
-    {
-        if(TreasuryCoins<P->Amount) return false;
-        TreasuryCoins-=P->Amount; P->Status=TEXT("reserved");
-    }
-    if(P->Status!=TEXT("reserved")) return false;
-    Residents[Worker].Coins+=P->Amount; P->Status=TEXT("paid");
-    FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=TEXT("wage"); T.TaskId=TaskId;
-    T.From=-1; T.To=Worker; T.Amount=P->Amount; T.Item=TEXT("labor"); T.Quantity=1; T.At=Elapsed; const FString SourceId=T.Id; Transactions.Add(MoveTemp(T));
-    return AssessIncomeTax(Worker,SourceId);
-}
-
 void AHearthVillage::AdvanceEconomy(float Dt)
 {
-    for(auto& P:WagePayables) if(P.Status==TEXT("owed") && TreasuryCoins>=P.Amount) SettleWage(P.Worker,P.TaskId);
-    for(auto& P:WagePayables) if(P.Status==TEXT("unfunded") && TreasuryCoins>=P.Amount)
+    for(auto& P:WagePayables) if(P.Status==TEXT("owed") && (P.bTaxFunded?TaxProjectCoins:GeneralFunds())>=P.Amount) SettleWage(P.Worker,P.TaskId);
+    for(auto& P:WagePayables) if(P.Status==TEXT("unfunded") && (P.bTaxFunded?TaxProjectCoins:GeneralFunds())>=P.Amount)
     {
         const bool StillWorking=Residents.IsValidIndex(P.Worker) && Residents[P.Worker].ActiveTaskId==P.TaskId
             && Residents[P.Worker].Task>=EHearthTask::ProductionTravel && Residents[P.Worker].Task<=EHearthTask::ProductionDeposit;
-        if(StillWorking) { TreasuryCoins-=P.Amount; P.Status=TEXT("reserved"); }
+        if(StillWorking) { TreasuryCoins-=P.Amount; if(P.bTaxFunded) TaxProjectCoins-=P.Amount; P.Status=TEXT("reserved"); }
     }
     for(auto& Offer:TradeOffers)
     {
