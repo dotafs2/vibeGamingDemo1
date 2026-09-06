@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "kit_id": "wood_production_kit_01",
+  "reuse_count": 8,
+  "assets_copied": false,
+  "existing_assets_modified": false,
+  "visual_geometry_defines_recipe_quantities": false,
+  "references": [
+    {
+      "reference_id": "input_logs",
+      "source_kit": "VillageKit",
+      "asset_id": "carry_logs",
+      "asset_glb": "../VillageKit/modules/carry_logs.glb",
+      "role": "primary input-stock visual",
+      "resource_id_suggestion": "wood",
+      "bytes": 194728,
+      "sha256": "22081c8c7a4dc62d972524b6d262d852e9e597f659581cafc766285e71dc042e",
+      "triangles": 2820,
+      "bounds_authoring_m": [
+        [
+          -0.3867579996585846,
+          -0.20200002193450928,
+          0.0029999837279319763
+        ],
+        [
+          0.3867579996585846,
+          0.20200002193450928,
+          0.37700003385543823
+        ]
+      ],
+      "measured_size_m": [
+        0.773516,
+        0.404,
+        0.374
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.0029999837279319763,
+      "portable_pbr_verified": true,
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank",
+        "VK_Hemp_Rope"
+      ]
+    },
+    {
+      "reference_id": "output_planks",
+      "source_kit": "SocietyKit",
+      "asset_id": "goods_planks_bundle",
+      "asset_glb": "../SocietyKit/modules/goods_planks_bundle.glb",
+      "role": "primary output-stock visual",
+      "resource_id_suggestion": "planks",
+      "bytes": 94080,
+      "sha256": "a6fa6816b1ae7efa845a2b2bc9133055d8ffab0b35c14641f5b1b1710fd2f5c6",
+      "triangles": 1296,
+      "bounds_authoring_m": [
+        [
+          -0.44999998807907104,
+          -0.20749999582767487,
+          -0.012500002980232239
+        ],
+        [
+          0.44999998807907104,
+          0.20750001072883606,
+          0.2224999964237213
+        ]
+      ],
+      "measured_size_m": [
+        0.9,
+        0.415,
+        0.235
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": 0.012500002980232239,
+      "portable_pbr_verified": true,
+      "materials": [
+        "SK_Honey_Plank",
+        "SK_Cut_Oak",
+        "SK_Hemp_Rope"
+      ]
+    },
+    {
+      "reference_id": "output_beams",
+      "source_kit": "SocietyKit",
+      "asset_id": "goods_beams_bundle",
+      "asset_glb": "../SocietyKit/modules/goods_beams_bundle.glb",
+      "role": "primary output-stock visual",
+      "resource_id_suggestion": "timber_beams",
+      "bytes": 77516,
+      "sha256": "91d0a1f84ce842b096ca724e67e4402afce295e96e09980b61ad764beb76f675",
+      "triangles": 1080,
+      "bounds_authoring_m": [
+        [
+          -0.6000000238418579,
+          -0.22750000655651093,
+          -0.012500006705522537
+        ],
+        [
+          0.6000000238418579,
+          0.22750000655651093,
+          0.26249998807907104
+        ]
+      ],
+      "measured_size_m": [
+        1.2,
+        0.455,
+        0.275
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": 0.012500006705522537,
+      "portable_pbr_verified": true,
+      "materials": [
+        "SK_Honey_Plank",
+        "SK_Cut_Oak",
+        "SK_Hemp_Rope"
+      ]
+    },
+    {
+      "reference_id": "carpenter_bench",
+      "source_kit": "VillageKit",
+      "asset_id": "workbench_carpenter",
+      "asset_glb": "../VillageKit/modules/workbench_carpenter.glb",
+      "role": "existing facility visual",
+      "resource_id_suggestion": null,
+      "bytes": 112936,
+      "sha256": "1d967fc22e77e9e3980768f98c4282b173ffee9cdef545503533e0b5cd2b1294",
+      "triangles": 1552,
+      "bounds_authoring_m": [
+        [
+          -0.800000011920929,
+          -0.612500011920929,
+          0.0
+        ],
+        [
+          0.800000011920929,
+          0.3559999465942383,
+          0.9800000190734863
+        ]
+      ],
+      "measured_size_m": [
+        1.6,
+        0.9685,
+        0.98
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.0,
+      "portable_pbr_verified": true,
+      "materials": [
+        "VK_Cut_Oak",
+        "VK_Chestnut",
+        "VK_Honey_Plank",
+        "VK_Timber_Recess",
+        "VK_Forged_Iron"
+      ]
+    },
+    {
+      "reference_id": "saw",
+      "source_kit": "ToolKit",
+      "asset_id": "tool_saw",
+      "asset_glb": "../ToolKit/modules/tool_saw.glb",
+      "role": "existing work tool",
+      "resource_id_suggestion": null,
+      "bytes": 54604,
+      "sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c",
+      "triangles": 736,
+      "bounds_authoring_m": [
+        [
+          -0.34850001335144043,
+          -0.02850000187754631,
+          0.0
+        ],
+        [
+          0.34850001335144043,
+          0.02850000187754631,
+          0.19590628147125244
+        ]
+      ],
+      "measured_size_m": [
+        0.697,
+        0.057,
+        0.195906
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.0,
+      "portable_pbr_verified": true,
+      "materials": [
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Honey_Wood",
+        "TK_Brass_Pin",
+        "TK_Cream_Grip_Wrap"
+      ]
+    },
+    {
+      "reference_id": "axe",
+      "source_kit": "ToolKit",
+      "asset_id": "tool_axe",
+      "asset_glb": "../ToolKit/modules/tool_axe.glb",
+      "role": "existing hewing tool",
+      "resource_id_suggestion": null,
+      "bytes": 58564,
+      "sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f",
+      "triangles": 1176,
+      "bounds_authoring_m": [
+        [
+          -0.14875000715255737,
+          -0.03400000184774399,
+          0.0
+        ],
+        [
+          0.14875000715255737,
+          0.03400000184774399,
+          0.7554337978363037
+        ]
+      ],
+      "measured_size_m": [
+        0.2975,
+        0.068,
+        0.755434
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.0,
+      "portable_pbr_verified": true,
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Iron_Recess",
+        "TK_Brass_Pin"
+      ]
+    },
+    {
+      "reference_id": "portable_planks",
+      "source_kit": "VillageKit",
+      "asset_id": "carry_planks",
+      "asset_glb": "../VillageKit/modules/carry_planks.glb",
+      "role": "alternative smaller carry pack",
+      "resource_id_suggestion": "planks",
+      "bytes": 94020,
+      "sha256": "7e6408af8b50f96b9a3bd01f33fc3ddc0be6fdfa0c5feed648e24bec205d4ed2",
+      "triangles": 1296,
+      "bounds_authoring_m": [
+        [
+          -0.38999998569488525,
+          -0.18549999594688416,
+          0.005000002682209015
+        ],
+        [
+          0.38999998569488525,
+          0.18549996614456177,
+          0.2510000169277191
+        ]
+      ],
+      "measured_size_m": [
+        0.78,
+        0.371,
+        0.246
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.005000002682209015,
+      "portable_pbr_verified": true,
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Cut_Oak",
+        "VK_Hemp_Rope"
+      ]
+    },
+    {
+      "reference_id": "installed_beam",
+      "source_kit": "VillageKit",
+      "asset_id": "beam_timber_2m",
+      "asset_glb": "../VillageKit/modules/beam_timber_2m.glb",
+      "role": "installed structural counterpart, not a stock pack",
+      "resource_id_suggestion": "timber_beams",
+      "bytes": 8940,
+      "sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921",
+      "triangles": 108,
+      "bounds_authoring_m": [
+        [
+          -0.9100000262260437,
+          -0.09000000357627869,
+          0.0
+        ],
+        [
+          0.9100000262260437,
+          0.09000000357627869,
+          0.20000000298023224
+        ]
+      ],
+      "measured_size_m": [
+        1.82,
+        0.18,
+        0.2
+      ],
+      "origin_policy": "Preserve source origin; do not recenter existing assets.",
+      "floor_placement_z_offset_m": -0.0,
+      "portable_pbr_verified": true,
+      "materials": [
+        "VK_Chestnut"
+      ]
+    }
+  ],
+  "selection_note": "Reuse existing logs, plank and beam stock, bench and tools. Only two missing static intermediate states are new.",
+  "runtime_integration_verified": false
+}

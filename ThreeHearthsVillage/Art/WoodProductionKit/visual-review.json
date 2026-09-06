@@ -1,0 +1,18 @@
+{
+  "reviewed_images": [
+    {
+      "sha256": "1b5728fb262fa1be3022b66143b78b3bbc340a6087f241bb885c8de5fe018b16",
+      "file": "previews/WoodProduction_originals.png",
+      "notes": "Both originals fully framed. Actual longitudinal saw slots and partial flattened beam faces are visible; warm wood palette matches existing assets."
+    },
+    {
+      "sha256": "a0ffedfe0fa99d23f8a93280569a2cbdb12780b24fa13caaa2351766d93c8d1a",
+      "file": "previews/WoodProduction_production.png",
+      "notes": "Both static production branches use existing stock, carpenter bench, saw and axe. Headings and branch labels are clear of table occlusion. No runtime gameplay is shown."
+    }
+  ],
+  "existing_assets_modified": false,
+  "runtime_inventory_or_animation_reviewed": false,
+  "source_blend_sha256": "f8b08f342d71e067fdb0fc07b304fb22bf4ff91c58b828fd5d272c44519ba3a6",
+  "originals_and_reuse_production_preview_reviewed": true
+}

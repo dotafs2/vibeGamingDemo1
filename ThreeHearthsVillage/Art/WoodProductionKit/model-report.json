@@ -1,0 +1,69 @@
+{
+  "kit_id": "wood_production_kit_01",
+  "built_via": "Blender MCP execute_blender_code",
+  "blender_version": "5.2.0 LTS",
+  "new_module_count": 2,
+  "reuses_existing_stock_tools_and_bench": true,
+  "modules": [
+    {
+      "id": "wip_log_to_planks",
+      "triangles": 484,
+      "size_m": [
+        0.74,
+        0.226,
+        0.226
+      ],
+      "bounds_min_m": [
+        -0.37,
+        -0.113,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.37,
+        0.113,
+        0.226
+      ],
+      "materials": [
+        "WP_Warm_Chestnut_Bark",
+        "WP_Bark_Facet",
+        "WP_Fresh_Oak_Cut",
+        "WP_Honey_Heartwood",
+        "WP_Inner_Kerf",
+        "WP_Fresh_Oak_Cut"
+      ],
+      "uv_layers": 1,
+      "bytes": 34284
+    },
+    {
+      "id": "wip_log_to_beam",
+      "triangles": 354,
+      "size_m": [
+        0.74,
+        0.226,
+        0.226
+      ],
+      "bounds_min_m": [
+        -0.37,
+        -0.113,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.37,
+        0.113,
+        0.226
+      ],
+      "materials": [
+        "WP_Warm_Chestnut_Bark",
+        "WP_Bark_Facet",
+        "WP_Fresh_Oak_Cut",
+        "WP_Honey_Heartwood",
+        "WP_Inner_Kerf",
+        "WP_Fresh_Oak_Cut"
+      ],
+      "uv_layers": 1,
+      "bytes": 24436
+    }
+  ],
+  "total_triangles": 838,
+  "generation_seconds": 0.105
+}

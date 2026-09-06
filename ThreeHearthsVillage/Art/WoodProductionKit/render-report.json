@@ -1,0 +1,30 @@
+{
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 24,
+  "views": {
+    "originals": {
+      "file": "previews/WoodProduction_originals.png",
+      "resolution": [
+        1700,
+        1150
+      ],
+      "seconds": 52.173,
+      "source_assets_reused_by_path": false,
+      "existing_source_files_modified": false,
+      "runtime_integration_shown": false
+    },
+    "production": {
+      "file": "previews/WoodProduction_production.png",
+      "resolution": [
+        1900,
+        1450
+      ],
+      "seconds": 94.578,
+      "source_assets_reused_by_path": true,
+      "existing_source_files_modified": false,
+      "runtime_integration_shown": false
+    }
+  }
+}

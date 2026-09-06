@@ -1,0 +1,120 @@
+{
+  "kit_id": "wood_production_kit_01",
+  "artifacts": [
+    {
+      "file": "create_wood_production_kit.py",
+      "bytes": 8568,
+      "sha256": "eda7871a1c296a8a783be48d1a6931efd58bbc9e11760ea5f897d0dbe103e440"
+    },
+    {
+      "file": "mcp/generate-request.json",
+      "bytes": 364,
+      "sha256": "f0e96f4ce1bcc85f37182008c9ccfe2b680893333751809073e8abe093b3baff"
+    },
+    {
+      "file": "mcp/render-originals-request.json",
+      "bytes": 400,
+      "sha256": "bfc4820363b531a9aa7067802b22dbae047f58f1062f64cbd0aa42d15e41342b"
+    },
+    {
+      "file": "mcp/render-production-request.json",
+      "bytes": 476,
+      "sha256": "2343947dcaa9f88ef7b0f7fbbbc82c20b7ee184f86fde2288c858458edafa56d"
+    },
+    {
+      "file": "mcp/source-audit-request.json",
+      "bytes": 1231,
+      "sha256": "78593cb4ab50e61e0410c947fbc467e05e360717274ec1807cee5f7bb3518ef6"
+    },
+    {
+      "file": "model-report.json",
+      "bytes": 1409,
+      "sha256": "970dd2c0b2971ceef7a6567bd3c687ee00f8ccc1107d23b3a53d6fba587bd990"
+    },
+    {
+      "file": "module-specs.json",
+      "bytes": 2146,
+      "sha256": "8661fd36539e353a90fb3e6eac964f71061acc702363c127285fd850a40b856d"
+    },
+    {
+      "file": "modules/wip_log_to_beam.glb",
+      "bytes": 24436,
+      "sha256": "63917ac523b0123a1e99800e620e22500e784c4bf108ec1a15a8abc42801d78c"
+    },
+    {
+      "file": "modules/wip_log_to_planks.glb",
+      "bytes": 34284,
+      "sha256": "99345ee722159c6c5582b0050dbe2b2412e8fc8202768e0000db2ceb7679e10c"
+    },
+    {
+      "file": "previews/WoodProduction_originals.png",
+      "bytes": 2038473,
+      "sha256": "1b5728fb262fa1be3022b66143b78b3bbc340a6087f241bb885c8de5fe018b16"
+    },
+    {
+      "file": "previews/WoodProduction_production.png",
+      "bytes": 2987313,
+      "sha256": "a0ffedfe0fa99d23f8a93280569a2cbdb12780b24fa13caaa2351766d93c8d1a"
+    },
+    {
+      "file": "production-layout.json",
+      "bytes": 1917,
+      "sha256": "e8c5d3b0bdef14684e4e7744d736d47afb44a00432bac20b86dd700e8fd07e20"
+    },
+    {
+      "file": "README.md",
+      "bytes": 5650,
+      "sha256": "1c87b71fc22fbaa278a6ec6c77ea5643ad15a57d2a5bd1b3b5eb27e64de846d6"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 719,
+      "sha256": "b2b303f64ab4609d4a6242ad2c4af2db7446703c64cc875ebb4e5c9006f66cfd"
+    },
+    {
+      "file": "render_wood_production_kit.py",
+      "bytes": 8163,
+      "sha256": "83c3cc608aed13f40d73690de930a9293eb71738f9dbaaf9412848ba67da4fda"
+    },
+    {
+      "file": "reuse-manifest.json",
+      "bytes": 8954,
+      "sha256": "0312ae8233a78bcbadafc9869e9d4543beed9eb39c5334bc0c0ab7ce3b161da3"
+    },
+    {
+      "file": "source-audit.json",
+      "bytes": 637,
+      "sha256": "8a9567e1204a10485282dbad5a7dcc4915b01c03e8e6c68021246d65998dc7bb"
+    },
+    {
+      "file": "validate_wood_production_kit.py",
+      "bytes": 5947,
+      "sha256": "7819a9010100f716a66a7f44669f44b2498ec78ff59bcfa87ea49e8b32a66a21"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 3358,
+      "sha256": "91c49632c47462cd32eec3cd3f8083916e55a887c654cf77e59732ff4abb9e74"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 945,
+      "sha256": "11d02d54a4bebbb5044cd5d7399637d273aea37b27d18210ec8b98ddfff30ba1"
+    },
+    {
+      "file": "wood_geometry.py",
+      "bytes": 5557,
+      "sha256": "8e2f647f93974a34ad62cf21f0947e8ed5b4fe60b4b5e099eb91e18d58980dae"
+    },
+    {
+      "file": "WoodProductionKit.blend",
+      "bytes": 127033,
+      "sha256": "f8b08f342d71e067fdb0fc07b304fb22bf4ff91c58b828fd5d272c44519ba3a6"
+    },
+    {
+      "file": "write_reuse_manifest.py",
+      "bytes": 3836,
+      "sha256": "73324a1c3ef2f93b33e447c20520e92bef797a054e8e8e7e61d72371e6c5df35"
+    }
+  ]
+}

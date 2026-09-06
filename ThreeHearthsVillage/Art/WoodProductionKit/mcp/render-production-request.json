@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "user_prompt": "Render a read-only reuse illustration of logs to planks and logs to beams, using existing stock, bench, saw and axe plus the two new intermediate pieces.",
+    "code": "import runpy,sys; sys.argv=['render_wood_production_kit.py','--','production']; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\WoodProductionKit\\render_wood_production_kit.py',run_name='__main__')"
+  }
+}

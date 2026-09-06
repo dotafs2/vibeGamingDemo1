@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kit_id": "wood_production_kit_01",
+  "units": "metres",
+  "authoring_axes": {
+    "up": "+Z",
+    "front": "-Y"
+  },
+  "glb_axes": {
+    "up": "+Y",
+    "front": "+Z",
+    "convert_to_authoring": "(x,-z,y)"
+  },
+  "metadata_coordinates": "authoring local metres",
+  "origin": "exact bottom centre of each mesh envelope",
+  "runtime_integration_verified": false,
+  "spawns_stock": false,
+  "intermediates_are_inventory": false,
+  "modules": [
+    {
+      "id": "wip_log_to_planks",
+      "label": "Sawing log into planks",
+      "asset_glb": "modules/wip_log_to_planks.glb",
+      "nominal_size_m": [
+        0.74,
+        0.226,
+        0.226
+      ],
+      "category": "static_work_in_progress",
+      "output_resource_suggestion": "planks",
+      "work_anchor_m": [
+        0.11999999731779099,
+        -0.0430000014603138,
+        0.12999999523162842
+      ],
+      "support_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "long_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "geometry_note": "Two real longitudinal kerfs and one stripped bark slab; the remaining base is still connected.",
+      "inventory_identity": null,
+      "spawns_stock": false,
+      "runtime_integration_verified": false
+    },
+    {
+      "id": "wip_log_to_beam",
+      "label": "Hewing a timber beam",
+      "asset_glb": "modules/wip_log_to_beam.glb",
+      "nominal_size_m": [
+        0.74,
+        0.226,
+        0.226
+      ],
+      "category": "static_work_in_progress",
+      "output_resource_suggestion": "timber_beams",
+      "work_anchor_m": [
+        0.1599999964237213,
+        -0.07999999821186066,
+        0.15000000596046448
+      ],
+      "support_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "long_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "geometry_note": "Three faces have been flattened; the left rough end and rounded underside show unfinished stock.",
+      "inventory_identity": null,
+      "spawns_stock": false,
+      "runtime_integration_verified": false
+    }
+  ]
+}

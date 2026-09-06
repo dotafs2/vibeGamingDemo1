@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "scope": "Independent GLB bytes, real saw kerfs/hewn faces, PBR/UV/normals, origins, metadata, unchanged reuse hashes and bench support",
+  "new_asset_count": 2,
+  "new_total_triangles": 838,
+  "new_max_asset_triangles": 484,
+  "assets": [
+    {
+      "asset": "wip_log_to_planks.glb",
+      "bytes": 34284,
+      "triangles": 484,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "99345ee722159c6c5582b0050dbe2b2412e8fc8202768e0000db2ceb7679e10c",
+      "measured_size_m": [
+        0.7400000095367432,
+        0.22599999606609344,
+        0.22599999606609344
+      ]
+    },
+    {
+      "asset": "wip_log_to_beam.glb",
+      "bytes": 24436,
+      "triangles": 354,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "63917ac523b0123a1e99800e620e22500e784c4bf108ec1a15a8abc42801d78c",
+      "measured_size_m": [
+        0.7400000095367432,
+        0.22599999606609344,
+        0.22599999606609344
+      ]
+    }
+  ],
+  "reused_asset_count": 8,
+  "unchanged_references": [
+    {
+      "id": "input_logs",
+      "source_unchanged": true,
+      "triangles": 2820,
+      "sha256": "22081c8c7a4dc62d972524b6d262d852e9e597f659581cafc766285e71dc042e"
+    },
+    {
+      "id": "output_planks",
+      "source_unchanged": true,
+      "triangles": 1296,
+      "sha256": "a6fa6816b1ae7efa845a2b2bc9133055d8ffab0b35c14641f5b1b1710fd2f5c6"
+    },
+    {
+      "id": "output_beams",
+      "source_unchanged": true,
+      "triangles": 1080,
+      "sha256": "91d0a1f84ce842b096ca724e67e4402afce295e96e09980b61ad764beb76f675"
+    },
+    {
+      "id": "carpenter_bench",
+      "source_unchanged": true,
+      "triangles": 1552,
+      "sha256": "1d967fc22e77e9e3980768f98c4282b173ffee9cdef545503533e0b5cd2b1294"
+    },
+    {
+      "id": "saw",
+      "source_unchanged": true,
+      "triangles": 736,
+      "sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c"
+    },
+    {
+      "id": "axe",
+      "source_unchanged": true,
+      "triangles": 1176,
+      "sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f"
+    },
+    {
+      "id": "portable_planks",
+      "source_unchanged": true,
+      "triangles": 1296,
+      "sha256": "7e6408af8b50f96b9a3bd01f33fc3ddc0be6fdfa0c5feed648e24bec205d4ed2"
+    },
+    {
+      "id": "installed_beam",
+      "source_unchanged": true,
+      "triangles": 108,
+      "sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921"
+    }
+  ],
+  "real_saw_kerfs_verified": true,
+  "partial_hewn_faces_verified": true,
+  "support_checks": [
+    {
+      "branch": "logs_to_planks",
+      "exported_bench_support_height_m": [
+        0.8600000143051147,
+        0.8600000143051147,
+        0.8600000143051147
+      ],
+      "support_verified": true
+    },
+    {
+      "branch": "logs_to_beams",
+      "exported_bench_support_height_m": [
+        0.8600000143051147,
+        0.8600000143051147,
+        0.8600000143051147
+      ],
+      "support_verified": true
+    }
+  ],
+  "runtime_inventory_or_work_animation_verified": false,
+  "render_review_verified": true,
+  "source_originals_only_verified": true
+}

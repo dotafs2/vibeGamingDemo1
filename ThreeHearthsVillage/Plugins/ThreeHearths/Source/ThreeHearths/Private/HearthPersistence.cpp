@@ -33,11 +33,12 @@ FString AHearthVillage::ExportWorldState() const
     W.PlotCount=HousingPlotCount();
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
     W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
-    W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock;
+    W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock; W.Planks=PlankStock; W.Beams=BeamStock;
     for(int32 I=0;I<3;++I)
     {
         W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
     }
+    for(int32 I=0;I<2;++I) { W.Manufactured[I]=Manufactured[I]; W.ManufacturedSpent[I]=ManufacturedSpent[I]; }
     for(int32 I=0;I<W.PlotCount;++I) { W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; }
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -80,7 +81,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     WorldId=W.Id; CurrentRun=W.Run; WorldRevision=W.Revision; VillageEvent=W.Event; Elapsed=W.Elapsed;
     SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
     bAutonomousLifeEnabled=W.bAutonomy; bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
-    FoodStock=W.Food; StoneStock=W.Stone; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
+    FoodStock=W.Food; StoneStock=W.Stone; PlankStock=W.Planks; BeamStock=W.Beams; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
     Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); ++SocialRevision; bSocialOpen=false;
     for(int32 I=0;I<3;++I)
     {
@@ -88,6 +89,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         if(StockMeshes.IsValidIndex(I))
         { StockMeshes[I]->SetVisibility(WoodStock[I]>0); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,FMath::Clamp(WoodStock[I]/12.f*.4f,.04f,1.2f))); }
     }
+    for(int32 I=0;I<2;++I) { Manufactured[I]=W.Manufactured[I]; ManufacturedSpent[I]=W.ManufacturedSpent[I]; }
     for(int32 I=0;I<HousingPlotCount();++I)
     { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
     PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
@@ -114,6 +116,11 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     }
     for(auto& M:ProductionMeshes) if(IsValid(M)) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites=MoveTemp(W.Sites); ProductionTotals=MoveTemp(W.Totals);
+    if(!ProductionSites.ContainsByPredicate([](const FHearthSite& S) { return S.Kind==EHearthSiteKind::Carpenter; }))
+    {
+        FHearthSite S; S.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); S.Kind=EHearthSiteKind::Carpenter;
+        S.Position=FVector(-2250,-1050,8); S.Radius=190; ProductionSites.Add(MoveTemp(S)); ChooseSiteApproach(ProductionSites.Num()-1);
+    }
     for(auto& S:ProductionSites) { S.VisualStage=-99; S.Meshes.Reset(); S.Soil.Reset(); }
     if(Migrating) for(auto& R:Residents) if(!IsClearPoint(R.Actor->GetActorLocation()))
     {

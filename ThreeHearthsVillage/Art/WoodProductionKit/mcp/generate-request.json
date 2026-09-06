@@ -1,0 +1,7 @@
+{
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\WoodProductionKit\\create_wood_production_kit.py',run_name='__main__')",
+    "user_prompt": "Create only the two missing wood-production intermediate props, reusing all existing stock and tool assets."
+  },
+  "name": "execute_blender_code"
+}

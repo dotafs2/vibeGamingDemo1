@@ -168,17 +168,20 @@ void AHearthVillager::UpdateTool(EHearthTask Task,int32 WorkKind)
     else if(Id==TEXT("tool_shovel")) Grip=FVector(0,.3f,13.5f);
     else if(Id==TEXT("tool_trowel")) Grip=FVector(-.868f,.2f,9.8f);
     else if(Id==TEXT("tool_hoe")) Grip=FVector(0,0,13.5f);
+    else if(Id==TEXT("tool_saw")) Grip=FVector(-32.35f,.25f,10.2f);
+    else if(Id==TEXT("tool_mallet")) Grip=FVector(0,0,11.5f);
     if(Id.IsEmpty())
     {
         EquippedToolId.Empty(); Tool->SetVisibility(false); return;
     }
-    if(Id!=EquippedToolId)
+    if(!Tool->GetStaticMesh() || Tool->GetStaticMesh()->GetName()!=Id)
     {
         const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/ToolKit/%s/%s.%s"),*Id,*Id,*Id);
         UStaticMesh* Mesh=LoadObject<UStaticMesh>(nullptr,*Path);
         if(!Mesh) { EquippedToolId.Empty(); Tool->SetVisibility(false); return; }
         Tool->SetStaticMesh(Mesh); EquippedToolId=Id;
     }
+    else EquippedToolId=Id;
     Tool->SetRelativeRotation(FRotator::ZeroRotator);
     Tool->SetRelativeLocation(-Grip);
     Tool->SetRelativeScale3D(FVector::OneVector);
@@ -341,6 +344,9 @@ void AHearthVillage::BeginPlay()
     LoadHistory();
     ResetVillageState();
     InitializeWorldPersistence();
+    float RequestedSpeed=0;
+    if(FParse::Value(FCommandLine::Get(),TEXT("HearthSimulationSpeed="),RequestedSpeed) && FMath::IsFinite(RequestedSpeed))
+        SetSimulationSpeed(RequestedSpeed);
 }
 
 FLinearColor AHearthVillage::ResidentColor(int32 I) const
@@ -584,6 +590,15 @@ void AHearthVillage::Tick(float DeltaSeconds)
         R.Actor->EquippedToolId=R.HeldToolId;
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
         R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0);
+        const TCHAR* CargoMesh=(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
+            R.CargoType==3?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):
+            R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):TEXT("/Engine/BasicShapes/Cube");
+        if(auto* Asset=LoadObject<UStaticMesh>(nullptr,CargoMesh); Asset && R.Actor->Bundle->GetStaticMesh()!=Asset)
+        {
+            R.Actor->Bundle->SetStaticMesh(Asset);
+            R.Actor->Bundle->SetRelativeScale3D(R.CargoType>=3?FVector(.7f):FVector(.32f,.6f,.25f));
+            if(R.CarriedWood>0 || R.CargoType>=1) R.Actor->Bundle->SetMaterial(0,nullptr);
+        }
         if(auto* Material=Cast<UMaterialInstanceDynamic>(R.Actor->Bundle->GetMaterial(0)))
             Material->SetVectorParameterValue(TEXT("VillageTint"),R.CargoType==0?FLinearColor(.55f,.65f,.12f):R.CargoType==2?FLinearColor(.45f,.46f,.43f):Hearth::Wood);
     }

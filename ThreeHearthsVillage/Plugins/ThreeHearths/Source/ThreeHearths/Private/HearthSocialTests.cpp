@@ -74,7 +74,7 @@ bool FHearthSocialIntegrationTest::RunTest(const FString&)
     for(int32 X=-8;X<=8;++X) for(int32 Y=-8;Y<=8;++Y) V->LandGrid.Add(FIntPoint(X,Y));
     FHearthSite Tree; Tree.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     Tree.Kind=EHearthSiteKind::Tree; Tree.Position=FVector(-700,300,8); Tree.Approach=FVector(-900,300,8);
-    Tree.Radius=150; Tree.Stage=2; Tree.Units=Tree.Capacity=18; Tree.bReachable=true; V->ProductionSites.Add(Tree);
+    Tree.Radius=150; Tree.Stage=2; Tree.Units=Tree.Capacity=18; Tree.bReachable=true; const int32 TreeSite=V->ProductionSites.Add(Tree);
     if(!Begin()) return false;
     V->ResolveSocialTurn(0,0,TEXT("村里需要些木材。"),TEXT("test")); V->ResolveSocialTurn(1,0,TEXT("有什么我能帮忙的吗？"),TEXT("test"));
     TestTrue(TEXT("Ask for one available real gathering task"),V->ResolveSocialTurn(0,2,TEXT("可以帮忙采集一趟吗？"),TEXT("test")));
@@ -86,7 +86,7 @@ bool FHearthSocialIntegrationTest::RunTest(const FString&)
     TestTrue(TEXT("Help task checkpoint"),V->SaveWorld()); TestTrue(TEXT("Help task restore"),V->LoadWorld());
     for(int32 Step=0;Step<16000 && V->Commitments.Last().Status==TEXT("active");++Step) V->AdvanceSimulation(.05f);
     TestEqual(TEXT("Real gathering delivers six wood"),V->AvailableWood(),WoodBefore+6);
-    TestEqual(TEXT("Source loses exactly six wood"),V->ProductionSites[0].Units,12);
+    TestEqual(TEXT("Source loses exactly six wood"),V->ProductionSites[TreeSite].Units,12);
     TestEqual(TEXT("Help fulfils only after inventory deposit"),V->Commitments.Last().Status,FString(TEXT("fulfilled")));
     if(!Begin()) return false;
     auto& Reply=V->PendingDecisions[0]; Reply.bActive=true; Reply.bReturned=true; Reply.bSocial=true; Reply.bLife=true;

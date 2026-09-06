@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "units": "metres",
+  "authoring_axes": "+Z up / -Y front",
+  "runtime_integration_verified": false,
+  "stock_quantities_not_defined_by_this_layout": true,
+  "bench_work_surface_z_m": 0.86,
+  "bench_work_zone_m": {
+    "x": [
+      -0.66,
+      0.12
+    ],
+    "y": [
+      -0.35,
+      -0.12
+    ]
+  },
+  "branches": [
+    {
+      "id": "logs_to_planks",
+      "input_reference": "input_logs",
+      "facility_reference": "carpenter_bench",
+      "tool_reference": "saw",
+      "intermediate_id": "wip_log_to_planks",
+      "output_reference": "output_planks",
+      "bench_world_m": [
+        0,
+        0.93,
+        0
+      ],
+      "intermediate_bench_local_m": [
+        -0.27,
+        -0.23,
+        0.86
+      ],
+      "input_world_m": [
+        -1.57,
+        0.93,
+        0
+      ],
+      "output_world_m": [
+        1.59,
+        0.93,
+        0
+      ]
+    },
+    {
+      "id": "logs_to_beams",
+      "input_reference": "input_logs",
+      "facility_reference": "carpenter_bench",
+      "tool_reference": "axe",
+      "intermediate_id": "wip_log_to_beam",
+      "output_reference": "output_beams",
+      "bench_world_m": [
+        0,
+        -0.93,
+        0
+      ],
+      "intermediate_bench_local_m": [
+        -0.27,
+        -0.23,
+        0.86
+      ],
+      "input_world_m": [
+        -1.57,
+        -0.93,
+        0
+      ],
+      "output_world_m": [
+        1.75,
+        -0.93,
+        0
+      ]
+    }
+  ],
+  "workpiece_visibility_contract": "Show one workpiece only while a real production job owns/reserves its input; remove or swap it when the job completes or cancels. This file implements no job or inventory code.",
+  "quantity_note": "Existing pack lengths differ; visuals represent resource lots. Recipe amounts, yields and conservation remain owned by the production simulation."
+}

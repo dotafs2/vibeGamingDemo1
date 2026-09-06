@@ -1,0 +1,25 @@
+{
+  "source_blend": "WoodProductionKit.blend",
+  "objects": [
+    "wip_log_to_beam",
+    "wip_log_to_beam | overview",
+    "wip_log_to_planks",
+    "wip_log_to_planks | overview"
+  ],
+  "meshes": [
+    "wip_log_to_beam",
+    "wip_log_to_planks"
+  ],
+  "materials": [
+    "WP_Bark_Facet",
+    "WP_Fresh_Oak_Cut",
+    "WP_Honey_Heartwood",
+    "WP_Inner_Kerf",
+    "WP_Warm_Chestnut_Bark"
+  ],
+  "armatures": [],
+  "actions": [],
+  "new_original_intermediates_only": true,
+  "existing_assets_copied_into_source": false,
+  "source_blend_sha256": "f8b08f342d71e067fdb0fc07b304fb22bf4ff91c58b828fd5d272c44519ba3a6"
+}

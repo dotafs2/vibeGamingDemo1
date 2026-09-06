@@ -119,12 +119,14 @@ bool FHearthToolTaskBindingTest::RunTest(const FString&)
     Resident->EquippedToolId=TEXT("tool_pickaxe"); Resident->SetMotion(EHearthTask::ProductionWork,1.f,11);
     TestEqual(TEXT("Mining equips one pickaxe component"),Resident->EquippedToolId,FString(TEXT("tool_pickaxe")));
     TestTrue(TEXT("Equipped tool is visible"),Resident->Tool->IsVisible());
+    TestEqual(TEXT("Borrowed identity loads the matching physical mesh"),Resident->Tool->GetStaticMesh()->GetName(),FString(TEXT("tool_pickaxe")));
     TestEqual(TEXT("Tool remains attached to right hand"),Resident->Tool->GetAttachSocketName(),FName(TEXT("hand_r")));
     Resident->SetMotion(EHearthTask::ProductionTravel,1.f,11);
     TestTrue(TEXT("Travel removes the work tool"),Resident->EquippedToolId.IsEmpty());
     TestFalse(TEXT("Travel hides the reusable component"),Resident->Tool->IsVisible());
     Resident->EquippedToolId=TEXT("tool_hammer"); Resident->SetMotion(EHearthTask::ProductionWork,1.f,5);
     TestEqual(TEXT("Production construction equips its borrowed hammer"),Resident->EquippedToolId,FString(TEXT("tool_hammer")));
+    TestEqual(TEXT("Task switch replaces the physical mesh"),Resident->Tool->GetStaticMesh()->GetName(),FString(TEXT("tool_hammer")));
     TestTrue(TEXT("Task changes reuse the same tool component"),Resident->Tool.Get()==ReusableTool);
     World->DestroyWorld(false); return true;
 }

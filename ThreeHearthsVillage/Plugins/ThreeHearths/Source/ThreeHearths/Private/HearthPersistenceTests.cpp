@@ -71,7 +71,8 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     TestEqual(TEXT("Harvest task retained"),V->Residents[0].ActiveTaskId,CargoTask);
     V->AdvanceSimulation(.3f); V->AdvanceProduction(0,1.f);
     TestEqual(TEXT("Deposit is applied exactly once after resume"),V->FoodStock,36); TestEqual(TEXT("Cargo cleared after credit"),V->Residents[0].CargoAmount,0);
-    if(!TestEqual(TEXT("Production site retained after resume"),V->ProductionSites.Num(),1)) return false;
+    if(!TestTrue(TEXT("Production site retained after resume"),V->ProductionSites.Num()>=1)) return false;
+    TestTrue(TEXT("Old checkpoint gains one persistent carpenter workbench"),V->ProductionSites.ContainsByPredicate([](const FHearthSite& S) { return S.Kind==EHearthSiteKind::Carpenter; }));
     TestEqual(TEXT("Site reservation released"),V->ProductionSites[0].ReservedBy,-1); TestEqual(TEXT("Operation completion counted once"),V->ProductionTotals.FindRef(TEXT("harvest")),1);
     TestTrue(TEXT("Save post-delivery checkpoint"),V->SaveWorld()); TestTrue(TEXT("Reload post-delivery checkpoint"),V->LoadWorld()); V->AdvanceProduction(0,1.f);
     TestEqual(TEXT("Completed delivery cannot be replayed"),V->FoodStock,36);
@@ -103,6 +104,47 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     V->PendingDecisions[0].bActive=true; V->PendingDecisions[0].OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     TestTrue(TEXT("Save unresolved request"),V->SaveWorld()); TestTrue(TEXT("Restore unresolved request"),V->LoadWorld());
     TestEqual(TEXT("No automatic request replay"),V->PendingDecisionCount(),0); TestTrue(TEXT("Paid decisions disabled after uncertainty"),V->bApiDisabledThisRun);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthDerivedMaterialsTest,"ThreeHearths.Production.LogsToConstructionTimber",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthDerivedMaterialsTest::RunTest(const FString&)
+{
+    UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Isolated material-chain world"),World)) return false;
+    ON_SCOPE_EXIT { World->DestroyWorld(false); };
+    auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState();
+    V->bAutonomousLifeEnabled=false; V->bApiDisabledThisRun=true;
+    auto& Files=FPlatformFileManager::Get().GetPlatformFile(); V->WorldPath=HearthPersistenceTests::TestPath();
+    Files.CreateDirectoryTree(*FPaths::GetPath(V->WorldPath)); V->WorldLease=MakeShareable(Files.OpenWrite(*(V->WorldPath+TEXT(".lock")))); V->bWorldPersistenceEnabled=true;
+    ON_SCOPE_EXIT { V->WorldLease.Reset(); };
+    auto& R=V->Residents[0]; R.Plot=0; R.BuildProgress=1.f; R.DeliveredWood=V->CostFor(0); V->PlotOwners[0]=0;
+    int32 Installed=R.DeliveredWood;
+    for(int32 I=0;I<3 && Installed>0;++I) { const int32 Used=FMath::Min(Installed,V->WoodStock[I]); V->WoodStock[I]-=Used; Installed-=Used; }
+    const FVector Depot(-250,-400,8); R.Actor->SetActorLocation(Depot);
+    V->BuildLandGrid();
+    FHearthSite Bench; Bench.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Bench.Kind=EHearthSiteKind::Carpenter;
+    Bench.Position=FVector(420,620,8); Bench.Approach=Depot; Bench.Radius=190; Bench.bReachable=true; V->ProductionSites={Bench};
+    const int32 InitialLogs=V->AvailableWood();
+    TestTrue(TEXT("Carpenter accepts a plank job"),V->StartProduction(0,113,TEXT("test plank chain"),false));
+    TestEqual(TEXT("Two source logs are reserved once"),V->AvailableWood(),InitialLogs-2);
+    TestEqual(TEXT("Plank job borrows the shared saw"),R.HeldToolId,FString(TEXT("tool_saw")));
+    R.Task=EHearthTask::ProductionWork; R.Timer=0; R.Actor->SetActorLocation(Depot);
+    V->AdvanceProduction(0,.1f);
+    TestEqual(TEXT("Four planks become in-transit cargo"),R.CargoAmount,4); TestEqual(TEXT("Plank cargo type"),R.CargoType,3);
+    TestTrue(TEXT("Saw returns before delivery"),R.HeldToolId.IsEmpty()); TestEqual(TEXT("No credit before depot deposit"),V->PlankStock,0);
+    TestTrue(TEXT("Save in-transit planks"),V->SaveWorld()); TestTrue(TEXT("Restore in-transit planks"),V->LoadWorld());
+    TestEqual(TEXT("In-transit planks survive restart"),V->Residents[0].CargoAmount,4); TestEqual(TEXT("Still no premature plank credit"),V->PlankStock,0);
+    V->Residents[0].Task=EHearthTask::ProductionDeposit; V->Residents[0].Timer=0; V->AdvanceProduction(0,.1f);
+    TestEqual(TEXT("Planks enter persistent stock exactly once"),V->PlankStock,4); TestEqual(TEXT("Plank completion counted"),V->ProductionTotals.FindRef(TEXT("mill_planks")),1);
+    TestTrue(TEXT("Carpenter accepts a beam job"),V->StartProduction(0,114,TEXT("test beam chain"),false));
+    TestEqual(TEXT("Three more source logs are reserved"),V->AvailableWood(),InitialLogs-5);
+    TestEqual(TEXT("Beam job borrows the shared mallet"),V->Residents[0].HeldToolId,FString(TEXT("tool_mallet")));
+    V->Residents[0].Task=EHearthTask::ProductionWork; V->Residents[0].Timer=0; V->Residents[0].Actor->SetActorLocation(Depot); V->AdvanceProduction(0,.1f);
+    V->Residents[0].Task=EHearthTask::ProductionDeposit; V->Residents[0].Timer=0; V->AdvanceProduction(0,.1f);
+    TestEqual(TEXT("Two beams enter stock"),V->BeamStock,2); TestEqual(TEXT("Beam completion counted"),V->ProductionTotals.FindRef(TEXT("frame_beams")),1);
+    FString Error; FHearthWorldImage Image;
+    TestTrue(TEXT("Derived material ledger validates"),HearthWorld::Decode(V->ExportWorldState(),Image,Error));
+    TestEqual(TEXT("Persisted plank stock"),Image.Planks,4); TestEqual(TEXT("Persisted beam stock"),Image.Beams,2);
     return true;
 }
 

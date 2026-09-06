@@ -59,7 +59,9 @@ namespace HearthWorld
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision); NUM(Elapsed); NUM(Speed); NUM(Remainder);
-        NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone);
+        NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone); NUM(Planks); NUM(Beams);
+        J->SetNumberField(TEXT("ProducedPlanks"),W.Manufactured[0]); J->SetNumberField(TEXT("ProducedBeams"),W.Manufactured[1]);
+        J->SetNumberField(TEXT("SpentPlanks"),W.ManufacturedSpent[0]); J->SetNumberField(TEXT("SpentBeams"),W.ManufacturedSpent[1]);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
 #undef STR
 #undef NUM
@@ -170,6 +172,12 @@ namespace HearthWorld
 #define BOOL(Field) C.Bool(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision,0,9007199254740991.0); NUM(Elapsed,0,1e9); NUM(Speed,1,1000); NUM(Remainder,0,300);
         NUM(Selected,0,W.PlotCount-1); NUM(LastLife,-1,W.PlotCount-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
+        if(Root->HasField(TEXT("Planks"))) NUM(Planks,0,1e8);
+        if(Root->HasField(TEXT("Beams"))) NUM(Beams,0,1e8);
+        if(Root->HasField(TEXT("ProducedPlanks"))) C.Num(TEXT("ProducedPlanks"),W.Manufactured[0],0,1e8);
+        if(Root->HasField(TEXT("ProducedBeams"))) C.Num(TEXT("ProducedBeams"),W.Manufactured[1],0,1e8);
+        if(Root->HasField(TEXT("SpentPlanks"))) C.Num(TEXT("SpentPlanks"),W.ManufacturedSpent[0],0,1e8);
+        if(Root->HasField(TEXT("SpentBeams"))) C.Num(TEXT("SpentBeams"),W.ManufacturedSpent[1],0,1e8);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
 #undef STR
 #undef NUM
@@ -214,7 +222,7 @@ namespace HearthWorld
             }
             NUM(Plot,-1,W.PlotCount-1); NUM(CarriedWood,0,3); NUM(DeliveredWood,0,1000000); NUM(BuildProgress,0,1); NUM(Energy,0,100); NUM(SocialNeed,0,100);
             NUM(Source,-1,2); NUM(Trips,0,1e8); NUM(Timer,-1e9,1e6); NUM(MoveSpeed,1,2000); NUM(MoveRetry,0,1e6); NUM(HistoryIndex,-1,49999);
-            NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,12); NUM(CargoType,-1,2); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
+            NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,14); NUM(CargoType,-1,4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
 #undef NUM
             P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::ProductionDeposit)); R.Task=static_cast<EHearthTask>(Task);
@@ -225,7 +233,7 @@ namespace HearthWorld
         }
         for(const auto& V:C.Array(TEXT("sites"),1024))
         {
-            FHearthSite S; FRead P{Object(V)}; int32 Kind=0; P.Str(TEXT("id"),S.StableId); P.Num(TEXT("kind"),Kind,0,9); S.Kind=static_cast<EHearthSiteKind>(Kind);
+            FHearthSite S; FRead P{Object(V)}; int32 Kind=0; P.Str(TEXT("id"),S.StableId); P.Num(TEXT("kind"),Kind,0,10); S.Kind=static_cast<EHearthSiteKind>(Kind);
             P.Vector(TEXT("position"),S.Position); P.Vector(TEXT("approach"),S.Approach);
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
             NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,2);
@@ -287,6 +295,7 @@ namespace HearthWorld
         if(!Unique(W.Id)) return false;
         for(int32 I=0;I<W.PlotCount;++I) if(!Unique(W.PlotIds[I])) return false;
         int64 Accounted[3]={W.Food+W.Spent[0]-W.Produced[0],W.Wood[0]+W.Wood[1]+W.Wood[2]+W.Spent[1]-W.Produced[1],W.Stone+W.Spent[2]-W.Produced[2]};
+        int64 AccountedManufactured[2]={W.Planks+W.ManufacturedSpent[0]-W.Manufactured[0],W.Beams+W.ManufacturedSpent[1]-W.Manufactured[1]};
         for(int32 I=0;I<W.People.Num();++I)
         {
             const auto& Saved=W.People[I]; const auto& R=Saved.Person;
@@ -315,7 +324,8 @@ namespace HearthWorld
             if(Production && (!W.Sites.IsValidIndex(R.ProductionSite) || R.ProductionOp<0 || W.Sites[R.ProductionSite].ReservedBy!=I || R.WorkDuration<=0 || R.HistoryIndex<0)) return false;
             if(!Production && (R.ProductionSite!=-1 || R.ProductionOp!=-1 || R.CargoAmount!=0)) return false;
             if(R.CargoAmount>0 && (R.CargoType<0 || R.ProductionOp<9 || (R.Task!=EHearthTask::ProductionDeliver && R.Task!=EHearthTask::ProductionDeposit))) return false;
-            if(R.CargoType>=0) Accounted[R.CargoType]+=R.CargoAmount;
+            if(R.CargoType>=0 && R.CargoType<=2) Accounted[R.CargoType]+=R.CargoAmount;
+            if(R.CargoType>=3) AccountedManufactured[R.CargoType-3]+=R.CargoAmount;
             Accounted[1]+=R.CarriedWood+R.DeliveredWood;
         }
         for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
@@ -368,7 +378,8 @@ namespace HearthWorld
                 if(P.Status==TEXT("promised") && R.ConversationId!=P.ConversationId) return false;
             }
         }
-        if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0) return false;
+        if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0
+            || AccountedManufactured[0]!=0 || AccountedManufactured[1]!=0) return false;
         Out=MoveTemp(W); Error.Empty(); return true;
     }
 

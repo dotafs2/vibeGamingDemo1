@@ -1,0 +1,51 @@
+{
+  "milestone": "persistent_logs_to_construction_timber",
+  "engine": "Unreal Engine 5.8.1",
+  "focused_test": {
+    "result": "passed",
+    "log": "Saved/Logs/ThreeHearthsDerived3.log",
+    "scenario": "2 raw logs -> 4 planks via shared saw, save/load, deposit exactly once; 3 raw logs -> 2 beams via shared mallet"
+  },
+  "full_suite": {
+    "result": "passed",
+    "tests": 14,
+    "log": "Saved/Logs/ThreeHearthsAutomation13.log"
+  },
+  "runtime_acceptance": {
+    "simulation_speed": 100,
+    "elapsed_simulation_seconds": 5921.611328125,
+    "paused_before_shutdown": true,
+    "pending_request_count": 0,
+    "raw_logs": 342,
+    "planks": 196,
+    "produced_planks": 196,
+    "spent_planks": 0,
+    "accounted_planks": 0,
+    "mill_planks_operations": 49,
+    "beams": 14,
+    "produced_beams": 14,
+    "spent_beams": 0,
+    "accounted_beams": 0,
+    "frame_beams_operations": 7,
+    "carpenter_sites": 1,
+    "saw_holder": 9,
+    "mallet_holder": -1,
+    "budget_remaining_cny": 79.7820583,
+    "window_monitor": "Codex current non-primary monitor",
+    "screenshot": "Docs/Validation/Wood_Production_Runtime.png"
+  },
+  "material_conservation": {
+    "planks": "produced - spent - stock - in_transit = 0",
+    "beams": "produced - spent - stock - in_transit = 0",
+    "result": "passed"
+  },
+  "art_kit": {
+    "path": "Art/WoodProductionKit",
+    "status": "static-ready",
+    "runtime_connected": false,
+    "new_modules": [
+      "wip_log_to_planks",
+      "wip_log_to_beam"
+    ]
+  }
+}
