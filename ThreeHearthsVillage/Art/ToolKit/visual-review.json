@@ -1,0 +1,18 @@
+{
+  "live_holding_pose_reviewed": false,
+  "licensed_reference_geometry_delivered": false,
+  "source_blend_sha256": "e987ac015479c4a24ad5af923e710b2433d9b351f027ec0efac176c503eadb96",
+  "reviewed_images": [
+    {
+      "file": "previews/ToolKit_overview.png",
+      "notes": "All eight tools fully framed; distinct silhouettes, warm oak and cream handles, forged iron and sharpened edges. Saw handle opening and teeth visible.",
+      "sha256": "a2e85b79392dd195d39bd23257fe5b1ebd9ff33e00d09ca6d6c8b370492ece0a"
+    },
+    {
+      "file": "previews/ToolKit_grips.png",
+      "notes": "Primary grip, secondary grip and working-tip markers visible with clear legend. Presentation markers excluded from GLB.",
+      "sha256": "b5cc41c813e641b49d0af811b03ef120ca3a41454843dc8f5be65aaf3bb0b8f7"
+    }
+  ],
+  "overview_and_grip_guide_reviewed": true
+}

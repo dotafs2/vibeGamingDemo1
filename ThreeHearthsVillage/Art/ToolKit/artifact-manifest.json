@@ -1,0 +1,135 @@
+{
+  "kit_id": "tool_kit_01",
+  "artifacts": [
+    {
+      "file": "create_tool_kit.py",
+      "bytes": 13176,
+      "sha256": "040b822a7f443fec8930e513b3a6cbefa4ae714bfdc4f0eb8a44f12ca3e90803"
+    },
+    {
+      "file": "mcp/generate-request.json",
+      "bytes": 320,
+      "sha256": "3c3a737ace923baf9437ec1dabbd8d19c03fb023b9cd44a41f08b2540d2d4280"
+    },
+    {
+      "file": "mcp/render-grips-request.json",
+      "bytes": 374,
+      "sha256": "634b8913b3b7822a2f9cc5d242967c22c69d021ddd2d53cb4f02b04ab07c95c3"
+    },
+    {
+      "file": "mcp/render-overview-request.json",
+      "bytes": 354,
+      "sha256": "1422ccf9e1cbdecbb2827f7228ae8b9ed288cfeab393b4a2ee989f8ac1dfc5c5"
+    },
+    {
+      "file": "mcp/source-audit-request.json",
+      "bytes": 1157,
+      "sha256": "e51fc54e2595d07828548124a542167d602db951587a8ec0863c26645fd99292"
+    },
+    {
+      "file": "model-report.json",
+      "bytes": 3406,
+      "sha256": "93213d215ce2c86e3bd3508f7481d88f3d3412bff875ece7265df122c878e9a7"
+    },
+    {
+      "file": "module-specs.json",
+      "bytes": 8864,
+      "sha256": "b2bdcdf1a9ad66545b6a074c83c05a93e5a28632571f328d95ef16e0a97fcee1"
+    },
+    {
+      "file": "modules/tool_axe.glb",
+      "bytes": 58564,
+      "sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f"
+    },
+    {
+      "file": "modules/tool_hammer.glb",
+      "bytes": 62068,
+      "sha256": "1a1d75e995814ddb3c547f7c61da05f4cfdc1d418050cae60c1e82e729e90fbf"
+    },
+    {
+      "file": "modules/tool_hoe.glb",
+      "bytes": 57888,
+      "sha256": "6ec39bdf0ade4c59cdc56698573dd856a7eb026299471e5f2a1bb2186f8ea6bd"
+    },
+    {
+      "file": "modules/tool_mallet.glb",
+      "bytes": 58988,
+      "sha256": "f78ccef677b3467c27dcb7658f085608a89a57424b8a2ab175b61ce043ed663a"
+    },
+    {
+      "file": "modules/tool_pickaxe.glb",
+      "bytes": 56244,
+      "sha256": "4c1239ecf6be587d3df247d4bde10a04bea702ab417546875a0933b39e77c0f2"
+    },
+    {
+      "file": "modules/tool_saw.glb",
+      "bytes": 54604,
+      "sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c"
+    },
+    {
+      "file": "modules/tool_shovel.glb",
+      "bytes": 66748,
+      "sha256": "b83e27f2a77e5e22b2c9b2aed000dc06c5c8c7e595f1f38529f2b52aa07190bc"
+    },
+    {
+      "file": "modules/tool_trowel.glb",
+      "bytes": 43636,
+      "sha256": "0c6466242469e31c1ecd3882bd53c8870fda8dd03fa116f92b2c98d9be957472"
+    },
+    {
+      "file": "previews/ToolKit_grips.png",
+      "bytes": 2871104,
+      "sha256": "b5cc41c813e641b49d0af811b03ef120ca3a41454843dc8f5be65aaf3bb0b8f7"
+    },
+    {
+      "file": "previews/ToolKit_overview.png",
+      "bytes": 2856638,
+      "sha256": "a2e85b79392dd195d39bd23257fe5b1ebd9ff33e00d09ca6d6c8b370492ece0a"
+    },
+    {
+      "file": "README.md",
+      "bytes": 4478,
+      "sha256": "8fd20b1f069ff7e6a2a9955558164eec09cfddae38c39f63361ba7d898db773b"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 7176,
+      "sha256": "298bccfba5ed0ec20c8188eaac44a72fce6d9033347515c69bb2259ed966b21a"
+    },
+    {
+      "file": "render_tool_kit.py",
+      "bytes": 6208,
+      "sha256": "234e6717640db74a128055bda2bad9e658b813c856804a39e599f8776d9b5cea"
+    },
+    {
+      "file": "source-audit.json",
+      "bytes": 1071,
+      "sha256": "e58c2f56e863a9f58d0ee77834ae242ed7d8180f0668695d0128bebb69bee915"
+    },
+    {
+      "file": "tool_geometry.py",
+      "bytes": 5558,
+      "sha256": "38c697cbb84ee9da9bd1f8d6dccc3c0d32580575c3dbe3877bf8b423b08450de"
+    },
+    {
+      "file": "ToolKit.blend",
+      "bytes": 206455,
+      "sha256": "e987ac015479c4a24ad5af923e710b2433d9b351f027ec0efac176c503eadb96"
+    },
+    {
+      "file": "validate_tool_kit.py",
+      "bytes": 7002,
+      "sha256": "22635664dee57d9bf0d75b110160525f4f42b2553496a61772506ad2aa35ecf2"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 8537,
+      "sha256": "562d21b515385973e788e0f3c24f184cc124682e979233cec4cabb915e8c089c"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 864,
+      "sha256": "8f84c8a90680f5dc4e4031258857eda272fc8c03e0bbc00cdb3c09b2173a5580"
+    }
+  ]
+}

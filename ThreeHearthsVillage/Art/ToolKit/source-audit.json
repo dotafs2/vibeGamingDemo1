@@ -1,0 +1,47 @@
+{
+  "source_blend": "ToolKit.blend",
+  "objects": [
+    "tool_axe",
+    "tool_axe | overview",
+    "tool_hammer",
+    "tool_hammer | overview",
+    "tool_hoe",
+    "tool_hoe | overview",
+    "tool_mallet",
+    "tool_mallet | overview",
+    "tool_pickaxe",
+    "tool_pickaxe | overview",
+    "tool_saw",
+    "tool_saw | overview",
+    "tool_shovel",
+    "tool_shovel | overview",
+    "tool_trowel",
+    "tool_trowel | overview"
+  ],
+  "meshes": [
+    "tool_axe",
+    "tool_hammer",
+    "tool_hoe",
+    "tool_mallet",
+    "tool_pickaxe",
+    "tool_saw",
+    "tool_shovel",
+    "tool_trowel"
+  ],
+  "materials": [
+    "TK_Brass_Pin",
+    "TK_Cream_Grip_Wrap",
+    "TK_Cut_Edge",
+    "TK_Forged_Iron",
+    "TK_Honey_Wood",
+    "TK_Iron_Recess",
+    "TK_Sharpened_Edge",
+    "TK_Timber_Recess",
+    "TK_Warm_Oak"
+  ],
+  "armatures": [],
+  "actions": [],
+  "original_tools_only": true,
+  "licensed_character_geometry_in_source": false,
+  "source_blend_sha256": "e987ac015479c4a24ad5af923e710b2433d9b351f027ec0efac176c503eadb96"
+}

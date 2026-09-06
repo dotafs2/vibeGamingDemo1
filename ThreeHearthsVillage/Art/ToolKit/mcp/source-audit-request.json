@@ -1,0 +1,7 @@
+{
+  "arguments": {
+    "code": "from pathlib import Path\nimport bpy,json,hashlib\nout=Path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\ToolKit')\nwith bpy.data.libraries.load(str(out/'ToolKit.blend'),link=False) as (src,dst):\n    report={'source_blend':'ToolKit.blend','objects':sorted(src.objects),'meshes':sorted(src.meshes),'materials':sorted(src.materials),'armatures':list(src.armatures),'actions':list(src.actions)}\nassert len(report['objects'])==16 and len(report['meshes'])==8\nassert not report['armatures'] and not report['actions']\nassert all(name.startswith('tool_') for name in report['objects'])\nassert all(name.startswith('TK_') for name in report['materials'])\nreport.update({'original_tools_only':True,'licensed_character_geometry_in_source':False,'source_blend_sha256':hashlib.sha256((out/'ToolKit.blend').read_bytes()).hexdigest()})\n(out/'source-audit.json').write_text(json.dumps(report,indent=2)+'\\n',encoding='utf-8')\nprint('TOOL_SOURCE_AUDIT_PASSED')",
+    "user_prompt": "Verify ToolKit source contains eight original tools and no character or animation datablocks."
+  },
+  "name": "execute_blender_code"
+}

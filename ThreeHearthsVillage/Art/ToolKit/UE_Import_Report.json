@@ -1,0 +1,127 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "native renderable tools; inventory, sockets and work animation remain separate",
+  "assets": [
+    {
+      "id": "tool_hammer",
+      "source": "Art/ToolKit/modules/tool_hammer.glb",
+      "source_sha256": "1a1d75e995814ddb3c547f7c61da05f4cfdc1d418050cae60c1e82e729e90fbf",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_hammer/tool_hammer.tool_hammer",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        13.799999237060547,
+        4.0,
+        22.35000228881836
+      ],
+      "import_seconds": 0.5310000000754371,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_mallet",
+      "source": "Art/ToolKit/modules/tool_mallet.glb",
+      "source_sha256": "f78ccef677b3467c27dcb7658f085608a89a57424b8a2ab175b61ce043ed663a",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_mallet/tool_mallet.tool_mallet",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        13.199999809265137,
+        6.350000381469727,
+        23.775001525878906
+      ],
+      "import_seconds": 0.125,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_axe",
+      "source": "Art/ToolKit/modules/tool_axe.glb",
+      "source_sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_axe/tool_axe.tool_axe",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        14.875000953674316,
+        3.4000000953674316,
+        37.771690368652344
+      ],
+      "import_seconds": 0.1559999999590218,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_saw",
+      "source": "Art/ToolKit/modules/tool_saw.glb",
+      "source_sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_saw/tool_saw.tool_saw",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        34.85000228881836,
+        2.8500001430511475,
+        9.795313835144043
+      ],
+      "import_seconds": 0.0940000000409782,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_pickaxe",
+      "source": "Art/ToolKit/modules/tool_pickaxe.glb",
+      "source_sha256": "4c1239ecf6be587d3df247d4bde10a04bea702ab417546875a0933b39e77c0f2",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_pickaxe/tool_pickaxe.tool_pickaxe",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        26.797712326049805,
+        3.799999952316284,
+        42.89999771118164
+      ],
+      "import_seconds": 0.14099999994505197,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_shovel",
+      "source": "Art/ToolKit/modules/tool_shovel.glb",
+      "source_sha256": "b83e27f2a77e5e22b2c9b2aed000dc06c5c8c7e595f1f38529f2b52aa07190bc",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_shovel/tool_shovel.tool_shovel",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        13.699999809265137,
+        3.4000000953674316,
+        53.20830535888672
+      ],
+      "import_seconds": 0.14000000001396984,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_hoe",
+      "source": "Art/ToolKit/modules/tool_hoe.glb",
+      "source_sha256": "6ec39bdf0ade4c59cdc56698573dd856a7eb026299471e5f2a1bb2186f8ea6bd",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_hoe/tool_hoe.tool_hoe",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        14.155171394348145,
+        13.199999809265137,
+        44.64238739013672
+      ],
+      "import_seconds": 0.1410000000614673,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "tool_trowel",
+      "source": "Art/ToolKit/modules/tool_trowel.glb",
+      "source_sha256": "0c6466242469e31c1ecd3882bd53c8870fda8dd03fa116f92b2c98d9be957472",
+      "mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_trowel/tool_trowel.tool_trowel",
+      "material_slots": 6,
+      "bounds_extent_cm": [
+        8.684403419494629,
+        3.4019999504089355,
+        19.308507919311523
+      ],
+      "import_seconds": 0.10899999993853271,
+      "saved_assets": 7,
+      "collision": "not_generated_requires_gameplay_template"
+    }
+  ]
+}

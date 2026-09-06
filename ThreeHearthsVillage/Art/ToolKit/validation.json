@@ -1,0 +1,293 @@
+{
+  "status": "passed",
+  "scope": "Independent GLB binary geometry, indices, nondegenerate triangles, UV, normals, PBR, identity transforms, bounds and tool metadata",
+  "asset_count": 8,
+  "unique_tool_count": 8,
+  "total_triangles": 8652,
+  "max_asset_triangles": 1284,
+  "assets": [
+    {
+      "asset": "tool_hammer.glb",
+      "bytes": 62068,
+      "triangles": 1228,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5798045602605864,
+      "sha256": "1a1d75e995814ddb3c547f7c61da05f4cfdc1d418050cae60c1e82e729e90fbf",
+      "id": "tool_hammer",
+      "tool_id": "hammer",
+      "size_authoring_m": [
+        0.2759999930858612,
+        0.07999999821186066,
+        0.44700002670288086
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.018000002950429916,
+            0.0010000001639127731,
+            0.11500000208616257
+          ],
+          "section_thickness_m": 0.05160960182547569
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_mallet.glb",
+      "bytes": 58988,
+      "triangles": 1124,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5480427046263345,
+      "sha256": "f78ccef677b3467c27dcb7658f085608a89a57424b8a2ab175b61ce043ed663a",
+      "id": "tool_mallet",
+      "tool_id": "mallet",
+      "size_authoring_m": [
+        0.2639999985694885,
+        0.12700000405311584,
+        0.4755000174045563
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.0,
+            0.0,
+            0.11500000208616257
+          ],
+          "section_thickness_m": 0.05375999957323075
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_axe.glb",
+      "bytes": 58564,
+      "triangles": 1176,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.6054421768707483,
+      "sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f",
+      "id": "tool_axe",
+      "tool_id": "axe",
+      "size_authoring_m": [
+        0.29750001430511475,
+        0.06800000369548798,
+        0.7554337978363037
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            -0.07925000041723251,
+            0.0,
+            0.125
+          ],
+          "section_thickness_m": 0.058240000158548355
+        },
+        {
+          "anchor_m": [
+            -0.07925000041723251,
+            0.0,
+            0.3400000035762787
+          ],
+          "section_thickness_m": 0.04685088956904254
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_saw.glb",
+      "bytes": 54604,
+      "triangles": 736,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c",
+      "id": "tool_saw",
+      "tool_id": "saw",
+      "size_authoring_m": [
+        0.6970000267028809,
+        0.05700000375509262,
+        0.19590628147125244
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            -0.32350003719329834,
+            0.002500000409781933,
+            0.10200000554323196
+          ],
+          "section_thickness_m": 0.052000001072883606
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_pickaxe.glb",
+      "bytes": 56244,
+      "triangles": 1160,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.6137931034482759,
+      "sha256": "4c1239ecf6be587d3df247d4bde10a04bea702ab417546875a0933b39e77c0f2",
+      "id": "tool_pickaxe",
+      "tool_id": "pickaxe",
+      "size_authoring_m": [
+        0.5359542369842529,
+        0.07599999755620956,
+        0.8579999804496765
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.013473272323608398,
+            0.0,
+            0.125
+          ],
+          "section_thickness_m": 0.058240000158548355
+        },
+        {
+          "anchor_m": [
+            0.013473272323608398,
+            0.0,
+            0.38999998569488525
+          ],
+          "section_thickness_m": 0.04806309745071071
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_shovel.glb",
+      "bytes": 66748,
+      "triangles": 1284,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5545171339563862,
+      "sha256": "b83e27f2a77e5e22b2c9b2aed000dc06c5c8c7e595f1f38529f2b52aa07190bc",
+      "id": "tool_shovel",
+      "tool_id": "shovel",
+      "size_authoring_m": [
+        0.27399998903274536,
+        0.06800000369548798,
+        1.0641660690307617
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.0,
+            0.0030000004917383194,
+            0.13500000536441803
+          ],
+          "section_thickness_m": 0.05044000230729997
+        },
+        {
+          "anchor_m": [
+            0.0,
+            0.0030000004917383194,
+            0.38999998569488525
+          ],
+          "section_thickness_m": 0.041721015997829534
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_hoe.glb",
+      "bytes": 57888,
+      "triangles": 1148,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.6202090592334495,
+      "sha256": "6ec39bdf0ade4c59cdc56698573dd856a7eb026299471e5f2a1bb2186f8ea6bd",
+      "id": "tool_hoe",
+      "tool_id": "hoe",
+      "size_authoring_m": [
+        0.28310343623161316,
+        0.2639999985694885,
+        0.8928477764129639
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.0,
+            0.09600000083446503,
+            0.125
+          ],
+          "section_thickness_m": 0.051520004868507385
+        },
+        {
+          "anchor_m": [
+            0.0,
+            0.09600000083446503,
+            0.38999998569488525
+          ],
+          "section_thickness_m": 0.043090550381813406
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    },
+    {
+      "asset": "tool_trowel.glb",
+      "bytes": 43636,
+      "triangles": 796,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5226130653266332,
+      "sha256": "0c6466242469e31c1ecd3882bd53c8870fda8dd03fa116f92b2c98d9be957472",
+      "id": "tool_trowel",
+      "tool_id": "trowel",
+      "size_authoring_m": [
+        0.17368806898593903,
+        0.06803999841213226,
+        0.3861701488494873
+      ],
+      "bottom_center_origin_verified": true,
+      "grip_and_working_tip_metadata_verified": true,
+      "grip_within_exported_handle_section": [
+        {
+          "anchor_m": [
+            0.0,
+            0.0009800009429454803,
+            0.09200000017881393
+          ],
+          "section_thickness_m": 0.060680849915273394
+        }
+      ],
+      "self_contained_pbr": true,
+      "nonconstant_uv": true
+    }
+  ],
+  "runtime_holding_or_work_animation_verified": false,
+  "render_review_verified": true,
+  "source_audit_original_tools_only": true
+}

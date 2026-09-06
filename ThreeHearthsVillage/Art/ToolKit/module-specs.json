@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "kit_id": "tool_kit_01",
+  "units": "metres",
+  "authoring_axes": {
+    "up": "+Z",
+    "front": "-Y"
+  },
+  "glb_axes": {
+    "up": "+Y",
+    "front": "+Z",
+    "convert_to_authoring": "(x,-z,y)"
+  },
+  "origin": "exact bottom centre of mesh envelope",
+  "metadata_coordinates": "authoring local metres; glTF conversion is not applied to custom extras",
+  "character_height_reference_m": 1.557142,
+  "tool_inventory_created": false,
+  "runtime_attachment_verified": false,
+  "grip_contract": "Align grip_anchor.position_m to a hand/socket target. Axes and working tips are authoring suggestions; no live skeleton, IK, recipe, collision or work animation has been bound.",
+  "modules": [
+    {
+      "id": "tool_hammer",
+      "tool_id": "hammer",
+      "label": "Forged hammer",
+      "asset_glb": "modules/tool_hammer.glb",
+      "nominal_size_m": [
+        0.276,
+        0.08,
+        0.447
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.018000002950429916,
+          0.0010000001639127731,
+          0.11500000208616257
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.1379999965429306,
+        0.0010000001639127731,
+        0.40400001406669617
+      ],
+      "suggested_working_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "hand_count_suggestion": "one hand",
+      "work_kind_suggestion": "hammer",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately."
+    },
+    {
+      "id": "tool_mallet",
+      "tool_id": "mallet",
+      "label": "Oak mallet",
+      "asset_glb": "modules/tool_mallet.glb",
+      "nominal_size_m": [
+        0.264,
+        0.127,
+        0.4755
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.0,
+          0.0,
+          0.11500000208616257
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.13199999928474426,
+        0.0,
+        0.39500001072883606
+      ],
+      "suggested_working_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "hand_count_suggestion": "one hand",
+      "work_kind_suggestion": "mallet",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately."
+    },
+    {
+      "id": "tool_axe",
+      "tool_id": "axe",
+      "label": "Woodcutting axe",
+      "asset_glb": "modules/tool_axe.glb",
+      "nominal_size_m": [
+        0.2975,
+        0.068,
+        0.755434
+      ],
+      "grip_anchor": {
+        "position_m": [
+          -0.07925000041723251,
+          0.0,
+          0.125
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.14675000309944153,
+        0.0,
+        0.6579999923706055
+      ],
+      "suggested_working_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "hand_count_suggestion": "one or two hands",
+      "work_kind_suggestion": "axe",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately.",
+      "secondary_grip_anchor_m": [
+        -0.07925000041723251,
+        0.0,
+        0.3400000035762787
+      ]
+    },
+    {
+      "id": "tool_saw",
+      "tool_id": "saw",
+      "label": "Carpenter hand saw",
+      "asset_glb": "modules/tool_saw.glb",
+      "nominal_size_m": [
+        0.697,
+        0.057,
+        0.195906
+      ],
+      "grip_anchor": {
+        "position_m": [
+          -0.32350003719329834,
+          0.002500000409781933,
+          0.10200000554323196
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.11349998414516449,
+        0.002500000409781933,
+        0.000999998301267624
+      ],
+      "suggested_working_axis_local": [
+        1,
+        0,
+        0
+      ],
+      "hand_count_suggestion": "one hand",
+      "work_kind_suggestion": "saw",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately."
+    },
+    {
+      "id": "tool_pickaxe",
+      "tool_id": "pickaxe",
+      "label": "Forged pickaxe",
+      "asset_glb": "modules/tool_pickaxe.glb",
+      "nominal_size_m": [
+        0.535954,
+        0.076,
+        0.858
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.013473272323608398,
+          0.0,
+          0.125
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        -0.26852673292160034,
+        0.0,
+        0.6970000267028809
+      ],
+      "suggested_working_axis_local": [
+        -1,
+        0,
+        0
+      ],
+      "hand_count_suggestion": "two hands",
+      "work_kind_suggestion": "pickaxe",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately.",
+      "secondary_grip_anchor_m": [
+        0.013473272323608398,
+        0.0,
+        0.38999998569488525
+      ]
+    },
+    {
+      "id": "tool_shovel",
+      "tool_id": "shovel",
+      "label": "Garden shovel",
+      "asset_glb": "modules/tool_shovel.glb",
+      "nominal_size_m": [
+        0.274,
+        0.068,
+        1.064166
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.0,
+          0.0030000004917383194,
+          0.13500000536441803
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.0,
+        0.0030000004917383194,
+        1.065000057220459
+      ],
+      "suggested_working_axis_local": [
+        0,
+        0,
+        1
+      ],
+      "hand_count_suggestion": "two hands",
+      "work_kind_suggestion": "shovel",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately.",
+      "secondary_grip_anchor_m": [
+        0.0,
+        0.0030000004917383194,
+        0.38999998569488525
+      ]
+    },
+    {
+      "id": "tool_hoe",
+      "tool_id": "hoe",
+      "label": "Field hoe",
+      "asset_glb": "modules/tool_hoe.glb",
+      "nominal_size_m": [
+        0.283103,
+        0.264,
+        0.892848
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.0,
+          0.09600000083446503,
+          0.125
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.0,
+        -0.11800000071525574,
+        0.7440000176429749
+      ],
+      "suggested_working_axis_local": [
+        0,
+        -1,
+        0
+      ],
+      "hand_count_suggestion": "two hands",
+      "work_kind_suggestion": "hoe",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately.",
+      "secondary_grip_anchor_m": [
+        0.0,
+        0.09600000083446503,
+        0.38999998569488525
+      ]
+    },
+    {
+      "id": "tool_trowel",
+      "tool_id": "trowel",
+      "label": "Mason trowel",
+      "asset_glb": "modules/tool_trowel.glb",
+      "nominal_size_m": [
+        0.173688,
+        0.06804,
+        0.38617
+      ],
+      "grip_anchor": {
+        "position_m": [
+          0.0,
+          0.0009800009429454803,
+          0.09200000017881393
+        ],
+        "handle_axis_local": [
+          0,
+          0,
+          1
+        ]
+      },
+      "working_tip_m": [
+        0.0,
+        -0.019019998610019684,
+        0.3869999945163727
+      ],
+      "suggested_working_axis_local": [
+        0,
+        0,
+        1
+      ],
+      "hand_count_suggestion": "one hand",
+      "work_kind_suggestion": "trowel",
+      "tool_inventory_created": false,
+      "runtime_attachment_verified": false,
+      "collision_suggestion": "Disable per-part collision while equipped; design one simple work-volume separately."
+    }
+  ]
+}

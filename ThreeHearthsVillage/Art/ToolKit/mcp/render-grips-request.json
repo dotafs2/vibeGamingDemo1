@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "user_prompt": "Render ToolKit primary and secondary grip and working-tip guide using CPU three threads.",
+    "code": "import runpy,sys; sys.argv=['render_tool_kit.py','--','grips']; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\ToolKit\\render_tool_kit.py',run_name='__main__')"
+  }
+}

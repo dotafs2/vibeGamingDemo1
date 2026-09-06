@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\ToolKit\\create_tool_kit.py',run_name='__main__')",
+    "user_prompt": "Build eight original warm village tools with portable PBR and explicit grip anchors."
+  }
+}

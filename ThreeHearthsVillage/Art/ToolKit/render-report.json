@@ -1,0 +1,320 @@
+{
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 24,
+  "views": {
+    "overview": {
+      "file": "previews/ToolKit_overview.png",
+      "seconds": 38.576,
+      "resolution": [
+        1800,
+        1450
+      ],
+      "all_tools_at_authored_scale": true,
+      "guide_markers_in_exported_assets": false,
+      "placements": [
+        {
+          "id": "tool_hammer",
+          "display_translation_m": [
+            -1.3799999952316284,
+            0.5464999675750732,
+            0.05800001695752144
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_mallet",
+          "display_translation_m": [
+            -0.46000000834465027,
+            0.5322499871253967,
+            0.08150002360343933
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_axe",
+          "display_translation_m": [
+            0.46000000834465027,
+            0.3922830820083618,
+            0.05200003460049629
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_saw",
+          "display_translation_m": [
+            1.3799999952316284,
+            0.6720468401908875,
+            0.046500012278556824
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_pickaxe",
+          "display_translation_m": [
+            -1.3799999952316284,
+            -1.1089999675750732,
+            0.056000035256147385
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_shovel",
+          "display_translation_m": [
+            -0.46000000834465027,
+            -1.212083101272583,
+            0.05200004577636719
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_hoe",
+          "display_translation_m": [
+            0.46000000834465027,
+            -1.1264238357543945,
+            0.15000003576278687
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_trowel",
+          "display_translation_m": [
+            1.3799999952316284,
+            -0.873085081577301,
+            0.05202001705765724
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "grips": {
+      "file": "previews/ToolKit_grips.png",
+      "seconds": 36.496,
+      "resolution": [
+        1800,
+        1450
+      ],
+      "all_tools_at_authored_scale": true,
+      "guide_markers_in_exported_assets": false,
+      "placements": [
+        {
+          "id": "tool_hammer",
+          "display_translation_m": [
+            -1.3799999952316284,
+            0.5464999675750732,
+            0.05800001695752144
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_mallet",
+          "display_translation_m": [
+            -0.46000000834465027,
+            0.5322499871253967,
+            0.08150002360343933
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_axe",
+          "display_translation_m": [
+            0.46000000834465027,
+            0.3922830820083618,
+            0.05200003460049629
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_saw",
+          "display_translation_m": [
+            1.3799999952316284,
+            0.6720468401908875,
+            0.046500012278556824
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_pickaxe",
+          "display_translation_m": [
+            -1.3799999952316284,
+            -1.1089999675750732,
+            0.056000035256147385
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_shovel",
+          "display_translation_m": [
+            -0.46000000834465027,
+            -1.212083101272583,
+            0.05200004577636719
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_hoe",
+          "display_translation_m": [
+            0.46000000834465027,
+            -1.1264238357543945,
+            0.15000003576278687
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tool_trowel",
+          "display_translation_m": [
+            1.3799999952316284,
+            -0.873085081577301,
+            0.05202001705765724
+          ],
+          "display_rotation_euler_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "display_scale": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    }
+  }
+}

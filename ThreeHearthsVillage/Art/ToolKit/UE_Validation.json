@@ -1,0 +1,108 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "native renderable meshes, source hashes, scale and material slots",
+  "native_meshes": 8,
+  "unique_tool_count": 8,
+  "inventory_binding_verified": false,
+  "socket_binding_verified": false,
+  "work_animation_verified": false,
+  "assets": [
+    {
+      "id": "tool_hammer",
+      "tool_id": "hammer",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_hammer/tool_hammer.tool_hammer",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        27.599998474121094,
+        8.0,
+        44.70000457763672
+      ],
+      "material_slots": 7
+    },
+    {
+      "id": "tool_mallet",
+      "tool_id": "mallet",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_mallet/tool_mallet.tool_mallet",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        26.399999618530273,
+        12.700000762939453,
+        47.55000305175781
+      ],
+      "material_slots": 5
+    },
+    {
+      "id": "tool_axe",
+      "tool_id": "axe",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_axe/tool_axe.tool_axe",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        29.750001907348633,
+        6.800000190734863,
+        75.54338073730469
+      ],
+      "material_slots": 7
+    },
+    {
+      "id": "tool_saw",
+      "tool_id": "saw",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_saw/tool_saw.tool_saw",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        69.70000457763672,
+        5.700000286102295,
+        19.590627670288086
+      ],
+      "material_slots": 5
+    },
+    {
+      "id": "tool_pickaxe",
+      "tool_id": "pickaxe",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_pickaxe/tool_pickaxe.tool_pickaxe",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        53.59542465209961,
+        7.599999904632568,
+        85.79999542236328
+      ],
+      "material_slots": 6
+    },
+    {
+      "id": "tool_shovel",
+      "tool_id": "shovel",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_shovel/tool_shovel.tool_shovel",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        27.399999618530273,
+        6.800000190734863,
+        106.41661071777344
+      ],
+      "material_slots": 7
+    },
+    {
+      "id": "tool_hoe",
+      "tool_id": "hoe",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_hoe/tool_hoe.tool_hoe",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        28.31034278869629,
+        26.399999618530273,
+        89.28477478027344
+      ],
+      "material_slots": 6
+    },
+    {
+      "id": "tool_trowel",
+      "tool_id": "trowel",
+      "native_mesh": "/Game/ThreeHearths/Generated/ToolKit/tool_trowel/tool_trowel.tool_trowel",
+      "source_hash_current": true,
+      "dimensions_cm": [
+        17.368806838989258,
+        6.803999900817871,
+        38.61701583862305
+      ],
+      "material_slots": 6
+    }
+  ]
+}

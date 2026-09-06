@@ -1,0 +1,164 @@
+{
+  "kit_id": "tool_kit_01",
+  "blender_version": "5.2.0 LTS",
+  "built_via": "Blender MCP execute_blender_code",
+  "original_meshes_only": true,
+  "licensed_reference_included": false,
+  "modules": [
+    {
+      "id": "tool_hammer",
+      "triangles": 1228,
+      "size_m": [
+        0.276,
+        0.08,
+        0.447
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Cut_Edge",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 62068
+    },
+    {
+      "id": "tool_mallet",
+      "triangles": 1124,
+      "size_m": [
+        0.264,
+        0.127,
+        0.4755
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Honey_Wood",
+        "TK_Cut_Edge"
+      ],
+      "uv_layers": 1,
+      "bytes": 58988
+    },
+    {
+      "id": "tool_axe",
+      "triangles": 1176,
+      "size_m": [
+        0.2975,
+        0.068,
+        0.755434
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Iron_Recess",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 58564
+    },
+    {
+      "id": "tool_saw",
+      "triangles": 736,
+      "size_m": [
+        0.697,
+        0.057,
+        0.195906
+      ],
+      "materials": [
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Honey_Wood",
+        "TK_Brass_Pin",
+        "TK_Cream_Grip_Wrap"
+      ],
+      "uv_layers": 1,
+      "bytes": 54604
+    },
+    {
+      "id": "tool_pickaxe",
+      "triangles": 1160,
+      "size_m": [
+        0.535954,
+        0.076,
+        0.858
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 56244
+    },
+    {
+      "id": "tool_shovel",
+      "triangles": 1284,
+      "size_m": [
+        0.274,
+        0.068,
+        1.064166
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Iron_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 66748
+    },
+    {
+      "id": "tool_hoe",
+      "triangles": 1148,
+      "size_m": [
+        0.283103,
+        0.264,
+        0.892848
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 57888
+    },
+    {
+      "id": "tool_trowel",
+      "triangles": 796,
+      "size_m": [
+        0.173688,
+        0.06804,
+        0.38617
+      ],
+      "materials": [
+        "TK_Warm_Oak",
+        "TK_Timber_Recess",
+        "TK_Cream_Grip_Wrap",
+        "TK_Forged_Iron",
+        "TK_Sharpened_Edge",
+        "TK_Brass_Pin"
+      ],
+      "uv_layers": 1,
+      "bytes": 43636
+    }
+  ],
+  "total_triangles": 8652,
+  "generation_seconds": 1.185
+}
