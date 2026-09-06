@@ -11,5 +11,5 @@
   "thinking_mode": "disabled",
   "max_requests_per_run": 600,
   "autonomous_life": true,
-  "life_decision_interval_seconds": 60
+  "life_decision_interval_seconds": 6
 }

@@ -285,7 +285,7 @@ private:
     bool bApiBudgeted = false;
     FString ApiBudgetLedger;
     double ApiBudgetSpent = 0, ApiBudgetReserved = 0, ApiBudgetRemaining = 0;
-    float LifeDecisionInterval = 60.f;
+    float LifeDecisionInterval = 6.f;
     int32 LastLifeResident = -1;
     FString HistoryPath;
     FString ApiBackend;

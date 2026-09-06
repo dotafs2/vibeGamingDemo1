@@ -10,6 +10,7 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "HAL/FileManager.h"
+#include "HAL/PlatformTime.h"
 #include "Serialization/JsonSerializer.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -637,7 +638,11 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::ProductionWork) return TEXT("正在生产 / 施工");
     if(Residents[I].Task==EHearthTask::ProductionDeliver) return TEXT("运送产出");
     if(Residents[I].Task==EHearthTask::ProductionDeposit) return TEXT("交付入库");
-    if(Residents[I].Task==EHearthTask::LifeChoosing) return TEXT("准备下一步");
+    if(Residents[I].Task==EHearthTask::LifeChoosing)
+    {
+        const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-FPlatformTime::Seconds()));
+        return Wait>0?FString::Printf(TEXT("稍作休息 · %d 秒"),Wait):TEXT("等待下一步调度");
+    }
     if(Residents[I].Task==EHearthTask::LifeTravel) return TEXT("前往活动地点");
     if(Residents[I].Task==EHearthTask::LifeActivity) return LifeActionName(I,Residents[I].LifeAction);
     const TCHAR* Status[]={TEXT("观察地块"),TEXT("前往木材堆"),TEXT("整理木材"),TEXT("搬运木材"),TEXT("放下木材"),TEXT("搭建小屋"),TEXT("新家落成")};

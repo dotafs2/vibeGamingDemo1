@@ -100,7 +100,7 @@ void AHearthVillage::LoadApiConfig()
     bApiReady=false; bApiConfigured=false; bApiDisabledThisRun=false; bHasApiUsage=false;
     bApiBudgeted=false; ApiBudgetLedger.Empty(); ApiBudgetSpent=0; ApiBudgetReserved=0; ApiBudgetRemaining=0;
     ApiRequests=0; ApiSuccesses=0; ApiTokens=0;
-    bAutonomousLifeEnabled=true; LifeDecisionInterval=60.f; ApiMaxRequests=600;
+    bAutonomousLifeEnabled=true; LifeDecisionInterval=6.f; ApiMaxRequests=600;
     ApiBackend=TEXT("local"); ApiKey.Empty(); ApiModel.Empty();
     ApiStatus=TEXT("尚未配置模型 · 本地人设规则");
     FString ConfigPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/api-config.json");
@@ -109,7 +109,7 @@ void AHearthVillage::LoadApiConfig()
     if(!FFileHelper::LoadFileToString(Text,*ConfigPath)) return;
     if(Text.Len()>16384 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Config) || !Config.IsValid()) { ApiStatus=TEXT("API 配置格式有误 · 使用本地规则"); return; }
     Config->TryGetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
-    double Interval=60; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
+    double Interval=6; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
     if(FMath::IsFinite(Interval)) LifeDecisionInterval=FMath::Clamp(static_cast<float>(Interval),1.f,120.f);
     bool Enabled=false; Config->TryGetBoolField(TEXT("enabled"),Enabled);
     if(!Enabled) { ApiStatus=TEXT("API 已关闭 · 本地人设规则"); return; }
@@ -152,7 +152,6 @@ void AHearthVillage::LoadApiConfig()
         ApiEndpoint=HearthDecision::BudgetBase+TEXT("/chat/completions");
         ApiThinkingMode=TEXT("disabled"); ApiTokenField=TEXT("max_tokens"); ApiFormat=TEXT("json_object");
         ApiMaxTokens=FMath::Min(ApiMaxTokens,512); ApiTimeout=60.f;
-        LifeDecisionInterval=FMath::Max(LifeDecisionInterval,60.f);
     }
     if(ApiBackend==TEXT("codex_spark"))
     {
