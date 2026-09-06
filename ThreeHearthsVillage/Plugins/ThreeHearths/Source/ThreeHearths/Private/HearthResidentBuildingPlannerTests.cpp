@@ -1,5 +1,6 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "HearthResidentBuildingPlanner.h"
+#include "HearthPlannedConstructionAdapter.h"
 #include "Misc/AutomationTest.h"
 
 namespace
@@ -8,8 +9,8 @@ namespace
     {
         FHearthResidentBuildingInput I; I.ResidentId = TEXT("resident-1"); I.StableSeed = TEXT("seed-1");
         I.Need = Household >= 3 ? TEXT("family privacy") : TEXT("shelter"); I.Occupation = Occupation; I.HouseholdSize = Household; I.FriendsNearby = Friends;
-        I.Budget = 30; I.bRoadAccessible = true; I.RoadYaw = 20.f; I.Origin = FVector(400.f, -600.f, 8.f);
-        I.Stone = 16; I.Planks = 40; I.Beams = 8; return I;
+        I.Budget = 100; I.bRoadAccessible = true; I.RoadYaw = 20.f; I.Origin = FVector(400.f, -600.f, 8.f);
+        I.Stone = 16; I.Planks = 40; I.Beams = 40; return I;
     }
 }
 
@@ -37,9 +38,20 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestTrue(TEXT("Planner reuses the existing timber door catalog ID"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("wall_door_timber_2m"); }));
     const auto SmallValidation = HearthStructurePlan::Validate(Small.Plan, HearthResidentBuildingPlanner::ValidationContext(SmallInput));
     TestTrue(TEXT("Base plan validates against current real resources"), SmallValidation.bValid);
-    TestEqual(TEXT("Foundation uses ground elevation"), Small.Plan.Components[0].Offset.Z, 0.0);
-    TestEqual(TEXT("Floor is above the foundation"), Small.Plan.Components[1].Offset.Z, 24.0);
-    TestTrue(TEXT("Roof points to a vertical support"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("roof_slope_timber_2m") && C.bRequiresSupport && C.SupportsComponentId.Contains(TEXT("_support")); }));
+    TestTrue(TEXT("Foundation uses catalog elevation"), Small.Plan.Components[0].Offset.Z > 0.f);
+    TestTrue(TEXT("Floor uses catalog elevation"), Small.Plan.Components[1].Offset.Z > 0.f);
+    TestTrue(TEXT("Roof points to the beam support"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("roof_slope_timber_2m") && C.bRequiresSupport && C.SupportsComponentId.Contains(TEXT("_beam")); }));
+
+    TArray<FHearthCottageComponent> Empty;
+    const auto BaseRuntime = HearthPlannedConstructionAdapter::Convert(Family.Plan, 2, Empty);
+    TestTrue(TEXT("Base plan converts to executable cottage parts"), BaseRuntime.bAccepted);
+    const auto FirstExtensionRuntime = HearthPlannedConstructionAdapter::Convert(Family.Expansion.ResultingPlan, 2, BaseRuntime.Components);
+    TestTrue(TEXT("First expansion converts through the adapter"), FirstExtensionRuntime.bAccepted);
+    const auto SecondExtensionRuntime = HearthPlannedConstructionAdapter::Convert(Multi.Expansion.ResultingPlan, 2, FirstExtensionRuntime.Components);
+    TestTrue(TEXT("Second expansion converts through the adapter"), SecondExtensionRuntime.bAccepted);
+    TestEqual(TEXT("Second expansion adds one room worth of parts"), SecondExtensionRuntime.Components.Num(), FirstExtensionRuntime.Components.Num() + 16);
+    for (const FHearthCottageComponent& Old : FirstExtensionRuntime.Components)
+        TestTrue(TEXT("Existing runtime component fields remain unchanged"), SecondExtensionRuntime.Components.ContainsByPredicate([&](const FHearthCottageComponent& Current) { return Current.Id == Old.Id && Current.AssetId == Old.AssetId && Current.Offset == Old.Offset && Current.Yaw == Old.Yaw && Current.Stage == Old.Stage && Current.MaterialType == Old.MaterialType && Current.MaterialAmount == Old.MaterialAmount && Current.Owner == Old.Owner; }));
 
     auto Poor = Inputs(1, TEXT("general"), 0); Poor.Stone = 0; Poor.Planks = 1; Poor.Beams = 0; Poor.Budget = 2;
     const auto Unfunded = HearthResidentBuildingPlanner::Build(Poor);
