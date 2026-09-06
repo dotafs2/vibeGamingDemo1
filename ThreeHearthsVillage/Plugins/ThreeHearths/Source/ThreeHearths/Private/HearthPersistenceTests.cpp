@@ -220,13 +220,14 @@ bool FHearthStructurePlanPersistenceTest::RunTest(const FString&)
     auto Plan=HearthStructurePlan::MakePlan(TEXT("plan-9"),TEXT("seed-9"),Footprint,Reasons);
     FHearthStructureMaterialRecipe Recipe; Recipe.RecipeId=TEXT("wall-wood"); Recipe.CatalogId=TEXT("wall"); FHearthStructureMaterialQuantity Material; Material.MaterialId=TEXT("plank"); Material.Quantity=2; Recipe.Inputs.Add(Material);
     TestTrue(TEXT("Register serializable recipe"),HearthStructurePlan::RegisterRecipe(Plan,Recipe));
-    FHearthStructureComponentSpec Spec; Spec.CatalogId=TEXT("wall"); Spec.SemanticKey=TEXT("wall-a"); Spec.Offset=FVector(0,0,100); Spec.Height=80; Spec.RecipeId=Recipe.RecipeId; Spec.Materials=Recipe.Inputs; Spec.MaterialCost=4;
+    FHearthStructureComponentSpec Spec; Spec.CatalogId=TEXT("wall"); Spec.SemanticKey=TEXT("wall-a"); Spec.Offset=FVector(0,0,100); Spec.Height=80; Spec.BoundsMin=FVector(-91,-8,16); Spec.BoundsMax=FVector(91,8,224); Spec.RecipeId=Recipe.RecipeId; Spec.Materials=Recipe.Inputs; Spec.MaterialCost=4;
     TestTrue(TEXT("Append serializable upper component"),HearthStructurePlan::AppendComponent(Plan,Spec)); Image.Schema=9; Image.StructurePlans.Add(Plan);
     FString Error; FHearthWorldImage Decoded;
     TestTrue(TEXT("Schema9 structure plan roundtrips"),HearthWorld::Decode(HearthWorld::Encode(Image),Decoded,Error));
     TestEqual(TEXT("Plan ID survives roundtrip"),Decoded.StructurePlans[0].PlanId,FString(TEXT("plan-9")));
     TestEqual(TEXT("Stable seed survives roundtrip"),Decoded.StructurePlans[0].StableSeed,FString(TEXT("seed-9")));
     TestEqual(TEXT("Upper component Z survives roundtrip"),Decoded.StructurePlans[0].Components[0].Offset.Z,100.0);
+    TestTrue(TEXT("Authoritative component bounds survive roundtrip"),Decoded.StructurePlans[0].Components[0].BoundsMin.Equals(Spec.BoundsMin) && Decoded.StructurePlans[0].Components[0].BoundsMax.Equals(Spec.BoundsMax));
     TestEqual(TEXT("Recipe material quantity survives roundtrip"),Decoded.StructurePlans[0].Components[0].Materials[0].Quantity,2);
     FHearthWorldImage Legacy=Image; Legacy.Schema=6; Legacy.StructurePlans.Reset(); const FVector LegacyPosition=Legacy.People[0].Position;
     TestTrue(TEXT("Schema6 migration decodes without structure plans"),HearthWorld::Decode(HearthWorld::Encode(Legacy),Decoded,Error));

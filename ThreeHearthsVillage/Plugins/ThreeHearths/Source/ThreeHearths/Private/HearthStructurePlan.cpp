@@ -54,6 +54,77 @@ namespace HearthStructurePlan
             return FVector2D(Value.X * FMath::Cos(Radians) - Value.Y * FMath::Sin(Radians),
                 Value.X * FMath::Sin(Radians) + Value.Y * FMath::Cos(Radians));
         }
+
+        struct FComponentBounds
+        {
+            FVector2D Min = FVector2D::ZeroVector;
+            FVector2D Max = FVector2D::ZeroVector;
+            float MinZ = 0.f;
+            float MaxZ = 0.f;
+        };
+
+        bool ValidBounds(const FHearthStructureComponent& Component)
+        {
+            return !Component.BoundsMin.ContainsNaN() && !Component.BoundsMax.ContainsNaN()
+                && Component.BoundsMax.X > Component.BoundsMin.X
+                && Component.BoundsMax.Y > Component.BoundsMin.Y
+                && Component.BoundsMax.Z > Component.BoundsMin.Z;
+        }
+
+        FComponentBounds WorldBounds(const FHearthStructureComponent& Component)
+        {
+            FComponentBounds Result;
+            Result.Min = FVector2D(FLT_MAX, FLT_MAX);
+            Result.Max = FVector2D(-FLT_MAX, -FLT_MAX);
+            const FVector2D Corners[] = {
+                FVector2D(Component.BoundsMin.X, Component.BoundsMin.Y),
+                FVector2D(Component.BoundsMin.X, Component.BoundsMax.Y),
+                FVector2D(Component.BoundsMax.X, Component.BoundsMin.Y),
+                FVector2D(Component.BoundsMax.X, Component.BoundsMax.Y)
+            };
+            for (const FVector2D& Corner : Corners)
+            {
+                const FVector2D Point = Rotate2D(Corner, Component.Orientation.Yaw)
+                    + FVector2D(Component.Offset.X, Component.Offset.Y);
+                Result.Min.X = FMath::Min(Result.Min.X, Point.X);
+                Result.Min.Y = FMath::Min(Result.Min.Y, Point.Y);
+                Result.Max.X = FMath::Max(Result.Max.X, Point.X);
+                Result.Max.Y = FMath::Max(Result.Max.Y, Point.Y);
+            }
+            Result.MinZ = Component.Offset.Z + Component.BoundsMin.Z;
+            Result.MaxZ = Component.Offset.Z + Component.BoundsMax.Z;
+            return Result;
+        }
+
+        bool Overlaps(const FComponentBounds& A, const FComponentBounds& B)
+        {
+            return A.Min.X < B.Max.X && B.Min.X < A.Max.X
+                && A.Min.Y < B.Max.Y && B.Min.Y < A.Max.Y
+                && A.MinZ < B.MaxZ && B.MinZ < A.MaxZ;
+        }
+
+        bool HasSupportContact(const FHearthStructureComponent& Child, const FHearthStructureComponent& Parent)
+        {
+            const FComponentBounds ChildBounds = WorldBounds(Child);
+            const FComponentBounds ParentBounds = WorldBounds(Parent);
+            const bool bOverlapsXY = ChildBounds.Min.X <= ParentBounds.Max.X && ParentBounds.Min.X <= ChildBounds.Max.X
+                && ChildBounds.Min.Y <= ParentBounds.Max.Y && ParentBounds.Min.Y <= ChildBounds.Max.Y;
+            const bool bTouchesTop = ChildBounds.MinZ <= ParentBounds.MaxZ + 5.f
+                && ChildBounds.MaxZ >= ParentBounds.MaxZ - 5.f
+                && ChildBounds.MaxZ > ParentBounds.MinZ;
+            return bOverlapsXY && bTouchesTop;
+        }
+
+        bool IntentionallyConnected(const FHearthStructurePlan& Plan,
+            const FHearthStructureComponent& A, const FHearthStructureComponent& B)
+        {
+            if (A.SupportsComponentId == B.Id || B.SupportsComponentId == A.Id) return true;
+            return Plan.Connections.ContainsByPredicate([&](const FHearthStructureConnection& Connection)
+            {
+                return (Connection.FromComponentId == A.Id && Connection.ToComponentId == B.Id)
+                    || (Connection.FromComponentId == B.Id && Connection.ToComponentId == A.Id);
+            });
+        }
     }
 
     FHearthStructurePlan MakePlan(const FString& PlanId, const FString& StableSeed,
@@ -92,6 +163,7 @@ namespace HearthStructurePlan
         FHearthStructureComponent Component;
         Component.Id = Id; Component.CatalogId = Spec.CatalogId; Component.ExtensionId = ExtensionId;
         Component.Offset = Spec.Offset; Component.Orientation = Spec.Orientation; Component.Size = Spec.Size;
+        Component.BoundsMin = Spec.BoundsMin; Component.BoundsMax = Spec.BoundsMax;
         Component.Height = FMath::Max(0.f, Spec.Height);
         Component.MaterialCost = FMath::Max(0, Spec.MaterialCost); Component.CollisionRadius = FMath::Max(0.f, Spec.CollisionRadius);
         Component.RecipeId = Spec.RecipeId; Component.Materials = Spec.Materials;
@@ -172,29 +244,40 @@ namespace HearthStructurePlan
         for (const FHearthStructureComponent& Component : Plan.Components)
         {
             if (Component.Id.IsEmpty() || Component.CatalogId.IsEmpty()) Issue(Result, TEXT("component_missing_identity"));
+            if (!ValidBounds(Component))
+            {
+                Issue(Result, FString::Printf(TEXT("invalid_component_bounds:%s"), *Component.Id));
+                continue;
+            }
+            const FComponentBounds Bounds = WorldBounds(Component);
             Cost += FMath::Max(0, Component.MaterialCost);
             const FHearthStructureMaterialRecipe* Recipe = FindRecipe(Plan, Component.RecipeId);
             if (!Recipe || Recipe->CatalogId != Component.CatalogId || !SameMaterials(Recipe->Inputs, Component.Materials))
                 Issue(Result, FString::Printf(TEXT("recipe_mismatch:%s"), *Component.Id));
             for (const auto& Material : Component.Materials) RequiredMaterials.FindOrAdd(Material.MaterialId) += Material.Quantity;
-            const FVector2D Half = Component.Size * .5f;
-            if (FMath::Abs(Component.Offset.X) + Half.X > Plan.Footprint.Size.X * .5f
-                || FMath::Abs(Component.Offset.Y) + Half.Y > Plan.Footprint.Size.Y * .5f)
+            if (Bounds.Min.X < -Plan.Footprint.Size.X * .5f || Bounds.Max.X > Plan.Footprint.Size.X * .5f
+                || Bounds.Min.Y < -Plan.Footprint.Size.Y * .5f || Bounds.Max.Y > Plan.Footprint.Size.Y * .5f)
                 Issue(Result, FString::Printf(TEXT("component_outside_footprint:%s"), *Component.Id));
-            if (Component.bRequiresSupport && !FindComponent(Plan, Component.SupportsComponentId))
-                Issue(Result, FString::Printf(TEXT("unsupported_component:%s"), *Component.Id));
+            if (Component.bRequiresSupport)
+            {
+                const FHearthStructureComponent* Support = FindComponent(Plan, Component.SupportsComponentId);
+                if (!Support || !ValidBounds(*Support) || !HasSupportContact(Component, *Support))
+                    Issue(Result, FString::Printf(TEXT("unsupported_component:%s"), *Component.Id));
+            }
             for (const FHearthStructureOccupiedVolume& Existing : Context.Occupied)
             {
-                const bool bSameFloor = Component.Offset.Z < Existing.Z + Existing.Height && Existing.Z < Component.Offset.Z + Component.Height;
-                if (bSameFloor && FVector2D::Distance(FVector2D(Component.Offset.X, Component.Offset.Y), Existing.Center) < Component.CollisionRadius + Existing.Radius)
+                const bool bSameFloor = Bounds.MinZ < Existing.Z + Existing.Height && Existing.Z < Bounds.MaxZ;
+                const FVector2D Nearest(FMath::Clamp(Existing.Center.X, Bounds.Min.X, Bounds.Max.X),
+                    FMath::Clamp(Existing.Center.Y, Bounds.Min.Y, Bounds.Max.Y));
+                if (bSameFloor && FVector2D::Distance(Nearest, Existing.Center) < Existing.Radius)
                     Issue(Result, FString::Printf(TEXT("occupied_collision:%s"), *Component.Id));
             }
         }
         for (int32 I = 0; I < Plan.Components.Num(); ++I) for (int32 J = I + 1; J < Plan.Components.Num(); ++J)
         {
             const auto& A = Plan.Components[I]; const auto& B = Plan.Components[J];
-            const bool bSameFloor = A.Offset.Z < B.Offset.Z + B.Height && B.Offset.Z < A.Offset.Z + A.Height;
-            if (bSameFloor && FVector2D::Distance(FVector2D(A.Offset.X, A.Offset.Y), FVector2D(B.Offset.X, B.Offset.Y)) < A.CollisionRadius + B.CollisionRadius)
+            if (ValidBounds(A) && ValidBounds(B) && !IntentionallyConnected(Plan, A, B)
+                && Overlaps(WorldBounds(A), WorldBounds(B)))
                 Issue(Result, FString::Printf(TEXT("component_collision:%s:%s"), *A.Id, *B.Id));
         }
         for (const FHearthStructureConnection& Connection : Plan.Connections)

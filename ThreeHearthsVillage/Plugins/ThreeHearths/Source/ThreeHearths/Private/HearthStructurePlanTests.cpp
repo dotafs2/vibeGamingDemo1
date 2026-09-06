@@ -8,6 +8,7 @@ namespace
     {
         FHearthStructureComponentSpec Spec; Spec.CatalogId = Catalog; Spec.SemanticKey = Key;
         Spec.Offset = FVector(Offset, 0.f); Spec.Size = FVector2D(80.f, 20.f); Spec.CollisionRadius = 12.f;
+        Spec.BoundsMin = FVector(-40.f, -10.f, 0.f); Spec.BoundsMax = FVector(40.f, 10.f, 100.f);
         Spec.MaterialCost = Cost; Spec.bRequiresSupport = bSupport; Spec.SupportsComponentKey = Supports; return Spec;
     }
 }
@@ -53,6 +54,7 @@ bool FHearthStructurePlanTest::RunTest(const FString&)
     TestTrue(TEXT("Valid plan passes pure validation"), Valid.bValid);
     TestEqual(TEXT("Upper component preserves local Z for persistence"), Shed.Components.Last().Offset.Z, 100.0);
     TestEqual(TEXT("Upper component preserves explicit height for persistence"), Shed.Components.Last().Height, 80.f);
+    TestTrue(TEXT("Component preserves authoritative local bounds"), Shed.Components.Last().BoundsMin.Equals(FVector(-40.f,-10.f,0.f)) && Shed.Components.Last().BoundsMax.Equals(FVector(40.f,10.f,100.f)));
     FHearthStructureAttachment RoofAttachment; RoofAttachment.Id=TEXT("roof_attachment"); RoofAttachment.ParentComponentId=OldId;
     RoofAttachment.CatalogId=TEXT("vent"); RoofAttachment.Offset=FVector(0.f,0.f,100.f); Shed.Attachments.Add(RoofAttachment);
     TestEqual(TEXT("Attachment preserves three-dimensional local offset"), Shed.Attachments.Last().Offset.Z, 100.0);

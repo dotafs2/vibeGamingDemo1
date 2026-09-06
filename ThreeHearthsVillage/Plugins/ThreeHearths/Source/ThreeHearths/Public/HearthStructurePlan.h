@@ -79,6 +79,8 @@ struct THREEHEARTHS_API FHearthStructureComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator Orientation = FRotator::ZeroRotator;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Size = FVector2D(100.f, 20.f);
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector BoundsMin = FVector(-50.f, -10.f, 0.f);
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector BoundsMax = FVector(50.f, 10.f, 100.f);
     UPROPERTY(EditAnywhere, BlueprintReadWrite) int32 MaterialCost = 0;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString RecipeId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FHearthStructureMaterialQuantity> Materials;
@@ -155,6 +157,8 @@ struct THREEHEARTHS_API FHearthStructureComponentSpec
     UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator Orientation = FRotator::ZeroRotator;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Size = FVector2D(100.f, 20.f);
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector BoundsMin = FVector(-50.f, -10.f, 0.f);
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector BoundsMax = FVector(50.f, 10.f, 100.f);
     UPROPERTY(EditAnywhere, BlueprintReadWrite) int32 MaterialCost = 0;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString RecipeId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FHearthStructureMaterialQuantity> Materials;
