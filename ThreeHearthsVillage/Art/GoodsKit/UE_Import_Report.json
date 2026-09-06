@@ -1,0 +1,127 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "scope": "native renderable goods; inventory, recipes and carry animation remain separate",
+  "assets": [
+    {
+      "id": "goods_raw_clay_basket",
+      "source": "Art/GoodsKit/modules/goods_raw_clay_basket.glb",
+      "source_sha256": "b6119f837d01be99a9d7771035519bc477a8b5c9a6a1bd6418404d50810e1bea",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_raw_clay_basket/goods_raw_clay_basket.goods_raw_clay_basket",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        26.399999618530273,
+        22.485610961914062,
+        18.149999618530273
+      ],
+      "import_seconds": 0.5620000000344589,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_bricks_crate",
+      "source": "Art/GoodsKit/modules/goods_bricks_crate.glb",
+      "source_sha256": "f53e21dac64d790b30b40f56c3b7c593f9b50e8088a3bebbd96bf1d9742bc3c2",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_bricks_crate/goods_bricks_crate.goods_bricks_crate",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        31.700002670288086,
+        20.55000114440918,
+        15.050000190734863
+      ],
+      "import_seconds": 0.21899999992456287,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_tiles_terracotta_crate",
+      "source": "Art/GoodsKit/modules/goods_tiles_terracotta_crate.glb",
+      "source_sha256": "f18b6a7448908b01f66c07a24d87b9353e573579e677f7c8c9a2c23ff60633a6",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_tiles_terracotta_crate/goods_tiles_terracotta_crate.goods_tiles_terracotta_crate",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        32.70000076293945,
+        20.67500114440918,
+        16.450000762939453
+      ],
+      "import_seconds": 0.20300000009592623,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_tiles_slateblue_crate",
+      "source": "Art/GoodsKit/modules/goods_tiles_slateblue_crate.glb",
+      "source_sha256": "f1c608b5faa12d13f80bd3810b5130694aea86496158c9b8e588ff5f40d0c18a",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_tiles_slateblue_crate/goods_tiles_slateblue_crate.goods_tiles_slateblue_crate",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        32.70000076293945,
+        20.67500114440918,
+        16.450000762939453
+      ],
+      "import_seconds": 0.2029999999795109,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_lime_pail",
+      "source": "Art/GoodsKit/modules/goods_lime_pail.glb",
+      "source_sha256": "cd90a4d5f2fcdeb9b8a379c393ec2928b0458dda7b8eb767e53a4c663c05f265",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_lime_pail/goods_lime_pail.goods_lime_pail",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        22.1799373626709,
+        19.4827880859375,
+        22.600000381469727
+      ],
+      "import_seconds": 0.14099999994505197,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_pigment_pots",
+      "source": "Art/GoodsKit/modules/goods_pigment_pots.glb",
+      "source_sha256": "83c992196536268464946b0ef3959e2329daba38eb9b52dd342aeceaca3c67ab",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_pigment_pots/goods_pigment_pots.goods_pigment_pots",
+      "material_slots": 9,
+      "bounds_extent_cm": [
+        32.20000457763672,
+        17.795127868652344,
+        15.050000190734863
+      ],
+      "import_seconds": 0.31200000003445894,
+      "saved_assets": 10,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_iron_ingots_bundle",
+      "source": "Art/GoodsKit/modules/goods_iron_ingots_bundle.glb",
+      "source_sha256": "4c2d01aacf2d213da9fccf796b03db69151f4f561a2b6d15374d676701572f27",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_iron_ingots_bundle/goods_iron_ingots_bundle.goods_iron_ingots_bundle",
+      "material_slots": 5,
+      "bounds_extent_cm": [
+        32.0,
+        21.690597534179688,
+        15.948751449584961
+      ],
+      "import_seconds": 0.10999999998603016,
+      "saved_assets": 6,
+      "collision": "not_generated_requires_gameplay_template"
+    },
+    {
+      "id": "goods_nails_box",
+      "source": "Art/GoodsKit/modules/goods_nails_box.glb",
+      "source_sha256": "2538ad2a232fb315a8b4aa578b47d9fc68ea5223ce8f2be1061367effaeb55b0",
+      "mesh": "/Game/ThreeHearths/Generated/GoodsKit/goods_nails_box/goods_nails_box.goods_nails_box",
+      "material_slots": 7,
+      "bounds_extent_cm": [
+        24.19999885559082,
+        18.975000381469727,
+        15.050000190734863
+      ],
+      "import_seconds": 0.2190000000409782,
+      "saved_assets": 8,
+      "collision": "not_generated_requires_gameplay_template"
+    }
+  ]
+}
