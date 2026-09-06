@@ -34,6 +34,7 @@ FString AHearthVillage::ExportWorldState() const
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
     W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
     W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock; W.Planks=PlankStock; W.Beams=BeamStock; W.TreasuryCoins=TreasuryCoins;
+    W.TaxProjectCoins=TaxProjectCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<10;++I) W.TaxRemainders[I]=TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
@@ -49,7 +50,7 @@ FString AHearthVillage::ExportWorldState() const
         W.People.Add(MoveTemp(S));
     }
     W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
-    W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers;
+    W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers;
     return HearthWorld::Encode(W);
 }
 
@@ -69,6 +70,18 @@ bool AHearthVillage::SaveWorld()
 bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
 {
     FHearthWorldImage W; if(!HearthWorld::Decode(Text,W,Error)) return false;
+    const int32 SourceSchema=W.Schema;
+    if(W.Schema<6)
+    {
+        for(const auto& T:W.Transactions) if((T.Kind==TEXT("wage") || T.Kind==TEXT("plank_trade"))
+            && !W.TaxAssessments.ContainsByPredicate([&](const FHearthTaxAssessment& A) { return A.SourceTransactionId==T.Id; }))
+        {
+            FHearthTaxAssessment A; A.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); A.SourceTransactionId=T.Id;
+            A.Resident=T.To; A.Gross=T.Amount; A.Net=T.Amount; A.At=T.At; A.bLegacyExempt=true;
+            A.RemainderBefore=W.TaxRemainders[T.To]; A.RemainderAfter=A.RemainderBefore; W.TaxAssessments.Add(MoveTemp(A));
+        }
+        W.Schema=6;
+    }
     const bool Migrating=W.People.Num()!=Residents.Num();
     if(W.bIsland!=bUseCropoutMap) { Error=TEXT("存档的地图与当前场景不匹配"); return false; }
     if(!MigrateWorldPopulation(W,Error)) return false;
@@ -82,8 +95,9 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
     bAutonomousLifeEnabled=W.bAutonomy; bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
     FoodStock=W.Food; StoneStock=W.Stone; PlankStock=W.Planks; BeamStock=W.Beams; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
-    Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions);
+    Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions); TaxAssessments=MoveTemp(W.TaxAssessments);
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
+    TaxProjectCoins=W.TaxProjectCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         WoodStock[I]=W.Wood[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
@@ -115,7 +129,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         }
         PendingDecisions[I]=FHearthPendingDecision();
     }
-    if(W.Schema<4)
+    if(SourceSchema<4)
     {
         for(const auto& T:Transactions) if(T.Kind==TEXT("wage") && !WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P) { return P.TaskId==T.TaskId; }))
         {

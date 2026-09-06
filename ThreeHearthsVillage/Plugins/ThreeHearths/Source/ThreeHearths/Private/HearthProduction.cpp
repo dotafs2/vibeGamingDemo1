@@ -455,7 +455,30 @@ bool AHearthVillage::TransferCoins(const FString& Kind,const FString& TaskId,int
     if(From<0) TreasuryCoins-=Amount; else Residents[From].Coins-=Amount;
     if(To<0) TreasuryCoins+=Amount; else Residents[To].Coins+=Amount;
     FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=Kind; T.TaskId=TaskId;
-    T.From=From; T.To=To; T.Amount=Amount; T.Item=Item; T.Quantity=Quantity; T.At=Elapsed; Transactions.Add(MoveTemp(T));
+    T.From=From; T.To=To; T.Amount=Amount; T.Item=Item; T.Quantity=Quantity; T.At=Elapsed; const FString SourceId=T.Id; Transactions.Add(MoveTemp(T));
+    if(Trade && !AssessIncomeTax(To,SourceId)) return false;
+    return true;
+}
+
+bool AHearthVillage::AssessIncomeTax(int32 Resident,const FString& SourceTransactionId)
+{
+    if(!Residents.IsValidIndex(Resident) || TaxRatePercent<0 || TaxRatePercent>100 || TaxAssessments.Num()>=100000) return false;
+    if(TaxAssessments.ContainsByPredicate([&](const FHearthTaxAssessment& T) { return T.SourceTransactionId==SourceTransactionId; })) return false;
+    const auto* Source=Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Id==SourceTransactionId; });
+    if(!Source || Source->To!=Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade")) || Source->Amount<=0) return false;
+    const int32 Gross=Source->Amount,Before=TaxRemainders[Resident];
+    const int64 Accrued=static_cast<int64>(Gross)*TaxRatePercent+Before;
+    const int32 Tax=static_cast<int32>(Accrued/100),After=static_cast<int32>(Accrued%100);
+    if(Tax>Residents[Resident].Coins) return false;
+    Residents[Resident].Coins-=Tax; TreasuryCoins+=Tax; TaxProjectCoins+=Tax; TaxRemainders[Resident]=After;
+    FHearthTaxAssessment A; A.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); A.SourceTransactionId=SourceTransactionId;
+    A.Resident=Resident; A.Gross=Gross; A.Tax=Tax; A.Net=Gross-Tax; A.RemainderBefore=Before; A.RemainderAfter=After; A.At=Elapsed;
+    TaxAssessments.Add(MoveTemp(A));
+    if(Tax>0)
+    {
+        FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=TEXT("income_tax"); T.TaskId=SourceTransactionId;
+        T.From=Resident; T.To=-1; T.Amount=Tax; T.Item=TEXT("income_tax"); T.Quantity=1; T.At=Elapsed; Transactions.Add(MoveTemp(T));
+    }
     return true;
 }
 
@@ -488,7 +511,8 @@ bool AHearthVillage::SettleWage(int32 Worker,const FString& TaskId)
     if(P->Status!=TEXT("reserved")) return false;
     Residents[Worker].Coins+=P->Amount; P->Status=TEXT("paid");
     FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=TEXT("wage"); T.TaskId=TaskId;
-    T.From=-1; T.To=Worker; T.Amount=P->Amount; T.Item=TEXT("labor"); T.Quantity=1; T.At=Elapsed; Transactions.Add(MoveTemp(T)); return true;
+    T.From=-1; T.To=Worker; T.Amount=P->Amount; T.Item=TEXT("labor"); T.Quantity=1; T.At=Elapsed; const FString SourceId=T.Id; Transactions.Add(MoveTemp(T));
+    return AssessIncomeTax(Worker,SourceId);
 }
 
 void AHearthVillage::AdvanceEconomy(float Dt)
@@ -717,7 +741,7 @@ FString AHearthVillage::ProductionSummary() const
     { Land+=S.Kind==EHearthSiteKind::Land; Empty+=S.Kind==EHearthSiteKind::Empty && S.bReachable; Fields+=HearthProduction::IsCrop(S.Kind); Houses+=S.Kind==EHearthSiteKind::House; }
     for(const auto& T:TradeOffers) CompletedTrades+=T.Status==TEXT("completed");
     for(const auto& P:WagePayables) if(P.Status==TEXT("reserved")) ReservedWages+=P.Amount;
-    return FString::Printf(TEXT("食物 %d · 原木 %d · 木板 %d · 房梁 %d · 石材 %d\n村库 %d 枚 · 预留工资 %d · 居民买卖 %d 笔\n农田 %d · 新住宅 %d · 空地 %d / 已开垦 %d"),FoodStock,AvailableWood(),PlankStock,BeamStock,StoneStock,TreasuryCoins,ReservedWages,CompletedTrades,Fields,Houses,Empty,Land);
+    return FString::Printf(TEXT("食物 %d · 原木 %d · 木板 %d · 房梁 %d · 石材 %d\n村库 %d 枚 · 税收工程金 %d 枚 · 税率 %d%% · 预留工资 %d\n居民买卖 %d 笔 · 税单 %d 笔\n农田 %d · 新住宅 %d · 空地 %d / 已开垦 %d"),FoodStock,AvailableWood(),PlankStock,BeamStock,StoneStock,TreasuryCoins,TaxProjectCoins,TaxRatePercent,ReservedWages,CompletedTrades,TaxAssessments.Num(),Fields,Houses,Empty,Land);
 }
 
 FString AHearthVillage::CargoSummary(int32 Index) const

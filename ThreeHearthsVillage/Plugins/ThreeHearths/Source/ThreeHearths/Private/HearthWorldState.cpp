@@ -54,18 +54,24 @@ namespace HearthWorld
 
     FString Encode(const FHearthWorldImage& W)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),5); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),W.Schema); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision); NUM(Elapsed); NUM(Speed); NUM(Remainder);
         NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone); NUM(Planks); NUM(Beams); NUM(TreasuryCoins);
+        if(W.Schema>=6) { NUM(TaxProjectCoins); NUM(TaxRatePercent); }
         J->SetNumberField(TEXT("ProducedPlanks"),W.Manufactured[0]); J->SetNumberField(TEXT("ProducedBeams"),W.Manufactured[1]);
         J->SetNumberField(TEXT("SpentPlanks"),W.ManufacturedSpent[0]); J->SetNumberField(TEXT("SpentBeams"),W.ManufacturedSpent[1]);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
 #undef STR
 #undef NUM
 #undef BOOL
+        if(W.Schema>=6)
+        {
+            FArray TaxRemainders; for(int32 I=0;I<W.PlotCount;++I) TaxRemainders.Add(MakeShared<FJsonValueNumber>(W.TaxRemainders[I]));
+            J->SetArrayField(TEXT("tax_remainders"),TaxRemainders);
+        }
         FArray Plots,Resources,People,Sites,History;
         for(int32 I=0;I<W.PlotCount;++I)
         {
@@ -141,7 +147,7 @@ namespace HearthWorld
 #undef NUM
             History.Add(MakeShared<FJsonValueObject>(P));
         }
-        FArray Chats,Promises,Transactions;
+        FArray Chats,Promises,Transactions,Taxes;
         for(const auto& S:W.Conversations)
         {
             auto C=MakeShared<FJsonObject>();
@@ -172,6 +178,13 @@ namespace HearthWorld
             Entry->SetNumberField(TEXT("from"),T.From); Entry->SetNumberField(TEXT("to"),T.To); Entry->SetNumberField(TEXT("amount"),T.Amount);
             Entry->SetNumberField(TEXT("quantity"),T.Quantity); Entry->SetNumberField(TEXT("at"),T.At); Transactions.Add(MakeShared<FJsonValueObject>(Entry));
         }
+        for(const auto& T:W.TaxAssessments)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),T.Id); Entry->SetStringField(TEXT("source_transaction_id"),T.SourceTransactionId);
+            Entry->SetNumberField(TEXT("resident"),T.Resident); Entry->SetNumberField(TEXT("gross"),T.Gross); Entry->SetNumberField(TEXT("tax"),T.Tax);
+            Entry->SetNumberField(TEXT("net"),T.Net); Entry->SetNumberField(TEXT("remainder_before"),T.RemainderBefore); Entry->SetNumberField(TEXT("remainder_after"),T.RemainderAfter);
+            Entry->SetNumberField(TEXT("at"),T.At); Entry->SetBoolField(TEXT("legacy_exempt"),T.bLegacyExempt); Taxes.Add(MakeShared<FJsonValueObject>(Entry));
+        }
         FArray Payables,Trades;
         for(const auto& P:W.WagePayables)
         {
@@ -188,6 +201,7 @@ namespace HearthWorld
         }
         J->SetArrayField(TEXT("conversations"),Chats); J->SetArrayField(TEXT("commitments"),Promises);
         J->SetArrayField(TEXT("transactions"),Transactions);
+        if(W.Schema>=6) J->SetArrayField(TEXT("tax_assessments"),Taxes);
         J->SetArrayField(TEXT("wage_payables"),Payables); J->SetArrayField(TEXT("trade_offers"),Trades);
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
         J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("resources"),Resources); J->SetArrayField(TEXT("people"),People);
@@ -198,8 +212,9 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,5);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,6);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
+        const bool HasTaxes=W.Schema>=6 || Root->HasField(TEXT("tax_assessments"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
         if(W.PlotCount!=3 && W.PlotCount!=10) return false;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
@@ -208,6 +223,12 @@ namespace HearthWorld
         STR(Id); STR(Run); STR(Event); NUM(Revision,0,9007199254740991.0); NUM(Elapsed,0,1e9); NUM(Speed,1,1000); NUM(Remainder,0,300);
         NUM(Selected,0,W.PlotCount-1); NUM(LastLife,-1,W.PlotCount-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
         if(W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"))) NUM(TreasuryCoins,0,1e8);
+        if(HasTaxes)
+        {
+            NUM(TaxProjectCoins,0,1e8); NUM(TaxRatePercent,0,100);
+            const auto& Remainders=C.Array(TEXT("tax_remainders"),10); if(Remainders.Num()!=W.PlotCount) return false;
+            for(int32 I=0;I<W.PlotCount;++I) { double N=0; if(!Remainders[I]->TryGetNumber(N) || N<0 || N>=100 || N!=FMath::FloorToDouble(N)) return false; W.TaxRemainders[I]=static_cast<int32>(N); }
+        }
         if(Root->HasField(TEXT("Planks"))) NUM(Planks,0,1e8);
         if(Root->HasField(TEXT("Beams"))) NUM(Beams,0,1e8);
         if(Root->HasField(TEXT("ProducedPlanks"))) C.Num(TEXT("ProducedPlanks"),W.Manufactured[0],0,1e8);
@@ -343,6 +364,16 @@ namespace HearthWorld
                 P.Num(TEXT("from"),T.From,-1,W.PlotCount-1); P.Num(TEXT("to"),T.To,-1,W.PlotCount-1);
                 P.Num(TEXT("amount"),T.Amount,1,100000000); P.Num(TEXT("quantity"),T.Quantity,1,100000000); P.Num(TEXT("at"),T.At,0,1e9);
                 C.Good&=P.Good; W.Transactions.Add(MoveTemp(T));
+            }
+            if(HasTaxes) for(const auto& V:C.Array(TEXT("tax_assessments"),100000))
+            {
+                FHearthTaxAssessment T; FRead P{Object(V)};
+                P.Str(TEXT("id"),T.Id); P.Str(TEXT("source_transaction_id"),T.SourceTransactionId);
+                P.Num(TEXT("resident"),T.Resident,0,W.PlotCount-1); P.Num(TEXT("gross"),T.Gross,1,100000000);
+                P.Num(TEXT("tax"),T.Tax,0,T.Gross); P.Num(TEXT("net"),T.Net,0,T.Gross);
+                P.Num(TEXT("remainder_before"),T.RemainderBefore,0,99); P.Num(TEXT("remainder_after"),T.RemainderAfter,0,99); P.Num(TEXT("at"),T.At,0,1e9);
+                P.Bool(TEXT("legacy_exempt"),T.bLegacyExempt);
+                C.Good&=P.Good; W.TaxAssessments.Add(MoveTemp(T));
             }
             if(W.Schema>=4)
             {
@@ -503,14 +534,34 @@ namespace HearthWorld
         {
             const FString Key=T.Kind+TEXT("|")+T.TaskId;
             if(!Unique(T.Id) || !Guid(T.TaskId) || TransactionKeys.Contains(Key) || T.From==T.To
-                || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade"))
+                || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade") && T.Kind!=TEXT("income_tax"))
                 || (T.Kind==TEXT("wage") && (T.From!=-1 || T.To<0 || T.Item!=TEXT("labor") || T.Quantity!=1))
                 || (T.Kind==TEXT("food_purchase") && (T.From<0 || T.To!=-1 || T.Item!=TEXT("food") || T.Quantity!=1 || T.Amount!=1))
-                || (T.Kind==TEXT("plank_trade") && (T.From<0 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))) return false;
+                || (T.Kind==TEXT("plank_trade") && (T.From<0 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))
+                || (T.Kind==TEXT("income_tax") && (!HasTaxes || T.From<0 || T.To!=-1 || T.Item!=TEXT("income_tax") || T.Quantity!=1))) return false;
             TransactionKeys.Add(Key);
             if(T.From<0) ExpectedTreasury-=T.Amount; else ExpectedWallets[T.From]-=T.Amount;
             if(T.To<0) ExpectedTreasury+=T.Amount; else ExpectedWallets[T.To]+=T.Amount;
             if(ExpectedTreasury<0 || ExpectedWallets.ContainsByPredicate([](int64 Balance) { return Balance<0; })) return false;
+        }
+        if(HasTaxes)
+        {
+            TSet<FString> AssessedSources; int32 ExpectedRemainders[10]={0,0,0,0,0,0,0,0,0,0}; int64 Collected=0;
+            for(const auto& A:W.TaxAssessments)
+            {
+                if(!Unique(A.Id) || !Guid(A.SourceTransactionId) || AssessedSources.Contains(A.SourceTransactionId) || A.Resident<0 || A.Resident>=W.PlotCount) return false;
+                const auto* Source=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Id==A.SourceTransactionId; });
+                if(!Source || Source->To!=A.Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade")) || A.Gross!=Source->Amount) return false;
+                const int32 Before=ExpectedRemainders[A.Resident]; const int64 Accrued=static_cast<int64>(A.Gross)*W.TaxRatePercent+Before;
+                const int32 Tax=A.bLegacyExempt?0:static_cast<int32>(Accrued/100),After=A.bLegacyExempt?Before:static_cast<int32>(Accrued%100);
+                if(A.RemainderBefore!=Before || A.Tax!=Tax || A.Net!=A.Gross-Tax || A.RemainderAfter!=After) return false;
+                const auto* TaxTransaction=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Kind==TEXT("income_tax") && T.TaskId==A.SourceTransactionId; });
+                if((Tax>0)!=!!TaxTransaction || (TaxTransaction && (TaxTransaction->From!=A.Resident || TaxTransaction->Amount!=Tax))) return false;
+                ExpectedRemainders[A.Resident]=After; Collected+=Tax; AssessedSources.Add(A.SourceTransactionId);
+            }
+            if(W.Schema>=6) for(const auto& T:W.Transactions) if((T.Kind==TEXT("wage") || T.Kind==TEXT("plank_trade")) && !AssessedSources.Contains(T.Id)) return false;
+            for(int32 I=0;I<W.PlotCount;++I) if(W.TaxRemainders[I]!=ExpectedRemainders[I]) return false;
+            if(W.TaxProjectCoins!=Collected) return false;
         }
         TMap<FString,const FHearthWagePayable*> PayableByTask;
         for(const auto& P:W.WagePayables)

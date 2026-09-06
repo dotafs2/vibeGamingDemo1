@@ -367,7 +367,9 @@ void AHearthVillage::ResetVillageState()
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
-    Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); WagePayables.Reset(); TradeOffers.Reset(); TreasuryCoins=500; bSocialOpen=false; ++SocialRevision;
+    Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
+    TreasuryCoins=500; TaxProjectCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
+    bSocialOpen=false; ++SocialRevision;
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; NextTradeAt=8.f; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
     {
@@ -838,6 +840,9 @@ FString AHearthVillage::GetSnapshot() const
     }
     Root->SetArrayField(TEXT("tool_inventory"),Tools);
     Root->SetNumberField(TEXT("treasury_coins"),TreasuryCoins);
+    Root->SetNumberField(TEXT("tax_rate_percent"),TaxRatePercent);
+    Root->SetNumberField(TEXT("tax_project_coins"),TaxProjectCoins);
+    Root->SetNumberField(TEXT("tax_assessments"),TaxAssessments.Num());
     TArray<TSharedPtr<FJsonValue>> Economy;
     for(const auto& T:Transactions)
     {
@@ -847,6 +852,16 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("at"),T.At); Economy.Add(MakeShared<FJsonValueObject>(J));
     }
     Root->SetArrayField(TEXT("transactions"),Economy);
+    TArray<TSharedPtr<FJsonValue>> Taxes;
+    for(const auto& T:TaxAssessments)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),T.Id); J->SetStringField(TEXT("source_transaction_id"),T.SourceTransactionId);
+        J->SetNumberField(TEXT("resident"),T.Resident); J->SetNumberField(TEXT("gross"),T.Gross); J->SetNumberField(TEXT("tax"),T.Tax); J->SetNumberField(TEXT("net"),T.Net);
+        J->SetNumberField(TEXT("remainder_before"),T.RemainderBefore); J->SetNumberField(TEXT("remainder_after"),T.RemainderAfter); J->SetNumberField(TEXT("at"),T.At);
+        J->SetBoolField(TEXT("legacy_exempt"),T.bLegacyExempt);
+        Taxes.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("tax_ledger"),Taxes);
     TArray<TSharedPtr<FJsonValue>> Payables;
     for(const auto& P:WagePayables)
     {

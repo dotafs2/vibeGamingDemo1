@@ -97,6 +97,13 @@ struct FHearthTransaction
     int32 From=-1, To=-1, Amount=0, Quantity=0;
     float At=0;
 };
+struct FHearthTaxAssessment
+{
+    FString Id, SourceTransactionId;
+    int32 Resident=-1, Gross=0, Tax=0, Net=0, RemainderBefore=0, RemainderAfter=0;
+    float At=0;
+    bool bLegacyExempt=false;
+};
 struct FHearthWagePayable
 {
     FString Id, TaskId, Status=TEXT("reserved");
@@ -240,7 +247,10 @@ public:
     UPROPERTY(BlueprintReadOnly) int32 PlankStock=0;
     UPROPERTY(BlueprintReadOnly) int32 BeamStock=0;
     UPROPERTY(BlueprintReadOnly) int32 TreasuryCoins=500;
+    UPROPERTY(BlueprintReadOnly) int32 TaxProjectCoins=0;
+    UPROPERTY(BlueprintReadOnly) int32 TaxRatePercent=25;
     TArray<FHearthTransaction> Transactions;
+    TArray<FHearthTaxAssessment> TaxAssessments;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Village") bool bUseCropoutMap = false;
@@ -317,6 +327,7 @@ private:
     void FinishProduction(int32 Index,const FString& Result);
     void EnsureCottageComponents(FHearthSite& Site) const;
     bool TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity);
+    bool AssessIncomeTax(int32 Resident,const FString& SourceTransactionId);
     int32 WageForOperation(int32 Operation) const;
     bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount);
     bool SettleWage(int32 Worker,const FString& TaskId);
@@ -336,6 +347,7 @@ private:
     int32 PlotCosts[10] = {12,9,6,6,6,6,6,6,6,6};
     float SnapshotTimer = 0.f;
     float NextTradeAt = 8.f;
+    int32 TaxRemainders[10] = {0,0,0,0,0,0,0,0,0,0};
     double SimulationRemainder = 0;
     float AcceptanceCaptureDelay = -1.f;
     bool bAcceptanceCaptureDone = false;

@@ -83,7 +83,7 @@ bool FHearthModularCottageTest::RunTest(const FString&)
         V->Residents[0].Timer=0; V->AdvanceProduction(0,.05f);
         TestEqual(TEXT("Exactly one physical component completes"),V->ProductionSites[0].Units,ExpectedComponent);
         TestEqual(TEXT("Installed material is no longer cargo"),V->Residents[0].CargoAmount,0);
-        TestEqual(TEXT("One wage is paid per installed component"),V->Residents[0].Coins,InitialWallet+Wage*ExpectedComponent);
+        TestEqual(TEXT("Each installed component pays gross wage less accumulated income tax"),V->Residents[0].Coins,InitialWallet+Wage*ExpectedComponent-(Wage*ExpectedComponent*V->TaxRatePercent/100));
         if(ExpectedComponent<45) TestFalse(TEXT("A partial cottage plan cannot be overwritten by a farm"),V->IsProductionAllowed(1,101));
         if(ExpectedComponent==8)
         {

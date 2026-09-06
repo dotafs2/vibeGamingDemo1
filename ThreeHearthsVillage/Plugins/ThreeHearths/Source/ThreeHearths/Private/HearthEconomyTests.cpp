@@ -21,6 +21,9 @@ bool FHearthEconomyPersistenceTest::RunTest(const FString&)
     TestTrue(TEXT("Reserved wage survives reload"),V->ApplyWorldState(ReservedWorld,Error));
     TestTrue(TEXT("Restored reservation settles"),V->SettleWage(0,Work));
     TestFalse(TEXT("The same task cannot receive its wage twice"),V->SettleWage(0,Work));
+    TestEqual(TEXT("Gross wage creates one durable tax assessment"),V->TaxAssessments.Num(),1);
+    TestEqual(TEXT("First three-coin wage carries fractional tax forward"),V->TaxRemainders[0],75);
+    TestFalse(TEXT("The same income source cannot be assessed twice"),V->AssessIncomeTax(0,V->TaxAssessments[0].SourceTransactionId));
 
     const int32 BeforePoorTreasury=V->TreasuryCoins,BeforePayables=V->WagePayables.Num();
     V->TreasuryCoins=1;
@@ -85,8 +88,12 @@ bool FHearthEconomyPersistenceTest::RunTest(const FString&)
     if(!TestTrue(TEXT("A trade record exists after negotiation"),!V->TradeOffers.IsEmpty())) return false;
     TestEqual(TEXT("Trade completes only after delivery"),V->TradeOffers[0].Status,FString(TEXT("completed")));
     TestEqual(TEXT("Buyer owns delivered plank"),V->Residents[1].PersonalPlanks,1);
-    TestEqual(TEXT("Seller received price"),V->Residents[0].Coins,16);
+    TestEqual(TEXT("Seller receives sale price after accumulated income tax"),V->Residents[0].Coins,15);
     TestEqual(TEXT("Buyer paid price"),V->Residents[1].Coins,10);
+    TestEqual(TEXT("Small wage and sale income eventually produce one whole tax coin"),V->TaxProjectCoins,1);
+    TestEqual(TEXT("Tax assessment exposes gross income"),V->TaxAssessments.Last().Gross,2);
+    TestEqual(TEXT("Tax assessment exposes withheld tax"),V->TaxAssessments.Last().Tax,1);
+    TestEqual(TEXT("Tax assessment exposes net income"),V->TaxAssessments.Last().Net,1);
     const int32 TransactionsAfterDelivery=V->Transactions.Num(); V->AdvanceEconomy(5.f);
     TestEqual(TEXT("Completed handover cannot settle twice"),V->Transactions.Num(),TransactionsAfterDelivery);
     TestTrue(TEXT("Both residents remember the completed exchange"),V->Residents[0].Bonds.FindChecked(V->Residents[1].StableId).Memory.Contains(TEXT("交付"))
@@ -154,7 +161,7 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     Old.Transactions.Add(LegacySpend); Old.People[1].Person.Coins+=ActiveWage;
     FHearthWagePayable LegacyPaid; LegacyPaid.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); LegacyPaid.TaskId=LegacySpend.TaskId;
     LegacyPaid.Worker=1; LegacyPaid.Amount=ActiveWage; LegacyPaid.Status=TEXT("paid"); Old.WagePayables.Add(LegacyPaid);
-    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":5"),TEXT("\"schema\":3"));
+    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":6"),TEXT("\"schema\":3"));
     if(!TestTrue(TEXT("Valid schema-3 world migrates"),V->ApplyWorldState(Legacy,Error))) { AddError(Error); return false; }
     auto* Payable=V->WagePayables.FindByPredicate([&](const FHearthWagePayable& P){ return P.TaskId==ActiveTask; });
     if(!TestNotNull(TEXT("Migration creates a payable for unfinished work"),Payable)) return false;
@@ -171,8 +178,9 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     TestEqual(TEXT("Reload still does not pay unfinished worker"),V->Residents[0].Coins,WalletBeforeFunding);
     const int32 Site=V->Residents[0].ProductionSite; V->ReturnTool(0); if(V->ProductionSites.IsValidIndex(Site)) V->ProductionSites[Site].ReservedBy=-1;
     V->Residents[0].Task=EHearthTask::LifeChoosing; V->Residents[0].ProductionSite=-1; V->Residents[0].ProductionOp=-1; V->Residents[0].WorkDuration=0;
+    const int32 TaxBeforeCompletion=V->TaxProjectCoins;
     TestTrue(TEXT("Completed migrated work settles once"),V->SettleWage(0,ActiveTask));
-    TestEqual(TEXT("Worker receives the wage only after completion"),V->Residents[0].Coins,WalletBeforeFunding+ActiveWage);
+    TestEqual(TEXT("Worker receives gross wage less durable accumulated tax"),V->Residents[0].Coins,WalletBeforeFunding+ActiveWage-(V->TaxProjectCoins-TaxBeforeCompletion));
     TestFalse(TEXT("Migrated job cannot be paid twice"),V->SettleWage(0,ActiveTask));
     return true;
 }
