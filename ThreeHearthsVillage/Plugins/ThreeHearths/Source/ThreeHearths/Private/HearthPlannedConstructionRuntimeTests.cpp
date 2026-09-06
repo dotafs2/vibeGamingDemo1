@@ -111,6 +111,11 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     if(!TestTrue(TEXT("NPC completes every remaining base component through real haul/install work"),CompleteCurrentPlan(Village))) return false;
     const TArray<FHearthCottageComponent> BaseParts=Village->ProductionSites[0].CottageComponents;
     const int32 BaseRooms=Village->StructurePlans[0].Rooms.Num();
+    FHearthSite NeighborSite; NeighborSite.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); NeighborSite.Kind=EHearthSiteKind::Land; NeighborSite.Position=FVector(800,600,8); NeighborSite.Approach=FVector(400,600,8); NeighborSite.bReachable=true; Village->ProductionSites.Add(NeighborSite);
+    auto& NeighborBuilder=Village->Residents[1]; NeighborBuilder.BuildProgress=1.f; NeighborBuilder.Task=EHearthTask::LifeChoosing; NeighborBuilder.Actor->SetActorLocation(FVector(0,600,8)); NeighborBuilder.Route.Reset();
+    const int32 PreferredAction=Village->ChooseProductionLocally(1); const int32 PreferredSite=(PreferredAction-100)/16,PreferredOperation=(PreferredAction-100)%16;
+    TestEqual(TEXT("Local policy starts another household before repeatedly extending the first"),PreferredSite,1);
+    TestEqual(TEXT("Neighborhood priority still selects resident construction"),PreferredOperation,5);
     Village->Residents[0].SocialNeed=85.f;
     if(!TestTrue(TEXT("Later social need starts the first material-backed expansion"),Village->StartProduction(0,Action,TEXT("household needs another room"),false))) return false;
     TestEqual(TEXT("First runtime expansion appends one room"),Village->StructurePlans[0].Rooms.Num(),BaseRooms+1);

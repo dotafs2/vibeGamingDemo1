@@ -329,7 +329,14 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
         if(Op>=1 && Op<=7)
         {
             const FString Key=HearthProduction::OpKeys[Op]; Score=ProductionTotals.FindRef(Key)==0?100:10;
-            if(Op==5 && !ProductionSites[Site].BuildPlanId.IsEmpty()) Score=210; // Finish the chosen home piece by piece.
+            if(Op==5)
+            {
+                const auto& CandidateSite=ProductionSites[Site];
+                const bool HasPendingParts=CandidateSite.CottageComponents.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");});
+                if(!CandidateSite.BuildPlanId.IsEmpty() && HasPendingParts) Score=210; // Finish reserved material and the current assembly first.
+                else if(StructurePlans.Num()<3) Score=CandidateSite.BuildPlanId.IsEmpty()?225:70; // Establish a small neighborhood before extending a finished home.
+                else if(!CandidateSite.BuildPlanId.IsEmpty()) Score=190;
+            }
         }
         if(Index==0 && (Op==10 || Op==6)) Score+=10;
         if(Index==1 && (Op==8 || Op==9 || (Op>=1 && Op<=4))) Score+=10;
