@@ -270,6 +270,7 @@ void AHearthVillage::ResetVillageState()
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
+    Conversations.Reset(); Commitments.Reset(); bSocialOpen=false; ++SocialRevision;
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
     {
@@ -321,7 +322,7 @@ void AHearthVillage::SelectResident(int32 Index)
 {
     if(!Residents.IsValidIndex(Index)) return;
     SelectedResident=Index;
-    bHistoryOpen=true;
+    if(!bSocialOpen) bHistoryOpen=true;
     for(int32 I=0;I<Residents.Num();++I) if(IsValid(Residents[I].Actor))
         Residents[I].Actor->SelectionDisc->SetRelativeScale3D(FVector(I==Index?1.25f:0.68f,I==Index?1.25f:0.68f,0.035f));
 }
@@ -458,6 +459,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
         {
             AdvanceSimulation(static_cast<float>(Step));
         }
+        AdvanceSocial(RealDt);
         UpdateLifeDecisions();
         // Disk snapshots follow real time, not the accelerated village clock.
         SnapshotTimer+=RealDt;
@@ -471,7 +473,9 @@ void AHearthVillage::Tick(float DeltaSeconds)
     }
     for(auto& R:Residents) if(IsValid(R.Actor))
     {
-        R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:R.Task,bSimulationPaused?0.f:SimulationSpeed,R.ProductionOp);
+        const float MotionRate=!R.ConversationId.IsEmpty() && R.Task==EHearthTask::LifeActivity?1.f:SimulationSpeed;
+        const EHearthTask Motion=R.Task==EHearthTask::LifeChoosing && !R.Route.IsEmpty()?EHearthTask::LifeTravel:R.Task;
+        R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
         R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0);
         if(auto* Material=Cast<UMaterialInstanceDynamic>(R.Actor->Bundle->GetMaterial(0)))
             Material->SetVectorParameterValue(TEXT("VillageTint"),R.CargoType==0?FLinearColor(.55f,.65f,.12f):R.CargoType==2?FLinearColor(.45f,.46f,.43f):Hearth::Wood);
@@ -553,6 +557,9 @@ void AHearthVillage::AdvanceSimulation(float Dt)
             break;
         case EHearthTask::Settled:
             R.Task=EHearthTask::LifeChoosing; R.LatestEvent=TEXT("家已经建好了，准备选择接下来的生活。");
+            break;
+        case EHearthTask::LifeChoosing:
+            if(!R.Route.IsEmpty()) MoveResident(I,Dt);
             break;
         case EHearthTask::ProductionTravel:
         case EHearthTask::ProductionWork:
@@ -661,6 +668,8 @@ FString AHearthVillage::GetSnapshot() const
         J->SetStringField(TEXT("stable_id"),R.StableId); J->SetStringField(TEXT("task_id"),R.ActiveTaskId);
         J->SetStringField(TEXT("role"),R.Role); J->SetBoolField(TEXT("king"),R.bKing); J->SetNumberField(TEXT("age"),R.Age);
         J->SetNumberField(TEXT("hunger"),R.Hunger); J->SetNumberField(TEXT("mood"),R.Mood);
+        J->SetStringField(TEXT("conversation_id"),R.ConversationId); J->SetStringField(TEXT("speech"),R.Speech);
+        J->SetNumberField(TEXT("speech_remaining"),R.SpeechRemaining);
         J->SetStringField(TEXT("reason"),R.Reason); J->SetStringField(TEXT("status"),StatusFor(I));
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);

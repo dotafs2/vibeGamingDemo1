@@ -50,6 +50,7 @@ FString AHearthVillage::ExportWorldState() const
         W.People.Add(MoveTemp(S));
     }
     W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
+    W.Conversations=Conversations; W.Commitments=Commitments;
     return HearthWorld::Encode(W);
 }
 
@@ -82,6 +83,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
     bAutonomousLifeEnabled=W.bAutonomy; bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
     FoodStock=W.Food; StoneStock=W.Stone; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
+    Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); ++SocialRevision; bSocialOpen=false;
     for(int32 I=0;I<3;++I)
     {
         WoodStock[I]=W.Wood[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
@@ -106,6 +108,8 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
             R.Timer=FMath::Min(R.Timer,1.f); R.NextLifeDecision=Now+LifeDecisionInterval;
             if(DecisionHistory.IsValidIndex(R.HistoryIndex))
             { auto& H=DecisionHistory[R.HistoryIndex]; H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
+            for(auto& H:DecisionHistory) if(H.Run==CurrentRun && H.Resident==I && H.Kind==TEXT("social_turn") && H.Status==TEXT("thinking"))
+            { H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
         }
         PendingDecisions[I]=FHearthPendingDecision();
     }

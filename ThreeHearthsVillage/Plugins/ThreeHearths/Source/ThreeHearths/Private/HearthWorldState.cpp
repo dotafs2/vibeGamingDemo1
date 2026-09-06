@@ -54,7 +54,7 @@ namespace HearthWorld
 
     FString Encode(const FHearthWorldImage& W)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),2); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),3); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
@@ -84,6 +84,15 @@ namespace HearthWorld
 #define NUM(Field) P->SetNumberField(TEXT(#Field),R.Field)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
+            STR(ConversationId); STR(Speech); NUM(SpeechRemaining);
+            FArray Bonds;
+            for(const auto& Pair:R.Bonds)
+            {
+                auto B=MakeShared<FJsonObject>(); B->SetStringField(TEXT("other_id"),Pair.Key);
+                B->SetNumberField(TEXT("affinity"),Pair.Value.Affinity); B->SetNumberField(TEXT("trust"),Pair.Value.Trust);
+                B->SetNumberField(TEXT("meetings"),Pair.Value.Meetings); B->SetStringField(TEXT("memory"),Pair.Value.Memory); Bonds.Add(MakeShared<FJsonValueObject>(B));
+            }
+            P->SetArrayField(TEXT("bonds"),Bonds);
             NUM(Plot); NUM(CarriedWood); NUM(DeliveredWood); NUM(BuildProgress); NUM(Energy); NUM(SocialNeed);
             NUM(Source); NUM(Trips); NUM(Timer); NUM(MoveSpeed); NUM(MoveRetry); NUM(HistoryIndex);
             NUM(LifeAction); NUM(ProductionSite); NUM(ProductionOp); NUM(CargoType); NUM(CargoAmount); NUM(WorkDuration);
@@ -117,6 +126,31 @@ namespace HearthWorld
 #undef NUM
             History.Add(MakeShared<FJsonValueObject>(P));
         }
+        FArray Chats,Promises;
+        for(const auto& S:W.Conversations)
+        {
+            auto C=MakeShared<FJsonObject>();
+#define STR(Field) C->SetStringField(TEXT(#Field),S.Field)
+#define NUM(Field) C->SetNumberField(TEXT(#Field),S.Field)
+            STR(Id); STR(FirstId); STR(SecondId); STR(Outcome); NUM(First); NUM(Second); NUM(Speaker); NUM(Offer); NUM(Proposer); NUM(OfferAction); NUM(TravelTime); NUM(TurnDelay);
+#undef STR
+#undef NUM
+            C->SetBoolField(TEXT("met"),S.bMet); C->SetBoolField(TEXT("closed"),S.bClosed); C->SetBoolField(TEXT("accepted"),S.bAccepted);
+            FArray Lines;
+            for(const auto& L:S.Lines) { auto P=MakeShared<FJsonObject>(); P->SetNumberField(TEXT("speaker"),L.Speaker); P->SetNumberField(TEXT("intent"),L.Intent); P->SetNumberField(TEXT("at"),L.At); P->SetStringField(TEXT("text"),L.Text); P->SetStringField(TEXT("source"),L.Source); Lines.Add(MakeShared<FJsonValueObject>(P)); }
+            C->SetArrayField(TEXT("lines"),Lines); Chats.Add(MakeShared<FJsonValueObject>(C));
+        }
+        for(const auto& S:W.Commitments)
+        {
+            auto C=MakeShared<FJsonObject>();
+#define STR(Field) C->SetStringField(TEXT(#Field),S.Field)
+#define NUM(Field) C->SetNumberField(TEXT(#Field),S.Field)
+            STR(Id); STR(ConversationId); STR(TaskId); STR(Status); STR(Result); NUM(Worker); NUM(Beneficiary); NUM(Action);
+#undef STR
+#undef NUM
+            Promises.Add(MakeShared<FJsonValueObject>(C));
+        }
+        J->SetArrayField(TEXT("conversations"),Chats); J->SetArrayField(TEXT("commitments"),Promises);
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
         J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("resources"),Resources); J->SetArrayField(TEXT("people"),People);
         J->SetArrayField(TEXT("sites"),Sites); J->SetArrayField(TEXT("history"),History); return Json(J);
@@ -126,7 +160,7 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,2);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,3);
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
         if(W.PlotCount!=3 && W.PlotCount!=10) return false;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
@@ -157,6 +191,17 @@ namespace HearthWorld
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),R.Field,Min,Max)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             if(W.Schema>=2) { STR(Role); NUM(Hunger,0,100); NUM(Mood,0,100); NUM(Age,18,120); P.Bool(TEXT("king"),R.bKing); }
+            if(W.Schema>=3)
+            {
+                STR(ConversationId); STR(Speech); NUM(SpeechRemaining,0,60);
+                for(const auto& BondValue:P.Array(TEXT("bonds"),100))
+                {
+                    FRead B{Object(BondValue)}; FString Other; FHearthBond Bond;
+                    B.Str(TEXT("other_id"),Other); B.Num(TEXT("affinity"),Bond.Affinity,-100,100); B.Num(TEXT("trust"),Bond.Trust,0,100);
+                    B.Num(TEXT("meetings"),Bond.Meetings,0,1e8); B.Str(TEXT("memory"),Bond.Memory);
+                    P.Good&=B.Good && !R.Bonds.Contains(Other); R.Bonds.Add(Other,MoveTemp(Bond));
+                }
+            }
             NUM(Plot,-1,W.PlotCount-1); NUM(CarriedWood,0,3); NUM(DeliveredWood,0,1000000); NUM(BuildProgress,0,1); NUM(Energy,0,100); NUM(SocialNeed,0,100);
             NUM(Source,-1,2); NUM(Trips,0,1e8); NUM(Timer,-1e9,1e6); NUM(MoveSpeed,1,2000); NUM(MoveRetry,0,1e6); NUM(HistoryIndex,-1,49999);
             NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,12); NUM(CargoType,-1,2); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
@@ -187,6 +232,39 @@ namespace HearthWorld
             P.Num(TEXT("Resident"),H.Resident,0,9); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
             P.Bool(TEXT("bHasUsage"),H.bHasUsage); C.Good&=P.Good; W.History.Add(MoveTemp(H));
         }
+        if(W.Schema>=3)
+        {
+            for(const auto& V:C.Array(TEXT("conversations"),10000))
+            {
+                FHearthConversation S; FRead P{Object(V)};
+#define STR(Field) P.Str(TEXT(#Field),S.Field)
+#define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
+                STR(Id); STR(FirstId); STR(SecondId); STR(Outcome);
+                NUM(First,0,W.PlotCount-1); NUM(Second,0,W.PlotCount-1); NUM(Speaker,0,W.PlotCount-1);
+                NUM(Offer,-1,2); NUM(Proposer,-1,W.PlotCount-1); NUM(OfferAction,-1,20000); NUM(TravelTime,0,1000); NUM(TurnDelay,0,60);
+#undef STR
+#undef NUM
+                P.Bool(TEXT("met"),S.bMet); P.Bool(TEXT("closed"),S.bClosed); P.Bool(TEXT("accepted"),S.bAccepted);
+                for(const auto& Value:P.Array(TEXT("lines"),8))
+                {
+                    FRead L{Object(Value)}; FHearthDialogueLine Line;
+                    L.Num(TEXT("speaker"),Line.Speaker,0,W.PlotCount-1); L.Num(TEXT("intent"),Line.Intent,0,5); L.Num(TEXT("at"),Line.At,0,1e9);
+                    L.Str(TEXT("text"),Line.Text,180); L.Str(TEXT("source"),Line.Source); P.Good&=L.Good; S.Lines.Add(MoveTemp(Line));
+                }
+                C.Good&=P.Good; W.Conversations.Add(MoveTemp(S));
+            }
+            for(const auto& V:C.Array(TEXT("commitments"),20000))
+            {
+                FHearthCommitment S; FRead P{Object(V)};
+#define STR(Field) P.Str(TEXT(#Field),S.Field)
+#define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
+                STR(Id); STR(ConversationId); STR(TaskId); STR(Status); STR(Result);
+                NUM(Worker,0,W.PlotCount-1); NUM(Beneficiary,0,W.PlotCount-1); NUM(Action,0,20000);
+#undef STR
+#undef NUM
+                C.Good&=P.Good; W.Commitments.Add(MoveTemp(S));
+            }
+        }
         const FObject* Totals=nullptr;
         if(!Root->TryGetObjectField(TEXT("totals"),Totals) || (*Totals)->Values.Num()>1000) C.Good=false;
         else for(const auto& Pair:(*Totals)->Values)
@@ -202,7 +280,7 @@ namespace HearthWorld
         {
             const auto& Saved=W.People[I]; const auto& R=Saved.Person;
             if(!Unique(R.StableId) || (!R.ActiveTaskId.IsEmpty() && !Unique(R.ActiveTaskId)) || !Guid(Saved.PendingOperation,true) || R.Name.IsEmpty()) return false;
-            if(Saved.bPending && (!Guid(Saved.PendingOperation) || (R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing))) return false;
+            if(Saved.bPending && (!Guid(Saved.PendingOperation) || (R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing && !(R.Task==EHearthTask::LifeActivity && !R.ConversationId.IsEmpty())))) return false;
             if(R.Plot>=0 && (W.Owners[R.Plot]!=I || R.DeliveredWood>W.Costs[R.Plot])) return false;
             if(R.Task!=EHearthTask::Choosing && (R.Plot<0 || R.ActiveTaskId.IsEmpty())) return false;
             if(R.Task==EHearthTask::ToWood && R.Source<0) return false;
@@ -224,6 +302,50 @@ namespace HearthWorld
         {
             const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration) return false;
             if(S.ReservedBy>=0 && W.People[S.ReservedBy].Person.ProductionSite!=I) return false;
+        }
+        TSet<FString> ActivePeople,ChatIds;
+        for(const auto& S:W.Conversations)
+        {
+            if(!Unique(S.Id) || S.First==S.Second || S.FirstId!=W.People[S.First].Person.StableId || S.SecondId!=W.People[S.Second].Person.StableId
+                || (S.Speaker!=S.First && S.Speaker!=S.Second) || S.Offer==0) return false;
+            ChatIds.Add(S.Id);
+            if(!S.bClosed)
+            {
+                for(int32 I:{S.First,S.Second})
+                {
+                    const auto& R=W.People[I].Person;
+                    if(ActivePeople.Contains(R.StableId) || R.ConversationId!=S.Id || (R.Task!=EHearthTask::LifeTravel && R.Task!=EHearthTask::LifeActivity)) return false;
+                    ActivePeople.Add(R.StableId);
+                }
+            }
+            int32 Previous=-1;
+            for(const auto& L:S.Lines)
+            { if((L.Speaker!=S.First && L.Speaker!=S.Second) || L.Speaker==Previous || L.Text.IsEmpty()) return false; Previous=L.Speaker; }
+            if(!S.bMet && !S.Lines.IsEmpty()) return false;
+            if(!S.bClosed && !S.Lines.IsEmpty() && S.Speaker==S.Lines.Last().Speaker) return false;
+            if(S.Offer>=0 && ((S.Proposer!=S.First && S.Proposer!=S.Second) || (S.Offer==1 && S.OfferAction!=50) || (S.Offer==2 && S.OfferAction<100))) return false;
+        }
+        for(const auto& Saved:W.People)
+        {
+            const auto& R=Saved.Person;
+            if(!R.ConversationId.IsEmpty() && !ActivePeople.Contains(R.StableId)) return false;
+            for(const auto& Pair:R.Bonds) if(Pair.Key==R.StableId || !W.People.ContainsByPredicate([&Pair](const auto& P) { return P.Person.StableId==Pair.Key; })) return false;
+        }
+        TSet<int32> PromisedWorkers;
+        for(const auto& P:W.Commitments)
+        {
+            if(!Unique(P.Id) || !ChatIds.Contains(P.ConversationId) || P.Worker==P.Beneficiary || !Guid(P.TaskId,true)
+                || (P.Action!=50 && P.Action<100) || (P.Status!=TEXT("promised") && P.Status!=TEXT("active") && P.Status!=TEXT("fulfilled") && P.Status!=TEXT("broken"))) return false;
+            const auto* Chat=W.Conversations.FindByPredicate([&P](const auto& S) { return S.Id==P.ConversationId; });
+            if(!Chat || !Chat->bAccepted || P.Action!=Chat->OfferAction
+                || (P.Worker!=Chat->First && P.Worker!=Chat->Second) || (P.Beneficiary!=Chat->First && P.Beneficiary!=Chat->Second)) return false;
+            if(P.Status==TEXT("active") || P.Status==TEXT("promised"))
+            {
+                if(PromisedWorkers.Contains(P.Worker)) return false; PromisedWorkers.Add(P.Worker);
+                const auto& R=W.People[P.Worker].Person;
+                if(P.Status==TEXT("active") && (P.TaskId!=R.ActiveTaskId || R.LifeAction!=P.Action || (R.Task!=EHearthTask::LifeTravel && R.Task!=EHearthTask::LifeActivity && R.Task<EHearthTask::ProductionTravel))) return false;
+                if(P.Status==TEXT("promised") && R.ConversationId!=P.ConversationId) return false;
+            }
         }
         if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0) return false;
         Out=MoveTemp(W); Error.Empty(); return true;

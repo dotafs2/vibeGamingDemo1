@@ -1,0 +1,338 @@
+{
+  "status": "passed_offline_and_limited_mixed_model_smoke",
+  "date_beijing": "2026-09-06",
+  "engine": "5.8.1-56057345",
+  "build_passed": true,
+  "native_tests": {
+    "passed": 10,
+    "failed": 0,
+    "succeeded_with_known_warning": 1,
+    "tests": [
+      "ThreeHearths.Decisions.OneSlotPerResident",
+      "ThreeHearths.Decisions.PersistentBudgetRouting",
+      "ThreeHearths.Decisions.ValidateModelOutput",
+      "ThreeHearths.ImportPreview.WorldIsolation",
+      "ThreeHearths.Movement.ResidentTraffic",
+      "ThreeHearths.Movement.SweptSeparation",
+      "ThreeHearths.Persistence.CorruptionAndExclusiveWorld",
+      "ThreeHearths.Persistence.ResumeMaterialsAndTasks",
+      "ThreeHearths.Society.PopulationMigrationAndMeals",
+      "ThreeHearths.Society.TwoWayPromisesAndPersistence"
+    ]
+  },
+  "offline_island": {
+    "passed": true,
+    "api_requests": 0,
+    "samples": 695,
+    "closest_cm": 120.0,
+    "duration_seconds": 23.858999999938533,
+    "lines": 5,
+    "wood_delivered": 6,
+    "dialogue_reload": true,
+    "active_task_reload": true
+  },
+  "paid_social": {
+    "passed": true,
+    "api_requests": 2,
+    "api_successes": 2,
+    "api_tokens": 2070,
+    "lines": [
+      {
+        "speaker": 1,
+        "intent": 0,
+        "at": 418.0214538574219,
+        "text": "塞琳，你来啦！上次你送的木材帮了大忙，谢谢你。",
+        "source": "api"
+      },
+      {
+        "speaker": 9,
+        "intent": 0,
+        "at": 435.8670959472656,
+        "text": "米拉，别客气！邻里互助应该的。你最近庄稼长得怎么样？",
+        "source": "api"
+      },
+      {
+        "speaker": 1,
+        "intent": 2,
+        "at": 449.4137878417969,
+        "text": "村里还需要材料，你愿意帮忙采集一趟、运回来吗？",
+        "source": "local_fallback"
+      },
+      {
+        "speaker": 9,
+        "intent": 3,
+        "at": 462.9104919433594,
+        "text": "好，我来做这项采集，把东西运回村里。",
+        "source": "local_fallback"
+      },
+      {
+        "speaker": 1,
+        "intent": 5,
+        "at": 476.4071960449219,
+        "text": "谢谢，我们照约定去做，回头再聊。",
+        "source": "local_fallback"
+      }
+    ],
+    "new_commitments": [
+      {
+        "id": "538EE772-4DBB-D7B5-7C80-56918D72AA9C",
+        "worker": 9,
+        "beneficiary": 1,
+        "action": 174,
+        "status": "fulfilled",
+        "result": "已将 6 份木材送达村镇中心并计入公共库存。"
+      }
+    ],
+    "outcome": "对方答应完成一项采集与运输工作。",
+    "samples": 1164,
+    "closest_cm": 101.01021414271878,
+    "max_pending": 1,
+    "speakers_seen_pending": [
+      1,
+      9
+    ],
+    "duration_seconds": 39.56200000003446,
+    "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+    "usage_rows": [
+      {
+        "id": "F9C27BFC-4CF4-402A-6AFA-1988E80E07BE",
+        "resident": "12A27F67-4746-DF90-B4A3-3F8ECE2F2F82",
+        "state": "settled",
+        "prompt_tokens": 828,
+        "output_tokens": 37,
+        "cached_tokens": 0,
+        "charge": 6381000
+      },
+      {
+        "id": "8258FFF4-49CA-F0A5-40F1-2B878B4F7E54",
+        "resident": "C3F2DCFB-4C1A-7755-FC92-9DB7CF4396C7",
+        "state": "settled",
+        "prompt_tokens": 911,
+        "output_tokens": 41,
+        "cached_tokens": 0,
+        "charge": 7028500
+      },
+      {
+        "id": "B07F91AA-442A-B8CD-2740-8EA7EFE5B4C0",
+        "resident": "12A27F67-4746-DF90-B4A3-3F8ECE2F2F82",
+        "state": "settled",
+        "prompt_tokens": 1015,
+        "output_tokens": 41,
+        "cached_tokens": 256,
+        "charge": 6322100
+      },
+      {
+        "id": "86F6F036-4E0A-A57D-3A4F-FCB89172DD0F",
+        "resident": "C3F2DCFB-4C1A-7755-FC92-9DB7CF4396C7",
+        "state": "settled",
+        "prompt_tokens": 1065,
+        "output_tokens": 29,
+        "cached_tokens": 0,
+        "charge": 7705500
+      },
+      {
+        "id": "EF6747A1-409E-D9C5-F440-6FAE5992F0F0",
+        "resident": "12A27F67-4746-DF90-B4A3-3F8ECE2F2F82",
+        "state": "settled",
+        "prompt_tokens": 968,
+        "output_tokens": 28,
+        "cached_tokens": 0,
+        "charge": 7048000
+      },
+      {
+        "id": "6F08CF2A-4F47-4542-942E-5598CF2B91B3",
+        "resident": "C3F2DCFB-4C1A-7755-FC92-9DB7CF4396C7",
+        "state": "settled",
+        "prompt_tokens": 1047,
+        "output_tokens": 27,
+        "cached_tokens": 0,
+        "charge": 7534500
+      }
+    ],
+    "mode": "2 API turns followed by 3 explicit local fallback turns after request cap; actual gathering and delivery fulfilled",
+    "first_attempt": {
+      "paid_requests": 4,
+      "accepted_api_lines": 3,
+      "rejected_response": 1,
+      "passed_all_api_conversation": false,
+      "dialogue": {
+        "id": "1C432E2C-4040-1B3A-E67D-82A84DFDC218",
+        "first": 1,
+        "second": 9,
+        "met": true,
+        "closed": false,
+        "outcome": "",
+        "lines": [
+          {
+            "speaker": 1,
+            "intent": 0,
+            "at": 418.1214294433594,
+            "text": "塞琳，上次你送的木材帮了大忙，村镇中心都记着呢。你最近学手艺还顺利吗？",
+            "source": "api"
+          },
+          {
+            "speaker": 9,
+            "intent": 0,
+            "at": 436.7668762207031,
+            "text": "米拉姐，多亏你指点，我正学着砍树和搭架子，想早点攒够材料盖间小屋。你地里庄稼还好吗？",
+            "source": "api"
+          },
+          {
+            "speaker": 1,
+            "intent": 0,
+            "at": 455.4623107910156,
+            "text": "庄稼还行，就是人手紧。你砍树若有余力，帮我捎两捆木材来，我教你搭更稳的架子。",
+            "source": "api"
+          },
+          {
+            "speaker": 9,
+            "intent": 2,
+            "at": 473.0580139160156,
+            "text": "村里还需要材料，你愿意帮忙采集一趟、运回来吗？",
+            "source": "local_fallback"
+          }
+        ]
+      },
+      "failure": "Traceback (most recent call last):\n  File \"<string>\", line 45, in tick\nAssertionError: Model response did not pass native validation\n",
+      "invalid_action_dispatched": false
+    },
+    "combined_paid_requests": 6,
+    "combined_usage_cost_cny": 0.0420196,
+    "verified_attempt_usage_cost_cny": 0.0145825
+  },
+  "full_model_conversation_validated": false,
+  "total_night_budget": {
+    "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+    "model": "kimi-k2.6",
+    "authorized_cny": 100.0,
+    "allocation_cap_cny": 95.0,
+    "settled_cny": 0.0485211,
+    "prior_unverified_cny": 0.01,
+    "reserved_cny": 0.0,
+    "liability_cny": 0.0585211,
+    "remaining_allocatable_cny": 94.9414789,
+    "counts": {
+      "settled": 9
+    },
+    "halted": "",
+    "deadline_utc": 1788658200
+  },
+  "persistence": {
+    "schema_written": 3,
+    "schemas_read": [
+      1,
+      2,
+      3
+    ],
+    "dialogue_and_active_commitment_resume": true,
+    "no_repeated_lines_meetings_inventory_or_trust": true,
+    "unknown_paid_response_is_not_retried": true
+  },
+  "traffic": {
+    "same_stuck_promise_recovered": true,
+    "idle_resident_can_walk_aside_without_new_task_id": true,
+    "pending_working_and_chatting_residents_cannot_yield": true,
+    "no_teleport": true
+  },
+  "ui": {
+    "actual_native_chinese_bubbles_viewed": true,
+    "relationship_list_paper_background_viewed": true,
+    "screenshots_are_native_Shot_SHOWUI_editor_window": true
+  },
+  "scope": "Two-way conversation, directed memory, invitation/refusal, real meals/gathering commitments. Currency trades, labor orders, family and modular housing execution remain subsequent units.",
+  "known_existing_warnings": [
+    "ImportPreview.WorldIsolation temporary world has no context",
+    "Cropout BP_GI.PlayMusic accesses absent Audio with -nosound",
+    "Cropout SKM_Gatherer legacy material index corrected on load"
+  ],
+  "evidence": [
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/native-social-receipts-tests/index.json",
+      "sha256": "116c64d87999bd6338e5b1ff42ee2bd1fbac55f8d33edd3e7d067a32bc4cef28"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/metrics.json",
+      "sha256": "aaf81423836dba0f651117ba0aec7ea9f5f034a68db4c213c51b5462802ba034"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/completed-world.json",
+      "sha256": "f166abd675cf96394a073d0bd1f80e7023e226b6ab3b0cb1cfd005a33e75d74d"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/completed-social.json",
+      "sha256": "6fc2880dc293671b580b2e2fbffd05b9493715d9c3e92f063ad74e57a8c51a7b"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/mid-dialogue-before.json",
+      "sha256": "23a4d838cb237aa36b147f2239222eb799a932b28bde86eb5c317020398128b8"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/mid-dialogue-after.json",
+      "sha256": "23a4d838cb237aa36b147f2239222eb799a932b28bde86eb5c317020398128b8"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/active-help-before.json",
+      "sha256": "a98e443f662a9116bef3df951bc8bcdc4197c26a82ba453f824c18631131a688"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/active-help-after.json",
+      "sha256": "697f6fedd93608e1b3dd93491fa28fe1435cbe2ea822cb2ce83e34c91c6d1865"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-acceptance/exit-recovery.json",
+      "sha256": "69bfdbc809313f0379e3638ad03040bb492e334a03b4858438600bcdce945b8a"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi-verified/metrics.json",
+      "sha256": "6f69ff3e937d2b6fd76a5c13f1d161d3dbb9f724187b4772b978fc2ac3724b69"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi-verified/completed-world.json",
+      "sha256": "a424d5334ea7c00d3580e25e1e3190d44bda08d4d40625c34025d48b896bcb7a"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi-verified/completed-social.json",
+      "sha256": "ef55f2d08d38a61adf19da18605a78dea8df450d10297feb9f20044debee439d"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi-verified/completed-snapshot.json",
+      "sha256": "3deed05cf38757dd59bf5a112e50f04bb9ebaedd9b0bdf51b82cc04013e60887"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi-verified/budget-after.json",
+      "sha256": "9ab832f2d66b4bb2dffad358ac7656297c69d2ff2f7a4f92d3c930ce4d7bf54c"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi/budget-before.json",
+      "sha256": "48ef4bf136b605f8d2d4fc8511f918fe7de22f5ef91fd9aab344e52ef0957eb5"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi/failure.json",
+      "sha256": "757dacd1976f8632a4fb7484b32f5bd3f431be541727f8f47d2317e6a0c949d6"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi/failed-world.json",
+      "sha256": "baca63d72650ee6c9c836c8e7e3e4178d7de8c82a62d3369a5d49a2ac395fef5"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/social-kimi/latest-dialogue.json",
+      "sha256": "86c8d0843c92f26a2c012298cc8541238058b4ca8763e0364d254bad87ef33ea"
+    },
+    {
+      "path": "Docs/Validation/Social_Relationships.png",
+      "sha256": "88716fdf4f3eadf0901357e6b0380a0319e170eeac05c3303d17e1e26e7ba5e9"
+    },
+    {
+      "path": "Docs/Validation/Social_Local_Bubble.png",
+      "sha256": "de96927d04e72dcde7ceb3427eb55e6fbfac9692b59d840077829412372d0c63"
+    },
+    {
+      "path": "Docs/Validation/Social_Kimi_Bubble_1.png",
+      "sha256": "73ee45cb99c6eb73a8b188fa2d7326d44bd3bcef65e403172aa5201d9efd7cd3"
+    },
+    {
+      "path": "Docs/Validation/Social_Kimi_Bubble_2.png",
+      "sha256": "f82d80b590f122cbbfe10e449fe6657ac2ca8e3e32ebf1eeedd4909076dd4ec1"
+    }
+  ]
+}

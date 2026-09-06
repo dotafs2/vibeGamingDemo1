@@ -46,14 +46,41 @@ struct FHearthDecisionRecord
 // Each resident owns one request slot; replies never share mutable decision data.
 struct FHearthPendingDecision
 {
-    FString OperationId;
+    FString OperationId, ConversationId;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
-    bool bActive=false, bReturned=false, bLife=false, bHasUsage=false;
+    bool bActive=false, bReturned=false, bLife=false, bSocial=false, bHasUsage=false;
     int32 Choice=-1, Tokens=0, HistoryIndex=-1;
     double StartedAt=0, Latency=0;
     FString Reason, Error;
     TArray<int32> AllowedActions;
+};
+
+struct FHearthBond
+{
+    float Affinity=0, Trust=50;
+    int32 Meetings=0;
+    FString Memory;
+};
+struct FHearthDialogueLine
+{
+    int32 Speaker=-1, Intent=0;
+    float At=0;
+    FString Text, Source;
+};
+struct FHearthConversation
+{
+    FString Id, FirstId, SecondId, Outcome;
+    int32 First=-1, Second=-1, Speaker=-1;
+    int32 Offer=-1, Proposer=-1, OfferAction=-1;
+    bool bMet=false, bClosed=false, bAccepted=false;
+    float TravelTime=0, TurnDelay=0;
+    TArray<FHearthDialogueLine> Lines;
+};
+struct FHearthCommitment
+{
+    FString Id, ConversationId, TaskId, Status=TEXT("promised"), Result;
+    int32 Worker=-1, Beneficiary=-1, Action=-1;
 };
 
 UCLASS()
@@ -118,6 +145,9 @@ struct FHearthResident
     int32 ProductionSite = -1, ProductionOp = -1;
     int32 CargoType = -1, CargoAmount = 0;
     float WorkDuration = 0.f;
+    FString ConversationId, Speech;
+    float SpeechRemaining=0;
+    TMap<FString,FHearthBond> Bonds;
 };
 
 UCLASS()
@@ -142,6 +172,13 @@ public:
     UFUNCTION(BlueprintCallable) void SelectResident(int32 Index);
     UFUNCTION(BlueprintCallable) FString GetSnapshot() const;
     UFUNCTION(BlueprintCallable) FString GetDecisionHistory(int32 Index = -1) const;
+    UFUNCTION(BlueprintCallable) FString GetSocialState(int32 Index = -1) const;
+    TArray<FHearthConversation> Conversations;
+    TArray<FHearthCommitment> Commitments;
+    bool bSocialOpen=false;
+    int32 SocialRevision=0;
+    FString RelationshipSummary(int32 Index) const;
+    bool IsSociallyAvailable(int32 Index) const;
     UFUNCTION(BlueprintCallable) void ToggleAutonomy();
     UPROPERTY(BlueprintReadOnly) bool bAutonomousLifeEnabled = true;
     bool bHistoryOpen = false;
@@ -189,6 +226,7 @@ private:
     friend class FHearthWorldPersistenceTest;
     friend class FHearthWorldRecoveryTest;
     friend class FHearthSocietyPopulationTest;
+    friend class FHearthSocialIntegrationTest;
     FString WorldPath;
     FString PlotIds[10];
     TSharedPtr<IFileHandle> WorldLease;
@@ -269,7 +307,7 @@ private:
     void LoadApiConfig();
     void StopDecisionRequests();
     void RequestDecision(int32 Index);
-    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife);
+    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife, bool bSocial=false);
     void ConsumeDecision();
     void DecideLocally(int32 Index, const FString& Failure = FString());
     bool ReservePlot(int32 Index, int32 Plot, const FString& Reason, bool bFromApi);
@@ -284,12 +322,22 @@ private:
     void DecideLifeLocally(int32 Index, const FString& Failure = FString());
     bool StartLifeAction(int32 Index, int32 Action, const FString& Reason, bool bFromApi);
     void AdvanceLife(int32 Index, float Dt);
+    bool BeginConversation(int32 Index,int32 Other,const FString& Reason,bool bFromApi);
+    void AdvanceSocial(float RealDt);
+    TArray<int32> AvailableSocialIntents(int32 Index) const;
+    bool ResolveSocialTurn(int32 Index,int32 Intent,const FString& Words,const FString& Source);
+    void DecideSocialLocally(int32 Index,const FString& Failure=FString());
+    void RequestSocialDecision(int32 Index);
+    void CloseConversation(FHearthConversation& Conversation,const FString& Outcome);
+    void CompleteCommitments(int32 Worker,bool bSuccess,const FString& Result);
+    int32 FindHelpActivity(int32 Worker) const;
     void BuildEnvironment();
     void BuildIslandVillage();
     void Decide(int32 Index);
     void SeekWood(int32 Index);
     void SetRoute(int32 Index, const FVector& Target);
     bool MoveResident(int32 Index, float Dt);
+    bool TryYieldFor(int32 Walker);
     void SetHouseStage(int32 Plot, int32 Stage);
     void WriteSnapshot() const;
     UStaticMeshComponent* AddMesh(const FString& MeshPath, const FVector& Position, const FVector& Scale, const FLinearColor* Color = nullptr);

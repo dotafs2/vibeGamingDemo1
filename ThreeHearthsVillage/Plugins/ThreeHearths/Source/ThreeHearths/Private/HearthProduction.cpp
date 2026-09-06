@@ -208,6 +208,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         if(R.CargoType==1) WoodStock[0]+=Amount;
         if(R.CargoType==2) StoneStock+=Amount;
         const FString Result=FString::Printf(TEXT("已将 %d 份%s送达村镇中心并计入公共库存。"),Amount,HearthProduction::ResourceNames[FMath::Clamp(R.CargoType,0,2)]);
+        CompleteCommitments(Index,Amount>0,Result);
         R.CargoAmount=0; R.CargoType=-1; FinishProduction(Index,Result); return;
     }
     if(R.Task!=EHearthTask::ProductionWork) return;
@@ -217,7 +218,8 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
     {
         // Reserve and validate the return path before touching any resource amount.
         TArray<FVector> Home;
-        if(!FindActivityRoute(Index,FVector(-1650,-1050+(Index-1)*120,8),Home))
+        const FVector Depot=(bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,8))+FVector(0,((Index%3)-1)*120,0);
+        if(!FindActivityRoute(Index,Depot,Home))
         { R.Timer=3.f; R.LatestEvent=TEXT("交付路线暂不可用，保留资源并等待。"); return; }
         R.CargoType=Op==10?1:Op==11?2:0;
         R.CargoAmount=FMath::Min(Op==12?4:6,S.Units); S.Units-=R.CargoAmount; Produced[R.CargoType]+=R.CargoAmount;
@@ -365,7 +367,7 @@ FString AHearthVillage::GetAvailableActivities(int32 Index) const
 }
 
 bool AHearthVillage::CanAssignActivity(int32 Index) const
-{ return Residents.IsValidIndex(Index) && Residents[Index].Task==EHearthTask::LifeChoosing && !IsDecisionPending(Index); }
+{ return Residents.IsValidIndex(Index) && Residents[Index].Task==EHearthTask::LifeChoosing && Residents[Index].Route.IsEmpty() && !IsDecisionPending(Index); }
 bool AHearthVillage::AssignActivity(int32 Index,int32 Action)
 {
     if(!CanAssignActivity(Index) || !StartLifeAction(Index,Action,TEXT("按照你的安排，执行这项工作。"),false)) return false;

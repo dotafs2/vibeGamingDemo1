@@ -24,6 +24,8 @@
 #include "Widgets/Notifications/SProgressBar.h"
 
 TSharedRef<SWidget> MakeHearthHistoryWidget(AHearthVillage* Village);
+TSharedRef<SWidget> MakeHearthSocialWidget(AHearthVillage* Village);
+TSharedRef<SWidget> MakeHearthSpeechWidget(AHearthVillage* Village);
 
 namespace HearthUI
 {
@@ -86,6 +88,9 @@ public:
             auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].LatestEvent:TEXT(""));
         }).Font(HearthUI::Font(11)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Footer->AddSlot().AutoHeight().Padding(0,8,0,6)[SNew(SSeparator)];
+        Footer->AddSlot().AutoHeight().Padding(0,0,0,6)[ControlButton([] { return FText::FromString(TEXT("对话与关系")); },[this] {
+            if(auto* V=Village.Get()) { V->bSocialOpen=!V->bSocialOpen; V->bHistoryOpen=false; }
+        })];
         Footer->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V?V->WorldSaveStatus:TEXT(""));
         }).Font(HearthUI::Font(10)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
@@ -140,6 +145,7 @@ public:
 
         ChildSlot[
             SNew(SOverlay)
+            +SOverlay::Slot()[MakeHearthSpeechWidget(Village.Get())]
             +SOverlay::Slot().HAlign(HAlign_Left).VAlign(VAlign_Fill).Padding(22)[
                 SNew(SBox).WidthOverride(312)[SNew(SBorder).BorderImage(White).BorderBackgroundColor(HearthUI::Paper).Padding(20)[SNew(SVerticalBox)+SVerticalBox::Slot().FillHeight(1)[SNew(SScrollBox)+SScrollBox::Slot()[Panel]]+SVerticalBox::Slot().AutoHeight()[Footer]]]
             ]
@@ -149,6 +155,11 @@ public:
                 ]
             ]
             +SOverlay::Slot().HAlign(HAlign_Right).VAlign(VAlign_Top).Padding(22)[Controls]
+            +SOverlay::Slot().HAlign(HAlign_Right).VAlign(VAlign_Fill).Padding(356,82,22,112)[
+                SNew(SBox).WidthOverride(680).Visibility_Lambda([this] { auto* V=Village.Get(); return V && V->bSocialOpen?EVisibility::Visible:EVisibility::Collapsed; })[
+                    SNew(SBorder).BorderImage(White).BorderBackgroundColor(HearthUI::Paper).Padding(18)[MakeHearthSocialWidget(Village.Get())]
+                ]
+            ]
             +SOverlay::Slot().HAlign(HAlign_Center).VAlign(VAlign_Bottom).Padding(350,0,24,24)[
                 SNew(SBox).MaxDesiredWidth(740)[SNew(SBorder).BorderImage(White).BorderBackgroundColor(HearthUI::Paper).Padding(16,12)[
                     SNew(SVerticalBox)

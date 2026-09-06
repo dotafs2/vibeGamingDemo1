@@ -55,7 +55,7 @@ bool AHearthVillage::MigrateWorldPopulation(FHearthWorldImage& W,FString& Error)
         W.People.Add(MoveTemp(S)); W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; W.Costs[I]=PlotCosts[I]; W.Owners[I]=-1;
     }
     W.Food+=70; for(int32 I=0;I<3;++I) W.Wood[I]+=21;
-    W.PlotCount=10; W.Schema=2; W.bComplete=false;
+    W.PlotCount=10; W.Schema=3; W.bComplete=false;
     W.Event=TEXT("七位新居民抵达，带来70份食物和63份木材；原居民的家与工作都保留。");
     FHearthDecisionRecord Arrival; Arrival.Run=W.Run; Arrival.Timestamp=FDateTime::Now().ToString(); Arrival.Resident=3;
     Arrival.At=W.Elapsed; Arrival.Kind=TEXT("population_migration"); Arrival.Source=TEXT("world_rules"); Arrival.Status=TEXT("completed");

@@ -61,13 +61,16 @@ bool HearthMovement::FindDetour(const FVector& Start,const FVector& Goal,TConstA
     for(const FVector& Person:People)
     {
         if(FVector::DistSquared2D(Start,Person)>FMath::Square(800.f)) continue;
-        for(int32 Side=0;Side<12;++Side)
+        // Several distances provide a way around adjacent scenery, not just the
+        // tight circle around a person that can itself be cut off by a doorstep.
+        for(double Radius:{130.,240.,360.}) for(int32 Side=0;Side<24;++Side)
         {
-            const double Angle=Side*UE_DOUBLE_PI/6.;
-            const FVector Candidate=FVector(Person.X+130.*FMath::Cos(Angle),Person.Y+130.*FMath::Sin(Angle),Start.Z);
+            if(Nodes.Num()>=128) break;
+            const double Angle=Side*UE_DOUBLE_PI/12.;
+            const FVector Candidate=FVector(Person.X+Radius*FMath::Cos(Angle),Person.Y+Radius*FMath::Sin(Angle),Start.Z);
             if(SegmentClear(Candidate,Candidate,People) && ClearGround(Candidate,Candidate)) Nodes.Add(Candidate);
         }
-        if(Nodes.Num()>=50) break;
+        if(Nodes.Num()>=128) break;
     }
     TArray<double> Cost; Cost.Init(DBL_MAX,Nodes.Num()); Cost[0]=0;
     TArray<int32> Parent; Parent.Init(INDEX_NONE,Nodes.Num());
@@ -88,6 +91,38 @@ bool HearthMovement::FindDetour(const FVector& Start,const FVector& Goal,TConstA
             const double CandidateCost=Cost[Best]+FVector::Dist2D(Nodes[Best],Nodes[I]);
             if(CandidateCost>=Cost[I] || !SegmentClear(Nodes[Best],Nodes[I],People) || !ClearGround(Nodes[Best],Nodes[I])) continue;
             Cost[I]=CandidateCost; Parent[I]=Best;
+        }
+    }
+    return false;
+}
+
+bool AHearthVillage::TryYieldFor(int32 Walker)
+{
+    const auto& Walking=Residents[Walker]; if(Walking.Route.IsEmpty()) return false;
+    for(int32 Other=0;Other<Residents.Num();++Other)
+    {
+        auto& Idle=Residents[Other];
+        if(Other==Walker || Idle.Task!=EHearthTask::LifeChoosing || !Idle.Route.IsEmpty() || IsDecisionPending(Other)
+            || !Idle.ConversationId.IsEmpty() || FVector::Dist2D(Idle.Actor->GetActorLocation(),Walking.Actor->GetActorLocation())>220) continue;
+        TArray<FVector> People,Destinations;
+        for(int32 I=0;I<Residents.Num();++I) if(I!=Other)
+        { People.Add(Residents[I].Actor->GetActorLocation()); if(!Residents[I].Route.IsEmpty()) Destinations.Add(Residents[I].Route.Last()); }
+        const FVector Start=Idle.Actor->GetActorLocation();
+        for(float Radius:{120.f,240.f}) for(int32 Side=0;Side<16;++Side)
+        {
+            const double Angle=Side*UE_DOUBLE_PI/8.;
+            const FVector Target=Start+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0);
+            if(!HearthMovement::SegmentClear(Start,Target,People) || !HearthMovement::SegmentClear(Target,Target,Destinations)
+                || !HearthMovement::SegmentClear(Walking.Actor->GetActorLocation(),Walking.Route[0],TArray<FVector>{Target})) continue;
+            if(bUseCropoutMap && !IsClearSegment(Start,Target)) continue;
+            bool Land=true; const int32 Steps=FMath::CeilToInt(Radius/40.f);
+            for(int32 Step=0;Step<=Steps;++Step) if(!IsLand(FMath::Lerp(Start,Target,static_cast<float>(Step)/Steps))) Land=false;
+            if(!Land) continue;
+            // A short avoidance step keeps the idle resident's identity and plan;
+            // it cannot interrupt a conversation, a job or a paid decision.
+            Idle.Route={Target}; Idle.MoveRetry=0; Idle.bMovementBlocked=false;
+            Idle.LatestEvent=TEXT("给")+Walking.Name+TEXT("让出通道，再继续自己的安排。");
+            return true;
         }
     }
     return false;
@@ -120,7 +155,17 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
             TArray<FVector> Detour;
             auto ClearGround=[this](const FVector& A,const FVector& B)
             {
-                if(bUseCropoutMap) return IsClearSegment(A,B);
+                if(bUseCropoutMap)
+                {
+                    if(!IsClearSegment(A,B)) return false;
+                    // Imported scene props can occupy only part of a coarse land cell.
+                    // Reject their edges inside the search so it can choose the other
+                    // side, rather than repeatedly rejecting the same shortest detour.
+                    const int32 Probes=FMath::Max(1,FMath::CeilToInt(FVector::Dist2D(A,B)/40.f));
+                    for(int32 Probe=0;Probe<=Probes;++Probe)
+                        if(!IsLand(FMath::Lerp(A,B,static_cast<float>(Probe)/Probes))) return false;
+                    return true;
+                }
                 return IsLand(A) && IsLand(B);
             };
             // Skip an occupied intermediate waypoint when the following route node is reachable.
@@ -144,6 +189,7 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
             }
             if(Detour.IsEmpty())
             {
+                TryYieldFor(Index);
                 // A finished worker may still be standing at a newly assigned work point.
                 TArray<FVector> NewRoute;
                 if(bUseCropoutMap && !HearthMovement::SegmentClear(R.Route.Last(),R.Route.Last(),People)

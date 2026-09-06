@@ -193,7 +193,7 @@ void AHearthVillage::RequestDecision(int32 Index)
     SendDecisionRequest(Index,Context,Prompt,false);
 }
 
-void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife)
+void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife,bool bSocial)
 {
     if(bSimulationPaused || !HasDecisionCapacity(Index) || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) return;
     // Defense at the actual dispatch site: never issue a direct paid HTTPS call.
@@ -209,13 +209,20 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(ApiFormat==TEXT("json_object")) { auto Format=MakeShared<FJsonObject>(); Format->SetStringField(TEXT("type"),TEXT("json_object")); Body->SetObjectField(TEXT("response_format"),Format); }
     auto& Pending=PendingDecisions[Index]; Pending=FHearthPendingDecision();
     Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    Pending.bActive=true; Pending.bLife=bLife; Pending.StartedAt=FPlatformTime::Seconds();
+    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.StartedAt=FPlatformTime::Seconds();
+    Pending.ConversationId=bSocial?Residents[Index].ConversationId:FString();
     Pending.Serial=++DecisionSerial;
-    Pending.AllowedActions=bLife?AvailableLifeActions(Index):TArray<int32>();
-    StartHistory(Index,bLife,TEXT("api"));
-    Pending.HistoryIndex=Residents[Index].HistoryIndex;
+    Pending.AllowedActions=bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
+    if(bSocial)
+    {
+        FHearthDecisionRecord H; H.Run=CurrentRun; H.Timestamp=FDateTime::Now().ToString(); H.Resident=Index; H.At=Elapsed;
+        H.Kind=TEXT("social_turn"); H.Source=TEXT("api"); H.Model=ApiModel; H.Context=HearthDecision::Json(Context); H.Choice=TEXT("准备回应对方");
+        Pending.HistoryIndex=DecisionHistory.Add(MoveTemp(H)); ++HistoryRevision; SaveHistory();
+    }
+    else { StartHistory(Index,bLife,TEXT("api")); Pending.HistoryIndex=Residents[Index].HistoryIndex; }
     Residents[Index].DecisionSource=TEXT("waiting"); Residents[Index].DecisionNote=bLife?TEXT("正在考虑下一项活动"):TEXT("正在向模型询问选址");
-    Residents[Index].Reason=bLife?TEXT("家已经建好了，想想接下来做什么。"):TEXT("让我想想，这几块地哪一块更适合我。");
+    if(bSocial) Residents[Index].DecisionNote=TEXT("正在认真听对方说话，准备回应");
+    else Residents[Index].Reason=bLife?TEXT("家已经建好了，想想接下来做什么。"):TEXT("让我想想，这几块地哪一块更适合我。");
     ++ApiRequests;
     ApiStatus=FString::Printf(TEXT("%s正在思考 · 请求 %d / %d"),*Residents[Index].Name,ApiRequests,ApiMaxRequests);
     const uint64 Generation=DecisionGeneration;
@@ -299,6 +306,27 @@ void AHearthVillage::ConsumeDecision()
         }
         if(!Slot.bReturned) continue;
         auto Reply=MoveTemp(Slot); Slot=FHearthPendingDecision();
+        if(Reply.bSocial)
+        {
+            if(!Residents.IsValidIndex(Index) || Residents[Index].ConversationId!=Reply.ConversationId) continue;
+            if(Reply.Error.IsEmpty() && (!Reply.AllowedActions.Contains(Reply.Choice) || !ResolveSocialTurn(Index,Reply.Choice,Reply.Reason,TEXT("api"))))
+                Reply.Error=TEXT("对话回应已不符合当前提议或会面状态");
+            if(DecisionHistory.IsValidIndex(Reply.HistoryIndex))
+            {
+                auto& H=DecisionHistory[Reply.HistoryIndex]; H.Reason=Reply.Reason; H.Choice=TEXT("回应对话");
+                H.Tokens=Reply.Tokens; H.Latency=Reply.Latency; H.bHasUsage=Reply.bHasUsage;
+                H.Status=Reply.Error.IsEmpty()?TEXT("completed"):TEXT("failed"); H.Result=Reply.Error.IsEmpty()?TEXT("已当面说出并处理对应提议。"):Reply.Error;
+                ++HistoryRevision; SaveHistory();
+            }
+            if(Reply.Error.IsEmpty())
+            {
+                ++ApiSuccesses; Residents[Index].DecisionSource=TEXT("api");
+                Residents[Index].DecisionNote=FString::Printf(TEXT("%s · %.1f 秒"),*ApiModel,Reply.Latency);
+                ApiStatus=FString::Printf(TEXT("已采纳 %d 个模型决定"),ApiSuccesses);
+            }
+            else { ApiStatus=Reply.Error+TEXT(" · 使用本地规则"); DecideSocialLocally(Index,Reply.Error); }
+            WriteSnapshot(); continue;
+        }
         if(!Residents.IsValidIndex(Index) || Residents[Index].Task!=(Reply.bLife?EHearthTask::LifeChoosing:EHearthTask::Choosing)) continue;
         if(DecisionHistory.IsValidIndex(Reply.HistoryIndex))
         {

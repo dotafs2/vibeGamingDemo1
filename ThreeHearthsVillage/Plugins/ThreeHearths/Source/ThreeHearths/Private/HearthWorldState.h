@@ -13,7 +13,7 @@ struct FHearthSavedResident
 struct FHearthWorldImage
 {
     FString Id, Run, Event;
-    int32 Schema=2, PlotCount=3;
+    int32 Schema=3, PlotCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;
@@ -27,6 +27,8 @@ struct FHearthWorldImage
     TArray<FHearthSite> Sites;
     TMap<FString,int32> Totals;
     TArray<FHearthDecisionRecord> History;
+    TArray<FHearthConversation> Conversations;
+    TArray<FHearthCommitment> Commitments;
 };
 namespace HearthWorld
 {

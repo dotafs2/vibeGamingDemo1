@@ -158,7 +158,7 @@ TArray<int32> AHearthVillage::AvailableLifeActions(int32 Index) const
     TArray<int32> Actions={0,1,2};
     if(FoodStock>0) Actions.Add(50);
     Actions.Append(AvailableProductionActions(Index));
-    for(int32 I=0;I<Residents.Num();++I) if(I!=Index && Residents[I].BuildProgress>=1.f) Actions.Add(3+I);
+    for(int32 I=0;I<Residents.Num();++I) if(I!=Index && IsSociallyAvailable(I)) Actions.Add(3+I);
     return Actions;
 }
 
@@ -178,6 +178,7 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
     if(!Residents.IsValidIndex(Index) || Residents[Index].Task!=EHearthTask::LifeChoosing) return false;
     if(Action>=100) return StartProduction(Index,Action,Reason,bFromApi);
     if(!AvailableLifeActions(Index).Contains(Action)) return false;
+    if(Residents.IsValidIndex(Action-3)) return BeginConversation(Index,Action-3,Reason,bFromApi);
     auto& R=Residents[Index];
     FVector Target=PlotPositions[R.Plot]+FVector(-245,0,0);
     if(Action==1) Target=bUseCropoutMap?FVector(-1850,-2400,8):PlotPositions[1]+FVector(-245,0,0);
@@ -203,12 +204,17 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
     else if(Person.Energy<45) Action=0;
     else
     {
-        const int32 Work=ChooseProductionLocally(Index);
-        if(Work>=0) Action=Work;
-        else
+        if(Person.SocialNeed>55)
         {
-            for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && Residents[Other].BuildProgress>=1 && Person.SocialNeed>60) { Action=Other+3; break; }
+            float Best=-FLT_MAX;
+            for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && IsSociallyAvailable(Other))
+            {
+                const auto* Bond=Person.Bonds.Find(Residents[Other].StableId);
+                const float Score=(Bond?Bond->Affinity-Bond->Meetings*2:12.f)-FVector::Dist2D(Person.Actor->GetActorLocation(),Residents[Other].Actor->GetActorLocation())/1000;
+                if(Score>Best) { Best=Score; Action=Other+3; }
+            }
         }
+        if(Action==0) { const int32 Work=ChooseProductionLocally(Index); if(Work>=0) Action=Work; }
     }
     const FString Reason=Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==50?TEXT("肚子饿了，去吃一份库存里的食物。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
     if(StartLifeAction(Index,Action,Reason,false))
@@ -237,6 +243,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     Person->SetStringField(TEXT("stable_id"),R.StableId); Person->SetStringField(TEXT("role"),R.Role);
     Person->SetBoolField(TEXT("king"),R.bKing); Person->SetNumberField(TEXT("age"),R.Age);
     Person->SetNumberField(TEXT("hunger"),R.Hunger); Person->SetNumberField(TEXT("mood"),R.Mood);
+    Person->SetStringField(TEXT("remembered_relationships"),RelationshipSummary(Index));
     Person->SetNumberField(TEXT("energy"),R.Energy); Person->SetNumberField(TEXT("social_need"),R.SocialNeed);
     Context->SetObjectField(TEXT("resident"),Person); Context->SetNumberField(TEXT("completed_homes"),CompletedHomes());
     Context->SetNumberField(TEXT("available_wood"),AvailableWood());
@@ -254,7 +261,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
         M->SetStringField(TEXT("reason"),D.Reason); M->SetStringField(TEXT("result"),D.Result); Memory.Add(MakeShared<FJsonValueObject>(M));
     }
     Context->SetArrayField(TEXT("available_actions"),Actions); Context->SetArrayField(TEXT("recent_decisions_newest_first"),Memory);
-    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Rest when energy is low; visits reduce social need. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
+    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Rest when energy is low; eat action 50 when hungry, consuming one real food. When social_need exceeds 55, consider visiting an available idle neighbor. Visits start a real two-way conversation: each person can invite, ask help, accept or refuse, and accepted commitments become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
     SendDecisionRequest(Index,Context,Prompt,true);
 }
 
@@ -267,7 +274,7 @@ void AHearthVillage::UpdateLifeDecisions()
     {
         const int32 Index=(StartAfter+Offset)%Residents.Num();
         auto& R=Residents[Index];
-        if(R.Task!=EHearthTask::LifeChoosing || Now<R.NextLifeDecision || !HasDecisionCapacity(Index)) continue;
+        if(R.Task!=EHearthTask::LifeChoosing || !R.Route.IsEmpty() || Now<R.NextLifeDecision || !HasDecisionCapacity(Index)) continue;
         LastLifeResident=Index; R.NextLifeDecision=Now+LifeDecisionInterval;
         RequestLifeDecision(Index);
     }
@@ -276,22 +283,29 @@ void AHearthVillage::UpdateLifeDecisions()
 void AHearthVillage::AdvanceLife(int32 Index,float Dt)
 {
     auto& R=Residents[Index];
+    if(!R.ConversationId.IsEmpty())
+    {
+        if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt)) R.Task=EHearthTask::LifeActivity;
+        return;
+    }
     if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt))
     { R.Task=EHearthTask::LifeActivity; R.Timer=R.LifeAction==50?5.f:R.LifeAction==0?20.f:15.f; }
     else if(R.Task==EHearthTask::LifeActivity && R.Timer<=0)
     {
-        FString Extra;
+        FString Extra; bool Ate=false;
         if(R.LifeAction==50)
         {
-            if(FoodStock>0) { --FoodStock; ++Spent[0]; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("吃掉1份食物，已记入消耗。"); }
+            if(FoodStock>0) { --FoodStock; ++Spent[0]; Ate=true; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("吃掉1份食物，已记入消耗。"); }
             else Extra=TEXT("到达时食物已用完，这次没有吃到饭。");
         }
         else if(R.LifeAction==0) R.Energy=FMath::Min(100.f,R.Energy+35.f);
-        else if(Residents.IsValidIndex(R.LifeAction-3)) { R.SocialNeed=FMath::Max(0.f,R.SocialNeed-45.f); R.Energy=FMath::Max(0.f,R.Energy-6.f); }
+        // Legacy visit timers without a conversation do not invent a mutual encounter.
         else R.Energy=FMath::Max(0.f,R.Energy-10.f);
         const FString Result=FString::Printf(TEXT("%s已完成。精力 %.0f，饥饿 %.0f，社交需求 %.0f。%s%s"),*LifeActionName(Index,R.LifeAction),R.Energy,R.Hunger,R.SocialNeed,
             R.LifeAction==1||R.LifeAction==2?TEXT("本次只观察，没有改变资源库存。"):TEXT(""),*Extra);
-        R.LatestEvent=Result; CompleteHistory(Index,Result); R.Task=EHearthTask::LifeChoosing;
+        R.LatestEvent=Result; CompleteHistory(Index,Result);
+        if(R.LifeAction==50) CompleteCommitments(Index,Ate,Result);
+        R.Task=EHearthTask::LifeChoosing;
         VillageEvent=R.Name+TEXT("完成了活动，准备下一次选择。");
     }
 }

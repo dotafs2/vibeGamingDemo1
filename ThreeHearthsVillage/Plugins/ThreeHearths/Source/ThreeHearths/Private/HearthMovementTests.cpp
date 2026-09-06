@@ -80,6 +80,28 @@ bool FHearthMovementIntegrationTest::RunTest(const FString&)
         {FVector(400,0,8),FVector(0,0,8),FVector(0,700,8)},0.05f);
     Scenario(TEXT("Oversized step"),{FVector(-400,0,8),FVector(0,0,8),FVector(0,700,8)},
         {FVector(400,0,8),FVector(0,0,8),FVector(0,700,8)},3.f);
+    Village->Residents[0].Actor->SetActorLocation(FVector(-109,0,8)); Village->Residents[0].Route={FVector(400,0,8)};
+    Village->Residents[1].Actor->SetActorLocation(FVector(0,0,8)); Village->Residents[1].Route.Reset();
+    Village->Residents[2].Actor->SetActorLocation(FVector(0,700,8));
+    Village->Residents[1].Task=EHearthTask::LifeChoosing; Village->Residents[1].BuildProgress=1;
+    Village->PendingDecisions.SetNum(3); Village->PendingDecisions[1].bActive=true;
+    TestFalse(TEXT("Yielding never interrupts an independent pending decision"),Village->TryYieldFor(0));
+    Village->PendingDecisions[1].bActive=false; Village->Residents[1].Task=EHearthTask::ProductionWork;
+    TestFalse(TEXT("Yielding never takes over an ongoing production job"),Village->TryYieldFor(0));
+    Village->Residents[1].Task=EHearthTask::LifeChoosing;
+    TestTrue(TEXT("An idle neighbor can step aside when asked by blocked traffic"),Village->TryYieldFor(0));
+    TestFalse(TEXT("The short avoidance movement cannot receive a new job midway"),Village->CanAssignActivity(1));
+    const int32 HistoryBefore=Village->DecisionHistory.Num();
+    bool Arrived=false; double Clearance=DBL_MAX;
+    for(int32 Step=0;Step<1000 && !Arrived;++Step)
+    {
+        const bool Walker=Village->MoveResident(0,.05f),Neighbor=Village->MoveResident(1,.05f);
+        Clearance=FMath::Min(Clearance,FVector::Dist2D(Village->Residents[0].Actor->GetActorLocation(),Village->Residents[1].Actor->GetActorLocation()));
+        Arrived=Walker && Neighbor;
+    }
+    TestTrue(TEXT("Both finish the avoidance without teleporting or overlap"),Arrived && Clearance>=HearthMovement::Separation-.01);
+    TestEqual(TEXT("Yield does not create a new paid or production decision"),Village->DecisionHistory.Num(),HistoryBefore);
+    TestEqual(TEXT("Idle neighbor keeps its own planning state"),Village->Residents[1].Task,EHearthTask::LifeChoosing);
     World->DestroyWorld(false);
     return true;
 }
