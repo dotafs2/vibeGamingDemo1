@@ -454,6 +454,16 @@ namespace HearthWorld
                 Part->Status=R.Task==EHearthTask::ProductionWork?TEXT("installing"):TEXT("transporting"); R.ProductionComponentId=Part->Id;
             }
         }
+        // Early schema-eight public works saves did not distinguish depot-bound
+        // travel from loaded travel. Preserve the in-flight task and infer the
+        // only safe phase from whether the resident is carrying material.
+        if(W.Schema==8)
+            for(auto& Saved:W.People)
+            {
+                auto& R=Saved.Person;
+                if(R.Task==EHearthTask::PublicTravel && R.LifeAction!=1 && R.LifeAction!=2)
+                    R.LifeAction=R.CargoAmount>0?2:1;
+            }
         Error=TEXT("世界存档引用、任务或资源守恒校验失败");
         auto Reject=[&Error](const FString& Detail)
         {
@@ -710,6 +720,7 @@ namespace HearthWorld
                     {
                         const auto& R=W.People[Part.Worker].Person;
                         if((R.Task!=EHearthTask::PublicTravel && R.Task!=EHearthTask::PublicWork) || R.ActiveTaskId!=Part.TaskId || R.ProductionSite!=-1 || R.ProductionOp!=-1 || !R.ProductionComponentId.IsEmpty() || R.CargoAmount>6) return Reject(TEXT("公共工程工人任务引用"));
+                        if(R.Task==EHearthTask::PublicTravel && R.LifeAction!=(R.CargoAmount>0?2:1)) return Reject(TEXT("公共工程运输阶段"));
                         if(!PublicPayable || !(*PublicPayable)->bTaxFunded || (*PublicPayable)->Status!=TEXT("reserved") || (*PublicPayable)->Worker!=Part.Worker || (*PublicPayable)->Amount!=2) return Reject(TEXT("公共工程在建工资"));
                     }
                 }

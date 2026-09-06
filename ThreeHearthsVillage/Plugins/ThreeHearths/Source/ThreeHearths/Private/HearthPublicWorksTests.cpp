@@ -52,6 +52,10 @@ bool FHearthPublicWallTest::RunTest(const FString&)
     TestTrue(TEXT("Public worker can be assigned before transit"), Village->CanAssignActivity(0));
     TestTrue(TEXT("A public part enters explicit depot phase"), Village->StartPublicPart(0));
     TestEqual(TEXT("Initial public haul phase is depot bound"), Village->Residents[0].LifeAction, 1);
+    Village->Residents[0].Route.Reset();
+    Village->AdvancePublicWorker(0, 0.f);
+    TestEqual(TEXT("An old empty-route transit remains active while its route is rebuilt"), Village->Residents[0].Task, EHearthTask::PublicTravel);
+    TestTrue(TEXT("An old empty-route transit receives a real depot route"), !Village->Residents[0].Route.IsEmpty());
     TestTrue(TEXT("Cancelling transit restores reserved public stock"), Village->CancelPublicWork(0));
     TestEqual(TEXT("Cancelled transit restores one stone"), Village->PublicProject.Stock[0], 1);
     TestEqual(TEXT("Cancelled transit clears phase"), Village->Residents[0].LifeAction, -1);

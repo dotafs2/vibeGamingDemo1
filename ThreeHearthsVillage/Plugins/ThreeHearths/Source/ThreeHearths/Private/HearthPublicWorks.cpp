@@ -152,7 +152,16 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
     if (!Part) return;
     if (R.Task == EHearthTask::PublicTravel)
     {
+        if ((R.LifeAction != 1 && R.LifeAction != 2) || (R.LifeAction == 1 && R.CargoAmount > 0)
+            || (R.LifeAction == 2 && R.CargoAmount <= 0)) { CancelPublicWork(Worker); return; }
         if (!MoveResident(Worker, Dt)) return;
+        const FVector Target = R.LifeAction == 2 ? ProductionSites[PublicProject.Site].Approach : PublicDepotFor(*this);
+        if (!IsValid(R.Actor) || FVector::Dist2D(R.Actor->GetActorLocation(), Target) > 280.f)
+        {
+            TArray<FVector> RecoveryRoute;
+            if (!FindActivityRoute(Worker, Target, RecoveryRoute)) { CancelPublicWork(Worker); return; }
+            R.Route = MoveTemp(RecoveryRoute); return;
+        }
         if (R.LifeAction == 2 && R.CargoAmount > 0)
         {
             const int32 M = R.CargoType - 2;
@@ -167,7 +176,6 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
             }
             R.Task = EHearthTask::PublicWork; R.Timer = 1.f; R.WorkDuration = 1.f; Part->Status = TEXT("installing"); return;
         }
-        if (R.LifeAction != 1) { CancelPublicWork(Worker); return; }
         int32 M = -1; for (int32 I = 0; I < 3; ++I) if (Part->Reserved[I] > 0) { M = I; break; }
         if (M >= 0)
         {
