@@ -1,0 +1,49 @@
+{
+  "milestone": "stage_4_modular_cottage",
+  "verified_at": "2026-09-06T14:18:00+08:00",
+  "engine": "Unreal Engine 5.8.1",
+  "build": "succeeded",
+  "automation": {
+    "result": "17/17 passed",
+    "log": "Saved/Logs/ThreeHearthsAutomation27.log",
+    "focused_test": "ThreeHearths.Production.ModularCottageLifecycle"
+  },
+  "assembly": {
+    "plan": "Art/Stage4HouseAudit/stage4-assembly.json",
+    "stages": [
+      { "name": "foundation_and_floor", "material": "stone", "amount": 2, "instances_added": 8 },
+      { "name": "frame", "material": "beams", "amount": 2, "instances_added": 21 },
+      { "name": "wall_panels_and_gables", "material": "planks", "amount": 3, "instances_added": 10 },
+      { "name": "roof", "material": "planks", "amount": 2, "instances_added": 6 }
+    ],
+    "total_native_mesh_instances": 45,
+    "whole_house_mesh_used": false
+  },
+  "persistence": {
+    "stable_build_plan_id": true,
+    "transport_reload": "passed",
+    "installation_reload": "passed",
+    "completed_reload": "passed",
+    "legacy_house_compatibility": true,
+    "trade_travel_reload": "passed",
+    "trade_handover_reload": "passed",
+    "schema3_reserved_wage_reload": "passed"
+  },
+  "runtime_100x": {
+    "simulation_elapsed_seconds": 1890.2687,
+    "api_requests": 0,
+    "pending_requests": 0,
+    "completed_modular_cottages_observed": 5,
+    "invalid_repurposed_plan_sites": 0,
+    "ownerless_plan_sites": 0,
+    "resource_conservation_accounted_totals": {
+      "food": 100,
+      "wood": 99,
+      "stone": 0,
+      "planks": 0,
+      "beams": 0
+    },
+    "note": "Food and wood reconcile to their invariant opening totals; derived stone, plank, and beam ledgers reconcile to zero. This acceptance run explicitly disabled external model calls."
+  },
+  "visual_evidence": "Docs/Validation/Modular_Cottage_Runtime.png"
+}

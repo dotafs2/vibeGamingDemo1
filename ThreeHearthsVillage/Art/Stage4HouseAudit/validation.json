@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "new_geometry_required": false,
+  "selected_component_asset_count": 10,
+  "prototype_frame_also_audited": true,
+  "generated_native_files_present_and_import_hashes_match": 11,
+  "single_local_mesh_glbs_verified": 11,
+  "independent_structural_parts_verified": true,
+  "whole_house_examples_excluded": true,
+  "assembly_component_count": 45,
+  "per_stage_additions": {
+    "1": 8,
+    "2": 21,
+    "3": 10,
+    "4": 6
+  },
+  "assembly_triangles": 36600,
+  "unique_selected_asset_triangles": 9556,
+  "duplicate_posts_or_beams": false,
+  "collision_suggestions_only": true,
+  "ue_runtime_behavior_verified": false,
+  "preview_review_verified": true,
+  "exported_door_opening_and_proposed_collision_clearance_verified": true
+}

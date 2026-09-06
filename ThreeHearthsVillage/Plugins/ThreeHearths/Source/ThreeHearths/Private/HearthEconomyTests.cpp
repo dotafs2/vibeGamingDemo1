@@ -70,9 +70,16 @@ bool FHearthEconomyPersistenceTest::RunTest(const FString&)
     TestTrue(TEXT("Buyer explicitly accepts in dialogue"),V->ResolveSocialTurn(1,3,TEXT("两枚钱可以，送来后我付款。"),TEXT("test")));
     TestTrue(TEXT("Accepted offer survives reload before delivery"),V->ApplyWorldState(V->ExportWorldState(),Error));
     TestTrue(TEXT("Seller closes negotiation and starts delivery"),V->ResolveSocialTurn(0,5,TEXT("好，我现在送过来。"),TEXT("test")));
-    bool SawTravel=V->Residents[0].Task==EHearthTask::TradeTravel;
-    for(int32 Step=0;Step<1000 && V->TradeOffers[0].Status!=TEXT("completed");++Step)
+    bool SawTravel=V->Residents[0].Task==EHearthTask::TradeTravel; const int32 TransactionsBeforeDelivery=V->Transactions.Num();
+    TestTrue(TEXT("In-transit seller and carried plank survive reload"),V->ApplyWorldState(V->ExportWorldState(),Error));
+    TestEqual(TEXT("Reload resumes seller delivery travel"),V->Residents[0].Task,EHearthTask::TradeTravel);
+    TestEqual(TEXT("Reload keeps exactly one reserved trade plank"),V->TradeOffers[0].ReservedQuantity,1);
+    for(int32 Step=0;Step<1000 && V->TradeOffers[0].Status!=TEXT("delivering");++Step)
     { V->AdvanceSimulation(.05f); SawTravel|=V->Residents[0].Task==EHearthTask::TradeTravel; }
+    if(!TestEqual(TEXT("Seller reaches the handover phase"),V->TradeOffers[0].Status,FString(TEXT("delivering")))) return false;
+    TestTrue(TEXT("Handover-in-progress survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error));
+    TestEqual(TEXT("Handover reload has not paid early"),V->Transactions.Num(),TransactionsBeforeDelivery);
+    for(int32 Step=0;Step<1000 && V->TradeOffers[0].Status!=TEXT("completed");++Step) V->AdvanceSimulation(.05f);
     TestTrue(TEXT("Seller physically enters delivery travel"),SawTravel);
     TestTrue(TEXT("Seller moved while carrying the reserved plank"),!V->Residents[0].Actor->GetActorLocation().Equals(SellerStart,1.f));
     if(!TestTrue(TEXT("A trade record exists after negotiation"),!V->TradeOffers.IsEmpty())) return false;
@@ -80,6 +87,8 @@ bool FHearthEconomyPersistenceTest::RunTest(const FString&)
     TestEqual(TEXT("Buyer owns delivered plank"),V->Residents[1].PersonalPlanks,1);
     TestEqual(TEXT("Seller received price"),V->Residents[0].Coins,16);
     TestEqual(TEXT("Buyer paid price"),V->Residents[1].Coins,10);
+    const int32 TransactionsAfterDelivery=V->Transactions.Num(); V->AdvanceEconomy(5.f);
+    TestEqual(TEXT("Completed handover cannot settle twice"),V->Transactions.Num(),TransactionsAfterDelivery);
     TestTrue(TEXT("Both residents remember the completed exchange"),V->Residents[0].Bonds.FindChecked(V->Residents[1].StableId).Memory.Contains(TEXT("交付"))
         && V->Residents[1].Bonds.FindChecked(V->Residents[0].StableId).Memory.Contains(TEXT("交付")));
 
@@ -155,6 +164,11 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     V->AdvanceEconomy(.1f);
     TestEqual(TEXT("Funding unfinished work reserves its wage"),Payable->Status,FString(TEXT("reserved")));
     TestEqual(TEXT("Reservation does not pay before completion"),V->Residents[0].Coins,WalletBeforeFunding);
+    if(!TestTrue(TEXT("Funded but unfinished migrated work reloads"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+    Payable=V->WagePayables.FindByPredicate([&](const FHearthWagePayable& P){ return P.TaskId==ActiveTask; });
+    if(!TestNotNull(TEXT("Reserved migrated wage survives reload"),Payable)) return false;
+    TestEqual(TEXT("Reload keeps funded unfinished wage reserved"),Payable->Status,FString(TEXT("reserved")));
+    TestEqual(TEXT("Reload still does not pay unfinished worker"),V->Residents[0].Coins,WalletBeforeFunding);
     const int32 Site=V->Residents[0].ProductionSite; V->ReturnTool(0); if(V->ProductionSites.IsValidIndex(Site)) V->ProductionSites[Site].ReservedBy=-1;
     V->Residents[0].Task=EHearthTask::LifeChoosing; V->Residents[0].ProductionSite=-1; V->Residents[0].ProductionOp=-1; V->Residents[0].WorkDuration=0;
     TestTrue(TEXT("Completed migrated work settles once"),V->SettleWage(0,ActiveTask));

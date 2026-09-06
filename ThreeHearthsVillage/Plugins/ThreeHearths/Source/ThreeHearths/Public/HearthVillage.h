@@ -23,7 +23,7 @@ enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering,
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter };
 struct FHearthSite
 {
-    FString StableId;
+    FString StableId, BuildPlanId;
     EHearthSiteKind Kind=EHearthSiteKind::Empty;
     FVector Position=FVector::ZeroVector, Approach=FVector::ZeroVector;
     float Radius=270.f, Growth=0.f, GrowDuration=120.f, Progress=0.f;
@@ -264,6 +264,7 @@ private:
     friend class FHearthDerivedMaterialsTest;
     friend class FHearthEconomyPersistenceTest;
     friend class FHearthLegacyUnfundedWageTest;
+    friend class FHearthModularCottageTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
     FString WorldPath;

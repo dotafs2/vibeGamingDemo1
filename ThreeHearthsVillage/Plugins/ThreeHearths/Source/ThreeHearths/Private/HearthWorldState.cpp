@@ -112,6 +112,7 @@ namespace HearthWorld
         for(const auto& S:W.Sites)
         {
             auto P=MakeShared<FJsonObject>(); P->SetStringField(TEXT("id"),S.StableId);
+            P->SetStringField(TEXT("build_plan_id"),S.BuildPlanId);
             P->SetNumberField(TEXT("kind"),static_cast<int32>(S.Kind)); P->SetField(TEXT("position"),Vec(S.Position)); P->SetField(TEXT("approach"),Vec(S.Approach));
 #define NUM(Field) P->SetNumberField(TEXT(#Field),S.Field)
             NUM(Radius); NUM(Growth); NUM(GrowDuration); NUM(Progress); NUM(Stage); NUM(Units); NUM(Capacity); NUM(ReservedBy); NUM(Owner);
@@ -260,10 +261,10 @@ namespace HearthWorld
         }
         for(const auto& V:C.Array(TEXT("sites"),1024))
         {
-            FHearthSite S; FRead P{Object(V)}; int32 Kind=0; P.Str(TEXT("id"),S.StableId); P.Num(TEXT("kind"),Kind,0,10); S.Kind=static_cast<EHearthSiteKind>(Kind);
+            FHearthSite S; FRead P{Object(V)}; int32 Kind=0; P.Str(TEXT("id"),S.StableId); if(P.J.IsValid()) P.J->TryGetStringField(TEXT("build_plan_id"),S.BuildPlanId); P.Num(TEXT("kind"),Kind,0,10); S.Kind=static_cast<EHearthSiteKind>(Kind);
             P.Vector(TEXT("position"),S.Position); P.Vector(TEXT("approach"),S.Approach);
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
-            NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,2);
+            NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,4);
             NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,W.PlotCount-1); NUM(Owner,-1,W.PlotCount-1);
 #undef NUM
             P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion); C.Good&=P.Good; W.Sites.Add(MoveTemp(S));
@@ -375,8 +376,18 @@ namespace HearthWorld
             if(R.HistoryIndex>=0 && (!W.History.IsValidIndex(R.HistoryIndex) || W.History[R.HistoryIndex].Resident!=I || W.History[R.HistoryIndex].Run!=W.Run)) return false;
             const bool Production=R.Task>=EHearthTask::ProductionTravel && R.Task<=EHearthTask::ProductionDeposit;
             if(Production && (!W.Sites.IsValidIndex(R.ProductionSite) || R.ProductionOp<0 || W.Sites[R.ProductionSite].ReservedBy!=I || R.WorkDuration<=0 || R.HistoryIndex<0)) return false;
+            if(Production && R.ProductionOp==5)
+            {
+                const auto& Site=W.Sites[R.ProductionSite];
+                const int32 ExpectedType=Site.Stage==0?2:Site.Stage==1?4:3;
+                const int32 ExpectedAmount=Site.Stage==0?2:Site.Stage==1?2:Site.Stage==2?3:2;
+                if(Site.Kind!=EHearthSiteKind::Land || Site.Stage<0 || Site.Stage>=4 || Site.BuildPlanId.IsEmpty()
+                    || R.CargoType!=ExpectedType || R.CargoAmount!=ExpectedAmount) return false;
+            }
             if(!Production && (R.ProductionSite!=-1 || R.ProductionOp!=-1 || R.CargoAmount!=0)) return false;
-            if(R.CargoAmount>0 && (R.CargoType<0 || R.ProductionOp<9 || (R.Task!=EHearthTask::ProductionDeliver && R.Task!=EHearthTask::ProductionDeposit))) return false;
+            if(R.CargoAmount>0 && (R.CargoType<0 || (R.ProductionOp<9 && R.ProductionOp!=5)
+                || (R.ProductionOp==5 && R.Task!=EHearthTask::ProductionTravel && R.Task!=EHearthTask::ProductionWork)
+                || (R.ProductionOp>=9 && R.Task!=EHearthTask::ProductionDeliver && R.Task!=EHearthTask::ProductionDeposit))) return false;
             if(R.CargoType>=0 && R.CargoType<=2) Accounted[R.CargoType]+=R.CargoAmount;
             if(R.CargoType>=3) AccountedManufactured[R.CargoType-3]+=R.CargoAmount;
             AccountedManufactured[0]+=R.PersonalPlanks;
@@ -385,7 +396,8 @@ namespace HearthWorld
         for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
         for(int32 I=0;I<W.Sites.Num();++I)
         {
-            const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration) return false;
+            const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration || (!S.BuildPlanId.IsEmpty() && !Guid(S.BuildPlanId))) return false;
+            if(!S.BuildPlanId.IsEmpty() && (S.Stage<0 || S.Stage>4 || (S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House))) return false;
             if(S.ReservedBy>=0 && W.People[S.ReservedBy].Person.ProductionSite!=I) return false;
         }
         TSet<FString> ActivePeople,ChatIds;

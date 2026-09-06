@@ -1,0 +1,12 @@
+{
+  "images": [
+    {
+      "notes": "All four stages fully framed and labeled. Independent foundations/floors, open post-and-beam frame, wall/gable panels and roof components appear cumulatively. Earlier components retain the same IDs; no whole-house source mesh is used.",
+      "file": "previews/Stage4_ComponentStages.png",
+      "sha256": "70b3ab23a9d0f17afebfef2de4480232d9c4b3526d946220e4c02074a27026fa"
+    }
+  ],
+  "four_cumulative_component_stages_reviewed": true,
+  "runtime_ue_behavior_reviewed": false,
+  "new_geometry_required": false
+}

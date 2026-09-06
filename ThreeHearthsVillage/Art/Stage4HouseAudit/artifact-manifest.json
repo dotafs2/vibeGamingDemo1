@@ -1,0 +1,54 @@
+{
+  "artifacts": [
+    {
+      "file": "audit_stage4_components.py",
+      "bytes": 11346,
+      "sha256": "acea04e149af74540498a93df523d6c4ad1c9621b72580fffd200a168b548749"
+    },
+    {
+      "file": "component-catalog.json",
+      "bytes": 22960,
+      "sha256": "444f48a62339708a44ca806dc8442131934542bc4c51e579e36d04f5a306e9ac"
+    },
+    {
+      "file": "mcp/render-request.json",
+      "bytes": 401,
+      "sha256": "e658f78f119a211b64af50b5421c8dde8be812a7faedca856d65ed478fedf7c6"
+    },
+    {
+      "file": "previews/Stage4_ComponentStages.png",
+      "bytes": 3178316,
+      "sha256": "70b3ab23a9d0f17afebfef2de4480232d9c4b3526d946220e4c02074a27026fa"
+    },
+    {
+      "file": "README.md",
+      "bytes": 5007,
+      "sha256": "fbabd16832e267034ab1be19fb9f0cd0621a4c2edbba6f390adfee06e39820c9"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 7717,
+      "sha256": "2e6f1fd8a9abe079b54489562a1a5f3e3e579abf03da7a7f4e9ca13ca255fcb9"
+    },
+    {
+      "file": "render_stage4_components.py",
+      "bytes": 5885,
+      "sha256": "f6b293dd5ee32d7d511226c23056abe638adc6d43c3cd5891b61a37e8ac1ad44"
+    },
+    {
+      "file": "stage4-assembly.json",
+      "bytes": 18739,
+      "sha256": "4ac00985bf532401e70b6e38a1885733d372490a0a96e44e39f18e29bbb79d96"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 773,
+      "sha256": "b369248e040fc79a5848f65f8ec3b3b4c0f1d36958a449fd78dc19028ae85cc3"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 563,
+      "sha256": "83e4eaf1d46421e563143b7253a185e6e32c193cbad055b960bda302b6e39c68"
+    }
+  ]
+}

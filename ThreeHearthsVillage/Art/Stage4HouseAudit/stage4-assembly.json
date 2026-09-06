@@ -1,0 +1,827 @@
+{
+  "schema_version": 1,
+  "assembly_id": "s4_cottage_4x4_terracotta",
+  "source_layout": "../VillageKit/example-layouts.json#cottage_terracotta",
+  "footprint_grid_m": [
+    4,
+    4
+  ],
+  "floor_structural_datum_m": 0,
+  "finished_floor_z_m": 0.16,
+  "frame_top_z_m": 2.4,
+  "component_count": 45,
+  "unique_component_assets": 10,
+  "placements": [
+    {
+      "component_id": "s4_foundation_stone_2m_xm100_ym100_zp000_r000",
+      "component_asset_id": "foundation_stone_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        -1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_foundation_stone_2m_xm100_yp100_zp000_r000",
+      "component_asset_id": "foundation_stone_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        -1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_foundation_stone_2m_xp100_ym100_zp000_r000",
+      "component_asset_id": "foundation_stone_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        1,
+        -1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_foundation_stone_2m_xp100_yp100_zp000_r000",
+      "component_asset_id": "foundation_stone_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        1,
+        1.0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_floor_timber_2m_xm100_ym100_zp000_r000",
+      "component_asset_id": "floor_timber_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        -1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_floor_timber_2m_xm100_yp100_zp000_r000",
+      "component_asset_id": "floor_timber_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        -1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_floor_timber_2m_xp100_ym100_zp000_r000",
+      "component_asset_id": "floor_timber_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        1,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_floor_timber_2m_xp100_yp100_zp000_r000",
+      "component_asset_id": "floor_timber_2m",
+      "stage": 1,
+      "position_authoring_m": [
+        1,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xm200_ym200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        -2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xm200_yp000_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        -2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xm200_yp200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        -2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp000_ym200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        0,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp000_yp000_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        0,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp000_yp200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        0,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp200_ym200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        2,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp200_yp000_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        2,
+        0.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_post_timber_2_4m_xp200_yp200_zp000_r000",
+      "component_asset_id": "post_timber_2_4m",
+      "stage": 2,
+      "position_authoring_m": [
+        2,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xm100_ym200_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        -1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xm100_yp000_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        -1,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xm100_yp200_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        -1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp100_ym200_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        1,
+        -2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp100_yp000_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        1,
+        0.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp100_yp200_zp220_r000",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        1,
+        2.0,
+        2.2
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xm200_ym100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        -2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xm200_yp100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        -2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp000_ym100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        0,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp000_yp100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        0,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp200_ym100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        2,
+        -1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_beam_timber_2m_xp200_yp100_zp220_r090",
+      "component_asset_id": "beam_timber_2m",
+      "stage": 2,
+      "position_authoring_m": [
+        2,
+        1.0,
+        2.2
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_window_plaster_2m_xm200_ym100_zp000_r-90",
+      "component_asset_id": "wall_window_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        -2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_plaster_2m_xm200_yp100_zp000_r-90",
+      "component_asset_id": "wall_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        -2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": -90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_door_plaster_2m_xm100_ym200_zp000_r000",
+      "component_asset_id": "wall_door_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        -1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_window_plaster_2m_xp100_ym200_zp000_r000",
+      "component_asset_id": "wall_window_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        1,
+        -2.0,
+        0.0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_window_plaster_2m_xp200_ym100_zp000_r090",
+      "component_asset_id": "wall_window_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        2,
+        -1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_plaster_2m_xp200_yp100_zp000_r090",
+      "component_asset_id": "wall_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        2,
+        1.0,
+        0.0
+      ],
+      "yaw_degrees": 90,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_window_plaster_2m_xm100_yp200_zp000_r180",
+      "component_asset_id": "wall_window_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        -1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_wall_window_plaster_2m_xp100_yp200_zp000_r180",
+      "component_asset_id": "wall_window_plaster_2m",
+      "stage": 3,
+      "position_authoring_m": [
+        1,
+        2.0,
+        0.0
+      ],
+      "yaw_degrees": 180,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r000",
+      "component_asset_id": "roof_slope_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r180",
+      "component_asset_id": "roof_slope_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_ridge_terracotta_2m_xp000_ym100_zp240_r000",
+      "component_asset_id": "roof_ridge_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        -1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r000",
+      "component_asset_id": "roof_slope_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r180",
+      "component_asset_id": "roof_slope_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_roof_ridge_terracotta_2m_xp000_yp100_zp240_r000",
+      "component_asset_id": "roof_ridge_terracotta_2m",
+      "stage": 4,
+      "position_authoring_m": [
+        0,
+        1.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_gable_plaster_4m_xp000_ym200_zp240_r000",
+      "component_asset_id": "gable_plaster_4m",
+      "stage": 3,
+      "position_authoring_m": [
+        0,
+        -2.0,
+        2.4
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "component_id": "s4_gable_plaster_4m_xp000_yp200_zp240_r180",
+      "component_asset_id": "gable_plaster_4m",
+      "stage": 3,
+      "position_authoring_m": [
+        0,
+        2.0,
+        2.4
+      ],
+      "yaw_degrees": 180,
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "stage": 1,
+      "name": "foundation_and_floor",
+      "adds_components": 8,
+      "cumulative_components": 8,
+      "only_add_component_ids": [
+        "s4_foundation_stone_2m_xm100_ym100_zp000_r000",
+        "s4_foundation_stone_2m_xm100_yp100_zp000_r000",
+        "s4_foundation_stone_2m_xp100_ym100_zp000_r000",
+        "s4_foundation_stone_2m_xp100_yp100_zp000_r000",
+        "s4_floor_timber_2m_xm100_ym100_zp000_r000",
+        "s4_floor_timber_2m_xm100_yp100_zp000_r000",
+        "s4_floor_timber_2m_xp100_ym100_zp000_r000",
+        "s4_floor_timber_2m_xp100_yp100_zp000_r000"
+      ]
+    },
+    {
+      "stage": 2,
+      "name": "frame",
+      "adds_components": 21,
+      "cumulative_components": 29,
+      "only_add_component_ids": [
+        "s4_post_timber_2_4m_xm200_ym200_zp000_r000",
+        "s4_post_timber_2_4m_xm200_yp000_zp000_r000",
+        "s4_post_timber_2_4m_xm200_yp200_zp000_r000",
+        "s4_post_timber_2_4m_xp000_ym200_zp000_r000",
+        "s4_post_timber_2_4m_xp000_yp000_zp000_r000",
+        "s4_post_timber_2_4m_xp000_yp200_zp000_r000",
+        "s4_post_timber_2_4m_xp200_ym200_zp000_r000",
+        "s4_post_timber_2_4m_xp200_yp000_zp000_r000",
+        "s4_post_timber_2_4m_xp200_yp200_zp000_r000",
+        "s4_beam_timber_2m_xm100_ym200_zp220_r000",
+        "s4_beam_timber_2m_xm100_yp000_zp220_r000",
+        "s4_beam_timber_2m_xm100_yp200_zp220_r000",
+        "s4_beam_timber_2m_xp100_ym200_zp220_r000",
+        "s4_beam_timber_2m_xp100_yp000_zp220_r000",
+        "s4_beam_timber_2m_xp100_yp200_zp220_r000",
+        "s4_beam_timber_2m_xm200_ym100_zp220_r090",
+        "s4_beam_timber_2m_xm200_yp100_zp220_r090",
+        "s4_beam_timber_2m_xp000_ym100_zp220_r090",
+        "s4_beam_timber_2m_xp000_yp100_zp220_r090",
+        "s4_beam_timber_2m_xp200_ym100_zp220_r090",
+        "s4_beam_timber_2m_xp200_yp100_zp220_r090"
+      ]
+    },
+    {
+      "stage": 3,
+      "name": "wall_panels_and_gables",
+      "adds_components": 10,
+      "cumulative_components": 39,
+      "only_add_component_ids": [
+        "s4_wall_window_plaster_2m_xm200_ym100_zp000_r-90",
+        "s4_wall_plaster_2m_xm200_yp100_zp000_r-90",
+        "s4_wall_door_plaster_2m_xm100_ym200_zp000_r000",
+        "s4_wall_window_plaster_2m_xp100_ym200_zp000_r000",
+        "s4_wall_window_plaster_2m_xp200_ym100_zp000_r090",
+        "s4_wall_plaster_2m_xp200_yp100_zp000_r090",
+        "s4_wall_window_plaster_2m_xm100_yp200_zp000_r180",
+        "s4_wall_window_plaster_2m_xp100_yp200_zp000_r180",
+        "s4_gable_plaster_4m_xp000_ym200_zp240_r000",
+        "s4_gable_plaster_4m_xp000_yp200_zp240_r180"
+      ]
+    },
+    {
+      "stage": 4,
+      "name": "roof",
+      "adds_components": 6,
+      "cumulative_components": 45,
+      "only_add_component_ids": [
+        "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r000",
+        "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r180",
+        "s4_roof_ridge_terracotta_2m_xp000_ym100_zp240_r000",
+        "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r000",
+        "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r180",
+        "s4_roof_ridge_terracotta_2m_xp000_yp100_zp240_r000"
+      ]
+    }
+  ],
+  "retains_previous_component_instances": true,
+  "stage_changes_replace_house_mesh": false,
+  "uses_house_mesh_or_material_swap": false,
+  "runtime_implementation_verified": false,
+  "optional_details_excluded": [
+    "door_oak",
+    "shutter_sage",
+    "porch_steps_stone_2m",
+    "table_communal",
+    "bench_timber"
+  ],
+  "central_post_note": "This reuses the existing canonical 4x4 frame layout, including its central supporting post; it is not a clear-span redesign."
+}

@@ -1,0 +1,698 @@
+{
+  "schema_version": 1,
+  "audit_id": "stage4_sample_house_modularity",
+  "new_geometry_required": false,
+  "new_glb_files_created": 0,
+  "units": "metres",
+  "authoring_axes": "+Z up / -Y front",
+  "glb_to_authoring_coordinates": "(x,-z,y)",
+  "asset_root_note": "Existing art sources are Art/VillageKit; native imports are Content/ThreeHearths/Generated/VillageKit.",
+  "components": [
+    {
+      "component_asset_id": "foundation_stone_2m",
+      "category": "foundation",
+      "selected_for_minimal_house": true,
+      "installation_stage": 1,
+      "source_glb": "../VillageKit/modules/foundation_stone_2m.glb",
+      "source_sha256": "6898bb09a0213b2ab2efacf8744b7a94445c879b0ff3bc3e144c48ee728524fc",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/foundation_stone_2m.foundation_stone_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/foundation_stone_2m/foundation_stone_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        2.0,
+        2.0,
+        0.24
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -1.0,
+          -0.23999999463558197
+        ],
+        [
+          1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "origin_convention": "Origin at centre of top surface Z=0; extends down to -0.24.",
+      "triangles": 1836,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Stone_Shadow",
+        "VK_BlueGrey_Stone",
+        "VK_Stone_Edge"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              -0.12
+            ],
+            "size_m": [
+              2,
+              2,
+              0.24
+            ]
+          }
+        ],
+        "note": "Top surface is the structural datum at Z=0; foundation extends downward."
+      }
+    },
+    {
+      "component_asset_id": "floor_timber_2m",
+      "category": "floor",
+      "selected_for_minimal_house": true,
+      "installation_stage": 1,
+      "source_glb": "../VillageKit/modules/floor_timber_2m.glb",
+      "source_sha256": "04d19de6c2df4d629991d251027229fafe518a9f4e18df3bdc4c41cb5659032c",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/floor_timber_2m.floor_timber_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/floor_timber_2m/floor_timber_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        2.0,
+        2.0,
+        0.16
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          0.1599999964237213
+        ]
+      ],
+      "origin_convention": "Origin at floor structural datum; deck extends Z=0..0.16.",
+      "triangles": 1080,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Honey_Plank",
+        "VK_Cut_Oak",
+        "VK_Chestnut"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              0.08
+            ],
+            "size_m": [
+              2,
+              2,
+              0.16
+            ]
+          }
+        ],
+        "note": "One simple floor box bridges cosmetic plank gaps; finished floor is Z=.16."
+      }
+    },
+    {
+      "component_asset_id": "post_timber_2_4m",
+      "category": "post",
+      "selected_for_minimal_house": true,
+      "installation_stage": 2,
+      "source_glb": "../VillageKit/modules/post_timber_2_4m.glb",
+      "source_sha256": "d37e8d67e0d4d3b0a9088d57fb8e7517b4f4c1c0ff751ebb6d66782232ed3559",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/post_timber_2_4m/post_timber_2_4m.post_timber_2_4m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/post_timber_2_4m/post_timber_2_4m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        0.18,
+        0.18,
+        2.4
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.09000000357627869,
+          -0.09000000357627869,
+          0.0
+        ],
+        [
+          0.09000000357627869,
+          0.09000000357627869,
+          2.4000000953674316
+        ]
+      ],
+      "origin_convention": "Origin centre bottom; .18m square section, Z=0..2.4.",
+      "triangles": 108,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Chestnut"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              1.2
+            ],
+            "size_m": [
+              0.18,
+              0.18,
+              2.4
+            ]
+          }
+        ],
+        "note": "One box per post; do not combine all posts into a house-sized convex hull."
+      }
+    },
+    {
+      "component_asset_id": "beam_timber_2m",
+      "category": "beam",
+      "selected_for_minimal_house": true,
+      "installation_stage": 2,
+      "source_glb": "../VillageKit/modules/beam_timber_2m.glb",
+      "source_sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.beam_timber_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        1.82,
+        0.18,
+        0.2
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.9100000262260437,
+          -0.09000000357627869,
+          0.0
+        ],
+        [
+          0.9100000262260437,
+          0.09000000357627869,
+          0.20000000298023224
+        ]
+      ],
+      "origin_convention": "Origin centre underside; longitudinal axis +X, actual span X=-.91..+.91 to fit between .18m posts on2m grid; Z=0..0.2. Place underside at storey datum+2.2, rotate90 degrees for Y edges.",
+      "triangles": 108,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Chestnut"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              0.1
+            ],
+            "size_m": [
+              1.82,
+              0.18,
+              0.2
+            ]
+          }
+        ],
+        "note": "Place the underside at storey datum +2.2; rotate around Z for Y-axis members."
+      }
+    },
+    {
+      "component_asset_id": "wall_plaster_2m",
+      "category": "wall",
+      "selected_for_minimal_house": true,
+      "installation_stage": 3,
+      "source_glb": "../VillageKit/modules/wall_plaster_2m.glb",
+      "source_sha256": "23fd0a392e44560c1425c3e7a19d1bc8cff6091d0879e70c2e016c55a782e4a0",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_plaster_2m/wall_plaster_2m.wall_plaster_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_plaster_2m/wall_plaster_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        1.82,
+        0.16,
+        2.08
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.9100000262260437,
+          -0.07999999821186066,
+          0.16000008583068848
+        ],
+        [
+          0.9100000262260437,
+          0.07999999821186066,
+          2.240000009536743
+        ]
+      ],
+      "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
+      "triangles": 108,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Cream_Lime"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              1.2
+            ],
+            "size_m": [
+              1.82,
+              0.16,
+              2.08
+            ]
+          }
+        ],
+        "note": "Panel fills the space between separate posts and beams."
+      }
+    },
+    {
+      "component_asset_id": "wall_door_plaster_2m",
+      "category": "wall_door",
+      "selected_for_minimal_house": true,
+      "installation_stage": 3,
+      "source_glb": "../VillageKit/modules/wall_door_plaster_2m.glb",
+      "source_sha256": "0b8b30fd835a2f2d2be3bdef7e452c2816068767ad8ff272df01e17a080950d8",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/wall_door_plaster_2m.wall_door_plaster_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/wall_door_plaster_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        1.82,
+        0.22,
+        2.115
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.9099999666213989,
+          -0.12799999117851257,
+          0.125
+        ],
+        [
+          0.9100000262260437,
+          0.09200000017881393,
+          2.2400002479553223
+        ]
+      ],
+      "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
+      "triangles": 648,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Cut_Oak"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              -0.69,
+              0,
+              1.2
+            ],
+            "size_m": [
+              0.44,
+              0.22,
+              2.08
+            ]
+          },
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0.69,
+              0,
+              1.2
+            ],
+            "size_m": [
+              0.44,
+              0.22,
+              2.08
+            ]
+          },
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              2.15
+            ],
+            "size_m": [
+              0.94,
+              0.22,
+              0.18
+            ]
+          }
+        ],
+        "clear_door_opening_m": {
+          "x": [
+            -0.47,
+            0.47
+          ],
+          "z": [
+            0.16,
+            2.06
+          ]
+        },
+        "note": "Keep the doorway empty. A single panel-sized box would incorrectly seal the entrance."
+      }
+    },
+    {
+      "component_asset_id": "wall_window_plaster_2m",
+      "category": "wall_window",
+      "selected_for_minimal_house": true,
+      "installation_stage": 3,
+      "source_glb": "../VillageKit/modules/wall_window_plaster_2m.glb",
+      "source_sha256": "b5c3ae18009e24c238be384a8ed43f8417fe72aa58cb98b3eba1c0080eb7f0b8",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/wall_window_plaster_2m.wall_window_plaster_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/wall_window_plaster_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        1.82,
+        0.362,
+        2.08
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.9100000262260437,
+          -0.27000001072883606,
+          0.15999996662139893
+        ],
+        [
+          0.9100000262260437,
+          0.09200000017881393,
+          2.240000009536743
+        ]
+      ],
+      "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
+      "triangles": 1188,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Cut_Oak",
+        "VK_Stone_Edge",
+        "VK_Opaque_Window"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "box",
+            "center_authoring_m": [
+              0,
+              0,
+              1.2
+            ],
+            "size_m": [
+              1.82,
+              0.22,
+              2.08
+            ]
+          }
+        ],
+        "note": "Closed painted-glass window may block as one wall box; use separate edge/glass shapes if traversal/opening is later required."
+      }
+    },
+    {
+      "component_asset_id": "gable_plaster_4m",
+      "category": "gable",
+      "selected_for_minimal_house": true,
+      "installation_stage": 3,
+      "source_glb": "../VillageKit/modules/gable_plaster_4m.glb",
+      "source_sha256": "e972423f82170d781da8e5a08925e412985f63607df524fa3bda34f1ab3cfdc8",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/gable_plaster_4m.gable_plaster_4m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/gable_plaster_4m/gable_plaster_4m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        4.052418,
+        0.255,
+        1.297008
+      ],
+      "bounds_authoring_m": [
+        [
+          -2.0262088775634766,
+          -0.17500007152557373,
+          -0.048503994941711426
+        ],
+        [
+          2.0262088775634766,
+          0.07999999821186066,
+          1.2485040426254272
+        ]
+      ],
+      "origin_convention": "Origin centre on 4m-wide end wall top; front -Y; apex Z=1.2.",
+      "triangles": 620,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Cream_Lime",
+        "VK_Chestnut",
+        "VK_Cut_Oak"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "convex_triangular_prism",
+            "vertices_authoring_m": [
+              [
+                -2,
+                -0.08,
+                0
+              ],
+              [
+                2,
+                -0.08,
+                0
+              ],
+              [
+                0,
+                -0.08,
+                1.2
+              ],
+              [
+                -2,
+                0.08,
+                0
+              ],
+              [
+                2,
+                0.08,
+                0
+              ],
+              [
+                0,
+                0.08,
+                1.2
+              ]
+            ]
+          }
+        ],
+        "note": "Triangular wall closure, not a whole-roof or whole-house bounding box."
+      }
+    },
+    {
+      "component_asset_id": "roof_slope_terracotta_2m",
+      "category": "roof_slope",
+      "selected_for_minimal_house": true,
+      "installation_stage": 4,
+      "source_glb": "../VillageKit/modules/roof_slope_terracotta_2m.glb",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.roof_slope_terracotta_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        2.2934,
+        2.0,
+        1.4141
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.04340045154094696,
+          -1.0,
+          -0.13000008463859558
+        ],
+        [
+          2.25,
+          1.0,
+          1.2841004133224487
+        ]
+      ],
+      "origin_convention": "Origin at ridge projection on wall-top datum; ridge along Y at Z=1.20, slope towards +X to eave X=2.18/Z=0. A matching half rotates 180 degrees about Z. Along Y every panel is exactly 2m; place centres 2m apart.",
+      "triangles": 3452,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4",
+        "VK_Cut_Oak"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [
+          {
+            "type": "oriented_box",
+            "center_authoring_m": [
+              1.0671,
+              0,
+              0.5584
+            ],
+            "size_m": [
+              2.4884533349050373,
+              2,
+              0.085
+            ],
+            "rotation_euler_degrees": [
+              0,
+              28.83096831239038,
+              0
+            ]
+          }
+        ],
+        "note": "One simple shape for the underlying roof bed. Do not generate collision separately for all decorative tiles."
+      }
+    },
+    {
+      "component_asset_id": "roof_ridge_terracotta_2m",
+      "category": "ridge",
+      "selected_for_minimal_house": true,
+      "installation_stage": 4,
+      "source_glb": "../VillageKit/modules/roof_ridge_terracotta_2m.glb",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.roof_ridge_terracotta_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        0.3,
+        2.0,
+        0.189
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.15000000596046448,
+          -1.0,
+          1.2200000286102295
+        ],
+        [
+          0.15000000596046448,
+          1.0,
+          1.409000039100647
+        ]
+      ],
+      "origin_convention": "Origin on wall-top datum, ridge along Y, bottom Z=1.20; span2m.",
+      "triangles": 408,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Terracotta_1",
+        "VK_Terracotta_2",
+        "VK_Terracotta_3",
+        "VK_Terracotta_4"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [],
+        "note": "Decorative ridge caps can inherit roof support and remain nonblocking."
+      }
+    },
+    {
+      "component_asset_id": "frame_timber_2m",
+      "category": "frame",
+      "selected_for_minimal_house": false,
+      "installation_stage": null,
+      "source_glb": "../VillageKit/modules/frame_timber_2m.glb",
+      "source_sha256": "78a7712a689a4d827a0553715b68581142fb2dbd6ab812b67a9dd4a4e6223888",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/frame_timber_2m/frame_timber_2m.frame_timber_2m",
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/frame_timber_2m/frame_timber_2m.uasset",
+      "native_file_exists": true,
+      "native_import_record_matches_source": true,
+      "native_settings_inspected_in_running_ue": false,
+      "import_record_collision_state": "not_generated_requires_gameplay_template",
+      "measured_size_m": [
+        2.18,
+        2.192,
+        2.4
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.090000033378601,
+          -1.1019999980926514,
+          0.0
+        ],
+        [
+          1.0899999141693115,
+          1.0899999141693115,
+          2.4000000953674316
+        ]
+      ],
+      "origin_convention": "Standalone frame prototype only; origin bay centre, Z=0; posts X/Y=+/-1, top Z=2.4. Multi-bay assemblies instead use post_timber_2_4m and beam_timber_2m placed once per grid vertex/edge.",
+      "triangles": 1512,
+      "single_local_mesh_node": true,
+      "materials": [
+        "VK_Chestnut",
+        "VK_Cut_Oak"
+      ],
+      "uv0": true,
+      "unit_normals": true,
+      "collision_design": {
+        "suggestion": [],
+        "note": "Standalone one-bay prototype only. For a multi-bay house, reuse separate posts/beams once per grid vertex/edge; never use one convex hull sealing its interior."
+      }
+    }
+  ],
+  "explicitly_excluded_whole_house_assets": [
+    "Art/HearthCottage/*.glb",
+    "Art/VillageKit/examples/*.glb"
+  ],
+  "runtime_stage_system_or_collision_modified": false
+}
