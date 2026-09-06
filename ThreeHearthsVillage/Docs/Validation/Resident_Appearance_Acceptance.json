@@ -1,0 +1,354 @@
+{
+  "status": "passed_bounded_native_runtime_review",
+  "date_beijing": "2026-09-06",
+  "build_passed": true,
+  "native_tests_passed": 10,
+  "api_requests": 0,
+  "attachment_parts": {
+    "passed": true,
+    "people": [
+      {
+        "index": 0,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_cropped_dark",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_cropped_dark/hair_cropped_dark.hair_cropped_dark",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D6E0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "pouch_belt_double",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/pouch_belt_double/pouch_belt_double.pouch_belt_double",
+            "bone": "pelvis",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6C960) {rotation: {x: -0.707051, y: -0.008921, z: -0.707051, w: 0.008921}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_braid_auburn",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_braid_auburn/hair_braid_auburn.hair_braid_auburn",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CB10) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "hat_straw_wide",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hat_straw_wide/hat_straw_wide.hat_straw_wide",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CBA0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "apron_linen_short",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/apron_linen_short/apron_linen_short.apron_linen_short",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CE70) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_waves_chestnut",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_waves_chestnut/hair_waves_chestnut.hair_waves_chestnut",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CE70) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "scarf_red",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/scarf_red/scarf_red.scarf_red",
+            "bone": "neck",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CE70) {rotation: {x: -0.704490, y: -0.060772, z: -0.704490, w: 0.060772}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "pouch_belt_double",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/pouch_belt_double/pouch_belt_double.pouch_belt_double",
+            "bone": "pelvis",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6CF00) {rotation: {x: -0.707051, y: -0.008921, z: -0.707051, w: 0.008921}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_swept_silver",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_swept_silver/hair_swept_silver.hair_swept_silver",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D1D0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "beard_neat_silver",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/beard_neat_silver/beard_neat_silver.beard_neat_silver",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D260) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "cape_royal_blue",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/cape_royal_blue/cape_royal_blue.cape_royal_blue",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D530) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "regalia_king_crown",
+            "mesh": "/Game/ThreeHearths/Generated/SocietyKit/regalia_king_crown/regalia_king_crown.regalia_king_crown",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D530) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 23.486068, y: 0.809088, z: 0.000000}, scale3d: {x: 2.000000, y: 2.000000, z: 2.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_cropped_dark",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_cropped_dark/hair_cropped_dark.hair_cropped_dark",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D650) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "cap_merchant_plum",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/cap_merchant_plum/cap_merchant_plum.cap_merchant_plum",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D770) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "bag_crossbody_leather",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/bag_crossbody_leather.bag_crossbody_leather",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D770) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "headwrap_sage",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/headwrap_sage/headwrap_sage.headwrap_sage",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D800) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "apron_linen_short",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/apron_linen_short/apron_linen_short.apron_linen_short",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D890) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_bun_dark",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_bun_dark/hair_bun_dark.hair_bun_dark",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D920) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "scarf_red",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/scarf_red/scarf_red.scarf_red",
+            "bone": "neck",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D920) {rotation: {x: -0.704490, y: -0.060772, z: -0.704490, w: 0.060772}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_swept_silver",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_swept_silver/hair_swept_silver.hair_swept_silver",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D9B0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "shawl_ochre",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/shawl_ochre/shawl_ochre.shawl_ochre",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D9B0) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "bag_crossbody_leather",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/bag_crossbody_leather/bag_crossbody_leather.bag_crossbody_leather",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D9B0) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_waves_chestnut",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_waves_chestnut/hair_waves_chestnut.hair_waves_chestnut",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6D9B0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "backpack_bedroll",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/backpack_bedroll/backpack_bedroll.backpack_bedroll",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6DA40) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "scarf_red",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/scarf_red/scarf_red.scarf_red",
+            "bone": "neck",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6DA40) {rotation: {x: -0.704490, y: -0.060772, z: -0.704490, w: 0.060772}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "body_material": "/Game/Characters/Materials/M_Body.M_Body",
+        "parts": [
+          {
+            "name": "hair_bun_dark",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/hair_bun_dark/hair_bun_dark.hair_bun_dark",
+            "bone": "head",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6DAD0) {rotation: {x: -0.707002, y: -0.012174, z: -0.707002, w: 0.012174}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "apron_linen_short",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/apron_linen_short/apron_linen_short.apron_linen_short",
+            "bone": "spine_02",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6DB60) {rotation: {x: 0.707079, y: -0.006287, z: 0.707079, w: 0.006287}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          },
+          {
+            "name": "pouch_belt_double",
+            "mesh": "/Game/ThreeHearths/Generated/ResidentKit/pouch_belt_double/pouch_belt_double.pouch_belt_double",
+            "bone": "pelvis",
+            "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+            "relative_transform": "<Struct 'Transform' (0x0000029B56F6DBF0) {rotation: {x: -0.707051, y: -0.008921, z: -0.707051, w: 0.008921}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+          }
+        ]
+      }
+    ],
+    "runtime_count": 28,
+    "api_requests": 0
+  },
+  "animated_anchors": {
+    "samples": 60,
+    "maximum_anchor_error_cm": 0,
+    "passed": true,
+    "animation": "/Game/Characters/Animations/A_Woodchopping.A_Woodchopping"
+  },
+  "native_front_and_back_images_reviewed": true,
+  "main_roof": {
+    "passed": true,
+    "mesh": "/Game/ThreeHearths/Generated/HearthCottageRuntime/SM_HearthCottage_Polished.SM_HearthCottage_Polished",
+    "collision_box": [
+      {
+        "center": [
+          -9.224998474121094,
+          32.224998474121094,
+          189.74999976158142
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "dimensions": [
+          439.54998779296875,
+          425.54998779296875,
+          379.5
+        ]
+      }
+    ],
+    "location": [
+      -1500.0,
+      1200.0,
+      2.8000004768370426
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "original_aggregate_geometry_copied": true,
+    "collision_profile": "BlockAll",
+    "simple_collision_count": 1,
+    "bounds_maximum_difference_cm": 0.0,
+    "original_asset_unchanged": true
+  },
+  "live_social_gathering_and_reload": {
+    "passed": true,
+    "api_requests": 0,
+    "samples": 969,
+    "closest_cm": 101.01021414271878,
+    "duration_seconds": 32.65599999995902,
+    "lines": 5,
+    "wood_delivered": 6,
+    "dialogue_reload": true,
+    "active_task_reload": true
+  },
+  "limitations": [
+    "Rigid accessories; no cloth simulation or exhaustive animation intersection certification",
+    "No new skin/outfit tinting; original M_Body restored",
+    "Hand tools and cargo gripping animation are separate work",
+    "Editor runtime checked; packaged build not checked"
+  ],
+  "evidence": [
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/appearance-acceptance/attachment-check.json",
+      "sha256": "0179c54494ed67d02723a28385dbd04509af1bc97c80ffe89e9ddefa66f7980c"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/appearance-acceptance/animated-anchor-check.json",
+      "sha256": "7d85376b537fb6d075cd0d49e8254548d611e33059ddf65a31498cbc2c48f5d3"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/appearance-acceptance/main-roof-replacement.json",
+      "sha256": "d380b8fe3c1fe5602c00aa062f19f8e2ea961b967ec4691e2d3df4bdab0bf95b"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/appearance-acceptance/runtime-social/metrics.json",
+      "sha256": "d91574303b0315df7b1b70489cdb1d33b66be80ae2654e6d53fcd27ebb48d35c"
+    },
+    {
+      "path": "Saved/ThreeHearths/overnight-2026-09-06/native-appearance-tests/index.json",
+      "sha256": "8565cf4c5c69463c8c0e7ba3405ea1be0196b24fba3ed52677d44d1b2a0209fa"
+    }
+  ]
+}

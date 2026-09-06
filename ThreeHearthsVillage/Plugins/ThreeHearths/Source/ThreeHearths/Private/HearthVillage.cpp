@@ -76,6 +76,45 @@ AHearthVillager::AHearthVillager()
     Bundle->SetVisibility(false);
 }
 
+void AHearthVillager::ConfigureAppearance(int32 Profile)
+{
+    for(const auto& Part:AppearanceParts) if(IsValid(Part)) Part->DestroyComponent();
+    AppearanceParts.Reset();
+    const auto* Mesh=Body->GetSkeletalMeshAsset(); if(!Mesh) return;
+    // The old profession instances belong to M_Hat, not the skin/body slot.
+    if(Mesh->GetMaterials().Num()>0) Body->SetMaterial(0,Mesh->GetMaterials()[0].MaterialInterface);
+    const auto& Ref=Mesh->GetRefSkeleton();
+    auto Add=[&](const TCHAR* Id,const TCHAR* Bone,const TCHAR* Kit=TEXT("ResidentKit"),FVector Offset=FVector::ZeroVector,float Scale=1.f)
+    {
+        const int32 BoneIndex=Ref.FindBoneIndex(FName(Bone)); if(BoneIndex==INDEX_NONE) return;
+        const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/%s/%s/%s"),Kit,Id,Id);
+        auto* Asset=LoadObject<UStaticMesh>(nullptr,*Path); if(!Asset) return;
+        FTransform BoneRef=Ref.GetRefBonePose()[BoneIndex];
+        for(int32 Parent=Ref.GetParentIndex(BoneIndex);Parent!=INDEX_NONE;Parent=Ref.GetParentIndex(Parent)) BoneRef=BoneRef*Ref.GetRefBonePose()[Parent];
+        // Exported origins coincide with the reference bone; their axes remain mesh-parallel.
+        const FTransform Desired(FQuat::Identity,BoneRef.GetLocation()+Offset,FVector(Scale));
+        auto* Part=NewObject<UStaticMeshComponent>(this,FName(Id));
+        Part->SetStaticMesh(Asset); Part->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        Part->SetCanEverAffectNavigation(false); Part->SetupAttachment(Body,FName(Bone));
+        Part->SetRelativeTransform(Desired.GetRelativeTransform(BoneRef));
+        AddInstanceComponent(Part); Part->RegisterComponent(); AppearanceParts.Add(Part);
+    };
+    switch(Profile)
+    {
+    case 0: Add(TEXT("hair_cropped_dark"),TEXT("head")); Add(TEXT("pouch_belt_double"),TEXT("pelvis")); break;
+    case 1: Add(TEXT("hair_braid_auburn"),TEXT("head")); Add(TEXT("hat_straw_wide"),TEXT("head")); Add(TEXT("apron_linen_short"),TEXT("spine_02")); break;
+    case 2: Add(TEXT("hair_waves_chestnut"),TEXT("head")); Add(TEXT("scarf_red"),TEXT("neck")); Add(TEXT("pouch_belt_double"),TEXT("pelvis")); break;
+    case 3: Add(TEXT("hair_swept_silver"),TEXT("head")); Add(TEXT("beard_neat_silver"),TEXT("head")); Add(TEXT("cape_royal_blue"),TEXT("spine_02")); Add(TEXT("regalia_king_crown"),TEXT("head"),TEXT("SocietyKit"),FVector(0,0,23.5f),2.f); break;
+    case 4: Add(TEXT("hair_cropped_dark"),TEXT("head")); Add(TEXT("cap_merchant_plum"),TEXT("head")); Add(TEXT("bag_crossbody_leather"),TEXT("spine_02")); break;
+    case 5: Add(TEXT("headwrap_sage"),TEXT("head")); Add(TEXT("apron_linen_short"),TEXT("spine_02")); break;
+    case 6: Add(TEXT("hair_bun_dark"),TEXT("head")); Add(TEXT("scarf_red"),TEXT("neck")); break;
+    case 7: Add(TEXT("hair_swept_silver"),TEXT("head")); Add(TEXT("shawl_ochre"),TEXT("spine_02")); Add(TEXT("bag_crossbody_leather"),TEXT("spine_02")); break;
+    case 8: Add(TEXT("hair_waves_chestnut"),TEXT("head")); Add(TEXT("backpack_bedroll"),TEXT("spine_02")); Add(TEXT("scarf_red"),TEXT("neck")); break;
+    default: Add(TEXT("hair_bun_dark"),TEXT("head")); Add(TEXT("apron_linen_short"),TEXT("spine_02")); Add(TEXT("pouch_belt_double"),TEXT("pelvis")); break;
+    }
+    Hat->SetVisibility(AppearanceParts.IsEmpty());
+}
+
 void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
 {
     if (Task != LastMotion || WorkKind != LastWorkKind || !Body->IsPlaying())
@@ -296,8 +335,7 @@ void AHearthVillage::ResetVillageState()
             R.Actor->Hat->SetSkeletalMesh(Hat);
             R.Actor->Hat->SetLeaderPoseComponent(R.Actor->Body,true);
         }
-        const TCHAR* Outfits[]={TEXT("MI_WoodCut"),TEXT("MI_Farming"),TEXT("MI_Builder")};
-        if (auto* Outfit=LoadObject<UMaterialInterface>(nullptr,*(FString(TEXT("/Game/Characters/Materials/"))+Outfits[I%3]))) R.Actor->Body->SetMaterial(0,Outfit);
+        R.Actor->ConfigureAppearance(I);
         if (TintMaterial)
         {
             auto* M=UMaterialInstanceDynamic::Create(TintMaterial,this);

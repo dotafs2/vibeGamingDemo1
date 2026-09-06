@@ -93,6 +93,8 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<USkeletalMeshComponent> Hat;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> SelectionDisc;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Bundle;
+    UPROPERTY(VisibleAnywhere) TArray<TObjectPtr<UStaticMeshComponent>> AppearanceParts;
+    UFUNCTION(BlueprintCallable) void ConfigureAppearance(int32 Profile);
     void SetMotion(EHearthTask Task, float Rate, int32 WorkKind=-1);
     int32 ResidentIndex = -1;
 private:
