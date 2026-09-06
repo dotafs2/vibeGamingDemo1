@@ -33,14 +33,14 @@ namespace
             Existing.MaterialAmount == Expected.MaterialAmount && Existing.Owner == Expected.Owner;
     }
 
-    FHearthCottageComponent MakeComponent(const FHearthStructureComponent& Spec, const FCatalogRule& Rule,
-        const FHearthStructureMaterialQuantity& Material, int32 Owner)
+    FHearthCottageComponent MakeComponent(const FHearthStructurePlan& Plan, const FHearthStructureComponent& Spec,
+        const FCatalogRule& Rule, const FHearthStructureMaterialQuantity& Material, int32 Owner)
     {
         FHearthCottageComponent Result;
         Result.Id = Spec.Id;
         Result.AssetId = Spec.CatalogId;
-        Result.Offset = Spec.Offset;
-        Result.Yaw = Spec.Orientation.Yaw;
+        Result.Offset = Plan.Footprint.Orientation.RotateVector(Spec.Offset);
+        Result.Yaw = Plan.Footprint.Orientation.Yaw + Spec.Orientation.Yaw;
         Result.Stage = Rule.Stage;
         Result.MaterialType = Rule.MaterialType;
         Result.MaterialAmount = Material.Quantity;
@@ -119,7 +119,7 @@ FHearthPlannedConstructionResult HearthPlannedConstructionAdapter::Convert(const
             return Result;
         }
 
-        const FHearthCottageComponent Expected = MakeComponent(Spec, Rule, Material, Owner);
+        const FHearthCottageComponent Expected = MakeComponent(Plan, Spec, Rule, Material, Owner);
         if (const int32* ExistingIndex = ExistingById.Find(Spec.Id))
         {
             if (!MatchesImmutablePlanFields(Existing[*ExistingIndex], Expected))

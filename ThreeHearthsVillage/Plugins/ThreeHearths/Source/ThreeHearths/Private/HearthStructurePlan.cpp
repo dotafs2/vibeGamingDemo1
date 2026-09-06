@@ -160,7 +160,8 @@ namespace HearthStructurePlan
             || !SameMaterials(Recipe->Inputs, Spec.Materials)) return false;
         const FString Id = KeyId(Plan, TEXT("component"), Spec.SemanticKey);
         if (HasId(Plan, Id) || Plan.Components.ContainsByPredicate([&](const FHearthStructureComponent& C)
-            { return C.CatalogId == Spec.CatalogId && C.ExtensionId == ExtensionId && C.Offset == Spec.Offset; })) return false;
+            { return C.CatalogId == Spec.CatalogId && C.ExtensionId == ExtensionId && C.Offset == Spec.Offset
+                && C.Orientation.Equals(Spec.Orientation); })) return false;
         FHearthStructureComponent Component;
         Component.Id = Id; Component.CatalogId = Spec.CatalogId; Component.ExtensionId = ExtensionId;
         Component.Offset = Spec.Offset; Component.Orientation = Spec.Orientation; Component.Size = Spec.Size;

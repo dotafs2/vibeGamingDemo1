@@ -38,13 +38,14 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestTrue(TEXT("Planner reuses the existing timber door catalog ID"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("wall_door_timber_2m"); }));
     const auto SmallValidation = HearthStructurePlan::Validate(Small.Plan, HearthResidentBuildingPlanner::ValidationContext(SmallInput));
     TestTrue(TEXT("Base plan validates against current real resources"), SmallValidation.bValid);
-    TestTrue(TEXT("Foundation uses catalog elevation"), Small.Plan.Components[0].Offset.Z > 0.f);
-    TestTrue(TEXT("Floor uses catalog elevation"), Small.Plan.Components[1].Offset.Z > 0.f);
+    TestEqual(TEXT("Foundation origin is its catalog top datum"), Small.Plan.Components[0].Offset.Z, 0.0);
+    TestEqual(TEXT("Floor origin rests on the same foundation datum"), Small.Plan.Components[1].Offset.Z, 0.0);
     TestTrue(TEXT("Roof points to the beam support"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("roof_slope_timber_2m") && C.bRequiresSupport && C.SupportsComponentId.Contains(TEXT("_beam")); }));
 
     TArray<FHearthCottageComponent> Empty;
     const auto BaseRuntime = HearthPlannedConstructionAdapter::Convert(Family.Plan, 2, Empty);
     TestTrue(TEXT("Base plan converts to executable cottage parts"), BaseRuntime.bAccepted);
+    TestTrue(TEXT("Adapter rotates local component positions toward the road"), !BaseRuntime.Components[2].Offset.Equals(Family.Plan.Components[2].Offset));
     const auto FirstExtensionRuntime = HearthPlannedConstructionAdapter::Convert(Family.Expansion.ResultingPlan, 2, BaseRuntime.Components);
     TestTrue(TEXT("First expansion converts through the adapter"), FirstExtensionRuntime.bAccepted);
     const auto SecondExtensionRuntime = HearthPlannedConstructionAdapter::Convert(Multi.Expansion.ResultingPlan, 2, FirstExtensionRuntime.Components);
