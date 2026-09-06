@@ -1,4 +1,5 @@
 #include "HearthStructurePlan.h"
+#include "HearthStructureCatalog.h"
 
 namespace HearthStructurePlan
 {
@@ -250,6 +251,12 @@ namespace HearthStructurePlan
                 continue;
             }
             const FComponentBounds Bounds = WorldBounds(Component);
+            if (const FHearthStructureCatalogEntry* Catalog = HearthStructureCatalog::Find(Component.CatalogId))
+            {
+                if (!Component.BoundsMin.Equals(Catalog->BoundsMin * 100.f, .01f)
+                    || !Component.BoundsMax.Equals(Catalog->BoundsMax * 100.f, .01f))
+                    Issue(Result, FString::Printf(TEXT("catalog_bounds_mismatch:%s"), *Component.Id));
+            }
             Cost += FMath::Max(0, Component.MaterialCost);
             const FHearthStructureMaterialRecipe* Recipe = FindRecipe(Plan, Component.RecipeId);
             if (!Recipe || Recipe->CatalogId != Component.CatalogId || !SameMaterials(Recipe->Inputs, Component.Materials))
@@ -263,6 +270,12 @@ namespace HearthStructurePlan
                 const FHearthStructureComponent* Support = FindComponent(Plan, Component.SupportsComponentId);
                 if (!Support || !ValidBounds(*Support) || !HasSupportContact(Component, *Support))
                     Issue(Result, FString::Printf(TEXT("unsupported_component:%s"), *Component.Id));
+                else if (const FHearthStructureCatalogEntry* Catalog = HearthStructureCatalog::Find(Component.CatalogId))
+                {
+                    if (!Catalog->SupportContacts.ContainsByPredicate([&](const FHearthStructureSupportContact& Contact)
+                        { return Contact.ParentCatalogId == Support->CatalogId; }))
+                        Issue(Result, FString::Printf(TEXT("invalid_support_catalog:%s"), *Component.Id));
+                }
             }
             for (const FHearthStructureOccupiedVolume& Existing : Context.Occupied)
             {
