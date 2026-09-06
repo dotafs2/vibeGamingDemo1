@@ -28,6 +28,8 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestTrue(TEXT("Need and occupation change room count"), Family.Plan.Rooms.Num() > Small.Plan.Rooms.Num());
     TestTrue(TEXT("Family plan has a later expansion proposal"), Family.Expansion.ResultingPlan.Rooms.Num() > Family.Plan.Rooms.Num());
     TestEqual(TEXT("Expansion ID follows caller stable key"), Family.Expansion.ExtensionKey, FString(TEXT("extension-family")));
+    TestTrue(TEXT("Expansion need is persisted in the resulting plan"), Family.Expansion.ResultingPlan.Reasons.Need.Contains(TEXT("extension-family")) && Family.Expansion.ResultingPlan.Reasons.Need.Contains(FamilyInput.Need));
+    TestTrue(TEXT("Expansion resource decision is persisted in the resulting plan"), Family.Expansion.ResultingPlan.Reasons.Budget.Contains(TEXT("extension-family")) && Family.Expansion.ResultingPlan.Reasons.Budget.Contains(TEXT("stone=")));
     TestTrue(TEXT("Base component IDs survive expansion"), Family.Expansion.ResultingPlan.Components.ContainsByPredicate([&](const FHearthStructureComponent& C) { return Family.Plan.Components.ContainsByPredicate([&](const FHearthStructureComponent& B) { return B.Id == C.Id; }); }));
     const int32 BeforeAppend = Family.Expansion.ResultingPlan.Rooms.Num();
     auto SecondExtensionInput = FamilyInput; SecondExtensionInput.ExtensionKey = TEXT("extension-workshop-2");

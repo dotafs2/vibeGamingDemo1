@@ -124,5 +124,12 @@ FHearthResidentBuildingPlan HearthResidentBuildingPlanner::Build(const FHearthRe
 
 bool HearthResidentBuildingPlanner::AppendExpansion(FHearthResidentBuildingPlan& Existing,const FHearthResidentBuildingInput& I)
 {
-    if(!Existing.bBuildable)return false; const FString K=I.ExtensionKey.IsEmpty()?TEXT("resident_extension_1"):I.ExtensionKey; const FHearthStructurePlan Original=Existing.Expansion.ResultingPlan.Components.IsEmpty()?Existing.Plan:Existing.Expansion.ResultingPlan; if(HasExtension(Original,K))return false; FHearthStructurePlan Candidate=Original; const int32 N=Candidate.Rooms.Num(); if(!Add(Candidate,N,I.RoadYaw,K))return false; Candidate.Footprint.Size.X=FMath::Max(Candidate.Footprint.Size.X,2.f*(N*200.f+120.f)+240.f); auto Context=ValidationContext(I); AddCommittedResources(Original,Context); if(!HearthStructurePlan::Validate(Candidate,Context).bValid)return false; Existing.Expansion.ExtensionKey=K; Existing.Expansion.ResultingPlan=MoveTemp(Candidate); Existing.Expansion.Reason=FString::Printf(TEXT("Extension %s appends room_%d with finite current resources."),*K,N); return true;
+    if(!Existing.bBuildable)return false; const FString K=I.ExtensionKey.IsEmpty()?TEXT("resident_extension_1"):I.ExtensionKey; const FHearthStructurePlan Original=Existing.Expansion.ResultingPlan.Components.IsEmpty()?Existing.Plan:Existing.Expansion.ResultingPlan; if(HasExtension(Original,K))return false; FHearthStructurePlan Candidate=Original; const int32 N=Candidate.Rooms.Num(); if(!Add(Candidate,N,I.RoadYaw,K))return false; Candidate.Footprint.Size.X=FMath::Max(Candidate.Footprint.Size.X,2.f*(N*200.f+120.f)+240.f);
+    const FString Trace=FString::Printf(TEXT("extension[%s] room_%d"),*K,N);
+    Candidate.Reasons.Need+=FString::Printf(TEXT(" | %s need=%s"),*Trace,*I.Need);
+    Candidate.Reasons.Occupation+=FString::Printf(TEXT(" | %s occupation=%s"),*Trace,*I.Occupation);
+    Candidate.Reasons.Budget+=FString::Printf(TEXT(" | %s budget=%d stone=%d planks=%d beams=%d"),*Trace,I.Budget,I.Stone,I.Planks,I.Beams);
+    Candidate.Reasons.Relationship+=FString::Printf(TEXT(" | %s friends_nearby=%d household=%d"),*Trace,I.FriendsNearby,I.HouseholdSize);
+    Candidate.Reasons.RoadAccess+=FString::Printf(TEXT(" | %s %s"),*Trace,I.bRoadAccessible?TEXT("road-accessible"):TEXT("road-inaccessible"));
+    auto Context=ValidationContext(I); AddCommittedResources(Original,Context); if(!HearthStructurePlan::Validate(Candidate,Context).bValid)return false; Existing.Expansion.ExtensionKey=K; Existing.Expansion.ResultingPlan=MoveTemp(Candidate); Existing.Expansion.Reason=FString::Printf(TEXT("Extension %s appends room_%d with finite current resources."),*K,N); return true;
 }
