@@ -22,6 +22,11 @@ namespace
             if (CatalogId.StartsWith(TEXT("roof_"))) OutRule.Stage = 4;
             return true;
         }
+        if (CatalogId == TEXT("wall_stone_2m") || CatalogId == TEXT("wall_door_stone_2m"))
+        {
+            OutRule = {CatalogId.StartsWith(TEXT("roof_"))?4:3, 2, TEXT("stone")};
+            return true;
+        }
         return false;
     }
 

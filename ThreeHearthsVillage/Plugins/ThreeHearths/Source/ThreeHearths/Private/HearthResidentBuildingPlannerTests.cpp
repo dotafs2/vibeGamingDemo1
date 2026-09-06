@@ -48,6 +48,19 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestEqual(TEXT("Floor origin rests on the same foundation datum"), Small.Plan.Components[1].Offset.Z, 0.0);
     TestTrue(TEXT("Roof points to the beam support"), Small.Plan.Components.ContainsByPredicate([](const FHearthStructureComponent& C) { return C.CatalogId == TEXT("roof_slope_timber_2m") && C.bRequiresSupport && C.SupportsComponentId.Contains(TEXT("_beam")); }));
 
+    auto PlasterInput=Inputs(1,TEXT("mason"),0); PlasterInput.WallMaterial=TEXT("plaster"); PlasterInput.RoofMaterial=TEXT("terracotta");
+    const auto Plaster=HearthResidentBuildingPlanner::Build(PlasterInput);
+    TestTrue(TEXT("Unsupported finish preference still yields an honest executable plan"),Plaster.bBuildable);
+    TestTrue(TEXT("Plaster preference defers to supplied timber wall"),Plaster.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("wall_timber_2m") && C.Materials.Num()==1 && C.Materials[0].MaterialId==TEXT("plank");}));
+    TestTrue(TEXT("Terracotta preference defers to supplied timber roof"),Plaster.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("roof_slope_timber_2m") && C.Materials.Num()==1 && C.Materials[0].MaterialId==TEXT("plank");}));
+    TestTrue(TEXT("Deferred finish reason distinguishes preference from installed material"),Plaster.Plan.Reasons.Budget.Contains(TEXT("preferred wall=plaster roof=terracotta")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("no plaster production inventory")) && Plaster.Plan.Reasons.Budget.Contains(TEXT("no tile production inventory")));
+    auto StoneInput=Inputs(1,TEXT("mason"),0); StoneInput.WallMaterial=TEXT("stone"); StoneInput.RoofMaterial=TEXT("slateblue");
+    const auto Stone=HearthResidentBuildingPlanner::Build(StoneInput);
+    TestTrue(TEXT("Stone and slate choice is buildable"),Stone.bBuildable);
+    TestTrue(TEXT("Stone choice changes the wall and door assets"),Stone.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("wall_stone_2m");}) && Stone.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("wall_door_stone_2m");}));
+    TestTrue(TEXT("Unavailable slate tile preference defers to supplied timber roof"),Stone.Plan.Components.ContainsByPredicate([](const auto& C){return C.CatalogId==TEXT("roof_slope_timber_2m");}));
+    TestTrue(TEXT("Material choice and finite recipe remain in plan reasons"),Stone.Plan.Reasons.Budget.Contains(TEXT("preferred wall=stone roof=slateblue")) && Stone.Plan.Reasons.Budget.Contains(TEXT("executable wall=stone roof=timber")) && Stone.Plan.Reasons.Budget.Contains(TEXT("stone=5")));
+
     TArray<FHearthCottageComponent> Empty;
     const auto BaseRuntime = HearthPlannedConstructionAdapter::Convert(Family.Plan, 2, Empty);
     TestTrue(TEXT("Base plan converts to executable cottage parts"), BaseRuntime.bAccepted);
@@ -60,6 +73,9 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestEqual(TEXT("Second expansion shares one boundary wall"), SecondExtensionRuntime.Components.Num(), FirstExtensionRuntime.Components.Num() + 15);
     for (const FHearthCottageComponent& Old : FirstExtensionRuntime.Components)
         TestTrue(TEXT("Existing runtime component fields remain unchanged"), SecondExtensionRuntime.Components.ContainsByPredicate([&](const FHearthCottageComponent& Current) { return Current.Id == Old.Id && Current.AssetId == Old.AssetId && Current.Offset == Old.Offset && Current.Yaw == Old.Yaw && Current.Stage == Old.Stage && Current.MaterialType == Old.MaterialType && Current.MaterialAmount == Old.MaterialAmount && Current.Owner == Old.Owner; }));
+    const auto StoneRuntime=HearthPlannedConstructionAdapter::Convert(Stone.Plan,4,Empty);
+    TestTrue(TEXT("Selected stone wall assets convert to executable NPC units"),StoneRuntime.bAccepted);
+    TestTrue(TEXT("Stone wall units request actual stone cargo"),StoneRuntime.Components.ContainsByPredicate([](const auto& C){return C.AssetId==TEXT("wall_stone_2m") && C.MaterialType==2 && C.MaterialAmount==1;}));
 
     auto Poor = Inputs(1, TEXT("general"), 0); Poor.Stone = 0; Poor.Planks = 1; Poor.Beams = 0; Poor.Budget = 2;
     const auto Unfunded = HearthResidentBuildingPlanner::Build(Poor);

@@ -10,6 +10,8 @@ struct THREEHEARTHS_API FHearthResidentBuildingInput
     FString ExtensionKey = TEXT("resident_extension_1");
     FString Need = TEXT("shelter");
     FString Occupation = TEXT("general");
+    FString WallMaterial = TEXT("timber");
+    FString RoofMaterial = TEXT("timber");
     int32 HouseholdSize = 1;
     int32 FriendsNearby = 0;
     int32 Budget = 12;

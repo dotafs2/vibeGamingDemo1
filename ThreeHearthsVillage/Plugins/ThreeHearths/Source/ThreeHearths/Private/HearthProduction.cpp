@@ -57,6 +57,8 @@ namespace HearthProduction
         Input.Need=Resident.Hunger>=65.f?TEXT("urgent shelter near food and neighbors"):
             Resident.SocialNeed>=60.f?TEXT("social family shelter"):TEXT("shelter");
         Input.Occupation=Resident.Role;
+        Input.WallMaterial=Resident.WallMaterial;
+        Input.RoofMaterial=Resident.RoofMaterial;
         Input.FriendsNearby=0;
         for(const auto& Bond:Resident.Bonds) if(Bond.Value.Meetings>0 && Bond.Value.Affinity>=0.f) ++Input.FriendsNearby;
         Input.HouseholdSize=FMath::Clamp(1+Input.FriendsNearby/2,1,4);

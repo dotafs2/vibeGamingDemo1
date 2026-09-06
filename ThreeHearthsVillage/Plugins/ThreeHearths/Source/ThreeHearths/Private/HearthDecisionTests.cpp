@@ -81,6 +81,9 @@ bool FHearthParallelCapacityTest::RunTest(const FString&)
     Village->PendingDecisions[0].StartedAtSimulation=0.0;
     Village->ConsumeDecision();
     TestTrue(TEXT("Wall time alone cannot expire a simulation-clock request"),Village->PendingDecisions[0].bActive);
+    Village->Elapsed=31.1f;
+    Village->ConsumeDecision();
+    TestFalse(TEXT("Accelerated simulation releases the request slot at its world-time deadline"),Village->PendingDecisions[0].bActive);
     World->DestroyWorld(false);
     return true;
 }
