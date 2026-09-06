@@ -1,0 +1,81 @@
+{
+  "kit_id": "town_kit_01",
+  "source_workflow": "offline glTF authored exporter; Blender source/render pending",
+  "artifacts": [
+    {
+      "file": "artifact-manifest.json",
+      "bytes": 2605,
+      "sha256": "6a325cd0c848e9f8927e4cc468919fb16c847b52cf9675fe49c5aeffb6cf032c"
+    },
+    {
+      "file": "attachment-sockets.json",
+      "bytes": 2430,
+      "sha256": "c1eab28756cbe05d809b39e6996fc2a877d3b6e2829234a0d431ad9fa7d495eb"
+    },
+    {
+      "file": "catalog.json",
+      "bytes": 9298,
+      "sha256": "5e7ec95d220ae9277f779d32ed4019a9d94be4af63e3109a8ae990b13403f290"
+    },
+    {
+      "file": "create_town_kit.py",
+      "bytes": 12228,
+      "sha256": "7a7d4f29df6dbac55b1d87055826e0ee38f0494717cba1a4126f35cfec30a321"
+    },
+    {
+      "file": "modules/town_corner_stone_2m.glb",
+      "bytes": 3788,
+      "sha256": "1769835e0a1b5b13eeb8e5f990e4a73ebb4b3a1fe67c4431e843b14d26bf676d"
+    },
+    {
+      "file": "modules/town_gable_end_timber_2m.glb",
+      "bytes": 7468,
+      "sha256": "bfb1e803a798baaf4424cb75a7c631aaf40d74977cf3a755a88b079bb0b124d4"
+    },
+    {
+      "file": "modules/town_roof_ridge_joint_2m.glb",
+      "bytes": 5672,
+      "sha256": "66a6d4c7f58eebcbcf09622b77d468c42d1f0f78dfc6760fdc206ff2cdd19c29"
+    },
+    {
+      "file": "modules/town_roof_valley_joint_2m.glb",
+      "bytes": 4748,
+      "sha256": "477bdd9cb7f7b6589d773d12219bef65bc2e1c91b49cd73f093f4f38de031308"
+    },
+    {
+      "file": "modules/town_stair_timber_2m.glb",
+      "bytes": 11108,
+      "sha256": "724d720dfa91da452eeffef55ddc7397e1e5cae72e2b0cd8934b9d8633e872c0"
+    },
+    {
+      "file": "modules/town_wall_gate_timber_2m.glb",
+      "bytes": 5640,
+      "sha256": "ad70abff1007faa2c51a48c3a0831abe204ae5a799b254a4f254f554eef4e9e6"
+    },
+    {
+      "file": "preview-assembly.svg",
+      "bytes": 2154,
+      "sha256": "3dd9ec879cfa0bace9dbdee6f203270dbf82d20491aa8995e9a82646ce77b216"
+    },
+    {
+      "file": "README.md",
+      "bytes": 2299,
+      "sha256": "f4763931c137851ddd30e64a1e9c351bb605bd36509fe1d14bab1b3a37d28259"
+    },
+    {
+      "file": "recipes.json",
+      "bytes": 2828,
+      "sha256": "25e84c6b1ab57a50929c0f6333e77b2b7d5d234a51b034fed415f86038d17657"
+    },
+    {
+      "file": "validate_town_kit.py",
+      "bytes": 2365,
+      "sha256": "1adf84f89652eb6e08d49941832e7cd010ddb5a79bc398548d1e6d24237cab26"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 3688,
+      "sha256": "9c4bb4def128addd66456961c63aa550ac0e6bd4e993b8d06c47ac6e521d0dc7"
+    }
+  ]
+}

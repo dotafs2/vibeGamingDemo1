@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "status": "art-authored-not-live",
+  "recipes": [
+    {
+      "id": "install_town_corner_stone_2m",
+      "output_component_asset_id": "town_corner_stone_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "stone": 16
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "install_town_wall_gate_timber_2m",
+      "output_component_asset_id": "town_wall_gate_timber_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 2
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "install_town_roof_ridge_joint_2m",
+      "output_component_asset_id": "town_roof_ridge_joint_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1,
+        "tiles": 2
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "install_town_stair_timber_2m",
+      "output_component_asset_id": "town_stair_timber_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "planks": 6,
+        "beams": 2
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "install_town_roof_valley_joint_2m",
+      "output_component_asset_id": "town_roof_valley_joint_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1,
+        "tiles": 2
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "install_town_gable_end_timber_2m",
+      "output_component_asset_id": "town_gable_end_timber_2m",
+      "output_count": 1,
+      "resource_inputs": {
+        "planks": 4,
+        "beams": 1
+      },
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    }
+  ],
+  "runtime_supported_module_ids": [
+    "town_corner_stone_2m",
+    "town_wall_gate_timber_2m",
+    "town_stair_timber_2m",
+    "town_gable_end_timber_2m"
+  ],
+  "blocked_module_ids": [
+    "town_roof_ridge_joint_2m",
+    "town_roof_valley_joint_2m"
+  ],
+  "note": "tiles is retained as the authored roof material input; current C++ economy exposes stone/planks/beams only."
+}

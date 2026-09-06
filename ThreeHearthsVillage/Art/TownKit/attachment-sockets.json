@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "grid_m": 2,
+  "coordinate_system": "+Z up / -Y front",
+  "sockets": [
+    {
+      "component": "town_corner_stone_2m",
+      "provides": [
+        "corner_inside_origin",
+        "wall_edge_x_plus",
+        "wall_edge_y_plus"
+      ],
+      "accepts": [
+        "wall_stone_2m",
+        "wall_timber_2m",
+        "wall_door_timber_2m"
+      ]
+    },
+    {
+      "component": "town_wall_gate_timber_2m",
+      "provides": [
+        "wall_edge_x_minus",
+        "wall_edge_x_plus",
+        "gate_clear_opening"
+      ],
+      "accepts": [
+        "floor_timber_2m",
+        "porch_steps_stone_2m"
+      ]
+    },
+    {
+      "component": "town_roof_ridge_joint_2m",
+      "provides": [
+        "ridge_x",
+        "roof_slope_left",
+        "roof_slope_right"
+      ],
+      "accepts": [
+        "roof_slope_terracotta_2m",
+        "roof_slope_slateblue_2m",
+        "roof_ridge_timber_2m"
+      ]
+    },
+    {
+      "component": "town_stair_timber_2m",
+      "provides": [
+        "lower_floor_access",
+        "upper_floor_access",
+        "wall_walkway_access"
+      ],
+      "accepts": [
+        "floor_timber_2m",
+        "floor_opening_2m",
+        "castle_walkway_timber_2m"
+      ]
+    },
+    {
+      "component": "town_roof_valley_joint_2m",
+      "provides": [
+        "roof_valley_x",
+        "roof_valley_y",
+        "extension_joint"
+      ],
+      "accepts": [
+        "roof_slope_terracotta_2m",
+        "roof_slope_slateblue_2m",
+        "town_roof_ridge_joint_2m"
+      ]
+    },
+    {
+      "component": "town_gable_end_timber_2m",
+      "provides": [
+        "gable_end_left",
+        "gable_end_right",
+        "roof_end_cap"
+      ],
+      "accepts": [
+        "roof_slope_timber_2m",
+        "roof_ridge_timber_2m",
+        "wall_timber_2m"
+      ]
+    }
+  ],
+  "assembly_examples": [
+    {
+      "id": "shelter_to_courtyard",
+      "pieces": [
+        "town_wall_gate_timber_2m",
+        "wall_timber_2m",
+        "town_gable_end_timber_2m",
+        "roof_slope_timber_2m"
+      ],
+      "scale_note": "one bay"
+    },
+    {
+      "id": "courtyard_to_castle",
+      "pieces": [
+        "town_corner_stone_2m",
+        "castle_wall_stone_2m",
+        "town_stair_timber_2m",
+        "town_roof_valley_joint_2m"
+      ],
+      "scale_note": "repeated orthogonal runs"
+    }
+  ]
+}

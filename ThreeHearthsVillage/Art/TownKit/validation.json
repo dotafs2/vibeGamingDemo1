@@ -1,0 +1,186 @@
+{
+  "status": "passed",
+  "asset_count": 6,
+  "assets": [
+    {
+      "id": "town_corner_stone_2m",
+      "bytes": 3788,
+      "sha256": "1769835e0a1b5b13eeb8e5f990e4a73ebb4b3a1fe67c4431e843b14d26bf676d",
+      "triangles": 24,
+      "bounds": [
+        [
+          -0.2,
+          -0.2,
+          0.0
+        ],
+        [
+          2.0,
+          2.0,
+          2.4
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_wall_gate_timber_2m",
+      "bytes": 5640,
+      "sha256": "ad70abff1007faa2c51a48c3a0831abe204ae5a799b254a4f254f554eef4e9e6",
+      "triangles": 48,
+      "bounds": [
+        [
+          -0.87,
+          -0.08,
+          0.0
+        ],
+        [
+          0.87,
+          0.08,
+          2.4
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_roof_ridge_joint_2m",
+      "bytes": 5672,
+      "sha256": "66a6d4c7f58eebcbcf09622b77d468c42d1f0f78dfc6760fdc206ff2cdd19c29",
+      "triangles": 48,
+      "bounds": [
+        [
+          -1.025,
+          -1.0,
+          1.01
+        ],
+        [
+          1.025,
+          1.0,
+          1.5250000000000001
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "town_stair_timber_2m",
+      "bytes": 11108,
+      "sha256": "724d720dfa91da452eeffef55ddc7397e1e5cae72e2b0cd8934b9d8633e872c0",
+      "triangles": 120,
+      "bounds": [
+        [
+          -1.0,
+          -0.74,
+          0.0
+        ],
+        [
+          1.0,
+          0.74,
+          2.05
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_roof_valley_joint_2m",
+      "bytes": 4748,
+      "sha256": "477bdd9cb7f7b6589d773d12219bef65bc2e1c91b49cd73f093f4f38de031308",
+      "triangles": 36,
+      "bounds": [
+        [
+          -1.0,
+          -1.0,
+          1.13
+        ],
+        [
+          1.0,
+          1.0,
+          1.52
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "town_gable_end_timber_2m",
+      "bytes": 7468,
+      "sha256": "bfb1e803a798baaf4424cb75a7c631aaf40d74977cf3a755a88b079bb0b124d4",
+      "triangles": 72,
+      "bounds": [
+        [
+          -1.0,
+          -0.11,
+          0.0
+        ],
+        [
+          1.0,
+          0.11,
+          2.0
+        ]
+      ],
+      "materials": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    }
+  ],
+  "runtime_supported_module_ids": [
+    "town_corner_stone_2m",
+    "town_wall_gate_timber_2m",
+    "town_stair_timber_2m",
+    "town_gable_end_timber_2m"
+  ],
+  "blocked_module_ids": [
+    "town_roof_ridge_joint_2m",
+    "town_roof_valley_joint_2m"
+  ],
+  "runtime_supported_count": 4,
+  "blocked_count": 2,
+  "socket_count": 6,
+  "source_geometry_reused": false,
+  "existing_kits_modified": false,
+  "native_import_or_ue_runtime_verified": false,
+  "blender_source_or_render_verified": false,
+  "note": "GLB geometry/metadata/attachment contract verified offline. Four pieces use current stone/planks/beams stock; two roof pieces retain authored tiles and are blocked until a tiles runtime resource exists. Blender source/render and UE import remain pending."
+}

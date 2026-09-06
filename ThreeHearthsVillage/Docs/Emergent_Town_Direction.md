@@ -32,3 +32,13 @@ Safely integrate the currently active finance/procurement/public-wall work first
 Acceptance must include an overview of the connected settlement, close-up progressive assembly, persisted NPC decision reasons, usable routes and doors, real material/cost changes, and save/load preserving placements and variation. Compare against the current isolated-square presentation. Do not substitute more identical plots, random colors, decorative instant-spawn buildings or a hand-authored town for this behavior.
 
 Sol manages the work and integration; Luna implements bounded pieces under the latest Agent_Work_Plan.md cost/concurrency policy. This direction changes the next visual/layout priority, not the Kimi budget, save safety, model hierarchy or no-push rule.
+
+## Foundation progress, 2026-09-06
+
+- The island no longer renders permanent square plot plinths or colored ownership borders. Existing saved positions remain unchanged while the visible presentation moves toward continuous streets.
+- `HearthTownLayout` now produces deterministic street-front candidates from roads, access, nearby work/market/friends and blockers. Home and rear-extension IDs remain stable when unrelated existing buildings are inserted.
+- `HearthStructurePlan` now represents reusable catalog components, sockets, rooms, openings, connections, explicit material recipes and decision reasons. Validation covers support, collision, door access, component budget and available materials; failed extensions roll back atomically.
+- `Art/TownKit` contains six offline glTF candidates and attachment metadata. Four candidates use current stone/plank/beam stocks. The two roof joint candidates retain a real `tiles` dependency and remain blocked until tiles exist in the runtime economy. Blender and Unreal import/render acceptance is still pending.
+- Public-wall transport now persists an explicit depot/site phase, refunds safely on invalid return routing, and restores the complete original site if approval fails. The full `ThreeHearths` suite passes 24/24 after these changes.
+
+These are planning, validation and candidate-art foundations. Runtime NPC plan selection, schema migration, component visualization and save/load of new plans remain the next implementation slice.

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1000" height="560" fill="#d7c7a5"/>
+  <text x="30" y="42" font-family="sans-serif" font-size="26" fill="#30261c">TownKit connection pieces — authored 2m grid preview</text>
+  <g transform="translate(80,100)" stroke="#30261c" stroke-width="3">
+    <path d="M0 220V0h220v40H40v180z" fill="#647177"/><path d="M40 180h180v40H40z" fill="#8b5b35"/>
+    <text x="0" y="270" stroke="none" fill="#30261c" font-size="20">corner stone + gate</text>
+  </g>
+  <g transform="translate(400,100)" stroke="#30261c" stroke-width="3">
+    <rect x="0" y="0" width="220" height="220" fill="#8b5b35"/><rect x="55" y="80" width="110" height="140" fill="#d7c7a5"/>
+    <path d="M0 55h220M55 0v55M165 0v55" fill="none"/>
+    <text x="0" y="270" stroke="none" fill="#30261c" font-size="20">real gate opening</text>
+  </g>
+  <g transform="translate(720,100)" stroke="#30261c" stroke-width="3">
+    <path d="M0 220L110 0l110 220" fill="#b85b39"/><path d="M110 0v220M40 220h140" fill="none"/>
+    <text x="0" y="270" stroke="none" fill="#30261c" font-size="20">roof ridge joint</text>
+  </g>
+  <g transform="translate(80,430)" stroke="#30261c" stroke-width="3">
+    <path d="M0 170h220M20 170V0M55 170V35M90 170V70M125 170V105M160 170V140" fill="none" stroke="#8b5b35" stroke-width="18"/>
+    <text x="0" y="220" stroke="none" fill="#30261c" font-size="20">stair access</text>
+  </g>
+  <g transform="translate(400,430)" stroke="#30261c" stroke-width="3">
+    <path d="M0 170h220M110 60v110M0 60h220" fill="none" stroke="#b85b39" stroke-width="22"/>
+    <text x="0" y="220" stroke="none" fill="#30261c" font-size="20">roof valley joint</text>
+  </g>
+  <g transform="translate(720,430)" stroke="#30261c" stroke-width="3">
+    <path d="M0 170h220L110 0z" fill="#d1a06b"/><path d="M0 170h220M110 0v170" fill="none"/>
+    <text x="0" y="220" stroke="none" fill="#30261c" font-size="20">gable end cap</text>
+  </g>
+  <text x="30" y="730" font-family="sans-serif" font-size="18" fill="#30261c">Schematic preview; Blender render, UE import and runtime evidence pending.</text>
+</svg>

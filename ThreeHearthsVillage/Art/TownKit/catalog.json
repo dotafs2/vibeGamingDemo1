@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "kit_id": "town_kit_01",
+  "status": "art-authored-runtime-binding-pending",
+  "units": "metres",
+  "up_axis": "+Z",
+  "front_axis": "-Y",
+  "grid_m": 2,
+  "materials": {
+    "stone": "reused SocietyKit blue-grey stone family",
+    "timber": "reused VillageKit chestnut/cut-oak family",
+    "terracotta": "reused VillageKit terracotta roof family"
+  },
+  "reuse_audit": {
+    "VillageKit": "Straight walls, doors/windows and roof slopes already cover bays; TownKit adds orthogonal corner, real gate opening and roof junction.",
+    "PublicWallKit": "2m grid and native PBR conventions reused; its public wall pieces remain unchanged.",
+    "SocietyKit": "Castle stone palette and modular wall precedent reused; no source geometry copied into new pieces."
+  },
+  "modules": [
+    {
+      "id": "town_corner_stone_2m",
+      "asset_glb": "modules/town_corner_stone_2m.glb",
+      "role": "corner_wall",
+      "measured_size_m": [
+        2.2,
+        2.2,
+        2.4
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.2,
+          -0.2,
+          0.0
+        ],
+        [
+          2.0,
+          2.0,
+          2.4
+        ]
+      ],
+      "origin_convention": "Inside-corner anchor at (0,0,0); two orthogonal 2m runs, +X and +Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 16
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 24,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_wall_gate_timber_2m",
+      "asset_glb": "modules/town_wall_gate_timber_2m.glb",
+      "role": "wall_gate",
+      "measured_size_m": [
+        1.74,
+        0.16,
+        2.4
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.87,
+          -0.08,
+          0.0
+        ],
+        [
+          0.87,
+          0.08,
+          2.4
+        ]
+      ],
+      "origin_convention": "Centre-bottom anchor; 1.56m clear opening, front -Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 2
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 48,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_roof_ridge_joint_2m",
+      "asset_glb": "modules/town_roof_ridge_joint_2m.glb",
+      "role": "roof_connector",
+      "measured_size_m": [
+        2.05,
+        2.0,
+        0.5150000000000001
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.025,
+          -1.0,
+          1.01
+        ],
+        [
+          1.025,
+          1.0,
+          1.5250000000000001
+        ]
+      ],
+      "origin_convention": "Centre anchor at ridge datum Z=1.2; two roof slopes meet a 2m ridge joint.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1,
+        "tiles": 2
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 48,
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "town_stair_timber_2m",
+      "asset_glb": "modules/town_stair_timber_2m.glb",
+      "role": "stair_access",
+      "measured_size_m": [
+        2.0,
+        1.48,
+        2.05
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.74,
+          0.0
+        ],
+        [
+          1.0,
+          0.74,
+          2.05
+        ]
+      ],
+      "origin_convention": "Centre-bottom anchor; eight .25m risers over a 2m run, side stringers provide one installation unit.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 6,
+        "beams": 2
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 120,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    },
+    {
+      "id": "town_roof_valley_joint_2m",
+      "asset_glb": "modules/town_roof_valley_joint_2m.glb",
+      "role": "roof_valley_connector",
+      "measured_size_m": [
+        2.0,
+        2.0,
+        0.3900000000000001
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -1.0,
+          1.13
+        ],
+        [
+          1.0,
+          1.0,
+          1.52
+        ]
+      ],
+      "origin_convention": "Centre anchor at intersecting ridge/valley datum; orthogonal 2m roof edges meet at one joint.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1,
+        "tiles": 2
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 36,
+      "runtime_support": "blocked_on_tiles_runtime_resource"
+    },
+    {
+      "id": "town_gable_end_timber_2m",
+      "asset_glb": "modules/town_gable_end_timber_2m.glb",
+      "role": "gable_end",
+      "measured_size_m": [
+        2.0,
+        0.22,
+        2.0
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.11,
+          0.0
+        ],
+        [
+          1.0,
+          0.11,
+          2.0
+        ]
+      ],
+      "origin_convention": "Centre-bottom anchor at 2m end bay; stepped timber infill closes the roof end without replacing the plan.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "grid_m": 2,
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 4,
+        "beams": 1
+      },
+      "recipe_status": "ready_for_townkit_art_review",
+      "runtime_binding": "pending",
+      "native_import_status": "not_imported",
+      "material_names": [
+        "Town_Stone",
+        "Town_Stone_Edge",
+        "Town_Chestnut",
+        "Town_Cut_Oak",
+        "Town_Honey_Plank",
+        "Town_Terracotta"
+      ],
+      "geometry_source": "original_minimal_connection_component",
+      "source_geometry_reused_unchanged": false,
+      "triangles": 72,
+      "runtime_support": "runtime_supported_existing_stock_candidate"
+    }
+  ],
+  "npc_transport_rule": "NPCs carry listed stock inputs; each TownKit piece is one on-site installation unit; no whole building is handheld.",
+  "ue_runtime_verified": false,
+  "runtime_supported_module_ids": [
+    "town_corner_stone_2m",
+    "town_wall_gate_timber_2m",
+    "town_stair_timber_2m",
+    "town_gable_end_timber_2m"
+  ],
+  "blocked_module_ids": [
+    "town_roof_ridge_joint_2m",
+    "town_roof_valley_joint_2m"
+  ]
+}

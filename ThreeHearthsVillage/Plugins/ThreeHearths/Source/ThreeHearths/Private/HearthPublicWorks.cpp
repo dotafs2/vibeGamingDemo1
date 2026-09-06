@@ -31,14 +31,17 @@ namespace HearthPublicWorks
 
 namespace
 {
-    const FVector PublicDepot(-1650.f, -1050.f, 8.f);
+    FVector PublicDepotFor(const AHearthVillage& Village)
+    {
+        return Village.bUseCropoutMap ? FVector(-1650.f, -1050.f, 8.f) : FVector(-250.f, -400.f, 8.f);
+    }
     const TCHAR* MaterialNames[] = { TEXT("stone"), TEXT("plank"), TEXT("beam") };
 
     void ClearPublicResident(FHearthResident& R)
     {
         R.ActiveTaskId.Empty(); R.Route.Reset(); R.Task = EHearthTask::LifeChoosing; R.Timer = 0.f;
         R.ProductionSite = -1; R.ProductionOp = -1; R.ProductionComponentId.Empty();
-        R.CargoType = -1; R.CargoAmount = 0; R.WorkDuration = 0.f; R.NextLifeDecision = 0;
+        R.CargoType = -1; R.CargoAmount = 0; R.WorkDuration = 0.f; R.NextLifeDecision = 0; R.LifeAction = -1;
     }
 
     FHearthPublicPart* FirstPart(FHearthPublicProject& P)
@@ -61,15 +64,14 @@ bool AHearthVillage::ApprovePublicProject(int32 King)
     {
         const FHearthSite& S = ProductionSites[I];
         if (S.Kind != EHearthSiteKind::Empty || !S.bExpansion || S.ReservedBy >= 0 || !S.BuildPlanId.IsEmpty()) continue;
-        if (FVector::DistSquared2D(S.Position, PublicDepot) < Best) { Best = FVector::DistSquared2D(S.Position, PublicDepot); SiteIndex = I; }
+        if (FVector::DistSquared2D(S.Position, PublicDepotFor(*this)) < Best) { Best = FVector::DistSquared2D(S.Position, PublicDepotFor(*this)); SiteIndex = I; }
     }
     if (!ProductionSites.IsValidIndex(SiteIndex)) return false;
-    FHearthSite Candidate = ProductionSites[SiteIndex];
-    Candidate.Radius = 350.f;
+    const FHearthSite OriginalSite = ProductionSites[SiteIndex];
     ProductionSites[SiteIndex].Radius = 350.f;
-    if (!ChooseSiteApproach(SiteIndex) || !ProductionSites[SiteIndex].bReachable) { ProductionSites[SiteIndex] = Candidate; return false; }
+    if (!ChooseSiteApproach(SiteIndex) || !ProductionSites[SiteIndex].bReachable) { ProductionSites[SiteIndex] = OriginalSite; return false; }
     TArray<FVector> Route;
-    if (!FindActivityRoute(King, ProductionSites[SiteIndex].Approach, Route)) { ProductionSites[SiteIndex] = Candidate; return false; }
+    if (!FindActivityRoute(King, ProductionSites[SiteIndex].Approach, Route)) { ProductionSites[SiteIndex] = OriginalSite; return false; }
 
     FHearthDecisionRecord History;
     History.Run = CurrentRun; History.Timestamp = FDateTime::Now().ToString(TEXT("%Y-%m-%d %H:%M:%S"));
@@ -96,7 +98,7 @@ bool AHearthVillage::StartPublicPart(int32 Worker)
     FHearthPublicPart* Part = FirstPart(PublicProject);
     if (!Part || Part->Worker >= 0) return false;
     TArray<FVector> Route;
-    if (!FindActivityRoute(Worker, PublicDepot, Route)) return false;
+    if (!FindActivityRoute(Worker, PublicDepotFor(*this), Route)) return false;
     for (int32 M = 0; M < 3; ++M)
         if (Part->Required[M] > PublicProject.Stock[M]) return false;
     auto& R = Residents[Worker];
@@ -104,7 +106,7 @@ bool AHearthVillage::StartPublicPart(int32 Worker)
     const FString PreviousTask=R.ActiveTaskId; R.ActiveTaskId=TaskId;
     if (!TryBorrowTool(Worker, 5) || !ReserveWage(Worker, TaskId, 2, true)) { ReturnTool(Worker); R.ActiveTaskId=PreviousTask; return false; }
     R.ProductionSite = -1; R.ProductionOp = -1; R.ProductionComponentId.Empty();
-    R.CargoType = -1; R.CargoAmount = 0; R.Route = MoveTemp(Route); R.Task = EHearthTask::PublicTravel; R.Timer = 0.f;
+    R.CargoType = -1; R.CargoAmount = 0; R.Route = MoveTemp(Route); R.Task = EHearthTask::PublicTravel; R.Timer = 0.f; R.LifeAction = 1;
     Part->Worker = Worker; Part->TaskId = TaskId; Part->Status = TEXT("transporting");
     for (int32 M = 0; M < 3; ++M) { Part->Reserved[M] = Part->Required[M]; PublicProject.Stock[M] -= Part->Required[M]; }
     StartHistory(Worker,true,TEXT("local"));
@@ -151,7 +153,7 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
     if (R.Task == EHearthTask::PublicTravel)
     {
         if (!MoveResident(Worker, Dt)) return;
-        if (R.CargoAmount > 0)
+        if (R.LifeAction == 2 && R.CargoAmount > 0)
         {
             const int32 M = R.CargoType - 2;
             if (M < 0 || M >= 3) return;
@@ -159,18 +161,20 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
             int32 Next = -1; for (int32 I = 0; I < 3; ++I) if (Part->Reserved[I] > 0) { Next = I; break; }
             if (Next >= 0)
             {
-                TArray<FVector> Route; if (!FindActivityRoute(Worker, PublicDepot, Route)) return;
-                R.Route = MoveTemp(Route); R.LatestEvent = TEXT("材料已送达工地，返回公共仓库继续搬运。"); return;
+                TArray<FVector> Route;
+                if (!FindActivityRoute(Worker, PublicDepotFor(*this), Route)) { CancelPublicWork(Worker); return; }
+                R.Route = MoveTemp(Route); R.LifeAction = 1; R.LatestEvent = TEXT("材料已送达工地，返回公共仓库继续搬运。"); return;
             }
             R.Task = EHearthTask::PublicWork; R.Timer = 1.f; R.WorkDuration = 1.f; Part->Status = TEXT("installing"); return;
         }
+        if (R.LifeAction != 1) { CancelPublicWork(Worker); return; }
         int32 M = -1; for (int32 I = 0; I < 3; ++I) if (Part->Reserved[I] > 0) { M = I; break; }
         if (M >= 0)
         {
             const int32 Amount = FMath::Min(6, Part->Reserved[M]); Part->Reserved[M] -= Amount;
             R.CargoType = M + 2; R.CargoAmount = Amount;
             TArray<FVector> Route; if (!FindActivityRoute(Worker, ProductionSites[PublicProject.Site].Approach, Route)) { Part->Reserved[M] += Amount; R.CargoType = -1; R.CargoAmount = 0; return; }
-            R.Route = MoveTemp(Route); R.LatestEvent = FString::Printf(TEXT("携带%d份%s前往工地。"), Amount, MaterialNames[M]); return;
+            R.Route = MoveTemp(Route); R.LifeAction = 2; R.LatestEvent = FString::Printf(TEXT("携带%d份%s前往工地。"), Amount, MaterialNames[M]); return;
         }
         R.Task = EHearthTask::PublicWork; R.Timer = 1.f; R.WorkDuration = 1.f; Part->Status = TEXT("installing"); return;
     }

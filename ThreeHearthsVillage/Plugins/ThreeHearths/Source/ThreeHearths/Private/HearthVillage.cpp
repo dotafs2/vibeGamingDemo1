@@ -282,7 +282,6 @@ void AHearthVillage::BuildIslandVillage()
 {
     // This verified land corridor belongs to the copied /Game/Village island.
     // Keep props clear of the walking lanes and retain the terrain's own materials.
-    const FLinearColor Plinth(0.43f,0.36f,0.22f);
     AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2130,0,3.6f),FVector(3.4f,52.f,0.012f),&Hearth::Path);
     const FVector AddedPlots[]={FVector(-2800,-1900,8),FVector(-2800,0,8),FVector(-2800,1900,8),
         FVector(400,-1900,8),FVector(-2800,-950,8),FVector(-2800,950,8),FVector(-1000,950,8)};
@@ -291,13 +290,6 @@ void AHearthVillage::BuildIslandVillage()
         PlotPositions[I]=I<3?FVector(-1000,-1900+I*1900,8):AddedPlots[I-3];
         const FVector P=PlotPositions[I];
         AddMesh(Hearth::Shapes+TEXT("Cube"),FVector((-2130+P.X)*.5f,P.Y,3.8f),FVector(FMath::Abs(P.X+2130)/100.f,1.5f,.014f),&Hearth::Path);
-        AddMesh(Hearth::Shapes+TEXT("Cube"),P+FVector(0,0,-3),FVector(5.4f,5.4f,0.025f),&Plinth);
-        const FLinearColor Marker=ResidentColor(I);
-        for(int32 Side=-1;Side<=1;Side+=2)
-        {
-            AddMesh(Hearth::Shapes+TEXT("Cube"),P+FVector(0,Side*270,-1),FVector(5.4f,0.065f,0.025f),&Marker);
-            AddMesh(Hearth::Shapes+TEXT("Cube"),P+FVector(Side*270,0,-1),FVector(0.065f,5.4f,0.025f),&Marker);
-        }
         auto* House=AddMesh(Hearth::Houses+TEXT("SM_House_01"),P,FVector(1));
         HouseMeshes.Add(House); House->SetVisibility(false);
     }
