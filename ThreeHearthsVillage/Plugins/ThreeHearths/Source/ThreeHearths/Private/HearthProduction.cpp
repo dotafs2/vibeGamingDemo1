@@ -133,6 +133,7 @@ void AHearthVillage::EnsureCottageComponents(FHearthSite& S) const
 
 void AHearthVillage::InitializeProduction()
 {
+    bReplacementPlotSearchDone=false;
     for(const auto& M:ProductionMeshes) if(IsValid(M.Get())) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites.Reset(); ProductionTotals.Reset(); FixedObstacles.Reset();
     FoodStock=Residents.Num()*10; StoneStock=0; PlankStock=BeamStock=0;
@@ -207,7 +208,8 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
 {
     int32 Site,Op;
     if(!Residents.IsValidIndex(Index) || Residents[Index].BuildProgress<1 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
-    const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0 || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
+    const auto& S=ProductionSites[Site];
+    if(!S.bReachable || S.ReservedBy>=0 || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
     if(!ToolAvailableFor(Index,Op)) return false;
@@ -235,6 +237,26 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
             if(!CandidateComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
             {
                 if(S.Owner!=Index) return false; // Neighbors may build parts, but only the owner chooses an extension.
+                // A resident who is ready to choose and can pay for a vacant plot gets this decision round before
+                // an owner starts another extension. The window disappears as soon as the applicant acts, becomes
+                // ineligible, or leaves the choosing state, so an unaffordable or abandoned request cannot lock housing.
+                const bool bVacantPlotAvailable=ProductionSites.ContainsByPredicate([](const FHearthSite& Other)
+                {
+                    return Other.bReachable && Other.ReservedBy<0 && Other.BuildPlanId.IsEmpty() && Other.Kind==EHearthSiteKind::Empty;
+                });
+                const bool bExecutableApplicant=bVacantPlotAvailable && Residents.ContainsByPredicate([this](const FHearthResident& Applicant)
+                {
+                    const bool bOwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& OtherPlan)
+                    {
+                        return OtherPlan.PlanId.Contains(Applicant.StableId);
+                    });
+                    const bool bHousingNeed=Applicant.Role.Contains(TEXT("木匠")) || Applicant.Role.Contains(TEXT("铁匠"))
+                        || Applicant.Role.Contains(TEXT("陶工")) || Applicant.Role.Contains(TEXT("织工"))
+                        || FMath::Max(Applicant.Hunger,Applicant.SocialNeed)>=45.f;
+                    return !bOwnsStructure && bHousingNeed && Applicant.BuildProgress>=1.f
+                        && Applicant.Coins>=WageForOperation(0) && Applicant.Task==EHearthTask::LifeChoosing && Applicant.Route.IsEmpty();
+                });
+                if(bExecutableApplicant) return false;
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
                 if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,Residents[Funder].Coins/WageForOperation(Op),Expanded,ExpansionComponents)) return false;
                 CandidateComponents=MoveTemp(ExpansionComponents.Components);
@@ -455,6 +477,56 @@ void AHearthVillage::AdvanceProductionWorld(float Dt)
         S.Growth=FMath::Max(0.f,S.Growth-Dt);
         if(S.Growth<=0) { S.Stage=2; S.Units=S.Capacity; }
     }
+    if(!bReplacementPlotSearchDone && !PublicProject.Id.IsEmpty() && PublicProject.Status==TEXT("completed")
+        && ProductionSites.IsValidIndex(PublicProject.Site))
+    {
+        bool bVacantHousingSite=false;
+        for(int32 SiteIndex=0;SiteIndex<ProductionSites.Num();++SiteIndex)
+        {
+            const FHearthSite& Site=ProductionSites[SiteIndex];
+            if(SiteIndex!=PublicProject.Site && Site.Kind==EHearthSiteKind::Empty && Site.bReachable && Site.ReservedBy<0)
+            { bVacantHousingSite=true; break; }
+        }
+        const bool bExecutableHousingNeed=Residents.ContainsByPredicate([this](const FHearthResident& Applicant)
+        {
+            const bool bOwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Applicant.StableId);});
+            const bool bNeed=Applicant.Role.Contains(TEXT("木匠")) || Applicant.Role.Contains(TEXT("铁匠"))
+                || Applicant.Role.Contains(TEXT("陶工")) || Applicant.Role.Contains(TEXT("织工"))
+                || FMath::Max(Applicant.Hunger,Applicant.SocialNeed)>=45.f;
+            return !bOwnsStructure && bNeed && Applicant.BuildProgress>=1.f && Applicant.Coins>=WageForOperation(0);
+        });
+        if(!bVacantHousingSite && bExecutableHousingNeed)
+        {
+            bReplacementPlotSearchDone=true;
+            constexpr float Radius=260.f,Clearance=80.f;
+            const float Xs[]={-3010.f,-1250.f,-3450.f,-810.f,-3890.f,-370.f};
+            bool bAdded=false;
+            for(float X:Xs) for(float Y=-4800.f;Y<=4800.f && !bAdded;Y+=600.f)
+            {
+                const FVector Candidate(X,Y,8);
+                if(!IsLand(Candidate) || !IsLand(Candidate+FVector(Radius,Radius,0)) || !IsLand(Candidate-FVector(Radius,Radius,0))
+                    || !IsLand(Candidate+FVector(-Radius,Radius,0)) || !IsLand(Candidate+FVector(Radius,-Radius,0))) continue;
+                bool bClear=true;
+                for(const FHearthSite& Other:ProductionSites)
+                    if(FMath::Abs(Candidate.X-Other.Position.X)<Radius+Other.Radius+Clearance
+                        && FMath::Abs(Candidate.Y-Other.Position.Y)<Radius+Other.Radius+Clearance) { bClear=false; break; }
+                for(const FVector& Obstacle:FixedObstacles)
+                    if(FMath::Abs(Candidate.X-Obstacle.X)<Radius+Obstacle.Z+Clearance
+                        && FMath::Abs(Candidate.Y-Obstacle.Y)<Radius+Obstacle.Z+Clearance) { bClear=false; break; }
+                if(!bClear) continue;
+                FHearthSite Plot; Plot.Kind=EHearthSiteKind::Empty; Plot.Position=Candidate; Plot.Radius=Radius; Plot.bExpansion=true;
+                Plot.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+                const int32 NewIndex=ProductionSites.Add(MoveTemp(Plot));
+                if(ChooseSiteApproach(NewIndex))
+                {
+                    UpdateSiteVisual(NewIndex); bAdded=true;
+                    ProductionStatus+=TEXT(" · 公共工程保留实体占地后补划1处可达宅地");
+                    UE_LOG(LogTemp,Display,TEXT("REPLACEMENT_HOUSING_PLOT site=%d position=%s public_site=%d"),NewIndex,*Candidate.ToString(),PublicProject.Site);
+                }
+                else ProductionSites.RemoveAt(NewIndex);
+            }
+        }
+    }
 }
 
 void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
@@ -542,7 +614,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         R.LatestEvent=FString::Printf(TEXT("携带 %d 份%s回村镇中心，尚未入库。"),R.CargoAmount,HearthProduction::ResourceNames[R.CargoType]);
         auto& H=DecisionHistory[R.HistoryIndex]; H.Result=R.LatestEvent; ++HistoryRevision; SaveHistory(); return;
     }
-    FString Result;
+    FString Result; bool bCompletedHousePlan=false;
     if(Op==0) { S.Kind=EHearthSiteKind::Land; S.Owner=Index; Result=TEXT("空地已开垦，可以建农田、房屋或种植树木、灌木。"); }
     else if(Op==5)
     {
@@ -557,6 +629,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         if(S.Units>=S.CottageComponents.Num())
         {
             S.Kind=EHearthSiteKind::House; S.Stage=4; S.Capacity=S.CottageComponents.Num();
+            bCompletedHousePlan=true;
             Result=FString::Printf(TEXT("住宅计划 %s 的 %d 个构件已逐件搬运并安装完成。"),*S.BuildPlanId,S.CottageComponents.Num());
         }
         else Result=FString::Printf(TEXT("已安装 %s；住宅计划 %s 完成 %d / %d 个构件。"),*Part->AssetId,*S.BuildPlanId,S.Units,S.CottageComponents.Num());
@@ -571,6 +644,11 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
     }
     else if(Op==8) { S.Stage=1; S.Growth=S.GrowDuration; Result=TEXT("播种耕作完成，作物开始生长；成熟后可收获并运回粮食。"); }
     FinishProduction(Index,Result);
+    if(bCompletedHousePlan)
+    {
+        bReplacementPlotSearchDone=false;
+        if(bWorldPersistenceEnabled && !bWorldWriteBlocked) SaveWorld();
+    }
 }
 
 bool AHearthVillage::CancelProduction(int32 Index)

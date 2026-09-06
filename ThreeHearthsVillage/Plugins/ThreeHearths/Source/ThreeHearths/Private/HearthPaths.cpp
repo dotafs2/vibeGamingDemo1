@@ -49,16 +49,23 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
     // Sparse probes can miss a corner that a later 12 cm movement step hits,
     // producing an endless replan to the same invalid shortcut. Use exact boxes
     // and every crossed grid cell for both planning and execution.
-    for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z)) return false;
+    const auto MayLeaveContainingBox=[](const FVector& Start,const FVector& End,const FVector& Center,float Radius)
+    {
+        const FVector2D From(Start.X-Center.X,Start.Y-Center.Y),Delta(End.X-Start.X,End.Y-Start.Y);
+        const bool bStartsInside=FMath::Abs(From.X)<Radius && FMath::Abs(From.Y)<Radius;
+        return bStartsInside && FVector2D::DotProduct(From,Delta)>=0.f;
+    };
+    for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z) && !MayLeaveContainingBox(A,B,O,O.Z)) return false;
     for(const auto& S:ProductionSites)
         if(!(S.Kind==EHearthSiteKind::Empty && !S.bExpansion && !S.bReachable)
-            && HearthMovement::SegmentHitsBox(A,B,S.Position,S.Radius+25)) return false;
+            && HearthMovement::SegmentHitsBox(A,B,S.Position,S.Radius+25) && !MayLeaveContainingBox(A,B,S.Position,S.Radius+25)) return false;
     return HearthMovement::GridSegmentClear(A,B,HearthPaths::Step,[this](FIntPoint Cell) { return LandGrid.Contains(Cell); });
 }
 
 bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,TArray<FVector>& Out) const
 {
     Out.Reset(); if(!IsClearPoint(Start) || !IsClearPoint(End)) return false;
+    if(Start.Equals(End,.01)) return true;
     auto Attach=[this](const FVector& P,FIntPoint& Found)
     {
         float Best=FLT_MAX; bool Valid=false; const auto C=HearthPaths::Cell(P);

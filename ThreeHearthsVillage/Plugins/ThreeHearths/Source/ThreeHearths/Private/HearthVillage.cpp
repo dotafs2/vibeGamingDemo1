@@ -834,6 +834,10 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("personal_planks"),R.PersonalPlanks);
         J->SetNumberField(TEXT("life_action"),R.LifeAction); J->SetNumberField(TEXT("history_count"),HistoryCount(I));
         J->SetNumberField(TEXT("next_decision_in_simulation_seconds"),FMath::Max(0.0,R.NextLifeDecision-Elapsed));
+        TArray<TSharedPtr<FJsonValue>> LocalProductionActions;
+        for(const int32 Action:AvailableProductionActions(I)) LocalProductionActions.Add(MakeShared<FJsonValueNumber>(Action));
+        J->SetArrayField(TEXT("available_production_actions"),LocalProductionActions);
+        J->SetNumberField(TEXT("local_production_choice"),ChooseProductionLocally(I));
         if(IsValid(R.Actor)) J->SetStringField(TEXT("position"),R.Actor->GetActorLocation().ToString());
         People.Add(MakeShared<FJsonValueObject>(J));
         AccountedWood+=R.CarriedWood+R.DeliveredWood+(R.CargoType==1?R.CargoAmount:0);

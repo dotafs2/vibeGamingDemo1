@@ -185,6 +185,30 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
     auto& R=Residents[Index];
     R.bMovementBlocked=false;
     if(R.Route.IsEmpty()) { R.bYieldingForTraffic=false; return true; }
+    while(!R.Route.IsEmpty() && R.Actor->GetActorLocation().Equals(R.Route[0],.01)) R.Route.RemoveAt(0);
+    if(R.Route.IsEmpty()) { R.bYieldingForTraffic=false; return true; }
+    const FVector Current=R.Actor->GetActorLocation();
+    if(bUseCropoutMap && !IsClearPoint(Current))
+    {
+        FVector EscapeDirection=FVector::ZeroVector; float EscapeDistance=0.f;
+        auto IncludeContainingBox=[&](const FVector& Center,float Radius)
+        {
+            const FVector Offset(Current.X-Center.X,Current.Y-Center.Y,0);
+            if(FMath::Abs(Offset.X)>=Radius || FMath::Abs(Offset.Y)>=Radius) return;
+            EscapeDirection+=Offset.IsNearlyZero()?FVector(1,0,0):Offset.GetSafeNormal2D();
+            EscapeDistance=FMath::Max(EscapeDistance,Radius+80.f);
+        };
+        for(const FVector& Obstacle:FixedObstacles) IncludeContainingBox(Obstacle,Obstacle.Z);
+        for(const FHearthSite& Site:ProductionSites)
+            if(!(Site.Kind==EHearthSiteKind::Empty && !Site.bExpansion && !Site.bReachable)) IncludeContainingBox(Site.Position,Site.Radius+25.f);
+        if(EscapeDistance>0.f)
+        {
+            if(EscapeDirection.IsNearlyZero()) EscapeDirection=FVector(1,0,0);
+            const FVector Escape=Current+EscapeDirection.GetSafeNormal2D()*EscapeDistance;
+            if(IsLand(Escape) && IsClearSegment(Current,Escape)
+                && !R.Route[0].Equals(Escape,.01)) R.Route.Insert(Escape,0);
+        }
+    }
     if(R.bYieldingForTraffic && !R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01)
         && !R.Route.ContainsByPredicate([&](const FVector& Point) { return Point.Equals(R.TrafficYieldTarget,.01); }))
     { R.bYieldingForTraffic=false; R.TrafficYieldWaiters.Reset(); }

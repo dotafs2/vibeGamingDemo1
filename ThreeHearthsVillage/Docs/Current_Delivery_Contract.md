@@ -36,3 +36,15 @@ Next dependency chain: (A) authoritative asset geometry and validation contract;
 Keep progress concise: current step, actual artifact/evidence, next executable action, and any concrete blocker. If a lane fails, diagnose or reassign that lane while independent work continues. A missing Blender MCP connection does not by itself block work with already imported assets. Avoid frequent transcript polling and redundant full-suite runs.
 
 Preserve the user's existing cumulative Kimi CNY100 authorization/CNY95 allocation and unresolved-request ledger. Do not add budget, clear uncertainty, buy credits, redeem another Codex reset, push, or launch extra user-owned tasks. Keep the current models. Native goal activation does not authorize bypassing a pause, budget stop or genuine user-action blocker.
+
+## 2026-09-06 runtime acceptance checkpoint
+
+The current branch now has live runtime evidence for the integration slice above:
+
+- The restored ten-resident world contains three authoritative component plans with one, two and three rooms. The three-room home records two later extensions and retains all earlier component IDs. The owners and reasons differ (king/relationships, potter household, merchant shelter and budget).
+- Site 14 remains occupied by the completed 15-part public wall. A new residential site is created only after live terrain, footprint, clearance and route checks; the accepted run placed site 24 at `(-3450,-1800)` and completed all 16 transported components there.
+- The third completed plan was saved as world revision 10 and reloaded with the same world ID, plan IDs, owners, site IDs, room counts and installed-component counts.
+- The overview is `Saved/ThreeHearths/Acceptance/ten-npc-three-plans.png`; pre- and post-restart snapshots are `ten-npc-three-plans-state.json` and `ten-npc-three-plans-restarted-state.json`. The persisted acceptance world is `ten-npc-neighborhood.json`.
+- `Saved/Logs/FinalFullAcceptance.log` records 31 successful `ThreeHearths` automation tests and zero failures. Focused public-site finance and movement recovery evidence is in `PublicSiteOwnership.log` and `MovementSamePoint.log`.
+
+The runtime roof audit remains documented separately under `Art/RoofMaterialAudit`. The current generated NPC homes deliberately use the timber roof material family; broader resident-selectable wall and roof material variants remain part of the larger village goal rather than evidence claimed by this checkpoint.

@@ -411,6 +411,7 @@ private:
     float NextTradeAt = 8.f;
     int32 TaxRemainders[10] = {0,0,0,0,0,0,0,0,0,0};
     double SimulationRemainder = 0;
+    bool bReplacementPlotSearchDone = false;
     float AcceptanceCaptureDelay = -1.f;
     bool bAcceptanceCaptureDone = false;
     void AdvanceSimulation(float Dt);

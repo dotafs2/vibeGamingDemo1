@@ -172,6 +172,20 @@ bool FHearthMovementIntegrationTest::RunTest(const FString&)
         TestEqual(TEXT("Builder keeps the borrowed hammer"),Builder.HeldToolId,FString(TEXT("tool_hammer")));
         TestEqual(TEXT("Hammer operation remains attached to the construction task"),Builder.HeldToolOperationId,Builder.ActiveTaskId);
     }
+    Village->FixedObstacles.Reset(); Village->ProductionSites.Reset();
+    FHearthSite SpawnBlocker; SpawnBlocker.Position=FVector(-2250,-1050,8); SpawnBlocker.Radius=190;
+    Village->ProductionSites.Add(SpawnBlocker);
+    Village->Residents[0].Actor->SetActorLocation(FVector(-2100,-850,8));
+    Village->Residents[1].Actor->SetActorLocation(FVector(0,1000,8));
+    Village->Residents[2].Actor->SetActorLocation(FVector(0,-1000,8));
+    Village->Residents[0].Route={FVector(-3520,-120,8)};
+    bool Escaped=false;
+    for(int32 Step=0;Step<1200 && !Escaped;++Step) Escaped=Village->MoveResident(0,.05f);
+    TestTrue(TEXT("A resident restored inside a later production exclusion can walk out and finish the original route"),Escaped);
+    TestTrue(TEXT("Production-exclusion escape reaches the original destination"),Village->Residents[0].Actor->GetActorLocation().Equals(FVector(-3520,-120,8),.01));
+    TArray<FVector> SamePointRoute;
+    TestTrue(TEXT("A resident already at a clear activity point has a valid completed path"),Village->FindProductionPath(FVector(0,0,8),FVector(0,0,8),SamePointRoute));
+    TestTrue(TEXT("A completed same-point path contains no artificial out-and-back loop"),SamePointRoute.IsEmpty());
     World->DestroyWorld(false);
     return true;
 }
