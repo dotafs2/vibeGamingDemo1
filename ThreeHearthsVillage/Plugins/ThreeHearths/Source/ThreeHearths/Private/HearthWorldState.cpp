@@ -1,4 +1,5 @@
 #include "HearthWorldState.h"
+#include "HearthPlannedConstructionAdapter.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Misc/FileHelper.h"
@@ -589,7 +590,7 @@ namespace HearthWorld
             {
                 const auto& Site=W.Sites[R.ProductionSite];
                 const auto* Part=Site.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
-                if(Site.Kind!=EHearthSiteKind::Land || Site.Stage<0 || Site.Stage>=4 || Site.BuildPlanId.IsEmpty() || !Part || Part->ReservedBy!=I) return Reject(FString::Printf(TEXT("居民 %d 住宅构件任务"),I));
+                if((Site.Kind!=EHearthSiteKind::Land && Site.Kind!=EHearthSiteKind::House) || Site.Stage<0 || Site.Stage>4 || Site.BuildPlanId.IsEmpty() || !Part || Part->ReservedBy!=I) return Reject(FString::Printf(TEXT("居民 %d 住宅构件任务"),I));
                 if(Part->Status==TEXT("reserved") && (R.Task!=EHearthTask::ProductionTravel || R.CargoAmount!=0 || R.CargoType!=-1)) return Reject(FString::Printf(TEXT("居民 %d 住宅构件预留"),I));
                 if(Part->Status==TEXT("transporting") && (R.Task!=EHearthTask::ProductionTravel || R.CargoType!=Part->MaterialType || R.CargoAmount!=Part->MaterialAmount)) return Reject(FString::Printf(TEXT("居民 %d 住宅构件搬运"),I));
                 if(Part->Status==TEXT("installing") && (R.Task!=EHearthTask::ProductionWork || R.CargoType!=Part->MaterialType || R.CargoAmount!=Part->MaterialAmount)) return Reject(FString::Printf(TEXT("居民 %d 住宅构件安装"),I));
@@ -612,10 +613,18 @@ namespace HearthWorld
         Error=TEXT("世界存档校验失败：生产场地与建造构件");
         for(int32 I=0;I<W.Sites.Num();++I)
         {
-            const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration || (!S.BuildPlanId.IsEmpty() && !Guid(S.BuildPlanId))) return false;
+            const auto& S=W.Sites[I];
+            const FHearthStructurePlan* Planned=W.StructurePlans.FindByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId==S.BuildPlanId;});
+            const bool bNativePlan=W.Schema>=9 && Planned;
+            if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration || (!S.BuildPlanId.IsEmpty() && !bNativePlan && !Guid(S.BuildPlanId))) return false;
             if(!S.BuildPlanId.IsEmpty() && (S.Stage<0 || S.Stage>4 || (S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House))) return false;
             if(S.ReservedBy>=0 && W.People[S.ReservedBy].Person.ProductionSite!=I) return false;
-            if(W.Schema>=5 && !S.BuildPlanId.IsEmpty() && S.CottageComponents.Num()!=45) return false;
+            if(!S.BuildPlanId.IsEmpty() && ((bNativePlan && S.CottageComponents.Num()!=Planned->Components.Num()) || (!bNativePlan && W.Schema>=5 && S.CottageComponents.Num()!=45))) return false;
+            if(bNativePlan)
+            {
+                const FHearthPlannedConstructionResult Converted=HearthPlannedConstructionAdapter::Convert(*Planned,S.Owner,S.CottageComponents);
+                if(!Converted.bAccepted || Converted.Components.Num()!=S.CottageComponents.Num()) return false;
+            }
             if(S.BuildPlanId.IsEmpty() && !S.CottageComponents.IsEmpty()) return false;
             int32 Completed=0,Active=0;
             for(const auto& Part:S.CottageComponents)
@@ -631,7 +640,7 @@ namespace HearthWorld
                 Completed+=Done; Active+=Reserved||Transporting||Installing;
                 if(Reserved) { if(Part.MaterialType==2) Accounted[2]+=Part.MaterialAmount; else AccountedManufactured[Part.MaterialType-3]+=Part.MaterialAmount; }
             }
-            if(!S.CottageComponents.IsEmpty() && (S.Units!=Completed || Active!=(S.ReservedBy>=0?1:0) || (S.Kind==EHearthSiteKind::House)!=(Completed==45))) return false;
+            if(!S.CottageComponents.IsEmpty() && (S.Units!=Completed || Active!=(S.ReservedBy>=0?1:0) || (S.Kind==EHearthSiteKind::House)!=(Completed==S.CottageComponents.Num()))) return false;
         }
         TSet<FString> ActivePeople,ChatIds;
         Error=TEXT("世界存档校验失败：居民对话");

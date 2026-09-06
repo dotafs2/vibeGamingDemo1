@@ -1,6 +1,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "HearthResidentBuildingPlanner.h"
 #include "HearthVillage.h"
+#include "HearthWorldState.h"
 #include "Engine/World.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/ScopeExit.h"
@@ -26,7 +27,7 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
 
     Village->ProductionSites.Reset(); Village->LandGrid.Reset();
     for(int32 X=-30;X<=30;++X) for(int32 Y=-30;Y<=30;++Y) Village->LandGrid.Add(FIntPoint(X,Y));
-    FHearthSite Site; Site.StableId=TEXT("runtime-plan-site"); Site.Kind=EHearthSiteKind::Land;
+    FHearthSite Site; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Site.Kind=EHearthSiteKind::Land;
     Site.Position=FVector(400,0,8); Site.Approach=FVector(0,0,8); Site.bReachable=true;
     Village->ProductionSites.Add(Site);
     Village->StoneStock=100; Village->PlankStock=100; Village->BeamStock=100;
@@ -51,6 +52,11 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     TestEqual(TEXT("Adapter creates one executable record per planned component"),RuntimeSite.CottageComponents.Num(),Plan.Components.Num());
     TestEqual(TEXT("First planned component is reserved for its choosing resident"),RuntimeSite.CottageComponents[0].ReservedBy,0);
     TestEqual(TEXT("Only the first real material unit is reserved"),Village->StoneStock,StoneBefore-RuntimeSite.CottageComponents[0].MaterialAmount);
+    FHearthWorldImage SavedDuringFirstHaul; FString SaveError;
+    TestTrue(TEXT("Schema9 accepts a native non-GUID plan and dynamic component count"),
+        HearthWorld::Decode(Village->ExportWorldState(),SavedDuringFirstHaul,SaveError));
+    TestEqual(TEXT("In-progress native plan survives the save image"),SavedDuringFirstHaul.StructurePlans.Num(),1);
+    TestEqual(TEXT("Reserved component list survives the save image"),SavedDuringFirstHaul.Sites[0].CottageComponents.Num(),Plan.Components.Num());
 
     for(int32 Step=0;Step<1000 && Resident.CargoAmount==0;++Step) Village->AdvanceSimulation(.05f);
     TestTrue(TEXT("Worker reaches the depot and physically picks up planned material"),Resident.CargoAmount>0);
