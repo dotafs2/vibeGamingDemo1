@@ -75,7 +75,8 @@ struct THREEHEARTHS_API FHearthStructureComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString Id;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString CatalogId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString ExtensionId;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Offset = FVector2D::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector Offset = FVector::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator Orientation = FRotator::ZeroRotator;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Size = FVector2D(100.f, 20.f);
     UPROPERTY(EditAnywhere, BlueprintReadWrite) int32 MaterialCost = 0;
@@ -95,7 +96,8 @@ struct THREEHEARTHS_API FHearthStructureAttachment
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString ParentComponentId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString CatalogId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString Socket;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Offset = FVector2D::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector Offset = FVector::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator Orientation = FRotator::ZeroRotator;
 };
 
@@ -119,6 +121,8 @@ struct THREEHEARTHS_API FHearthStructureOccupiedVolume
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Center = FVector2D::ZeroVector;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) float Radius = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) float Z = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString OwnerId;
 };
 
@@ -147,7 +151,8 @@ struct THREEHEARTHS_API FHearthStructureComponentSpec
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString CatalogId;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FString SemanticKey;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Offset = FVector2D::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector Offset = FVector::ZeroVector;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite) float Height = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FRotator Orientation = FRotator::ZeroRotator;
     UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector2D Size = FVector2D(100.f, 20.f);
     UPROPERTY(EditAnywhere, BlueprintReadWrite) int32 MaterialCost = 0;

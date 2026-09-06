@@ -7,7 +7,7 @@ namespace
     FHearthStructureComponentSpec Component(const TCHAR* Catalog, const TCHAR* Key, FVector2D Offset, int32 Cost, bool bSupport = false, const TCHAR* Supports = TEXT(""))
     {
         FHearthStructureComponentSpec Spec; Spec.CatalogId = Catalog; Spec.SemanticKey = Key;
-        Spec.Offset = Offset; Spec.Size = FVector2D(80.f, 20.f); Spec.CollisionRadius = 12.f;
+        Spec.Offset = FVector(Offset, 0.f); Spec.Size = FVector2D(80.f, 20.f); Spec.CollisionRadius = 12.f;
         Spec.MaterialCost = Cost; Spec.bRequiresSupport = bSupport; Spec.SupportsComponentKey = Supports; return Spec;
     }
 }
@@ -43,11 +43,20 @@ bool FHearthStructurePlanTest::RunTest(const FString&)
     TestTrue(TEXT("Extension preserves the original instance ID"), Shed.Components.ContainsByPredicate([&](const FHearthStructureComponent& C){ return C.Id==OldId; }));
     TestTrue(TEXT("Extension preserves room and opening data"), Shed.Openings.Num()==1 && Shed.Rooms.Num()==1);
     FHearthStructureValidationContext ValidContext; ValidContext.AvailableBudget=20; ValidContext.bRoadAccessible=true;
-    ValidContext.AvailableMaterials.Add(Wood); ValidContext.AvailableMaterials[0].Quantity=4;
+    ValidContext.AvailableMaterials.Add(Wood); ValidContext.AvailableMaterials[0].Quantity=6;
+    FHearthStructureMaterialRecipe RoofRecipe; RoofRecipe.RecipeId=TEXT("roof_wood"); RoofRecipe.CatalogId=TEXT("roof"); RoofRecipe.Inputs.Add(Wood);
+    TestTrue(TEXT("Shed registers a roof recipe"), HearthStructurePlan::RegisterRecipe(Shed,RoofRecipe));
+    auto RoofSpec=Component(TEXT("roof"),TEXT("roof"),FVector2D(0.f,0.f),2,true,TEXT("north_wall"));
+    RoofSpec.RecipeId=RoofRecipe.RecipeId; RoofSpec.Materials=RoofRecipe.Inputs; RoofSpec.Offset=FVector(0.f,100.f,100.f); RoofSpec.Height=80.f;
+    TestTrue(TEXT("Upper floor component is accepted above the lower wall"), HearthStructurePlan::AppendComponent(Shed,RoofSpec));
     auto Valid=HearthStructurePlan::Validate(Shed,ValidContext);
     TestTrue(TEXT("Valid plan passes pure validation"), Valid.bValid);
+    TestEqual(TEXT("Upper component preserves local Z for persistence"), Shed.Components.Last().Offset.Z, 100.0);
+    TestEqual(TEXT("Upper component preserves explicit height for persistence"), Shed.Components.Last().Height, 80.f);
+    FHearthStructureAttachment RoofAttachment; RoofAttachment.Id=TEXT("roof_attachment"); RoofAttachment.ParentComponentId=OldId;
+    RoofAttachment.CatalogId=TEXT("vent"); RoofAttachment.Offset=FVector(0.f,0.f,100.f); Shed.Attachments.Add(RoofAttachment);
+    TestEqual(TEXT("Attachment preserves three-dimensional local offset"), Shed.Attachments.Last().Offset.Z, 100.0);
     FHearthStructurePlan Floating = HearthStructurePlan::MakePlan(TEXT("floating"),TEXT("seed-floating"),Footprint,Reasons);
-    FHearthStructureMaterialRecipe RoofRecipe; RoofRecipe.RecipeId=TEXT("roof_wood"); RoofRecipe.CatalogId=TEXT("roof"); RoofRecipe.Inputs.Add(Wood);
     TestTrue(TEXT("Floating plan registers its roof recipe"), HearthStructurePlan::RegisterRecipe(Floating,RoofRecipe));
     auto FloatingSpec=Component(TEXT("roof"),TEXT("roof"),FVector2D(0.f,0.f),2,true,TEXT("missing")); FloatingSpec.RecipeId=RoofRecipe.RecipeId; FloatingSpec.Materials=RoofRecipe.Inputs;
     TestTrue(TEXT("Floating component can be represented"), HearthStructurePlan::AppendComponent(Floating, FloatingSpec));
@@ -68,7 +77,7 @@ bool FHearthStructurePlanTest::RunTest(const FString&)
     TestTrue(TEXT("Repeated plan construction succeeds"), HearthStructurePlan::AppendComponent(RepeatA,Base) && HearthStructurePlan::AppendComponent(RepeatB,Base));
     TestEqual(TEXT("Same seed produces stable IDs"), RepeatA.Components[0].Id, RepeatB.Components[0].Id);
     const int32 RevisionBeforeRollback=RepeatA.Revision;
-    auto GoodExtension=Base; GoodExtension.SemanticKey=TEXT("extension_wall"); GoodExtension.Offset=FVector2D(0.f,-100.f);
+    auto GoodExtension=Base; GoodExtension.SemanticKey=TEXT("extension_wall"); GoodExtension.Offset=FVector(0.f,-100.f,0.f);
     const FHearthStructureComponentSpec BadExtension[]={GoodExtension,Base};
     TestFalse(TEXT("Partially invalid extension is rejected"), HearthStructurePlan::AppendExtension(RepeatA,TEXT("bad-extension"),BadExtension));
     TestEqual(TEXT("Failed extension restores Revision atomically"),RepeatA.Revision,RevisionBeforeRollback);

@@ -92,6 +92,7 @@ namespace HearthStructurePlan
         FHearthStructureComponent Component;
         Component.Id = Id; Component.CatalogId = Spec.CatalogId; Component.ExtensionId = ExtensionId;
         Component.Offset = Spec.Offset; Component.Orientation = Spec.Orientation; Component.Size = Spec.Size;
+        Component.Height = FMath::Max(0.f, Spec.Height);
         Component.MaterialCost = FMath::Max(0, Spec.MaterialCost); Component.CollisionRadius = FMath::Max(0.f, Spec.CollisionRadius);
         Component.RecipeId = Spec.RecipeId; Component.Materials = Spec.Materials;
         Component.bRequiresSupport = Spec.bRequiresSupport;
@@ -184,14 +185,16 @@ namespace HearthStructurePlan
                 Issue(Result, FString::Printf(TEXT("unsupported_component:%s"), *Component.Id));
             for (const FHearthStructureOccupiedVolume& Existing : Context.Occupied)
             {
-                if (FVector2D::Distance(Component.Offset, Existing.Center) < Component.CollisionRadius + Existing.Radius)
+                const bool bSameFloor = Component.Offset.Z < Existing.Z + Existing.Height && Existing.Z < Component.Offset.Z + Component.Height;
+                if (bSameFloor && FVector2D::Distance(FVector2D(Component.Offset.X, Component.Offset.Y), Existing.Center) < Component.CollisionRadius + Existing.Radius)
                     Issue(Result, FString::Printf(TEXT("occupied_collision:%s"), *Component.Id));
             }
         }
         for (int32 I = 0; I < Plan.Components.Num(); ++I) for (int32 J = I + 1; J < Plan.Components.Num(); ++J)
         {
             const auto& A = Plan.Components[I]; const auto& B = Plan.Components[J];
-            if (FVector2D::Distance(A.Offset, B.Offset) < A.CollisionRadius + B.CollisionRadius)
+            const bool bSameFloor = A.Offset.Z < B.Offset.Z + B.Height && B.Offset.Z < A.Offset.Z + A.Height;
+            if (bSameFloor && FVector2D::Distance(FVector2D(A.Offset.X, A.Offset.Y), FVector2D(B.Offset.X, B.Offset.Y)) < A.CollisionRadius + B.CollisionRadius)
                 Issue(Result, FString::Printf(TEXT("component_collision:%s:%s"), *A.Id, *B.Id));
         }
         for (const FHearthStructureConnection& Connection : Plan.Connections)
