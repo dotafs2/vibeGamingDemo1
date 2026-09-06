@@ -232,6 +232,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
             CandidateComponents=Converted.Components;
             if(!CandidateComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
             {
+                if(S.Owner!=Index) return false; // Neighbors may build parts, but only the owner chooses an extension.
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
                 if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,GeneralFunds(),Expanded,ExpansionComponents)) return false;
                 CandidateComponents=MoveTemp(ExpansionComponents.Components);
@@ -333,9 +334,14 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
             {
                 const auto& CandidateSite=ProductionSites[Site];
                 const bool HasPendingParts=CandidateSite.CottageComponents.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");});
-                if(!CandidateSite.BuildPlanId.IsEmpty() && HasPendingParts) Score=210; // Finish reserved material and the current assembly first.
-                else if(StructurePlans.Num()<3) Score=CandidateSite.BuildPlanId.IsEmpty()?225:70; // Establish a small neighborhood before extending a finished home.
-                else if(!CandidateSite.BuildPlanId.IsEmpty()) Score=190;
+                const auto& Person=Residents[Index];
+                const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Person.StableId);});
+                const bool WorkshopRole=Person.Role.Contains(TEXT("木匠"))||Person.Role.Contains(TEXT("铁匠"))||Person.Role.Contains(TEXT("陶工"))||Person.Role.Contains(TEXT("织工"));
+                const float NeedPressure=FMath::Max(Person.Hunger,Person.SocialNeed);
+                if(!CandidateSite.BuildPlanId.IsEmpty() && HasPendingParts) Score=260; // Complete the current material-backed assembly before opening another frame.
+                else if(CandidateSite.BuildPlanId.IsEmpty()) Score=!OwnsStructure?(WorkshopRole?205:(NeedPressure>=45.f?195:85)):20;
+                else if(CandidateSite.Owner==Index) Score=NeedPressure>=75.f?190:(WorkshopRole?175:50);
+                else Score=20;
             }
         }
         if(Index==0 && (Op==10 || Op==6)) Score+=10;

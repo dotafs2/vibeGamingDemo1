@@ -112,7 +112,8 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     const TArray<FHearthCottageComponent> BaseParts=Village->ProductionSites[0].CottageComponents;
     const int32 BaseRooms=Village->StructurePlans[0].Rooms.Num();
     FHearthSite NeighborSite; NeighborSite.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); NeighborSite.Kind=EHearthSiteKind::Land; NeighborSite.Position=FVector(800,600,8); NeighborSite.Approach=FVector(400,600,8); NeighborSite.bReachable=true; Village->ProductionSites.Add(NeighborSite);
-    auto& NeighborBuilder=Village->Residents[1]; NeighborBuilder.BuildProgress=1.f; NeighborBuilder.Task=EHearthTask::LifeChoosing; NeighborBuilder.Actor->SetActorLocation(FVector(0,600,8)); NeighborBuilder.Route.Reset();
+    auto& NeighborBuilder=Village->Residents[1]; NeighborBuilder.BuildProgress=1.f; NeighborBuilder.Task=EHearthTask::LifeChoosing; NeighborBuilder.SocialNeed=80.f; NeighborBuilder.Role=TEXT("陶工"); NeighborBuilder.Actor->SetActorLocation(FVector(0,600,8)); NeighborBuilder.Route.Reset();
+    TestFalse(TEXT("A neighbor may not decide an extension for somebody else's completed home"),Village->IsProductionAllowed(1,Action));
     const int32 PreferredAction=Village->ChooseProductionLocally(1); const int32 PreferredSite=(PreferredAction-100)/16,PreferredOperation=(PreferredAction-100)%16;
     TestEqual(TEXT("Local policy starts another household before repeatedly extending the first"),PreferredSite,1);
     TestEqual(TEXT("Neighborhood priority still selects resident construction"),PreferredOperation,5);
