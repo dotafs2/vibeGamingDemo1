@@ -1,4 +1,6 @@
 #include "HearthVillage.h"
+#include "HearthPlannedConstructionAdapter.h"
+#include "HearthResidentBuildingPlanner.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
@@ -44,6 +46,31 @@ namespace HearthProduction
     FString Json(const TSharedRef<FJsonObject>& Object) { FString S; FJsonSerializer::Serialize(Object,TJsonWriterFactory<>::Create(&S)); return S; }
     const FHearthCottageComponent* NextComponent(const FHearthSite& Site)
     { return Site.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); }); }
+
+    FHearthResidentBuildingInput PlanningInput(const FHearthResident& Resident, const FHearthSite& Site,
+        int32 Stone, int32 Planks, int32 Beams, int32 ConstructionGrantBudget)
+    {
+        FHearthResidentBuildingInput Input;
+        Input.ResidentId=Resident.StableId;
+        Input.StableSeed=Resident.StableId+TEXT("|")+Resident.Personality+TEXT("|")+Resident.Role;
+        Input.Need=Resident.Hunger>=65.f?TEXT("urgent shelter near food and neighbors"):
+            Resident.SocialNeed>=60.f?TEXT("social family shelter"):TEXT("shelter");
+        Input.Occupation=Resident.Role;
+        Input.FriendsNearby=0;
+        for(const auto& Bond:Resident.Bonds) if(Bond.Value.Meetings>0 && Bond.Value.Affinity>=0.f) ++Input.FriendsNearby;
+        Input.HouseholdSize=FMath::Clamp(1+Input.FriendsNearby/2,1,4);
+        // Cottage materials and wages are supplied by the existing village-construction grant,
+        // so its currently spendable treasury balance is the plan's real feasibility ceiling.
+        Input.Budget=FMath::Max(0,ConstructionGrantBudget);
+        Input.bRoadAccessible=Site.bReachable;
+        const FVector Road=Site.Approach-Site.Position;
+        Input.RoadYaw=Road.IsNearlyZero()?0.f:FMath::RadiansToDegrees(FMath::Atan2(Road.Y,Road.X));
+        Input.Origin=Site.Position;
+        Input.Stone=FMath::Max(0,Stone);
+        Input.Planks=FMath::Max(0,Planks);
+        Input.Beams=FMath::Max(0,Beams);
+        return Input;
+    }
 }
 
 void HearthCottage::Populate(FHearthSite& S)
@@ -74,7 +101,22 @@ void HearthCottage::Populate(FHearthSite& S)
     S.Capacity=45; S.Units=0; for(const auto& C:S.CottageComponents) S.Units+=C.Status==TEXT("completed");
 }
 
-void AHearthVillage::EnsureCottageComponents(FHearthSite& S) const { HearthCottage::Populate(S); }
+void AHearthVillage::EnsureCottageComponents(FHearthSite& S) const
+{
+    if(const FHearthStructurePlan* Plan=StructurePlans.FindByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==S.BuildPlanId; }))
+    {
+        const auto Converted=HearthPlannedConstructionAdapter::Convert(*Plan,S.Owner,S.CottageComponents);
+        if(Converted.bAccepted)
+        {
+            S.CottageComponents=Converted.Components;
+            S.Capacity=S.CottageComponents.Num();
+            S.Units=0;
+            for(const auto& Component:S.CottageComponents) S.Units+=Component.Status==TEXT("completed");
+        }
+        return;
+    }
+    HearthCottage::Populate(S);
+}
 
 void AHearthVillage::InitializeProduction()
 {
@@ -142,8 +184,26 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     if(Op==0) return S.Kind==EHearthSiteKind::Empty;
     if(Op==5)
     {
-        if(S.Kind!=EHearthSiteKind::Land || S.Stage>=4) return false;
-        const auto* Part=HearthProduction::NextComponent(S); const int32 Type=Part?Part->MaterialType:2,Amount=Part?Part->MaterialAmount:1;
+        if(S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House) return false;
+        TArray<FHearthCottageComponent> CandidateComponents=S.CottageComponents;
+        if(S.BuildPlanId.IsEmpty())
+        {
+            if(S.Kind!=EHearthSiteKind::Land) return false;
+            const auto Proposed=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(Residents[Index],S,StoneStock,PlankStock,BeamStock,GeneralFunds()));
+            if(!Proposed.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==Proposed.Plan.PlanId; })) return false;
+            const auto Converted=HearthPlannedConstructionAdapter::Convert(Proposed.Plan,Index,{});
+            if(!Converted.bAccepted) return false;
+            CandidateComponents=Converted.Components;
+        }
+        else if(const FHearthStructurePlan* Plan=StructurePlans.FindByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==S.BuildPlanId; }))
+        {
+            const auto Converted=HearthPlannedConstructionAdapter::Convert(*Plan,S.Owner,CandidateComponents);
+            if(!Converted.bAccepted) return false;
+            CandidateComponents=Converted.Components;
+        }
+        const auto* Part=CandidateComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
+        if(!Part) return false;
+        const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount;
         return Type==2?StoneStock>=Amount:Type==3?PlankStock>=Amount:BeamStock>=Amount;
     }
     if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land && S.BuildPlanId.IsEmpty();
@@ -251,6 +311,20 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     TArray<FVector> Route;
     if(!FindActivityRoute(Index,ProductionSites[Site].Approach,Route)) return false;
     auto& R=Residents[Index]; auto& S=ProductionSites[Site];
+    FHearthResidentBuildingPlan ProposedPlan;
+    FHearthPlannedConstructionResult ProposedComponents;
+    const bool bNeedsNewPlan=Op==5 && S.BuildPlanId.IsEmpty();
+    if(bNeedsNewPlan)
+    {
+        ProposedPlan=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(R,S,StoneStock,PlankStock,BeamStock,GeneralFunds()));
+        if(!ProposedPlan.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==ProposedPlan.Plan.PlanId; }))
+        {
+            R.LatestEvent=ProposedPlan.Reason.IsEmpty()?TEXT("当前需求、资源或道路条件无法生成可执行住宅计划。"):ProposedPlan.Reason;
+            return false;
+        }
+        ProposedComponents=HearthPlannedConstructionAdapter::Convert(ProposedPlan.Plan,Index,{});
+        if(!ProposedComponents.bAccepted) { R.LatestEvent=ProposedComponents.Reason; return false; }
+    }
     if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,true,bFromApi?TEXT("api"):TEXT("local"));
     const FString Label=ProductionActionName(Action);
     R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
@@ -266,7 +340,15 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     R.ProductionSite=Site; R.ProductionOp=Op; R.CargoAmount=0; R.CargoType=-1;
     if(Op==5)
     {
-        if(S.BuildPlanId.IsEmpty()) { S.BuildPlanId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); S.Owner=Index; }
+        if(bNeedsNewPlan)
+        {
+            StructurePlans.Add(ProposedPlan.Plan);
+            S.BuildPlanId=ProposedPlan.Plan.PlanId;
+            S.Owner=Index;
+            S.CottageComponents=MoveTemp(ProposedComponents.Components);
+            S.Capacity=S.CottageComponents.Num();
+            S.Units=0;
+        }
         EnsureCottageComponents(S); auto* Part=S.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
         if(!Part) { ReturnTool(Index); CancelWage(R.ActiveTaskId); R.ActiveTaskId.Empty(); return false; }
         const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount; Part->Status=TEXT("reserved"); Part->ReservedBy=Index; Part->Owner=S.Owner;
@@ -397,7 +479,11 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         S.Stage=0; for(int32 Group=1;Group<=4;++Group)
             if(!S.CottageComponents.ContainsByPredicate([Group](const auto& C){ return C.Stage==Group && C.Status!=TEXT("completed"); })) S.Stage=Group; else break;
         if(S.Owner<0) S.Owner=Index;
-        if(S.Units>=S.CottageComponents.Num()) { S.Kind=EHearthSiteKind::House; S.Stage=4; Result=TEXT("木结构模块住宅的45个构件已逐件安装完成；陶瓦和灰泥装饰留待材料产业接入后升级。"); }
+        if(S.Units>=S.CottageComponents.Num())
+        {
+            S.Kind=EHearthSiteKind::House; S.Stage=4; S.Capacity=S.CottageComponents.Num();
+            Result=FString::Printf(TEXT("住宅计划 %s 的 %d 个构件已逐件搬运并安装完成。"),*S.BuildPlanId,S.CottageComponents.Num());
+        }
         else Result=FString::Printf(TEXT("已安装 %s；住宅计划 %s 完成 %d / %d 个构件。"),*Part->AssetId,*S.BuildPlanId,S.Units,S.CottageComponents.Num());
     }
     else if(Op>=1 && Op<=7)
