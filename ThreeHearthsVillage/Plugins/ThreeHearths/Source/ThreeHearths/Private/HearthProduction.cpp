@@ -731,6 +731,30 @@ FString AHearthVillage::GetProductionState() const
         J->SetArrayField(TEXT("components"),Components); Sites.Add(MakeShared<FJsonValueObject>(J));
     }
     Root->SetArrayField(TEXT("sites"),Sites);
+    TArray<TSharedPtr<FJsonValue>> Plans;
+    for(const FHearthStructurePlan& Plan:StructurePlans)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("plan_id"),Plan.PlanId); J->SetStringField(TEXT("stable_seed"),Plan.StableSeed);
+        J->SetNumberField(TEXT("revision"),Plan.Revision); J->SetNumberField(TEXT("room_count"),Plan.Rooms.Num()); J->SetNumberField(TEXT("component_count"),Plan.Components.Num());
+        auto Footprint=MakeShared<FJsonObject>(); Footprint->SetNumberField(TEXT("origin_x"),Plan.Footprint.Origin.X); Footprint->SetNumberField(TEXT("origin_y"),Plan.Footprint.Origin.Y); Footprint->SetNumberField(TEXT("origin_z"),Plan.Footprint.Origin.Z);
+        Footprint->SetNumberField(TEXT("size_x"),Plan.Footprint.Size.X); Footprint->SetNumberField(TEXT("size_y"),Plan.Footprint.Size.Y); Footprint->SetNumberField(TEXT("yaw"),Plan.Footprint.Orientation.Yaw); J->SetObjectField(TEXT("footprint"),Footprint);
+        auto Reasons=MakeShared<FJsonObject>(); Reasons->SetStringField(TEXT("need"),Plan.Reasons.Need); Reasons->SetStringField(TEXT("occupation"),Plan.Reasons.Occupation); Reasons->SetStringField(TEXT("budget"),Plan.Reasons.Budget); Reasons->SetStringField(TEXT("relationship"),Plan.Reasons.Relationship); Reasons->SetStringField(TEXT("road_access"),Plan.Reasons.RoadAccess); J->SetObjectField(TEXT("reasons"),Reasons);
+        TArray<TSharedPtr<FJsonValue>> Rooms; for(const auto& Room:Plan.Rooms){auto R=MakeShared<FJsonObject>();R->SetStringField(TEXT("id"),Room.Id);R->SetStringField(TEXT("label"),Room.Label);Rooms.Add(MakeShared<FJsonValueObject>(R));} J->SetArrayField(TEXT("rooms"),Rooms);
+        TSet<FString> ExtensionIds; TArray<TSharedPtr<FJsonValue>> Components;
+        for(const auto& Part:Plan.Components)
+        {
+            if(!Part.ExtensionId.IsEmpty()) ExtensionIds.Add(Part.ExtensionId);
+            auto C=MakeShared<FJsonObject>(); C->SetStringField(TEXT("id"),Part.Id); C->SetStringField(TEXT("catalog_id"),Part.CatalogId); C->SetStringField(TEXT("extension_id"),Part.ExtensionId);
+            C->SetNumberField(TEXT("offset_x"),Part.Offset.X); C->SetNumberField(TEXT("offset_y"),Part.Offset.Y); C->SetNumberField(TEXT("offset_z"),Part.Offset.Z); C->SetNumberField(TEXT("yaw"),Part.Orientation.Yaw);
+            C->SetNumberField(TEXT("bounds_min_x"),Part.BoundsMin.X); C->SetNumberField(TEXT("bounds_min_y"),Part.BoundsMin.Y); C->SetNumberField(TEXT("bounds_min_z"),Part.BoundsMin.Z); C->SetNumberField(TEXT("bounds_max_x"),Part.BoundsMax.X); C->SetNumberField(TEXT("bounds_max_y"),Part.BoundsMax.Y); C->SetNumberField(TEXT("bounds_max_z"),Part.BoundsMax.Z);
+            Components.Add(MakeShared<FJsonValueObject>(C));
+        }
+        TArray<FString> SortedExtensionIds=ExtensionIds.Array(); SortedExtensionIds.Sort(); TArray<TSharedPtr<FJsonValue>> Extensions; for(const FString& ExtensionId:SortedExtensionIds) Extensions.Add(MakeShared<FJsonValueString>(ExtensionId)); J->SetArrayField(TEXT("extension_ids"),Extensions); J->SetArrayField(TEXT("components"),Components);
+        const int32 SiteIndex=ProductionSites.IndexOfByPredicate([&](const FHearthSite& Site){return Site.BuildPlanId==Plan.PlanId;});
+        J->SetNumberField(TEXT("site_id"),SiteIndex); if(ProductionSites.IsValidIndex(SiteIndex)){const auto& Site=ProductionSites[SiteIndex];int32 Installed=0;for(const auto& Part:Site.CottageComponents)Installed+=Part.Status==TEXT("completed");J->SetNumberField(TEXT("owner"),Site.Owner);J->SetStringField(TEXT("site_status"),HearthProduction::KindKeys[static_cast<int32>(Site.Kind)]);J->SetNumberField(TEXT("installed_components"),Installed);}
+        Plans.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("structure_plans"),Plans);
     auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:ProductionTotals) Totals->SetNumberField(Pair.Key,Pair.Value); Root->SetObjectField(TEXT("completed_operations"),Totals);
     for(int32 Type=0;Type<3;++Type)
     {

@@ -3,8 +3,10 @@
 #include "HearthVillage.h"
 #include "HearthWorldState.h"
 #include "Engine/World.h"
+#include "Dom/JsonObject.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/ScopeExit.h"
+#include "Serialization/JsonSerializer.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPlannedConstructionRuntimeTest,
     "ThreeHearths.Production.ResidentPlanRuntimeExecution",
@@ -53,6 +55,17 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     TestEqual(TEXT("Adapter creates one executable record per planned component"),RuntimeSite.CottageComponents.Num(),Plan.Components.Num());
     TestEqual(TEXT("First planned component is reserved for its choosing resident"),RuntimeSite.CottageComponents[0].ReservedBy,0);
     TestEqual(TEXT("Only the first real material unit is reserved"),Village->StoneStock,StoneBefore-RuntimeSite.CottageComponents[0].MaterialAmount);
+    TSharedPtr<FJsonObject> ProductionEvidence;
+    TestTrue(TEXT("Runtime production evidence is valid JSON"),FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Village->GetProductionState()),ProductionEvidence));
+    const TArray<TSharedPtr<FJsonValue>>* EvidencePlans=nullptr;
+    TestTrue(TEXT("Runtime evidence exposes authoritative structure plans"),ProductionEvidence.IsValid()&&ProductionEvidence->TryGetArrayField(TEXT("structure_plans"),EvidencePlans)&&EvidencePlans&&EvidencePlans->Num()==1);
+    if(EvidencePlans&&EvidencePlans->Num()==1)
+    {
+        const auto EvidencePlan=(*EvidencePlans)[0]->AsObject(); const TSharedPtr<FJsonObject>* Reasons=nullptr;
+        TestEqual(TEXT("Evidence plan maps to its live site"),static_cast<int32>(EvidencePlan->GetNumberField(TEXT("site_id"))),0);
+        TestEqual(TEXT("Evidence contains every component transform"),EvidencePlan->GetArrayField(TEXT("components")).Num(),Plan.Components.Num());
+        TestTrue(TEXT("Evidence persists live NPC reasons"),EvidencePlan->TryGetObjectField(TEXT("reasons"),Reasons)&&Reasons&&(*Reasons)->HasField(TEXT("need"))&&(*Reasons)->HasField(TEXT("occupation")));
+    }
     FHearthWorldImage SavedDuringFirstHaul; FString SaveError;
     if(!TestTrue(TEXT("Schema9 accepts a native non-GUID plan and dynamic component count"),
         HearthWorld::Decode(Village->ExportWorldState(),SavedDuringFirstHaul,SaveError)))
