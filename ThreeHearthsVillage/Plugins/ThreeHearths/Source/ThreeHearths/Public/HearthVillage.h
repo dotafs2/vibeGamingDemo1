@@ -17,7 +17,7 @@ class FJsonObject;
 class IFileHandle;
 
 UENUM(BlueprintType)
-enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit };
+enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting };
 
 // Stable operation IDs: each site offers only the operations its current state permits.
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter };
@@ -95,7 +95,7 @@ struct FHearthWagePayable
 };
 struct FHearthTradeOffer
 {
-    FString Id, Status=TEXT("proposed"), Result;
+    FString Id, ConversationId, Status=TEXT("proposed"), Result;
     int32 Seller=-1, Buyer=-1, Quantity=1, Price=2, ReservedQuantity=0;
     float Remaining=0;
 };
@@ -263,6 +263,7 @@ private:
     friend class FHearthToolOwnershipTest;
     friend class FHearthDerivedMaterialsTest;
     friend class FHearthEconomyPersistenceTest;
+    friend class FHearthLegacyUnfundedWageTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
     FString WorldPath;

@@ -132,7 +132,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
                 if(!ReserveWage(I,R.ActiveTaskId,Wage))
                 {
                     FHearthWagePayable P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); P.TaskId=R.ActiveTaskId;
-                    P.Worker=I; P.Amount=Wage; P.Status=TEXT("owed"); WagePayables.Add(MoveTemp(P));
+                    P.Worker=I; P.Amount=Wage; P.Status=TEXT("unfunded"); WagePayables.Add(MoveTemp(P));
                 }
             }
         }

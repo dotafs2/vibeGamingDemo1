@@ -203,7 +203,9 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
     else if(Person.Energy<45) Action=0;
     else
     {
-        if(Person.SocialNeed>55)
+        if(Person.PersonalPlanks>1)
+            for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2 && IsSociallyAvailable(Other)) { Action=Other+3; break; }
+        if(Action==0 && Person.SocialNeed>55)
         {
             float Best=-FLT_MAX;
             for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Index && IsSociallyAvailable(Other))
@@ -261,7 +263,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
         M->SetStringField(TEXT("reason"),D.Reason); M->SetStringField(TEXT("result"),D.Result); Memory.Add(MakeShared<FJsonValueObject>(M));
     }
     Context->SetArrayField(TEXT("available_actions"),Actions); Context->SetArrayField(TEXT("recent_decisions_newest_first"),Memory);
-    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Completed production earns a real wage from the village treasury. Rest when energy is low; eat action 50 when hungry, buying one real food for one coin. When social_need exceeds 55, consider visiting an available idle neighbor. Visits start a real two-way conversation: each person can invite, ask help, accept or refuse, and accepted commitments become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
+    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Completed production earns a real wage from the village treasury. Rest when energy is low; eat action 50 when hungry, buying one real food for one coin. A resident who owns a plank may visit an idle neighbor to offer it for two coins. Visits start a real two-way conversation: each person can invite, offer a plank sale, ask help, accept or refuse, and accepted obligations become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
     SendDecisionRequest(Index,Context,Prompt,true);
 }
 

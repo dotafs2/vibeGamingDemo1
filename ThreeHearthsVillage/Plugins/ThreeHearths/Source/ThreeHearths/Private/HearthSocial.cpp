@@ -4,7 +4,7 @@
 
 namespace HearthSocial
 {
-    const TCHAR* IntentNames[]={TEXT("回应与闲聊"),TEXT("邀请一起吃饭"),TEXT("请求采集帮助"),TEXT("接受提议"),TEXT("婉拒提议"),TEXT("告别")};
+    const TCHAR* IntentNames[]={TEXT("回应与闲聊"),TEXT("邀请一起吃饭"),TEXT("请求采集帮助"),TEXT("接受提议"),TEXT("婉拒提议"),TEXT("告别"),TEXT("出售一块自有木板")};
     FString Json(const TSharedRef<FJsonObject>& J) { FString Text; FJsonSerializer::Serialize(J,TJsonWriterFactory<>::Create(&Text)); return Text; }
 }
 
@@ -60,7 +60,9 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
     {
         TArray<int32> Choices={4};
         const int32 Other=S->First==Index?S->Second:S->First;
-        if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))) Choices.Insert(3,0);
+        const auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); });
+        if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))
+            || (S->Offer==3 && Trade && Trade->Buyer==Index && Residents[Index].PersonalPlanks==0 && Residents[Index].Coins>=Trade->Price)) Choices.Insert(3,0);
         return Choices;
     }
     TArray<int32> Choices={0,5};
@@ -69,6 +71,7 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
         const int32 Other=S->First==Index?S->Second:S->First;
         if(FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) Choices.Add(1);
         if(FindHelpActivity(Other)>=0) Choices.Add(2);
+        if(Residents[Index].PersonalPlanks>1 && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2) Choices.Add(6);
     }
     return Choices;
 }
@@ -80,8 +83,16 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
     if(!S) return false;
     const int32 Other=S->First==Index?S->Second:S->First;
     if(FVector::Dist2D(Residents[Index].Actor->GetActorLocation(),Residents[Other].Actor->GetActorLocation())>300) return false;
+    auto& R=Residents[Index]; auto& Listener=Residents[Other]; FHearthTradeOffer* PendingTrade=nullptr;
+    if(Intent==6 && (R.PersonalPlanks<=1 || Listener.PersonalPlanks!=0 || Listener.Coins<2
+        || TradeOffers.ContainsByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id; }))) return false;
+    if(Intent==3 && S->Offer==3)
+    {
+        PendingTrade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); });
+        if(!PendingTrade || PendingTrade->Buyer!=Index || R.PersonalPlanks!=0 || R.Coins<PendingTrade->Price) return false;
+    }
     FHearthDialogueLine Line; Line.Speaker=Index; Line.Intent=Intent; Line.Text=Words; Line.Source=Source; Line.At=Elapsed;
-    S->Lines.Add(MoveTemp(Line)); auto& R=Residents[Index]; auto& Listener=Residents[Other];
+    S->Lines.Add(MoveTemp(Line));
     R.Speech=Words; R.SpeechRemaining=4.5f; Listener.SpeechRemaining=0;
     R.LatestEvent=TEXT("对")+Listener.Name+TEXT("说：")+Words;
     R.SocialNeed=FMath::Max(0.f,R.SocialNeed-15); Listener.SocialNeed=FMath::Max(0.f,Listener.SocialNeed-10);
@@ -93,20 +104,36 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
     {
         S->Offer=Intent; S->Proposer=Index; S->OfferAction=Intent==1?50:FindHelpActivity(Other);
     }
+    else if(Intent==6)
+    {
+        --R.PersonalPlanks; FHearthTradeOffer T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.ConversationId=S->Id;
+        T.Seller=Index; T.Buyer=Other; T.ReservedQuantity=1; T.Result=R.Name+TEXT("提出以2枚钱出售1块自有木板，木板已预留。"); TradeOffers.Add(MoveTemp(T));
+        S->Offer=3; S->Proposer=Index; S->OfferAction=-1;
+    }
     else if(Intent==3)
     {
         S->bAccepted=true;
-        const TArray<int32> Workers=S->Offer==1?TArray<int32>{Index,Other}:TArray<int32>{Index};
-        for(int32 Worker:Workers)
+        if(S->Offer==3)
         {
-            FHearthCommitment P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); P.ConversationId=S->Id;
-            P.Worker=Worker; P.Beneficiary=Worker==Index?Other:Index; P.Action=S->OfferAction;
-            Commitments.Add(MoveTemp(P));
+            PendingTrade->Status=TEXT("accepted"); PendingTrade->Result=Index==PendingTrade->Buyer?TEXT("买方同意价格，卖方将在谈话后送货。"):TEXT("交易已接受。");
+            S->Outcome=TEXT("双方同意以2枚钱交易1块自有木板。");
         }
-        S->Outcome=S->Offer==1?TEXT("两人约好一起去吃饭。"):TEXT("对方答应完成一项采集与运输工作。");
+        else
+        {
+            const TArray<int32> Workers=S->Offer==1?TArray<int32>{Index,Other}:TArray<int32>{Index};
+            for(int32 Worker:Workers)
+            {
+                FHearthCommitment P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); P.ConversationId=S->Id;
+                P.Worker=Worker; P.Beneficiary=Worker==Index?Other:Index; P.Action=S->OfferAction;
+                Commitments.Add(MoveTemp(P));
+            }
+            S->Outcome=S->Offer==1?TEXT("两人约好一起去吃饭。"):TEXT("对方答应完成一项采集与运输工作。");
+        }
     }
     else if(Intent==4)
     {
+        if(S->Offer==3) if(auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); }))
+        { Residents[Trade->Seller].PersonalPlanks+=Trade->ReservedQuantity; Trade->ReservedQuantity=0; Trade->Status=TEXT("cancelled"); Trade->Result=TEXT("买方拒绝，预留木板已退回卖方。"); }
         Reciprocal.Affinity=FMath::Max(-100.f,Reciprocal.Affinity-.5f);
         Listener.Mood=FMath::Max(0.f,Listener.Mood-1.f); S->Outcome=TEXT("提议被婉拒，双方保留自己的安排。");
         S->Offer=-1; S->Proposer=-1; S->OfferAction=-1;
@@ -140,6 +167,26 @@ void AHearthVillage::CloseConversation(FHearthConversation& S,const FString& Out
             B.Trust=FMath::Max(0.f,B.Trust-3); B.Memory=P.Result;
         }
     }
+    if(S.Offer==3 && S.bAccepted)
+    {
+        auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S.Id && T.Status==TEXT("accepted"); });
+        if(Trade)
+        {
+            TArray<FVector> Route; const FVector Target=Residents[Trade->Buyer].Actor->GetActorLocation()+FVector(0,120,0);
+            const bool Routed=!bUseCropoutMap?true:FindActivityRoute(Trade->Seller,Target,Route);
+            if(!bUseCropoutMap) Route={Target};
+            if(Routed)
+            {
+                auto& Seller=Residents[Trade->Seller]; auto& Buyer=Residents[Trade->Buyer]; Seller.Task=EHearthTask::TradeTravel; Buyer.Task=EHearthTask::TradeWaiting;
+                Seller.ActiveTaskId=Trade->Id; Seller.Route=MoveTemp(Route); Trade->Remaining=90.f;
+                Seller.LatestEvent=TEXT("携带预留木板前往买方交货。"); Buyer.LatestEvent=TEXT("等待卖方送来木板，交货后才付款。");
+            }
+            else
+            {
+                Residents[Trade->Seller].PersonalPlanks+=Trade->ReservedQuantity; Trade->ReservedQuantity=0; Trade->Status=TEXT("cancelled"); Trade->Result=TEXT("无法找到交货路线，交易取消并退回木板。");
+            }
+        }
+    }
     VillageEvent=Residents[S.First].Name+TEXT("和")+Residents[S.Second].Name+TEXT("：")+Outcome; ++SocialRevision;
 }
 
@@ -168,10 +215,11 @@ void AHearthVillage::DecideSocialLocally(int32 Index,const FString& Failure)
         const auto* B=Residents[Index].Bonds.Find(Residents[Other].StableId);
         const bool WillAccept=Choices.Contains(3) && Residents[Index].Energy>=25 && (!B || B->Trust>=35);
         Intent=WillAccept?3:4;
-        Words=WillAccept?(S->Offer==1?TEXT("好啊，一起去吃饭。我也想歇一会儿。"):TEXT("好，我来做这项采集，把东西运回村里。")):TEXT("抱歉，我现在有些累，这次先不答应了。");
+        Words=WillAccept?(S->Offer==1?TEXT("好啊，一起去吃饭。我也想歇一会儿。"):S->Offer==3?TEXT("两枚钱可以，我等你把木板送来再付款。"):TEXT("好，我来做这项采集，把东西运回村里。")):TEXT("抱歉，我现在有些累，这次先不答应了。");
     }
     else if(S->Lines.Num()==0) Words=Residents[Other].Name+TEXT("，最近过得怎么样？新家住得还习惯吗？");
     else if(S->Lines.Num()==1) Words=TEXT("还不错，家已经安顿好了。谢谢你过来，见到邻居真好。");
+    else if(Choices.Contains(6)) { Intent=6; Words=TEXT("我有一块自己的木板，两枚钱卖给你，需要吗？"); }
     else if(Choices.Contains(2) && AvailableWood()<60) { Intent=2; Words=TEXT("村里还需要材料，你愿意帮忙采集一趟、运回来吗？"); }
     else if(Choices.Contains(1)) { Intent=1; Words=TEXT("我们一起去村镇中心吃点东西，边走边聊吧？"); }
     else { Intent=5; Words=TEXT("聊得很开心，我先去忙了，下次再见。"); }
@@ -193,6 +241,7 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
         P->SetNumberField(TEXT("id"),I); P->SetStringField(TEXT("stable_id"),R.StableId); P->SetStringField(TEXT("name"),R.Name);
         P->SetStringField(TEXT("role"),R.Role); P->SetStringField(TEXT("personality"),R.Personality); P->SetNumberField(TEXT("age"),R.Age);
         P->SetNumberField(TEXT("energy"),R.Energy); P->SetNumberField(TEXT("hunger"),R.Hunger); P->SetNumberField(TEXT("mood"),R.Mood);
+        P->SetNumberField(TEXT("coins"),R.Coins); P->SetNumberField(TEXT("personally_owned_planks"),R.PersonalPlanks);
         P->SetBoolField(TEXT("home_completed"),R.BuildProgress>=1.f); P->SetStringField(TEXT("home_plot"),PlotLabel(R.Plot));
         P->SetStringField(TEXT("latest_event"),R.LatestEvent);
         P->SetStringField(TEXT("relationships"),RelationshipSummary(I)); People.Add(MakeShared<FJsonValueObject>(P));
@@ -203,11 +252,11 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
     for(const auto& Line:S->Lines)
     { auto L=MakeShared<FJsonObject>(); L->SetStringField(TEXT("speaker"),Residents[Line.Speaker].Name); L->SetNumberField(TEXT("intent_id"),Line.Intent); L->SetStringField(TEXT("words"),Line.Text); Lines.Add(MakeShared<FJsonValueObject>(L)); }
     Context->SetArrayField(TEXT("allowed_intents"),Choices); Context->SetArrayField(TEXT("conversation_so_far"),Lines);
-    Context->SetStringField(TEXT("pending_offer"),S->Offer<0?TEXT("无提议"):S->Offer==1?TEXT("一起去吃饭，每人消耗1份库存食物"):ProductionActionName(S->OfferAction));
+    Context->SetStringField(TEXT("pending_offer"),S->Offer<0?TEXT("无提议"):S->Offer==1?TEXT("一起去吃饭，每人消耗1份库存食物"):S->Offer==3?TEXT("卖方以2枚钱出售1块自有木板，交货后付款"):ProductionActionName(S->OfferAction));
     const int32 HelpAction=FindHelpActivity(Other);
     Context->SetStringField(TEXT("available_help_job"),HelpAction<0?TEXT("无可用采集工作"):ProductionActionName(HelpAction));
     AppendProductionContext(Context);
-    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed home already belongs to its resident; do not claim they still need their first home. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only, without invitations, requests for work or promises; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye. A request must use 1 or 2, never 0. Previous words alone do not create an offer: accept or decline only when pending_offer exists and that intent is allowed. Accepted promises cause real tasks after the conversation and change trust only when performed or failed. Do not claim completed work or transferred resources. Never invent quantities, trades, marriage, money, tools or additional obligations. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
+    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed home already belongs to its resident; do not claim they still need their first home. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye; 6=offer one personally owned plank for exactly two coins. Previous words alone do not create an offer. Accepted plank sales require the seller to travel and deliver before payment. Do not claim completed work or transferred resources before it occurs. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
     SendDecisionRequest(Index,Context,Prompt,true,true);
 }
 

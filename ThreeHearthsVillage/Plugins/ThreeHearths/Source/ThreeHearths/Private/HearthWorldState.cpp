@@ -170,7 +170,7 @@ namespace HearthWorld
         }
         for(const auto& T:W.TradeOffers)
         {
-            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),T.Id); Entry->SetStringField(TEXT("status"),T.Status); Entry->SetStringField(TEXT("result"),T.Result);
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),T.Id); Entry->SetStringField(TEXT("conversation_id"),T.ConversationId); Entry->SetStringField(TEXT("status"),T.Status); Entry->SetStringField(TEXT("result"),T.Result);
             Entry->SetNumberField(TEXT("seller"),T.Seller); Entry->SetNumberField(TEXT("buyer"),T.Buyer); Entry->SetNumberField(TEXT("quantity"),T.Quantity);
             Entry->SetNumberField(TEXT("price"),T.Price); Entry->SetNumberField(TEXT("reserved_quantity"),T.ReservedQuantity); Entry->SetNumberField(TEXT("remaining"),T.Remaining);
             Trades.Add(MakeShared<FJsonValueObject>(Entry));
@@ -252,7 +252,7 @@ namespace HearthWorld
             NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,14); NUM(CargoType,-1,4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
 #undef NUM
-            P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::ProductionDeposit)); R.Task=static_cast<EHearthTask>(Task);
+            P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::TradeWaiting)); R.Task=static_cast<EHearthTask>(Task);
             P.Bool(TEXT("bMovementBlocked"),R.bMovementBlocked); P.Vector(TEXT("position"),Saved.Position); P.Num(TEXT("yaw"),Saved.Yaw,-360,360);
             P.Num(TEXT("decision_delay"),Saved.DecisionDelay,0,86400); P.Bool(TEXT("pending"),Saved.bPending); P.Str(TEXT("pending_operation"),Saved.PendingOperation);
             for(const auto& Point:P.Array(TEXT("route"),4096)) { FVector Position; P.Vector(Point,Position); R.Route.Add(Position); }
@@ -286,14 +286,14 @@ namespace HearthWorld
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
                 STR(Id); STR(FirstId); STR(SecondId); STR(Outcome);
                 NUM(First,0,W.PlotCount-1); NUM(Second,0,W.PlotCount-1); NUM(Speaker,0,W.PlotCount-1);
-                NUM(Offer,-1,2); NUM(Proposer,-1,W.PlotCount-1); NUM(OfferAction,-1,20000); NUM(TravelTime,0,1000); NUM(TurnDelay,0,60);
+                NUM(Offer,-1,3); NUM(Proposer,-1,W.PlotCount-1); NUM(OfferAction,-1,20000); NUM(TravelTime,0,1000); NUM(TurnDelay,0,60);
 #undef STR
 #undef NUM
                 P.Bool(TEXT("met"),S.bMet); P.Bool(TEXT("closed"),S.bClosed); P.Bool(TEXT("accepted"),S.bAccepted);
                 for(const auto& Value:P.Array(TEXT("lines"),8))
                 {
                     FRead L{Object(Value)}; FHearthDialogueLine Line;
-                    L.Num(TEXT("speaker"),Line.Speaker,0,W.PlotCount-1); L.Num(TEXT("intent"),Line.Intent,0,5); L.Num(TEXT("at"),Line.At,0,1e9);
+                    L.Num(TEXT("speaker"),Line.Speaker,0,W.PlotCount-1); L.Num(TEXT("intent"),Line.Intent,0,6); L.Num(TEXT("at"),Line.At,0,1e9);
                     L.Str(TEXT("text"),Line.Text,180); L.Str(TEXT("source"),Line.Source); P.Good&=L.Good; S.Lines.Add(MoveTemp(Line));
                 }
                 C.Good&=P.Good; W.Conversations.Add(MoveTemp(S));
@@ -328,7 +328,7 @@ namespace HearthWorld
                 }
                 for(const auto& V:C.Array(TEXT("trade_offers"),100000))
                 {
-                    FHearthTradeOffer S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("status"),S.Status); P.Str(TEXT("result"),S.Result);
+                    FHearthTradeOffer S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); if(P.J.IsValid()) P.J->TryGetStringField(TEXT("conversation_id"),S.ConversationId); P.Str(TEXT("status"),S.Status); P.Str(TEXT("result"),S.Result);
                     P.Num(TEXT("seller"),S.Seller,0,W.PlotCount-1); P.Num(TEXT("buyer"),S.Buyer,0,W.PlotCount-1);
                     P.Num(TEXT("quantity"),S.Quantity,1,1000); P.Num(TEXT("price"),S.Price,1,1000000); P.Num(TEXT("reserved_quantity"),S.ReservedQuantity,0,1000);
                     P.Num(TEXT("remaining"),S.Remaining,0,1000); C.Good&=P.Good; W.TradeOffers.Add(MoveTemp(S));
@@ -408,7 +408,7 @@ namespace HearthWorld
             { if((L.Speaker!=S.First && L.Speaker!=S.Second) || L.Speaker==Previous || L.Text.IsEmpty()) return false; Previous=L.Speaker; }
             if(!S.bMet && !S.Lines.IsEmpty()) return false;
             if(!S.bClosed && !S.Lines.IsEmpty() && S.Speaker==S.Lines.Last().Speaker) return false;
-            if(S.Offer>=0 && ((S.Proposer!=S.First && S.Proposer!=S.Second) || (S.Offer==1 && S.OfferAction!=50) || (S.Offer==2 && S.OfferAction<100))) return false;
+            if(S.Offer>=0 && ((S.Proposer!=S.First && S.Proposer!=S.Second) || (S.Offer==1 && S.OfferAction!=50) || (S.Offer==2 && S.OfferAction<100) || (S.Offer==3 && S.OfferAction!=-1))) return false;
         }
         for(const auto& Saved:W.People)
         {
@@ -450,7 +450,7 @@ namespace HearthWorld
         for(const auto& P:W.WagePayables)
         {
             if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=W.PlotCount
-                || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid"))) return false;
+                || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("unfunded") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid"))) return false;
             PayableByTask.Add(P.TaskId,&P);
             const auto* Wage=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Kind==TEXT("wage") && T.TaskId==P.TaskId; });
             if(P.Status==TEXT("paid") && (!Wage || Wage->To!=P.Worker || Wage->Amount!=P.Amount)) return false;
@@ -469,20 +469,29 @@ namespace HearthWorld
                 if(Production)
                 {
                     const auto* const* P=PayableByTask.Find(R.ActiveTaskId);
-                    if(!P || ((*P)->Status!=TEXT("reserved") && (*P)->Status!=TEXT("owed")) || (*P)->Worker!=I) return false;
+                    if(!P || ((*P)->Status!=TEXT("reserved") && (*P)->Status!=TEXT("unfunded")) || (*P)->Worker!=I) return false;
                 }
             }
         }
         TSet<FString> TradeIds;
         for(const auto& T:W.TradeOffers)
         {
-            if(!Unique(T.Id) || T.Seller==T.Buyer || T.Quantity!=1 || T.Price!=2 || T.Remaining<0
-                || (T.Status!=TEXT("proposed") && T.Status!=TEXT("accepted") && T.Status!=TEXT("completed") && T.Status!=TEXT("cancelled"))) return false;
-            const bool Active=T.Status==TEXT("proposed") || T.Status==TEXT("accepted");
+            if(!Guid(T.Id) || TradeIds.Contains(T.Id) || T.Seller==T.Buyer || T.Quantity!=1 || T.Price!=2 || T.Remaining<0
+                || (T.Status!=TEXT("proposed") && T.Status!=TEXT("accepted") && T.Status!=TEXT("delivering") && T.Status!=TEXT("completed") && T.Status!=TEXT("cancelled"))) return false;
+            const bool Active=T.Status==TEXT("proposed") || T.Status==TEXT("accepted") || T.Status==TEXT("delivering");
             if(T.ReservedQuantity!=(Active?1:0)) return false;
             const auto* Sale=W.Transactions.FindByPredicate([&](const FHearthTransaction& X) { return X.Kind==TEXT("plank_trade") && X.TaskId==T.Id; });
             if((T.Status==TEXT("completed"))!=!!Sale || (Sale && (Sale->From!=T.Buyer || Sale->To!=T.Seller))) return false;
-            if(Active) AccountedManufactured[0]+=T.ReservedQuantity; TradeIds.Add(T.Id);
+            if(Active)
+            {
+                if(!Guid(T.ConversationId) || !ChatIds.Contains(T.ConversationId)) return false;
+                const auto* Chat=W.Conversations.FindByPredicate([&](const FHearthConversation& C) { return C.Id==T.ConversationId; });
+                if(!Chat || Chat->Offer!=3 || Chat->Proposer!=T.Seller) return false;
+                if(T.Status==TEXT("delivering") && (W.People[T.Seller].Person.Task!=EHearthTask::TradeWaiting || W.People[T.Buyer].Person.Task!=EHearthTask::TradeWaiting)) return false;
+                if(T.Status==TEXT("accepted") && Chat->bClosed && (W.People[T.Seller].Person.Task!=EHearthTask::TradeTravel || W.People[T.Buyer].Person.Task!=EHearthTask::TradeWaiting)) return false;
+                AccountedManufactured[0]+=T.ReservedQuantity;
+            }
+            TradeIds.Add(T.Id);
         }
         if(W.Schema>=4) for(const auto& T:W.Transactions) if(T.Kind==TEXT("plank_trade") && !TradeIds.Contains(T.TaskId)) return false;
         if(HasEconomy)

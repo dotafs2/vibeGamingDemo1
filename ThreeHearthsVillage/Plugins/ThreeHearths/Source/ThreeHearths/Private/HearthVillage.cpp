@@ -145,7 +145,7 @@ void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
     if (Task != LastMotion || WorkKind != LastWorkKind || !Body->IsPlaying())
     {
         UAnimSequence* Animation = Idle;
-        if (Task==EHearthTask::ToWood || Task==EHearthTask::ToHome || Task==EHearthTask::LifeTravel || Task==EHearthTask::ProductionTravel || Task==EHearthTask::ProductionDeliver) Animation=Walk;
+        if (Task==EHearthTask::ToWood || Task==EHearthTask::ToHome || Task==EHearthTask::LifeTravel || Task==EHearthTask::ProductionTravel || Task==EHearthTask::ProductionDeliver || Task==EHearthTask::TradeTravel) Animation=Walk;
         else if (Task==EHearthTask::Chopping) Animation=Chop;
         else if (Task==EHearthTask::Building) Animation=Build;
         if(Task==EHearthTask::ProductionWork)
@@ -589,15 +589,17 @@ void AHearthVillage::Tick(float DeltaSeconds)
         const EHearthTask Motion=R.Task==EHearthTask::LifeChoosing && !R.Route.IsEmpty()?EHearthTask::LifeTravel:R.Task;
         R.Actor->EquippedToolId=R.HeldToolId;
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
-        R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0);
-        const TCHAR* CargoMesh=(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
+        const bool bTradeCargo=(R.Task==EHearthTask::TradeTravel || R.Task==EHearthTask::TradeWaiting)
+            && TradeOffers.ContainsByPredicate([&](const FHearthTradeOffer& T) { return T.Id==R.ActiveTaskId && T.Seller==R.Actor->ResidentIndex && T.ReservedQuantity>0; });
+        R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0 || bTradeCargo);
+        const TCHAR* CargoMesh=bTradeCargo?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
             R.CargoType==3?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):
             R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):TEXT("/Engine/BasicShapes/Cube");
         if(auto* Asset=LoadObject<UStaticMesh>(nullptr,CargoMesh); Asset && R.Actor->Bundle->GetStaticMesh()!=Asset)
         {
             R.Actor->Bundle->SetStaticMesh(Asset);
-            R.Actor->Bundle->SetRelativeScale3D(R.CargoType>=3?FVector(.7f):FVector(.32f,.6f,.25f));
-            if(R.CarriedWood>0 || R.CargoType>=1) R.Actor->Bundle->SetMaterial(0,nullptr);
+            R.Actor->Bundle->SetRelativeScale3D(R.CargoType>=3 || bTradeCargo?FVector(.7f):FVector(.32f,.6f,.25f));
+            if(R.CarriedWood>0 || R.CargoType>=1 || bTradeCargo) R.Actor->Bundle->SetMaterial(0,nullptr);
         }
         if(auto* Material=Cast<UMaterialInstanceDynamic>(R.Actor->Bundle->GetMaterial(0)))
             Material->SetVectorParameterValue(TEXT("VillageTint"),R.CargoType==0?FLinearColor(.55f,.65f,.12f):R.CargoType==2?FLinearColor(.45f,.46f,.43f):Hearth::Wood);
@@ -722,6 +724,8 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::ProductionWork) return TEXT("正在生产 / 施工");
     if(Residents[I].Task==EHearthTask::ProductionDeliver) return TEXT("运送产出");
     if(Residents[I].Task==EHearthTask::ProductionDeposit) return TEXT("交付入库");
+    if(Residents[I].Task==EHearthTask::TradeTravel) return TEXT("携带自有木板前往交货");
+    if(Residents[I].Task==EHearthTask::TradeWaiting) return TEXT("等待木板交易结算");
     if(Residents[I].Task==EHearthTask::LifeChoosing)
     {
         const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-Elapsed));
@@ -853,7 +857,7 @@ FString AHearthVillage::GetSnapshot() const
     TArray<TSharedPtr<FJsonValue>> Trades;
     for(const auto& T:TradeOffers)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),T.Id); J->SetStringField(TEXT("status"),T.Status); J->SetStringField(TEXT("result"),T.Result);
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),T.Id); J->SetStringField(TEXT("conversation_id"),T.ConversationId); J->SetStringField(TEXT("status"),T.Status); J->SetStringField(TEXT("result"),T.Result);
         J->SetNumberField(TEXT("seller"),T.Seller); J->SetNumberField(TEXT("buyer"),T.Buyer); J->SetNumberField(TEXT("quantity"),T.Quantity);
         J->SetNumberField(TEXT("price"),T.Price); J->SetNumberField(TEXT("reserved_quantity"),T.ReservedQuantity); J->SetNumberField(TEXT("remaining"),T.Remaining);
         Trades.Add(MakeShared<FJsonValueObject>(J));

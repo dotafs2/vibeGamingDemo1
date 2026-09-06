@@ -334,9 +334,10 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
 
 bool AHearthVillage::TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity)
 {
-    const bool Purchase=Kind==TEXT("food_purchase") && From>=0 && To==-1 && Item==TEXT("food") && Quantity==1;
+    FGuid ParsedTask;
+    const bool Purchase=Kind==TEXT("food_purchase") && From>=0 && To==-1 && Item==TEXT("food") && Quantity==1 && Amount==1;
     const bool Trade=Kind==TEXT("plank_trade") && From>=0 && To>=0 && Item==TEXT("plank") && Quantity==1 && Amount==2;
-    if(TaskId.IsEmpty() || Amount<=0 || Quantity<=0 || From<-1 || To<-1 || From==To || From>=Residents.Num() || To>=Residents.Num()
+    if(!FGuid::Parse(TaskId,ParsedTask) || !ParsedTask.IsValid() || From<-1 || To<-1 || From==To || From>=Residents.Num() || To>=Residents.Num()
         || (!Purchase && !Trade) || Transactions.Num()>=100000) return false;
     if(Transactions.ContainsByPredicate([&](const FHearthTransaction& T) { return T.Kind==Kind && T.TaskId==TaskId; })) return false;
     const int32 Balance=From<0?TreasuryCoins:Residents[From].Coins;
@@ -352,7 +353,8 @@ int32 AHearthVillage::WageForOperation(int32 Operation) const { return Operation
 
 bool AHearthVillage::ReserveWage(int32 Worker,const FString& TaskId,int32 Amount)
 {
-    if(!Residents.IsValidIndex(Worker) || TaskId.IsEmpty() || Amount<=0 || TreasuryCoins<Amount
+    FGuid ParsedTask;
+    if(!Residents.IsValidIndex(Worker) || !FGuid::Parse(TaskId,ParsedTask) || !ParsedTask.IsValid() || (Amount!=2 && Amount!=3) || TreasuryCoins<Amount
         || WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P) { return P.TaskId==TaskId; })) return false;
     TreasuryCoins-=Amount;
     FHearthWagePayable P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); P.TaskId=TaskId; P.Worker=Worker; P.Amount=Amount;
@@ -363,6 +365,11 @@ bool AHearthVillage::SettleWage(int32 Worker,const FString& TaskId)
 {
     auto* P=WagePayables.FindByPredicate([&](const FHearthWagePayable& X) { return X.TaskId==TaskId; });
     if(!P || P->Worker!=Worker || !Residents.IsValidIndex(Worker) || Transactions.Num()>=100000) return false;
+    if(P->Status==TEXT("unfunded"))
+    {
+        if(TreasuryCoins<P->Amount) { P->Status=TEXT("owed"); return false; }
+        TreasuryCoins-=P->Amount; P->Status=TEXT("reserved");
+    }
     if(P->Status==TEXT("owed"))
     {
         if(TreasuryCoins<P->Amount) return false;
@@ -377,20 +384,33 @@ bool AHearthVillage::SettleWage(int32 Worker,const FString& TaskId)
 void AHearthVillage::AdvanceEconomy(float Dt)
 {
     for(auto& P:WagePayables) if(P.Status==TEXT("owed") && TreasuryCoins>=P.Amount) SettleWage(P.Worker,P.TaskId);
-    for(auto& Offer:TradeOffers) if(Offer.Status==TEXT("proposed") || Offer.Status==TEXT("accepted"))
+    for(auto& P:WagePayables) if(P.Status==TEXT("unfunded") && TreasuryCoins>=P.Amount)
     {
-        Offer.Remaining=FMath::Max(0.f,Offer.Remaining-Dt); if(Offer.Remaining>0) return;
-        if(Offer.Status==TEXT("proposed"))
+        const bool StillWorking=Residents.IsValidIndex(P.Worker) && Residents[P.Worker].ActiveTaskId==P.TaskId
+            && Residents[P.Worker].Task>=EHearthTask::ProductionTravel && Residents[P.Worker].Task<=EHearthTask::ProductionDeposit;
+        if(StillWorking) { TreasuryCoins-=P.Amount; P.Status=TEXT("reserved"); }
+    }
+    for(auto& Offer:TradeOffers)
+    {
+        if(Offer.Status==TEXT("accepted") && Residents.IsValidIndex(Offer.Seller) && Residents[Offer.Seller].Task==EHearthTask::TradeTravel)
         {
-            if(Residents.IsValidIndex(Offer.Buyer) && Residents[Offer.Buyer].Coins>=Offer.Price && Residents[Offer.Buyer].Mood>=20)
-            { Offer.Status=TEXT("accepted"); Offer.Remaining=4.f; Offer.Result=TEXT("买方同意价格，木板正在交付。"); }
-            else
+            Offer.Remaining=FMath::Max(0.f,Offer.Remaining-Dt);
+            if(MoveResident(Offer.Seller,Dt))
             {
-                if(Residents.IsValidIndex(Offer.Seller)) Residents[Offer.Seller].PersonalPlanks+=Offer.ReservedQuantity;
-                Offer.ReservedQuantity=0; Offer.Status=TEXT("cancelled"); Offer.Result=TEXT("买方拒绝或余额不足，预留木板已退回卖方。");
+                Offer.Status=TEXT("delivering"); Offer.Remaining=1.f;
+                Residents[Offer.Seller].Task=EHearthTask::TradeWaiting; Residents[Offer.Seller].LatestEvent=TEXT("已与买方见面，正在交付木板。");
+                Residents[Offer.Buyer].LatestEvent=TEXT("卖方已到达，验收木板后付款。");
             }
-            VillageEvent=Offer.Result; return;
+            else if(Offer.Remaining<=0)
+            {
+                Residents[Offer.Seller].PersonalPlanks+=Offer.ReservedQuantity; Offer.ReservedQuantity=0; Offer.Status=TEXT("cancelled");
+                Offer.Result=TEXT("送货超时，交易取消，木板退回卖方。");
+                for(int32 I:{Offer.Seller,Offer.Buyer}) if(Residents[I].Task==EHearthTask::TradeTravel || Residents[I].Task==EHearthTask::TradeWaiting) Residents[I].Task=EHearthTask::LifeChoosing;
+            }
+            continue;
         }
+        if(Offer.Status!=TEXT("delivering")) continue;
+        Offer.Remaining=FMath::Max(0.f,Offer.Remaining-Dt); if(Offer.Remaining>0) continue;
         if(TransferCoins(TEXT("plank_trade"),Offer.Id,Offer.Buyer,Offer.Seller,Offer.Price,TEXT("plank"),Offer.Quantity))
         {
             Residents[Offer.Buyer].PersonalPlanks+=Offer.ReservedQuantity; Offer.ReservedQuantity=0; Offer.Status=TEXT("completed");
@@ -401,16 +421,12 @@ void AHearthVillage::AdvanceEconomy(float Dt)
             Residents[Offer.Seller].PersonalPlanks+=Offer.ReservedQuantity; Offer.ReservedQuantity=0; Offer.Status=TEXT("cancelled");
             Offer.Result=TEXT("结算时余额不足，交易取消，木板退回卖方。");
         }
-        VillageEvent=Offer.Result; NextTradeAt=Elapsed+20.f; return;
+        for(int32 I:{Offer.Seller,Offer.Buyer}) if(Residents[I].Task==EHearthTask::TradeTravel || Residents[I].Task==EHearthTask::TradeWaiting)
+        { Residents[I].Task=EHearthTask::LifeChoosing; Residents[I].NextLifeDecision=Elapsed+LifeDecisionInterval; Residents[I].LatestEvent=Offer.Result; }
+        auto& SellerBond=Residents[Offer.Seller].Bonds.FindOrAdd(Residents[Offer.Buyer].StableId);
+        auto& BuyerBond=Residents[Offer.Buyer].Bonds.FindOrAdd(Residents[Offer.Seller].StableId);
+        SellerBond.Memory=Offer.Result; BuyerBond.Memory=Offer.Result; VillageEvent=Offer.Result;
     }
-    if(Elapsed<NextTradeAt) return;
-    int32 Seller=-1,Buyer=-1;
-    for(int32 I=0;I<Residents.Num() && Seller<0;++I) if(Residents[I].PersonalPlanks>0) Seller=I;
-    if(Seller>=0) for(int32 I=0;I<Residents.Num();++I) if(I!=Seller && Residents[I].Coins>=2) { Buyer=I; break; }
-    if(Seller<0 || Buyer<0) { NextTradeAt=Elapsed+10.f; return; }
-    --Residents[Seller].PersonalPlanks;
-    FHearthTradeOffer T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Seller=Seller; T.Buyer=Buyer; T.ReservedQuantity=1; T.Remaining=2.f;
-    T.Result=Residents[Seller].Name+TEXT("提出以2枚钱出售1块自有木板，货物已预留。"); TradeOffers.Add(MoveTemp(T)); VillageEvent=TradeOffers.Last().Result;
 }
 
 void AHearthVillage::UpdateSiteVisual(int32 Index)
