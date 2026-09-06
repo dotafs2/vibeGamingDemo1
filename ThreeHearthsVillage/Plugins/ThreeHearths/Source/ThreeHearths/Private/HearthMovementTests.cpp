@@ -2,6 +2,8 @@
 #include "HearthMovement.h"
 #include "HearthVillage.h"
 #include "Engine/World.h"
+#include "Engine/StaticMeshActor.h"
+#include "Components/StaticMeshComponent.h"
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthMovementGeometryTest,"ThreeHearths.Movement.SweptSeparation",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
@@ -38,7 +40,7 @@ bool FHearthMovementGeometryTest::RunTest(const FString&)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthMovementIntegrationTest,"ThreeHearths.Movement.ResidentTraffic",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthMovementIntegrationTest::RunTest(const FString&)
 {
-    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(true).CreateNavigation(false).CreateAISystem(false);
     UWorld* World=UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
     if(!TestNotNull(TEXT("Create isolated movement test world"),World)) return false;
     auto* Village=World->SpawnActor<AHearthVillage>();
@@ -102,6 +104,74 @@ bool FHearthMovementIntegrationTest::RunTest(const FString&)
     TestTrue(TEXT("Both finish the avoidance without teleporting or overlap"),Arrived && Clearance>=HearthMovement::Separation-.01);
     TestEqual(TEXT("Yield does not create a new paid or production decision"),Village->DecisionHistory.Num(),HistoryBefore);
     TestEqual(TEXT("Idle neighbor keeps its own planning state"),Village->Residents[1].Task,EHearthTask::LifeChoosing);
+
+    auto* Terrain=World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),FVector(0,0,-47.f),FRotator::ZeroRotator);
+    Terrain->Tags.Add(TEXT("ThreeHearthsBaseTerrain"));
+    Terrain->GetStaticMeshComponent()->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube")));
+    Terrain->GetStaticMeshComponent()->SetWorldScale3D(FVector(140.f,140.f,1.f));
+    Village->bUseCropoutMap=true;
+    for(int32 X=-22;X<=22;++X) for(int32 Y=-22;Y<=22;++Y) Village->LandGrid.Add(FIntPoint(X,Y));
+    // Exact north-street deadlock from the 10-NPC run: two 285 cm exclusion
+    // boxes leave only 30 cm between them, and both walkers inside need to exit
+    // past the builder at the mouth. All three have live, opposing tasks.
+    Village->FixedObstacles={FVector(-1690,3000,285),FVector(-1690,3600,285),FVector(-2570,3000,285),FVector(-2570,3600,285)};
+    FHearthSite DistantSite; DistantSite.Position=FVector(5000,5000,8); DistantSite.Radius=145;
+    Village->ProductionSites.Add(DistantSite);
+    for(float Dt:{.05f,.2f,3.f})
+    {
+        const TArray<FVector> Starts={FVector(-2027.549,3300,8),FVector(-1920,3300,8),FVector(-1812,3300,8)};
+        const TArray<FVector> Goals={FVector(-1680,3300,8),FVector(-2010,-1050,8),FVector(-1530,-1339.706,8)};
+        for(int32 I=0;I<3;++I)
+        {
+            auto& R=Village->Residents[I]; R.Actor->SetActorLocation(Starts[I]);
+            R.MoveRetry=0; R.bYieldingForTraffic=false; R.Task=I==0?EHearthTask::ProductionTravel:EHearthTask::LifeTravel;
+            R.ActiveTaskId=FString::Printf(TEXT("north-street-task-%d"),I);
+            R.Route.Reset();
+            if(I<2) R.Route.Add(FVector(-1800,3300,8));
+            if(I>0)
+            {
+                for(int32 Y=3300;Y>=-300;Y-=300) R.Route.Add(FVector(-2100,Y,8));
+                R.Route.Append({FVector(-1800,-300,8),FVector(-1800,-600,8),FVector(-1800,-900,8),FVector(-1800,-1200,8)});
+            }
+            R.Route.Add(Goals[I]);
+        }
+        auto& Builder=Village->Residents[0]; Builder.CargoType=3; Builder.CargoAmount=1;
+        Builder.ProductionComponentId=TEXT("roof_slope_timber_2m"); Builder.HeldToolId=TEXT("tool_hammer");
+        Builder.HeldToolOperationId=Builder.ActiveTaskId;
+        bool Complete=false,ClearGeometry=true,SimulatedReload=false; double MinSeparation=DBL_MAX;
+        for(int32 Step=0;Step<4000 && !Complete;++Step)
+        {
+            Complete=true;
+            for(int32 I=0;I<3;++I)
+            {
+                Complete=Village->MoveResident(I,Dt) && Complete;
+                ClearGeometry=Village->IsClearPoint(Village->Residents[I].Actor->GetActorLocation()) && ClearGeometry;
+                // The persisted route must also recover if a reload drops the
+                // transient traffic courtesy state while standing in the bay.
+                auto& R=Village->Residents[I];
+                if(Dt==.2f && !SimulatedReload && R.bYieldingForTraffic && R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01))
+                { R.bYieldingForTraffic=false; R.TrafficYieldWaiters.Reset(); SimulatedReload=true; }
+                for(int32 A=0;A<3;++A) for(int32 B=A+1;B<3;++B)
+                    MinSeparation=FMath::Min(MinSeparation,FVector::Dist2D(Village->Residents[A].Actor->GetActorLocation(),Village->Residents[B].Actor->GetActorLocation()));
+            }
+        }
+        TestTrue(FString::Printf(TEXT("Real north-street traffic resolves at dt %.2f"),Dt),Complete);
+        if(!Complete) for(const auto& R:Village->Residents) AddInfo(FString::Printf(TEXT("Traffic dt=%g pos=%s next=%s yield=%d route=%d"),Dt,*R.Actor->GetActorLocation().ToString(),R.Route.IsEmpty()?TEXT("none"):*R.Route[0].ToString(),R.bYieldingForTraffic,R.Route.Num()));
+        TestTrue(TEXT("Narrow-street yielding never overlaps another resident"),MinSeparation>=HearthMovement::Separation-.01);
+        TestTrue(TEXT("Every movement update ends outside building exclusions"),ClearGeometry);
+        if(Dt==.2f) TestTrue(TEXT("Regression exercised missing transient courtesy state after reload"),SimulatedReload);
+        for(int32 I=0;I<3;++I)
+        {
+            const auto& R=Village->Residents[I];
+            TestTrue(TEXT("Original destination is reached"),R.Actor->GetActorLocation().Equals(Goals[I],.01));
+            TestEqual(TEXT("Avoidance preserves the original task"),R.Task,I==0?EHearthTask::ProductionTravel:EHearthTask::LifeTravel);
+            TestEqual(TEXT("Avoidance preserves the task identity"),R.ActiveTaskId,FString::Printf(TEXT("north-street-task-%d"),I));
+        }
+        TestEqual(TEXT("Builder still carries the paid component material"),Builder.CargoAmount,1);
+        TestEqual(TEXT("Builder keeps component ownership"),Builder.ProductionComponentId,FString(TEXT("roof_slope_timber_2m")));
+        TestEqual(TEXT("Builder keeps the borrowed hammer"),Builder.HeldToolId,FString(TEXT("tool_hammer")));
+        TestEqual(TEXT("Hammer operation remains attached to the construction task"),Builder.HeldToolOperationId,Builder.ActiveTaskId);
+    }
     World->DestroyWorld(false);
     return true;
 }

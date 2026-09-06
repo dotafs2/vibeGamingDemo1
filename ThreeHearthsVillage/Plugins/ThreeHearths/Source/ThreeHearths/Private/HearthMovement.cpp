@@ -125,6 +125,58 @@ bool AHearthVillage::TryYieldFor(int32 Walker)
             return true;
         }
     }
+    // In a one-person passage the person at its mouth must sometimes back out,
+    // even when carrying a construction component. Moving the task owner aside
+    // preserves cargo, reservations and tools; cancelling their task would not.
+    auto& Yielding=Residents[Walker];
+    if(Yielding.bYieldingForTraffic) return false;
+    const FVector Start=Yielding.Actor->GetActorLocation();
+    TArray<FVector> People;
+    TArray<int32> BlockedWalkers;
+    for(int32 Other=0;Other<Residents.Num();++Other) if(Other!=Walker && IsValid(Residents[Other].Actor))
+    {
+        const auto& R=Residents[Other]; People.Add(R.Actor->GetActorLocation());
+        if(!R.Route.IsEmpty() && FVector::Dist2D(Start,R.Actor->GetActorLocation())<350
+            && !HearthMovement::SegmentClear(R.Actor->GetActorLocation(),R.Route[0],TArray<FVector>{Start})) BlockedWalkers.Add(Other);
+    }
+    if(BlockedWalkers.IsEmpty()) return false;
+    const FVector Forward=(Yielding.Route[0]-Start).GetSafeNormal2D();
+    for(float Backoff:{0.f,120.f,240.f,360.f}) for(float Radius:{120.f,180.f,240.f}) for(int32 Side=0;Side<16;++Side)
+    {
+        const FVector Retreat=Start-Forward*Backoff;
+        const double Angle=Side*UE_DOUBLE_PI/8.;
+        const FVector Target=Retreat+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0);
+        if(!HearthMovement::SegmentClear(Start,Retreat,People) || !HearthMovement::SegmentClear(Retreat,Target,People)
+            || (bUseCropoutMap && (!IsClearSegment(Start,Retreat) || !IsClearSegment(Retreat,Target)))) continue;
+        bool ClearsTraffic=true;
+        for(int32 Other:BlockedWalkers)
+        {
+            const auto& R=Residents[Other];
+            if(!HearthMovement::SegmentClear(R.Actor->GetActorLocation(),R.Route[0],TArray<FVector>{Target})) ClearsTraffic=false;
+            const FVector Direction=(R.Route[0]-R.Actor->GetActorLocation()).GetSafeNormal2D();
+            const FVector Offset=Target-R.Actor->GetActorLocation();
+            if((Offset-Direction*FVector::DotProduct(Offset,Direction)).Size2D()<HearthMovement::Separation) ClearsTraffic=false;
+        }
+        if(!ClearsTraffic) continue;
+        bool Land=true;
+        for(const auto& Segment:TArray<TPair<FVector,FVector>>{{Start,Retreat},{Retreat,Target}})
+        {
+            const int32 Probes=FMath::Max(1,FMath::CeilToInt(FVector::Dist2D(Segment.Key,Segment.Value)/40.f));
+            for(int32 Probe=0;Probe<=Probes;++Probe) if(!IsLand(FMath::Lerp(Segment.Key,Segment.Value,static_cast<float>(Probe)/Probes))) Land=false;
+        }
+        if(!Land) continue;
+        // Return through the known-clear mouth after the waiting traffic passes.
+        // Both waypoints live in the normal persisted route, so reload is safe.
+        Yielding.Route.Insert(Start,0);
+        if(Backoff>0) Yielding.Route.Insert(Retreat,0);
+        Yielding.Route.Insert(Target,0);
+        if(Backoff>0) Yielding.Route.Insert(Retreat,0);
+        Yielding.TrafficYieldTarget=Target; Yielding.bYieldingForTraffic=true;
+        Yielding.TrafficYieldReturn=Start; Yielding.TrafficYieldWaiters=BlockedWalkers;
+        Yielding.MoveRetry=0; Yielding.bMovementBlocked=false;
+        Yielding.LatestEvent=TEXT("在通道口侧让，保留手上的工作和材料，等同伴通过后继续。");
+        return true;
+    }
     return false;
 }
 
@@ -132,7 +184,22 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
 {
     auto& R=Residents[Index];
     R.bMovementBlocked=false;
-    if(R.Route.IsEmpty()) return true;
+    if(R.Route.IsEmpty()) { R.bYieldingForTraffic=false; return true; }
+    if(R.bYieldingForTraffic && !R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01)
+        && !R.Route.ContainsByPredicate([&](const FVector& Point) { return Point.Equals(R.TrafficYieldTarget,.01); }))
+    { R.bYieldingForTraffic=false; R.TrafficYieldWaiters.Reset(); }
+    if(R.bYieldingForTraffic && R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01))
+    {
+        // Wait for the actual opposing traffic to clear the mouth, rather than
+        // a wall-clock timeout that can let us re-enter ahead of a slower walker.
+        for(int32 Other:R.TrafficYieldWaiters) if(Residents.IsValidIndex(Other))
+        {
+            const auto& Waiting=Residents[Other];
+            if(!Waiting.Route.IsEmpty() && !HearthMovement::SegmentClear(Waiting.Actor->GetActorLocation(),Waiting.Route[0],TArray<FVector>{R.TrafficYieldReturn}))
+            { R.bMovementBlocked=true; return false; }
+        }
+        R.bYieldingForTraffic=false; R.TrafficYieldWaiters.Reset();
+    }
     R.MoveRetry=FMath::Max(0.f,R.MoveRetry-Dt);
     if(R.MoveRetry>0) { R.bMovementBlocked=true; return false; }
     TArray<FVector,TInlineAllocator<8>> People;
@@ -169,7 +236,7 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
                 return IsLand(A) && IsLand(B);
             };
             // Skip an occupied intermediate waypoint when the following route node is reachable.
-            for(int32 Join=0;Join<FMath::Min(3,R.Route.Num());++Join)
+            for(int32 Join=0;Join<FMath::Min(R.bYieldingForTraffic?1:3,R.Route.Num());++Join)
             {
                 if(HearthMovement::FindDetour(Start,R.Route[Join],People,ClearGround,Detour))
                 {
@@ -203,7 +270,14 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
         R.Actor->SetActorRotation(FRotator(0,Delta.Rotation().Yaw,0));
         R.Actor->SetActorLocation(Next);
         Budget-=FMath::Min<double>(Distance,Budget);
-        if(Next.Equals(R.Route[0],0.01)) R.Route.RemoveAt(0);
+        if(Next.Equals(R.Route[0],0.01))
+        {
+            R.Route.RemoveAt(0);
+            if(R.bYieldingForTraffic && Next.Equals(R.TrafficYieldTarget,.01))
+            {
+                return false;
+            }
+        }
     }
     return R.Route.IsEmpty();
 }

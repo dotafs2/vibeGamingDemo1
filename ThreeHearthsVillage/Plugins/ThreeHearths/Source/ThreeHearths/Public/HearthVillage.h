@@ -211,6 +211,11 @@ struct FHearthResident
     float MoveSpeed = 240.f;
     float MoveRetry = 0.f;
     bool bMovementBlocked = false;
+    // Transient avoidance only: the original task and route remain owned by this resident.
+    bool bYieldingForTraffic = false;
+    FVector TrafficYieldTarget = FVector::ZeroVector;
+    FVector TrafficYieldReturn = FVector::ZeroVector;
+    TArray<int32> TrafficYieldWaiters;
     double NextLifeDecision = 0;
     TArray<FVector> Route;
     int32 HistoryIndex = -1;
