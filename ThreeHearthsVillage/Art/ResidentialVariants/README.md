@@ -2,6 +2,8 @@
 
 当前 VillageKit 的 40 个独立组件都有 UE 原生包，源 GLB 哈希与导入记录一致，尺寸检查通过。没有必要重做现有墙、框架或陶瓦。`component-map.json` 给出每件的完整原生路径、实测包围盒/原点、PBR、资源配方来源、当前绑定状态和下一步接入动作，可作为 Planner 注册的输入清单；它不会自动修改运行时。
 
+本轮在 UE 5.8.1 完成了 40 件原生资产的重新加载检查：全部材质基色/粗糙度/金属度与源 GLB 匹配，原点和尺寸误差小于 0.15 厘米，完整三角形、UV0 与 Nanite 关闭均通过。`native-validation.json` 为 `passed` 并记录对应清单哈希；日志为 `Saved/Logs/ResidentialVariantsAudit.log`。检查未启动 PIE、没有改动或保存资产，引擎已自动退出。
+
 ## 现在可以使用的 7 件
 
 以下已经同时出现在 `HearthStructureCatalog` 和居民 Planner 配方中。当前每次安装消耗下表的 1 份资源，来自实际 C++ 配方；旧 Art catalog 的多资源数量仅作为作者设计记录保存，不能当成当前运行时平衡数值。

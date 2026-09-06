@@ -1,0 +1,3112 @@
+{
+  "status": "passed",
+  "read_only": true,
+  "component_map_sha256": "5bcfd55289cc95903ca0cb695cc19126c350769d697e2af8200631cccb9cb8e3",
+  "assets": [
+    {
+      "id": "foundation_stone_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/foundation_stone_2m.foundation_stone_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        -12.0
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        100.0,
+        12.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        -11.999999731779099
+      ],
+      "expected_extent_cm": [
+        100.0,
+        100.0,
+        11.999999731779099
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1836,
+      "native_lod0_fallback_triangles": 1836,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1836,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "floor_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/floor_timber_2m.floor_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        100.0,
+        8.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        7.999999821186066
+      ],
+      "expected_extent_cm": [
+        100.0,
+        100.0,
+        7.999999821186066
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1080,
+      "native_lod0_fallback_triangles": 1080,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1080,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "frame_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/frame_timber_2m/frame_timber_2m.frame_timber_2m",
+      "bounds_origin_cm": [
+        -3.814697265625e-06,
+        0.6000022888183594,
+        120.00000762939453
+      ],
+      "bounds_extent_cm": [
+        109.0,
+        109.59999084472656,
+        120.00000762939453
+      ],
+      "expected_origin_cm": [
+        -5.9604644775390625e-06,
+        0.6000041961669922,
+        120.00000476837158
+      ],
+      "expected_extent_cm": [
+        108.99999737739563,
+        109.59999561309814,
+        120.00000476837158
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1512,
+      "native_lod0_fallback_triangles": 1512,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1512,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/frame_timber_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/frame_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "post_timber_2_4m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/post_timber_2_4m/post_timber_2_4m.post_timber_2_4m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        120.00000762939453
+      ],
+      "bounds_extent_cm": [
+        9.0,
+        9.0,
+        120.00000762939453
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        120.00000476837158
+      ],
+      "expected_extent_cm": [
+        9.000000357627869,
+        9.000000357627869,
+        120.00000476837158
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 108,
+      "native_lod0_fallback_triangles": 108,
+      "native_nanite_triangles": 0,
+      "source_triangles": 108,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/post_timber_2_4m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "beam_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.beam_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        10.0
+      ],
+      "bounds_extent_cm": [
+        91.0,
+        9.0,
+        10.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        10.000000149011612
+      ],
+      "expected_extent_cm": [
+        91.00000262260437,
+        9.000000357627869,
+        10.000000149011612
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 108,
+      "native_lod0_fallback_triangles": 108,
+      "native_nanite_triangles": 0,
+      "source_triangles": 108,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/beam_timber_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_plaster_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_plaster_2m/wall_plaster_2m.wall_plaster_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        91.0,
+        8.0,
+        104.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        120.00000476837158
+      ],
+      "expected_extent_cm": [
+        91.00000262260437,
+        7.999999821186066,
+        103.99999618530273
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 108,
+      "native_lod0_fallback_triangles": 108,
+      "native_nanite_triangles": 0,
+      "source_triangles": 108,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_plaster_2m/VK_Cream_Lime.VK_Cream_Lime",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8148465752601624,
+            0.715693473815918,
+            0.48514994978904724,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_timber_2m/wall_timber_2m.wall_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        90.5999984741211,
+        8.0,
+        104.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        120.00000476837158
+      ],
+      "expected_extent_cm": [
+        90.6000018119812,
+        7.999999821186066,
+        103.99999618530273
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 864,
+      "native_lod0_fallback_triangles": 864,
+      "native_nanite_triangles": 0,
+      "source_triangles": 864,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_timber_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_stone_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_stone_2m/wall_stone_2m.wall_stone_2m",
+      "bounds_origin_cm": [
+        3.814697265625e-06,
+        0.0,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        90.40000915527344,
+        8.0,
+        103.39999389648438
+      ],
+      "expected_origin_cm": [
+        2.9802322387695312e-06,
+        0.0,
+        119.99999806284904
+      ],
+      "expected_extent_cm": [
+        90.4000073671341,
+        7.999999821186066,
+        103.39999869465828
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3348,
+      "native_lod0_fallback_triangles": 3348,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3348,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_stone_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_stone_2m/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_stone_2m/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_door_plaster_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/wall_door_plaster_2m.wall_door_plaster_2m",
+      "bounds_origin_cm": [
+        0.0,
+        1.799999713897705,
+        118.25001525878906
+      ],
+      "bounds_extent_cm": [
+        91.0,
+        11.0,
+        105.75001525878906
+      ],
+      "expected_origin_cm": [
+        2.9802322387695312e-06,
+        1.799999549984932,
+        118.25001239776611
+      ],
+      "expected_extent_cm": [
+        90.99999964237213,
+        10.999999567866325,
+        105.75001239776611
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 648,
+      "native_lod0_fallback_triangles": 648,
+      "native_nanite_triangles": 0,
+      "source_triangles": 648,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/VK_Cream_Lime.VK_Cream_Lime",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8148465752601624,
+            0.715693473815918,
+            0.48514994978904724,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_door_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_door_timber_2m/wall_door_timber_2m.wall_door_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        1.799999713897705,
+        118.25001525878906
+      ],
+      "bounds_extent_cm": [
+        90.5999984741211,
+        11.0,
+        105.75001525878906
+      ],
+      "expected_origin_cm": [
+        -2.9802322387695312e-06,
+        1.799999549984932,
+        118.25001239776611
+      ],
+      "expected_extent_cm": [
+        90.59999883174896,
+        10.999999567866325,
+        105.75001239776611
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1188,
+      "native_lod0_fallback_triangles": 1188,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1188,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_timber_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_window_plaster_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/wall_window_plaster_2m.wall_window_plaster_2m",
+      "bounds_origin_cm": [
+        0.0,
+        8.900001525878906,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        91.0,
+        18.100000381469727,
+        104.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        8.900000527501106,
+        119.9999988079071
+      ],
+      "expected_extent_cm": [
+        91.00000262260437,
+        18.1000005453825,
+        104.00000214576721
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1188,
+      "native_lod0_fallback_triangles": 1188,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1188,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/VK_Cream_Lime.VK_Cream_Lime",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8148465752601624,
+            0.715693473815918,
+            0.48514994978904724,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/VK_Opaque_Window.VK_Opaque_Window",
+          "roughness": 0.23999999463558197,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.21223075687885284,
+            0.25015828013420105,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_window_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/wall_window_timber_2m.wall_window_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        8.900001525878906,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        90.5999984741211,
+        18.100000381469727,
+        104.0
+      ],
+      "expected_origin_cm": [
+        -2.9802322387695312e-06,
+        8.900000527501106,
+        119.9999988079071
+      ],
+      "expected_extent_cm": [
+        90.59999883174896,
+        18.1000005453825,
+        104.00000214576721
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2052,
+      "native_lod0_fallback_triangles": 2052,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2052,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/VK_Opaque_Window.VK_Opaque_Window",
+          "roughness": 0.23999999463558197,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.21223075687885284,
+            0.25015828013420105,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_door_stone_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_door_stone_2m/wall_door_stone_2m.wall_door_stone_2m",
+      "bounds_origin_cm": [
+        3.814697265625e-06,
+        1.799999713897705,
+        117.94999694824219
+      ],
+      "bounds_extent_cm": [
+        90.40000915527344,
+        11.0,
+        105.44999694824219
+      ],
+      "expected_origin_cm": [
+        2.9802322387695312e-06,
+        1.799999549984932,
+        117.94999688863754
+      ],
+      "expected_extent_cm": [
+        90.4000073671341,
+        10.999999567866325,
+        105.44999986886978
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2808,
+      "native_lod0_fallback_triangles": 2808,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2808,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_stone_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_stone_2m/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_stone_2m/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_door_stone_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "wall_window_stone_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/wall_window_stone_2m.wall_window_stone_2m",
+      "bounds_origin_cm": [
+        0.0,
+        8.900001525878906,
+        120.0
+      ],
+      "bounds_extent_cm": [
+        90.4000015258789,
+        18.100000381469727,
+        103.39999389648438
+      ],
+      "expected_origin_cm": [
+        -2.9802322387695312e-06,
+        8.900000527501106,
+        119.99999806284904
+      ],
+      "expected_extent_cm": [
+        90.40000140666962,
+        18.1000005453825,
+        103.39999869465828
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3888,
+      "native_lod0_fallback_triangles": 3888,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3888,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/wall_window_stone_2m/VK_Opaque_Window.VK_Opaque_Window",
+          "roughness": 0.23999999463558197,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.21223075687885284,
+            0.25015828013420105,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "gable_plaster_4m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/gable_plaster_4m.gable_plaster_4m",
+      "bounds_origin_cm": [
+        0.0,
+        4.750003814697266,
+        60.0
+      ],
+      "bounds_extent_cm": [
+        202.62088012695312,
+        12.750003814697266,
+        64.85040283203125
+      ],
+      "expected_origin_cm": [
+        0.0,
+        4.750003665685654,
+        60.00000238418579
+      ],
+      "expected_extent_cm": [
+        202.62088775634766,
+        12.75000348687172,
+        64.85040187835693
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 620,
+      "native_lod0_fallback_triangles": 620,
+      "native_nanite_triangles": 0,
+      "source_triangles": 620,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/VK_Cream_Lime.VK_Cream_Lime",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8148465752601624,
+            0.715693473815918,
+            0.48514994978904724,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "gable_timber_4m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/gable_timber_4m.gable_timber_4m",
+      "bounds_origin_cm": [
+        0.0,
+        4.750003814697266,
+        60.0
+      ],
+      "bounds_extent_cm": [
+        202.62088012695312,
+        12.750003814697266,
+        64.85040283203125
+      ],
+      "expected_origin_cm": [
+        0.0,
+        4.750003665685654,
+        60.00000238418579
+      ],
+      "expected_extent_cm": [
+        202.62088775634766,
+        12.75000348687172,
+        64.85040187835693
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 788,
+      "native_lod0_fallback_triangles": 788,
+      "native_nanite_triangles": 0,
+      "source_triangles": 788,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "gable_stone_4m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/gable_stone_4m/gable_stone_4m.gable_stone_4m",
+      "bounds_origin_cm": [
+        0.0,
+        4.750003814697266,
+        60.0
+      ],
+      "bounds_extent_cm": [
+        202.62088012695312,
+        12.750003814697266,
+        64.85040283203125
+      ],
+      "expected_origin_cm": [
+        0.0,
+        4.750003665685654,
+        60.00000238418579
+      ],
+      "expected_extent_cm": [
+        202.62088775634766,
+        12.75000348687172,
+        64.85040187835693
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 656,
+      "native_lod0_fallback_triangles": 656,
+      "native_nanite_triangles": 0,
+      "source_triangles": 656,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_stone_4m/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_stone_4m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_stone_4m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/gable_stone_4m/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.roof_slope_terracotta_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/roof_slope_slateblue_2m.roof_slope_slateblue_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.roof_ridge_terracotta_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/roof_ridge_slateblue_2m.roof_ridge_slateblue_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "porch_post_timber",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/porch_post_timber/porch_post_timber.porch_post_timber",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        120.00000762939453
+      ],
+      "bounds_extent_cm": [
+        14.0,
+        14.0,
+        120.00000762939453
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        120.00000476837158
+      ],
+      "expected_extent_cm": [
+        14.000000059604645,
+        14.000000059604645,
+        120.00000476837158
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 324,
+      "native_lod0_fallback_triangles": 324,
+      "native_nanite_triangles": 0,
+      "source_triangles": 324,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/porch_post_timber/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/porch_post_timber/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/porch_post_timber/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "porch_steps_stone_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/porch_steps_stone_2m/porch_steps_stone_2m.porch_steps_stone_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        19.999998092651367
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        45.0,
+        19.999998092651367
+      ],
+      "expected_origin_cm": [
+        0.0,
+        1.4901161193847656e-06,
+        19.999998435378075
+      ],
+      "expected_extent_cm": [
+        100.0,
+        45.000000298023224,
+        19.999999180436134
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 324,
+      "native_lod0_fallback_triangles": 324,
+      "native_nanite_triangles": 0,
+      "source_triangles": 324,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/porch_steps_stone_2m/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "railing_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/railing_timber_2m/railing_timber_2m.railing_timber_2m",
+      "bounds_origin_cm": [
+        3.814697265625e-06,
+        0.0,
+        47.5
+      ],
+      "bounds_extent_cm": [
+        101.5,
+        8.5,
+        47.5
+      ],
+      "expected_origin_cm": [
+        5.9604644775390625e-06,
+        0.0,
+        47.49999940395355
+      ],
+      "expected_extent_cm": [
+        101.500004529953,
+        8.500000089406967,
+        47.49999940395355
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1296,
+      "native_lod0_fallback_triangles": 1296,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1296,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/railing_timber_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/railing_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/canopy_terracotta_2m.canopy_terracotta_2m",
+      "bounds_origin_cm": [
+        0.0,
+        64.22980499267578,
+        26.607637405395508
+      ],
+      "bounds_extent_cm": [
+        110.0,
+        66.77019500732422,
+        32.107643127441406
+      ],
+      "expected_origin_cm": [
+        0.0,
+        64.22980511561036,
+        26.607636734843254
+      ],
+      "expected_extent_cm": [
+        110.00000238418579,
+        66.7702010832727,
+        32.10764117538929
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2024,
+      "native_lod0_fallback_triangles": 2024,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2024,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/canopy_slateblue_2m.canopy_slateblue_2m",
+      "bounds_origin_cm": [
+        0.0,
+        64.22980499267578,
+        26.607637405395508
+      ],
+      "bounds_extent_cm": [
+        110.0,
+        66.77019500732422,
+        32.107643127441406
+      ],
+      "expected_origin_cm": [
+        0.0,
+        64.22980511561036,
+        26.607636734843254
+      ],
+      "expected_extent_cm": [
+        110.00000238418579,
+        66.7702010832727,
+        32.10764117538929
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2024,
+      "native_lod0_fallback_triangles": 2024,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2024,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "floor_opening_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/floor_opening_2m/floor_opening_2m.floor_opening_2m",
+      "bounds_origin_cm": [
+        -3.814697265625e-06,
+        0.0,
+        8.0
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        100.0,
+        8.0
+      ],
+      "expected_origin_cm": [
+        -2.9802322387695312e-06,
+        0.0,
+        7.999999821186066
+      ],
+      "expected_extent_cm": [
+        99.99999701976776,
+        100.0,
+        7.999999821186066
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 216,
+      "native_lod0_fallback_triangles": 216,
+      "native_nanite_triangles": 0,
+      "source_triangles": 216,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/floor_opening_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "stairs_switchback_2x4m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/stairs_switchback_2x4m/stairs_switchback_2x4m.stairs_switchback_2x4m",
+      "bounds_origin_cm": [
+        0.0,
+        28.24999237060547,
+        172.69866943359375
+      ],
+      "bounds_extent_cm": [
+        93.49999237060547,
+        163.75,
+        161.19866943359375
+      ],
+      "expected_origin_cm": [
+        0.0,
+        28.249990940093994,
+        172.69867658615112
+      ],
+      "expected_extent_cm": [
+        93.4999942779541,
+        163.75000476837158,
+        161.1986756324768
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 4860,
+      "native_lod0_fallback_triangles": 4860,
+      "native_nanite_triangles": 0,
+      "source_triangles": 4860,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/stairs_switchback_2x4m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/stairs_switchback_2x4m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/stairs_switchback_2x4m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "carry_logs",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs.carry_logs",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        19.000001907348633
+      ],
+      "bounds_extent_cm": [
+        38.67580032348633,
+        20.200002670288086,
+        18.700002670288086
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        19.00000087916851
+      ],
+      "expected_extent_cm": [
+        38.67579996585846,
+        20.200002193450928,
+        18.700002506375313
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2820,
+      "native_lod0_fallback_triangles": 2820,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2820,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_logs/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_logs/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_logs/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_logs/VK_Hemp_Rope.VK_Hemp_Rope",
+          "roughness": 0.6200000047683716,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5583403706550598,
+            0.423267662525177,
+            0.20863686501979828,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "carry_planks",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks.carry_planks",
+      "bounds_origin_cm": [
+        0.0,
+        9.5367431640625e-07,
+        12.80000114440918
+      ],
+      "bounds_extent_cm": [
+        39.0,
+        18.549999237060547,
+        12.30000114440918
+      ],
+      "expected_origin_cm": [
+        0.0,
+        1.4901161193847656e-06,
+        12.800000980496407
+      ],
+      "expected_extent_cm": [
+        38.999998569488525,
+        18.549998104572296,
+        12.300000712275505
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1296,
+      "native_lod0_fallback_triangles": 1296,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1296,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_planks/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_planks/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_planks/VK_Hemp_Rope.VK_Hemp_Rope",
+          "roughness": 0.6200000047683716,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5583403706550598,
+            0.423267662525177,
+            0.20863686501979828,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "carry_stones",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/carry_stones.carry_stones",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        19.5
+      ],
+      "bounds_extent_cm": [
+        30.000001907348633,
+        21.25,
+        19.5
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        19.500000774860382
+      ],
+      "expected_extent_cm": [
+        30.000001192092896,
+        21.250000596046448,
+        19.500000774860382
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1764,
+      "native_lod0_fallback_triangles": 1764,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1764,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_BlueGrey_Stone.VK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_Stone_Edge.VK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_stones/VK_Stone_Shadow.VK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "carry_tiles",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/carry_tiles.carry_tiles",
+      "bounds_origin_cm": [
+        0.0,
+        0.625,
+        17.700000762939453
+      ],
+      "bounds_extent_cm": [
+        29.000001907348633,
+        20.875,
+        17.700000762939453
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.6250001490116119,
+        17.70000010728836
+      ],
+      "expected_extent_cm": [
+        29.000002145767212,
+        20.875000208616257,
+        17.70000010728836
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1676,
+      "native_lod0_fallback_triangles": 1676,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1676,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_tiles/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "carry_plaster",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/carry_plaster/carry_plaster.carry_plaster",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        28.05000114440918
+      ],
+      "bounds_extent_cm": [
+        16.350000381469727,
+        16.5,
+        24.55000114440918
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        28.050000965595245
+      ],
+      "expected_extent_cm": [
+        16.350001096725464,
+        16.500000655651093,
+        24.550001323223114
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1100,
+      "native_lod0_fallback_triangles": 1100,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1100,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_plaster/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_plaster/VK_Forged_Iron.VK_Forged_Iron",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.6499999761581421,
+          "base_color_linear": [
+            0.08650045841932297,
+            0.10461648553609848,
+            0.1119324266910553,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_plaster/VK_Cream_Lime.VK_Cream_Lime",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8148465752601624,
+            0.715693473815918,
+            0.48514994978904724,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/carry_plaster/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "table_communal",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/table_communal/table_communal.table_communal",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        41.585697174072266
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        42.5,
+        38.414302825927734
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        41.58569872379303
+      ],
+      "expected_extent_cm": [
+        100.0,
+        42.500001192092896,
+        38.414302468299866
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1188,
+      "native_lod0_fallback_triangles": 1188,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1188,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/table_communal/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/table_communal/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/table_communal/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "bench_timber",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/bench_timber/bench_timber.bench_timber",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        23.0
+      ],
+      "bounds_extent_cm": [
+        90.0,
+        19.649999618530273,
+        23.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        23.000000417232513
+      ],
+      "expected_extent_cm": [
+        89.99999761581421,
+        19.65000033378601,
+        23.000000417232513
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 540,
+      "native_lod0_fallback_triangles": 540,
+      "native_nanite_triangles": 0,
+      "source_triangles": 540,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/bench_timber/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/bench_timber/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/bench_timber/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "workbench_carpenter",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/workbench_carpenter.workbench_carpenter",
+      "bounds_origin_cm": [
+        0.0,
+        12.825002670288086,
+        49.0
+      ],
+      "bounds_extent_cm": [
+        80.0,
+        48.42499542236328,
+        49.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        12.825003266334534,
+        49.000000953674316
+      ],
+      "expected_extent_cm": [
+        80.0000011920929,
+        48.42499792575836,
+        49.000000953674316
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1552,
+      "native_lod0_fallback_triangles": 1552,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1552,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/workbench_carpenter/VK_Forged_Iron.VK_Forged_Iron",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.6499999761581421,
+          "base_color_linear": [
+            0.08650045841932297,
+            0.10461648553609848,
+            0.1119324266910553,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "door_oak",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/door_oak/door_oak.door_oak",
+      "bounds_origin_cm": [
+        0.0,
+        3.375,
+        91.5
+      ],
+      "bounds_extent_cm": [
+        42.64999771118164,
+        7.625,
+        91.5
+      ],
+      "expected_origin_cm": [
+        -1.4901161193847656e-06,
+        3.374999947845936,
+        91.50000214576721
+      ],
+      "expected_extent_cm": [
+        42.649997770786285,
+        7.624999992549419,
+        91.50000214576721
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1252,
+      "native_lod0_fallback_triangles": 1252,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1252,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/door_oak/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/door_oak/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/door_oak/VK_Forged_Iron.VK_Forged_Iron",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.6499999761581421,
+          "base_color_linear": [
+            0.08650045841932297,
+            0.10461648553609848,
+            0.1119324266910553,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/door_oak/VK_Brass.VK_Brass",
+          "roughness": 0.30000001192092896,
+          "metallic": 0.699999988079071,
+          "base_color_linear": [
+            0.48514994978904724,
+            0.30054378509521484,
+            0.0802198201417923,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "shutter_sage",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/shutter_sage/shutter_sage.shutter_sage",
+      "bounds_origin_cm": [
+        -0.673609733581543,
+        1.499999761581421,
+        40.0
+      ],
+      "bounds_extent_cm": [
+        19.3236083984375,
+        4.25,
+        40.0
+      ],
+      "expected_origin_cm": [
+        -0.6736099720001221,
+        1.4999998733401299,
+        40.00000059604645
+      ],
+      "expected_extent_cm": [
+        19.32360976934433,
+        4.249999858438969,
+        40.00000059604645
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 880,
+      "native_lod0_fallback_triangles": 880,
+      "native_nanite_triangles": 0,
+      "source_triangles": 880,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/shutter_sage/VK_Sage_Paint.VK_Sage_Paint",
+          "roughness": 0.4099999964237213,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.18447498977184296,
+            0.34670406579971313,
+            0.30946892499923706,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/shutter_sage/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/shutter_sage/VK_Forged_Iron.VK_Forged_Iron",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.6499999761581421,
+          "base_color_linear": [
+            0.08650045841932297,
+            0.10461648553609848,
+            0.1119324266910553,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/roof_slope_timber_2m.roof_slope_timber_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_1.VK_Timber_Shingle_1",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_2.VK_Timber_Shingle_2",
+          "roughness": 0.5099999904632568,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3227895498275757,
+            0.14835558831691742,
+            0.07183142006397247,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_3.VK_Timber_Shingle_3",
+          "roughness": 0.5299999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.24917088449001312,
+            0.11452009528875351,
+            0.05544881150126457,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_4.VK_Timber_Shingle_4",
+          "roughness": 0.5,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3624303936958313,
+            0.16657468676567078,
+            0.08065281808376312,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/roof_ridge_timber_2m.roof_ridge_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_1.VK_Timber_Shingle_1",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_2.VK_Timber_Shingle_2",
+          "roughness": 0.5099999904632568,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3227895498275757,
+            0.14835558831691742,
+            0.07183142006397247,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_3.VK_Timber_Shingle_3",
+          "roughness": 0.5299999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.24917088449001312,
+            0.11452009528875351,
+            0.05544881150126457,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_4.VK_Timber_Shingle_4",
+          "roughness": 0.5,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3624303936958313,
+            0.16657468676567078,
+            0.08065281808376312,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit"
+    }
+  ],
+  "engine": "5.8.1-56057345+++UE5+Release-5.8"
+}
