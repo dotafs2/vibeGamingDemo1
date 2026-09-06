@@ -594,6 +594,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
         R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0 || bTradeCargo);
         const TCHAR* CargoMesh=bTradeCargo?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
             R.CargoType==3?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):
+            R.CargoType==2?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_stones/carry_stones"):
             R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):TEXT("/Engine/BasicShapes/Cube");
         if(auto* Asset=LoadObject<UStaticMesh>(nullptr,CargoMesh); Asset && R.Actor->Bundle->GetStaticMesh()!=Asset)
         {

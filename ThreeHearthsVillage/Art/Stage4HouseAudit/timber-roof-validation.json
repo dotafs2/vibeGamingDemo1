@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "scope": "Independent GLB binary checks plus winding/position/normal/UV comparison to original roof geometry",
+  "assets": [
+    {
+      "asset": "roof_slope_timber_2m.glb",
+      "bytes": 150096,
+      "triangles": 3452,
+      "materials": 6,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.4559675550405562,
+      "sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a",
+      "asset_id": "roof_slope_timber_2m",
+      "source_geometry_asset_id": "roof_slope_terracotta_2m",
+      "size_authoring_m": [
+        2.2934,
+        2.0,
+        1.4141
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.04340045154094696,
+          -1.0,
+          -0.13000008463859558
+        ],
+        [
+          2.25,
+          1.0,
+          1.2841004133224487
+        ]
+      ],
+      "triangle_winding_positions_uv0_exactly_preserved": true,
+      "normal_orientation_preserved_within_unit_vector_tolerance": 0.00015,
+      "max_normal_vector_delta": 9.45747294963514e-05,
+      "identity_node_and_original_datum_preserved": true,
+      "self_contained_pbr": true,
+      "wood_base_matches_beam_reference": true,
+      "original_source_hash_unchanged": true,
+      "requires_native_import": true
+    },
+    {
+      "asset": "roof_ridge_timber_2m.glb",
+      "bytes": 20748,
+      "triangles": 408,
+      "materials": 4,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2",
+      "asset_id": "roof_ridge_timber_2m",
+      "source_geometry_asset_id": "roof_ridge_terracotta_2m",
+      "size_authoring_m": [
+        0.3,
+        2.0,
+        0.189
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.15000000596046448,
+          -1.0,
+          1.2200000286102295
+        ],
+        [
+          0.15000000596046448,
+          1.0,
+          1.409000039100647
+        ]
+      ],
+      "triangle_winding_positions_uv0_exactly_preserved": true,
+      "normal_orientation_preserved_within_unit_vector_tolerance": 0.00015,
+      "max_normal_vector_delta": 4.8223273575128306e-05,
+      "identity_node_and_original_datum_preserved": true,
+      "self_contained_pbr": true,
+      "wood_base_matches_beam_reference": true,
+      "original_source_hash_unchanged": true,
+      "requires_native_import": true
+    }
+  ],
+  "asset_count": 2,
+  "total_triangles": 3860,
+  "source_blend_hash_and_two_mesh_audit_verified": true,
+  "native_import_verified": false,
+  "inventory_or_recipe_binding_verified": false,
+  "original_roof_and_beam_sources_unchanged": true
+}

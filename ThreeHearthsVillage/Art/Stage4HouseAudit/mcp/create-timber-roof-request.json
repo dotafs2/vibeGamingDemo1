@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "user_prompt": "Reuse existing roof mesh and UVs in Blender, create timber PBR variants, export two independent GLBs and save source blend",
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\Stage4HouseAudit\\create_timber_roof_variants.py',run_name='__main__')"
+  }
+}

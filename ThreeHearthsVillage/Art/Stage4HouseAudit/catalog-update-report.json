@@ -1,0 +1,18 @@
+{
+  "catalog": "../VillageKit/catalog.json",
+  "source_sha256": "67ec6fb7f9c36beda306e58cf0acd2923ad605a34f432211c2f337f84553c1e8",
+  "result_sha256": "985ea5ada549877670230cfa77fc6876a574b0aa1fde0230c6daeb7cdd79cb25",
+  "original_module_count": 38,
+  "result_module_count": 40,
+  "original_module_entries_unchanged": true,
+  "added_modules": [
+    "roof_slope_timber_2m",
+    "roof_ridge_timber_2m"
+  ],
+  "roof_material_choice_added": "timber",
+  "resource_inputs_each": {
+    "planks": 1
+  },
+  "runtime_contract_confirmed_by_parent_task": true,
+  "runtime_verified_by_art_agent": false
+}

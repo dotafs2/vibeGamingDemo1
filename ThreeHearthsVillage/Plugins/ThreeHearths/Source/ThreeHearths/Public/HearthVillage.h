@@ -21,6 +21,13 @@ enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering,
 
 // Stable operation IDs: each site offers only the operations its current state permits.
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter };
+struct FHearthCottageComponent
+{
+    FString Id, AssetId, Status=TEXT("waiting_material"), Source=TEXT("public_depot"), SupplyPolicy=TEXT("village_construction_grant");
+    FVector Offset=FVector::ZeroVector;
+    float Yaw=0;
+    int32 Stage=0, MaterialType=-1, MaterialAmount=1, Owner=-1, ReservedBy=-1;
+};
 struct FHearthSite
 {
     FString StableId, BuildPlanId;
@@ -29,9 +36,11 @@ struct FHearthSite
     float Radius=270.f, Growth=0.f, GrowDuration=120.f, Progress=0.f;
     int32 Stage=0, Units=0, Capacity=0, ReservedBy=-1, Owner=-1, VisualStage=-99;
     bool bReachable=true, bExpansion=false;
+    TArray<FHearthCottageComponent> CottageComponents;
     TArray<TWeakObjectPtr<UStaticMeshComponent>> Meshes;
     TWeakObjectPtr<UStaticMeshComponent> Soil;
 };
+namespace HearthCottage { void Populate(FHearthSite& Site); }
 
 struct FHearthDecisionRecord
 {
@@ -174,7 +183,7 @@ struct FHearthResident
     int32 ProductionSite = -1, ProductionOp = -1;
     int32 CargoType = -1, CargoAmount = 0;
     float WorkDuration = 0.f;
-    FString ConversationId, Speech;
+    FString ConversationId, Speech, ProductionComponentId;
     float SpeechRemaining=0;
     TMap<FString,FHearthBond> Bonds;
 };
@@ -220,6 +229,7 @@ public:
     UFUNCTION(BlueprintCallable) FString GetAvailableActivities(int32 Index) const;
     UFUNCTION(BlueprintCallable) bool AssignActivity(int32 Index, int32 Action);
     UFUNCTION(BlueprintCallable) FString GetProductionState() const;
+    UFUNCTION(BlueprintCallable) bool CancelProduction(int32 Index);
     FString ProductionSummary() const;
     FString CargoSummary(int32 Index) const;
     bool CanAssignActivity(int32 Index) const;
@@ -305,6 +315,7 @@ private:
     void ReturnTool(int32 Index);
     bool ToolAvailableFor(int32 Index,int32 Operation) const;
     void FinishProduction(int32 Index,const FString& Result);
+    void EnsureCottageComponents(FHearthSite& Site) const;
     bool TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity);
     int32 WageForOperation(int32 Operation) const;
     bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount);

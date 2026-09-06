@@ -191,7 +191,7 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     TestTrue(TEXT("Corrupt file retained as named archive"),Archives.Num()>=1);
     FFileHelper::SaveStringToFile(TEXT("broken_current"),*V->WorldPath); FFileHelper::SaveStringToFile(TEXT("broken_backup"),*(V->WorldPath+TEXT(".bak")));
     const FString Before=V->WorldId; TestFalse(TEXT("Both damaged files fail closed"),V->LoadWorld()); TestEqual(TEXT("Failed recovery retains current in-memory world"),V->WorldId,Before);
-    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":4"),TEXT("\"schema\":999")),Good,Error));
+    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":5"),TEXT("\"schema\":999")),Good,Error));
     return true;
 }
 #endif

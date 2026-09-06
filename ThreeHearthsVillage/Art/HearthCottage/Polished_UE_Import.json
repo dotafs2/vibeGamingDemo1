@@ -267,7 +267,8 @@
           ],
           "matches_source_pbr": true
         }
-      ]
+      ],
+      "nanite": "disabled_low_poly_kit"
     }
   ],
   "main_map_sha256_before": "a347226963d57e1908a6398cfc33089493b3b1cd392eebc1f1da4d2ad865e3a9",
@@ -408,5 +409,6 @@
   "reference_materials": "passed",
   "map": "/Game/ThreeHearths/Maps/L_HearthCottagePolished_Compare",
   "main_map_and_original_assets_unchanged": true,
-  "reference_bones": "passed"
+  "reference_bones": "passed",
+  "runtime_material_fix": "Nanite disabled on low-poly cottage mesh so authored roughness/specular materials render without fallback."
 }

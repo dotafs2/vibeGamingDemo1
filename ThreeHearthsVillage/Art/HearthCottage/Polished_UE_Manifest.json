@@ -1,5 +1,5 @@
 {
-  "status": "frozen",
+  "status": "verified_after_runtime_nanite_fix",
   "native_artifacts": [
     {
       "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/01___warm_lime_plaster.uasset",
@@ -78,8 +78,8 @@
     },
     {
       "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/HearthCottage_SharedUV_Polished.uasset",
-      "bytes": 380431,
-      "sha256": "5d6f27a9f11670bbc2e7b541055ddfbbab968c10db8b8b4a8feab6b550a07e3f"
+      "bytes": 383594,
+      "sha256": "226a04d1a142c69c8ea783e23cec4fa709c857ebb65b5ac67e94da9a8296f23a"
     },
     {
       "file": "Content/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___1.uasset",
@@ -153,5 +153,6 @@
       "file": "Plugins/ThreeHearths/Tools/capture_polished_cottage.py",
       "sha256": "832dc8916a47f7cde8de4a4c4085328262b2d640c2c1c17300e764ab585a3f57"
     }
-  ]
+  ],
+  "runtime_fix": "Polished low-poly mesh has Nanite disabled; authored material roughness/specular now avoids default-material fallback."
 }

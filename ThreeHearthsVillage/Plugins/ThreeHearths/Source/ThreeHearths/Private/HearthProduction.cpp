@@ -41,13 +41,40 @@ namespace HearthProduction
         else if(Op==13) Wood=2;
         else if(Op==14) Wood=3;
     }
-    void CottagePart(int32 Stage,int32& CargoType,int32& Amount,const TCHAR*& Name)
-    {
-        CargoType=Stage==0?2:Stage==1?4:3; Amount=Stage==0?2:Stage==1?2:Stage==2?3:2;
-        const TCHAR* Names[]={TEXT("石质地基层"),TEXT("木梁框架"),TEXT("灰泥墙体层"),TEXT("陶瓦屋顶层")}; Name=Names[FMath::Clamp(Stage,0,3)];
-    }
     FString Json(const TSharedRef<FJsonObject>& Object) { FString S; FJsonSerializer::Serialize(Object,TJsonWriterFactory<>::Create(&S)); return S; }
+    const FHearthCottageComponent* NextComponent(const FHearthSite& Site)
+    { return Site.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); }); }
 }
+
+void HearthCottage::Populate(FHearthSite& S)
+{
+    if(S.BuildPlanId.IsEmpty() || !S.CottageComponents.IsEmpty()) return;
+    int32 Serial=0;
+    auto Add=[&](const TCHAR* Asset,int32 Stage,int32 Material,float X,float Y,float Z,float Yaw)
+    {
+        FHearthCottageComponent C; C.AssetId=Asset; C.Stage=Stage; C.MaterialType=Material; C.Offset=FVector(X,Y,Z); C.Yaw=Yaw; C.Owner=S.Owner;
+        C.Id=FString::Printf(TEXT("%s:%02d:%s"),*S.BuildPlanId,++Serial,Asset); C.Status=Stage<=S.Stage?TEXT("completed"):TEXT("waiting_material");
+        S.CottageComponents.Add(MoveTemp(C));
+    };
+    for(float X:{-100.f,100.f}) for(float Y:{-100.f,100.f}) Add(TEXT("foundation_stone_2m"),1,2,X,Y,0,0);
+    for(float X:{-100.f,100.f}) for(float Y:{-100.f,100.f}) Add(TEXT("floor_timber_2m"),1,3,X,Y,0,0);
+    for(float X:{-200.f,0.f,200.f}) for(float Y:{-200.f,0.f,200.f}) Add(TEXT("post_timber_2_4m"),2,4,X,Y,0,0);
+    for(float X:{-100.f,100.f}) for(float Y:{-200.f,0.f,200.f}) Add(TEXT("beam_timber_2m"),2,4,X,Y,220,0);
+    for(float X:{-200.f,0.f,200.f}) for(float Y:{-100.f,100.f}) Add(TEXT("beam_timber_2m"),2,4,X,Y,220,90);
+    Add(TEXT("wall_window_timber_2m"),3,3,-200,-100,0,-90); Add(TEXT("wall_timber_2m"),3,3,-200,100,0,-90);
+    Add(TEXT("wall_door_timber_2m"),3,3,-100,-200,0,0); Add(TEXT("wall_window_timber_2m"),3,3,100,-200,0,0);
+    Add(TEXT("wall_window_timber_2m"),3,3,200,-100,0,90); Add(TEXT("wall_timber_2m"),3,3,200,100,0,90);
+    Add(TEXT("wall_window_timber_2m"),3,3,-100,200,0,180); Add(TEXT("wall_window_timber_2m"),3,3,100,200,0,180);
+    Add(TEXT("gable_timber_4m"),3,3,0,-200,240,0); Add(TEXT("gable_timber_4m"),3,3,0,200,240,180);
+    for(float Y:{-100.f,100.f})
+    {
+        Add(TEXT("roof_slope_timber_2m"),4,3,0,Y,240,0); Add(TEXT("roof_slope_timber_2m"),4,3,0,Y,240,180);
+        Add(TEXT("roof_ridge_timber_2m"),4,3,0,Y,240,0);
+    }
+    S.Capacity=45; S.Units=0; for(const auto& C:S.CottageComponents) S.Units+=C.Status==TEXT("completed");
+}
+
+void AHearthVillage::EnsureCottageComponents(FHearthSite& S) const { HearthCottage::Populate(S); }
 
 void AHearthVillage::InitializeProduction()
 {
@@ -116,7 +143,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     if(Op==5)
     {
         if(S.Kind!=EHearthSiteKind::Land || S.Stage>=4) return false;
-        int32 Type,Amount; const TCHAR* Name; HearthProduction::CottagePart(S.Stage,Type,Amount,Name);
+        const auto* Part=HearthProduction::NextComponent(S); const int32 Type=Part?Part->MaterialType:2,Amount=Part?Part->MaterialAmount:1;
         return Type==2?StoneStock>=Amount:Type==3?PlankStock>=Amount:BeamStock>=Amount;
     }
     if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land && S.BuildPlanId.IsEmpty();
@@ -179,8 +206,9 @@ FString AHearthVillage::ProductionActionName(int32 Action) const
     if(F+W+T>0) Name+=FString::Printf(TEXT("（食物%d / 木材%d / 石材%d）"),F,W,T);
     if(Op==5)
     {
-        int32 Type,Amount; const TCHAR* Part; HearthProduction::CottagePart(S.Stage,Type,Amount,Part);
-        Name+=FString::Printf(TEXT(" · 下一构件 %s（%s %d）"),Part,HearthProduction::ResourceNames[Type],Amount);
+        const auto* Part=HearthProduction::NextComponent(S); const int32 Type=Part?Part->MaterialType:2,Amount=Part?Part->MaterialAmount:1;
+        const FString PartName=Part?Part->AssetId:TEXT("foundation_stone_2m");
+        Name+=FString::Printf(TEXT(" · 下一构件 %s（%s %d）"),*PartName,HearthProduction::ResourceNames[Type],Amount);
     }
     return Name;
 }
@@ -201,7 +229,7 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
         if(Op>=1 && Op<=7)
         {
             const FString Key=HearthProduction::OpKeys[Op]; Score=ProductionTotals.FindRef(Key)==0?100:10;
-            if(Op==5 && AvailableWood()<70) Score-=50;
+            if(Op==5 && !ProductionSites[Site].BuildPlanId.IsEmpty()) Score=210; // Finish the chosen home piece by piece.
         }
         if(Index==0 && (Op==10 || Op==6)) Score+=10;
         if(Index==1 && (Op==8 || Op==9 || (Op>=1 && Op<=4))) Score+=10;
@@ -234,16 +262,23 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     R.ProductionSite=Site; R.ProductionOp=Op; R.CargoAmount=0; R.CargoType=-1;
     if(Op==5)
     {
-        int32 Type,Amount; const TCHAR* Part; HearthProduction::CottagePart(S.Stage,Type,Amount,Part);
         if(S.BuildPlanId.IsEmpty()) { S.BuildPlanId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); S.Owner=Index; }
-        R.CargoType=Type; R.CargoAmount=Amount;
+        EnsureCottageComponents(S); auto* Part=S.CottageComponents.FindByPredicate([](const auto& C){ return C.Status!=TEXT("completed"); });
+        if(!Part) { ReturnTool(Index); TreasuryCoins+=WageForOperation(Op); WagePayables.RemoveAll([&](const auto& P){return P.TaskId==R.ActiveTaskId;}); R.ActiveTaskId.Empty(); return false; }
+        const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount; Part->Status=TEXT("reserved"); Part->ReservedBy=Index; Part->Owner=S.Owner;
+        R.ProductionComponentId=Part->Id;
         if(Type==2) StoneStock-=Amount; else if(Type==3) PlankStock-=Amount; else BeamStock-=Amount;
-        R.LatestEvent=FString::Printf(TEXT("从公共库存领取 %d 份%s，前往工地安装%s。"),Amount,HearthProduction::ResourceNames[Type],Part);
+        R.LatestEvent=FString::Printf(TEXT("村庄批准公共建材供给；前往库存点领取 %d 份%s，再安装 %s。"),Amount,HearthProduction::ResourceNames[Type],*Part->AssetId);
     }
     R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
+    if(Op==5)
+    {
+        const FVector Depot=(bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,8))+FVector(0,((Index%3)-1)*120,0);
+        if(!FindActivityRoute(Index,Depot,Route)) { CancelProduction(Index); return false; }
+    }
     R.Route=MoveTemp(Route); R.Task=EHearthTask::ProductionTravel; if(Op!=5) R.LatestEvent=Label;
     R.MoveRetry=0; R.bMovementBlocked=false;
-    R.WorkDuration=Op==5?12.f:Op==0?20.f:Op<=7?25.f:Op==8?20.f:Op==13?18.f:Op==14?22.f:12.f;
+    R.WorkDuration=Op==5?3.f:Op==0?20.f:Op<=7?25.f:Op==8?20.f:Op==13?18.f:Op==14?22.f:12.f;
     const TCHAR* Hat=(Op==10 || Op==6)?TEXT("SKM_Woodcutter"):Op==11?TEXT("SKM_Miner"):(Op==0 || Op==8 || Op==9)?TEXT("SKM_Farmer"):Op==12?TEXT("SKM_Gatherer"):TEXT("SKP_Builder");
     if(auto* Asset=LoadObject<USkeletalMesh>(nullptr,*(FString(TEXT("/Game/Characters/Meshes/Hats/"))+Hat))) { R.Actor->Hat->SetSkeletalMesh(Asset); R.Actor->Hat->SetLeaderPoseComponent(R.Actor->Body,true); }
     AcceptHistory(Index,Label,Reason,R.DecisionSource); DecisionHistory[R.HistoryIndex].Kind=TEXT("production");
@@ -274,6 +309,24 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
     }
     if(R.Task==EHearthTask::ProductionTravel)
     {
+        if(Op==5)
+        {
+            auto* Part=S.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
+            if(!Part) { CancelProduction(Index); return; }
+            if(MoveResident(Index,Dt))
+            {
+                if(Part->Status==TEXT("reserved"))
+                {
+                    R.CargoType=Part->MaterialType; R.CargoAmount=Part->MaterialAmount; Part->Status=TEXT("transporting");
+                    TArray<FVector> ToSite;
+                    if(!FindActivityRoute(Index,S.Approach,ToSite)) { CancelProduction(Index); return; }
+                    R.Route=MoveTemp(ToSite); R.LatestEvent=FString::Printf(TEXT("已在公共库存点领取 %s，正搬往住宅工地。"),*Part->AssetId);
+                }
+                else if(Part->Status==TEXT("transporting")) { Part->Status=TEXT("installing"); R.Task=EHearthTask::ProductionWork; R.Timer=R.WorkDuration; }
+                else CancelProduction(Index);
+            }
+            return;
+        }
         if(MoveResident(Index,Dt)) { R.Task=EHearthTask::ProductionWork; R.Timer=R.WorkDuration; }
         return;
     }
@@ -332,12 +385,16 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
     if(Op==0) { S.Kind=EHearthSiteKind::Land; S.Owner=Index; Result=TEXT("空地已开垦，可以建农田、房屋或种植树木、灌木。"); }
     else if(Op==5)
     {
-        int32 Type,Amount; const TCHAR* Part; HearthProduction::CottagePart(S.Stage,Type,Amount,Part);
-        if(R.CargoType!=Type || R.CargoAmount!=Amount) { R.Timer=1.f; R.LatestEvent=TEXT("构件材料记录不完整，暂停安装等待恢复。"); return; }
-        if(Type==2) Spent[2]+=Amount; else ManufacturedSpent[Type-3]+=Amount;
-        R.CargoType=-1; R.CargoAmount=0; ++S.Stage; if(S.Owner<0) S.Owner=Index;
-        if(S.Stage>=4) { S.Kind=EHearthSiteKind::House; Result=TEXT("模块小住宅的地基、框架、墙体和屋顶已逐件安装完成。"); }
-        else Result=FString::Printf(TEXT("已安装%s；住宅计划 %s 完成 %d / 4 个构件层。"),Part,*S.BuildPlanId,S.Stage);
+        auto* Part=S.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
+        if(!Part || Part->Status!=TEXT("installing") || R.CargoType!=Part->MaterialType || R.CargoAmount!=Part->MaterialAmount)
+        { R.Timer=1.f; R.LatestEvent=TEXT("构件材料记录不完整，暂停安装等待恢复。"); return; }
+        if(Part->MaterialType==2) Spent[2]+=Part->MaterialAmount; else ManufacturedSpent[Part->MaterialType-3]+=Part->MaterialAmount;
+        Part->Status=TEXT("completed"); Part->ReservedBy=-1; R.CargoType=-1; R.CargoAmount=0; R.ProductionComponentId.Empty(); ++S.Units;
+        S.Stage=0; for(int32 Group=1;Group<=4;++Group)
+            if(!S.CottageComponents.ContainsByPredicate([Group](const auto& C){ return C.Stage==Group && C.Status!=TEXT("completed"); })) S.Stage=Group; else break;
+        if(S.Owner<0) S.Owner=Index;
+        if(S.Units>=S.CottageComponents.Num()) { S.Kind=EHearthSiteKind::House; S.Stage=4; Result=TEXT("木结构模块住宅的45个构件已逐件安装完成；陶瓦和灰泥装饰留待材料产业接入后升级。"); }
+        else Result=FString::Printf(TEXT("已安装 %s；住宅计划 %s 完成 %d / %d 个构件。"),*Part->AssetId,*S.BuildPlanId,S.Units,S.CottageComponents.Num());
     }
     else if(Op>=1 && Op<=7)
     {
@@ -351,6 +408,27 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
     FinishProduction(Index,Result);
 }
 
+bool AHearthVillage::CancelProduction(int32 Index)
+{
+    if(!Residents.IsValidIndex(Index)) return false; auto& R=Residents[Index];
+    if(R.ProductionOp!=5 || !ProductionSites.IsValidIndex(R.ProductionSite)) return false; auto& S=ProductionSites[R.ProductionSite];
+    auto* Part=S.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
+    if(!Part || Part->Status==TEXT("completed")) return false;
+    const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount;
+    if(Type==2) StoneStock+=Amount; else if(Type==3) PlankStock+=Amount; else if(Type==4) BeamStock+=Amount;
+    Part->Status=TEXT("waiting_material"); Part->ReservedBy=-1;
+    if(auto* Payable=WagePayables.FindByPredicate([&](const auto& P){ return P.TaskId==R.ActiveTaskId; }))
+    {
+        if(Payable->Status==TEXT("reserved")) TreasuryCoins+=Payable->Amount;
+        if(Payable->Status!=TEXT("paid")) WagePayables.RemoveAll([&](const auto& P){ return P.TaskId==R.ActiveTaskId; });
+    }
+    S.ReservedBy=-1; S.Progress=0; R.CargoType=-1; R.CargoAmount=0; R.ProductionComponentId.Empty(); R.Route.Reset(); ReturnTool(Index);
+    R.Task=EHearthTask::LifeChoosing; R.ProductionSite=-1; R.ProductionOp=-1; R.WorkDuration=0; R.NextLifeDecision=Elapsed+LifeDecisionInterval;
+    R.LatestEvent=TEXT("施工取消：未安装构件已退回公共库存，未赚取的工资也已解除预留。");
+    if(DecisionHistory.IsValidIndex(R.HistoryIndex)) { auto& H=DecisionHistory[R.HistoryIndex]; H.Status=TEXT("failed"); H.Result=R.LatestEvent; ++HistoryRevision; SaveHistory(); }
+    VillageEvent=R.Name+TEXT("：")+R.LatestEvent; return true;
+}
+
 void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
 {
     auto& R=Residents[Index]; auto& S=ProductionSites[R.ProductionSite];
@@ -361,7 +439,7 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
     const FString Pay=Paid?FString::Printf(TEXT(" 已领取预留工资 %d 枚。"),Wage):TEXT(" 工资仍保留在应付账款中，等待恢复结算。");
     const FString Outcome=Result+Pay+FString::Printf(TEXT(" 当前库存：食物 %d、原木 %d、木板 %d、房梁 %d、石材 %d。"),FoodStock,AvailableWood(),PlankStock,BeamStock,StoneStock);
     R.LatestEvent=Outcome; CompleteHistory(Index,Outcome); ReturnTool(Index); R.Task=EHearthTask::LifeChoosing;
-    R.ProductionSite=-1; R.ProductionOp=-1; VillageEvent=R.Name+TEXT("：")+Result;
+    R.ProductionSite=-1; R.ProductionOp=-1; R.ProductionComponentId.Empty(); R.WorkDuration=0; VillageEvent=R.Name+TEXT("：")+Result;
 }
 
 bool AHearthVillage::TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity)
@@ -469,38 +547,18 @@ void AHearthVillage::UpdateSiteVisual(int32 Index)
     // from legacy saves whose completed house is still represented by one mesh.
     if(!S.BuildPlanId.IsEmpty())
     {
-        const int32 Key=600+S.Stage;
+        const int32 Key=600+S.Units;
         if(S.VisualStage==Key) return; S.VisualStage=Key;
         for(const auto& Weak:S.Meshes) if(auto* M=Weak.Get()) { ProductionMeshes.Remove(M); M->DestroyComponent(); }
         S.Meshes.Reset();
-        auto AddPart=[this,&S](const TCHAR* Id,float X,float Y,float Z,float Yaw)
+        auto AddPart=[this,&S](const FHearthCottageComponent& Part)
         {
-            const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/%s/%s"),Id,Id);
-            if(auto* M=AddMesh(Path,S.Position+FVector(X,Y,Z),FVector::OneVector))
-            { M->SetRelativeRotation(FRotator(0,Yaw,0)); S.Meshes.Add(M); ProductionMeshes.Add(M); }
+            const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/%s/%s"),*Part.AssetId,*Part.AssetId);
+            if(auto* M=AddMesh(Path,S.Position+Part.Offset,FVector::OneVector))
+            { M->SetRelativeRotation(FRotator(0,Part.Yaw,0)); S.Meshes.Add(M); ProductionMeshes.Add(M); }
         };
-        if(S.Stage>=1) for(float X:{-100.f,100.f}) for(float Y:{-100.f,100.f})
-        { AddPart(TEXT("foundation_stone_2m"),X,Y,0,0); AddPart(TEXT("floor_timber_2m"),X,Y,0,0); }
-        if(S.Stage>=2)
-        {
-            for(float X:{-200.f,0.f,200.f}) for(float Y:{-200.f,0.f,200.f}) AddPart(TEXT("post_timber_2_4m"),X,Y,0,0);
-            for(float X:{-100.f,100.f}) for(float Y:{-200.f,0.f,200.f}) AddPart(TEXT("beam_timber_2m"),X,Y,220,0);
-            for(float X:{-200.f,0.f,200.f}) for(float Y:{-100.f,100.f}) AddPart(TEXT("beam_timber_2m"),X,Y,220,90);
-        }
-        if(S.Stage>=3)
-        {
-            AddPart(TEXT("wall_window_plaster_2m"),-200,-100,0,-90); AddPart(TEXT("wall_plaster_2m"),-200,100,0,-90);
-            AddPart(TEXT("wall_door_plaster_2m"),-100,-200,0,0); AddPart(TEXT("wall_window_plaster_2m"),100,-200,0,0);
-            AddPart(TEXT("wall_window_plaster_2m"),200,-100,0,90); AddPart(TEXT("wall_plaster_2m"),200,100,0,90);
-            AddPart(TEXT("wall_window_plaster_2m"),-100,200,0,180); AddPart(TEXT("wall_window_plaster_2m"),100,200,0,180);
-            AddPart(TEXT("gable_plaster_4m"),0,-200,240,0); AddPart(TEXT("gable_plaster_4m"),0,200,240,180);
-        }
-        if(S.Stage>=4) for(float Y:{-100.f,100.f})
-        {
-            AddPart(TEXT("roof_slope_terracotta_2m"),0,Y,240,0); AddPart(TEXT("roof_slope_terracotta_2m"),0,Y,240,180);
-            AddPart(TEXT("roof_ridge_terracotta_2m"),0,Y,240,0);
-        }
-        if(S.Soil.IsValid()) S.Soil->SetVisibility(S.Stage==0);
+        for(const auto& Part:S.CottageComponents) if(Part.Status==TEXT("completed")) AddPart(Part);
+        if(S.Soil.IsValid()) S.Soil->SetVisibility(S.Units==0);
         return;
     }
     int32 Visual=S.Stage;
@@ -572,21 +630,14 @@ FString AHearthVillage::GetProductionState() const
         J->SetNumberField(TEXT("x"),S.Position.X); J->SetNumberField(TEXT("y"),S.Position.Y); J->SetNumberField(TEXT("radius"),S.Radius);
         J->SetStringField(TEXT("approach"),S.Approach.ToString());
         TArray<TSharedPtr<FJsonValue>> Components;
-        if(!S.BuildPlanId.IsEmpty()) for(int32 Stage=0;Stage<4;++Stage)
+        if(!S.BuildPlanId.IsEmpty()) for(const auto& Part:S.CottageComponents)
         {
-            int32 Type,Amount; const TCHAR* Name; HearthProduction::CottagePart(Stage,Type,Amount,Name);
             const TCHAR* Keys[]={TEXT("food"),TEXT("raw_logs"),TEXT("stone"),TEXT("planks"),TEXT("beams")};
-            const int32 Instances[]={8,21,10,6}; auto C=MakeShared<FJsonObject>();
-            C->SetStringField(TEXT("id"),FString::Printf(TEXT("%s:%d"),*S.BuildPlanId,Stage+1));
-            C->SetStringField(TEXT("name"),Name); C->SetNumberField(TEXT("stage"),Stage+1); C->SetNumberField(TEXT("instance_count"),Instances[Stage]);
-            C->SetStringField(TEXT("material"),Keys[Type]); C->SetNumberField(TEXT("material_amount"),Amount); C->SetNumberField(TEXT("owner"),S.Owner);
-            FString Status=Stage<S.Stage?TEXT("completed"):TEXT("waiting_material"); int32 ReservedBy=-1;
-            if(Stage==S.Stage && S.ReservedBy>=0 && Residents.IsValidIndex(S.ReservedBy))
-            {
-                ReservedBy=S.ReservedBy; const auto Task=Residents[S.ReservedBy].Task;
-                Status=Task==EHearthTask::ProductionTravel?TEXT("transporting"):Task==EHearthTask::ProductionWork?TEXT("installing"):TEXT("reserved");
-            }
-            C->SetNumberField(TEXT("reserved_by"),ReservedBy); C->SetStringField(TEXT("status"),Status);
+            auto C=MakeShared<FJsonObject>(); C->SetStringField(TEXT("id"),Part.Id); C->SetStringField(TEXT("asset_id"),Part.AssetId);
+            C->SetNumberField(TEXT("stage"),Part.Stage); C->SetNumberField(TEXT("instance_count"),1);
+            C->SetStringField(TEXT("material"),Keys[Part.MaterialType]); C->SetNumberField(TEXT("material_amount"),Part.MaterialAmount); C->SetNumberField(TEXT("owner"),Part.Owner);
+            C->SetNumberField(TEXT("reserved_by"),Part.ReservedBy); C->SetStringField(TEXT("status"),Part.Status);
+            C->SetStringField(TEXT("source"),Part.Source); C->SetStringField(TEXT("supply_policy"),Part.SupplyPolicy);
             Components.Add(MakeShared<FJsonValueObject>(C));
         }
         J->SetArrayField(TEXT("components"),Components); Sites.Add(MakeShared<FJsonValueObject>(J));
@@ -596,6 +647,7 @@ FString AHearthVillage::GetProductionState() const
     for(int32 Type=0;Type<3;++Type)
     {
         int32 Carry=0; for(const auto& R:Residents) if(R.CargoType==Type) Carry+=R.CargoAmount;
+        for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents) if(C.MaterialType==Type && C.Status==TEXT("reserved")) Carry+=C.MaterialAmount;
         const int32 Stock=Type==0?FoodStock:Type==1?AvailableWood():StoneStock;
         int32 Accounted=Stock+Carry+Spent[Type]-Produced[Type];
         if(Type==1) for(const auto& R:Residents) Accounted+=R.CarriedWood+R.DeliveredWood;
@@ -609,6 +661,7 @@ FString AHearthVillage::GetProductionState() const
     for(int32 Type=0;Type<2;++Type)
     {
         int32 Carry=0; for(const auto& R:Residents) if(R.CargoType==Type+3) Carry+=R.CargoAmount;
+        for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents) if(C.MaterialType==Type+3 && C.Status==TEXT("reserved")) Carry+=C.MaterialAmount;
         const int32 Stock=Type==0?PlankStock:BeamStock;
         int32 Personal=0,Reserved=0;
         if(Type==0)

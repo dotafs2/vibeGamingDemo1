@@ -1,8 +1,12 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "HearthWorldState.h"
+#include "Dom/JsonObject.h"
 #include "Engine/World.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/ScopeExit.h"
+#include "Serialization/JsonReader.h"
+#include "Serialization/JsonSerializer.h"
+#include "Serialization/JsonWriter.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthModularCottageTest,"ThreeHearths.Production.ModularCottageLifecycle",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthModularCottageTest::RunTest(const FString&)
@@ -26,7 +30,7 @@ bool FHearthModularCottageTest::RunTest(const FString&)
     FHearthSite Site; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Site.Kind=EHearthSiteKind::Land;
     Site.Position=FVector(400,0,8); Site.Approach=FVector(0,0,8); Site.bReachable=true; V->ProductionSites.Add(Site);
     V->Residents[0].Actor->SetActorLocation(FVector(-400,0,8));
-    V->StoneStock=2; V->Produced[2]=2; V->PlankStock=5; V->Manufactured[0]=5; V->BeamStock=2; V->Manufactured[1]=2;
+    V->StoneStock=4; V->Produced[2]=4; V->PlankStock=20; V->Manufactured[0]=20; V->BeamStock=21; V->Manufactured[1]=21;
     const int32 Action=105, InitialWallet=V->Residents[0].Coins, Wage=V->WageForOperation(5);
     FString PlanId,Error; FHearthWorldImage Baseline;
     if(!TestTrue(TEXT("Seeded component inventory is ledger-consistent"),HearthWorld::Decode(V->ExportWorldState(),Baseline,Error))) { AddError(Error); return false; }
@@ -36,45 +40,85 @@ bool FHearthModularCottageTest::RunTest(const FString&)
     TestEqual(TEXT("Failed route leaves treasury unchanged"),V->TreasuryCoins,TreasuryBeforeFailure);
     TestTrue(TEXT("Failed route creates no build plan"),V->ProductionSites[0].BuildPlanId.IsEmpty());
     V->ProductionSites[0].bReachable=true;
+    V->StoneStock=0; const int32 PayablesBeforeMissing=V->WagePayables.Num();
+    TestFalse(TEXT("Missing first component material refuses before creating the plan"),V->StartProduction(0,Action,TEXT("test"),false));
+    TestEqual(TEXT("Missing material creates no payable"),V->WagePayables.Num(),PayablesBeforeMissing); V->StoneStock=4;
 
-    for(int32 ExpectedStage=1;ExpectedStage<=4;++ExpectedStage)
+    for(int32 ExpectedComponent=1;ExpectedComponent<=45;++ExpectedComponent)
     {
-        if(ExpectedStage==3)
+        if(!TestTrue(*FString::Printf(TEXT("Component %d starts"),ExpectedComponent),V->StartProduction(0,Action,TEXT("逐件搭建木结构小住宅"),false))) return false;
+        if(ExpectedComponent==1)
         {
-            const int32 Saved=V->PlankStock; V->PlankStock=0; const int32 Payables=V->WagePayables.Num();
-            TestFalse(TEXT("Missing component material refuses the stage"),V->StartProduction(0,Action,TEXT("test"),false));
-            TestEqual(TEXT("Material refusal creates no payable"),V->WagePayables.Num(),Payables); V->PlankStock=Saved;
+            PlanId=V->ProductionSites[0].BuildPlanId; FGuid Parsed;
+            TestTrue(TEXT("Construction creates a stable GUID plan"),FGuid::Parse(PlanId,Parsed) && Parsed.IsValid());
+            TestEqual(TEXT("Plan contains every independently persisted component"),V->ProductionSites[0].CottageComponents.Num(),45);
         }
-        if(!TestTrue(*FString::Printf(TEXT("Stage %d starts"),ExpectedStage),V->StartProduction(0,Action,TEXT("逐件搭建小住宅"),false))) return false;
-        if(ExpectedStage==1) { PlanId=V->ProductionSites[0].BuildPlanId; FGuid Parsed; TestTrue(TEXT("Construction creates a stable GUID plan"),FGuid::Parse(PlanId,Parsed) && Parsed.IsValid()); }
         else TestEqual(TEXT("Every stage keeps the same plan identity"),V->ProductionSites[0].BuildPlanId,PlanId);
         TestEqual(TEXT("The resident who chose the plan remains its owner"),V->ProductionSites[0].Owner,0);
-        TestEqual(TEXT("Construction starts by transporting a reserved component"),V->Residents[0].Task,EHearthTask::ProductionTravel);
-        if(!TestTrue(TEXT("Transporting component survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+        TestEqual(TEXT("Construction first travels empty-handed to public inventory"),V->Residents[0].CargoAmount,0);
+        if(ExpectedComponent==2 && !TestTrue(TEXT("Partial same-stage plan and reserved next piece survive reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+        for(int32 Step=0;Step<1000 && V->Residents[0].CargoAmount==0;++Step) V->AdvanceSimulation(.05f);
+        if(!TestTrue(TEXT("Worker physically picks up the reserved component"),V->Residents[0].CargoAmount>0)) return false;
+        if(ExpectedComponent==1)
+        {
+            const FVector Depot(-250,-520,8);
+            TestTrue(TEXT("Pickup occurs at public inventory before the construction site"),FVector::Dist2D(V->Residents[0].Actor->GetActorLocation(),Depot)<260.f
+                && FVector::Dist2D(V->Residents[0].Actor->GetActorLocation(),V->ProductionSites[0].Approach)>150.f);
+        }
+        if(ExpectedComponent==2)
+        {
+            const int32 StockBeforeCancel=V->StoneStock; const int32 TreasuryBeforeCancel=V->TreasuryCoins; const int32 PayablesBeforeCancel=V->WagePayables.Num();
+            TestTrue(TEXT("Player/system may cancel after pickup"),V->CancelProduction(0));
+            TestEqual(TEXT("Cancellation returns the uninstalled stone"),V->StoneStock,StockBeforeCancel+1);
+            TestEqual(TEXT("Cancellation returns the unearned reserved wage"),V->TreasuryCoins,TreasuryBeforeCancel+Wage);
+            TestEqual(TEXT("Cancellation removes the unpaid payable"),V->WagePayables.Num(),PayablesBeforeCancel-1);
+            TestEqual(TEXT("Already installed component remains installed"),V->ProductionSites[0].Units,1);
+            if(!TestTrue(TEXT("Cancelled component can be resumed"),V->StartProduction(0,Action,TEXT("恢复施工"),false))) return false;
+            for(int32 Step=0;Step<1000 && V->Residents[0].CargoAmount==0;++Step) V->AdvanceSimulation(.05f);
+        }
+        if(ExpectedComponent==10 && !TestTrue(TEXT("In-transit individual component survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
         for(int32 Step=0;Step<1000 && V->Residents[0].Task==EHearthTask::ProductionTravel;++Step) V->AdvanceSimulation(.05f);
         if(!TestEqual(TEXT("Worker reaches component installation"),V->Residents[0].Task,EHearthTask::ProductionWork)) return false;
-        if(!TestTrue(TEXT("Installing component survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+        if(ExpectedComponent==10 && !TestTrue(TEXT("Partially completed frame and installing member survive reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
         V->Residents[0].Timer=0; V->AdvanceProduction(0,.05f);
-        TestEqual(TEXT("Exactly one component layer completes"),V->ProductionSites[0].Stage,ExpectedStage);
+        TestEqual(TEXT("Exactly one physical component completes"),V->ProductionSites[0].Units,ExpectedComponent);
         TestEqual(TEXT("Installed material is no longer cargo"),V->Residents[0].CargoAmount,0);
-        TestEqual(TEXT("One wage is paid per installed layer"),V->Residents[0].Coins,InitialWallet+Wage*ExpectedStage);
-        if(ExpectedStage<4) TestFalse(TEXT("A partial cottage plan cannot be overwritten by a farm"),V->IsProductionAllowed(1,101));
-        V->UpdateSiteVisual(0); const int32 Counts[]={8,29,39,45};
-        TestEqual(TEXT("Visual assembly retains every earlier module"),V->ProductionSites[0].Meshes.Num(),Counts[ExpectedStage-1]);
-        for(const auto& Weak:V->ProductionSites[0].Meshes) if(auto* Mesh=Weak.Get())
+        TestEqual(TEXT("One wage is paid per installed component"),V->Residents[0].Coins,InitialWallet+Wage*ExpectedComponent);
+        if(ExpectedComponent<45) TestFalse(TEXT("A partial cottage plan cannot be overwritten by a farm"),V->IsProductionAllowed(1,101));
+        if(ExpectedComponent==8)
         {
-            TestNotNull(TEXT("Installed component uses a native VillageKit mesh"),Mesh->GetStaticMesh().Get());
-            TestTrue(TEXT("Installed component keeps its authored materials"),Mesh->GetNumMaterials()>0);
-            TestEqual(TEXT("Modular cottage does not block resident paths"),Mesh->GetCollisionEnabled(),ECollisionEnabled::NoCollision);
+            TSharedPtr<FJsonObject> LegacyRoot; const FString Current=V->ExportWorldState();
+            const auto Reader=TJsonReaderFactory<>::Create(Current);
+            if(!TestTrue(TEXT("Schema-five cottage snapshot parses for migration fixture"),FJsonSerializer::Deserialize(Reader,LegacyRoot) && LegacyRoot.IsValid())) return false;
+            LegacyRoot->SetNumberField(TEXT("schema"),4);
+            for(const auto& Value:LegacyRoot->GetArrayField(TEXT("sites"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("cottage_components"));
+            for(const auto& Value:LegacyRoot->GetArrayField(TEXT("people"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("ProductionComponentId"));
+            FString LegacyText; const auto Writer=TJsonWriterFactory<>::Create(&LegacyText); FJsonSerializer::Serialize(LegacyRoot.ToSharedRef(),Writer);
+            if(!TestTrue(TEXT("Schema-four staged cottage migrates into component records"),V->ApplyWorldState(LegacyText,Error))) { AddError(Error); return false; }
+            TestEqual(TEXT("Migration recreates all component records"),V->ProductionSites[0].CottageComponents.Num(),45);
+            TestEqual(TEXT("Migration preserves the eight installed stage-one pieces"),V->ProductionSites[0].Units,8);
         }
+        if(ExpectedComponent==10) TestEqual(TEXT("Reload resumes within the frame stage, not after it"),V->ProductionSites[0].Stage,1);
+    }
+    TArray<FVector> EntranceRoute;
+    V->Residents[0].Actor->SetActorLocation(FVector(-900,0,8));
+    TestTrue(TEXT("Completed cottage keeps a traversable route to its entrance approach"),V->FindActivityRoute(0,V->ProductionSites[0].Approach,EntranceRoute));
+    TestTrue(TEXT("The entrance approach stays outside the four-metre footprint"),FVector::Dist2D(V->ProductionSites[0].Position,V->ProductionSites[0].Approach)>=300.f);
+    V->UpdateSiteVisual(0);
+    TestEqual(TEXT("Visual assembly contains all 45 independently installed modules"),V->ProductionSites[0].Meshes.Num(),45);
+    for(const auto& Weak:V->ProductionSites[0].Meshes) if(auto* Mesh=Weak.Get())
+    {
+        TestNotNull(TEXT("Installed component uses a native VillageKit mesh"),Mesh->GetStaticMesh().Get());
+        TestTrue(TEXT("Installed component keeps its authored materials"),Mesh->GetNumMaterials()>0);
+        TestEqual(TEXT("Modular cottage does not block resident paths"),Mesh->GetCollisionEnabled(),ECollisionEnabled::NoCollision);
     }
     TestEqual(TEXT("Final site becomes a real house"),V->ProductionSites[0].Kind,EHearthSiteKind::House);
-    TestEqual(TEXT("Foundation consumes two stone"),V->Spent[2],2);
-    TestEqual(TEXT("Frame consumes two beams"),V->ManufacturedSpent[1],2);
-    TestEqual(TEXT("Walls and roof consume five planks"),V->ManufacturedSpent[0],5);
+    TestEqual(TEXT("Four foundation blocks consume four stone"),V->Spent[2],4);
+    TestEqual(TEXT("Posts and beams consume twenty-one beams"),V->ManufacturedSpent[1],21);
+    TestEqual(TEXT("Floors, timber walls and timber roof consume twenty planks"),V->ManufacturedSpent[0],20);
     TestEqual(TEXT("All cottage component stocks are consumed"),V->StoneStock+V->BeamStock+V->PlankStock,0);
     const int32 WageTransactions=V->Transactions.FilterByPredicate([](const FHearthTransaction& T){ return T.Kind==TEXT("wage"); }).Num();
-    TestEqual(TEXT("Four component jobs settle exactly four wages"),WageTransactions,4);
+    TestEqual(TEXT("Forty-five component jobs settle exactly forty-five wages"),WageTransactions,45);
     const int32 TxBefore=V->Transactions.Num(); V->AdvanceEconomy(5.f); TestEqual(TEXT("Completed cottage cannot settle twice"),V->Transactions.Num(),TxBefore);
     const FString Production=V->GetProductionState();
     TestTrue(TEXT("Snapshot exposes the stable build plan"),Production.Contains(PlanId));

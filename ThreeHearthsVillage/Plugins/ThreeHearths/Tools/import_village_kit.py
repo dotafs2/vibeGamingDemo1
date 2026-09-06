@@ -14,10 +14,24 @@ KIT=ROOT/'Art/VillageKit'
 DEST='/Game/ThreeHearths/Generated/VillageKit'
 REPORT=KIT/'UE_Import_Report.json'
 
+def disable_nanite_for_low_poly_kit(mesh):
+    """VillageKit pieces are tiny low-poly meshes; Nanite only adds material usage churn."""
+    settings=mesh.get_editor_property('nanite_settings')
+    if not settings.get_editor_property('enabled'):
+        return False
+    settings.set_editor_property('enabled',False)
+    mesh.set_editor_property('nanite_settings',settings)
+    return True
+
 def import_one(source,asset_id,previous,replace_changed=False,destination_root=DEST):
     checksum=hashlib.sha256(source.read_bytes()).hexdigest()
     old=previous.get(asset_id)
-    if old and old['source_sha256']==checksum and ue.load_asset(old['mesh']):
+    existing=ue.load_asset(old['mesh']) if old and old['source_sha256']==checksum else None
+    if existing:
+        if disable_nanite_for_low_poly_kit(existing):
+            if not ue.get_editor_subsystem(ue.EditorAssetSubsystem).save_loaded_asset(existing,False):
+                raise RuntimeError('Cannot save Nanite setting for '+asset_id)
+        old['nanite']='disabled_low_poly_kit'
         return old
     destination=destination_root+'/'+asset_id
     replacing=bool(old and replace_changed and old['mesh'].startswith(destination+'/'))
@@ -46,6 +60,7 @@ def import_one(source,asset_id,previous,replace_changed=False,destination_root=D
     if len(meshes)!=1 or meshes[0].get_num_lods()<1:
         raise RuntimeError('Missing renderable combined mesh: '+asset_id)
     sm=meshes[0]
+    disable_nanite_for_low_poly_kit(sm)
     slots=sm.get_editor_property('static_materials')
     if not slots or any(not slot.get_editor_property('material_interface') for slot in slots):
         raise RuntimeError('Missing material slot: '+asset_id)
@@ -62,7 +77,7 @@ def import_one(source,asset_id,previous,replace_changed=False,destination_root=D
         'mesh':sm.get_path_name(),'material_slots':len(slots),
         'bounds_extent_cm':[extent.x,extent.y,extent.z],
         'import_seconds':time.monotonic()-started,'saved_assets':len(imported),
-        'collision':'not_generated_requires_gameplay_template'}
+        'collision':'not_generated_requires_gameplay_template','nanite':'disabled_low_poly_kit'}
 
 def main():
     _,switches,_=ue.SystemLibrary.parse_command_line(ue.SystemLibrary.get_command_line())

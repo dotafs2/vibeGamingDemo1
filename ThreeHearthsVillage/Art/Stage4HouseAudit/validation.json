@@ -4,6 +4,7 @@
   "selected_component_asset_count": 10,
   "prototype_frame_also_audited": true,
   "generated_native_files_present_and_import_hashes_match": 11,
+  "new_roof_glbs_awaiting_native_import": [],
   "single_local_mesh_glbs_verified": 11,
   "independent_structural_parts_verified": true,
   "whole_house_examples_excluded": true,
@@ -14,11 +15,14 @@
     "3": 10,
     "4": 6
   },
-  "assembly_triangles": 36600,
-  "unique_selected_asset_triangles": 9556,
+  "assembly_triangles": 43308,
+  "unique_selected_asset_triangles": 11884,
   "duplicate_posts_or_beams": false,
   "collision_suggestions_only": true,
-  "ue_runtime_behavior_verified": false,
+  "ue_runtime_behavior_verified": true,
   "preview_review_verified": true,
-  "exported_door_opening_and_proposed_collision_clearance_verified": true
+  "exported_door_opening_and_proposed_collision_clearance_verified": true,
+  "timber_roof_geometry_uv_and_pbr_independently_verified": true,
+  "main_catalog_timber_roofs_and_one_plank_contract_verified": true,
+  "selected_wall_and_gable_material_family": "timber"
 }

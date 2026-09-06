@@ -1,12 +1,25 @@
 {
+  "roof_variant": "timber",
+  "wall_variant": "timber",
+  "assembly_sha256": "95284cc2000ed89741b06d914425ec1600884024d7895dc00161c2c00aa22958",
+  "source_blend_sha256": "aecc617692d9395f50c96d39dff3e54014d7e5a2fa0787b188b6e7a3145c7b53",
+  "four_cumulative_component_stages_reviewed": true,
+  "timber_roof_components_and_chestnut_reference_reviewed": true,
+  "observations": [
+    "All four cumulative construction stages visible; final walls, gables and roof are timber assets.",
+    "Door opening remains visibly open; previous posts, beams and floor retained.",
+    "Rounded overlapping wood roof pieces share the warm chestnut family with the existing beam; no texture dependency.",
+    "Closeup ridge dimension caption is partly occluded by the ridge; exact dimensions are verified in the specs and binary validation."
+  ],
   "images": [
     {
-      "notes": "All four stages fully framed and labeled. Independent foundations/floors, open post-and-beam frame, wall/gable panels and roof components appear cumulatively. Earlier components retain the same IDs; no whole-house source mesh is used.",
       "file": "previews/Stage4_ComponentStages.png",
-      "sha256": "70b3ab23a9d0f17afebfef2de4480232d9c4b3526d946220e4c02074a27026fa"
+      "sha256": "63bc97693803ee72b9934194c16df3e4c33299d348f733b926af2e849763a68e"
+    },
+    {
+      "file": "previews/TimberRoof_Components.png",
+      "sha256": "e21b2396583b9a98032dcd71324524285c6edbcc684e2cf0c059db5160cf3b31"
     }
   ],
-  "four_cumulative_component_stages_reviewed": true,
-  "runtime_ue_behavior_reviewed": false,
-  "new_geometry_required": false
+  "runtime_ue_screenshot": false
 }

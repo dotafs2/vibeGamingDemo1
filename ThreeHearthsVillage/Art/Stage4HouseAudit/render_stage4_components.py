@@ -1,4 +1,4 @@
-"""Blender MCP proof render: four cumulative stages made from existing components."""
+"""Blender MCP proof render: cumulative components with new timber roof variants."""
 from pathlib import Path
 import importlib.util
 import json
@@ -20,7 +20,7 @@ bpy.ops.wm.save_as_mainfile(filepath=str(SAVED/'Stage4_Audit_Scratch.blend'))
 plan=json.loads((OUT/'stage4-assembly.json').read_text(encoding='utf-8'))
 catalog=json.loads((OUT/'component-catalog.json').read_text(encoding='utf-8'))
 components={c['component_asset_id']:c for c in catalog['components'] if c['selected_for_minimal_house']}
-sources=bpy.data.collections.new('EXISTING_COMPONENT_SOURCES');scene.collection.children.link(sources)
+sources=bpy.data.collections.new('COMPONENT_SOURCES | timber roof variants');scene.collection.children.link(sources)
 assets={}
 for mid,component in components.items():
     before=set(scene.objects);bpy.ops.import_scene.gltf(filepath=str(OUT/component['source_glb']))
@@ -67,14 +67,14 @@ d=bpy.data.cameras.new('Stage audit camera');d.type='ORTHO';d.ortho_scale=26.2
 c=bpy.data.objects.new('Stage audit camera',d);scene.collection.objects.link(c);c.location=(6,-28,23)
 c.rotation_euler=(Vector((0,0,1.25))-c.location).to_track_quat('-Z','Y').to_euler();scene.camera=c
 # Camera-space text avoids occlusion by the house geometry at later stages.
-for text,y,size in (('FOUR BUILD STAGES  /  INDEPENDENT COMPONENTS',5.25,.40),
+for text,y,size in (('TIMBER HOUSE  /  FOUR COMPONENT BUILD STAGES',5.25,.40),
  ('EXISTING INSTANCES RETAINED  /  NO WHOLE-HOUSE MESH OR MATERIAL SWAP',-5.45,.25)):
     o=label(text,(0,0,0),size);o.parent=c;o.location=(0,y,-10);o.rotation_euler=(0,0,0)
 bpy.ops.wm.save_as_mainfile(filepath=str(SAVED/'Stage4_Components_Proof.blend'))
 scene.render.filepath=str(OUT/'previews/Stage4_ComponentStages.png');bpy.ops.render.render(write_still=True)
 report={'engine':'Cycles','device':'CPU','threads':3,'samples':16,'resolution':[2400,1150],
  'preview_file':'previews/Stage4_ComponentStages.png','new_geometry_created':False,'new_glbs_exported':False,
- 'existing_sources_modified':False,'uses_whole_house_mesh':False,'stages':stages,
+ 'existing_sources_modified':False,'uses_whole_house_mesh':False,'stages':stages,'roof_variant':'timber','wall_variant':'timber',
  'seconds':round(time.monotonic()-START,3),'runtime_ue_screenshot':False}
 (OUT/'render-report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
 print('STAGE4_COMPONENT_PREVIEW_COMPLETE',flush=True)

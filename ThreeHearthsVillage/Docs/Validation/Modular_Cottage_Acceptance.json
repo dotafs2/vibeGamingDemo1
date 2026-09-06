@@ -1,49 +1,82 @@
 {
-  "milestone": "stage_4_modular_cottage",
-  "verified_at": "2026-09-06T14:18:00+08:00",
+  "milestone": "stage_5_independent_cottage_components",
+  "verified_at": "2026-09-06T15:03:00+08:00",
   "engine": "Unreal Engine 5.8.1",
   "build": "succeeded",
   "automation": {
     "result": "17/17 passed",
-    "log": "Saved/Logs/ThreeHearthsAutomation27.log",
-    "focused_test": "ThreeHearths.Production.ModularCottageLifecycle"
+    "log": "Saved/Logs/ThreeHearthsAutomationComponentsFinal.log",
+    "focused_test": "ThreeHearths.Production.ModularCottageLifecycle",
+    "focused_result": "passed"
   },
   "assembly": {
     "plan": "Art/Stage4HouseAudit/stage4-assembly.json",
-    "stages": [
-      { "name": "foundation_and_floor", "material": "stone", "amount": 2, "instances_added": 8 },
-      { "name": "frame", "material": "beams", "amount": 2, "instances_added": 21 },
-      { "name": "wall_panels_and_gables", "material": "planks", "amount": 3, "instances_added": 10 },
-      { "name": "roof", "material": "planks", "amount": 2, "instances_added": 6 }
+    "component_jobs": 45,
+    "groups": [
+      {
+        "name": "foundation_and_floor",
+        "components": 8
+      },
+      {
+        "name": "frame",
+        "components": 21
+      },
+      {
+        "name": "timber_wall_panels_and_gables",
+        "components": 10
+      },
+      {
+        "name": "timber_roof",
+        "components": 6
+      }
     ],
+    "resources": {
+      "stone": 4,
+      "planks": 20,
+      "beams": 21
+    },
     "total_native_mesh_instances": 45,
-    "whole_house_mesh_used": false
+    "whole_house_mesh_used": false,
+    "terracotta_and_plaster_upgrade": "deferred_until_real_production_chains_exist"
   },
-  "persistence": {
-    "stable_build_plan_id": true,
+  "lifecycle": {
+    "stable_component_ids": true,
+    "public_supply_policy": "village_construction_grant",
+    "pickup_at_public_depot": true,
+    "empty_handed_before_pickup": true,
+    "cargo_to_site": true,
+    "one_wage_per_component": true,
+    "missing_material_refusal": "passed",
+    "cancel_after_pickup_returns_material_and_wage": "passed",
+    "retry_without_duplicate": "passed",
+    "partial_same_stage_reload": "passed",
     "transport_reload": "passed",
     "installation_reload": "passed",
     "completed_reload": "passed",
-    "legacy_house_compatibility": true,
-    "trade_travel_reload": "passed",
-    "trade_handover_reload": "passed",
-    "schema3_reserved_wage_reload": "passed"
+    "schema4_stage_plan_migration": "passed",
+    "completed_house_entrance_route": "passed"
+  },
+  "art": {
+    "timber_roof_native_import": "passed",
+    "native_component_import_hashes_matching": 11,
+    "blender_preview_review": "passed",
+    "nanite_policy": "disabled_for_low_poly_village_kit",
+    "villagekit_nanite_material_warnings_after_fix": 0,
+    "polished_cottage_root_cause": "Nanite-enabled low-poly mesh used materials without saved Nanite usage, causing runtime default-material fallback; Nanite disabled on the mesh."
   },
   "runtime_100x": {
-    "simulation_elapsed_seconds": 1890.2687,
+    "simulation_elapsed_seconds": 2978.7,
     "api_requests": 0,
     "pending_requests": 0,
-    "completed_modular_cottages_observed": 5,
-    "invalid_repurposed_plan_sites": 0,
-    "ownerless_plan_sites": 0,
-    "resource_conservation_accounted_totals": {
-      "food": 100,
-      "wood": 99,
-      "stone": 0,
-      "planks": 0,
-      "beams": 0
-    },
-    "note": "Food and wood reconcile to their invariant opening totals; derived stone, plank, and beam ledgers reconcile to zero. This acceptance run explicitly disabled external model calls."
+    "component_plans": 1,
+    "completed_component_cottages": 1,
+    "completed_components": 45,
+    "active_components": 0,
+    "note": "Fresh isolated local-rule run; runtime snapshot confirmed all 45 stable component records completed."
   },
-  "visual_evidence": "Docs/Validation/Modular_Cottage_Runtime.png"
+  "visual_evidence": [
+    "Docs/Validation/Modular_Cottage_Components_Runtime.png",
+    "Art/Stage4HouseAudit/previews/Stage4_ComponentStages.png",
+    "Art/Stage4HouseAudit/previews/TimberRoof_Components.png"
+  ]
 }

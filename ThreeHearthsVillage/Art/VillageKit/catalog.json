@@ -68,7 +68,8 @@
     ],
     "roof_material": [
       "terracotta",
-      "slateblue"
+      "slateblue",
+      "timber"
     ]
   },
   "blueprints": [
@@ -866,6 +867,50 @@
       "runtime_binding": "pending",
       "collision": "engine_template_required",
       "navigation": "not_inferred_from_visual_mesh"
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "category": "roof_slope",
+      "material_family": "timber",
+      "nominal_size_m": [
+        2.18,
+        2,
+        1.2
+      ],
+      "asset_glb": "modules/roof_slope_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 1
+      },
+      "runtime_binding": "aligned_with_stage4_runtime",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh",
+      "runtime_binding_note": "Current component planner consumes one plank per installed roof component, no beams; native UE import and source hash verified.",
+      "native_import_status": "verified",
+      "geometry_source_asset_id": "roof_slope_terracotta_2m"
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "category": "ridge",
+      "material_family": "timber",
+      "nominal_size_m": [
+        0.3,
+        2,
+        0.18
+      ],
+      "asset_glb": "modules/roof_ridge_timber_2m.glb",
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 1
+      },
+      "runtime_binding": "aligned_with_stage4_runtime",
+      "collision": "engine_template_required",
+      "navigation": "not_inferred_from_visual_mesh",
+      "runtime_binding_note": "Current component planner consumes one plank per installed roof component, no beams; native UE import and source hash verified.",
+      "native_import_status": "verified",
+      "geometry_source_asset_id": "roof_ridge_terracotta_2m"
     }
   ]
 }

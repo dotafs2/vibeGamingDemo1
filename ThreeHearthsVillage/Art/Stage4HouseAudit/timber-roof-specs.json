@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "units": "metres",
+  "authoring_axes": "+Z up / -Y front",
+  "material_reference_asset": "../VillageKit/modules/beam_timber_2m.glb",
+  "material_reference_sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921",
+  "base_wood_pbr": {
+    "baseColorFactor": [
+      0.28314873576164246,
+      0.13013647496700287,
+      0.06301001459360123,
+      1
+    ],
+    "metallicFactor": 0,
+    "roughnessFactor": 0.47999998927116394
+  },
+  "modules": [
+    {
+      "id": "roof_slope_timber_2m",
+      "category": "roof_slope",
+      "material_family": "timber",
+      "nominal_size_m": [
+        2.18,
+        2,
+        1.2
+      ],
+      "source_geometry_asset_id": "roof_slope_terracotta_2m",
+      "source_geometry_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "asset_glb": "../VillageKit/modules/roof_slope_timber_2m.glb",
+      "origin_convention": "Origin at ridge projection on wall-top datum; ridge along Y at Z=1.20, slope towards +X to eave X=2.18/Z=0. A matching half rotates 180 degrees about Z. Along Y every panel is exactly 2m; place centres 2m apart.",
+      "surface_description": "Rounded overlapping timber shingles; same low-poly silhouette and UVs as the existing roof modules.",
+      "requires_native_import": true,
+      "inventory_or_recipe_binding_verified": false,
+      "resource_inputs": {
+        "planks": 1
+      },
+      "runtime_binding": "aligned_with_stage4_runtime",
+      "runtime_contract_confirmed_by_parent_task": true
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "category": "ridge",
+      "material_family": "timber",
+      "nominal_size_m": [
+        0.3,
+        2,
+        0.18
+      ],
+      "source_geometry_asset_id": "roof_ridge_terracotta_2m",
+      "source_geometry_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "asset_glb": "../VillageKit/modules/roof_ridge_timber_2m.glb",
+      "origin_convention": "Origin on wall-top datum, ridge along Y, bottom Z=1.20; span2m.",
+      "surface_description": "Rounded overlapping timber shingles; same low-poly silhouette and UVs as the existing roof modules.",
+      "requires_native_import": true,
+      "inventory_or_recipe_binding_verified": false,
+      "resource_inputs": {
+        "planks": 1
+      },
+      "runtime_binding": "aligned_with_stage4_runtime",
+      "runtime_contract_confirmed_by_parent_task": true
+    }
+  ],
+  "original_sources_modified": false,
+  "native_assets_imported": false,
+  "inventory_or_recipe_binding_verified": false
+}

@@ -1,12 +1,17 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "audit_id": "stage4_sample_house_modularity",
   "new_geometry_required": false,
-  "new_glb_files_created": 0,
+  "new_glb_files_created": 2,
+  "new_material_variants": [
+    "roof_slope_timber_2m",
+    "roof_ridge_timber_2m"
+  ],
+  "new_roof_geometry_reused": true,
   "units": "metres",
   "authoring_axes": "+Z up / -Y front",
   "glb_to_authoring_coordinates": "(x,-z,y)",
-  "asset_root_note": "Existing art sources are Art/VillageKit; native imports are Content/ThreeHearths/Generated/VillageKit.",
+  "asset_root_note": "Art/VillageKit modules are independent GLBs with matching native imports in Content/ThreeHearths/Generated/VillageKit.",
   "components": [
     {
       "component_asset_id": "foundation_stone_2m",
@@ -16,9 +21,12 @@
       "source_glb": "../VillageKit/modules/foundation_stone_2m.glb",
       "source_sha256": "6898bb09a0213b2ab2efacf8744b7a94445c879b0ff3bc3e144c48ee728524fc",
       "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/foundation_stone_2m/foundation_stone_2m.foundation_stone_2m",
+      "proposed_generated_mesh_object_path": null,
       "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/foundation_stone_2m/foundation_stone_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -75,9 +83,12 @@
       "source_glb": "../VillageKit/modules/floor_timber_2m.glb",
       "source_sha256": "04d19de6c2df4d629991d251027229fafe518a9f4e18df3bdc4c41cb5659032c",
       "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/floor_timber_2m/floor_timber_2m.floor_timber_2m",
+      "proposed_generated_mesh_object_path": null,
       "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/floor_timber_2m/floor_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -134,9 +145,12 @@
       "source_glb": "../VillageKit/modules/post_timber_2_4m.glb",
       "source_sha256": "d37e8d67e0d4d3b0a9088d57fb8e7517b4f4c1c0ff751ebb6d66782232ed3559",
       "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/post_timber_2_4m/post_timber_2_4m.post_timber_2_4m",
+      "proposed_generated_mesh_object_path": null,
       "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/post_timber_2_4m/post_timber_2_4m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -191,9 +205,12 @@
       "source_glb": "../VillageKit/modules/beam_timber_2m.glb",
       "source_sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921",
       "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.beam_timber_2m",
+      "proposed_generated_mesh_object_path": null,
       "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -241,40 +258,44 @@
       }
     },
     {
-      "component_asset_id": "wall_plaster_2m",
+      "component_asset_id": "wall_timber_2m",
       "category": "wall",
       "selected_for_minimal_house": true,
       "installation_stage": 3,
-      "source_glb": "../VillageKit/modules/wall_plaster_2m.glb",
-      "source_sha256": "23fd0a392e44560c1425c3e7a19d1bc8cff6091d0879e70c2e016c55a782e4a0",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_plaster_2m/wall_plaster_2m.wall_plaster_2m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_plaster_2m/wall_plaster_2m.uasset",
+      "source_glb": "../VillageKit/modules/wall_timber_2m.glb",
+      "source_sha256": "f65b37c567b0c3bb3c458db40219c698616b5ea57e0f52754f5a13b1877ab77a",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_timber_2m/wall_timber_2m.wall_timber_2m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_timber_2m/wall_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
-        1.82,
+        1.812,
         0.16,
         2.08
       ],
       "bounds_authoring_m": [
         [
-          -0.9100000262260437,
+          -0.906000018119812,
           -0.07999999821186066,
           0.16000008583068848
         ],
         [
-          0.9100000262260437,
+          0.906000018119812,
           0.07999999821186066,
           2.240000009536743
         ]
       ],
       "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
-      "triangles": 108,
+      "triangles": 864,
       "single_local_mesh_node": true,
       "materials": [
-        "VK_Cream_Lime"
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
       ],
       "uv0": true,
       "unit_normals": true,
@@ -298,41 +319,44 @@
       }
     },
     {
-      "component_asset_id": "wall_door_plaster_2m",
+      "component_asset_id": "wall_door_timber_2m",
       "category": "wall_door",
       "selected_for_minimal_house": true,
       "installation_stage": 3,
-      "source_glb": "../VillageKit/modules/wall_door_plaster_2m.glb",
-      "source_sha256": "0b8b30fd835a2f2d2be3bdef7e452c2816068767ad8ff272df01e17a080950d8",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/wall_door_plaster_2m.wall_door_plaster_2m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_door_plaster_2m/wall_door_plaster_2m.uasset",
+      "source_glb": "../VillageKit/modules/wall_door_timber_2m.glb",
+      "source_sha256": "0bae324426cb30195d54ded5d663e799869c10f865279ad0f715d88c60e9cfd5",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_door_timber_2m/wall_door_timber_2m.wall_door_timber_2m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_door_timber_2m/wall_door_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
-        1.82,
+        1.812,
         0.22,
         2.115
       ],
       "bounds_authoring_m": [
         [
-          -0.9099999666213989,
+          -0.906000018119812,
           -0.12799999117851257,
           0.125
         ],
         [
-          0.9100000262260437,
+          0.9059999585151672,
           0.09200000017881393,
           2.2400002479553223
         ]
       ],
       "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
-      "triangles": 648,
+      "triangles": 1188,
       "single_local_mesh_node": true,
       "materials": [
-        "VK_Cream_Lime",
-        "VK_Cut_Oak"
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
       ],
       "uv0": true,
       "unit_normals": true,
@@ -392,41 +416,44 @@
       }
     },
     {
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_asset_id": "wall_window_timber_2m",
       "category": "wall_window",
       "selected_for_minimal_house": true,
       "installation_stage": 3,
-      "source_glb": "../VillageKit/modules/wall_window_plaster_2m.glb",
-      "source_sha256": "b5c3ae18009e24c238be384a8ed43f8417fe72aa58cb98b3eba1c0080eb7f0b8",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/wall_window_plaster_2m.wall_window_plaster_2m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_window_plaster_2m/wall_window_plaster_2m.uasset",
+      "source_glb": "../VillageKit/modules/wall_window_timber_2m.glb",
+      "source_sha256": "2f7c42495d688b84bdbfd9e14b78afd6d85503ea3796c6a0e719dcb9161d587a",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/wall_window_timber_2m.wall_window_timber_2m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/wall_window_timber_2m/wall_window_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
-        1.82,
+        1.812,
         0.362,
         2.08
       ],
       "bounds_authoring_m": [
         [
-          -0.9100000262260437,
+          -0.906000018119812,
           -0.27000001072883606,
           0.15999996662139893
         ],
         [
-          0.9100000262260437,
+          0.9059999585151672,
           0.09200000017881393,
           2.240000009536743
         ]
       ],
       "origin_convention": "Origin centred on bay edge, Z=0; front -Y; infill width 1.82, thickness .16, Z=.16..2.24 between frame members. Rotate around Z to face other boundaries.",
-      "triangles": 1188,
+      "triangles": 2052,
       "single_local_mesh_node": true,
       "materials": [
-        "VK_Cream_Lime",
         "VK_Cut_Oak",
+        "VK_Honey_Plank",
         "VK_Stone_Edge",
         "VK_Opaque_Window"
       ],
@@ -452,16 +479,19 @@
       }
     },
     {
-      "component_asset_id": "gable_plaster_4m",
+      "component_asset_id": "gable_timber_4m",
       "category": "gable",
       "selected_for_minimal_house": true,
       "installation_stage": 3,
-      "source_glb": "../VillageKit/modules/gable_plaster_4m.glb",
-      "source_sha256": "e972423f82170d781da8e5a08925e412985f63607df524fa3bda34f1ab3cfdc8",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/gable_plaster_4m/gable_plaster_4m.gable_plaster_4m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/gable_plaster_4m/gable_plaster_4m.uasset",
+      "source_glb": "../VillageKit/modules/gable_timber_4m.glb",
+      "source_sha256": "7447ab6ffa3ff0b0e8a4fb98d88c693912cc3d575ebd9df509cd1437ecee0600",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/gable_timber_4m/gable_timber_4m.gable_timber_4m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/gable_timber_4m/gable_timber_4m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -482,12 +512,13 @@
         ]
       ],
       "origin_convention": "Origin centre on 4m-wide end wall top; front -Y; apex Z=1.2.",
-      "triangles": 620,
+      "triangles": 788,
       "single_local_mesh_node": true,
       "materials": [
-        "VK_Cream_Lime",
+        "VK_Honey_Plank",
         "VK_Chestnut",
-        "VK_Cut_Oak"
+        "VK_Cut_Oak",
+        "VK_Timber_Recess"
       ],
       "uv0": true,
       "unit_normals": true,
@@ -533,16 +564,19 @@
       }
     },
     {
-      "component_asset_id": "roof_slope_terracotta_2m",
+      "component_asset_id": "roof_slope_timber_2m",
       "category": "roof_slope",
       "selected_for_minimal_house": true,
       "installation_stage": 4,
-      "source_glb": "../VillageKit/modules/roof_slope_terracotta_2m.glb",
-      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.roof_slope_terracotta_2m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.uasset",
+      "source_glb": "../VillageKit/modules/roof_slope_timber_2m.glb",
+      "source_sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/roof_slope_timber_2m.roof_slope_timber_2m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/roof_slope_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -567,10 +601,10 @@
       "single_local_mesh_node": true,
       "materials": [
         "VK_Timber_Recess",
-        "VK_Terracotta_1",
-        "VK_Terracotta_2",
-        "VK_Terracotta_3",
-        "VK_Terracotta_4",
+        "VK_Timber_Shingle_1",
+        "VK_Timber_Shingle_2",
+        "VK_Timber_Shingle_3",
+        "VK_Timber_Shingle_4",
         "VK_Cut_Oak"
       ],
       "uv0": true,
@@ -600,16 +634,19 @@
       }
     },
     {
-      "component_asset_id": "roof_ridge_terracotta_2m",
+      "component_asset_id": "roof_ridge_timber_2m",
       "category": "ridge",
       "selected_for_minimal_house": true,
       "installation_stage": 4,
-      "source_glb": "../VillageKit/modules/roof_ridge_terracotta_2m.glb",
-      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
-      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.roof_ridge_terracotta_2m",
-      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.uasset",
+      "source_glb": "../VillageKit/modules/roof_ridge_timber_2m.glb",
+      "source_sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2",
+      "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/roof_ridge_timber_2m.roof_ridge_timber_2m",
+      "proposed_generated_mesh_object_path": null,
+      "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/roof_ridge_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [
@@ -633,16 +670,16 @@
       "triangles": 408,
       "single_local_mesh_node": true,
       "materials": [
-        "VK_Terracotta_1",
-        "VK_Terracotta_2",
-        "VK_Terracotta_3",
-        "VK_Terracotta_4"
+        "VK_Timber_Shingle_1",
+        "VK_Timber_Shingle_2",
+        "VK_Timber_Shingle_3",
+        "VK_Timber_Shingle_4"
       ],
       "uv0": true,
       "unit_normals": true,
       "collision_design": {
         "suggestion": [],
-        "note": "Decorative ridge caps can inherit roof support and remain nonblocking."
+        "note": "Decorative timber ridge caps can inherit roof support and remain nonblocking."
       }
     },
     {
@@ -653,9 +690,12 @@
       "source_glb": "../VillageKit/modules/frame_timber_2m.glb",
       "source_sha256": "78a7712a689a4d827a0553715b68581142fb2dbd6ab812b67a9dd4a4e6223888",
       "generated_mesh_object_path": "/Game/ThreeHearths/Generated/VillageKit/frame_timber_2m/frame_timber_2m.frame_timber_2m",
+      "proposed_generated_mesh_object_path": null,
       "native_uasset_path": "Content/ThreeHearths/Generated/VillageKit/frame_timber_2m/frame_timber_2m.uasset",
       "native_file_exists": true,
       "native_import_record_matches_source": true,
+      "requires_native_import": false,
+      "native_path_is_proposal": false,
       "native_settings_inspected_in_running_ue": false,
       "import_record_collision_state": "not_generated_requires_gameplay_template",
       "measured_size_m": [

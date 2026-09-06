@@ -1,0 +1,41 @@
+{
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 16,
+  "resolution": [
+    1600,
+    1100
+  ],
+  "preview_file": "previews/TimberRoof_Components.png",
+  "source_glbs_imported": [
+    {
+      "asset_id": "roof_slope_timber_2m",
+      "preview_offset_m": [
+        -2.4,
+        0.2,
+        0.13
+      ]
+    },
+    {
+      "asset_id": "roof_ridge_timber_2m",
+      "preview_offset_m": [
+        1.3,
+        0.2,
+        -1.22
+      ]
+    },
+    {
+      "asset_id": "beam_timber_2m",
+      "preview_offset_m": [
+        0.9,
+        -1.35,
+        0
+      ]
+    }
+  ],
+  "preview_display_offsets_only": true,
+  "source_assets_modified": false,
+  "runtime_ue_screenshot": false,
+  "seconds": 19.441
+}

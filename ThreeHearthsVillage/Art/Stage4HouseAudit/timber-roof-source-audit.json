@@ -1,0 +1,49 @@
+{
+  "modeling_interface": "Blender MCP execute_blender_code",
+  "blender_version": "5.2.0 LTS",
+  "source_blend": "TimberRoofVariants.blend",
+  "source_blend_sha256": "aecc617692d9395f50c96d39dff3e54014d7e5a2fa0787b188b6e7a3145c7b53",
+  "objects": [
+    "roof_slope_timber_2m",
+    "roof_ridge_timber_2m"
+  ],
+  "mesh_count": 2,
+  "assets": [
+    {
+      "asset_id": "roof_slope_timber_2m",
+      "source_id": "roof_slope_terracotta_2m",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "mesh_objects": 1,
+      "triangles": 3452,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "VK_Timber_Recess",
+        "VK_Timber_Shingle_1",
+        "VK_Timber_Shingle_2",
+        "VK_Timber_Shingle_3",
+        "VK_Timber_Shingle_4",
+        "VK_Cut_Oak"
+      ]
+    },
+    {
+      "asset_id": "roof_ridge_timber_2m",
+      "source_id": "roof_ridge_terracotta_2m",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "mesh_objects": 1,
+      "triangles": 408,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "VK_Timber_Shingle_1",
+        "VK_Timber_Shingle_2",
+        "VK_Timber_Shingle_3",
+        "VK_Timber_Shingle_4"
+      ]
+    }
+  ],
+  "source_geometries_intentionally_unchanged": true,
+  "external_images": []
+}

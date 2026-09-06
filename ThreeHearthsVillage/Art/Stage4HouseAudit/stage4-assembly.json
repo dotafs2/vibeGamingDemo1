@@ -1,7 +1,30 @@
 {
-  "schema_version": 1,
-  "assembly_id": "s4_cottage_4x4_terracotta",
+  "schema_version": 2,
+  "assembly_id": "s4_cottage_4x4_timber",
   "source_layout": "../VillageKit/example-layouts.json#cottage_terracotta",
+  "roof_asset_substitutions": {
+    "roof_slope_terracotta_2m": "roof_slope_timber_2m",
+    "roof_ridge_terracotta_2m": "roof_ridge_timber_2m"
+  },
+  "roof_material_family": "timber",
+  "all_component_substitutions": {
+    "roof_slope_terracotta_2m": "roof_slope_timber_2m",
+    "roof_ridge_terracotta_2m": "roof_ridge_timber_2m",
+    "wall_plaster_2m": "wall_timber_2m",
+    "wall_door_plaster_2m": "wall_door_timber_2m",
+    "wall_window_plaster_2m": "wall_window_timber_2m",
+    "gable_plaster_4m": "gable_timber_4m"
+  },
+  "wall_material_family": "timber",
+  "roof_resource_inputs_per_component": {
+    "planks": 1
+  },
+  "roof_resource_inputs_total": {
+    "planks": 6
+  },
+  "roof_resource_contract_alignment": "Matches parent-confirmed current Stage4 planner: each slope/ridge consumes one plank, no beam.",
+  "roof_native_import_required": false,
+  "inventory_or_recipe_binding_verified": true,
   "footprint_grid_m": [
     4,
     4
@@ -477,8 +500,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_window_plaster_2m_xm200_ym100_zp000_r-90",
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_id": "s4_wall_window_timber_2m_xm200_ym100_zp000_r-90",
+      "component_asset_id": "wall_window_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         -2,
@@ -493,8 +516,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_plaster_2m_xm200_yp100_zp000_r-90",
-      "component_asset_id": "wall_plaster_2m",
+      "component_id": "s4_wall_timber_2m_xm200_yp100_zp000_r-90",
+      "component_asset_id": "wall_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         -2,
@@ -509,8 +532,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_door_plaster_2m_xm100_ym200_zp000_r000",
-      "component_asset_id": "wall_door_plaster_2m",
+      "component_id": "s4_wall_door_timber_2m_xm100_ym200_zp000_r000",
+      "component_asset_id": "wall_door_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         -1,
@@ -525,8 +548,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_window_plaster_2m_xp100_ym200_zp000_r000",
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_id": "s4_wall_window_timber_2m_xp100_ym200_zp000_r000",
+      "component_asset_id": "wall_window_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         1,
@@ -541,8 +564,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_window_plaster_2m_xp200_ym100_zp000_r090",
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_id": "s4_wall_window_timber_2m_xp200_ym100_zp000_r090",
+      "component_asset_id": "wall_window_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         2,
@@ -557,8 +580,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_plaster_2m_xp200_yp100_zp000_r090",
-      "component_asset_id": "wall_plaster_2m",
+      "component_id": "s4_wall_timber_2m_xp200_yp100_zp000_r090",
+      "component_asset_id": "wall_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         2,
@@ -573,8 +596,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_window_plaster_2m_xm100_yp200_zp000_r180",
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_id": "s4_wall_window_timber_2m_xm100_yp200_zp000_r180",
+      "component_asset_id": "wall_window_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         -1,
@@ -589,8 +612,8 @@
       ]
     },
     {
-      "component_id": "s4_wall_window_plaster_2m_xp100_yp200_zp000_r180",
-      "component_asset_id": "wall_window_plaster_2m",
+      "component_id": "s4_wall_window_timber_2m_xp100_yp200_zp000_r180",
+      "component_asset_id": "wall_window_timber_2m",
       "stage": 3,
       "position_authoring_m": [
         1,
@@ -605,8 +628,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r000",
-      "component_asset_id": "roof_slope_terracotta_2m",
+      "component_id": "s4_roof_slope_timber_2m_xp000_ym100_zp240_r000",
+      "component_asset_id": "roof_slope_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -621,8 +644,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r180",
-      "component_asset_id": "roof_slope_terracotta_2m",
+      "component_id": "s4_roof_slope_timber_2m_xp000_ym100_zp240_r180",
+      "component_asset_id": "roof_slope_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -637,8 +660,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_ridge_terracotta_2m_xp000_ym100_zp240_r000",
-      "component_asset_id": "roof_ridge_terracotta_2m",
+      "component_id": "s4_roof_ridge_timber_2m_xp000_ym100_zp240_r000",
+      "component_asset_id": "roof_ridge_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -653,8 +676,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r000",
-      "component_asset_id": "roof_slope_terracotta_2m",
+      "component_id": "s4_roof_slope_timber_2m_xp000_yp100_zp240_r000",
+      "component_asset_id": "roof_slope_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -669,8 +692,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r180",
-      "component_asset_id": "roof_slope_terracotta_2m",
+      "component_id": "s4_roof_slope_timber_2m_xp000_yp100_zp240_r180",
+      "component_asset_id": "roof_slope_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -685,8 +708,8 @@
       ]
     },
     {
-      "component_id": "s4_roof_ridge_terracotta_2m_xp000_yp100_zp240_r000",
-      "component_asset_id": "roof_ridge_terracotta_2m",
+      "component_id": "s4_roof_ridge_timber_2m_xp000_yp100_zp240_r000",
+      "component_asset_id": "roof_ridge_timber_2m",
       "stage": 4,
       "position_authoring_m": [
         0,
@@ -701,8 +724,8 @@
       ]
     },
     {
-      "component_id": "s4_gable_plaster_4m_xp000_ym200_zp240_r000",
-      "component_asset_id": "gable_plaster_4m",
+      "component_id": "s4_gable_timber_4m_xp000_ym200_zp240_r000",
+      "component_asset_id": "gable_timber_4m",
       "stage": 3,
       "position_authoring_m": [
         0,
@@ -717,8 +740,8 @@
       ]
     },
     {
-      "component_id": "s4_gable_plaster_4m_xp000_yp200_zp240_r180",
-      "component_asset_id": "gable_plaster_4m",
+      "component_id": "s4_gable_timber_4m_xp000_yp200_zp240_r180",
+      "component_asset_id": "gable_timber_4m",
       "stage": 3,
       "position_authoring_m": [
         0,
@@ -785,16 +808,16 @@
       "adds_components": 10,
       "cumulative_components": 39,
       "only_add_component_ids": [
-        "s4_wall_window_plaster_2m_xm200_ym100_zp000_r-90",
-        "s4_wall_plaster_2m_xm200_yp100_zp000_r-90",
-        "s4_wall_door_plaster_2m_xm100_ym200_zp000_r000",
-        "s4_wall_window_plaster_2m_xp100_ym200_zp000_r000",
-        "s4_wall_window_plaster_2m_xp200_ym100_zp000_r090",
-        "s4_wall_plaster_2m_xp200_yp100_zp000_r090",
-        "s4_wall_window_plaster_2m_xm100_yp200_zp000_r180",
-        "s4_wall_window_plaster_2m_xp100_yp200_zp000_r180",
-        "s4_gable_plaster_4m_xp000_ym200_zp240_r000",
-        "s4_gable_plaster_4m_xp000_yp200_zp240_r180"
+        "s4_wall_window_timber_2m_xm200_ym100_zp000_r-90",
+        "s4_wall_timber_2m_xm200_yp100_zp000_r-90",
+        "s4_wall_door_timber_2m_xm100_ym200_zp000_r000",
+        "s4_wall_window_timber_2m_xp100_ym200_zp000_r000",
+        "s4_wall_window_timber_2m_xp200_ym100_zp000_r090",
+        "s4_wall_timber_2m_xp200_yp100_zp000_r090",
+        "s4_wall_window_timber_2m_xm100_yp200_zp000_r180",
+        "s4_wall_window_timber_2m_xp100_yp200_zp000_r180",
+        "s4_gable_timber_4m_xp000_ym200_zp240_r000",
+        "s4_gable_timber_4m_xp000_yp200_zp240_r180"
       ]
     },
     {
@@ -803,19 +826,19 @@
       "adds_components": 6,
       "cumulative_components": 45,
       "only_add_component_ids": [
-        "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r000",
-        "s4_roof_slope_terracotta_2m_xp000_ym100_zp240_r180",
-        "s4_roof_ridge_terracotta_2m_xp000_ym100_zp240_r000",
-        "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r000",
-        "s4_roof_slope_terracotta_2m_xp000_yp100_zp240_r180",
-        "s4_roof_ridge_terracotta_2m_xp000_yp100_zp240_r000"
+        "s4_roof_slope_timber_2m_xp000_ym100_zp240_r000",
+        "s4_roof_slope_timber_2m_xp000_ym100_zp240_r180",
+        "s4_roof_ridge_timber_2m_xp000_ym100_zp240_r000",
+        "s4_roof_slope_timber_2m_xp000_yp100_zp240_r000",
+        "s4_roof_slope_timber_2m_xp000_yp100_zp240_r180",
+        "s4_roof_ridge_timber_2m_xp000_yp100_zp240_r000"
       ]
     }
   ],
   "retains_previous_component_instances": true,
   "stage_changes_replace_house_mesh": false,
   "uses_house_mesh_or_material_swap": false,
-  "runtime_implementation_verified": false,
+  "runtime_implementation_verified": true,
   "optional_details_excluded": [
     "door_oak",
     "shutter_sage",

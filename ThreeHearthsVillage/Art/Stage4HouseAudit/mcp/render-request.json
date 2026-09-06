@@ -1,7 +1,7 @@
 {
-  "name": "execute_blender_code",
   "arguments": {
-    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\Stage4HouseAudit\\render_stage4_components.py',run_name='__main__')",
-    "user_prompt": "Render four cumulative build stages from existing independent VillageKit components, retaining earlier components and excluding whole-house assets."
-  }
+    "user_prompt": "Render four cumulative modular house stages using the new timber roof GLBs, CPU three threads",
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\Stage4HouseAudit\\render_stage4_components.py',run_name='__main__')"
+  },
+  "name": "execute_blender_code"
 }

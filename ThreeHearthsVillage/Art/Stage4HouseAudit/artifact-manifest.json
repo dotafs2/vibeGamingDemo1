@@ -2,53 +2,129 @@
   "artifacts": [
     {
       "file": "audit_stage4_components.py",
-      "bytes": 11346,
-      "sha256": "acea04e149af74540498a93df523d6c4ad1c9621b72580fffd200a168b548749"
+      "bytes": 14490,
+      "sha256": "b152d67b29896e2d8f017e38dfea205fca857da4e22159b05aef3924db441527"
+    },
+    {
+      "file": "catalog-update-report.json",
+      "bytes": 610,
+      "sha256": "3f13d85e4e3395cfe505e0ef3b5469a007f4e1b297798e88d6e9c3a37c5d5ff9"
     },
     {
       "file": "component-catalog.json",
-      "bytes": 22960,
-      "sha256": "444f48a62339708a44ca806dc8442131934542bc4c51e579e36d04f5a306e9ac"
+      "bytes": 24580,
+      "sha256": "4bd2409fa6cd822d112ba089cb68c9eac7c353101e4457fd877a15a487682e0b"
+    },
+    {
+      "file": "create_timber_roof_variants.py",
+      "bytes": 5557,
+      "sha256": "c005d2d31ab7391aa7d678e6125af850b23af65edc271bc8f1d3d0daf91130ed"
+    },
+    {
+      "file": "mcp/create-timber-roof-request.json",
+      "bytes": 379,
+      "sha256": "e55942d875ed7b69eab08d014408b5abf7a315b572c9b429e962cac27f40e853"
     },
     {
       "file": "mcp/render-request.json",
-      "bytes": 401,
-      "sha256": "e658f78f119a211b64af50b5421c8dde8be812a7faedca856d65ed478fedf7c6"
+      "bytes": 347,
+      "sha256": "cad38a401a8b1e3e854fabafab9182bc113c1b71e66e772dc88a8e8b0f638fa6"
+    },
+    {
+      "file": "mcp/render-timber-components-request.json",
+      "bytes": 366,
+      "sha256": "0d0b76d177783cc2ad6b892b3141209748f7b433659348a99cd9d0cacb853313"
     },
     {
       "file": "previews/Stage4_ComponentStages.png",
-      "bytes": 3178316,
-      "sha256": "70b3ab23a9d0f17afebfef2de4480232d9c4b3526d946220e4c02074a27026fa"
+      "bytes": 3170953,
+      "sha256": "63bc97693803ee72b9934194c16df3e4c33299d348f733b926af2e849763a68e"
+    },
+    {
+      "file": "previews/TimberRoof_Components.png",
+      "bytes": 1906095,
+      "sha256": "e21b2396583b9a98032dcd71324524285c6edbcc684e2cf0c059db5160cf3b31"
     },
     {
       "file": "README.md",
-      "bytes": 5007,
-      "sha256": "fbabd16832e267034ab1be19fb9f0cd0621a4c2edbba6f390adfee06e39820c9"
+      "bytes": 6814,
+      "sha256": "9cd86da530b39c86c337ea76ac26b9da29e5d392375117097a761984a24725b5"
     },
     {
       "file": "render-report.json",
-      "bytes": 7717,
-      "sha256": "2e6f1fd8a9abe079b54489562a1a5f3e3e579abf03da7a7f4e9ca13ca255fcb9"
+      "bytes": 7731,
+      "sha256": "d61cec008507fd6fe881e1b6e3d9083c4efa362b0e1606e2576e2898be3fcb32"
     },
     {
       "file": "render_stage4_components.py",
-      "bytes": 5885,
-      "sha256": "f6b293dd5ee32d7d511226c23056abe638adc6d43c3cd5891b61a37e8ac1ad44"
+      "bytes": 5946,
+      "sha256": "75c1b5b250014aacd9ccdd25fbef686290f61b7a2585a8512adc181bb5f67305"
+    },
+    {
+      "file": "render_timber_roof_components.py",
+      "bytes": 4179,
+      "sha256": "76fa2d36220c70396e0f7002cca31ec2c8743156d4abb4bbf7492759ffb2a2ff"
     },
     {
       "file": "stage4-assembly.json",
-      "bytes": 18739,
-      "sha256": "4ac00985bf532401e70b6e38a1885733d372490a0a96e44e39f18e29bbb79d96"
+      "bytes": 19558,
+      "sha256": "95284cc2000ed89741b06d914425ec1600884024d7895dc00161c2c00aa22958"
+    },
+    {
+      "file": "timber-roof-render-report.json",
+      "bytes": 763,
+      "sha256": "72f5757f8cb2f38f799857ef9ab82a1ee5871dab00ec7b19dde649c097cb3b54"
+    },
+    {
+      "file": "timber-roof-source-audit.json",
+      "bytes": 1406,
+      "sha256": "21e12458419f91c1313203cc5f9b536908382f8b765dc77de5471be389eb5973"
+    },
+    {
+      "file": "timber-roof-specs.json",
+      "bytes": 2633,
+      "sha256": "1cde2e095e79423d49ca95b4dc6a71d0ed3cd5cf5fd272b77bcef1167c768e14"
+    },
+    {
+      "file": "timber-roof-validation.json",
+      "bytes": 2757,
+      "sha256": "67cc9af92f194a54040c1919e2a9fc4c1e7df58fd009504ed4959082df08fb35"
+    },
+    {
+      "file": "TimberRoofVariants.blend",
+      "bytes": 183504,
+      "sha256": "aecc617692d9395f50c96d39dff3e54014d7e5a2fa0787b188b6e7a3145c7b53"
+    },
+    {
+      "file": "validate_timber_roof.py",
+      "bytes": 5433,
+      "sha256": "69520663c650dc0a020425efe6795b8d8551428e2aa52c9374bcd64a8ad25944"
     },
     {
       "file": "validation.json",
-      "bytes": 773,
-      "sha256": "b369248e040fc79a5848f65f8ec3b3b4c0f1d36958a449fd78dc19028ae85cc3"
+      "bytes": 1013,
+      "sha256": "cced58ec4ce720bd517bb7e915ef67636cd5b7f4ca2ad70c9b69de3dfb532211"
     },
     {
       "file": "visual-review.json",
-      "bytes": 563,
-      "sha256": "83e4eaf1d46421e563143b7253a185e6e32c193cbad055b960bda302b6e39c68"
+      "bytes": 1206,
+      "sha256": "3aea4918e6e530614fe773ff979324c9404d75e1ac4350405f5b0e4f9e308c57"
+    }
+  ],
+  "external_catalog_artifact": {
+    "file": "../VillageKit/catalog.json",
+    "sha256": "6d01d378ea21b20583597b6e092f2c4bdb0ef4aebef2295e1ac59728b0f8b8fa"
+  },
+  "external_roof_module_artifacts": [
+    {
+      "file": "../VillageKit/modules/roof_slope_timber_2m.glb",
+      "bytes": 150096,
+      "sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a"
+    },
+    {
+      "file": "../VillageKit/modules/roof_ridge_timber_2m.glb",
+      "bytes": 20748,
+      "sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2"
     }
   ]
 }

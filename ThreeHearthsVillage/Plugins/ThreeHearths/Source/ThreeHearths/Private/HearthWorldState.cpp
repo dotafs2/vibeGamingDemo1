@@ -54,7 +54,7 @@ namespace HearthWorld
 
     FString Encode(const FHearthWorldImage& W)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),4); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),5); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
@@ -88,7 +88,7 @@ namespace HearthWorld
             STR(HouseBlueprint); STR(WallMaterial); STR(RoofMaterial);
             STR(HeldToolId); STR(HeldToolOperationId);
             STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
-            STR(ConversationId); STR(Speech); NUM(SpeechRemaining);
+            STR(ConversationId); STR(Speech); STR(ProductionComponentId); NUM(SpeechRemaining);
             FArray Bonds;
             for(const auto& Pair:R.Bonds)
             {
@@ -118,6 +118,16 @@ namespace HearthWorld
             NUM(Radius); NUM(Growth); NUM(GrowDuration); NUM(Progress); NUM(Stage); NUM(Units); NUM(Capacity); NUM(ReservedBy); NUM(Owner);
 #undef NUM
             P->SetBoolField(TEXT("reachable"),S.bReachable); P->SetBoolField(TEXT("expansion"),S.bExpansion);
+            FArray Components;
+            for(const auto& C:S.CottageComponents)
+            {
+                auto Part=MakeShared<FJsonObject>(); Part->SetStringField(TEXT("id"),C.Id); Part->SetStringField(TEXT("asset_id"),C.AssetId);
+                Part->SetStringField(TEXT("status"),C.Status); Part->SetStringField(TEXT("source"),C.Source); Part->SetStringField(TEXT("supply_policy"),C.SupplyPolicy);
+                Part->SetField(TEXT("offset"),Vec(C.Offset)); Part->SetNumberField(TEXT("yaw"),C.Yaw); Part->SetNumberField(TEXT("stage"),C.Stage);
+                Part->SetNumberField(TEXT("material_type"),C.MaterialType); Part->SetNumberField(TEXT("material_amount"),C.MaterialAmount);
+                Part->SetNumberField(TEXT("owner"),C.Owner); Part->SetNumberField(TEXT("reserved_by"),C.ReservedBy); Components.Add(MakeShared<FJsonValueObject>(Part));
+            }
+            P->SetArrayField(TEXT("cottage_components"),Components);
             Sites.Add(MakeShared<FJsonValueObject>(P));
         }
         for(const auto& H:W.History)
@@ -188,7 +198,7 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,4);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,5);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
         if(W.PlotCount!=3 && W.PlotCount!=10) return false;
@@ -233,6 +243,7 @@ namespace HearthWorld
                 P.J->TryGetStringField(TEXT("RoofMaterial"),R.RoofMaterial);
                 P.J->TryGetStringField(TEXT("HeldToolId"),R.HeldToolId);
                 P.J->TryGetStringField(TEXT("HeldToolOperationId"),R.HeldToolOperationId);
+                P.J->TryGetStringField(TEXT("ProductionComponentId"),R.ProductionComponentId);
             }
             if(W.Schema>=2) { STR(Role); NUM(Hunger,0,100); NUM(Mood,0,100); NUM(Age,18,120); P.Bool(TEXT("king"),R.bKing); }
             if(W.Schema>=3)
@@ -267,7 +278,20 @@ namespace HearthWorld
             NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,4);
             NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,W.PlotCount-1); NUM(Owner,-1,W.PlotCount-1);
 #undef NUM
-            P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion); C.Good&=P.Good; W.Sites.Add(MoveTemp(S));
+            P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion);
+            if(W.Schema>=5)
+            {
+                for(const auto& Value:P.Array(TEXT("cottage_components"),45))
+                {
+                    FHearthCottageComponent Part; FRead Q{Object(Value)}; Q.Str(TEXT("id"),Part.Id); Q.Str(TEXT("asset_id"),Part.AssetId);
+                    Q.Str(TEXT("status"),Part.Status); Q.Str(TEXT("source"),Part.Source); Q.Str(TEXT("supply_policy"),Part.SupplyPolicy);
+                    Q.Vector(TEXT("offset"),Part.Offset); Q.Num(TEXT("yaw"),Part.Yaw,-360,360); Q.Num(TEXT("stage"),Part.Stage,1,4);
+                    Q.Num(TEXT("material_type"),Part.MaterialType,2,4); Q.Num(TEXT("material_amount"),Part.MaterialAmount,1,4);
+                    Q.Num(TEXT("owner"),Part.Owner,-1,W.PlotCount-1); Q.Num(TEXT("reserved_by"),Part.ReservedBy,-1,W.PlotCount-1);
+                    P.Good&=Q.Good; S.CottageComponents.Add(MoveTemp(Part));
+                }
+            }
+            C.Good&=P.Good; W.Sites.Add(MoveTemp(S));
         }
         for(const auto& V:C.Array(TEXT("history"),50000))
         {
@@ -341,6 +365,17 @@ namespace HearthWorld
         else for(const auto& Pair:(*Totals)->Values)
         { int32 Count=0; FRead T{*Totals}; T.Num(*Pair.Key,Count,0,1e8); C.Good&=T.Good && Pair.Key.Len()<100; W.Totals.Add(FString(Pair.Key),Count); }
         if(!C.Good || W.People.Num()!=W.PlotCount || !Guid(W.Id) || !Guid(W.Run)) return false;
+        if(W.Schema<5)
+        {
+            for(auto& Site:W.Sites) if(!Site.BuildPlanId.IsEmpty()) HearthCottage::Populate(Site);
+            for(int32 I=0;I<W.People.Num();++I)
+            {
+                auto& R=W.People[I].Person; if(R.ProductionOp!=5 || !W.Sites.IsValidIndex(R.ProductionSite)) continue;
+                auto& Site=W.Sites[R.ProductionSite]; auto* Part=Site.CottageComponents.FindByPredicate([](const auto& P){ return P.Status!=TEXT("completed"); });
+                if(!Part) return false; Part->ReservedBy=I; Part->MaterialType=R.CargoType; Part->MaterialAmount=R.CargoAmount;
+                Part->Status=R.Task==EHearthTask::ProductionWork?TEXT("installing"):TEXT("transporting"); R.ProductionComponentId=Part->Id;
+            }
+        }
         Error=TEXT("世界存档引用、任务或资源守恒校验失败");
         TSet<FString> Ids;
         TSet<FString> TransactionKeys;
@@ -379,12 +414,13 @@ namespace HearthWorld
             if(Production && R.ProductionOp==5)
             {
                 const auto& Site=W.Sites[R.ProductionSite];
-                const int32 ExpectedType=Site.Stage==0?2:Site.Stage==1?4:3;
-                const int32 ExpectedAmount=Site.Stage==0?2:Site.Stage==1?2:Site.Stage==2?3:2;
-                if(Site.Kind!=EHearthSiteKind::Land || Site.Stage<0 || Site.Stage>=4 || Site.BuildPlanId.IsEmpty()
-                    || R.CargoType!=ExpectedType || R.CargoAmount!=ExpectedAmount) return false;
+                const auto* Part=Site.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
+                if(Site.Kind!=EHearthSiteKind::Land || Site.Stage<0 || Site.Stage>=4 || Site.BuildPlanId.IsEmpty() || !Part || Part->ReservedBy!=I) return false;
+                if(Part->Status==TEXT("reserved") && (R.Task!=EHearthTask::ProductionTravel || R.CargoAmount!=0 || R.CargoType!=-1)) return false;
+                if(Part->Status==TEXT("transporting") && (R.Task!=EHearthTask::ProductionTravel || R.CargoType!=Part->MaterialType || R.CargoAmount!=Part->MaterialAmount)) return false;
+                if(Part->Status==TEXT("installing") && (R.Task!=EHearthTask::ProductionWork || R.CargoType!=Part->MaterialType || R.CargoAmount!=Part->MaterialAmount)) return false;
             }
-            if(!Production && (R.ProductionSite!=-1 || R.ProductionOp!=-1 || R.CargoAmount!=0)) return false;
+            if(!Production && (R.ProductionSite!=-1 || R.ProductionOp!=-1 || R.CargoAmount!=0 || !R.ProductionComponentId.IsEmpty())) return false;
             if(R.CargoAmount>0 && (R.CargoType<0 || (R.ProductionOp<9 && R.ProductionOp!=5)
                 || (R.ProductionOp==5 && R.Task!=EHearthTask::ProductionTravel && R.Task!=EHearthTask::ProductionWork)
                 || (R.ProductionOp>=9 && R.Task!=EHearthTask::ProductionDeliver && R.Task!=EHearthTask::ProductionDeposit))) return false;
@@ -394,11 +430,29 @@ namespace HearthWorld
             Accounted[1]+=R.CarriedWood+R.DeliveredWood;
         }
         for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
+        TSet<FString> ComponentIds;
         for(int32 I=0;I<W.Sites.Num();++I)
         {
             const auto& S=W.Sites[I]; if(!Unique(S.StableId) || S.Units>S.Capacity || S.Growth>S.GrowDuration || (!S.BuildPlanId.IsEmpty() && !Guid(S.BuildPlanId))) return false;
             if(!S.BuildPlanId.IsEmpty() && (S.Stage<0 || S.Stage>4 || (S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House))) return false;
             if(S.ReservedBy>=0 && W.People[S.ReservedBy].Person.ProductionSite!=I) return false;
+            if(W.Schema>=5 && !S.BuildPlanId.IsEmpty() && S.CottageComponents.Num()!=45) return false;
+            if(S.BuildPlanId.IsEmpty() && !S.CottageComponents.IsEmpty()) return false;
+            int32 Completed=0,Active=0;
+            for(const auto& Part:S.CottageComponents)
+            {
+                if(Part.Id.IsEmpty() || !Part.Id.StartsWith(S.BuildPlanId+TEXT(":")) || ComponentIds.Contains(Part.Id) || Part.AssetId.IsEmpty()
+                    || Part.Stage<1 || Part.Stage>4 || Part.MaterialType<2 || Part.MaterialType>4 || Part.MaterialAmount<1
+                    || Part.Owner!=S.Owner || Part.Source!=TEXT("public_depot") || Part.SupplyPolicy!=TEXT("village_construction_grant")) return false;
+                ComponentIds.Add(Part.Id);
+                const bool Done=Part.Status==TEXT("completed"),Waiting=Part.Status==TEXT("waiting_material");
+                const bool Reserved=Part.Status==TEXT("reserved"),Transporting=Part.Status==TEXT("transporting"),Installing=Part.Status==TEXT("installing");
+                if(!Done && !Waiting && !Reserved && !Transporting && !Installing) return false;
+                if((Done || Waiting)!=(Part.ReservedBy<0) || ((Reserved || Transporting || Installing) && Part.ReservedBy<0)) return false;
+                Completed+=Done; Active+=Reserved||Transporting||Installing;
+                if(Reserved) { if(Part.MaterialType==2) Accounted[2]+=Part.MaterialAmount; else AccountedManufactured[Part.MaterialType-3]+=Part.MaterialAmount; }
+            }
+            if(!S.CottageComponents.IsEmpty() && (S.Units!=Completed || Active!=(S.ReservedBy>=0?1:0) || (S.Kind==EHearthSiteKind::House)!=(Completed==45))) return false;
         }
         TSet<FString> ActivePeople,ChatIds;
         for(const auto& S:W.Conversations)

@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\Stage4HouseAudit\\render_timber_roof_components.py',run_name='__main__')",
+    "user_prompt": "Render exported timber roof slope and ridge with existing chestnut beam as PBR reference, CPU three threads"
+  }
+}
