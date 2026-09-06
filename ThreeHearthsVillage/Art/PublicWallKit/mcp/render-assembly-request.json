@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\PublicWallKit\\render_public_wall_kit.py',init_globals={'PREVIEW_MODE':'assembly'},run_name='__main__')",
+    "user_prompt": "Render the assembled six-metre public wall with 15 component instances, existing carry-material visuals and a 1.557m ruler, CPU three threads"
+  }
+}

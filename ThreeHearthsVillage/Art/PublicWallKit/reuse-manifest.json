@@ -1,0 +1,36 @@
+{
+  "existing_assets_modified": false,
+  "references": [
+    {
+      "asset_glb": "../SocietyKit/modules/castle_wall_stone_2m.glb",
+      "role": "unchanged source wall geometry and stone PBR",
+      "sha256": "43317cfd1e3132d74e498dbb7857f8a067435ecdd8c5fb0180d1bc698753c92a"
+    },
+    {
+      "asset_glb": "../VillageKit/modules/beam_timber_2m.glb",
+      "role": "chestnut beam PBR",
+      "sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921"
+    },
+    {
+      "asset_glb": "../VillageKit/modules/floor_timber_2m.glb",
+      "role": "honey plank and cut-oak PBR",
+      "sha256": "04d19de6c2df4d629991d251027229fafe518a9f4e18df3bdc4c41cb5659032c"
+    },
+    {
+      "asset_glb": "../VillageKit/modules/carry_stones.glb",
+      "role": "stone carry visual",
+      "sha256": "e47d231ca303d807b9c40ca6a08d4c86ee78bb34207ca0f71d46f01a0426abbe"
+    },
+    {
+      "asset_glb": "../VillageKit/modules/carry_planks.glb",
+      "role": "plank carry visual",
+      "sha256": "7e6408af8b50f96b9a3bd01f33fc3ddc0be6fdfa0c5feed648e24bec205d4ed2"
+    },
+    {
+      "asset_glb": "../SocietyKit/modules/goods_beams_bundle.glb",
+      "role": "beam carry visual",
+      "sha256": "91d0a1f84ce842b096ca724e67e4402afce295e96e09980b61ad764beb76f675"
+    }
+  ],
+  "reused_wall_geometry_unchanged": true
+}

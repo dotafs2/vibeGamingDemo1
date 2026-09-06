@@ -1,0 +1,23 @@
+{
+  "components_and_assembled_segment_reviewed": true,
+  "source_blend_sha256": "2ad326fa7b3fb1a7069c8057d4ededf2a895c973d53f155bd333862e67a6b0f3",
+  "assembly_sha256": "75491f0ed01bbe473a68947145f47701626739665772162cf5753fef8df75f73",
+  "images": [
+    {
+      "file": "previews/PublicWall_components.png",
+      "sha256": "5c8f0e71b0786e0d1318fee85bd9ea13c56ba151ce6f7f6b13280216164629a2"
+    },
+    {
+      "file": "previews/PublicWall_assembly.png",
+      "sha256": "399e130aa8a04b4484cd67653cbd556534157fb2f315df26cb0da9262e2903cd"
+    }
+  ],
+  "observations": [
+    "Four source modules and input labels are visible in the component overview.",
+    "Assembled image shows a six-metre stone wall with separate foundation, deck and paired parapets.",
+    "Existing stone, plank and beam carry visuals and the 1.557m ruler remain clear and unoccluded.",
+    "Blue-grey stones and warm chestnut/honey wood match existing reference materials.",
+    "No staircase or navigation behavior is claimed by this first straight segment."
+  ],
+  "runtime_ue_screenshot": false
+}

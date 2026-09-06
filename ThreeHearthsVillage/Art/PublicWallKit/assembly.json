@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "assembly_id": "first_public_wall_6m",
+  "component_count": 15,
+  "unique_component_assets": 4,
+  "nominal_length_m": 6,
+  "footprint_m": [
+    6,
+    0.9
+  ],
+  "highest_geometry_z_m": 3.637,
+  "placements": [
+    {
+      "component_id": "public_wall_b01_foundation",
+      "component_asset_id": "public_wall_foundation_2m",
+      "installation_stage": 1,
+      "position_authoring_m": [
+        -2.0,
+        0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": []
+    },
+    {
+      "component_id": "public_wall_b01_stone",
+      "component_asset_id": "public_wall_stone_2m",
+      "installation_stage": 2,
+      "position_authoring_m": [
+        -2.0,
+        0,
+        0.28
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b01_foundation"
+      ]
+    },
+    {
+      "component_id": "public_wall_b01_walkway",
+      "component_asset_id": "public_wall_walkway_2m",
+      "installation_stage": 3,
+      "position_authoring_m": [
+        -2.0,
+        0,
+        2.677
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b01_stone"
+      ]
+    },
+    {
+      "component_id": "public_wall_b01_parapet_front",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        -2.0,
+        -0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b01_walkway"
+      ]
+    },
+    {
+      "component_id": "public_wall_b01_parapet_back",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        -2.0,
+        0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b01_walkway"
+      ]
+    },
+    {
+      "component_id": "public_wall_b02_foundation",
+      "component_asset_id": "public_wall_foundation_2m",
+      "installation_stage": 1,
+      "position_authoring_m": [
+        0.0,
+        0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": []
+    },
+    {
+      "component_id": "public_wall_b02_stone",
+      "component_asset_id": "public_wall_stone_2m",
+      "installation_stage": 2,
+      "position_authoring_m": [
+        0.0,
+        0,
+        0.28
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b02_foundation"
+      ]
+    },
+    {
+      "component_id": "public_wall_b02_walkway",
+      "component_asset_id": "public_wall_walkway_2m",
+      "installation_stage": 3,
+      "position_authoring_m": [
+        0.0,
+        0,
+        2.677
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b02_stone"
+      ]
+    },
+    {
+      "component_id": "public_wall_b02_parapet_front",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        0.0,
+        -0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b02_walkway"
+      ]
+    },
+    {
+      "component_id": "public_wall_b02_parapet_back",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        0.0,
+        0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b02_walkway"
+      ]
+    },
+    {
+      "component_id": "public_wall_b03_foundation",
+      "component_asset_id": "public_wall_foundation_2m",
+      "installation_stage": 1,
+      "position_authoring_m": [
+        2.0,
+        0,
+        0
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": []
+    },
+    {
+      "component_id": "public_wall_b03_stone",
+      "component_asset_id": "public_wall_stone_2m",
+      "installation_stage": 2,
+      "position_authoring_m": [
+        2.0,
+        0,
+        0.28
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b03_foundation"
+      ]
+    },
+    {
+      "component_id": "public_wall_b03_walkway",
+      "component_asset_id": "public_wall_walkway_2m",
+      "installation_stage": 3,
+      "position_authoring_m": [
+        2.0,
+        0,
+        2.677
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b03_stone"
+      ]
+    },
+    {
+      "component_id": "public_wall_b03_parapet_front",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        2.0,
+        -0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b03_walkway"
+      ]
+    },
+    {
+      "component_id": "public_wall_b03_parapet_back",
+      "component_asset_id": "public_wall_parapet_2m",
+      "installation_stage": 4,
+      "position_authoring_m": [
+        2.0,
+        0.38,
+        2.897
+      ],
+      "yaw_degrees": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "requires_installed_component_ids": [
+        "public_wall_b03_walkway"
+      ]
+    }
+  ],
+  "resource_inputs_total": {
+    "stone": 36,
+    "planks": 21,
+    "beams": 12
+  },
+  "only_adds_components": true,
+  "whole_wall_glb_created": false,
+  "walkway_access_or_navigation_verified": false,
+  "note": "Three straight 2m bays. Access stairs, gates, corners and towers are deliberately outside this first minimal segment."
+}

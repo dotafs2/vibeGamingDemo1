@@ -1,0 +1,17 @@
+{
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 16,
+  "resolution": [
+    2100,
+    1100
+  ],
+  "preview_file": "previews/PublicWall_components.png",
+  "module_instances": 4,
+  "source_glbs_used": true,
+  "source_assets_modified": false,
+  "whole_wall_glb_created": false,
+  "runtime_ue_screenshot": false,
+  "seconds": 25.797
+}

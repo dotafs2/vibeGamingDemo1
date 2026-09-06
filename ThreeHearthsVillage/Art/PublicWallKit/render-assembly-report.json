@@ -1,0 +1,17 @@
+{
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 16,
+  "resolution": [
+    1900,
+    1250
+  ],
+  "preview_file": "previews/PublicWall_assembly.png",
+  "module_instances": 15,
+  "source_glbs_used": true,
+  "source_assets_modified": false,
+  "whole_wall_glb_created": false,
+  "runtime_ue_screenshot": false,
+  "seconds": 28.668
+}

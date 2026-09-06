@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\PublicWallKit\\render_public_wall_kit.py',init_globals={'PREVIEW_MODE':'components'},run_name='__main__')",
+    "user_prompt": "Render the four independent public wall modules with resource-input labels, CPU three threads"
+  }
+}

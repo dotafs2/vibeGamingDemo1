@@ -1,0 +1,225 @@
+{
+  "status": "passed",
+  "asset_count": 4,
+  "source_mesh_count": 4,
+  "total_unique_triangles": 2904,
+  "max_asset_triangles": 1584,
+  "assets": [
+    {
+      "asset": "public_wall_stone_2m.glb",
+      "bytes": 123752,
+      "triangles": 1584,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "567ee1560dea93899fd662359406f9c7263701385f6d4071661948ababba1032",
+      "asset_id": "public_wall_stone_2m",
+      "size_authoring_m": [
+        1.99399995803833,
+        0.4000000059604645,
+        2.394000068306923
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.996999979019165,
+          -0.20000000298023224,
+          0.003000006079673767
+        ],
+        [
+          0.996999979019165,
+          0.20000000298023224,
+          2.3970000743865967
+        ]
+      ],
+      "single_identity_mesh_node": true,
+      "original_palette_pbr_verified": true,
+      "self_contained_pbr": true,
+      "resource_inputs": {
+        "stone": 8
+      },
+      "reused_wall_positions_winding_uv_exact": true
+    },
+    {
+      "asset": "public_wall_foundation_2m.glb",
+      "bytes": 29324,
+      "triangles": 352,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "a3d89e3bbe6b95d14a398aad84535a82d8e2463f39569bba9c980fff13a2c3a3",
+      "asset_id": "public_wall_foundation_2m",
+      "size_authoring_m": [
+        1.99399995803833,
+        0.8939999938011169,
+        0.2800000011920929
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.996999979019165,
+          -0.44699999690055847,
+          0.0
+        ],
+        [
+          0.996999979019165,
+          0.44699999690055847,
+          0.2800000011920929
+        ]
+      ],
+      "single_identity_mesh_node": true,
+      "original_palette_pbr_verified": true,
+      "self_contained_pbr": true,
+      "resource_inputs": {
+        "stone": 4
+      },
+      "reused_wall_positions_winding_uv_exact": false
+    },
+    {
+      "asset": "public_wall_walkway_2m.glb",
+      "bytes": 43580,
+      "triangles": 528,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "809d85262fd4fe6285436e8abfdc6620731884e73198c3ff4978a0d1083feb43",
+      "asset_id": "public_wall_walkway_2m",
+      "size_authoring_m": [
+        2.0,
+        0.8999999761581421,
+        0.2199999988079071
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.44999998807907104,
+          0.0
+        ],
+        [
+          1.0,
+          0.44999998807907104,
+          0.2199999988079071
+        ]
+      ],
+      "single_identity_mesh_node": true,
+      "original_palette_pbr_verified": true,
+      "self_contained_pbr": true,
+      "resource_inputs": {
+        "planks": 3,
+        "beams": 2
+      },
+      "reused_wall_positions_winding_uv_exact": false
+    },
+    {
+      "asset": "public_wall_parapet_2m.glb",
+      "bytes": 35992,
+      "triangles": 440,
+      "materials": 3,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "70b93c3ea26cc21607e73a677294fd13924f946441cefd0ed4aefef672dbf0f3",
+      "asset_id": "public_wall_parapet_2m",
+      "size_authoring_m": [
+        2.0,
+        0.14000000059604645,
+        0.7400000095367432
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.07000000029802322,
+          0.0
+        ],
+        [
+          1.0,
+          0.07000000029802322,
+          0.7400000095367432
+        ]
+      ],
+      "single_identity_mesh_node": true,
+      "original_palette_pbr_verified": true,
+      "self_contained_pbr": true,
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1
+      },
+      "reused_wall_positions_winding_uv_exact": false
+    }
+  ],
+  "assembly_component_count": 15,
+  "assembly_triangles": 10032,
+  "support_contacts": [
+    {
+      "component_id": "public_wall_b01_stone",
+      "supported_by": "public_wall_b01_foundation",
+      "vertical_gap_m": 0.0030000048875808982
+    },
+    {
+      "component_id": "public_wall_b01_walkway",
+      "supported_by": "public_wall_b01_stone",
+      "vertical_gap_m": -7.438659688219218e-08
+    },
+    {
+      "component_id": "public_wall_b01_parapet_front",
+      "supported_by": "public_wall_b01_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    },
+    {
+      "component_id": "public_wall_b01_parapet_back",
+      "supported_by": "public_wall_b01_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    },
+    {
+      "component_id": "public_wall_b02_stone",
+      "supported_by": "public_wall_b02_foundation",
+      "vertical_gap_m": 0.0030000048875808982
+    },
+    {
+      "component_id": "public_wall_b02_walkway",
+      "supported_by": "public_wall_b02_stone",
+      "vertical_gap_m": -7.438659688219218e-08
+    },
+    {
+      "component_id": "public_wall_b02_parapet_front",
+      "supported_by": "public_wall_b02_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    },
+    {
+      "component_id": "public_wall_b02_parapet_back",
+      "supported_by": "public_wall_b02_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    },
+    {
+      "component_id": "public_wall_b03_stone",
+      "supported_by": "public_wall_b03_foundation",
+      "vertical_gap_m": 0.0030000048875808982
+    },
+    {
+      "component_id": "public_wall_b03_walkway",
+      "supported_by": "public_wall_b03_stone",
+      "vertical_gap_m": -7.438659688219218e-08
+    },
+    {
+      "component_id": "public_wall_b03_parapet_front",
+      "supported_by": "public_wall_b03_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    },
+    {
+      "component_id": "public_wall_b03_parapet_back",
+      "supported_by": "public_wall_b03_walkway",
+      "vertical_gap_m": 1.192092646817855e-09
+    }
+  ],
+  "resource_inputs_total": {
+    "stone": 36,
+    "planks": 21,
+    "beams": 12
+  },
+  "existing_sources_unchanged": true,
+  "whole_wall_mesh_created": false,
+  "native_import_or_ue_runtime_verified": false,
+  "collision_and_navigation_suggestions_only": true,
+  "previews_reviewed": true
+}

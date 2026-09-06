@@ -1,0 +1,126 @@
+{
+  "kit_id": "public_wall_kit_01",
+  "artifacts": [
+    {
+      "file": "PublicWallKit.blend",
+      "bytes": 157094,
+      "sha256": "2ad326fa7b3fb1a7069c8057d4ededf2a895c973d53f155bd333862e67a6b0f3"
+    },
+    {
+      "file": "README.md",
+      "bytes": 5222,
+      "sha256": "7fcd22fca31b9d0d412d79c0b1948a19502ae84dc9188b75f23ee6b96dba4a14"
+    },
+    {
+      "file": "UE_Import_Report.json",
+      "bytes": 10245,
+      "sha256": "56a7f0fbbbd2d75f297bd4a0c281b9d881b46ecb786e9abbf9340125b346f172"
+    },
+    {
+      "file": "assembly.json",
+      "bytes": 6718,
+      "sha256": "75491f0ed01bbe473a68947145f47701626739665772162cf5753fef8df75f73"
+    },
+    {
+      "file": "catalog.json",
+      "bytes": 7465,
+      "sha256": "672873205afc4c89ad578842ad188aa34bfd52f2eb20dc9777cd177c08316826"
+    },
+    {
+      "file": "create_public_wall_kit.py",
+      "bytes": 10412,
+      "sha256": "1aad78dd20e013a89fe9e4262478bb66092e7e8a0b03e51e2ceee3cfe1fdc850"
+    },
+    {
+      "file": "mcp/create-request.json",
+      "bytes": 391,
+      "sha256": "1dade82d546b82cf05d53ba4959122cc5edbd83051262327eb6337bc2b58fee4"
+    },
+    {
+      "file": "mcp/render-assembly-request.json",
+      "bytes": 431,
+      "sha256": "b2def3a97743b9dfebea7a5083da5267166572202adeb09cfe4c361ddb178693"
+    },
+    {
+      "file": "mcp/render-components-request.json",
+      "bytes": 385,
+      "sha256": "237b12fcedbb55ad229ef3c9710a453a38ae1ead3ae7e15fb5692a22df35af64"
+    },
+    {
+      "file": "modules/public_wall_foundation_2m.glb",
+      "bytes": 29324,
+      "sha256": "a3d89e3bbe6b95d14a398aad84535a82d8e2463f39569bba9c980fff13a2c3a3"
+    },
+    {
+      "file": "modules/public_wall_parapet_2m.glb",
+      "bytes": 35992,
+      "sha256": "70b93c3ea26cc21607e73a677294fd13924f946441cefd0ed4aefef672dbf0f3"
+    },
+    {
+      "file": "modules/public_wall_stone_2m.glb",
+      "bytes": 123752,
+      "sha256": "567ee1560dea93899fd662359406f9c7263701385f6d4071661948ababba1032"
+    },
+    {
+      "file": "modules/public_wall_walkway_2m.glb",
+      "bytes": 43580,
+      "sha256": "809d85262fd4fe6285436e8abfdc6620731884e73198c3ff4978a0d1083feb43"
+    },
+    {
+      "file": "previews/PublicWall_assembly.png",
+      "bytes": 2768225,
+      "sha256": "399e130aa8a04b4484cd67653cbd556534157fb2f315df26cb0da9262e2903cd"
+    },
+    {
+      "file": "previews/PublicWall_components.png",
+      "bytes": 2479153,
+      "sha256": "5c8f0e71b0786e0d1318fee85bd9ea13c56ba151ce6f7f6b13280216164629a2"
+    },
+    {
+      "file": "recipes.json",
+      "bytes": 2056,
+      "sha256": "78f6d7f188e656b55a25bae473902fa6453b0ae57cee6312a4831d8d844f9da8"
+    },
+    {
+      "file": "render-assembly-report.json",
+      "bytes": 369,
+      "sha256": "69591193adb8de58a82542b8ea94e8d497ccd053dbb134fb54a1236fab1f3e8f"
+    },
+    {
+      "file": "render-components-report.json",
+      "bytes": 370,
+      "sha256": "71dbfd887e2a4d5c78f2b6e4d8a4fa998b8eae6e7467c95c7f2ebca62a86491c"
+    },
+    {
+      "file": "render_public_wall_kit.py",
+      "bytes": 5999,
+      "sha256": "c108c60532842bc58dea5ae023bb8ecef8b2639608528495685bce76be24464c"
+    },
+    {
+      "file": "reuse-manifest.json",
+      "bytes": 1350,
+      "sha256": "00da52aff8f45f5dd4f6e6c8d71ef8dfdc9e7653b35b474d90108e7437c85ec3"
+    },
+    {
+      "file": "source-audit.json",
+      "bytes": 733,
+      "sha256": "69c76e9c04e8f675eacb4d0517d18d2cf756fbd0e3181fa4b5dc8ad522f69115"
+    },
+    {
+      "file": "validate_public_wall_kit.py",
+      "bytes": 7341,
+      "sha256": "fdcacad839458bd2b1fd2533eb481034b25a04f96745e99fc9610c7025f6b71e"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 6387,
+      "sha256": "8a3cabb7215c8341fb007dc27f80e242f071760b5e3bd203f3e596e876157173"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 1095,
+      "sha256": "26ddacc2cdd8b84c9af0e278a7ae087a7cd5c60e7724102203e52780577685a2"
+    }
+  ],
+  "native_import": "passed: /Game/ThreeHearths/Generated/PublicWallKit, Nanite disabled"
+}

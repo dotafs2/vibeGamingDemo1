@@ -1,0 +1,22 @@
+{
+  "modeling_interface": "Blender MCP execute_blender_code",
+  "blender_version": "5.2.0 LTS",
+  "source_blend": "PublicWallKit.blend",
+  "source_blend_sha256": "2ad326fa7b3fb1a7069c8057d4ededf2a895c973d53f155bd333862e67a6b0f3",
+  "objects": [
+    "public_wall_stone_2m",
+    "public_wall_foundation_2m",
+    "public_wall_walkway_2m",
+    "public_wall_parapet_2m"
+  ],
+  "mesh_count": 4,
+  "source_contains_four_independent_modules": true,
+  "source_contains_assembled_whole_wall": false,
+  "source_contains_reference_character": false,
+  "triangles_by_asset": {
+    "public_wall_stone_2m": 1584,
+    "public_wall_foundation_2m": 352,
+    "public_wall_walkway_2m": 528,
+    "public_wall_parapet_2m": 440
+  }
+}

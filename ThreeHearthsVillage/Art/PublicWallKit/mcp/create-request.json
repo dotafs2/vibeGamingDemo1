@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "user_prompt": "Build the first public wall as four independent construction modules in the existing VillageKit/SocietyKit style; export GLBs and source blend",
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\PublicWallKit\\create_public_wall_kit.py',run_name='__main__')"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "status": "proposed_not_live",
+  "resources": {
+    "stone": {
+      "engine_stock_property": "StoneStock",
+      "npc_carry_asset": "../VillageKit/modules/carry_stones.glb",
+      "single_delivery_unit": 1
+    },
+    "planks": {
+      "engine_stock_property": "PlankStock",
+      "npc_carry_asset": "../VillageKit/modules/carry_planks.glb",
+      "single_delivery_unit": 1
+    },
+    "beams": {
+      "engine_stock_property": "BeamStock",
+      "npc_carry_asset": "../SocietyKit/modules/goods_beams_bundle.glb",
+      "single_delivery_unit": 1,
+      "society_catalog_visual_resource_alias": "timber_beams"
+    }
+  },
+  "recipes": [
+    {
+      "id": "install_public_wall_stone_2m",
+      "resource_inputs": {
+        "stone": 8
+      },
+      "output_component_asset_id": "public_wall_stone_2m",
+      "output_count": 1,
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false
+    },
+    {
+      "id": "install_public_wall_foundation_2m",
+      "resource_inputs": {
+        "stone": 4
+      },
+      "output_component_asset_id": "public_wall_foundation_2m",
+      "output_count": 1,
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false
+    },
+    {
+      "id": "install_public_wall_walkway_2m",
+      "resource_inputs": {
+        "planks": 3,
+        "beams": 2
+      },
+      "output_component_asset_id": "public_wall_walkway_2m",
+      "output_count": 1,
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false
+    },
+    {
+      "id": "install_public_wall_parapet_2m",
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1
+      },
+      "output_component_asset_id": "public_wall_parapet_2m",
+      "output_count": 1,
+      "requires_site_installation": true,
+      "inventory_deduction_verified": false
+    }
+  ],
+  "example_6m_segment_inputs": {
+    "stone": 36,
+    "planks": 21,
+    "beams": 12
+  },
+  "visual_block_count_does_not_define_inventory_quantity": true
+}

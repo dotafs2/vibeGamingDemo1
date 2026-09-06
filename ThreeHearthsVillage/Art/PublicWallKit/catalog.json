@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "kit_id": "public_wall_kit_01",
+  "status": "native_import_passed_runtime_contract_pending",
+  "units": "metres",
+  "authoring_axes": "+Z up / -Y front",
+  "longitudinal_axis": "+X",
+  "grid_m": 2,
+  "resources": {
+    "stone": {
+      "engine_stock_property": "StoneStock",
+      "npc_carry_asset": "../VillageKit/modules/carry_stones.glb",
+      "single_delivery_unit": 1
+    },
+    "planks": {
+      "engine_stock_property": "PlankStock",
+      "npc_carry_asset": "../VillageKit/modules/carry_planks.glb",
+      "single_delivery_unit": 1
+    },
+    "beams": {
+      "engine_stock_property": "BeamStock",
+      "npc_carry_asset": "../SocietyKit/modules/goods_beams_bundle.glb",
+      "single_delivery_unit": 1,
+      "society_catalog_visual_resource_alias": "timber_beams"
+    }
+  },
+  "modules": [
+    {
+      "id": "public_wall_stone_2m",
+      "role": "stone_wall",
+      "asset_glb": "modules/public_wall_stone_2m.glb",
+      "measured_size_m": [
+        1.99399995803833,
+        0.4000000059604645,
+        2.394000068306923
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.996999979019165,
+          -0.20000000298023224,
+          0.003000006079673767
+        ],
+        [
+          0.996999979019165,
+          0.20000000298023224,
+          2.3970000743865967
+        ]
+      ],
+      "origin_convention": "Preserved SocietyKit structural datum at Z=0; geometry Z=.003..2.397. Length +X, front -Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 8
+      },
+      "recipe_status": "ready_for_runtime_construction_contract",
+      "runtime_binding": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_stone_2m/public_wall_stone_2m.public_wall_stone_2m",
+      "native_import_status": "passed",
+      "collision_design": [
+        {
+          "type": "box",
+          "center_authoring_m": [
+            0,
+            0,
+            1.2
+          ],
+          "size_m": [
+            2,
+            0.4,
+            2.4
+          ]
+        }
+      ],
+      "triangles": 1584,
+      "material_names": [
+        "SK_Stone_Edge",
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Shadow"
+      ],
+      "geometry_source": "../SocietyKit/modules/castle_wall_stone_2m.glb",
+      "source_geometry_reused_unchanged": true
+    },
+    {
+      "id": "public_wall_foundation_2m",
+      "role": "foundation",
+      "asset_glb": "modules/public_wall_foundation_2m.glb",
+      "measured_size_m": [
+        1.99399995803833,
+        0.8939999938011169,
+        0.2800000011920929
+      ],
+      "bounds_authoring_m": [
+        [
+          -0.996999979019165,
+          -0.44699999690055847,
+          0.0
+        ],
+        [
+          0.996999979019165,
+          0.44699999690055847,
+          0.2800000011920929
+        ]
+      ],
+      "origin_convention": "Centre bottom at Z=0; length along +X, front -Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "stone": 4
+      },
+      "recipe_status": "ready_for_runtime_construction_contract",
+      "runtime_binding": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_foundation_2m/public_wall_foundation_2m.public_wall_foundation_2m",
+      "native_import_status": "passed",
+      "collision_design": [
+        {
+          "type": "box",
+          "center_authoring_m": [
+            0,
+            0,
+            0.14
+          ],
+          "size_m": [
+            2,
+            0.9,
+            0.28
+          ]
+        }
+      ],
+      "triangles": 352,
+      "material_names": [
+        "SK_BlueGrey_Stone",
+        "SK_Stone_Shadow",
+        "SK_Stone_Edge"
+      ],
+      "geometry_source": "original_minimal_component",
+      "source_geometry_reused_unchanged": false
+    },
+    {
+      "id": "public_wall_walkway_2m",
+      "role": "timber_walkway",
+      "asset_glb": "modules/public_wall_walkway_2m.glb",
+      "measured_size_m": [
+        2.0,
+        0.8999999761581421,
+        0.2199999988079071
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.44999998807907104,
+          0.0
+        ],
+        [
+          1.0,
+          0.44999998807907104,
+          0.2199999988079071
+        ]
+      ],
+      "origin_convention": "Centre bottom at Z=0; length along +X, front -Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 3,
+        "beams": 2
+      },
+      "recipe_status": "ready_for_runtime_construction_contract",
+      "runtime_binding": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_walkway_2m/public_wall_walkway_2m.public_wall_walkway_2m",
+      "native_import_status": "passed",
+      "collision_design": [
+        {
+          "type": "box",
+          "center_authoring_m": [
+            0,
+            0,
+            0.11
+          ],
+          "size_m": [
+            2,
+            0.9,
+            0.22
+          ]
+        }
+      ],
+      "triangles": 528,
+      "material_names": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
+      ],
+      "geometry_source": "original_minimal_component",
+      "source_geometry_reused_unchanged": false
+    },
+    {
+      "id": "public_wall_parapet_2m",
+      "role": "timber_parapet",
+      "asset_glb": "modules/public_wall_parapet_2m.glb",
+      "measured_size_m": [
+        2.0,
+        0.14000000059604645,
+        0.7400000095367432
+      ],
+      "bounds_authoring_m": [
+        [
+          -1.0,
+          -0.07000000029802322,
+          0.0
+        ],
+        [
+          1.0,
+          0.07000000029802322,
+          0.7400000095367432
+        ]
+      ],
+      "origin_convention": "Centre bottom at Z=0; length along +X, front -Y.",
+      "installation_anchor_m": [
+        0,
+        0,
+        0
+      ],
+      "npc_handheld": false,
+      "execution_unit": "one_site_installation",
+      "resource_inputs": {
+        "planks": 2,
+        "beams": 1
+      },
+      "recipe_status": "ready_for_runtime_construction_contract",
+      "runtime_binding": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_parapet_2m/public_wall_parapet_2m.public_wall_parapet_2m",
+      "native_import_status": "passed",
+      "collision_design": [
+        {
+          "type": "box",
+          "center_authoring_m": [
+            0,
+            0,
+            0.37
+          ],
+          "size_m": [
+            2,
+            0.14,
+            0.74
+          ]
+        }
+      ],
+      "triangles": 440,
+      "material_names": [
+        "VK_Chestnut",
+        "VK_Cut_Oak",
+        "VK_Honey_Plank"
+      ],
+      "geometry_source": "original_minimal_component",
+      "source_geometry_reused_unchanged": false
+    }
+  ],
+  "npc_transport_rule": "NPCs carry the resource bundles listed above; finished wall modules are installed on site, never handheld.",
+  "recipes_applied_to_runtime": false,
+  "native_assets_imported": true
+}

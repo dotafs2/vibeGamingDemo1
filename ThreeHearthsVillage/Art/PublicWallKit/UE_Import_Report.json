@@ -1,0 +1,315 @@
+{
+  "status": "passed",
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "assets": [
+    {
+      "id": "public_wall_stone_2m",
+      "source": "Art/PublicWallKit/modules/public_wall_stone_2m.glb",
+      "source_sha256": "567ee1560dea93899fd662359406f9c7263701385f6d4071661948ababba1032",
+      "mesh": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_stone_2m/public_wall_stone_2m.public_wall_stone_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        99.69999694824219,
+        20.0,
+        119.70000579953194
+      ],
+      "import_seconds": 0.9370000000344589,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite": "disabled_low_poly_kit",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        120.00000640749931
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        120.00000402331352
+      ],
+      "expected_extent_cm": [
+        99.6999979019165,
+        20.000000298023224,
+        119.70000341534615
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 1584,
+      "native_lod0_fallback_triangles": 1584,
+      "native_nanite_triangles": 0,
+      "source_triangles": 1584,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_stone_2m/SK_Stone_Edge.SK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_stone_2m/SK_BlueGrey_Stone.SK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_stone_2m/SK_Stone_Shadow.SK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ]
+    },
+    {
+      "id": "public_wall_foundation_2m",
+      "source": "Art/PublicWallKit/modules/public_wall_foundation_2m.glb",
+      "source_sha256": "a3d89e3bbe6b95d14a398aad84535a82d8e2463f39569bba9c980fff13a2c3a3",
+      "mesh": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_foundation_2m/public_wall_foundation_2m.public_wall_foundation_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        99.69999694824219,
+        44.70000076293945,
+        14.0
+      ],
+      "import_seconds": 0.2970000000204891,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite": "disabled_low_poly_kit",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        14.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        14.000000059604645
+      ],
+      "expected_extent_cm": [
+        99.6999979019165,
+        44.69999969005585,
+        14.000000059604645
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 352,
+      "native_lod0_fallback_triangles": 352,
+      "native_nanite_triangles": 0,
+      "source_triangles": 352,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_foundation_2m/SK_BlueGrey_Stone.SK_BlueGrey_Stone",
+          "roughness": 0.5199999809265137,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.31398871541023254,
+            0.3762621283531189,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_foundation_2m/SK_Stone_Shadow.SK_Stone_Shadow",
+          "roughness": 0.5699999928474426,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19806931912899017,
+            0.25015828013420105,
+            0.2788942754268646,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_foundation_2m/SK_Stone_Edge.SK_Stone_Edge",
+          "roughness": 0.4699999988079071,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4910208582878113,
+            0.533276379108429,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ]
+    },
+    {
+      "id": "public_wall_walkway_2m",
+      "source": "Art/PublicWallKit/modules/public_wall_walkway_2m.glb",
+      "source_sha256": "809d85262fd4fe6285436e8abfdc6620731884e73198c3ff4978a0d1083feb43",
+      "mesh": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_walkway_2m/public_wall_walkway_2m.public_wall_walkway_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        100.0,
+        45.0,
+        11.0
+      ],
+      "import_seconds": 0.31200000003445894,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite": "disabled_low_poly_kit",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        11.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        10.999999940395355
+      ],
+      "expected_extent_cm": [
+        100.0,
+        44.999998807907104,
+        10.999999940395355
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 528,
+      "native_lod0_fallback_triangles": 528,
+      "native_nanite_triangles": 0,
+      "source_triangles": 528,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_walkway_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_walkway_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_walkway_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ]
+    },
+    {
+      "id": "public_wall_parapet_2m",
+      "source": "Art/PublicWallKit/modules/public_wall_parapet_2m.glb",
+      "source_sha256": "70b93c3ea26cc21607e73a677294fd13924f946441cefd0ed4aefef672dbf0f3",
+      "mesh": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_parapet_2m/public_wall_parapet_2m.public_wall_parapet_2m",
+      "material_slots": 3,
+      "bounds_extent_cm": [
+        100.0,
+        7.0,
+        37.0
+      ],
+      "import_seconds": 0.31299999996554106,
+      "saved_assets": 4,
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite": "disabled_low_poly_kit",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        37.0
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        37.00000047683716
+      ],
+      "expected_extent_cm": [
+        100.0,
+        7.000000029802322,
+        37.00000047683716
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 440,
+      "native_lod0_fallback_triangles": 440,
+      "native_nanite_triangles": 0,
+      "source_triangles": 440,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_parapet_2m/VK_Chestnut.VK_Chestnut",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_parapet_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/PublicWallKit/public_wall_parapet_2m/VK_Honey_Plank.VK_Honey_Plank",
+          "roughness": 0.46000000834465027,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.44520118832588196,
+            0.23839756846427917,
+            0.10702310502529144,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ]
+    }
+  ],
+  "nanite_policy": "disabled_low_poly_kit"
+}
