@@ -84,6 +84,14 @@ bool FHearthDecisionSimulationClockTest::RunTest(const FString&)
     if(!TestNotNull(TEXT("Create timing village"),Village)) { World->DestroyWorld(false); return false; }
     Village->Residents.SetNum(1);
     Village->Residents[0].Task=EHearthTask::LifeChoosing;
+    Village->bAutonomousLifeEnabled=false;
+    Village->SimulationSpeed=3.f;
+    Village->Tick(.2f);
+    TestTrue(TEXT("Three-times speed advances the simulation clock three times faster"),FMath::IsNearlyEqual(Village->Elapsed,.6f,.001f));
+    Village->bSimulationPaused=true;
+    Village->Tick(.2f);
+    TestTrue(TEXT("Pause freezes the simulation clock"),FMath::IsNearlyEqual(Village->Elapsed,.6f,.001f));
+    Village->bSimulationPaused=false;
     Village->Residents[0].NextLifeDecision=6.0;
     Village->Elapsed=0.f;
     TestEqual(TEXT("Cooldown starts on simulation clock"),Village->StatusFor(0),FString(TEXT("稍作休息 · 6 秒")));
