@@ -88,6 +88,8 @@ bool FHearthPrivateHouseFinanceTest::RunTest(const FString&)
     const int32 StoneSite=V->ProductionSites.IndexOfByPredicate([](const FHearthSite& Site){return Site.Kind==EHearthSiteKind::Stone&&Site.bReachable&&Site.Units>0;});
     TestTrue(TEXT("A resident may fund their own plot preparation after public funds run out"),EmptySite>=0&&V->IsProductionAllowed(0,100+EmptySite*16));
     TestFalse(TEXT("An unfunded public production job is removed before local choice"),StoneSite>=0&&V->IsProductionAllowed(0,100+StoneSite*16+11));
+    V->Residents[0].Role=TEXT("木匠"); V->Residents[0].SocialNeed=80.f;
+    TestEqual(TEXT("Local policy chooses the executable private plot instead of an unfunded public job"),V->ChooseProductionLocally(0),100+EmptySite*16);
     V->ProductionSites=OriginalSites;
     const int32 Treasury=V->TreasuryCoins,TaxFund=V->TaxProjectCoins,Owner=V->Residents[0].Coins,Worker=V->Residents[1].Coins;
     TestFalse(TEXT("Public wage refuses empty general fund"),V->ReserveWage(1,Id(),2));

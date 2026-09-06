@@ -329,7 +329,14 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
         if(Op==13) Score=PublicBuilding && PublicProject.Stock[1]<PublicNeed[1]?245:(PlankStock<12?165:18);
         if(Op==14) Score=PublicBuilding && PublicProject.Stock[2]<PublicNeed[2]?240:(BeamStock<8?155:16);
         if(Op==8) Score=FoodStock<40?125:45;
-        if(Op==0) { int32 Ready=0; for(const auto& S:ProductionSites) Ready+=S.Kind==EHearthSiteKind::Land; Score=Ready<2?90:2; }
+        if(Op==0)
+        {
+            int32 Ready=0; for(const auto& S:ProductionSites) Ready+=S.Kind==EHearthSiteKind::Land;
+            const auto& Person=Residents[Index]; const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Person.StableId);});
+            const bool WorkshopRole=Person.Role.Contains(TEXT("木匠"))||Person.Role.Contains(TEXT("铁匠"))||Person.Role.Contains(TEXT("陶工"))||Person.Role.Contains(TEXT("织工"));
+            const float NeedPressure=FMath::Max(Person.Hunger,Person.SocialNeed);
+            Score=Ready==0&&!OwnsStructure?(WorkshopRole?205:(NeedPressure>=45.f?195:90)):(Ready<2?90:2);
+        }
         if(Op>=1 && Op<=7)
         {
             const FString Key=HearthProduction::OpKeys[Op]; Score=ProductionTotals.FindRef(Key)==0?100:10;
