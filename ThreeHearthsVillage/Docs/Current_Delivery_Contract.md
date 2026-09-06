@@ -48,3 +48,9 @@ The current branch now has live runtime evidence for the integration slice above
 - `Saved/Logs/FinalFullAcceptance.log` records 31 successful `ThreeHearths` automation tests and zero failures. Focused public-site finance and movement recovery evidence is in `PublicSiteOwnership.log` and `MovementSamePoint.log`.
 
 The runtime roof audit remains documented separately under `Art/RoofMaterialAudit`. The current generated NPC homes deliberately use the timber roof material family; broader resident-selectable wall and roof material variants remain part of the larger village goal rather than evidence claimed by this checkpoint.
+
+## 2026-09-06 final continuous-neighborhood audit
+
+The dependency chain in this contract is now implemented and verified. The authoritative revision-14 acceptance world contains six completed live plans and 156/156 independently transported and installed components. It adds a real stone-wall mason home, preserves the three-room home's two extension IDs, and reloads every plan identity and every stored component transform/bound unchanged. Resource ledgers reconcile to the ten-resident initial endowment, no construction escrow or model request remains pending, and the final native automation run records 31 successes, zero failures, and exit code 0.
+
+The requirement-by-requirement evidence, local-fallback provenance, screenshots, generated reload/conservation summaries, hashes, and exact artifact paths are recorded in [Ten-NPC continuous neighborhood acceptance](Validation/Ten_NPC_Continuous_Build_Acceptance.md).
