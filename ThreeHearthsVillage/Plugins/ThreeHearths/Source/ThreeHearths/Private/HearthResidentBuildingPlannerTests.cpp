@@ -21,6 +21,8 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     auto FamilyInput = Inputs(4, TEXT("carpenter"), 1); FamilyInput.ExtensionKey = TEXT("extension-family");
     const auto Small = HearthResidentBuildingPlanner::Build(SmallInput);
     const auto Family = HearthResidentBuildingPlanner::Build(FamilyInput);
+    AddInfo(TEXT("Small planner: ")+Small.Reason);
+    AddInfo(TEXT("Family planner: ")+Family.Reason);
     TestTrue(TEXT("Small household produces a buildable plan"), Small.bBuildable);
     TestTrue(TEXT("Family/workshop household produces a buildable plan"), Family.bBuildable);
     TestTrue(TEXT("Need and occupation change room count"), Family.Plan.Rooms.Num() > Small.Plan.Rooms.Num());
@@ -51,7 +53,7 @@ bool FHearthResidentBuildingPlannerTest::RunTest(const FString&)
     TestTrue(TEXT("First expansion converts through the adapter"), FirstExtensionRuntime.bAccepted);
     const auto SecondExtensionRuntime = HearthPlannedConstructionAdapter::Convert(Multi.Expansion.ResultingPlan, 2, FirstExtensionRuntime.Components);
     TestTrue(TEXT("Second expansion converts through the adapter"), SecondExtensionRuntime.bAccepted);
-    TestEqual(TEXT("Second expansion adds one room worth of parts"), SecondExtensionRuntime.Components.Num(), FirstExtensionRuntime.Components.Num() + 16);
+    TestEqual(TEXT("Second expansion shares one boundary wall"), SecondExtensionRuntime.Components.Num(), FirstExtensionRuntime.Components.Num() + 15);
     for (const FHearthCottageComponent& Old : FirstExtensionRuntime.Components)
         TestTrue(TEXT("Existing runtime component fields remain unchanged"), SecondExtensionRuntime.Components.ContainsByPredicate([&](const FHearthCottageComponent& Current) { return Current.Id == Old.Id && Current.AssetId == Old.AssetId && Current.Offset == Old.Offset && Current.Yaw == Old.Yaw && Current.Stage == Old.Stage && Current.MaterialType == Old.MaterialType && Current.MaterialAmount == Old.MaterialAmount && Current.Owner == Old.Owner; }));
 

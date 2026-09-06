@@ -99,9 +99,10 @@ namespace HearthStructurePlan
 
         bool Overlaps(const FComponentBounds& A, const FComponentBounds& B)
         {
-            return A.Min.X < B.Max.X && B.Min.X < A.Max.X
-                && A.Min.Y < B.Max.Y && B.Min.Y < A.Max.Y
-                && A.MinZ < B.MaxZ && B.MinZ < A.MaxZ;
+            constexpr float SeamTolerance = .25f;
+            return A.Min.X < B.Max.X - SeamTolerance && B.Min.X < A.Max.X - SeamTolerance
+                && A.Min.Y < B.Max.Y - SeamTolerance && B.Min.Y < A.Max.Y - SeamTolerance
+                && A.MinZ < B.MaxZ - SeamTolerance && B.MinZ < A.MaxZ - SeamTolerance;
         }
 
         bool HasSupportContact(const FHearthStructureComponent& Child, const FHearthStructureComponent& Parent)
