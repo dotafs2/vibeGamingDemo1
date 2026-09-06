@@ -60,7 +60,7 @@ struct FHearthPendingDecision
     uint64 Serial=0;
     bool bActive=false, bReturned=false, bLife=false, bSocial=false, bHasUsage=false;
     int32 Choice=-1, HouseStyle=-1, Tokens=0, HistoryIndex=-1;
-    double StartedAt=0, Latency=0;
+    double StartedAt=0, StartedAtSimulation=0, Latency=0;
     FString Reason, Error;
     TArray<int32> AllowedActions;
 };

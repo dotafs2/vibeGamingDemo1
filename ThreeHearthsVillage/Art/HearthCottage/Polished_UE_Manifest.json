@@ -105,6 +105,11 @@
       "file": "Content/ThreeHearths/Maps/L_HearthCottagePolished_Compare.umap",
       "bytes": 487321,
       "sha256": "668a08970bae231409df51e5d449a408205361728574ad3e560e4c241ff689e7"
+    },
+    {
+      "file": "Content/ThreeHearths/Generated/HearthCottageRuntime/SM_HearthCottage_Polished.uasset",
+      "bytes": 394378,
+      "sha256": "a5c99ebe4b4d751c1e8f03393ccdc0a0ffd408d5618c98ddd49bf412e360857c"
     }
   ],
   "art_reports_and_images": [
@@ -120,13 +125,13 @@
     },
     {
       "file": "Polished_UE_Import.json",
-      "bytes": 18482,
-      "sha256": "497d100374b85114969daf7fd0fde779dff29c94e413ac9f84d43053990fde67"
+      "bytes": 18762,
+      "sha256": "1b7ba4cc42f3e2553d91aff27a98dd8a42fafe466bf6119243ae20c628c73fcf"
     },
     {
       "file": "Polished_UE_README.md",
-      "bytes": 2897,
-      "sha256": "983f1a9af503e777fe9b912d0138ff8e92f84f8937b63fe574a09eea98e81a33"
+      "bytes": 3307,
+      "sha256": "09ed250cf7e52ad26b701403214622cc28f856e9aa7d276e10b5abcd31e22d9c"
     },
     {
       "file": "Polished_UE_roof_original.png",
@@ -154,5 +159,5 @@
       "sha256": "832dc8916a47f7cde8de4a4c4085328262b2d640c2c1c17300e764ab585a3f57"
     }
   ],
-  "runtime_fix": "Polished low-poly mesh has Nanite disabled; authored material roughness/specular now avoids default-material fallback."
+  "runtime_fix": "Both polished source and runtime low-poly meshes have Nanite disabled; clean runtime warning count is zero."
 }

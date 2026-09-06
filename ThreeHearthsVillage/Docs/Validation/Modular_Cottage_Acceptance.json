@@ -4,8 +4,8 @@
   "engine": "Unreal Engine 5.8.1",
   "build": "succeeded",
   "automation": {
-    "result": "17/17 passed",
-    "log": "Saved/Logs/ThreeHearthsAutomationComponentsFinal.log",
+    "result": "18/18 passed",
+    "log": "Saved/Logs/ThreeHearthsAutomationSpeedTimeout.log",
     "focused_test": "ThreeHearths.Production.ModularCottageLifecycle",
     "focused_result": "passed"
   },
@@ -62,7 +62,14 @@
     "blender_preview_review": "passed",
     "nanite_policy": "disabled_for_low_poly_village_kit",
     "villagekit_nanite_material_warnings_after_fix": 0,
-    "polished_cottage_root_cause": "Nanite-enabled low-poly mesh used materials without saved Nanite usage, causing runtime default-material fallback; Nanite disabled on the mesh."
+    "polished_cottage_root_cause": "The runtime copy remained Nanite-enabled and shared 19 imported materials without saved Nanite usage, causing runtime default-material fallback; Nanite is disabled on both source and runtime meshes.",
+    "polished_cottage_nanite_material_warnings_after_fix": 0
+  },
+  "decision_timing": {
+    "cooldown_clock": "simulation_time",
+    "request_deadline_clock": "simulation_time_with_wall_clock_safety_cap",
+    "runtime_100x_pending_after_fallback": 0,
+    "runtime_log": "Saved/Logs/ThreeHearthsSpeedTimeoutRuntime.log"
   },
   "runtime_100x": {
     "simulation_elapsed_seconds": 2978.7,

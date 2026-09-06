@@ -96,6 +96,16 @@ void AHearthVillage::StopDecisionRequests()
     }
 }
 
+namespace HearthDecision
+{
+    bool RequestExceededSimulationDeadline(double CurrentSimulationTime,double StartedSimulationTime,float TimeoutSeconds)
+    {
+        return FMath::IsFinite(CurrentSimulationTime) && FMath::IsFinite(StartedSimulationTime)
+            && FMath::IsFinite(TimeoutSeconds) && TimeoutSeconds>=0.f
+            && CurrentSimulationTime-StartedSimulationTime>static_cast<double>(TimeoutSeconds);
+    }
+}
+
 bool AHearthVillage::IsDecisionPending(int32 Index) const
 { return PendingDecisions.IsValidIndex(Index) && PendingDecisions[Index].bActive; }
 
@@ -236,7 +246,8 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(ApiFormat==TEXT("json_object")) { auto Format=MakeShared<FJsonObject>(); Format->SetStringField(TEXT("type"),TEXT("json_object")); Body->SetObjectField(TEXT("response_format"),Format); }
     auto& Pending=PendingDecisions[Index]; Pending=FHearthPendingDecision();
     Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.StartedAt=FPlatformTime::Seconds();
+    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial;
+    Pending.StartedAt=FPlatformTime::Seconds(); Pending.StartedAtSimulation=Elapsed;
     Pending.ConversationId=bSocial?Residents[Index].ConversationId:FString();
     Pending.Serial=++DecisionSerial;
     Pending.AllowedActions=bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
@@ -325,10 +336,13 @@ void AHearthVillage::ConsumeDecision()
     {
         auto& Slot=PendingDecisions[Index];
         if(!Slot.bActive) continue;
-        if(!Slot.bReturned && FPlatformTime::Seconds()-Slot.StartedAt>ApiTimeout+2)
+        const bool bSimulationDeadline=HearthDecision::RequestExceededSimulationDeadline(Elapsed,Slot.StartedAtSimulation,ApiTimeout);
+        const bool bWallDeadline=FPlatformTime::Seconds()-Slot.StartedAt>ApiTimeout+2;
+        if(!Slot.bReturned && (bSimulationDeadline || bWallDeadline))
         {
             if(Slot.Request.IsValid()) { Slot.Request->OnProcessRequestComplete().Unbind(); Slot.Request->CancelRequest(); Slot.Request.Reset(); }
-            Slot.Error=TEXT("等待模型超时"); Slot.bReturned=true; Slot.Latency=FPlatformTime::Seconds()-Slot.StartedAt;
+            Slot.Error=bSimulationDeadline?TEXT("模型未赶上当前游戏倍速，已采用本地规则"):TEXT("等待模型超时");
+            Slot.bReturned=true; Slot.Latency=FPlatformTime::Seconds()-Slot.StartedAt;
             if(bApiBudgeted) bApiDisabledThisRun=true;
         }
         if(!Slot.bReturned) continue;

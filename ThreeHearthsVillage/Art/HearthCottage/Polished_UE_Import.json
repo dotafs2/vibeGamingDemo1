@@ -410,5 +410,5 @@
   "map": "/Game/ThreeHearths/Maps/L_HearthCottagePolished_Compare",
   "main_map_and_original_assets_unchanged": true,
   "reference_bones": "passed",
-  "runtime_material_fix": "Nanite disabled on low-poly cottage mesh so authored roughness/specular materials render without fallback."
+  "runtime_material_fix": "Nanite disabled on both the imported polished mesh and /Game/ThreeHearths/Generated/HearthCottageRuntime/SM_HearthCottage_Polished; a clean game launch produced zero related default-material fallback warnings."
 }

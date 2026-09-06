@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 namespace HearthDecision { bool ParsePlan(FString Text,int32& Plot,int32& HouseStyle,FString& Reason); bool ParseLifePlan(FString Text,int32& Action,FString& Reason); }
 namespace HearthDecision { bool RequiresBudgetGateway(const FString& Base,const FString& Model); bool ReadBudgetDescriptor(const FString& Text,FString& Token,FString& Ledger); }
+namespace HearthDecision { bool RequestExceededSimulationDeadline(double CurrentSimulationTime,double StartedSimulationTime,float TimeoutSeconds); }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthBudgetRoutingTest,"ThreeHearths.Decisions.PersistentBudgetRouting",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthBudgetRoutingTest::RunTest(const FString&)
@@ -104,6 +105,15 @@ bool FHearthDecisionSimulationClockTest::RunTest(const FString&)
     Village->Elapsed=6.f;
     TestEqual(TEXT("Cooldown becomes schedulable at simulated deadline"),Village->StatusFor(0),FString(TEXT("等待下一步调度")));
     World->DestroyWorld(false);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthDecisionSimulationTimeoutTest,"ThreeHearths.Decisions.RequestTimeoutUsesSimulationClock",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthDecisionSimulationTimeoutTest::RunTest(const FString&)
+{
+    TestFalse(TEXT("Request remains valid before its simulated deadline"),HearthDecision::RequestExceededSimulationDeadline(29.9,0.0,30.f));
+    TestTrue(TEXT("Accelerated simulation expires a request at the same world-time deadline"),HearthDecision::RequestExceededSimulationDeadline(30.1,0.0,30.f));
+    TestFalse(TEXT("Pause does not age a request when the simulation clock is unchanged"),HearthDecision::RequestExceededSimulationDeadline(12.0,12.0,30.f));
     return true;
 }
 
