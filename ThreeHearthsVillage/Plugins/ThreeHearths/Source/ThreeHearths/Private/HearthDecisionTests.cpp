@@ -99,6 +99,8 @@ bool FHearthDecisionSimulationClockTest::RunTest(const FString&)
     Village->bSimulationPaused=false;
     Village->Residents[0].NextLifeDecision=6.0;
     Village->Elapsed=0.f;
+    TestEqual(TEXT("Disabled autonomy is reported instead of looking scheduler-stalled"),Village->StatusFor(0),FString(TEXT("自主生活已关闭")));
+    Village->bAutonomousLifeEnabled=true;
     TestEqual(TEXT("Cooldown starts on simulation clock"),Village->StatusFor(0),FString(TEXT("稍作休息 · 6 秒")));
     Village->Elapsed=3.f;
     TestEqual(TEXT("Advancing simulated time reduces cooldown"),Village->StatusFor(0),FString(TEXT("稍作休息 · 3 秒")));

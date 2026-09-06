@@ -96,7 +96,10 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     StopDecisionRequests(); LoadApiConfig();
     WorldId=W.Id; CurrentRun=W.Run; WorldRevision=W.Revision; VillageEvent=W.Event; Elapsed=W.Elapsed;
     SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
-    bAutonomousLifeEnabled=W.bAutonomy; bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
+    // Loading a world must not silently keep the whole village idle because an
+    // earlier session closed autonomy. LoadApiConfig above establishes the current
+    // run policy; -HearthNoAutonomousLife remains the explicit headless/test opt-out.
+    bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
     FoodStock=W.Food; StoneStock=W.Stone; PlankStock=W.Planks; BeamStock=W.Beams; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
     Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions); TaxAssessments=MoveTemp(W.TaxAssessments);
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;

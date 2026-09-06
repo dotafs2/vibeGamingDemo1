@@ -126,7 +126,8 @@ void AHearthVillage::LoadApiConfig()
     bApiReady=false; bApiConfigured=false; bApiDisabledThisRun=false; bHasApiUsage=false;
     bApiBudgeted=false; ApiBudgetLedger.Empty(); ApiBudgetSpent=0; ApiBudgetReserved=0; ApiBudgetRemaining=0;
     ApiRequests=0; ApiSuccesses=0; ApiTokens=0;
-    bAutonomousLifeEnabled=true; LifeDecisionInterval=6.f; ApiMaxRequests=600;
+    const bool bAutonomyForcedOff=FParse::Param(FCommandLine::Get(),TEXT("HearthNoAutonomousLife"));
+    bAutonomousLifeEnabled=!bAutonomyForcedOff; LifeDecisionInterval=6.f; ApiMaxRequests=600;
     ApiBackend=TEXT("local"); ApiKey.Empty(); ApiModel.Empty();
     ApiStatus=TEXT("尚未配置模型 · 本地人设规则");
     FString ConfigPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/api-config.json");
@@ -134,7 +135,7 @@ void AHearthVillage::LoadApiConfig()
     FString Text; TSharedPtr<FJsonObject> Config;
     if(!FFileHelper::LoadFileToString(Text,*ConfigPath)) return;
     if(Text.Len()>16384 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Config) || !Config.IsValid()) { ApiStatus=TEXT("API 配置格式有误 · 使用本地规则"); return; }
-    Config->TryGetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
+    if(!bAutonomyForcedOff) Config->TryGetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
     double Interval=6; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
     if(FMath::IsFinite(Interval)) LifeDecisionInterval=FMath::Clamp(static_cast<float>(Interval),1.f,120.f);
     if(FParse::Param(FCommandLine::Get(),TEXT("HearthDisableApi")))

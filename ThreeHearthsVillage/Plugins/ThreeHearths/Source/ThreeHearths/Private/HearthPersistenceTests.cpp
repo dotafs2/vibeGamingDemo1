@@ -57,6 +57,8 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
             if(!TestTrue(TEXT("Save an in-progress home phase"),V->SaveWorld())) { AddError(V->WorldSaveStatus); return false; }
             V->AdvanceSimulation(1.f); V->FoodStock+=99;
             if(!TestTrue(TEXT("Restore complete checkpoint"),V->LoadWorld())) { AddError(V->WorldSaveStatus); return false; }
+            TestTrue(TEXT("A saved off switch does not leave a normal restarted village idle"),V->bAutonomousLifeEnabled);
+            V->bAutonomousLifeEnabled=false;
             V->bApiDisabledThisRun=true;
             const auto& After=V->Residents[0];
             TestEqual(TEXT("Same resident across reload"),After.StableId,ResidentId); TestEqual(TEXT("Same task identity"),After.ActiveTaskId,Before.ActiveTaskId);

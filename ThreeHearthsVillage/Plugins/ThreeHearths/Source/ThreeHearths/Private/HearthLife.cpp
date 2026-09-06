@@ -322,5 +322,6 @@ FString AHearthVillage::LifeSummary() const
     for(int32 I=0;I<Residents.Num();++I) if(IsDecisionPending(I)) Thinking.Add(Residents[I].Name);
     if(!Thinking.IsEmpty()) return FString::Join(Thinking,TEXT("、"))+TEXT("正在各自思考，回复后独立执行");
     if(ApiRequests>=ApiMaxRequests && bApiReady) return TEXT("本轮模型预算已用完 · 后续采用本地规则");
-    return FString::Printf(TEXT("自主生活开启 · 每人独立思考 · 每人间隔 %d 秒"),FMath::RoundToInt(LifeDecisionInterval));
+    const float RealWait=LifeDecisionInterval/FMath::Max(1.f,SimulationSpeed);
+    return FString::Printf(TEXT("自主生活开启 · 每人独立思考 · 间隔 %d 秒模拟时间（当前约 %.2f 秒现实时间）"),FMath::RoundToInt(LifeDecisionInterval),RealWait);
 }

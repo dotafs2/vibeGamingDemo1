@@ -742,6 +742,7 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::SupplyHandover) return TEXT("交付木板并等待结算");
     if(Residents[I].Task==EHearthTask::LifeChoosing)
     {
+        if(!bAutonomousLifeEnabled) return TEXT("自主生活已关闭");
         const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-Elapsed));
         return Wait>0?FString::Printf(TEXT("稍作休息 · %d 秒"),Wait):TEXT("等待下一步调度");
     }
@@ -827,6 +828,7 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("coins"),R.Coins);
         J->SetNumberField(TEXT("personal_planks"),R.PersonalPlanks);
         J->SetNumberField(TEXT("life_action"),R.LifeAction); J->SetNumberField(TEXT("history_count"),HistoryCount(I));
+        J->SetNumberField(TEXT("next_decision_in_simulation_seconds"),FMath::Max(0.0,R.NextLifeDecision-Elapsed));
         if(IsValid(R.Actor)) J->SetStringField(TEXT("position"),R.Actor->GetActorLocation().ToString());
         People.Add(MakeShared<FJsonValueObject>(J));
         AccountedWood+=R.CarriedWood+R.DeliveredWood+(R.CargoType==1?R.CargoAmount:0);
