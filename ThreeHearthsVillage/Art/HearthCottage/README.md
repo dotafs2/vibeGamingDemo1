@@ -2,7 +2,7 @@
 
 为 ThreeHearths 小镇制作的原创低多边形外观模型：奶油色灰泥墙、陶红弧形瓦片、粗木梁、灰蓝色石基与烟囱、蓝绿色百叶窗、小门廊、花箱、柴堆及木桶。
 
-**共享 UV 基线：`HearthCottage_SharedUV.blend` 与 `HearthCottage_SharedUV.glb`。陶瓦外观新变体：`HearthCottage_SharedUV_Polished.blend` 与 `HearthCottage_SharedUV_Polished.glb`。** 基线保留原始材质与法线，供比较和回退；Polished 修复了陶瓦反光的材质和曲面法线。旧基线文件没有覆盖。新变体尚未经过 UE 导入验收，主地图目前仍使用旧版。
+**共享 UV 基线：`HearthCottage_SharedUV.blend` 与 `HearthCottage_SharedUV.glb`。陶瓦外观新变体：`HearthCottage_SharedUV_Polished.blend` 与 `HearthCottage_SharedUV_Polished.glb`。** 基线保留原始材质与法线，供比较和回退；Polished 修复了陶瓦反光的材质和曲面法线。旧基线文件没有覆盖。新变体已通过 UE 原生导入和同光照对比验收；主地图已接入保留原碰撞盒的独立 Polished 运行时副本。当前复核入口见 [屋面高光审计](../RoofMaterialAudit/README.md)。
 
 - `HearthCottage.blend`：可编辑源文件，模型按结构分组，附正交相机和展示灯光。
 - `HearthCottage.glb`：只包含房屋与附属小道具，不包含展示地面、灯光及相机；材质为简单 PBR 纯色，不依赖外部贴图。
@@ -19,7 +19,7 @@ Blender 5.2.1 LTS；16,788 个三角面，45 个网格对象，19 个材质。�
 
 - 地图：`/Game/ThreeHearths/Maps/L_ThreeHearthsVillage`。
 - 场景对象：`Hearth Cottage - Shared UV`，位于 `ThreeHearths/Generated` 文件夹。
-- 网格：`/Game/ThreeHearths/Generated/HearthCottage/SM_HearthCottage_SharedUV`。
+- 当前网格：`/Game/ThreeHearths/Generated/HearthCottageRuntime/SM_HearthCottage_Polished`；原始 `HearthCottage/SM_HearthCottage_SharedUV` 保留用于对比。
 - 位置：`X=-1500, Y=1200, Z=2.8` 厘米，Yaw 为 90°；位于北侧主路旁，门口朝向主路。
 - 45 个源网格合并为一个静态网格，保留 16,788 个三角面、19 个材质及 UV0。UE 内再次检查了屋顶 UV 的重复使用。
 - 添加一个包围盒碰撞体，验证其会阻挡村庄的土地探测；九处地面采样确认房屋落地且没有占用道路。对象采用 Movable，以当前动态光照显示，共享 UV0 不用作烘焙光照贴图。
@@ -81,7 +81,7 @@ blender --background --factory-startup --threads 4 --python-exit-code 1 --python
 - `*_roof_finish_only.png`：只修粗糙度与法线，仍保留旧颜色，隔离高光改善效果。
 - `*_roof_polished.png`：相同修正再加与 VillageKit 一致的陶瓦底色。
 
-这里的 `*` 为 `HearthCottage_SharedUV_Polished`。每张图附有 `_render.json`，记录相同灯光哈希、几何/UV 指纹、相机、样本数与输出哈希。全屋和屋顶近景是两个固定机位；每组内部相机不变。`HearthCottage_Polished_Comparison.html` 可在本地切换三个屋顶状态，并同时查看全屋前后。原生 UE 光照下的最终效果由后续导入单独验收。
+这里的 `*` 为 `HearthCottage_SharedUV_Polished`。每张图附有 `_render.json`，记录相同灯光哈希、几何/UV 指纹、相机、样本数与输出哈希。全屋和屋顶近景是两个固定机位；每组内部相机不变。`HearthCottage_Polished_Comparison.html` 可在本地切换三个屋顶状态，并同时查看全屋前后。原生 UE 光照下的对比和导入验收已完成，见 `Polished_UE_README.md`；随后主地图接入记录见 `Docs/Resident_Appearance.md`。
 
 通过 Blender MCP `execute_blender_code` 执行以下代码生成变体；该步骤不会渲染，也不会覆盖原 SharedUV 文件：
 

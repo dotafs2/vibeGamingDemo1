@@ -1,0 +1,199 @@
+{
+  "status": "passed",
+  "read_only": true,
+  "source_assets": [
+    {
+      "id": "cottage_legacy",
+      "source": "Art/HearthCottage/HearthCottage_SharedUV.glb",
+      "source_sha256": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91",
+      "family": "legacy",
+      "roof_roughness": [
+        0.7799999713897705,
+        0.7799999713897705,
+        0.7799999713897705,
+        0.7799999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 7228,
+      "smooth_triangles": 0,
+      "smooth_triangle_fraction": 0.0,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "cottage_polished",
+      "source": "Art/HearthCottage/HearthCottage_SharedUV_Polished.glb",
+      "source_sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 7228,
+      "smooth_triangles": 3224,
+      "smooth_triangle_fraction": 0.4460431654676259,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "source": "Art/VillageKit/modules/roof_slope_terracotta_2m.glb",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "source": "Art/VillageKit/modules/roof_slope_slateblue_2m.glb",
+      "source_sha256": "131f0a6ebbfcc9b6d686aea2b8658c21df08460546bf3023fc948d292775ac8b",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_terracotta_2m.glb",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_slateblue_2m.glb",
+      "source_sha256": "84c36710c698ee352df9dffe324b0df5f1e7124ecb95891fa827056a91a9a14f",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "source": "Art/VillageKit/modules/canopy_terracotta_2m.glb",
+      "source_sha256": "7a4b6d1fa6f9a0d20d2d5deedd0aafe5a1bceb4a8ad27d0010aa5f432e6ad038",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 2024,
+      "smooth_triangles": 944,
+      "smooth_triangle_fraction": 0.466403162055336,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "source": "Art/VillageKit/modules/canopy_slateblue_2m.glb",
+      "source_sha256": "d7f1a849578fbefd9e4e2ba71627c8d4b8484979798a66092572148659f29924",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 2024,
+      "smooth_triangles": 944,
+      "smooth_triangle_fraction": 0.466403162055336,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "source": "Art/VillageKit/modules/roof_slope_timber_2m.glb",
+      "source_sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a",
+      "family": "timber",
+      "roof_roughness": [
+        0.47999998927116394,
+        0.5,
+        0.5099999904632568,
+        0.5299999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_timber_2m.glb",
+      "source_sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2",
+      "family": "timber",
+      "roof_roughness": [
+        0.47999998927116394,
+        0.5,
+        0.5099999904632568,
+        0.5299999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    }
+  ],
+  "scope": "Source PBR, smooth split normals and UV; legacy baseline intentionally retained.",
+  "native_verified": false,
+  "fresh_screenshot_taken": false
+}

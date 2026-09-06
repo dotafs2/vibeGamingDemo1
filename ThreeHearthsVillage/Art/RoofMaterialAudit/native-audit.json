@@ -1,0 +1,2095 @@
+{
+  "status": "passed",
+  "read_only": true,
+  "source_assets": [
+    {
+      "id": "cottage_legacy",
+      "source": "Art/HearthCottage/HearthCottage_SharedUV.glb",
+      "source_sha256": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91",
+      "family": "legacy",
+      "roof_roughness": [
+        0.7799999713897705,
+        0.7799999713897705,
+        0.7799999713897705,
+        0.7799999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 7228,
+      "smooth_triangles": 0,
+      "smooth_triangle_fraction": 0.0,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "cottage_polished",
+      "source": "Art/HearthCottage/HearthCottage_SharedUV_Polished.glb",
+      "source_sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 7228,
+      "smooth_triangles": 3224,
+      "smooth_triangle_fraction": 0.4460431654676259,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "source": "Art/VillageKit/modules/roof_slope_terracotta_2m.glb",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "source": "Art/VillageKit/modules/roof_slope_slateblue_2m.glb",
+      "source_sha256": "131f0a6ebbfcc9b6d686aea2b8658c21df08460546bf3023fc948d292775ac8b",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_terracotta_2m.glb",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_slateblue_2m.glb",
+      "source_sha256": "84c36710c698ee352df9dffe324b0df5f1e7124ecb95891fa827056a91a9a14f",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "source": "Art/VillageKit/modules/canopy_terracotta_2m.glb",
+      "source_sha256": "7a4b6d1fa6f9a0d20d2d5deedd0aafe5a1bceb4a8ad27d0010aa5f432e6ad038",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 2024,
+      "smooth_triangles": 944,
+      "smooth_triangle_fraction": 0.466403162055336,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "source": "Art/VillageKit/modules/canopy_slateblue_2m.glb",
+      "source_sha256": "d7f1a849578fbefd9e4e2ba71627c8d4b8484979798a66092572148659f29924",
+      "family": "ceramic",
+      "roof_roughness": [
+        0.3400000035762787,
+        0.36000001430511475,
+        0.3799999952316284,
+        0.4000000059604645
+      ],
+      "metallic": 0,
+      "roof_triangles": 2024,
+      "smooth_triangles": 944,
+      "smooth_triangle_fraction": 0.466403162055336,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "source": "Art/VillageKit/modules/roof_slope_timber_2m.glb",
+      "source_sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a",
+      "family": "timber",
+      "roof_roughness": [
+        0.47999998927116394,
+        0.5,
+        0.5099999904632568,
+        0.5299999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 3452,
+      "smooth_triangles": 1616,
+      "smooth_triangle_fraction": 0.4681344148319815,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "source": "Art/VillageKit/modules/roof_ridge_timber_2m.glb",
+      "source_sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2",
+      "family": "timber",
+      "roof_roughness": [
+        0.47999998927116394,
+        0.5,
+        0.5099999904632568,
+        0.5299999713897705
+      ],
+      "metallic": 0,
+      "roof_triangles": 408,
+      "smooth_triangles": 192,
+      "smooth_triangle_fraction": 0.47058823529411764,
+      "unit_normals_and_uv_verified": true,
+      "normal_texture": false,
+      "source_tangents_exported": false
+    }
+  ],
+  "scope": "Source PBR, smooth split normals and UV; legacy baseline intentionally retained. Native source PBR, geometry and Nanite, including runtime copy. Build settings are recorded, not a final native split-normal comparison.",
+  "native_verified": true,
+  "fresh_screenshot_taken": false,
+  "engine": "5.8.1-56057345+++UE5+Release-5.8",
+  "native_assets": [
+    {
+      "id": "cottage_polished",
+      "mesh": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/HearthCottage_SharedUV_Polished.HearthCottage_SharedUV_Polished",
+      "bounds_origin_cm": [
+        -9.224998474121094,
+        32.224998474121094,
+        189.75
+      ],
+      "bounds_extent_cm": [
+        219.77499389648438,
+        212.77499389648438,
+        189.75
+      ],
+      "expected_origin_cm": [
+        -9.224996704630797,
+        32.22500078574066,
+        189.75000083446503
+      ],
+      "expected_extent_cm": [
+        219.77499948067194,
+        212.77500100239868,
+        189.75000083446503
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 16788,
+      "native_lod0_fallback_triangles": 16788,
+      "native_nanite_triangles": 0,
+      "source_triangles": 16788,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/06___soft_blue-grey_stone.06___soft_blue-grey_stone",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3049873113632202,
+            0.34191441535949707,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/07___stone_edge.07___stone_edge",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4793201684951782,
+            0.4969329833984375,
+            0.44520118832588196,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/08___chimney_opening.08___chimney_opening",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.08228270709514618,
+            0.09989872574806213,
+            0.13286831974983215,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/05___timber_recess.05___timber_recess",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.0802198201417923,
+            0.045186202973127365,
+            0.02955683507025242,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/04___cut_timber_and_door.04___cut_timber_and_door",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.43965718150138855,
+            0.2462013214826584,
+            0.109461709856987,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/03___chestnut_timber.03___chestnut_timber",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.22322796285152435,
+            0.09758734703063965,
+            0.04970656707882881,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/12___forged_iron.12___forged_iron",
+          "roughness": 0.6299999952316284,
+          "metallic": 0.15000000596046448,
+          "base_color_linear": [
+            0.08228270709514618,
+            0.07421357184648514,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/10___opaque_blue_glass.10___opaque_blue_glass",
+          "roughness": 0.30000001192092896,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.08437620848417282,
+            0.15292614698410034,
+            0.17144110798835754,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/09___sage-blue_shutters.09___sage-blue_shutters",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19120168685913086,
+            0.3277781009674072,
+            0.31398871541023254,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/16___planter_earth.16___planter_earth",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.12743768095970154,
+            0.08228270709514618,
+            0.045186202973127365,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/14___sunlit_foliage.14___sunlit_foliage",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3613067865371704,
+            0.47353148460388184,
+            0.13286831974983215,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/15___marigold.15___marigold",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8227857351303101,
+            0.48514994978904724,
+            0.13563333451747894,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/13___sage_foliage.13___sage_foliage",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.20863686501979828,
+            0.30946892499923706,
+            0.07618538290262222,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/02___gable_cream.02___gable_cream",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.7011018991470337,
+            0.6038273572921753,
+            0.40724021196365356,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___4.Roof___4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___3.Roof___3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___2.Roof___2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___1.Roof___1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/01___warm_lime_plaster.01___warm_lime_plaster",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8069522380828857,
+            0.715693473815918,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "06___soft_blue-grey_stone": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "07___stone_edge": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "08___chimney_opening": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "05___timber_recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "04___cut_timber_and_door": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "03___chestnut_timber": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "12___forged_iron": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "10___opaque_blue_glass": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "09___sage-blue_shutters": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "16___planter_earth": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "14___sunlit_foliage": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "15___marigold": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "13___sage_foliage": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "02___gable_cream": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "01___warm_lime_plaster": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad"
+    },
+    {
+      "id": "cottage_runtime",
+      "mesh": "/Game/ThreeHearths/Generated/HearthCottageRuntime/SM_HearthCottage_Polished.SM_HearthCottage_Polished",
+      "bounds_origin_cm": [
+        -9.224998474121094,
+        32.224998474121094,
+        189.74999976158142
+      ],
+      "bounds_extent_cm": [
+        219.7750015258789,
+        212.7750015258789,
+        189.75000023841858
+      ],
+      "expected_origin_cm": [
+        -9.224996704630797,
+        32.22500078574066,
+        189.75000083446503
+      ],
+      "expected_extent_cm": [
+        219.77499948067194,
+        212.77500100239868,
+        189.75000083446503
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 16788,
+      "native_lod0_fallback_triangles": 16788,
+      "native_nanite_triangles": 0,
+      "source_triangles": 16788,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/06___soft_blue-grey_stone.06___soft_blue-grey_stone",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3049873113632202,
+            0.34191441535949707,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/07___stone_edge.07___stone_edge",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4793201684951782,
+            0.4969329833984375,
+            0.44520118832588196,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/08___chimney_opening.08___chimney_opening",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.08228270709514618,
+            0.09989872574806213,
+            0.13286831974983215,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/05___timber_recess.05___timber_recess",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.0802198201417923,
+            0.045186202973127365,
+            0.02955683507025242,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/04___cut_timber_and_door.04___cut_timber_and_door",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.43965718150138855,
+            0.2462013214826584,
+            0.109461709856987,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/03___chestnut_timber.03___chestnut_timber",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.22322796285152435,
+            0.09758734703063965,
+            0.04970656707882881,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/12___forged_iron.12___forged_iron",
+          "roughness": 0.6299999952316284,
+          "metallic": 0.15000000596046448,
+          "base_color_linear": [
+            0.08228270709514618,
+            0.07421357184648514,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/10___opaque_blue_glass.10___opaque_blue_glass",
+          "roughness": 0.30000001192092896,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.08437620848417282,
+            0.15292614698410034,
+            0.17144110798835754,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/09___sage-blue_shutters.09___sage-blue_shutters",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.19120168685913086,
+            0.3277781009674072,
+            0.31398871541023254,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/16___planter_earth.16___planter_earth",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.12743768095970154,
+            0.08228270709514618,
+            0.045186202973127365,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/14___sunlit_foliage.14___sunlit_foliage",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3613067865371704,
+            0.47353148460388184,
+            0.13286831974983215,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/15___marigold.15___marigold",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8227857351303101,
+            0.48514994978904724,
+            0.13563333451747894,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/13___sage_foliage.13___sage_foliage",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.20863686501979828,
+            0.30946892499923706,
+            0.07618538290262222,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/02___gable_cream.02___gable_cream",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.7011018991470337,
+            0.6038273572921753,
+            0.40724021196365356,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___4.Roof___4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___3.Roof___3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___2.Roof___2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/Roof___1.Roof___1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/HearthCottagePolished/HearthCottage_SharedUV_Polished/01___warm_lime_plaster.01___warm_lime_plaster",
+          "roughness": 0.7799999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.8069522380828857,
+            0.715693473815918,
+            0.4910208582878113,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "06___soft_blue-grey_stone": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "07___stone_edge": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "08___chimney_opening": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "05___timber_recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "04___cut_timber_and_door": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "03___chestnut_timber": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "12___forged_iron": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "10___opaque_blue_glass": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "09___sage-blue_shutters": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "16___planter_earth": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "14___sunlit_foliage": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "15___marigold": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "13___sage_foliage": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "02___gable_cream": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "Roof___1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "01___warm_lime_plaster": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad"
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/roof_slope_terracotta_2m.roof_slope_terracotta_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_terracotta_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Cut_Oak": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559"
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/roof_slope_slateblue_2m.roof_slope_slateblue_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_slateblue_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Cut_Oak": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "131f0a6ebbfcc9b6d686aea2b8658c21df08460546bf3023fc948d292775ac8b"
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/roof_ridge_terracotta_2m.roof_ridge_terracotta_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Terracotta_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204"
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/roof_ridge_slateblue_2m.roof_ridge_slateblue_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_SlateBlue_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "84c36710c698ee352df9dffe324b0df5f1e7124ecb95891fa827056a91a9a14f"
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/canopy_terracotta_2m.canopy_terracotta_2m",
+      "bounds_origin_cm": [
+        0.0,
+        64.22980499267578,
+        26.607637405395508
+      ],
+      "bounds_extent_cm": [
+        110.0,
+        66.77019500732422,
+        32.107643127441406
+      ],
+      "expected_origin_cm": [
+        0.0,
+        64.22980511561036,
+        26.607636734843254
+      ],
+      "expected_extent_cm": [
+        110.00000238418579,
+        66.7702010832727,
+        32.10764117538929
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2024,
+      "native_lod0_fallback_triangles": 2024,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2024,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_1.VK_Terracotta_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.4969329833984375,
+            0.14126329123973846,
+            0.11443537473678589,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_2.VK_Terracotta_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5906188488006592,
+            0.2015562504529953,
+            0.15896083414554596,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_3.VK_Terracotta_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.42869049310684204,
+            0.11697066575288773,
+            0.09989872574806213,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Terracotta_4.VK_Terracotta_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.6444796919822693,
+            0.2581828534603119,
+            0.19120168685913086,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_terracotta_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Terracotta_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Cut_Oak": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "7a4b6d1fa6f9a0d20d2d5deedd0aafe5a1bceb4a8ad27d0010aa5f432e6ad038"
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/canopy_slateblue_2m.canopy_slateblue_2m",
+      "bounds_origin_cm": [
+        0.0,
+        64.22980499267578,
+        26.607637405395508
+      ],
+      "bounds_extent_cm": [
+        110.0,
+        66.77019500732422,
+        32.107643127441406
+      ],
+      "expected_origin_cm": [
+        0.0,
+        64.22980511561036,
+        26.607636734843254
+      ],
+      "expected_extent_cm": [
+        110.00000238418579,
+        66.7702010832727,
+        32.10764117538929
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 2024,
+      "native_lod0_fallback_triangles": 2024,
+      "native_nanite_triangles": 0,
+      "source_triangles": 2024,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_1.VK_SlateBlue_1",
+          "roughness": 0.3400000035762787,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.19806931912899017,
+            0.2746773064136505,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_2.VK_SlateBlue_2",
+          "roughness": 0.3799999952316284,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.16202937066555023,
+            0.2961382567882538,
+            0.366252601146698,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_3.VK_SlateBlue_3",
+          "roughness": 0.36000001430511475,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.07618538290262222,
+            0.15292614698410034,
+            0.23074005544185638,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_SlateBlue_4.VK_SlateBlue_4",
+          "roughness": 0.4000000059604645,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.21952620148658752,
+            0.37123769521713257,
+            0.4125426113605499,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/canopy_slateblue_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_SlateBlue_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Cut_Oak": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "d7f1a849578fbefd9e4e2ba71627c8d4b8484979798a66092572148659f29924"
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/roof_slope_timber_2m.roof_slope_timber_2m",
+      "bounds_origin_cm": [
+        110.3299789428711,
+        0.0,
+        57.705013275146484
+      ],
+      "bounds_extent_cm": [
+        114.6700210571289,
+        100.0,
+        70.70502471923828
+      ],
+      "expected_origin_cm": [
+        110.32997742295265,
+        0.0,
+        57.70501643419266
+      ],
+      "expected_extent_cm": [
+        114.67002257704735,
+        100.0,
+        70.70502489805222
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 3452,
+      "native_lod0_fallback_triangles": 3452,
+      "native_nanite_triangles": 0,
+      "source_triangles": 3452,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Recess.VK_Timber_Recess",
+          "roughness": 0.5600000023841858,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.09989872574806213,
+            0.05612849071621895,
+            0.0382043719291687,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_1.VK_Timber_Shingle_1",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_2.VK_Timber_Shingle_2",
+          "roughness": 0.5099999904632568,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3227895498275757,
+            0.14835558831691742,
+            0.07183142006397247,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_3.VK_Timber_Shingle_3",
+          "roughness": 0.5299999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.24917088449001312,
+            0.11452009528875351,
+            0.05544881150126457,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Timber_Shingle_4.VK_Timber_Shingle_4",
+          "roughness": 0.5,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3624303936958313,
+            0.16657468676567078,
+            0.08065281808376312,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_slope_timber_2m/VK_Cut_Oak.VK_Cut_Oak",
+          "roughness": 0.4300000071525574,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.5028864741325378,
+            0.2917706370353699,
+            0.1384316086769104,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Recess": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Cut_Oak": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a"
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "mesh": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/roof_ridge_timber_2m.roof_ridge_timber_2m",
+      "bounds_origin_cm": [
+        0.0,
+        0.0,
+        131.45001220703125
+      ],
+      "bounds_extent_cm": [
+        15.000000953674316,
+        100.0,
+        9.450004577636719
+      ],
+      "expected_origin_cm": [
+        0.0,
+        0.0,
+        131.45000338554382
+      ],
+      "expected_extent_cm": [
+        15.000000596046448,
+        100.0,
+        9.450000524520874
+      ],
+      "origin_preserved": true,
+      "dimensions_verified": true,
+      "pbr_values_verified": true,
+      "uv_channels": 1,
+      "native_triangles": 408,
+      "native_lod0_fallback_triangles": 408,
+      "native_nanite_triangles": 0,
+      "source_triangles": 408,
+      "material_details": [
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_1.VK_Timber_Shingle_1",
+          "roughness": 0.47999998927116394,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.28314873576164246,
+            0.13013647496700287,
+            0.06301001459360123,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_2.VK_Timber_Shingle_2",
+          "roughness": 0.5099999904632568,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3227895498275757,
+            0.14835558831691742,
+            0.07183142006397247,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_3.VK_Timber_Shingle_3",
+          "roughness": 0.5299999713897705,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.24917088449001312,
+            0.11452009528875351,
+            0.05544881150126457,
+            1.0
+          ],
+          "matches_source_pbr": true
+        },
+        {
+          "material": "/Game/ThreeHearths/Generated/VillageKit/roof_ridge_timber_2m/VK_Timber_Shingle_4.VK_Timber_Shingle_4",
+          "roughness": 0.5,
+          "metallic": 0.0,
+          "base_color_linear": [
+            0.3624303936958313,
+            0.16657468676567078,
+            0.08065281808376312,
+            1.0
+          ],
+          "matches_source_pbr": true
+        }
+      ],
+      "nanite": "disabled_low_poly_kit",
+      "native_build_settings_read": true,
+      "build_settings": {
+        "recompute_normals": true,
+        "recompute_tangents": true,
+        "use_mikk_t_space": true
+      },
+      "observation": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished.",
+      "material_parents": [
+        "/InterchangeAssets/gltf/MaterialInstances/MI_Default_Opaque_DS.MI_Default_Opaque_DS"
+      ],
+      "exposed_specular_parameters": {
+        "VK_Timber_Shingle_1": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_2": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_3": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        },
+        "VK_Timber_Shingle_4": {
+          "SpecularTexture_Rotation": 0.0,
+          "SpecularTexture_TexCoord": 0.0,
+          "SpecularFactor": 1.0
+        }
+      },
+      "specular_scope": "Named effective scalar values only; an empty map is not zero specular. Source uses glTF nonmetal dielectric defaults.",
+      "source_sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2"
+    }
+  ],
+  "native_build_settings_read": true,
+  "observations": [
+    {
+      "id": "cottage_polished",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "cottage_runtime",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_slope_terracotta_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_slope_slateblue_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_ridge_terracotta_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_ridge_slateblue_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "canopy_terracotta_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "canopy_slateblue_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_slope_timber_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    },
+    {
+      "id": "roof_ridge_timber_2m",
+      "note": "UE rebuilds normals. Source smooth normals are verified, but the final vertex normals are not byte-compared; this flag alone does not prove lost smoothing. Existing same-light UE images show continuous highlights on Polished."
+    }
+  ]
+}
