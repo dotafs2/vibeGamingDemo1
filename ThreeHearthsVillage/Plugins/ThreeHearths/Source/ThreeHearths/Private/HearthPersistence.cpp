@@ -180,6 +180,11 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         }
         R.Actor->SetActorLocation(Best); R.LatestEvent=TEXT("新住宅地块划定后，移到附近空地继续原任务。");
     }
+    // Rebuild routes to shared wood piles with the current per-resident arrival
+    // slots. Older saves may contain duplicate final points that can never be
+    // occupied by two builders at once.
+    for(int32 I=0;I<Residents.Num();++I)
+        if(Residents[I].Task==EHearthTask::ToWood) SeekWood(I);
     RefreshProductionVisuals(); SelectResident(W.Selected); bHistoryOpen=false;
     if(Interrupted) { bApiDisabledThisRun=true; ApiStatus=TEXT("已恢复世界；未确认请求不重试，本轮使用本地规则"); }
     SaveHistory(); WorldSaveTimer=0; return true;

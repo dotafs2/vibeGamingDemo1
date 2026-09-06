@@ -83,6 +83,18 @@ bool FHearthPublicWallTest::RunTest(const FString&)
     TestEqual(TEXT("Unspent project tax becomes released tax"), Village->TaxReleasedCoins, 2);
     TestEqual(TEXT("Tax release itself does not mint or destroy treasury cash"), Village->TreasuryCoins, TreasuryBeforeCompletion);
     TestEqual(TEXT("Released cash is available to general production"), Village->GeneralFunds(), Village->TreasuryCoins);
+    FHearthSite ReplacementLand; ReplacementLand.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    ReplacementLand.Kind=EHearthSiteKind::Land; ReplacementLand.bExpansion=true; ReplacementLand.bReachable=true; ReplacementLand.Owner=1;
+    ReplacementLand.Position=FVector(900,900,8); ReplacementLand.Approach=FVector(700,900,8);
+    const int32 ReplacementIndex=Village->ProductionSites.Add(ReplacementLand);
+    const int32 PlantTreeAction=100+ReplacementIndex*16+6;
+    Village->Residents[1].BuildProgress=1.f;
+    TestFalse(TEXT("A houseless claimant's replacement land is not consumed by another use"),
+        Village->IsProductionAllowed(1,PlantTreeAction));
+    FHearthStructurePlan ExistingHome; ExistingHome.PlanId=TEXT("resident_")+Village->Residents[1].StableId+TEXT("_house");
+    Village->StructurePlans.Add(ExistingHome);
+    TestTrue(TEXT("The same expansion land can serve production after its claimant owns a home"),
+        Village->IsProductionAllowed(1,PlantTreeAction));
     return true;
 }
 #endif

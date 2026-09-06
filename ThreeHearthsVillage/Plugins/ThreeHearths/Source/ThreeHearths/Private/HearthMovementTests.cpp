@@ -186,6 +186,19 @@ bool FHearthMovementIntegrationTest::RunTest(const FString&)
     TArray<FVector> SamePointRoute;
     TestTrue(TEXT("A resident already at a clear activity point has a valid completed path"),Village->FindProductionPath(FVector(0,0,8),FVector(0,0,8),SamePointRoute));
     TestTrue(TEXT("A completed same-point path contains no artificial out-and-back loop"),SamePointRoute.IsEmpty());
+    Village->bUseCropoutMap=false; Village->ProductionSites.Reset();
+    for(int32 I=0;I<3;++I)
+    {
+        Village->Residents[I].Actor->SetActorLocation(FVector(I*300.f,600.f,8.f));
+        Village->SeekWood(I);
+    }
+    const FVector WoodGoal0=Village->Residents[0].Route.Last();
+    const FVector WoodGoal1=Village->Residents[1].Route.Last();
+    const FVector WoodGoal2=Village->Residents[2].Route.Last();
+    TestTrue(TEXT("Shared wood pile assigns distinct resident arrival slots"),
+        FVector::Dist2D(WoodGoal0,WoodGoal1)>=HearthMovement::Separation
+        && FVector::Dist2D(WoodGoal0,WoodGoal2)>=HearthMovement::Separation
+        && FVector::Dist2D(WoodGoal1,WoodGoal2)>=HearthMovement::Separation);
     World->DestroyWorld(false);
     return true;
 }

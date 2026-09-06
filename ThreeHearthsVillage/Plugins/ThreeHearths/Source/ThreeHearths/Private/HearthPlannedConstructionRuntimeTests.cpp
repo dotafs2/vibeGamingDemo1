@@ -133,6 +133,8 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     const int32 PreferredAction=Village->ChooseProductionLocally(1); const int32 PreferredSite=(PreferredAction-100)/16,PreferredOperation=(PreferredAction-100)%16;
     TestEqual(TEXT("Local policy starts another household before repeatedly extending the first"),PreferredSite,1);
     TestEqual(TEXT("Neighborhood priority still selects resident construction"),PreferredOperation,5);
+    NeighborBuilder.Role=TEXT("农民"); NeighborBuilder.Hunger=0.f; NeighborBuilder.SocialNeed=0.f;
+    // The other household is no longer under housing pressure, so the existing owner may extend.
     Village->Residents[0].SocialNeed=85.f;
     if(!TestTrue(TEXT("Later social need starts the first material-backed expansion"),Village->StartProduction(0,Action,TEXT("household needs another room"),false))) return false;
     TestEqual(TEXT("First runtime expansion appends one room"),Village->StructurePlans[0].Rooms.Num(),BaseRooms+1);

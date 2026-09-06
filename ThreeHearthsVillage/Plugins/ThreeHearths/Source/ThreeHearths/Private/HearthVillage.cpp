@@ -1,4 +1,5 @@
 #include "HearthVillage.h"
+#include "HearthMovement.h"
 #include "Animation/AnimSequence.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
@@ -521,7 +522,31 @@ void AHearthVillage::SeekWood(int32 Index)
     }
     if(Best<0) { R.Timer=1.f; R.Task=EHearthTask::Chopping; R.Source=-1; R.LatestEvent=TEXT("木材暂时不足，等待补充。"); return; }
     R.Source=Best; R.Task=EHearthTask::ToWood;
-    SetRoute(Index,WoodPositions[Best]+FVector(80,(Index%3)*120-120,0));
+    // Give every resident a stable place around the shared pile. Reusing only
+    // three arrival points left old home builders permanently queued behind a
+    // worker who had already reached the same point.
+    const int32 Slots=FMath::Max(3,Residents.Num());
+    if(bUseCropoutMap && !ProductionSites.IsEmpty())
+    {
+        for(int32 Probe=0;Probe<Slots;++Probe)
+        {
+            const int32 Slot=(Index+Probe)%Slots;
+            const double Angle=2.0*UE_DOUBLE_PI*static_cast<double>(Slot)/Slots;
+            const FVector Target=WoodPositions[Best]+FVector(FMath::Cos(Angle),FMath::Sin(Angle),0)*240.f;
+            const bool Claimed=Residents.ContainsByPredicate([&](const FHearthResident& Other)
+            {
+                return &Other!=&R && Other.Task==EHearthTask::ToWood && Other.Source==Best && !Other.Route.IsEmpty()
+                    && FVector::Dist2D(Other.Route.Last(),Target)<HearthMovement::Separation;
+            });
+            TArray<FVector> CandidateRoute;
+            if(!Claimed && FindActivityRoute(Index,Target,CandidateRoute))
+            {
+                R.Route=MoveTemp(CandidateRoute); R.MoveRetry=0; R.bMovementBlocked=false; return;
+            }
+        }
+    }
+    const double Angle=2.0*UE_DOUBLE_PI*static_cast<double>(Index)/Slots;
+    SetRoute(Index,WoodPositions[Best]+FVector(FMath::Cos(Angle),FMath::Sin(Angle),0)*240.f);
 }
 
 void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)

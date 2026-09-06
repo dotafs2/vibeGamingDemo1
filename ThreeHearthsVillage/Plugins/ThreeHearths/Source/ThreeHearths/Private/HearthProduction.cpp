@@ -242,21 +242,21 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
                 // A resident who is ready to choose and can pay for a vacant plot gets this decision round before
                 // an owner starts another extension. The window disappears as soon as the applicant acts, becomes
                 // ineligible, or leaves the choosing state, so an unaffordable or abandoned request cannot lock housing.
-                const bool bVacantPlotAvailable=ProductionSites.ContainsByPredicate([](const FHearthSite& Other)
+                const bool bVacantPlotAvailable=ProductionSites.ContainsByPredicate([this](const FHearthSite& Other)
                 {
-                    return Other.bReachable && Other.ReservedBy<0 && Other.BuildPlanId.IsEmpty() && Other.Kind==EHearthSiteKind::Empty;
+                    const int32 OtherIndex=&Other-ProductionSites.GetData();
+                    return OtherIndex!=PublicProject.Site && Other.bReachable && Other.ReservedBy<0
+                        && Other.BuildPlanId.IsEmpty() && (Other.Kind==EHearthSiteKind::Empty || Other.Kind==EHearthSiteKind::Land);
                 });
                 const bool bExecutableApplicant=bVacantPlotAvailable && Residents.ContainsByPredicate([this](const FHearthResident& Applicant)
                 {
                     const bool bOwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& OtherPlan)
-                    {
-                        return OtherPlan.PlanId.Contains(Applicant.StableId);
-                    });
+                    { return OtherPlan.PlanId.Contains(Applicant.StableId); });
                     const bool bHousingNeed=Applicant.Role.Contains(TEXT("木匠")) || Applicant.Role.Contains(TEXT("铁匠"))
                         || Applicant.Role.Contains(TEXT("陶工")) || Applicant.Role.Contains(TEXT("织工"))
                         || FMath::Max(Applicant.Hunger,Applicant.SocialNeed)>=45.f;
                     return !bOwnsStructure && bHousingNeed && Applicant.BuildProgress>=1.f
-                        && Applicant.Coins>=WageForOperation(0) && Applicant.Task==EHearthTask::LifeChoosing && Applicant.Route.IsEmpty();
+                        && Applicant.Coins>=WageForOperation(0);
                 });
                 if(bExecutableApplicant) return false;
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
@@ -270,7 +270,22 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
         return Type==2?StoneStock>=Amount:Type==3?PlankStock>=Amount:BeamStock>=Amount;
     }
     if(GeneralFunds()<WageForOperation(Op)) return false;
-    if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land && S.BuildPlanId.IsEmpty();
+    if(Op>=1 && Op<=7)
+    {
+        if(S.Kind!=EHearthSiteKind::Land || !S.BuildPlanId.IsEmpty()) return false;
+        // The replacement created after a public project remains available to
+        // its houseless claimant while beams and other real inputs are being
+        // produced. Without this reservation, high speed simulation can turn
+        // each new plot into farmland just before the housing recipe is ready.
+        if(S.bExpansion && PublicProject.Status==TEXT("completed") && Residents.IsValidIndex(S.Owner))
+        {
+            const auto& Claimant=Residents[S.Owner];
+            const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan)
+            { return Plan.PlanId.Contains(Claimant.StableId); });
+            if(!OwnsStructure) return false;
+        }
+        return true;
+    }
     if(Op==8) return HearthProduction::IsCrop(S.Kind) && S.Stage==0;
     if(Op==9) return HearthProduction::IsCrop(S.Kind) && S.Stage==2 && S.Units>0;
     if(Op==10) return S.Kind==EHearthSiteKind::Tree && S.Stage==2 && S.Units>0;
@@ -500,7 +515,8 @@ void AHearthVillage::AdvanceProductionWorld(float Dt)
         for(int32 SiteIndex=0;SiteIndex<ProductionSites.Num();++SiteIndex)
         {
             const FHearthSite& Site=ProductionSites[SiteIndex];
-            if(SiteIndex!=PublicProject.Site && Site.Kind==EHearthSiteKind::Empty && Site.bReachable && Site.ReservedBy<0)
+            if(SiteIndex!=PublicProject.Site && (Site.Kind==EHearthSiteKind::Empty || Site.Kind==EHearthSiteKind::Land)
+                && Site.BuildPlanId.IsEmpty() && Site.bReachable && Site.ReservedBy<0)
             { bVacantHousingSite=true; break; }
         }
         const bool bExecutableHousingNeed=Residents.ContainsByPredicate([this](const FHearthResident& Applicant)
@@ -631,7 +647,15 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         auto& H=DecisionHistory[R.HistoryIndex]; H.Result=R.LatestEvent; ++HistoryRevision; SaveHistory(); return;
     }
     FString Result; bool bCompletedHousePlan=false;
-    if(Op==0) { S.Kind=EHearthSiteKind::Land; S.Owner=Index; Result=TEXT("空地已开垦，可以建农田、房屋或种植树木、灌木。"); }
+    if(Op==0)
+    {
+        S.Kind=EHearthSiteKind::Land; S.Owner=Index;
+        // A replacement plot is only fulfilled once it becomes a home. If its
+        // owner later uses the land for production, allow the completed public
+        // project to search for another reachable housing plot.
+        if(S.bExpansion && PublicProject.Status==TEXT("completed")) bReplacementPlotSearchDone=false;
+        Result=TEXT("空地已开垦，可以建农田、房屋或种植树木、灌木。");
+    }
     else if(Op==5)
     {
         auto* Part=S.CottageComponents.FindByPredicate([&](const auto& C){ return C.Id==R.ProductionComponentId; });
