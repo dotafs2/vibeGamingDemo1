@@ -1,7 +1,6 @@
 #include "HearthVillage.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
-#include "HAL/PlatformTime.h"
 
 namespace HearthSocial
 {
@@ -125,7 +124,7 @@ void AHearthVillage::CloseConversation(FHearthConversation& S,const FString& Out
     for(int32 Index:{S.First,S.Second})
     {
         auto& R=Residents[Index]; R.ConversationId.Empty(); R.Route.Reset(); R.Task=EHearthTask::LifeChoosing;
-        R.Timer=0; R.NextLifeDecision=FPlatformTime::Seconds()+LifeDecisionInterval; R.LatestEvent=Outcome;
+        R.Timer=0; R.NextLifeDecision=Elapsed+LifeDecisionInterval; R.LatestEvent=Outcome;
         CompleteHistory(Index,Outcome);
     }
     // Commitments only count as fulfilled after the real task deposits output or consumes food.

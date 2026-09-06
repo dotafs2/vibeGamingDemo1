@@ -6,7 +6,6 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "HAL/FileManager.h"
-#include "HAL/PlatformTime.h"
 
 namespace HearthLife
 {
@@ -268,7 +267,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
 void AHearthVillage::UpdateLifeDecisions()
 {
     if(!bAutonomousLifeEnabled || bSimulationPaused) return;
-    const double Now=FPlatformTime::Seconds();
+    const double Now=Elapsed;
     const int32 StartAfter=LastLifeResident;
     for(int32 Offset=1;Offset<=Residents.Num();++Offset)
     {

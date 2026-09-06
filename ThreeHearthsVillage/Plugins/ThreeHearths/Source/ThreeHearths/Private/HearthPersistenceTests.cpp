@@ -2,7 +2,6 @@
 #include "HearthWorldState.h"
 #include "Engine/World.h"
 #include "HAL/PlatformFileManager.h"
-#include "HAL/PlatformTime.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -26,6 +25,9 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     ON_SCOPE_EXIT { World->DestroyWorld(false); };
     auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState();
     V->bAutonomousLifeEnabled=false;
+    // Keep this deterministic when the developer's Saved API config is enabled.
+    // AdvanceSimulation does not pump asynchronous HTTP replies.
+    V->bApiDisabledThisRun=true;
     auto& Files=FPlatformFileManager::Get().GetPlatformFile(); V->WorldPath=HearthPersistenceTests::TestPath();
     Files.CreateDirectoryTree(*FPaths::GetPath(V->WorldPath)); V->WorldLease=MakeShareable(Files.OpenWrite(*(V->WorldPath+TEXT(".lock")))); V->bWorldPersistenceEnabled=true;
     ON_SCOPE_EXIT { V->WorldLease.Reset(); };
@@ -42,6 +44,7 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
             if(!TestTrue(TEXT("Save an in-progress home phase"),V->SaveWorld())) { AddError(V->WorldSaveStatus); return false; }
             V->AdvanceSimulation(1.f); V->FoodStock+=99;
             if(!TestTrue(TEXT("Restore complete checkpoint"),V->LoadWorld())) { AddError(V->WorldSaveStatus); return false; }
+            V->bApiDisabledThisRun=true;
             const auto& After=V->Residents[0];
             TestEqual(TEXT("Same resident across reload"),After.StableId,ResidentId); TestEqual(TEXT("Same task identity"),After.ActiveTaskId,Before.ActiveTaskId);
             TestEqual(TEXT("Exact task phase"),After.Task,Before.Task); TestEqual(TEXT("Same carried materials"),After.CarriedWood,Before.CarriedWood);
@@ -58,15 +61,16 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     R.CargoType=0; R.CargoAmount=6; R.WorkDuration=12; R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     FHearthSite Site; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Site.Kind=EHearthSiteKind::Corn;
     Site.Units=6; Site.Capacity=12; Site.Stage=2; Site.ReservedBy=0; V->ProductionSites={Site}; V->Produced[0]=6;
-    R.NextLifeDecision=FPlatformTime::Seconds()+60;
-    TestTrue(TEXT("Checkpoint cargo before deposit"),V->SaveWorld());
+    R.NextLifeDecision=V->Elapsed+60;
+    if(!TestTrue(TEXT("Checkpoint cargo before deposit"),V->SaveWorld())) { AddError(V->WorldSaveStatus); return false; }
     const FString CargoTask=R.ActiveTaskId; V->AdvanceSimulation(.3f); TestEqual(TEXT("First delivery credited"),V->FoodStock,36);
-    TestTrue(TEXT("Restart from in-transit checkpoint"),V->LoadWorld());
+    if(!TestTrue(TEXT("Restart from in-transit checkpoint"),V->LoadWorld())) { AddError(V->WorldSaveStatus); return false; }
     TestEqual(TEXT("Checkpoint inventory has not received cargo"),V->FoodStock,30); TestEqual(TEXT("In-transit quantity restored"),V->Residents[0].CargoAmount,6);
-    TestTrue(TEXT("Remaining decision delay, not stale process epoch"),V->Residents[0].NextLifeDecision>FPlatformTime::Seconds()+58);
+    TestTrue(TEXT("Remaining decision delay uses simulation time"),V->Residents[0].NextLifeDecision>V->Elapsed+58);
     TestEqual(TEXT("Harvest task retained"),V->Residents[0].ActiveTaskId,CargoTask);
     V->AdvanceSimulation(.3f); V->AdvanceProduction(0,1.f);
     TestEqual(TEXT("Deposit is applied exactly once after resume"),V->FoodStock,36); TestEqual(TEXT("Cargo cleared after credit"),V->Residents[0].CargoAmount,0);
+    if(!TestEqual(TEXT("Production site retained after resume"),V->ProductionSites.Num(),1)) return false;
     TestEqual(TEXT("Site reservation released"),V->ProductionSites[0].ReservedBy,-1); TestEqual(TEXT("Operation completion counted once"),V->ProductionTotals.FindRef(TEXT("harvest")),1);
     TestTrue(TEXT("Save post-delivery checkpoint"),V->SaveWorld()); TestTrue(TEXT("Reload post-delivery checkpoint"),V->LoadWorld()); V->AdvanceProduction(0,1.f);
     TestEqual(TEXT("Completed delivery cannot be replayed"),V->FoodStock,36);

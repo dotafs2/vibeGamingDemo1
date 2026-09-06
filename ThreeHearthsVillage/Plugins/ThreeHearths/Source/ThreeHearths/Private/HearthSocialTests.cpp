@@ -14,6 +14,8 @@ bool FHearthSocialIntegrationTest::RunTest(const FString&)
     if(!TestNotNull(TEXT("Isolated social world"),World)) return false;
     ON_SCOPE_EXIT { World->DestroyWorld(false); };
     auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState(); V->bAutonomousLifeEnabled=false;
+    // The tight deterministic simulation loop does not pump asynchronous HTTP.
+    V->bApiDisabledThisRun=true;
     for(int32 Step=0;Step<16000 && V->CompletedHomes()<3;++Step) V->AdvanceSimulation(.05f);
     V->AdvanceSimulation(.05f);
     if(!TestEqual(TEXT("Settled test residents"),V->CompletedHomes(),3)) return false;

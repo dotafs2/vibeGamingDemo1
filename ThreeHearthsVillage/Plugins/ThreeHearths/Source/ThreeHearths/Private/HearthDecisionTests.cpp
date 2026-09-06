@@ -73,4 +73,25 @@ bool FHearthParallelCapacityTest::RunTest(const FString&)
     World->DestroyWorld(false);
     return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthDecisionSimulationClockTest,"ThreeHearths.Decisions.CooldownUsesSimulationClock",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthDecisionSimulationClockTest::RunTest(const FString&)
+{
+    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+    UWorld* World=UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
+    if(!TestNotNull(TEXT("Create isolated timing world"),World)) return false;
+    auto* Village=World->SpawnActor<AHearthVillage>();
+    if(!TestNotNull(TEXT("Create timing village"),Village)) { World->DestroyWorld(false); return false; }
+    Village->Residents.SetNum(1);
+    Village->Residents[0].Task=EHearthTask::LifeChoosing;
+    Village->Residents[0].NextLifeDecision=6.0;
+    Village->Elapsed=0.f;
+    TestEqual(TEXT("Cooldown starts on simulation clock"),Village->StatusFor(0),FString(TEXT("稍作休息 · 6 秒")));
+    Village->Elapsed=3.f;
+    TestEqual(TEXT("Advancing simulated time reduces cooldown"),Village->StatusFor(0),FString(TEXT("稍作休息 · 3 秒")));
+    Village->Elapsed=6.f;
+    TestEqual(TEXT("Cooldown becomes schedulable at simulated deadline"),Village->StatusFor(0),FString(TEXT("等待下一步调度")));
+    World->DestroyWorld(false);
+    return true;
+}
 #endif

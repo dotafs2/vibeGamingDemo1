@@ -2,7 +2,6 @@
 #include "Dom/JsonObject.h"
 #include "Components/StaticMeshComponent.h"
 #include "HAL/PlatformFileManager.h"
-#include "HAL/PlatformTime.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/Paths.h"
@@ -40,12 +39,11 @@ FString AHearthVillage::ExportWorldState() const
         W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
     }
     for(int32 I=0;I<W.PlotCount;++I) { W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; }
-    const double Now=FPlatformTime::Seconds();
     for(int32 I=0;I<Residents.Num();++I)
     {
         FHearthSavedResident S; S.Person=Residents[I]; S.Person.Actor=nullptr;
         if(IsValid(Residents[I].Actor)) { S.Position=Residents[I].Actor->GetActorLocation(); S.Yaw=Residents[I].Actor->GetActorRotation().Yaw; }
-        S.DecisionDelay=FMath::Max(0.0,Residents[I].NextLifeDecision-Now);
+        S.DecisionDelay=FMath::Max(0.0,Residents[I].NextLifeDecision-Elapsed);
         if(PendingDecisions.IsValidIndex(I)) { S.bPending=PendingDecisions[I].bActive; S.PendingOperation=PendingDecisions[I].OperationId; }
         W.People.Add(MoveTemp(S));
     }
@@ -93,19 +91,18 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(int32 I=0;I<HousingPlotCount();++I)
     { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
     PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
-    const double Now=FPlatformTime::Seconds();
     for(int32 I=0;I<Residents.Num();++I)
     {
         auto* Actor=Residents[I].Actor.Get(); const auto& S=W.People[I]; Residents[I]=S.Person; auto& R=Residents[I];
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
         if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
-        R.NextLifeDecision=Now+S.DecisionDelay;
+        R.NextLifeDecision=Elapsed+S.DecisionDelay;
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
         if(S.bPending)
         {
             Interrupted=true; R.DecisionSource=TEXT("local_fallback");
             R.DecisionNote=TEXT("重启时有未确认请求：")+S.PendingOperation+TEXT("；不自动重试，费用以独立账本为准");
-            R.Timer=FMath::Min(R.Timer,1.f); R.NextLifeDecision=Now+LifeDecisionInterval;
+            R.Timer=FMath::Min(R.Timer,1.f); R.NextLifeDecision=Elapsed+LifeDecisionInterval;
             if(DecisionHistory.IsValidIndex(R.HistoryIndex))
             { auto& H=DecisionHistory[R.HistoryIndex]; H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
             for(auto& H:DecisionHistory) if(H.Run==CurrentRun && H.Resident==I && H.Kind==TEXT("social_turn") && H.Status==TEXT("thinking"))

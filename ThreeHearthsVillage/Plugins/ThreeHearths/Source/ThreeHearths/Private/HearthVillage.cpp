@@ -10,7 +10,6 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "HAL/FileManager.h"
-#include "HAL/PlatformTime.h"
 #include "Serialization/JsonSerializer.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -640,7 +639,7 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::ProductionDeposit) return TEXT("交付入库");
     if(Residents[I].Task==EHearthTask::LifeChoosing)
     {
-        const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-FPlatformTime::Seconds()));
+        const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-Elapsed));
         return Wait>0?FString::Printf(TEXT("稍作休息 · %d 秒"),Wait):TEXT("等待下一步调度");
     }
     if(Residents[I].Task==EHearthTask::LifeTravel) return TEXT("前往活动地点");
