@@ -1,5 +1,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "HearthWorldState.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMeshActor.h"
 #include "Engine/World.h"
 #include "HAL/PlatformFileManager.h"
 #include "Misc/AutomationTest.h"
@@ -16,6 +18,7 @@ namespace HearthPersistenceTests
     }
     FString TestPath()
     { return FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir()/TEXT("ThreeHearths/Tests")/FGuid::NewGuid().ToString(EGuidFormats::Digits)/TEXT("world.json")); }
+
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPublicProjectPersistenceTest,"ThreeHearths.Persistence.PublicProjectSchema9RoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
@@ -23,11 +26,100 @@ bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
 {
     UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Isolated public persistence world"),World)) return false;
     ON_SCOPE_EXIT { World->DestroyWorld(false); };
-    auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState();
+    auto* Terrain=World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),FVector(0,0,-47.f),FRotator::ZeroRotator);
+    Terrain->Tags.Add(TEXT("ThreeHearthsBaseTerrain"));
+    Terrain->GetStaticMeshComponent()->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube")));
+    Terrain->GetStaticMeshComponent()->SetWorldScale3D(FVector(140.f,140.f,1.f));
+    auto* V=World->SpawnActor<AHearthVillage>(); V->bUseCropoutMap=true; V->BuildEnvironment(); V->ResetVillageState();
     V->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); V->PublicProject.Status=TEXT("unapproved");
     const FString Text=V->ExportWorldState(); FHearthWorldImage Image; FString Error;
     if(!TestTrue(TEXT("Schema 8 public project decodes"),HearthWorld::Decode(Text,Image,Error))) { AddError(Error); return false; }
     TestEqual(TEXT("Schema is 9"),Image.Schema,9); TestEqual(TEXT("Public project ID survives"),Image.PublicProject.Id,V->PublicProject.Id); TestEqual(TEXT("Public project status survives"),Image.PublicProject.Status,FString(TEXT("unapproved")));
+
+    V->ResetVillageState(); V->bApiDisabledThisRun=true;
+    auto Id=[] { return FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); };
+    // Earn project tax through the normal ledger before reserving the public wage.
+    for(int32 I=0;I<4;++I)
+    {
+        const FString Task=Id();
+        if(!TestTrue(TEXT("Earn valid income for project tax"),V->ReserveWage(0,Task,3) && V->SettleWage(0,Task))) return false;
+    }
+    const int32 King=V->Residents.IndexOfByPredicate([](const FHearthResident& R) { return R.bKing; });
+    if(!TestTrue(TEXT("Ten-person runtime has its real king"),King!=INDEX_NONE)) return false;
+    V->FixedObstacles.Reset(); V->ProductionSites.Reset(); V->LandGrid.Reset();
+    for(int32 X=-22;X<=22;++X) for(int32 Y=-22;Y<=22;++Y) V->LandGrid.Add(FIntPoint(X,Y));
+    FHearthSite PublicSite; PublicSite.StableId=Id(); PublicSite.Kind=EHearthSiteKind::Empty;
+    PublicSite.Position=FVector(900.f,0.f,8.f); PublicSite.Approach=FVector(300.f,0.f,8.f);
+    PublicSite.Radius=350.f; PublicSite.bExpansion=true; PublicSite.bReachable=true;
+    V->ProductionSites.Add(PublicSite);
+    V->PublicProject=FHearthPublicProject(); V->PublicProject.Id=Id(); HearthPublicWorks::Populate(V->PublicProject);
+    V->PublicProject.Status=TEXT("building"); V->PublicProject.King=King; V->PublicProject.Site=0;
+    V->PublicProject.ApprovalHistoryId=Id();
+    FHearthDecisionRecord Approval; Approval.Run=V->CurrentRun; Approval.Timestamp=FDateTime::Now().ToString();
+    Approval.Resident=King; Approval.At=V->Elapsed; Approval.Kind=TEXT("public_project_policy"); Approval.Source=TEXT("local");
+    Approval.Status=TEXT("completed"); Approval.Context=TEXT("ApprovalHistoryId=")+V->PublicProject.ApprovalHistoryId;
+    V->DecisionHistory.Add(Approval);
+    // Account deterministic quarry output and move it into the physical public depot.
+    V->StoneStock+=4; V->Produced[2]+=4; V->StoneStock-=4; V->PublicProject.Stock[0]=4; V->PublicProject.Grants[0]=4;
+    const int32 Worker=0;
+    const FString PublicTask=Id();
+    if(!TestTrue(TEXT("Reserve real tax-funded public wage"),V->ReserveWage(Worker,PublicTask,2,true))) return false;
+    auto& AssignedResident=V->Residents[Worker]; AssignedResident.ActiveTaskId=PublicTask;
+    AssignedResident.Plot=0; AssignedResident.DeliveredWood=V->CostFor(0); AssignedResident.BuildProgress=1.f; V->PlotOwners[0]=Worker;
+    int32 HomeWood=AssignedResident.DeliveredWood;
+    for(int32 I=0;I<3 && HomeWood>0;++I) { const int32 Used=FMath::Min(HomeWood,V->WoodStock[I]); V->WoodStock[I]-=Used; HomeWood-=Used; }
+    if(!TestTrue(TEXT("Borrow the real shared construction hammer"),V->TryBorrowTool(Worker,5))) return false;
+    AssignedResident.Task=EHearthTask::PublicTravel; AssignedResident.LifeAction=1;
+    AssignedResident.ProductionSite=-1; AssignedResident.ProductionOp=-1; AssignedResident.ProductionComponentId.Empty();
+    AssignedResident.CargoType=-1; AssignedResident.CargoAmount=0; AssignedResident.Route.Reset();
+    auto& AssignedPart=V->PublicProject.Parts[0]; AssignedPart.Worker=Worker; AssignedPart.TaskId=PublicTask;
+    AssignedPart.Status=TEXT("transporting"); AssignedPart.Reserved[0]=4; V->PublicProject.Stock[0]=0;
+    const FString Assigned=V->ExportWorldState();
+    const FVector Depot(-1650.f,-1050.f,8.f);
+    auto Migrate=[this,V,Worker,&Error](FHearthWorldImage& Out)
+    {
+        FHearthWorldImage Current;
+        // Each legacy fixture starts as a complete current-schema runtime image.
+        if(!TestTrue(TEXT("Current runtime fixture validates"),HearthWorld::Decode(V->ExportWorldState(),Current,Error))) return false;
+        if(!TestTrue(TEXT("Public worker exists in persisted people"),Current.People.IsValidIndex(Worker))) return false;
+        Current.Schema=8; Current.StructurePlans.Reset();
+        Current.People[Worker].Person.LifeAction=-1; // early schema-eight value before explicit phases
+        const FString Legacy=HearthWorld::Encode(Current);
+        if(!TestTrue(TEXT("Schema8 fixture migrates"),HearthWorld::Decode(Legacy,Out,Error))) return false;
+        return TestTrue(TEXT("Migrated fixture applies to a live village"),V->ApplyWorldState(Legacy,Error));
+    };
+
+    // An early save with cargo and a populated route must migrate to the site-bound phase.
+    auto& Loaded=V->Residents[Worker]; Loaded.Actor->SetActorLocation(Depot);
+    Loaded.CargoType=2; Loaded.CargoAmount=4; Loaded.LifeAction=2; Loaded.Route={V->ProductionSites[0].Approach};
+    V->PublicProject.Parts[0].Reserved[0]=0;
+    if(!TestTrue(TEXT("Runtime pickup creates loaded route"),Loaded.CargoAmount>0 && !Loaded.Route.IsEmpty())) return false;
+    FHearthWorldImage Migrated;
+    if(!Migrate(Migrated)) { AddError(Error); return false; }
+    TestEqual(TEXT("Loaded migration infers site-bound phase"),Migrated.People[Worker].Person.LifeAction,2);
+    TestTrue(TEXT("Loaded migration keeps physical cargo"),V->Residents[Worker].CargoAmount>0);
+    TestTrue(TEXT("Loaded migration keeps site route"),!V->Residents[Worker].Route.IsEmpty());
+
+    // An empty worker already at the depot must pick up instead of being cancelled.
+    if(!TestTrue(TEXT("Restore assigned runtime checkpoint"),V->ApplyWorldState(Assigned,Error))) { AddError(Error); return false; }
+    auto& AtDepot=V->Residents[Worker]; AtDepot.Actor->SetActorLocation(Depot); AtDepot.Route.Reset();
+    if(!Migrate(Migrated)) { AddError(Error); return false; }
+    TestEqual(TEXT("Empty depot migration infers depot-bound phase"),Migrated.People[Worker].Person.LifeAction,1);
+    TestEqual(TEXT("Depot resume remains public travel"),V->Residents[Worker].Task,EHearthTask::PublicTravel);
+    TestEqual(TEXT("Depot resume keeps empty cargo"),V->Residents[Worker].CargoAmount,0);
+    TestTrue(TEXT("Depot resume keeps the exact empty route"),V->Residents[Worker].Route.IsEmpty());
+
+    // An empty worker away from the depot and without waypoints must rebuild a route.
+    if(!TestTrue(TEXT("Restore assigned runtime checkpoint again"),V->ApplyWorldState(Assigned,Error))) { AddError(Error); return false; }
+    auto& Away=V->Residents[Worker];
+    const FVector AwayPosition=Away.Actor->GetActorLocation(); Away.Route.Reset();
+    if(!TestTrue(TEXT("Fixture is physically away from depot"),FVector::Dist2D(AwayPosition,Depot)>280.f)) return false;
+    if(!Migrate(Migrated)) { AddError(Error); return false; }
+    TestEqual(TEXT("Empty-route migration infers depot-bound phase"),Migrated.People[Worker].Person.LifeAction,1);
+    TestEqual(TEXT("Route recovery preserves public travel"),V->Residents[Worker].Task,EHearthTask::PublicTravel);
+    TestTrue(TEXT("Empty-route migration preserves missing waypoints for runtime recovery"),V->Residents[Worker].Route.IsEmpty());
+    TestEqual(TEXT("Empty-route migration cannot mint cargo"),V->Residents[Worker].CargoAmount,0);
+    TestTrue(TEXT("Empty-route migration preserves off-depot position"),V->Residents[Worker].Actor->GetActorLocation().Equals(AwayPosition,.001f));
     return true;
 }
 
