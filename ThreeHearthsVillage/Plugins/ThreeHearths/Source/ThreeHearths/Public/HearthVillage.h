@@ -323,6 +323,7 @@ private:
     friend class FHearthLegacyUnfundedWageTest;
     friend class FHearthModularCottageTest;
     friend class FHearthPlannedConstructionRuntimeTest;
+    friend class FHearthTownLayoutRuntimeTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
     FString WorldPath;

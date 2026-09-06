@@ -2,9 +2,10 @@
 
 namespace
 {
-    constexpr float HomeLong = 120.f;
-    constexpr float HomeShort = 100.f;
-    constexpr float Gap = 70.f;
+    // One native structural bay, including its roof projection, is about 500 x 480 cm.
+    constexpr float HomeLong = 250.f;
+    constexpr float HomeShort = 240.f;
+    constexpr float Gap = 80.f;
 
     FVector2D XY(const FVector& P) { return FVector2D(P.X, P.Y); }
     FVector MakePoint(const FVector2D& P, float Z = 8.f) { return FVector(P.X, P.Y, Z); }

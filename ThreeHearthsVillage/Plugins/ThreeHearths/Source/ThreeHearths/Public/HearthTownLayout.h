@@ -13,7 +13,7 @@ struct FHearthTownRoadSegment
 struct FHearthTownRect
 {
     FVector Center = FVector::ZeroVector;
-    FVector2D HalfExtent = FVector2D(120.f, 100.f);
+    FVector2D HalfExtent = FVector2D(250.f, 240.f);
     float Clearance = 60.f;
 };
 
@@ -22,7 +22,7 @@ struct FHearthTownFootprint
     FString Id;
     FVector Center = FVector::ZeroVector;
     FVector Door = FVector::ZeroVector;
-    FVector2D HalfExtent = FVector2D(120.f, 100.f);
+    FVector2D HalfExtent = FVector2D(250.f, 240.f);
     float Yaw = 0.f;
     bool bExisting = false;
 };
@@ -32,7 +32,7 @@ struct FHearthTownExpansion
     FString Id;
     FVector Center = FVector::ZeroVector;
     FVector Door = FVector::ZeroVector;
-    FVector2D HalfExtent = FVector2D(120.f, 100.f);
+    FVector2D HalfExtent = FVector2D(250.f, 240.f);
     float Yaw = 0.f;
     int32 ParentIndex = -1;
 };

@@ -1,6 +1,7 @@
 #include "HearthVillage.h"
 #include "HearthPlannedConstructionAdapter.h"
 #include "HearthResidentBuildingPlanner.h"
+#include "HearthTownLayout.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
@@ -167,22 +168,39 @@ void AHearthVillage::InitializeProduction()
     AddSite(EHearthSiteKind::Shrub,FVector(-2900,-3400,8),120);
     AddSite(EHearthSiteKind::Shrub,FVector(-3700,-3400,8),120);
     AddSite(EHearthSiteKind::Carpenter,FVector(-2250,-1050,8),190);
-    int32 Plots=0;
-    TArray<FVector> Candidates;
-    for(int32 X=-6000;X<=5700;X+=900) for(int32 Y=-6000;Y<=5700;Y+=900) Candidates.Add(FVector(X,Y,8));
-    Candidates.Sort([](const FVector& A,const FVector& B) { return FVector::DistSquared2D(A,FVector(-1100,-1050,8))<FVector::DistSquared2D(B,FVector(-1100,-1050,8)); });
-    for(const FVector& P:Candidates)
+    FHearthTownLayoutInput TownInput;
+    TownInput.IslandMin=FVector2D(-6000,-5700); TownInput.IslandMax=FVector2D(5700,5700);
+    TownInput.Roads.Add({FVector(-2130,-5100,8),FVector(-2130,5100,8),340.f});
+    TownInput.Markets={FVector(-1100,-1050,8),FVector(-1650,-1050,8)};
+    TownInput.Workpoints={FVector(-2250,-1050,8)};
+    for(const FVector& Obstacle:FixedObstacles)
     {
-        if(Plots>=18) break;
-        bool Clear=true;
-        for(const auto& S:ProductionSites) if(FMath::Abs(P.X-S.Position.X)<S.Radius+350 && FMath::Abs(P.Y-S.Position.Y)<S.Radius+350) Clear=false;
-        for(const auto& O:FixedObstacles) if(FMath::Abs(P.X-O.X)<O.Z+350 && FMath::Abs(P.Y-O.Y)<O.Z+350) Clear=false;
-        if(!Clear) continue;
-        const int32 Before=ProductionSites.Num(); AddSite(EHearthSiteKind::Empty,P,260,true); Plots+=ProductionSites.Num()>Before;
+        FHearthTownRect Blocker; Blocker.Center=FVector(Obstacle.X,Obstacle.Y,8); Blocker.HalfExtent=FVector2D(Obstacle.Z); Blocker.Clearance=80.f;
+        TownInput.TerrainBlockers.Add(Blocker);
+    }
+    for(const FHearthSite& ExistingSite:ProductionSites)
+    {
+        FHearthTownRect Blocker; Blocker.Center=ExistingSite.Position; Blocker.HalfExtent=FVector2D(ExistingSite.Radius); Blocker.Clearance=80.f;
+        TownInput.TerrainBlockers.Add(Blocker);
+        if(ExistingSite.Kind==EHearthSiteKind::Carpenter) TownInput.Workpoints.Add(ExistingSite.Position);
+    }
+    TownInput.RequestedHomes=18; TownInput.Seed=583;
+    const FHearthTownLayoutPlan TownPlan=HearthTownLayout::Build(TownInput);
+    int32 Plots=0;
+    for(const FHearthTownFootprint& Home:TownPlan.Homes)
+    {
+        if(Home.bExisting || Plots>=TownInput.RequestedHomes) continue;
+        constexpr float PlotRadius=260.f;
+        const FVector P=Home.Center;
+        if(!IsLand(P) || !IsLand(P+FVector(PlotRadius,PlotRadius,0)) || !IsLand(P-FVector(PlotRadius,PlotRadius,0))
+            || !IsLand(P+FVector(-PlotRadius,PlotRadius,0)) || !IsLand(P+FVector(PlotRadius,-PlotRadius,0))) continue;
+        FHearthSite Site; Site.Kind=EHearthSiteKind::Empty; Site.Position=P; Site.Approach=Home.Door;
+        Site.Radius=PlotRadius; Site.bExpansion=true; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+        ProductionSites.Add(MoveTemp(Site)); ++Plots;
     }
     int32 Reachable=0;
     for(int32 I=0;I<ProductionSites.Num();++I) { if(ChooseSiteApproach(I)) ++Reachable; UpdateSiteVisual(I); }
-    ProductionStatus=FString::Printf(TEXT("可达生产点 / 地块 %d / %d · 全员拥有全部技能"),Reachable,ProductionSites.Num());
+    ProductionStatus=FString::Printf(TEXT("连续街区住宅位 %d · 可达生产点 / 地块 %d / %d · 全员拥有全部技能"),Plots,Reachable,ProductionSites.Num());
 }
 
 bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
