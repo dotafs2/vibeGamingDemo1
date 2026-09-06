@@ -564,7 +564,6 @@ void AHearthVillage::Tick(float DeltaSeconds)
     }
     if(!bSimulationPaused && RealDt>0.f)
     {
-        ConsumeDecision();
         constexpr double Step=0.05;
         SimulationRemainder+=static_cast<double>(RealDt)*SimulationSpeed;
         const int32 Steps=FMath::Min(5000,FMath::FloorToInt(SimulationRemainder/Step));
@@ -572,9 +571,10 @@ void AHearthVillage::Tick(float DeltaSeconds)
         for(int32 I=0;I<Steps;++I)
         {
             AdvanceSimulation(static_cast<float>(Step));
+            AdvanceSocial(static_cast<float>(Step));
+            if(PendingDecisionCount()>0) ConsumeDecision();
+            UpdateLifeDecisions();
         }
-        AdvanceSocial(static_cast<float>(Steps*Step));
-        UpdateLifeDecisions();
         // Disk snapshots follow real time, not the accelerated village clock.
         SnapshotTimer+=RealDt;
         if(SnapshotTimer>=0.5f) { SnapshotTimer=0; WriteSnapshot(); }

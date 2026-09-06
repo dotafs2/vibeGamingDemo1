@@ -314,7 +314,21 @@ TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
         TArray<int32> Candidates;
         for(int32 S=0;S<ProductionSites.Num();++S) if(IsProductionAllowed(Index,HearthProduction::Action(S,Op))) Candidates.Add(S);
         const FVector P=Residents[Index].Actor->GetActorLocation();
-        Candidates.Sort([this,P](int32 A,int32 B) { return FVector::DistSquared2D(P,ProductionSites[A].Approach)<FVector::DistSquared2D(P,ProductionSites[B].Approach); });
+        Candidates.Sort([this,P,Op](int32 A,int32 B)
+        {
+            if(Op==5)
+            {
+                auto Priority=[this](int32 Site)
+                {
+                    const auto& Candidate=ProductionSites[Site];
+                    const bool Pending=Candidate.CottageComponents.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");});
+                    return Pending?0:Candidate.BuildPlanId.IsEmpty()?1:2;
+                };
+                const int32 APriority=Priority(A),BPriority=Priority(B);
+                if(APriority!=BPriority) return APriority<BPriority;
+            }
+            return FVector::DistSquared2D(P,ProductionSites[A].Approach)<FVector::DistSquared2D(P,ProductionSites[B].Approach);
+        });
         for(int32 I=0;I<FMath::Min(2,Candidates.Num());++I) Actions.Add(HearthProduction::Action(Candidates[I],Op));
     }
     return Actions;
