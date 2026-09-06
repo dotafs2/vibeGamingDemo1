@@ -18,6 +18,19 @@ namespace HearthPersistenceTests
     { return FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir()/TEXT("ThreeHearths/Tests")/FGuid::NewGuid().ToString(EGuidFormats::Digits)/TEXT("world.json")); }
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPublicProjectPersistenceTest,"ThreeHearths.Persistence.PublicProjectSchema8RoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
+{
+    UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Isolated public persistence world"),World)) return false;
+    ON_SCOPE_EXIT { World->DestroyWorld(false); };
+    auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState();
+    V->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); V->PublicProject.Status=TEXT("unapproved");
+    const FString Text=V->ExportWorldState(); FHearthWorldImage Image; FString Error;
+    if(!TestTrue(TEXT("Schema 8 public project decodes"),HearthWorld::Decode(Text,Image,Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("Schema is 8"),Image.Schema,8); TestEqual(TEXT("Public project ID survives"),Image.PublicProject.Id,V->PublicProject.Id); TestEqual(TEXT("Public project status survives"),Image.PublicProject.Status,FString(TEXT("unapproved")));
+    return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthWorldPersistenceTest,"ThreeHearths.Persistence.ResumeMaterialsAndTasks",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthWorldPersistenceTest::RunTest(const FString&)
 {
@@ -191,7 +204,7 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     TestTrue(TEXT("Corrupt file retained as named archive"),Archives.Num()>=1);
     FFileHelper::SaveStringToFile(TEXT("broken_current"),*V->WorldPath); FFileHelper::SaveStringToFile(TEXT("broken_backup"),*(V->WorldPath+TEXT(".bak")));
     const FString Before=V->WorldId; TestFalse(TEXT("Both damaged files fail closed"),V->LoadWorld()); TestEqual(TEXT("Failed recovery retains current in-memory world"),V->WorldId,Before);
-    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":7"),TEXT("\"schema\":999")),Good,Error));
+    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":8"),TEXT("\"schema\":999")),Good,Error));
     return true;
 }
 #endif

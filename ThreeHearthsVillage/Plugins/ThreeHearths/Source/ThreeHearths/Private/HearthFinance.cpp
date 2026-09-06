@@ -22,6 +22,20 @@ bool AHearthVillage::PrepareIncomeTax(int32 Resident,int32 Gross,const FString& 
 
 void AHearthVillage::CommitIncomeTax(const FHearthTaxAssessment& A)
 {
+    // Commit is intentionally non-failing for the normal game-thread path, so
+    // reject stale/replayed assessments before touching any ledger state.
+    FGuid AssessmentId, SourceId;
+    if(!Residents.IsValidIndex(A.Resident) || A.Gross<=0 || A.Tax<0 || A.Tax>A.Gross
+        || A.Net!=A.Gross-A.Tax || A.RemainderBefore<0 || A.RemainderBefore>99
+        || A.RemainderAfter<0 || A.RemainderAfter>99
+        || !FGuid::Parse(A.Id,AssessmentId) || !AssessmentId.IsValid()
+        || !FGuid::Parse(A.SourceTransactionId,SourceId) || !SourceId.IsValid()
+        || TaxAssessments.ContainsByPredicate([&](const auto& Existing)
+            { return Existing.Id==A.Id || Existing.SourceTransactionId==A.SourceTransactionId; })
+        || Residents[A.Resident].Coins<A.Tax
+        || TreasuryCoins<0 || TaxProjectCoins<0
+        || static_cast<int64>(TreasuryCoins)+A.Tax>100000000
+        || static_cast<int64>(TaxProjectCoins)+A.Tax>100000000) return;
     Residents[A.Resident].Coins-=A.Tax; TreasuryCoins+=A.Tax; TaxProjectCoins+=A.Tax;
     TaxRemainders[A.Resident]=A.RemainderAfter; TaxAssessments.Add(A);
     if(A.Tax>0)

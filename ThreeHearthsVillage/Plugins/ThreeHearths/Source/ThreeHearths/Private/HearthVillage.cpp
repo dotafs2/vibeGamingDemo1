@@ -145,13 +145,14 @@ void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
     if (Task != LastMotion || WorkKind != LastWorkKind || !Body->IsPlaying())
     {
         UAnimSequence* Animation = Idle;
-        if (Task==EHearthTask::ToWood || Task==EHearthTask::ToHome || Task==EHearthTask::LifeTravel || Task==EHearthTask::ProductionTravel || Task==EHearthTask::ProductionDeliver || Task==EHearthTask::TradeTravel) Animation=Walk;
+        if (Task==EHearthTask::ToWood || Task==EHearthTask::ToHome || Task==EHearthTask::LifeTravel || Task==EHearthTask::ProductionTravel || Task==EHearthTask::ProductionDeliver || Task==EHearthTask::TradeTravel || Task==EHearthTask::PublicTravel || Task==EHearthTask::SupplyTravel) Animation=Walk;
         else if (Task==EHearthTask::Chopping) Animation=Chop;
         else if (Task==EHearthTask::Building) Animation=Build;
         if(Task==EHearthTask::ProductionWork)
         {
             Animation=WorkKind==10?Chop:WorkKind==11?Mine:(WorkKind==9 || WorkKind==12)?Gather:(WorkKind==0 || WorkKind==8)?Farm:Build;
         }
+        else if(Task==EHearthTask::PublicWork) Animation=Build;
         LastWorkKind=WorkKind;
         Body->PlayAnimation(Animation,true);
         LastMotion=Task;
@@ -161,7 +162,7 @@ void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
 
 void AHearthVillager::UpdateTool(EHearthTask Task,int32 WorkKind)
 {
-    const FString Id=(Task==EHearthTask::ProductionWork)?EquippedToolId:FString(); FVector Grip;
+    const FString Id=(Task==EHearthTask::ProductionWork || Task==EHearthTask::PublicWork)?EquippedToolId:FString(); FVector Grip;
     if(Id==TEXT("tool_axe")) Grip=FVector(-7.925f,0,12.5f);
     else if(Id==TEXT("tool_pickaxe")) Grip=FVector(1.347f,0,12.5f);
     else if(Id==TEXT("tool_hammer")) Grip=FVector(1.8f,.1f,11.5f);
@@ -367,6 +368,8 @@ void AHearthVillage::ResetVillageState()
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
+    for(auto& Mesh:PublicMeshes) if(IsValid(Mesh.Get())) Mesh->DestroyComponent();
+    PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); PublicVisualCount=-1; PublicScheduleTimer=0;
     Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
     TreasuryCoins=500; TaxProjectCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
     bSocialOpen=false; ++SocialRevision;
@@ -580,6 +583,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
         if(SnapshotTimer>=0.5f) { SnapshotTimer=0; WriteSnapshot(); }
     }
     RefreshProductionVisuals();
+    RefreshPublicVisuals();
     if(bWorldPersistenceEnabled && !bWorldWriteBlocked)
     {
         WorldSaveTimer+=RealDt;
@@ -593,16 +597,18 @@ void AHearthVillage::Tick(float DeltaSeconds)
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
         const bool bTradeCargo=(R.Task==EHearthTask::TradeTravel || R.Task==EHearthTask::TradeWaiting)
             && TradeOffers.ContainsByPredicate([&](const FHearthTradeOffer& T) { return T.Id==R.ActiveTaskId && T.Seller==R.Actor->ResidentIndex && T.ReservedQuantity>0; });
-        R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0 || bTradeCargo);
-        const TCHAR* CargoMesh=bTradeCargo?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
+        const bool bSupplyCargo=(R.Task==EHearthTask::SupplyTravel || R.Task==EHearthTask::SupplyHandover)
+            && PublicProject.Orders.ContainsByPredicate([&](const FHearthSupplyOrder& O) { return O.Id==R.ActiveTaskId && O.Seller==R.Actor->ResidentIndex && O.ReservedQuantity>0; });
+        R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0 || bTradeCargo || bSupplyCargo);
+        const TCHAR* CargoMesh=(bTradeCargo || bSupplyCargo)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):(R.CarriedWood>0 || R.CargoType==1)?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_logs/carry_logs"):
             R.CargoType==3?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_planks/carry_planks"):
             R.CargoType==2?TEXT("/Game/ThreeHearths/Generated/VillageKit/carry_stones/carry_stones"):
             R.CargoType==4?TEXT("/Game/ThreeHearths/Generated/SocietyKit/goods_beams_bundle/goods_beams_bundle"):TEXT("/Engine/BasicShapes/Cube");
         if(auto* Asset=LoadObject<UStaticMesh>(nullptr,CargoMesh); Asset && R.Actor->Bundle->GetStaticMesh()!=Asset)
         {
             R.Actor->Bundle->SetStaticMesh(Asset);
-            R.Actor->Bundle->SetRelativeScale3D(R.CargoType>=3 || bTradeCargo?FVector(.7f):FVector(.32f,.6f,.25f));
-            if(R.CarriedWood>0 || R.CargoType>=1 || bTradeCargo) R.Actor->Bundle->SetMaterial(0,nullptr);
+            R.Actor->Bundle->SetRelativeScale3D(R.CargoType>=3 || bTradeCargo || bSupplyCargo?FVector(.7f):FVector(.32f,.6f,.25f));
+            if(R.CarriedWood>0 || R.CargoType>=1 || bTradeCargo || bSupplyCargo) R.Actor->Bundle->SetMaterial(0,nullptr);
         }
         if(auto* Material=Cast<UMaterialInstanceDynamic>(R.Actor->Bundle->GetMaterial(0)))
             Material->SetVectorParameterValue(TEXT("VillageTint"),R.CargoType==0?FLinearColor(.55f,.65f,.12f):R.CargoType==2?FLinearColor(.45f,.46f,.43f):Hearth::Wood);
@@ -615,6 +621,7 @@ void AHearthVillage::AdvanceSimulation(float Dt)
     AdvanceNeeds(Dt);
     AdvanceEconomy(Dt);
     AdvanceProductionWorld(Dt);
+    AdvancePublicWorks(Dt);
     for(int32 I=0;I<Residents.Num();++I)
     {
         auto& R=Residents[I];
@@ -695,6 +702,14 @@ void AHearthVillage::AdvanceSimulation(float Dt)
         case EHearthTask::ProductionDeposit:
             AdvanceProduction(I,Dt);
             break;
+        case EHearthTask::PublicTravel:
+        case EHearthTask::PublicWork:
+            AdvancePublicWorker(I,Dt);
+            break;
+        case EHearthTask::SupplyTravel:
+        case EHearthTask::SupplyHandover:
+            AdvanceSupplyWorker(I,Dt);
+            break;
         case EHearthTask::LifeTravel:
         case EHearthTask::LifeActivity:
             AdvanceLife(I,Dt);
@@ -729,6 +744,10 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::ProductionDeposit) return TEXT("交付入库");
     if(Residents[I].Task==EHearthTask::TradeTravel) return TEXT("携带自有木板前往交货");
     if(Residents[I].Task==EHearthTask::TradeWaiting) return TEXT("等待木板交易结算");
+    if(Residents[I].Task==EHearthTask::PublicTravel) return TEXT("搬运公共城墙材料");
+    if(Residents[I].Task==EHearthTask::PublicWork) return TEXT("安装公共城墙构件");
+    if(Residents[I].Task==EHearthTask::SupplyTravel) return TEXT("运送自有木板给公共工程");
+    if(Residents[I].Task==EHearthTask::SupplyHandover) return TEXT("交付木板并等待结算");
     if(Residents[I].Task==EHearthTask::LifeChoosing)
     {
         const int32 Wait=FMath::CeilToInt(FMath::Max(0.0,Residents[I].NextLifeDecision-Elapsed));
@@ -867,6 +886,7 @@ FString AHearthVillage::GetSnapshot() const
     {
         auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),P.Id); J->SetStringField(TEXT("task_id"),P.TaskId);
         J->SetStringField(TEXT("status"),P.Status); J->SetNumberField(TEXT("worker"),P.Worker); J->SetNumberField(TEXT("amount"),P.Amount);
+        J->SetBoolField(TEXT("tax_funded"),P.bTaxFunded);
         Payables.Add(MakeShared<FJsonValueObject>(J));
     }
     Root->SetArrayField(TEXT("wage_payables"),Payables);
@@ -879,6 +899,7 @@ FString AHearthVillage::GetSnapshot() const
         Trades.Add(MakeShared<FJsonValueObject>(J));
     }
     Root->SetArrayField(TEXT("trade_offers"),Trades);
+    AddPublicSnapshot(Root);
     Root->SetNumberField(TEXT("accounted_wood"),AccountedWood);
     Root->SetBoolField(TEXT("unique_plot_owners"),bUnique);
     FString Out; auto Writer=TJsonWriterFactory<>::Create(&Out); FJsonSerializer::Serialize(Root,Writer); return Out;

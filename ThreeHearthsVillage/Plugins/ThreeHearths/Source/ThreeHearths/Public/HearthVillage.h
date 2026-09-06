@@ -17,7 +17,7 @@ class FJsonObject;
 class IFileHandle;
 
 UENUM(BlueprintType)
-enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting };
+enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover };
 
 // Stable operation IDs: each site offers only the operations its current state permits.
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter };
@@ -116,6 +116,32 @@ struct FHearthTradeOffer
     int32 Seller=-1, Buyer=-1, Quantity=1, Price=2, ReservedQuantity=0;
     float Remaining=0;
 };
+
+struct FHearthPublicPart
+{
+    FString Id, Asset, TaskId, Status=TEXT("waiting");
+    FVector Offset=FVector::ZeroVector;
+    int32 Stage=1, Worker=-1;
+    int32 Required[3]={0,0,0}, Reserved[3]={0,0,0}, Delivered[3]={0,0,0}; // stone, planks, beams
+};
+struct FHearthSupplyOrder
+{
+    FString Id, ProjectId, Status=TEXT("transporting"), Result;
+    FString Origin=TEXT("resident_owned_sawmill_share_or_completed_trade");
+    int32 Seller=-1, Quantity=1, Price=2, ReservedQuantity=1, Escrow=2;
+    float Remaining=300.f;
+};
+struct FHearthPublicProject
+{
+    FString Id, TemplateId=TEXT("public_wall_6m"), Policy=TEXT("local_king_fixed_income_tax_25"), Status=TEXT("unapproved");
+    FString ApprovalHistoryId;
+    int32 King=-1, Site=-1, Completed=0;
+    int32 Stock[3]={0,0,0}, Grants[3]={0,0,0};
+    float ApprovedAt=0;
+    TArray<FHearthPublicPart> Parts;
+    TArray<FHearthSupplyOrder> Orders;
+};
+namespace HearthPublicWorks { void Populate(FHearthPublicProject& Project); }
 
 UCLASS()
 class THREEHEARTHS_API AHearthVillager : public AActor
@@ -252,6 +278,9 @@ public:
     UPROPERTY(BlueprintReadOnly) int32 TaxRatePercent=25;
     TArray<FHearthTransaction> Transactions;
     TArray<FHearthTaxAssessment> TaxAssessments;
+    FHearthPublicProject PublicProject;
+    UFUNCTION(BlueprintCallable) bool CancelPublicWork(int32 Resident);
+    FString PublicWorksSummary() const;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Village") bool bUseCropoutMap = false;
@@ -280,12 +309,14 @@ private:
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
     friend class FHearthWorldPersistenceTest;
+    friend class FHearthPublicProjectPersistenceTest;
     friend class FHearthWorldRecoveryTest;
     friend class FHearthToolOwnershipTest;
     friend class FHearthDerivedMaterialsTest;
     friend class FHearthEconomyPersistenceTest;
     friend class FHearthProjectFinanceTest;
     friend class FHearthPublicWallTest;
+    friend class FHearthSupplyOrderTest;
     friend class FHearthLegacyUnfundedWageTest;
     friend class FHearthModularCottageTest;
     friend class FHearthSocietyPopulationTest;
@@ -338,6 +369,19 @@ private:
     int32 WageForOperation(int32 Operation) const;
     bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded=false);
     bool SettleWage(int32 Worker,const FString& TaskId);
+    bool ApprovePublicProject(int32 King);
+    bool StartSupplyOrder(int32 Seller);
+    bool SettleSupplyOrder(FHearthSupplyOrder& Order);
+    bool CancelSupplyOrder(int32 Seller);
+    void AdvanceSupplyWorker(int32 Seller,float Dt);
+    bool StartPublicPart(int32 Worker);
+    void AdvancePublicWorks(float Dt);
+    void AdvancePublicWorker(int32 Worker,float Dt);
+    void RefreshPublicVisuals();
+    void AddPublicSnapshot(const TSharedRef<FJsonObject>& Root) const;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> PublicMeshes;
+    int32 PublicVisualCount=-1;
+    float PublicScheduleTimer=0;
     void AdvanceEconomy(float Dt);
     void AppendProductionContext(const TSharedRef<FJsonObject>& Context) const;
     bool IsLand(const FVector& Position) const;

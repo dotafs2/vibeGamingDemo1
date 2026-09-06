@@ -51,6 +51,7 @@ FString AHearthVillage::ExportWorldState() const
     }
     W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
     W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers;
+    W.PublicProject=PublicProject;
     return HearthWorld::Encode(W);
 }
 
@@ -61,6 +62,7 @@ bool AHearthVillage::SaveWorld()
     if(!HearthWorld::Write(WorldPath,ExportWorldState(),Error))
     {
         --WorldRevision; WorldSaveStatus=TEXT("存档失败：")+Error;
+        UE_LOG(LogTemp,Warning,TEXT("WORLD_SAVE_REJECTED path=%s revision=%lld reason=%s"),*WorldPath,WorldRevision+1,*Error);
         bApiDisabledThisRun=true; bSimulationPaused=true; return false;
     }
     WorldSaveStatus=FString::Printf(TEXT("世界已保存 · 第 %lld 版 · 每 30 秒自动保存"),WorldRevision);
@@ -97,6 +99,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     FoodStock=W.Food; StoneStock=W.Stone; PlankStock=W.Planks; BeamStock=W.Beams; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
     Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions); TaxAssessments=MoveTemp(W.TaxAssessments);
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
+    PublicProject=MoveTemp(W.PublicProject);
     TaxProjectCoins=W.TaxProjectCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {

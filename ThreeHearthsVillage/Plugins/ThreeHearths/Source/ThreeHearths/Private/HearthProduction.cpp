@@ -135,7 +135,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
 {
     int32 Site,Op;
     if(!Residents.IsValidIndex(Index) || Residents[Index].BuildProgress<1 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
-    const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0) return false;
+    const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0 || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
     if(!ToolAvailableFor(Index,Op)) return false;
@@ -221,9 +221,13 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
         int32 Site,Op; HearthProduction::Decode(Action,Site,Op); float Score=5;
         if(Op==9 || Op==12) Score=FoodStock<20?180:35;
         if(Op==10) Score=AvailableWood()<60?150:20;
-        if(Op==11) Score=StoneStock<10?140:15;
-        if(Op==13) Score=PlankStock<12?165:18;
-        if(Op==14) Score=BeamStock<8?155:16;
+        const bool PublicBuilding=!PublicProject.Id.IsEmpty() && PublicProject.Status==TEXT("building");
+        int32 PublicNeed[3]={0,0,0};
+        if(PublicBuilding) for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed"))
+            for(int32 M=0;M<3;++M) PublicNeed[M]+=Part.Required[M]-Part.Reserved[M]-Part.Delivered[M];
+        if(Op==11) Score=PublicBuilding && PublicProject.Stock[0]<PublicNeed[0]?235:(StoneStock<10?140:15);
+        if(Op==13) Score=PublicBuilding && PublicProject.Stock[1]<PublicNeed[1]?245:(PlankStock<12?165:18);
+        if(Op==14) Score=PublicBuilding && PublicProject.Stock[2]<PublicNeed[2]?240:(BeamStock<8?155:16);
         if(Op==8) Score=FoodStock<40?125:45;
         if(Op==0) { int32 Ready=0; for(const auto& S:ProductionSites) Ready+=S.Kind==EHearthSiteKind::Land; Score=Ready<2?90:2; }
         if(Op>=1 && Op<=7)
@@ -664,7 +668,7 @@ FString AHearthVillage::ProductionSummary() const
     { Land+=S.Kind==EHearthSiteKind::Land; Empty+=S.Kind==EHearthSiteKind::Empty && S.bReachable; Fields+=HearthProduction::IsCrop(S.Kind); Houses+=S.Kind==EHearthSiteKind::House; }
     for(const auto& T:TradeOffers) CompletedTrades+=T.Status==TEXT("completed");
     for(const auto& P:WagePayables) if(P.Status==TEXT("reserved")) ReservedWages+=P.Amount;
-    return FString::Printf(TEXT("食物 %d · 原木 %d · 木板 %d · 房梁 %d · 石材 %d\n村库 %d 枚 · 税收工程金 %d 枚 · 税率 %d%% · 预留工资 %d\n居民买卖 %d 笔 · 税单 %d 笔\n农田 %d · 新住宅 %d · 空地 %d / 已开垦 %d"),FoodStock,AvailableWood(),PlankStock,BeamStock,StoneStock,TreasuryCoins,TaxProjectCoins,TaxRatePercent,ReservedWages,CompletedTrades,TaxAssessments.Num(),Fields,Houses,Empty,Land);
+    return FString::Printf(TEXT("食物 %d · 原木 %d · 木板 %d · 房梁 %d · 石材 %d\n村库 %d 枚 · 税收工程金 %d 枚 · 税率 %d%% · 预留工资 %d\n居民买卖 %d 笔 · 税单 %d 笔\n农田 %d · 新住宅 %d · 空地 %d / 已开垦 %d\n%s"),FoodStock,AvailableWood(),PlankStock,BeamStock,StoneStock,TreasuryCoins,TaxProjectCoins,TaxRatePercent,ReservedWages,CompletedTrades,TaxAssessments.Num(),Fields,Houses,Empty,Land,*PublicWorksSummary());
 }
 
 FString AHearthVillage::CargoSummary(int32 Index) const

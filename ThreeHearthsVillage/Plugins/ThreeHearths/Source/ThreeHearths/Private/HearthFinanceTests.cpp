@@ -53,6 +53,11 @@ bool FHearthProjectFinanceTest::RunTest(const FString&)
     V->WagePayables.Add(Unfunded); V->AdvanceEconomy(.1f);
     TestEqual(TEXT("Deferred wage also cannot spend protected cash"),V->WagePayables.Last().Status,FString(TEXT("owed")));
     TestEqual(TEXT("Protected cash stays in treasury"),V->TreasuryCoins,Cash);
+    const FString BeforeDuplicateTax=V->ExportWorldState();
+    TestTrue(TEXT("A completed wage has a tax assessment"),V->TaxAssessments.Num()>0);
+    const FHearthTaxAssessment CompletedAssessment=V->TaxAssessments.Last();
+    V->CommitIncomeTax(CompletedAssessment);
+    TestEqual(TEXT("Replayed tax assessment leaves all state unchanged"),V->ExportWorldState(),BeforeDuplicateTax);
     return true;
 }
 #endif

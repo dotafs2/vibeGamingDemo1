@@ -13,7 +13,7 @@ struct FHearthSavedResident
 struct FHearthWorldImage
 {
     FString Id, Run, Event;
-    int32 Schema=7, PlotCount=3;
+    int32 Schema=8, PlotCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;
@@ -33,6 +33,7 @@ struct FHearthWorldImage
     TArray<FHearthCommitment> Commitments;
     TArray<FHearthTransaction> Transactions;
     TArray<FHearthTaxAssessment> TaxAssessments;
+    FHearthPublicProject PublicProject;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
 };
