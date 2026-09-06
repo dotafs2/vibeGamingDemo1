@@ -44,6 +44,12 @@ bool FHearthModularCottageTest::RunTest(const FString&)
     TestFalse(TEXT("Missing first component material refuses before creating the plan"),V->StartProduction(0,Action,TEXT("test"),false));
     TestEqual(TEXT("Missing material creates no payable"),V->WagePayables.Num(),PayablesBeforeMissing); V->StoneStock=4;
 
+    // Keep this lifecycle as the legacy fixed-cottage migration fixture. The schema-nine
+    // planner-to-executor path has its own ResidentPlanRuntimeExecution integration test.
+    V->ProductionSites[0].BuildPlanId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    V->ProductionSites[0].Owner=0;
+    V->EnsureCottageComponents(V->ProductionSites[0]);
+
     for(int32 ExpectedComponent=1;ExpectedComponent<=45;++ExpectedComponent)
     {
         if(!TestTrue(*FString::Printf(TEXT("Component %d starts"),ExpectedComponent),V->StartProduction(0,Action,TEXT("逐件搭建木结构小住宅"),false))) return false;
