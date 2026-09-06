@@ -23,9 +23,25 @@ namespace Hearth
     const FLinearColor Soil(0.26f,0.16f,0.085f);
     const FLinearColor Path(0.56f,0.43f,0.24f);
     const FLinearColor Wood(0.32f,0.16f,0.06f);
+
     const FLinearColor Foliage(0.11f,0.26f,0.12f);
     const FLinearColor Water(0.15f,0.34f,0.37f);
     const FName Generated(TEXT("ThreeHearthsGenerated"));
+}
+
+void AHearthVillage::AssignHouseStyle(int32 Index,FHearthResident& R) const
+{
+    const int32 Style=R.bKing?2:Index%3;
+    SetHouseStyle(Style,R);
+}
+
+bool AHearthVillage::SetHouseStyle(int32 Style,FHearthResident& R) const
+{
+    if(Style==0) { R.HouseBlueprint=TEXT("cottage_terracotta"); R.WallMaterial=TEXT("plaster"); R.RoofMaterial=TEXT("terracotta"); }
+    else if(Style==1) { R.HouseBlueprint=TEXT("longhouse_slateblue"); R.WallMaterial=TEXT("timber"); R.RoofMaterial=TEXT("slateblue"); }
+    else if(Style==2) { R.HouseBlueprint=TEXT("townhouse_terracotta"); R.WallMaterial=TEXT("stone"); R.RoofMaterial=TEXT("terracotta"); }
+    else return false;
+    return true;
 }
 
 AHearthVillager::AHearthVillager()
@@ -324,6 +340,7 @@ void AHearthVillage::ResetVillageState()
         FHearthResident R;
         R.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         InitializeResidentIdentity(I,R);
+        AssignHouseStyle(I,R);
         R.Reason=TEXT("先看看村庄里哪些地块适合自己。");
         R.LatestEvent=TEXT("带着自己的想法来到村庄。");
         R.Timer=1.5f+I*1.4f;
@@ -470,12 +487,17 @@ void AHearthVillage::SeekWood(int32 Index)
 void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)
 {
     if(!HouseMeshes.IsValidIndex(Plot)) return;
-    const FString Path=Hearth::Houses+FString::Printf(TEXT("SM_House_%02d"),FMath::Clamp(Stage+1,1,4));
+    FString Path=Hearth::Houses+FString::Printf(TEXT("SM_House_%02d"),FMath::Clamp(Stage+1,1,4));
+    if(Stage>=3 && Plot>=0 && Plot<UE_ARRAY_COUNT(PlotOwners) && Residents.IsValidIndex(PlotOwners[Plot]))
+    {
+        const auto& R=Residents[PlotOwners[Plot]];
+        if(!R.HouseBlueprint.IsEmpty()) Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/example__%s/%s.%s"),*R.HouseBlueprint,*R.HouseBlueprint,*R.HouseBlueprint);
+    }
     if(auto* Mesh=LoadObject<UStaticMesh>(nullptr,*Path))
     {
         HouseMeshes[Plot]->SetStaticMesh(Mesh);
         HouseMeshes[Plot]->SetVisibility(true);
-        const float Size=Plot==2?0.80f:(Plot==0?1.05f:0.95f);
+        const float Size=Stage>=3?0.9f:(Plot==2?0.80f:(Plot==0?1.05f:0.95f));
         HouseMeshes[Plot]->SetWorldScale3D(FVector(Size));
     }
 }
@@ -497,7 +519,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
         {
             AdvanceSimulation(static_cast<float>(Step));
         }
-        AdvanceSocial(RealDt);
+        AdvanceSocial(static_cast<float>(Steps*Step));
         UpdateLifeDecisions();
         // Disk snapshots follow real time, not the accelerated village clock.
         SnapshotTimer+=RealDt;
@@ -714,6 +736,7 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("speech_remaining"),R.SpeechRemaining);
         J->SetStringField(TEXT("reason"),R.Reason); J->SetStringField(TEXT("status"),StatusFor(I));
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
+        J->SetStringField(TEXT("house_blueprint"),R.HouseBlueprint); J->SetStringField(TEXT("wall_material"),R.WallMaterial); J->SetStringField(TEXT("roof_material"),R.RoofMaterial);
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);
         J->SetNumberField(TEXT("carried"),R.CarriedWood); J->SetNumberField(TEXT("delivered"),R.DeliveredWood);
         J->SetNumberField(TEXT("cost"),CostFor(I)); J->SetNumberField(TEXT("build_progress"),R.BuildProgress);

@@ -50,7 +50,7 @@ struct FHearthPendingDecision
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
     bool bActive=false, bReturned=false, bLife=false, bSocial=false, bHasUsage=false;
-    int32 Choice=-1, Tokens=0, HistoryIndex=-1;
+    int32 Choice=-1, HouseStyle=-1, Tokens=0, HistoryIndex=-1;
     double StartedAt=0, Latency=0;
     FString Reason, Error;
     TArray<int32> AllowedActions;
@@ -126,6 +126,9 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) FString LatestEvent;
     UPROPERTY(BlueprintReadOnly) FString DecisionSource = TEXT("pending");
     UPROPERTY(BlueprintReadOnly) FString DecisionNote;
+    UPROPERTY(BlueprintReadOnly) FString HouseBlueprint;
+    UPROPERTY(BlueprintReadOnly) FString WallMaterial;
+    UPROPERTY(BlueprintReadOnly) FString RoofMaterial;
     UPROPERTY(BlueprintReadOnly) EHearthTask Task = EHearthTask::Choosing;
     UPROPERTY(BlueprintReadOnly) int32 Plot = -1;
     UPROPERTY(BlueprintReadOnly) int32 CarriedWood = 0;
@@ -239,6 +242,8 @@ private:
     void ResetVillageState();
     bool ApplyWorldState(const FString& Text, FString& Error);
     void InitializeResidentIdentity(int32 Index,FHearthResident& Resident) const;
+    void AssignHouseStyle(int32 Index,FHearthResident& Resident) const;
+    bool SetHouseStyle(int32 Style,FHearthResident& Resident) const;
     void AdvanceNeeds(float Dt);
     bool MigrateWorldPopulation(struct FHearthWorldImage& Image,FString& Error) const;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> StockMeshes;
@@ -325,7 +330,7 @@ private:
     bool StartLifeAction(int32 Index, int32 Action, const FString& Reason, bool bFromApi);
     void AdvanceLife(int32 Index, float Dt);
     bool BeginConversation(int32 Index,int32 Other,const FString& Reason,bool bFromApi);
-    void AdvanceSocial(float RealDt);
+    void AdvanceSocial(float SimulationDt);
     TArray<int32> AvailableSocialIntents(int32 Index) const;
     bool ResolveSocialTurn(int32 Index,int32 Intent,const FString& Words,const FString& Source);
     void DecideSocialLocally(int32 Index,const FString& Failure=FString());

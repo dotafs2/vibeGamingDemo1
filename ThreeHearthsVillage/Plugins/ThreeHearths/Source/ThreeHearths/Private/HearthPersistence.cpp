@@ -96,6 +96,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         auto* Actor=Residents[I].Actor.Get(); const auto& S=W.People[I]; Residents[I]=S.Person; auto& R=Residents[I];
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
         if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
+        if(R.HouseBlueprint.IsEmpty()) AssignHouseStyle(I,R);
         R.NextLifeDecision=Elapsed+S.DecisionDelay;
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
         if(S.bPending)

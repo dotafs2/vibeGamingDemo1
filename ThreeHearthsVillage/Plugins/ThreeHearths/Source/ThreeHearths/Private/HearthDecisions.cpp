@@ -59,7 +59,23 @@ namespace HearthDecision
         Reason.ReplaceInline(TEXT("\r"),TEXT(" ")); Reason.ReplaceInline(TEXT("\n"),TEXT(" "));
         Plot=static_cast<int32>(Number); return true;
     }
-    bool ParsePlan(FString Text,int32& Plot,FString& Reason) { return ParseChoice(Text,TEXT("plot_id"),9,Plot,Reason); }
+    bool ParsePlan(FString Text,int32& Plot,int32& HouseStyle,FString& Reason)
+    {
+        Text.TrimStartAndEndInline();
+        if(Text.StartsWith(TEXT("```json")) && Text.EndsWith(TEXT("```"))) Text=Text.Mid(7,Text.Len()-10).TrimStartAndEnd();
+        TSharedPtr<FJsonObject> Object;
+        if(Text.Len()>4096 || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Object) || !Object.IsValid() || Object->Values.Num()!=3) return false;
+        double PlotNumber=0,StyleNumber=0;
+        if(!Object->HasTypedField<EJson::Number>(TEXT("plot_id")) || !Object->TryGetNumberField(TEXT("plot_id"),PlotNumber)
+            || !FMath::IsFinite(PlotNumber) || PlotNumber<0 || PlotNumber>9 || PlotNumber!=FMath::FloorToDouble(PlotNumber)) return false;
+        if(!Object->HasTypedField<EJson::Number>(TEXT("house_style_id")) || !Object->TryGetNumberField(TEXT("house_style_id"),StyleNumber)
+            || !FMath::IsFinite(StyleNumber) || StyleNumber<0 || StyleNumber>2 || StyleNumber!=FMath::FloorToDouble(StyleNumber)) return false;
+        if(!Object->HasTypedField<EJson::String>(TEXT("reason")) || !Object->TryGetStringField(TEXT("reason"),Reason)) return false;
+        Reason.TrimStartAndEndInline();
+        if(Reason.IsEmpty() || Reason.Len()>180) return false;
+        Reason.ReplaceInline(TEXT("\r"),TEXT(" ")); Reason.ReplaceInline(TEXT("\n"),TEXT(" "));
+        Plot=static_cast<int32>(PlotNumber); HouseStyle=static_cast<int32>(StyleNumber); return true;
+    }
     bool ParseLifePlan(FString Text,int32& Action,FString& Reason) { return ParseChoice(Text,TEXT("action_id"),10000,Action,Reason); }
 }
 
@@ -188,7 +204,16 @@ void AHearthVillage::RequestDecision(int32 Index)
     }
     if(Plots.IsEmpty()) { DecideLocally(Index); return; }
     Context->SetArrayField(TEXT("available_plots"),Plots);
-    const FString Prompt=TEXT("You make one high-level decision for a villager in a medieval village simulation. Choose exactly one available plot based on the supplied personality, description and wood cost. Return only JSON with exactly plot_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent plots, resources or actions. No tools, code, or explanations outside JSON.");
+    TArray<TSharedPtr<FJsonValue>> Styles;
+    const TCHAR* Blueprints[]={TEXT("cottage_terracotta"),TEXT("longhouse_slateblue"),TEXT("townhouse_terracotta")};
+    const TCHAR* StyleDescriptions[]={TEXT("奶油灰泥墙与暖色陶瓦的小屋"),TEXT("木构墙与蓝灰石板屋顶的长屋"),TEXT("石墙与暖色陶瓦的两层镇屋")};
+    for(int32 Style=0;Style<3;++Style)
+    {
+        auto Item=MakeShared<FJsonObject>(); Item->SetNumberField(TEXT("id"),Style); Item->SetStringField(TEXT("blueprint"),Blueprints[Style]);
+        Item->SetStringField(TEXT("description"),StyleDescriptions[Style]); Styles.Add(MakeShared<FJsonValueObject>(Item));
+    }
+    Context->SetArrayField(TEXT("available_house_styles"),Styles);
+    const FString Prompt=TEXT("You make one high-level decision for a villager in a medieval village simulation. Choose exactly one supplied available plot and one supplied available house style based on the resident's personality, description and wood cost. Return only JSON with exactly plot_id (integer), house_style_id (integer), and reason (brief first-person Chinese, at most 60 Chinese characters). The style controls the real finished house mesh and materials. Do not invent plots, styles, resources or actions. No tools, code, or explanations outside JSON.");
     SendDecisionRequest(Index,Context,Prompt,false);
 }
 
@@ -279,7 +304,7 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         FString Finish; Choice->TryGetStringField(TEXT("finish_reason"),Finish);
         if(Finish!=TEXT("stop") || !Choice->TryGetObjectField(TEXT("message"),Message)) { Reply.Error=TEXT("模型回答未完整生成"); return; }
         FString Content; FString Refusal; (*Message)->TryGetStringField(TEXT("refusal"),Refusal);
-        if(!Refusal.IsEmpty() || !(*Message)->TryGetStringField(TEXT("content"),Content) || !(bLife?HearthDecision::ParseLifePlan(Content,Reply.Choice,Reply.Reason):HearthDecision::ParsePlan(Content,Reply.Choice,Reply.Reason))) { Reply.Error=TEXT("模型选择不符合格式要求"); return; }
+        if(!Refusal.IsEmpty() || !(*Message)->TryGetStringField(TEXT("content"),Content) || !(bLife?HearthDecision::ParseLifePlan(Content,Reply.Choice,Reply.Reason):HearthDecision::ParsePlan(Content,Reply.Choice,Reply.HouseStyle,Reply.Reason))) { Reply.Error=TEXT("模型选择不符合格式要求"); return; }
         V->ApiStatus=TEXT("已收到模型选择，等待执行");
     });
     // Persist the operation ID before a paid request can leave the process. A restart
@@ -335,7 +360,9 @@ void AHearthVillage::ConsumeDecision()
         if(Reply.bLife && Reply.Error.IsEmpty() && !Reply.AllowedActions.Contains(Reply.Choice)) Reply.Error=TEXT("模型返回了未提供的技能或目标");
         // HTTP replies are parallel; world mutations remain ordered on the game thread.
         // Recheck present-day ownership, stock, routes and action availability before committing.
-        if(Reply.Error.IsEmpty() && !(Reply.bLife?StartLifeAction(Index,Reply.Choice,Reply.Reason,true):ReservePlot(Index,Reply.Choice,Reply.Reason,true))) Reply.Error=TEXT("模型选择的目标已不可用");
+        const bool bStarted=Reply.Error.IsEmpty() && (Reply.bLife?StartLifeAction(Index,Reply.Choice,Reply.Reason,true):ReservePlot(Index,Reply.Choice,Reply.Reason,true));
+        if(Reply.Error.IsEmpty() && !bStarted) Reply.Error=TEXT("模型选择的目标已不可用");
+        if(Reply.Error.IsEmpty() && !Reply.bLife && !SetHouseStyle(Reply.HouseStyle,Residents[Index])) Reply.Error=TEXT("模型选择的房屋样式无效");
         if(!Reply.Error.IsEmpty())
         {
             if(DecisionHistory.IsValidIndex(Reply.HistoryIndex)) DecisionHistory[Reply.HistoryIndex].Context+=TEXT("\n模型调用未采用：")+Reply.Error;

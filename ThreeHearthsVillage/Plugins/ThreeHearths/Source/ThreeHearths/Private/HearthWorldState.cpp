@@ -83,6 +83,7 @@ namespace HearthWorld
 #define STR(Field) P->SetStringField(TEXT(#Field),R.Field)
 #define NUM(Field) P->SetNumberField(TEXT(#Field),R.Field)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
+            STR(HouseBlueprint); STR(WallMaterial); STR(RoofMaterial);
             STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
             STR(ConversationId); STR(Speech); NUM(SpeechRemaining);
             FArray Bonds;
@@ -190,6 +191,12 @@ namespace HearthWorld
 #define STR(Field) P.Str(TEXT(#Field),R.Field)
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),R.Field,Min,Max)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
+            if(P.J.IsValid())
+            {
+                P.J->TryGetStringField(TEXT("HouseBlueprint"),R.HouseBlueprint);
+                P.J->TryGetStringField(TEXT("WallMaterial"),R.WallMaterial);
+                P.J->TryGetStringField(TEXT("RoofMaterial"),R.RoofMaterial);
+            }
             if(W.Schema>=2) { STR(Role); NUM(Hunger,0,100); NUM(Mood,0,100); NUM(Age,18,120); P.Bool(TEXT("king"),R.bKing); }
             if(W.Schema>=3)
             {
@@ -280,6 +287,11 @@ namespace HearthWorld
         {
             const auto& Saved=W.People[I]; const auto& R=Saved.Person;
             if(!Unique(R.StableId) || (!R.ActiveTaskId.IsEmpty() && !Unique(R.ActiveTaskId)) || !Guid(Saved.PendingOperation,true) || R.Name.IsEmpty()) return false;
+            const bool NoHouseStyle=R.HouseBlueprint.IsEmpty() && R.WallMaterial.IsEmpty() && R.RoofMaterial.IsEmpty();
+            const bool Cottage=R.HouseBlueprint==TEXT("cottage_terracotta") && R.WallMaterial==TEXT("plaster") && R.RoofMaterial==TEXT("terracotta");
+            const bool Longhouse=R.HouseBlueprint==TEXT("longhouse_slateblue") && R.WallMaterial==TEXT("timber") && R.RoofMaterial==TEXT("slateblue");
+            const bool Townhouse=R.HouseBlueprint==TEXT("townhouse_terracotta") && R.WallMaterial==TEXT("stone") && R.RoofMaterial==TEXT("terracotta");
+            if(!NoHouseStyle && !Cottage && !Longhouse && !Townhouse) return false;
             if(Saved.bPending && (!Guid(Saved.PendingOperation) || (R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing && !(R.Task==EHearthTask::LifeActivity && !R.ConversationId.IsEmpty())))) return false;
             if(R.Plot>=0 && (W.Owners[R.Plot]!=I || R.DeliveredWood>W.Costs[R.Plot])) return false;
             if(R.Task!=EHearthTask::Choosing && (R.Plot<0 || R.ActiveTaskId.IsEmpty())) return false;

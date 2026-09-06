@@ -210,15 +210,15 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
     SendDecisionRequest(Index,Context,Prompt,true,true);
 }
 
-void AHearthVillage::AdvanceSocial(float RealDt)
+void AHearthVillage::AdvanceSocial(float SimulationDt)
 {
-    for(auto& R:Residents) R.SpeechRemaining=FMath::Max(0.f,R.SpeechRemaining-RealDt);
+    for(auto& R:Residents) R.SpeechRemaining=FMath::Max(0.f,R.SpeechRemaining-SimulationDt);
     for(auto& S:Conversations) if(!S.bClosed)
     {
         auto& A=Residents[S.First]; auto& B=Residents[S.Second];
         if(!S.bMet)
         {
-            S.TravelTime+=RealDt;
+            S.TravelTime+=SimulationDt;
             if(A.Task==EHearthTask::LifeActivity && FVector::Dist2D(A.Actor->GetActorLocation(),B.Actor->GetActorLocation())<=300)
             {
                 S.bMet=true; S.TurnDelay=.2f;
@@ -229,7 +229,7 @@ void AHearthVillage::AdvanceSocial(float RealDt)
         }
         const FVector Direction=B.Actor->GetActorLocation()-A.Actor->GetActorLocation();
         A.Actor->SetActorRotation(FRotator(0,Direction.Rotation().Yaw,0)); B.Actor->SetActorRotation(FRotator(0,Direction.Rotation().Yaw+180,0));
-        S.TurnDelay=FMath::Max(0.f,S.TurnDelay-RealDt);
+        S.TurnDelay=FMath::Max(0.f,S.TurnDelay-SimulationDt);
         if(S.TurnDelay<=0 && !IsDecisionPending(S.Speaker)) RequestSocialDecision(S.Speaker);
     }
 }

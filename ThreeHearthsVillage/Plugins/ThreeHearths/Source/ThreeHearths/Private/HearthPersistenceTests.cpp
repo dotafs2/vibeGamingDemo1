@@ -31,7 +31,7 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     auto& Files=FPlatformFileManager::Get().GetPlatformFile(); V->WorldPath=HearthPersistenceTests::TestPath();
     Files.CreateDirectoryTree(*FPaths::GetPath(V->WorldPath)); V->WorldLease=MakeShareable(Files.OpenWrite(*(V->WorldPath+TEXT(".lock")))); V->bWorldPersistenceEnabled=true;
     ON_SCOPE_EXIT { V->WorldLease.Reset(); };
-    const FString Id=V->WorldId, ResidentId=V->Residents[0].StableId;
+    const FString Id=V->WorldId, ResidentId=V->Residents[0].StableId, HouseBlueprint=V->Residents[0].HouseBlueprint;
     TSet<EHearthTask> Resumed;
     const TSet<EHearthTask> Wanted={EHearthTask::ToWood,EHearthTask::Chopping,EHearthTask::ToHome,EHearthTask::Delivering,EHearthTask::Building};
     for(int32 Step=0;Step<16000 && V->CompletedHomes()<3;++Step)
@@ -47,6 +47,7 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
             V->bApiDisabledThisRun=true;
             const auto& After=V->Residents[0];
             TestEqual(TEXT("Same resident across reload"),After.StableId,ResidentId); TestEqual(TEXT("Same task identity"),After.ActiveTaskId,Before.ActiveTaskId);
+            TestEqual(TEXT("Resident house style survives reload"),After.HouseBlueprint,HouseBlueprint);
             TestEqual(TEXT("Exact task phase"),After.Task,Before.Task); TestEqual(TEXT("Same carried materials"),After.CarriedWood,Before.CarriedWood);
             TestEqual(TEXT("Same delivered materials"),After.DeliveredWood,Before.DeliveredWood); TestEqual(TEXT("Inventory and cargo restored together"),V->AvailableWood(),Wood);
             TestEqual(TEXT("Food restored without minted materials"),V->FoodStock,30); TestEqual(TEXT("Timer resumes"),After.Timer,Before.Timer);
@@ -124,6 +125,7 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     Reject(TEXT("Reject invalid source reference"),[](auto& W) { W.People[0].Person.Source=99; });
     Reject(TEXT("Reject invalid cargo phase"),[](auto& W) { W.People[0].Person.CargoType=1; W.People[0].Person.CargoAmount=3; W.Wood[0]-=3; });
     Reject(TEXT("Reject forged task enum"),[](auto& W) { W.People[0].Person.Task=static_cast<EHearthTask>(255); });
+    Reject(TEXT("Reject invalid house material combination"),[](auto& W) { W.People[0].Person.WallMaterial=TEXT("marble"); });
     Reject(TEXT("Reject changed map layout"),[](auto& W) { W.Plots[0].X+=100; });
     Reject(TEXT("Reject invalid history reference"),[](auto& W) { W.People[0].Person.HistoryIndex=1234; });
     TestTrue(TEXT("Save first checkpoint"),V->SaveWorld()); V->Elapsed=42; TestTrue(TEXT("Save next checkpoint with backup"),V->SaveWorld());

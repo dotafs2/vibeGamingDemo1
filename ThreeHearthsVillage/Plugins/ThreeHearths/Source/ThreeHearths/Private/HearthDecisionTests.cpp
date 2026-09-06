@@ -2,7 +2,7 @@
 #include "Misc/AutomationTest.h"
 #include "HearthVillage.h"
 #include "Engine/World.h"
-namespace HearthDecision { bool ParsePlan(FString Text,int32& Plot,FString& Reason); bool ParseLifePlan(FString Text,int32& Action,FString& Reason); }
+namespace HearthDecision { bool ParsePlan(FString Text,int32& Plot,int32& HouseStyle,FString& Reason); bool ParseLifePlan(FString Text,int32& Action,FString& Reason); }
 namespace HearthDecision { bool RequiresBudgetGateway(const FString& Base,const FString& Model); bool ReadBudgetDescriptor(const FString& Text,FString& Token,FString& Ledger); }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthBudgetRoutingTest,"ThreeHearths.Decisions.PersistentBudgetRouting",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
@@ -24,14 +24,15 @@ bool FHearthBudgetRoutingTest::RunTest(const FString&)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthDecisionValidationTest,"ThreeHearths.Decisions.ValidateModelOutput",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthDecisionValidationTest::RunTest(const FString&)
 {
-    int32 Plot=-1; FString Reason;
-    TestTrue(TEXT("Accept valid Chinese model decision"),HearthDecision::ParsePlan(TEXT("{\"plot_id\":2,\"reason\":\"我想节省木材。\"}"),Plot,Reason));
+    int32 Plot=-1,HouseStyle=-1; FString Reason;
+    TestTrue(TEXT("Accept valid Chinese model decision"),HearthDecision::ParsePlan(TEXT("{\"plot_id\":2,\"house_style_id\":1,\"reason\":\"我想节省木材。\"}"),Plot,HouseStyle,Reason));
     TestEqual(TEXT("Preserve chosen plot"),Plot,2);
+    TestEqual(TEXT("Preserve chosen house style"),HouseStyle,1);
     TestEqual(TEXT("Preserve returned motivation"),Reason,FString(TEXT("我想节省木材。")));
-    TestTrue(TEXT("Tolerate JSON code fences"),HearthDecision::ParsePlan(TEXT("```json\n{\"plot_id\":0,\"reason\":\"树林安静\"}\n```"),Plot,Reason));
-    const TArray<FString> Invalid={TEXT("not json"),TEXT("[]"),TEXT("{\"plot_id\":-1,\"reason\":\"x\"}"),TEXT("{\"plot_id\":10,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0.5,\"reason\":\"x\"}"),TEXT("{\"plot_id\":\"0\",\"reason\":\"x\"}"),TEXT("{\"plot_id\":true,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"reason\":\" \"}"),TEXT("{\"plot_id\":0,\"reason\":4}"),TEXT("{\"plot_id\":0}"),TEXT("{\"plot_id\":0,\"reason\":\"x\",\"wood\":999}")};
-    for(int32 I=0;I<Invalid.Num();++I) TestFalse(FString::Printf(TEXT("Reject malformed or invented action %d"),I),HearthDecision::ParsePlan(Invalid[I],Plot,Reason));
-    TestFalse(TEXT("Reject oversized rationale"),HearthDecision::ParsePlan(TEXT("{\"plot_id\":0,\"reason\":\"")+FString::ChrN(181,TEXT('x'))+TEXT("\"}"),Plot,Reason));
+    TestTrue(TEXT("Tolerate JSON code fences"),HearthDecision::ParsePlan(TEXT("```json\n{\"plot_id\":0,\"house_style_id\":2,\"reason\":\"树林安静\"}\n```"),Plot,HouseStyle,Reason));
+    const TArray<FString> Invalid={TEXT("not json"),TEXT("[]"),TEXT("{\"plot_id\":-1,\"house_style_id\":0,\"reason\":\"x\"}"),TEXT("{\"plot_id\":10,\"house_style_id\":0,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0.5,\"house_style_id\":0,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"house_style_id\":3,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"house_style_id\":\"1\",\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"house_style_id\":1,\"reason\":\" \"}"),TEXT("{\"plot_id\":0,\"house_style_id\":1,\"reason\":4}"),TEXT("{\"plot_id\":0,\"reason\":\"x\"}"),TEXT("{\"plot_id\":0,\"house_style_id\":1,\"reason\":\"x\",\"wood\":999}")};
+    for(int32 I=0;I<Invalid.Num();++I) TestFalse(FString::Printf(TEXT("Reject malformed or invented action %d"),I),HearthDecision::ParsePlan(Invalid[I],Plot,HouseStyle,Reason));
+    TestFalse(TEXT("Reject oversized rationale"),HearthDecision::ParsePlan(TEXT("{\"plot_id\":0,\"house_style_id\":1,\"reason\":\"")+FString::ChrN(181,TEXT('x'))+TEXT("\"}"),Plot,HouseStyle,Reason));
     TestTrue(TEXT("Accept valid life choice"),HearthDecision::ParseLifePlan(TEXT("{\"action_id\":5,\"reason\":\"我去拜访伯恩。\"}"),Plot,Reason));
     TestEqual(TEXT("Preserve life target"),Plot,5);
     TestFalse(TEXT("Do not interpret home plan as life plan"),HearthDecision::ParseLifePlan(TEXT("{\"plot_id\":0,\"reason\":\"休息\"}"),Plot,Reason));
@@ -84,10 +85,12 @@ bool FHearthDecisionSimulationClockTest::RunTest(const FString&)
     if(!TestNotNull(TEXT("Create timing village"),Village)) { World->DestroyWorld(false); return false; }
     Village->Residents.SetNum(1);
     Village->Residents[0].Task=EHearthTask::LifeChoosing;
+    Village->Residents[0].SpeechRemaining=4.5f;
     Village->bAutonomousLifeEnabled=false;
     Village->SimulationSpeed=3.f;
     Village->Tick(.2f);
     TestTrue(TEXT("Three-times speed advances the simulation clock three times faster"),FMath::IsNearlyEqual(Village->Elapsed,.6f,.001f));
+    TestTrue(TEXT("Social turn timing follows the same simulation clock"),FMath::IsNearlyEqual(Village->Residents[0].SpeechRemaining,3.9f,.001f));
     Village->bSimulationPaused=true;
     Village->Tick(.2f);
     TestTrue(TEXT("Pause freezes the simulation clock"),FMath::IsNearlyEqual(Village->Elapsed,.6f,.001f));
