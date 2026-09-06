@@ -84,6 +84,7 @@ namespace HearthWorld
 #define NUM(Field) P->SetNumberField(TEXT(#Field),R.Field)
             STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             STR(HouseBlueprint); STR(WallMaterial); STR(RoofMaterial);
+            STR(HeldToolId); STR(HeldToolOperationId);
             STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
             STR(ConversationId); STR(Speech); NUM(SpeechRemaining);
             FArray Bonds;
@@ -196,6 +197,8 @@ namespace HearthWorld
                 P.J->TryGetStringField(TEXT("HouseBlueprint"),R.HouseBlueprint);
                 P.J->TryGetStringField(TEXT("WallMaterial"),R.WallMaterial);
                 P.J->TryGetStringField(TEXT("RoofMaterial"),R.RoofMaterial);
+                P.J->TryGetStringField(TEXT("HeldToolId"),R.HeldToolId);
+                P.J->TryGetStringField(TEXT("HeldToolOperationId"),R.HeldToolOperationId);
             }
             if(W.Schema>=2) { STR(Role); NUM(Hunger,0,100); NUM(Mood,0,100); NUM(Age,18,120); P.Bool(TEXT("king"),R.bKing); }
             if(W.Schema>=3)
@@ -279,6 +282,7 @@ namespace HearthWorld
         if(!C.Good || W.People.Num()!=W.PlotCount || !Guid(W.Id) || !Guid(W.Run)) return false;
         Error=TEXT("世界存档引用、任务或资源守恒校验失败");
         TSet<FString> Ids;
+        TSet<FString> HeldTools;
         auto Unique=[&Ids](const FString& Id) { if(!Guid(Id) || Ids.Contains(Id)) return false; Ids.Add(Id); return true; };
         if(!Unique(W.Id)) return false;
         for(int32 I=0;I<W.PlotCount;++I) if(!Unique(W.PlotIds[I])) return false;
@@ -292,6 +296,11 @@ namespace HearthWorld
             const bool Longhouse=R.HouseBlueprint==TEXT("longhouse_slateblue") && R.WallMaterial==TEXT("timber") && R.RoofMaterial==TEXT("slateblue");
             const bool Townhouse=R.HouseBlueprint==TEXT("townhouse_terracotta") && R.WallMaterial==TEXT("stone") && R.RoofMaterial==TEXT("terracotta");
             if(!NoHouseStyle && !Cottage && !Longhouse && !Townhouse) return false;
+            const TSet<FString> KnownTools={TEXT("tool_hammer"),TEXT("tool_mallet"),TEXT("tool_axe"),TEXT("tool_saw"),TEXT("tool_pickaxe"),TEXT("tool_shovel"),TEXT("tool_hoe"),TEXT("tool_trowel")};
+            if(!R.HeldToolId.IsEmpty() && (!KnownTools.Contains(R.HeldToolId) || HeldTools.Contains(R.HeldToolId) || R.HeldToolOperationId!=R.ActiveTaskId
+                || (R.Task!=EHearthTask::ProductionTravel && R.Task!=EHearthTask::ProductionWork))) return false;
+            if(R.HeldToolId.IsEmpty()!=R.HeldToolOperationId.IsEmpty()) return false;
+            if(!R.HeldToolId.IsEmpty()) HeldTools.Add(R.HeldToolId);
             if(Saved.bPending && (!Guid(Saved.PendingOperation) || (R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing && !(R.Task==EHearthTask::LifeActivity && !R.ConversationId.IsEmpty())))) return false;
             if(R.Plot>=0 && (W.Owners[R.Plot]!=I || R.DeliveredWood>W.Costs[R.Plot])) return false;
             if(R.Task!=EHearthTask::Choosing && (R.Plot<0 || R.ActiveTaskId.IsEmpty())) return false;

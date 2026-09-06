@@ -132,6 +132,8 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) FString HouseBlueprint;
     UPROPERTY(BlueprintReadOnly) FString WallMaterial;
     UPROPERTY(BlueprintReadOnly) FString RoofMaterial;
+    UPROPERTY(BlueprintReadOnly) FString HeldToolId;
+    UPROPERTY(BlueprintReadOnly) FString HeldToolOperationId;
     UPROPERTY(BlueprintReadOnly) EHearthTask Task = EHearthTask::Choosing;
     UPROPERTY(BlueprintReadOnly) int32 Plot = -1;
     UPROPERTY(BlueprintReadOnly) int32 CarriedWood = 0;
@@ -233,6 +235,7 @@ private:
     friend class FHearthParallelCapacityTest;
     friend class FHearthWorldPersistenceTest;
     friend class FHearthWorldRecoveryTest;
+    friend class FHearthToolOwnershipTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
     FString WorldPath;
@@ -268,6 +271,9 @@ private:
     FString ProductionActionName(int32 Action) const;
     int32 ChooseProductionLocally(int32 Index) const;
     bool StartProduction(int32 Index,int32 Action,const FString& Reason,bool bFromApi);
+    bool TryBorrowTool(int32 Index,int32 Operation);
+    void ReturnTool(int32 Index);
+    bool ToolAvailableFor(int32 Index,int32 Operation) const;
     void FinishProduction(int32 Index,const FString& Result);
     void AppendProductionContext(const TSharedRef<FJsonObject>& Context) const;
     bool IsLand(const FVector& Position) const;

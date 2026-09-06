@@ -13,6 +13,16 @@ namespace HearthProduction
     const TCHAR* KindNames[]={TEXT("未开发空地"),TEXT("已开垦土地"),TEXT("玉米田"),TEXT("小麦田"),TEXT("生菜田"),TEXT("南瓜田"),TEXT("住宅"),TEXT("树木"),TEXT("浆果灌木"),TEXT("石矿")};
     const TCHAR* KindKeys[]={TEXT("empty"),TEXT("land"),TEXT("corn"),TEXT("wheat"),TEXT("lettuce"),TEXT("pumpkin"),TEXT("house"),TEXT("tree"),TEXT("shrub"),TEXT("stone")};
     const TCHAR* OpKeys[]={TEXT("claim_land"),TEXT("build_corn"),TEXT("build_wheat"),TEXT("build_lettuce"),TEXT("build_pumpkin"),TEXT("build_house"),TEXT("plant_tree"),TEXT("plant_shrub"),TEXT("sow"),TEXT("harvest"),TEXT("chop"),TEXT("quarry"),TEXT("gather")};
+    const TCHAR* ToolForOp(int32 Op)
+    {
+        if(Op==10) return TEXT("tool_axe");
+        if(Op==11) return TEXT("tool_pickaxe");
+        if(Op==5) return TEXT("tool_hammer");
+        if(Op==0 || Op==6) return TEXT("tool_shovel");
+        if(Op==7 || Op==12) return TEXT("tool_trowel");
+        if((Op>=1 && Op<=4) || Op==8 || Op==9) return TEXT("tool_hoe");
+        return TEXT("");
+    }
     const TCHAR* ResourceNames[]={TEXT("食物"),TEXT("木材"),TEXT("石材")};
     bool IsCrop(EHearthSiteKind K) { return K>=EHearthSiteKind::Corn && K<=EHearthSiteKind::Pumpkin; }
     int32 Action(int32 Site,int32 Op) { return 100+Site*16+Op; }
@@ -89,6 +99,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     const auto& S=ProductionSites[Site]; if(!S.bReachable || S.ReservedBy>=0) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
+    if(!ToolAvailableFor(Index,Op)) return false;
     if(Op==0) return S.Kind==EHearthSiteKind::Empty;
     if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land;
     if(Op==8) return HearthProduction::IsCrop(S.Kind) && S.Stage==0;
@@ -97,6 +108,30 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     if(Op==11) return S.Kind==EHearthSiteKind::Stone && S.Units>0;
     if(Op==12) return S.Kind==EHearthSiteKind::Shrub && S.Stage==2 && S.Units>0;
     return false;
+}
+
+bool AHearthVillage::ToolAvailableFor(int32 Index,int32 Operation) const
+{
+    const FString Tool=HearthProduction::ToolForOp(Operation);
+    if(Tool.IsEmpty()) return true;
+    for(int32 I=0;I<Residents.Num();++I) if(I!=Index && Residents[I].HeldToolId==Tool) return false;
+    return true;
+}
+
+bool AHearthVillage::TryBorrowTool(int32 Index,int32 Operation)
+{
+    if(!Residents.IsValidIndex(Index) || !ToolAvailableFor(Index,Operation)) return false;
+    auto& R=Residents[Index]; const FString Tool=HearthProduction::ToolForOp(Operation);
+    if(Tool.IsEmpty()) return true;
+    if(!R.HeldToolId.IsEmpty() && R.HeldToolId!=Tool) return false;
+    R.HeldToolId=Tool; R.HeldToolOperationId=R.ActiveTaskId;
+    return true;
+}
+
+void AHearthVillage::ReturnTool(int32 Index)
+{
+    if(!Residents.IsValidIndex(Index)) return;
+    Residents[Index].HeldToolId.Empty(); Residents[Index].HeldToolOperationId.Empty();
 }
 
 TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
@@ -160,11 +195,12 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     auto& R=Residents[Index]; auto& S=ProductionSites[Site];
     if(!DecisionHistory.IsValidIndex(R.HistoryIndex) || DecisionHistory[R.HistoryIndex].Status!=TEXT("thinking")) StartHistory(Index,true,bFromApi?TEXT("api"):TEXT("local"));
     const FString Label=ProductionActionName(Action);
+    R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    if(!TryBorrowTool(Index,Op)) { R.ActiveTaskId.Empty(); return false; }
     int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
     FoodStock-=F; StoneStock-=T; Spent[0]+=F; Spent[1]+=W; Spent[2]+=T;
     for(int32 I=0;I<3 && W>0;++I) { const int32 Used=FMath::Min(W,WoodStock[I]); WoodStock[I]-=Used; W-=Used; }
     S.ReservedBy=Index; S.Progress=0;
-    R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     R.ProductionSite=Site; R.ProductionOp=Op; R.CargoAmount=0; R.CargoType=-1;
     R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
     R.Route=MoveTemp(Route); R.Task=EHearthTask::ProductionTravel; R.LatestEvent=Label;
@@ -191,6 +227,13 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
 {
     auto& R=Residents[Index]; if(!ProductionSites.IsValidIndex(R.ProductionSite)) return;
     auto& S=ProductionSites[R.ProductionSite]; const int32 Op=R.ProductionOp;
+    if((R.Task==EHearthTask::ProductionTravel || R.Task==EHearthTask::ProductionWork) &&
+       R.HeldToolId.IsEmpty() && !TryBorrowTool(Index,Op))
+    {
+        R.Timer+=Dt;
+        R.LatestEvent=TEXT("所需工具正在由邻居使用，保留工地并等待归还。");
+        return;
+    }
     if(R.Task==EHearthTask::ProductionTravel)
     {
         if(MoveResident(Index,Dt)) { R.Task=EHearthTask::ProductionWork; R.Timer=R.WorkDuration; }
@@ -229,6 +272,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
             if(S.Kind==EHearthSiteKind::Tree || S.Kind==EHearthSiteKind::Shrub) S.Growth=S.GrowDuration;
         }
         R.Route=MoveTemp(Home); R.Task=EHearthTask::ProductionDeliver;
+        ReturnTool(Index);
         R.MoveRetry=0; R.bMovementBlocked=false;
         R.LatestEvent=FString::Printf(TEXT("携带 %d 份%s回村镇中心，尚未入库。"),R.CargoAmount,HearthProduction::ResourceNames[R.CargoType]);
         auto& H=DecisionHistory[R.HistoryIndex]; H.Result=R.LatestEvent; ++HistoryRevision; SaveHistory(); return;
@@ -254,7 +298,7 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
     S.ReservedBy=-1; S.Progress=1.f; R.Energy=FMath::Max(0.f,R.Energy-8.f);
     ProductionTotals.FindOrAdd(HearthProduction::OpKeys[R.ProductionOp])++;
     const FString Outcome=Result+FString::Printf(TEXT(" 当前库存：食物 %d、木材 %d、石材 %d。"),FoodStock,AvailableWood(),StoneStock);
-    R.LatestEvent=Outcome; CompleteHistory(Index,Outcome); R.Task=EHearthTask::LifeChoosing;
+    R.LatestEvent=Outcome; CompleteHistory(Index,Outcome); ReturnTool(Index); R.Task=EHearthTask::LifeChoosing;
     R.ProductionSite=-1; R.ProductionOp=-1; VillageEvent=R.Name+TEXT("：")+Result;
 }
 

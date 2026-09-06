@@ -79,17 +79,22 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     // enter StartProduction a second time and therefore must not debit again.
     R.Task=EHearthTask::ProductionTravel; R.ProductionSite=0; R.ProductionOp=7; R.WorkDuration=25;
     R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); R.Route={R.Actor->GetActorLocation()};
+    TestTrue(TEXT("Borrow one shared trowel for the operation"),V->TryBorrowTool(0,7));
+    const FString BorrowedToolOperation=R.HeldToolOperationId;
     V->ProductionSites[0].Kind=EHearthSiteKind::Land; V->ProductionSites[0].Units=0; V->ProductionSites[0].Stage=0; V->ProductionSites[0].ReservedBy=0;
     V->FoodStock-=5; V->Spent[0]+=5; V->Spent[1]+=2;
     for(int32 I=0;I<3;++I) if(V->WoodStock[I]>=2) { V->WoodStock[I]-=2; break; }
     TestTrue(TEXT("Checkpoint prepaid travel"),V->SaveWorld()); V->AdvanceSimulation(.05f);
     TestTrue(TEXT("Restore prepaid travel"),V->LoadWorld()); V->AdvanceSimulation(.05f);
+    TestEqual(TEXT("Borrowed tool survives restart"),V->Residents[0].HeldToolId,FString(TEXT("tool_trowel")));
+    TestEqual(TEXT("Tool remains tied to the same operation"),V->Residents[0].HeldToolOperationId,BorrowedToolOperation);
     TestEqual(TEXT("Travel resumes into work"),V->Residents[0].Task,EHearthTask::ProductionWork);
     V->AdvanceSimulation(12.f); TestTrue(TEXT("Checkpoint partial production work"),V->SaveWorld());
     V->AdvanceSimulation(14.f); TestTrue(TEXT("Restore partial work"),V->LoadWorld()); V->AdvanceSimulation(14.f); V->AdvanceProduction(0,1.f);
     TestEqual(TEXT("Production material food debit is not repeated"),V->FoodStock,31);
     TestEqual(TEXT("Production material wood debit is not repeated"),V->AvailableWood(),7);
     TestEqual(TEXT("Only one planting completion after restore"),V->ProductionTotals.FindRef(TEXT("plant_shrub")),1);
+    TestTrue(TEXT("Completed work returns the tool to shared storage"),V->Residents[0].HeldToolId.IsEmpty());
     TestEqual(TEXT("Site conversion resumes"),V->ProductionSites[0].Kind,EHearthSiteKind::Shrub);
     TestTrue(TEXT("Growing site checkpoint"),V->SaveWorld()); V->AdvanceSimulation(20.f); TestTrue(TEXT("Restore growth countdown"),V->LoadWorld());
     TestEqual(TEXT("World growth resumes without another harvest"),V->ProductionSites[0].Growth,120.f);
@@ -126,6 +131,9 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     Reject(TEXT("Reject invalid cargo phase"),[](auto& W) { W.People[0].Person.CargoType=1; W.People[0].Person.CargoAmount=3; W.Wood[0]-=3; });
     Reject(TEXT("Reject forged task enum"),[](auto& W) { W.People[0].Person.Task=static_cast<EHearthTask>(255); });
     Reject(TEXT("Reject invalid house material combination"),[](auto& W) { W.People[0].Person.WallMaterial=TEXT("marble"); });
+    Reject(TEXT("Reject duplicated physical tool holder"),[](auto& W) {
+        for(int32 I=0;I<2;++I) { auto& R=W.People[I].Person; R.Task=EHearthTask::ProductionWork; R.ProductionSite=0; R.ProductionOp=9; R.HeldToolId=TEXT("tool_hoe"); R.HeldToolOperationId=R.ActiveTaskId; }
+    });
     Reject(TEXT("Reject changed map layout"),[](auto& W) { W.Plots[0].X+=100; });
     Reject(TEXT("Reject invalid history reference"),[](auto& W) { W.People[0].Person.HistoryIndex=1234; });
     TestTrue(TEXT("Save first checkpoint"),V->SaveWorld()); V->Elapsed=42; TestTrue(TEXT("Save next checkpoint with backup"),V->SaveWorld());

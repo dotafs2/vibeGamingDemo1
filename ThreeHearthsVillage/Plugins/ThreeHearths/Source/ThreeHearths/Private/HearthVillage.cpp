@@ -108,7 +108,7 @@ void AHearthVillager::ConfigureAppearance(int32 Profile)
     // The old profession instances belong to M_Hat, not the skin/body slot.
     if(Mesh->GetMaterials().Num()>0) Body->SetMaterial(0,Mesh->GetMaterials()[0].MaterialInterface);
     const auto& Ref=Mesh->GetRefSkeleton();
-    auto Add=[&](const TCHAR* Id,const TCHAR* Bone,const TCHAR* Kit=TEXT("ResidentKit"),FVector Offset=FVector::ZeroVector,float Scale=1.f)
+    auto Add=[&](const TCHAR* Id,const TCHAR* Bone,const TCHAR* Kit=TEXT("ResidentKit"),FVector Offset=FVector(0,0,0),float Scale=1.f)
     {
         const int32 BoneIndex=Ref.FindBoneIndex(FName(Bone)); if(BoneIndex==INDEX_NONE) return;
         const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/%s/%s/%s"),Kit,Id,Id);
@@ -161,18 +161,13 @@ void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
 
 void AHearthVillager::UpdateTool(EHearthTask Task,int32 WorkKind)
 {
-    FString Id; FVector Grip;
-    if(Task==EHearthTask::Chopping) { Id=TEXT("tool_axe"); Grip=FVector(-7.925f,0,12.5f); }
-    else if(Task==EHearthTask::Building) { Id=TEXT("tool_hammer"); Grip=FVector(1.8f,.1f,11.5f); }
-    else if(Task==EHearthTask::ProductionWork)
-    {
-        if(WorkKind==10) { Id=TEXT("tool_axe"); Grip=FVector(-7.925f,0,12.5f); }
-        else if(WorkKind==11) { Id=TEXT("tool_pickaxe"); Grip=FVector(1.347f,0,12.5f); }
-        else if(WorkKind==5) { Id=TEXT("tool_hammer"); Grip=FVector(1.8f,.1f,11.5f); }
-        else if(WorkKind==0 || WorkKind==6) { Id=TEXT("tool_shovel"); Grip=FVector(0,.3f,13.5f); }
-        else if(WorkKind==7 || WorkKind==12) { Id=TEXT("tool_trowel"); Grip=FVector(-.868f,.2f,9.8f); }
-        else if((WorkKind>=1 && WorkKind<=4) || WorkKind==8 || WorkKind==9) { Id=TEXT("tool_hoe"); Grip=FVector(0,0,13.5f); }
-    }
+    const FString Id=(Task==EHearthTask::ProductionWork)?EquippedToolId:FString(); FVector Grip;
+    if(Id==TEXT("tool_axe")) Grip=FVector(-7.925f,0,12.5f);
+    else if(Id==TEXT("tool_pickaxe")) Grip=FVector(1.347f,0,12.5f);
+    else if(Id==TEXT("tool_hammer")) Grip=FVector(1.8f,.1f,11.5f);
+    else if(Id==TEXT("tool_shovel")) Grip=FVector(0,.3f,13.5f);
+    else if(Id==TEXT("tool_trowel")) Grip=FVector(-.868f,.2f,9.8f);
+    else if(Id==TEXT("tool_hoe")) Grip=FVector(0,0,13.5f);
     if(Id.IsEmpty())
     {
         EquippedToolId.Empty(); Tool->SetVisibility(false); return;
@@ -586,6 +581,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
     {
         const float MotionRate=!R.ConversationId.IsEmpty() && R.Task==EHearthTask::LifeActivity?1.f:SimulationSpeed;
         const EHearthTask Motion=R.Task==EHearthTask::LifeChoosing && !R.Route.IsEmpty()?EHearthTask::LifeTravel:R.Task;
+        R.Actor->EquippedToolId=R.HeldToolId;
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
         R.Actor->Bundle->SetVisibility(R.CarriedWood>0 || R.CargoAmount>0);
         if(auto* Material=Cast<UMaterialInstanceDynamic>(R.Actor->Bundle->GetMaterial(0)))
@@ -789,6 +785,7 @@ FString AHearthVillage::GetSnapshot() const
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
         J->SetStringField(TEXT("house_blueprint"),R.HouseBlueprint); J->SetStringField(TEXT("wall_material"),R.WallMaterial); J->SetStringField(TEXT("roof_material"),R.RoofMaterial);
         J->SetStringField(TEXT("equipped_tool"),IsValid(R.Actor)?R.Actor->EquippedToolId:FString());
+        J->SetStringField(TEXT("held_tool"),R.HeldToolId); J->SetStringField(TEXT("held_tool_operation"),R.HeldToolOperationId);
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);
         J->SetNumberField(TEXT("carried"),R.CarriedWood); J->SetNumberField(TEXT("delivered"),R.DeliveredWood);
         J->SetNumberField(TEXT("cost"),CostFor(I)); J->SetNumberField(TEXT("build_progress"),R.BuildProgress);
@@ -806,6 +803,17 @@ FString AHearthVillage::GetSnapshot() const
         if(R.Plot>=0) { if(Reserved.Contains(R.Plot)) bUnique=false; Reserved.Add(R.Plot); }
     }
     Root->SetArrayField(TEXT("residents"),People);
+    TArray<TSharedPtr<FJsonValue>> Tools;
+    const TCHAR* ToolIds[]={TEXT("tool_hammer"),TEXT("tool_mallet"),TEXT("tool_axe"),TEXT("tool_saw"),TEXT("tool_pickaxe"),TEXT("tool_shovel"),TEXT("tool_hoe"),TEXT("tool_trowel")};
+    for(const TCHAR* ToolId:ToolIds)
+    {
+        int32 Holder=-1; FString Operation;
+        for(int32 I=0;I<Residents.Num();++I) if(Residents[I].HeldToolId==ToolId) { Holder=I; Operation=Residents[I].HeldToolOperationId; break; }
+        auto Tool=MakeShared<FJsonObject>(); Tool->SetStringField(TEXT("id"),ToolId); Tool->SetNumberField(TEXT("holder"),Holder);
+        Tool->SetStringField(TEXT("operation_id"),Operation); Tool->SetStringField(TEXT("location"),Holder<0?TEXT("shared_tool_store"):TEXT("resident"));
+        Tools.Add(MakeShared<FJsonValueObject>(Tool));
+    }
+    Root->SetArrayField(TEXT("tool_inventory"),Tools);
     Root->SetNumberField(TEXT("accounted_wood"),AccountedWood);
     Root->SetBoolField(TEXT("unique_plot_owners"),bUnique);
     FString Out; auto Writer=TJsonWriterFactory<>::Create(&Out); FJsonSerializer::Serialize(Root,Writer); return Out;

@@ -116,16 +116,42 @@ bool FHearthToolTaskBindingTest::RunTest(const FString&)
     auto* Resident=World->SpawnActor<AHearthVillager>();
     if(!TestNotNull(TEXT("Create resident"),Resident)) { World->DestroyWorld(false); return false; }
     auto* ReusableTool=Resident->Tool.Get();
-    Resident->SetMotion(EHearthTask::ProductionWork,1.f,11);
+    Resident->EquippedToolId=TEXT("tool_pickaxe"); Resident->SetMotion(EHearthTask::ProductionWork,1.f,11);
     TestEqual(TEXT("Mining equips one pickaxe component"),Resident->EquippedToolId,FString(TEXT("tool_pickaxe")));
     TestTrue(TEXT("Equipped tool is visible"),Resident->Tool->IsVisible());
     TestEqual(TEXT("Tool remains attached to right hand"),Resident->Tool->GetAttachSocketName(),FName(TEXT("hand_r")));
     Resident->SetMotion(EHearthTask::ProductionTravel,1.f,11);
     TestTrue(TEXT("Travel removes the work tool"),Resident->EquippedToolId.IsEmpty());
     TestFalse(TEXT("Travel hides the reusable component"),Resident->Tool->IsVisible());
-    Resident->SetMotion(EHearthTask::Building,1.f);
-    TestEqual(TEXT("House construction equips a hammer"),Resident->EquippedToolId,FString(TEXT("tool_hammer")));
+    Resident->EquippedToolId=TEXT("tool_hammer"); Resident->SetMotion(EHearthTask::ProductionWork,1.f,5);
+    TestEqual(TEXT("Production construction equips its borrowed hammer"),Resident->EquippedToolId,FString(TEXT("tool_hammer")));
     TestTrue(TEXT("Task changes reuse the same tool component"),Resident->Tool.Get()==ReusableTool);
+    World->DestroyWorld(false); return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthToolOwnershipTest,"ThreeHearths.Residents.ExclusiveToolOwnership",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthToolOwnershipTest::RunTest(const FString&)
+{
+    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+    UWorld* World=UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
+    if(!TestNotNull(TEXT("Create isolated ownership world"),World)) return false;
+    auto* Village=World->SpawnActor<AHearthVillage>(); Village->Residents.SetNum(2);
+    for(int32 I=0;I<2;++I) Village->Residents[I].ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    TestTrue(TEXT("First resident borrows the single shared hoe"),Village->TryBorrowTool(0,9));
+    TestFalse(TEXT("Second resident cannot hold the same physical hoe"),Village->TryBorrowTool(1,9));
+    Village->ProductionSites.SetNum(1);
+    Village->Residents[1].ProductionSite=0;
+    Village->Residents[1].ProductionOp=9;
+    Village->Residents[1].Task=EHearthTask::ProductionWork;
+    Village->Residents[1].Timer=4.5f;
+    Village->Residents[1].WorkDuration=10.f;
+    Village->AdvanceProduction(1,0.5f);
+    TestEqual(TEXT("A restored work task waits instead of progressing without its tool"),Village->Residents[1].Timer,5.f);
+    TestTrue(TEXT("Waiting resident records the shared-tool reason"),Village->Residents[1].LatestEvent.Contains(TEXT("等待归还")));
+    Village->ReturnTool(0);
+    Village->AdvanceProduction(1,0.5f);
+    TestEqual(TEXT("Neighbor automatically borrows it after return"),Village->Residents[1].HeldToolId,FString(TEXT("tool_hoe")));
+    TestTrue(TEXT("Previous holder stays empty"),Village->Residents[0].HeldToolId.IsEmpty());
     World->DestroyWorld(false); return true;
 }
 #endif

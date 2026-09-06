@@ -97,6 +97,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
         if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
         if(R.HouseBlueprint.IsEmpty()) AssignHouseStyle(I,R);
+        if((R.Task==EHearthTask::ProductionTravel || R.Task==EHearthTask::ProductionWork) && R.HeldToolId.IsEmpty()) TryBorrowTool(I,R.ProductionOp);
         R.NextLifeDecision=Elapsed+S.DecisionDelay;
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
         if(S.bPending)

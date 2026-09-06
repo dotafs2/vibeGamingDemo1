@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "engine": "5.8.1",
+  "scope": "single-instance shared tool borrow, work reservation, return, neighbor re-borrow, and persistence",
+  "catalog_source": "ToolKit contains one persistent physical identity for each of eight tool ids",
+  "runtime_timeline": [
+    {"sim_time": 1735.9, "tool": "tool_hoe", "holder": 1, "state": "borrowed for operation 8B09DCAC-4B9B-165C-AE5E-90B93AC858B8"},
+    {"sim_time": 1739.0, "tool": "tool_hoe", "holder": 4, "state": "previous work returned it; neighbor borrowed it for operation 26653D01-42D9-B0A1-93BD-E499F7216CE5"},
+    {"sim_time": 1751.0, "tool": "tool_trowel", "holder": 0, "state": "holder 3 returned it; resident 0 borrowed it for a new stable operation"},
+    {"sim_time": 1752.0, "tool": "tool_hoe", "holder": -1, "state": "returned to shared_tool_store"}
+  ],
+  "invariants": [
+    "one holder per physical tool id",
+    "held tool is tied to the resident active task id",
+    "materials are not debited until tool acquisition succeeds",
+    "old in-progress saves borrow available tools once and competing work waits",
+    "completed work clears holder and operation together",
+    "snapshot exposes all eight tools including shared store locations"
+  ],
+  "automation": {
+    "log": "Saved/Logs/ThreeHearthsAutomation10.log",
+    "passed": 13,
+    "failed": 0,
+    "restored_work_without_tool": "timer frozen while occupied; automatic borrow after return"
+  }
+}
