@@ -1,8 +1,10 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "HearthWorldState.h"
+#include "Dom/JsonObject.h"
 #include "Engine/World.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/ScopeExit.h"
+#include "Serialization/JsonSerializer.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthProjectFinanceTest,"ThreeHearths.Economy.ProtectedProjectFundsAndAtomicIncome",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthProjectFinanceTest::RunTest(const FString&)
@@ -58,6 +60,66 @@ bool FHearthProjectFinanceTest::RunTest(const FString&)
     const FHearthTaxAssessment CompletedAssessment=V->TaxAssessments.Last();
     V->CommitIncomeTax(CompletedAssessment);
     TestEqual(TEXT("Replayed tax assessment leaves all state unchanged"),V->ExportWorldState(),BeforeDuplicateTax);
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPrivateHouseFinanceTest,"ThreeHearths.Economy.PrivateHouseWageEscrow",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthPrivateHouseFinanceTest::RunTest(const FString&)
+{
+    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+    auto* World=UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
+    if(!TestNotNull(TEXT("Private finance world"),World)) return false;
+    ON_SCOPE_EXIT { World->DestroyWorld(false); };
+    auto* V=World->SpawnActor<AHearthVillage>(); V->BuildEnvironment(); V->ResetVillageState(); V->bApiDisabledThisRun=true;
+    auto Id=[] { return FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); };
+    FString Error; FHearthWorldImage Image;
+    // Exhaust general funds through real, assessed wages. Protected tax cash remains.
+    while(V->GeneralFunds()>=2)
+    {
+        const int32 Amount=V->GeneralFunds()==2?2:3; const FString Task=Id();
+        if(!V->ReserveWage(2,Task,Amount) || !V->SettleWage(2,Task)) return false;
+    }
+    TestEqual(TEXT("Fixture spends all general funds without inventing coins"),V->GeneralFunds(),0);
+    const int32 Treasury=V->TreasuryCoins,TaxFund=V->TaxProjectCoins,Owner=V->Residents[0].Coins,Worker=V->Residents[1].Coins;
+    TestFalse(TEXT("Public wage refuses empty general fund"),V->ReserveWage(1,Id(),2));
+    TestFalse(TEXT("Private funding cannot also claim tax money"),V->ReserveWage(1,Id(),2,true,0));
+    TestFalse(TEXT("Private funding rejects an unknown owner"),V->ReserveWage(1,Id(),2,false,99));
+    const FString Cancelled=Id();
+    TestTrue(TEXT("House owner funds neighbor's component even with empty general fund"),V->ReserveWage(1,Cancelled,2,false,0));
+    TestEqual(TEXT("Escrow removes real owner coins"),V->Residents[0].Coins,Owner-2);
+    TestEqual(TEXT("Escrow leaves worker unpaid"),V->Residents[1].Coins,Worker);
+    TestEqual(TEXT("Private escrow leaves protected treasury untouched"),V->TreasuryCoins,Treasury);
+    if(!TestTrue(TEXT("Private escrow and exact funder survive schema9 reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+    TestTrue(TEXT("Cancelling after reload refunds original owner"),V->CancelWage(Cancelled));
+    TestEqual(TEXT("Refund returns to owner wallet"),V->Residents[0].Coins,Owner);
+    TestEqual(TEXT("Refund does not become village income"),V->TreasuryCoins,Treasury);
+    TestFalse(TEXT("Refund cannot run twice"),V->CancelWage(Cancelled));
+    for(int32 Part=0;Part<2;++Part)
+    {
+        const FString Task=Id(); TestTrue(TEXT("Reserve next private component"),V->ReserveWage(1,Task,2,false,0));
+        TestTrue(TEXT("Private component wage settles"),V->SettleWage(1,Task));
+        TestFalse(TEXT("Private component cannot be paid twice"),V->SettleWage(1,Task));
+        const auto* Wage=V->Transactions.FindByPredicate([&](const auto& T){return T.Kind==TEXT("wage")&&T.TaskId==Task;});
+        TestTrue(TEXT("Income ledger identifies the actual house owner"),Wage&&Wage->From==0&&Wage->To==1);
+    }
+    TestEqual(TEXT("Owner pays four gross coins"),V->Residents[0].Coins,Owner-4);
+    TestEqual(TEXT("Worker receives four coins less one income-tax coin"),V->Residents[1].Coins,Worker+3);
+    TestEqual(TEXT("Only assessed tax reaches protected fund"),V->TaxProjectCoins,TaxFund+1);
+    if(!TestTrue(TEXT("Private paid wages reconcile both wallets and tax on reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) { AddError(Error); return false; }
+    const FString Self=Id(); const int32 SelfWallet=V->Residents[0].Coins;
+    TestTrue(TEXT("Owner may reserve own labor"),V->ReserveWage(0,Self,2,false,0));
+    TestTrue(TEXT("Owner's completed labor releases their escrow"),V->SettleWage(0,Self));
+    TestEqual(TEXT("Self labor does not create money"),V->Residents[0].Coins,SelfWallet);
+    if(!TestTrue(TEXT("Self-funded labor is a valid conserved transaction"),HearthWorld::Decode(V->ExportWorldState(),Image,Error))) { AddError(Error); return false; }
+    auto Corrupt=Image; Corrupt.WagePayables.Last().Funder=1;
+    TestFalse(TEXT("A forged wage payer is rejected"),HearthWorld::Decode(HearthWorld::Encode(Corrupt),Image,Error));
+    // A public payable without the optional field is still the historical treasury case.
+    V->ResetVillageState(); const FString LegacyTask=Id(); TestTrue(TEXT("Reserve historical public wage"),V->ReserveWage(1,LegacyTask,2));
+    TSharedPtr<FJsonObject> LegacyRoot;
+    if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(V->ExportWorldState()),LegacyRoot)) return false;
+    for(const auto& Entry:LegacyRoot->GetArrayField(TEXT("wage_payables"))) Entry->AsObject()->RemoveField(TEXT("funder"));
+    FString Legacy; FJsonSerializer::Serialize(LegacyRoot.ToSharedRef(),TJsonWriterFactory<>::Create(&Legacy));
+    if(!TestTrue(TEXT("Earlier schema9 treasury escrow remains loadable"),HearthWorld::Decode(Legacy,Image,Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("Missing payer defaults to treasury"),Image.WagePayables.Last().Funder,-1);
     return true;
 }
 #endif

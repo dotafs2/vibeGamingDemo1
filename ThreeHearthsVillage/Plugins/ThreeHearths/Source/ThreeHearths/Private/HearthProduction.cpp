@@ -215,11 +215,13 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     if(Op==5)
     {
         if(S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House) return false;
+        const int32 Funder=S.BuildPlanId.IsEmpty()?Index:S.Owner;
+        if(!Residents.IsValidIndex(Funder) || Residents[Funder].Coins<WageForOperation(Op)) return false;
         TArray<FHearthCottageComponent> CandidateComponents=S.CottageComponents;
         if(S.BuildPlanId.IsEmpty())
         {
             if(S.Kind!=EHearthSiteKind::Land) return false;
-            const auto Proposed=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(Residents[Index],S,StoneStock,PlankStock,BeamStock,GeneralFunds()));
+            const auto Proposed=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(Residents[Index],S,StoneStock,PlankStock,BeamStock,Residents[Funder].Coins/WageForOperation(Op)));
             if(!Proposed.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==Proposed.Plan.PlanId; })) return false;
             const auto Converted=HearthPlannedConstructionAdapter::Convert(Proposed.Plan,Index,{});
             if(!Converted.bAccepted) return false;
@@ -234,7 +236,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
             {
                 if(S.Owner!=Index) return false; // Neighbors may build parts, but only the owner chooses an extension.
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
-                if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,GeneralFunds(),Expanded,ExpansionComponents)) return false;
+                if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,Residents[Funder].Coins/WageForOperation(Op),Expanded,ExpansionComponents)) return false;
                 CandidateComponents=MoveTemp(ExpansionComponents.Components);
             }
         }
@@ -367,7 +369,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     int32 ExpansionPlanIndex=INDEX_NONE;
     if(bNeedsNewPlan)
     {
-        ProposedPlan=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(R,S,StoneStock,PlankStock,BeamStock,GeneralFunds()));
+        ProposedPlan=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(R,S,StoneStock,PlankStock,BeamStock,R.Coins/WageForOperation(Op)));
         if(!ProposedPlan.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==ProposedPlan.Plan.PlanId; }))
         {
             R.LatestEvent=ProposedPlan.Reason.IsEmpty()?TEXT("当前需求、资源或道路条件无法生成可执行住宅计划。"):ProposedPlan.Reason;
@@ -379,7 +381,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     else if(Op==5 && !S.CottageComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
     {
         ExpansionPlanIndex=StructurePlans.IndexOfByPredicate([&](const FHearthStructurePlan& P){return P.PlanId==S.BuildPlanId;});
-        if(!StructurePlans.IsValidIndex(ExpansionPlanIndex) || !HearthProduction::PrepareExpansion(R,S,StructurePlans[ExpansionPlanIndex],StoneStock,PlankStock,BeamStock,GeneralFunds(),ProposedPlan.Plan,ProposedComponents))
+        if(!StructurePlans.IsValidIndex(ExpansionPlanIndex) || !HearthProduction::PrepareExpansion(R,S,StructurePlans[ExpansionPlanIndex],StoneStock,PlankStock,BeamStock,Residents[S.Owner].Coins/WageForOperation(Op),ProposedPlan.Plan,ProposedComponents))
         { R.LatestEvent=TEXT("当前真实库存或预算不足以扩建住宅。"); return false; }
         bNeedsExpansion=true;
     }
@@ -387,9 +389,10 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     const FString Label=ProductionActionName(Action);
     R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     if(!TryBorrowTool(Index,Op)) { R.ActiveTaskId.Empty(); return false; }
-    if(!ReserveWage(Index,R.ActiveTaskId,WageForOperation(Op)))
+    const int32 WageFunder=Op==5?(bNeedsNewPlan?Index:S.Owner):-1;
+    if(!ReserveWage(Index,R.ActiveTaskId,WageForOperation(Op),false,WageFunder))
     {
-        ReturnTool(Index); R.ActiveTaskId.Empty(); R.LatestEvent=TEXT("村库无法预留工资，这项工作暂不开始。"); return false;
+        ReturnTool(Index); R.ActiveTaskId.Empty(); R.LatestEvent=Op==5?TEXT("房主的钱包无法预留构件工资，这项工作暂不开始。"):TEXT("村库无法预留工资，这项工作暂不开始。"); return false;
     }
     int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
     FoodStock-=F; StoneStock-=T; Spent[0]+=F; Spent[1]+=W; Spent[2]+=T;
@@ -418,7 +421,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
         const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount; Part->Status=TEXT("reserved"); Part->ReservedBy=Index; Part->Owner=S.Owner;
         R.ProductionComponentId=Part->Id;
         if(Type==2) StoneStock-=Amount; else if(Type==3) PlankStock-=Amount; else BeamStock-=Amount;
-        R.LatestEvent=FString::Printf(TEXT("村庄批准公共建材供给；前往库存点领取 %d 份%s，再安装 %s。"),Amount,HearthProduction::ResourceNames[Type],*Part->AssetId);
+        R.LatestEvent=FString::Printf(TEXT("房主已预留构件工资，村庄批准公共建材供给；前往库存点领取 %d 份%s，再安装 %s。"),Amount,HearthProduction::ResourceNames[Type],*Part->AssetId);
     }
     R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
     if(Op==5)
@@ -594,12 +597,19 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
 
 void AHearthVillage::AdvanceEconomy(float Dt)
 {
-    for(auto& P:WagePayables) if(P.Status==TEXT("owed") && (P.bTaxFunded?TaxProjectCoins:GeneralFunds())>=P.Amount) SettleWage(P.Worker,P.TaskId);
-    for(auto& P:WagePayables) if(P.Status==TEXT("unfunded") && (P.bTaxFunded?TaxProjectCoins:GeneralFunds())>=P.Amount)
+    auto FundsFor=[this](const FHearthWagePayable& P)
+    { return P.Funder>=0?(Residents.IsValidIndex(P.Funder)?Residents[P.Funder].Coins:0):(P.bTaxFunded?TaxProjectCoins:GeneralFunds()); };
+    for(auto& P:WagePayables) if(P.Status==TEXT("owed") && FundsFor(P)>=P.Amount) SettleWage(P.Worker,P.TaskId);
+    for(auto& P:WagePayables) if(P.Status==TEXT("unfunded") && FundsFor(P)>=P.Amount)
     {
         const bool StillWorking=Residents.IsValidIndex(P.Worker) && Residents[P.Worker].ActiveTaskId==P.TaskId
             && Residents[P.Worker].Task>=EHearthTask::ProductionTravel && Residents[P.Worker].Task<=EHearthTask::ProductionDeposit;
-        if(StillWorking) { TreasuryCoins-=P.Amount; if(P.bTaxFunded) TaxProjectCoins-=P.Amount; P.Status=TEXT("reserved"); }
+        if(StillWorking)
+        {
+            if(P.Funder>=0) Residents[P.Funder].Coins-=P.Amount;
+            else { TreasuryCoins-=P.Amount; if(P.bTaxFunded) TaxProjectCoins-=P.Amount; }
+            P.Status=TEXT("reserved");
+        }
     }
     for(auto& Offer:TradeOffers)
     {

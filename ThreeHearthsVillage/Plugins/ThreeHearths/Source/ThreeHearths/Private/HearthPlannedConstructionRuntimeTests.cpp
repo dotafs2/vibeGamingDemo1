@@ -35,12 +35,27 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     Village->ProductionSites.Add(Site);
     Village->StoneStock=100; Village->PlankStock=100; Village->BeamStock=100;
     Village->Produced[2]=100; Village->Manufactured[0]=100; Village->Manufactured[1]=100;
+    TestFalse(TEXT("Full village treasury cannot subsidize an unaffordable private house"),Village->StartProduction(0,105,TEXT("unaffordable private plan"),false));
+    TestEqual(TEXT("Rejected private plan preserves owner savings"),Resident.Coins,12);
+    TestTrue(TEXT("Rejected private plan creates no wage or structure"),Village->WagePayables.IsEmpty()&&Village->StructurePlans.IsEmpty());
+    // Owners save real assessed earnings; construction no longer draws wages from the village.
+    for(int32 Worker=0;Worker<2;++Worker) for(int32 Job=0;Job<(Worker==0?50:10);++Job)
+    {
+        const FString Task=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+        if(!Village->ReserveWage(Worker,Task,3) || !Village->SettleWage(Worker,Task)) return false;
+    }
+    while(Village->GeneralFunds()>=2)
+    {
+        const FString Task=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); const int32 Amount=Village->GeneralFunds()==2?2:3;
+        if(!Village->ReserveWage(2,Task,Amount) || !Village->SettleWage(2,Task)) return false;
+    }
+    TestEqual(TEXT("Private construction fixture has no general village funds"),Village->GeneralFunds(),0);
 
     const int32 Action=105;
     const int32 StoneBefore=Village->StoneStock;
     FHearthResidentBuildingInput DiagnosticInput; DiagnosticInput.ResidentId=Resident.StableId;
     DiagnosticInput.StableSeed=Resident.StableId+TEXT("|")+Resident.Personality+TEXT("|")+Resident.Role;
-    DiagnosticInput.Need=TEXT("shelter"); DiagnosticInput.Occupation=Resident.Role; DiagnosticInput.Budget=Village->GeneralFunds();
+    DiagnosticInput.Need=TEXT("shelter"); DiagnosticInput.Occupation=Resident.Role; DiagnosticInput.Budget=Resident.Coins/Village->WageForOperation(5);
     DiagnosticInput.bRoadAccessible=true; DiagnosticInput.RoadYaw=180.f; DiagnosticInput.Origin=Village->ProductionSites[0].Position;
     DiagnosticInput.Stone=Village->StoneStock; DiagnosticInput.Planks=Village->PlankStock; DiagnosticInput.Beams=Village->BeamStock;
     const auto DiagnosticPlan=HearthResidentBuildingPlanner::Build(DiagnosticInput);
@@ -55,6 +70,7 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     TestEqual(TEXT("Adapter creates one executable record per planned component"),RuntimeSite.CottageComponents.Num(),Plan.Components.Num());
     TestEqual(TEXT("First planned component is reserved for its choosing resident"),RuntimeSite.CottageComponents[0].ReservedBy,0);
     TestEqual(TEXT("Only the first real material unit is reserved"),Village->StoneStock,StoneBefore-RuntimeSite.CottageComponents[0].MaterialAmount);
+    TestEqual(TEXT("First component wage is backed by its owner"),Village->WagePayables.Last().Funder,0);
     TSharedPtr<FJsonObject> ProductionEvidence;
     TestTrue(TEXT("Runtime production evidence is valid JSON"),FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Village->GetProductionState()),ProductionEvidence));
     const TArray<TSharedPtr<FJsonValue>>* EvidencePlans=nullptr;

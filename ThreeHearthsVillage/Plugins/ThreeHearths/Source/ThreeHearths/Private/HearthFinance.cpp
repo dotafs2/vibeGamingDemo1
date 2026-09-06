@@ -74,22 +74,30 @@ bool AHearthVillage::TransferCoins(const FString& Kind,const FString& TaskId,int
 
 int32 AHearthVillage::WageForOperation(int32 Operation) const { return Operation>=13?3:2; }
 
-bool AHearthVillage::ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded)
+bool AHearthVillage::ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded,int32 Funder)
 {
     FGuid Id;
     if(!Residents.IsValidIndex(Worker) || !FGuid::Parse(TaskId,Id) || !Id.IsValid() || (Amount!=2 && Amount!=3)
-        || TreasuryCoins<Amount || (bTaxFunded?TaxProjectCoins:GeneralFunds())<Amount || WagePayables.Num()>=100000
+        || Funder<-1 || Funder>=Residents.Num() || (bTaxFunded && Funder>=0)
+        || (Funder<0 && TreasuryCoins<Amount)
+        || (Funder>=0?Residents[Funder].Coins:(bTaxFunded?TaxProjectCoins:GeneralFunds()))<Amount || WagePayables.Num()>=100000
         || WagePayables.ContainsByPredicate([&](const auto& P){ return P.TaskId==TaskId; })) return false;
-    TreasuryCoins-=Amount; if(bTaxFunded) TaxProjectCoins-=Amount;
+    if(Funder>=0) Residents[Funder].Coins-=Amount;
+    else { TreasuryCoins-=Amount; if(bTaxFunded) TaxProjectCoins-=Amount; }
     FHearthWagePayable P; P.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    P.TaskId=TaskId; P.Worker=Worker; P.Amount=Amount; P.bTaxFunded=bTaxFunded; WagePayables.Add(MoveTemp(P)); return true;
+    P.TaskId=TaskId; P.Worker=Worker; P.Amount=Amount; P.Funder=Funder; P.bTaxFunded=bTaxFunded; WagePayables.Add(MoveTemp(P)); return true;
 }
 
 bool AHearthVillage::CancelWage(const FString& TaskId)
 {
     auto* P=WagePayables.FindByPredicate([&](const auto& X){ return X.TaskId==TaskId; });
     if(!P || P->Status==TEXT("paid") || P->Status==TEXT("cancelled")) return false;
-    if(P->Status==TEXT("reserved")) { TreasuryCoins+=P->Amount; if(P->bTaxFunded) TaxProjectCoins+=P->Amount; }
+    if(P->Funder<-1 || P->Funder>=Residents.Num() || (P->bTaxFunded && P->Funder>=0)) return false;
+    if(P->Status==TEXT("reserved"))
+    {
+        if(P->Funder>=0) Residents[P->Funder].Coins+=P->Amount;
+        else { TreasuryCoins+=P->Amount; if(P->bTaxFunded) TaxProjectCoins+=P->Amount; }
+    }
     if(P->bTaxFunded) P->Status=TEXT("cancelled");
     else WagePayables.RemoveAll([&](const auto& X){ return X.TaskId==TaskId; });
     return true;
@@ -101,11 +109,17 @@ bool AHearthVillage::SettleWage(int32 Worker,const FString& TaskId)
     if(!P || P->Worker!=Worker || !Residents.IsValidIndex(Worker) || (P->Status!=TEXT("reserved") && P->Status!=TEXT("owed") && P->Status!=TEXT("unfunded"))
         || Transactions.ContainsByPredicate([&](const auto& T){ return T.Kind==TEXT("wage") && T.TaskId==TaskId; })) return false;
     const bool NeedsFunding=P->Status!=TEXT("reserved");
-    if(NeedsFunding && (TreasuryCoins<P->Amount || (P->bTaxFunded?TaxProjectCoins:GeneralFunds())<P->Amount)) return false;
+    if(P->Funder<-1 || P->Funder>=Residents.Num() || (P->bTaxFunded && P->Funder>=0)) return false;
+    if(NeedsFunding && (P->Funder>=0?Residents[P->Funder].Coins:(P->bTaxFunded?TaxProjectCoins:GeneralFunds()))<P->Amount) return false;
+    if(NeedsFunding && P->Funder<0 && TreasuryCoins<P->Amount) return false;
     FHearthTransaction T; T.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); T.Kind=TEXT("wage"); T.TaskId=TaskId;
-    T.From=-1; T.To=Worker; T.Amount=P->Amount; T.Item=TEXT("labor"); T.Quantity=1; T.At=Elapsed;
+    T.From=P->Funder; T.To=Worker; T.Amount=P->Amount; T.Item=TEXT("labor"); T.Quantity=1; T.At=Elapsed;
     FHearthTaxAssessment Tax; if(!PrepareIncomeTax(Worker,P->Amount,T.Id,false,Tax)) return false;
-    if(NeedsFunding) { TreasuryCoins-=P->Amount; if(P->bTaxFunded) TaxProjectCoins-=P->Amount; }
+    if(NeedsFunding)
+    {
+        if(P->Funder>=0) Residents[P->Funder].Coins-=P->Amount;
+        else { TreasuryCoins-=P->Amount; if(P->bTaxFunded) TaxProjectCoins-=P->Amount; }
+    }
     Residents[Worker].Coins+=P->Amount; P->Status=TEXT("paid");
     Transactions.Add(MoveTemp(T)); CommitIncomeTax(Tax); return true;
 }

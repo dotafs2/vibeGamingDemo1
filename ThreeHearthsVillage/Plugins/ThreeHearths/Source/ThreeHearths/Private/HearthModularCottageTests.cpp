@@ -31,7 +31,13 @@ bool FHearthModularCottageTest::RunTest(const FString&)
     Site.Position=FVector(400,0,8); Site.Approach=FVector(0,0,8); Site.bReachable=true; V->ProductionSites.Add(Site);
     V->Residents[0].Actor->SetActorLocation(FVector(-400,0,8));
     V->StoneStock=4; V->Produced[2]=4; V->PlankStock=20; V->Manufactured[0]=20; V->BeamStock=21; V->Manufactured[1]=21;
+    for(int32 Job=0;Job<20;++Job)
+    {
+        const FString Task=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+        if(!V->ReserveWage(0,Task,3) || !V->SettleWage(0,Task)) return false;
+    }
     const int32 Action=105, InitialWallet=V->Residents[0].Coins, Wage=V->WageForOperation(5);
+    const int32 SeedWages=V->WagePayables.Num();
     FString PlanId,Error; FHearthWorldImage Baseline;
     if(!TestTrue(TEXT("Seeded component inventory is ledger-consistent"),HearthWorld::Decode(V->ExportWorldState(),Baseline,Error))) { AddError(Error); return false; }
 
@@ -73,10 +79,10 @@ bool FHearthModularCottageTest::RunTest(const FString&)
         }
         if(ExpectedComponent==2)
         {
-            const int32 StockBeforeCancel=V->StoneStock; const int32 TreasuryBeforeCancel=V->TreasuryCoins; const int32 PayablesBeforeCancel=V->WagePayables.Num();
+            const int32 StockBeforeCancel=V->StoneStock; const int32 WalletBeforeCancel=V->Residents[0].Coins; const int32 PayablesBeforeCancel=V->WagePayables.Num();
             TestTrue(TEXT("Player/system may cancel after pickup"),V->CancelProduction(0));
             TestEqual(TEXT("Cancellation returns the uninstalled stone"),V->StoneStock,StockBeforeCancel+1);
-            TestEqual(TEXT("Cancellation returns the unearned reserved wage"),V->TreasuryCoins,TreasuryBeforeCancel+Wage);
+            TestEqual(TEXT("Cancellation returns the unearned reserved wage to its owner"),V->Residents[0].Coins,WalletBeforeCancel+Wage);
             TestEqual(TEXT("Cancellation removes the unpaid payable"),V->WagePayables.Num(),PayablesBeforeCancel-1);
             TestEqual(TEXT("Already installed component remains installed"),V->ProductionSites[0].Units,1);
             if(!TestTrue(TEXT("Cancelled component can be resumed"),V->StartProduction(0,Action,TEXT("恢复施工"),false))) return false;
@@ -89,20 +95,36 @@ bool FHearthModularCottageTest::RunTest(const FString&)
         V->Residents[0].Timer=0; V->AdvanceProduction(0,.05f);
         TestEqual(TEXT("Exactly one physical component completes"),V->ProductionSites[0].Units,ExpectedComponent);
         TestEqual(TEXT("Installed material is no longer cargo"),V->Residents[0].CargoAmount,0);
-        TestEqual(TEXT("Each installed component pays gross wage less accumulated income tax"),V->Residents[0].Coins,InitialWallet+Wage*ExpectedComponent-(Wage*ExpectedComponent*V->TaxRatePercent/100));
+        TestEqual(TEXT("Self-installed components release escrow less accumulated income tax"),V->Residents[0].Coins,InitialWallet-(Wage*ExpectedComponent*V->TaxRatePercent/100));
         if(ExpectedComponent<45) TestFalse(TEXT("A partial cottage plan cannot be overwritten by a farm"),V->IsProductionAllowed(1,101));
         if(ExpectedComponent==8)
         {
             TSharedPtr<FJsonObject> LegacyRoot; const FString Current=V->ExportWorldState();
             const auto Reader=TJsonReaderFactory<>::Create(Current);
             if(!TestTrue(TEXT("Schema-five cottage snapshot parses for migration fixture"),FJsonSerializer::Deserialize(Reader,LegacyRoot) && LegacyRoot.IsValid())) return false;
+            // Schema four only had treasury-funded work. Reconcile this historical
+            // fixture's payer and balances rather than downgrading private transactions.
+            for(const auto& Value:LegacyRoot->GetArrayField(TEXT("transactions")))
+            {
+                const auto Transaction=Value->AsObject();
+                if(Transaction->GetStringField(TEXT("kind"))!=TEXT("wage") || Transaction->GetNumberField(TEXT("from"))<0) continue;
+                const int32 Funder=static_cast<int32>(Transaction->GetNumberField(TEXT("from")));
+                const int32 Amount=static_cast<int32>(Transaction->GetNumberField(TEXT("amount")));
+                const auto Person=LegacyRoot->GetArrayField(TEXT("people"))[Funder]->AsObject();
+                Person->SetNumberField(TEXT("Coins"),Person->GetNumberField(TEXT("Coins"))+Amount);
+                LegacyRoot->SetNumberField(TEXT("TreasuryCoins"),LegacyRoot->GetNumberField(TEXT("TreasuryCoins"))-Amount);
+                Transaction->SetNumberField(TEXT("from"),-1);
+            }
+            for(const auto& Value:LegacyRoot->GetArrayField(TEXT("wage_payables"))) Value->AsObject()->RemoveField(TEXT("funder"));
             LegacyRoot->SetNumberField(TEXT("schema"),4);
             for(const auto& Value:LegacyRoot->GetArrayField(TEXT("sites"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("cottage_components"));
             for(const auto& Value:LegacyRoot->GetArrayField(TEXT("people"))) if(const auto Object=Value->AsObject()) Object->RemoveField(TEXT("ProductionComponentId"));
             FString LegacyText; const auto Writer=TJsonWriterFactory<>::Create(&LegacyText); FJsonSerializer::Serialize(LegacyRoot.ToSharedRef(),Writer);
-            if(!TestTrue(TEXT("Schema-four staged cottage migrates into component records"),V->ApplyWorldState(LegacyText,Error))) { AddError(Error); return false; }
-            TestEqual(TEXT("Migration recreates all component records"),V->ProductionSites[0].CottageComponents.Num(),45);
-            TestEqual(TEXT("Migration preserves the eight installed stage-one pieces"),V->ProductionSites[0].Units,8);
+            auto* Migrated=World->SpawnActor<AHearthVillage>(); Migrated->BuildEnvironment(); Migrated->ResetVillageState();
+            if(!TestTrue(TEXT("Schema-four staged cottage migrates into component records"),Migrated->ApplyWorldState(LegacyText,Error))) { AddError(Error); return false; }
+            TestEqual(TEXT("Migration recreates all component records"),Migrated->ProductionSites[0].CottageComponents.Num(),45);
+            TestEqual(TEXT("Migration preserves the eight installed stage-one pieces"),Migrated->ProductionSites[0].Units,8);
+            Migrated->Destroy();
         }
         if(ExpectedComponent==10) TestEqual(TEXT("Reload resumes within the frame stage, not after it"),V->ProductionSites[0].Stage,1);
     }
@@ -124,7 +146,7 @@ bool FHearthModularCottageTest::RunTest(const FString&)
     TestEqual(TEXT("Floors, timber walls and timber roof consume twenty planks"),V->ManufacturedSpent[0],20);
     TestEqual(TEXT("All cottage component stocks are consumed"),V->StoneStock+V->BeamStock+V->PlankStock,0);
     const int32 WageTransactions=V->Transactions.FilterByPredicate([](const FHearthTransaction& T){ return T.Kind==TEXT("wage"); }).Num();
-    TestEqual(TEXT("Forty-five component jobs settle exactly forty-five wages"),WageTransactions,45);
+    TestEqual(TEXT("Forty-five component jobs settle exactly forty-five wages"),WageTransactions-SeedWages,45);
     const int32 TxBefore=V->Transactions.Num(); V->AdvanceEconomy(5.f); TestEqual(TEXT("Completed cottage cannot settle twice"),V->Transactions.Num(),TxBefore);
     const FString Production=V->GetProductionState();
     TestTrue(TEXT("Snapshot exposes the stable build plan"),Production.Contains(PlanId));

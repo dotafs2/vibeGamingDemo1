@@ -259,6 +259,7 @@ namespace HearthWorld
             auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),P.Id); Entry->SetStringField(TEXT("task_id"),P.TaskId);
             Entry->SetStringField(TEXT("status"),P.Status); Entry->SetNumberField(TEXT("worker"),P.Worker); Entry->SetNumberField(TEXT("amount"),P.Amount);
             if(W.Schema>=7) Entry->SetBoolField(TEXT("tax_funded"),P.bTaxFunded);
+            if(W.Schema>=9) Entry->SetNumberField(TEXT("funder"),P.Funder);
             Payables.Add(MakeShared<FJsonValueObject>(Entry));
         }
         for(const auto& T:W.TradeOffers)
@@ -477,7 +478,10 @@ namespace HearthWorld
                 {
                     FHearthWagePayable S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("task_id"),S.TaskId); P.Str(TEXT("status"),S.Status);
                     P.Num(TEXT("worker"),S.Worker,0,W.PlotCount-1); P.Num(TEXT("amount"),S.Amount,1,1000);
-                    if(W.Schema>=7) P.Bool(TEXT("tax_funded"),S.bTaxFunded); C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
+                    if(W.Schema>=7) P.Bool(TEXT("tax_funded"),S.bTaxFunded);
+                    // Earlier schema-nine saves funded every wage from the treasury.
+                    if(W.Schema>=9 && P.J.IsValid() && P.J->HasField(TEXT("funder"))) P.Num(TEXT("funder"),S.Funder,-1,W.PlotCount-1);
+                    C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
                 }
                 for(const auto& V:C.Array(TEXT("trade_offers"),100000))
                 {
@@ -696,9 +700,9 @@ namespace HearthWorld
         for(const auto& T:W.Transactions)
         {
             const FString Key=T.Kind+TEXT("|")+T.TaskId;
-            if(!Unique(T.Id) || !Guid(T.TaskId) || TransactionKeys.Contains(Key) || T.From==T.To
+            if(!Unique(T.Id) || !Guid(T.TaskId) || TransactionKeys.Contains(Key) || (T.From==T.To && !(W.Schema>=9 && T.Kind==TEXT("wage") && T.From>=0))
                 || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade") && T.Kind!=TEXT("public_purchase") && T.Kind!=TEXT("income_tax"))
-                || (T.Kind==TEXT("wage") && (T.From!=-1 || T.To<0 || T.Item!=TEXT("labor") || T.Quantity!=1))
+                || (T.Kind==TEXT("wage") && ((W.Schema<9 && T.From!=-1) || T.To<0 || T.Item!=TEXT("labor") || T.Quantity!=1))
                 || (T.Kind==TEXT("food_purchase") && (T.From<0 || T.To!=-1 || T.Item!=TEXT("food") || T.Quantity!=1 || T.Amount!=1))
                 || (T.Kind==TEXT("plank_trade") && (T.From<0 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))
                 || (T.Kind==TEXT("public_purchase") && (T.From!=-1 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))
@@ -746,13 +750,18 @@ namespace HearthWorld
         for(const auto& P:W.WagePayables)
         {
             if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=W.PlotCount
+                || P.Funder<-1 || P.Funder>=W.PlotCount || (P.Funder>=0 && (W.Schema<9 || P.bTaxFunded))
                 || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("unfunded") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid") && !(P.bTaxFunded && P.Status==TEXT("cancelled")))) return false;
             if(P.bTaxFunded && (P.Status==TEXT("reserved") || P.Status==TEXT("paid"))) CollectedTax-=P.Amount;
             PayableByTask.Add(P.TaskId,&P);
             const auto* Wage=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Kind==TEXT("wage") && T.TaskId==P.TaskId; });
-            if(P.Status==TEXT("paid") && (!Wage || Wage->To!=P.Worker || Wage->Amount!=P.Amount)) return false;
+            if(P.Status==TEXT("paid") && (!Wage || Wage->From!=P.Funder || Wage->To!=P.Worker || Wage->Amount!=P.Amount)) return false;
             if(P.Status!=TEXT("paid") && Wage) return false;
-            if(P.Status==TEXT("reserved")) { ExpectedTreasury-=P.Amount; if(ExpectedTreasury<0) return false; }
+            if(P.Status==TEXT("reserved"))
+            {
+                if(P.Funder>=0) ExpectedWallets[P.Funder]-=P.Amount; else ExpectedTreasury-=P.Amount;
+                if(ExpectedTreasury<0 || ExpectedWallets.ContainsByPredicate([](int64 Balance){return Balance<0;})) return false;
+            }
         }
         if(W.Schema>=4)
         {

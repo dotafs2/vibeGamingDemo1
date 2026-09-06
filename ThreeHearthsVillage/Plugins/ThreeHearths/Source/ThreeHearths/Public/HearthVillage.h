@@ -108,7 +108,7 @@ struct FHearthTaxAssessment
 struct FHearthWagePayable
 {
     FString Id, TaskId, Status=TEXT("reserved");
-    int32 Worker=-1, Amount=0;
+    int32 Worker=-1, Amount=0, Funder=-1;
     bool bTaxFunded=false;
 };
 struct FHearthTradeOffer
@@ -318,6 +318,7 @@ private:
     friend class FHearthDerivedMaterialsTest;
     friend class FHearthEconomyPersistenceTest;
     friend class FHearthProjectFinanceTest;
+    friend class FHearthPrivateHouseFinanceTest;
     friend class FHearthPublicWallTest;
     friend class FHearthSupplyOrderTest;
     friend class FHearthLegacyUnfundedWageTest;
@@ -372,7 +373,7 @@ private:
     int32 GeneralFunds() const { return FMath::Max(0,TreasuryCoins-TaxProjectCoins); }
     bool CancelWage(const FString& TaskId);
     int32 WageForOperation(int32 Operation) const;
-    bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded=false);
+    bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount,bool bTaxFunded=false,int32 Funder=-1);
     bool SettleWage(int32 Worker,const FString& TaskId);
     bool ApprovePublicProject(int32 King);
     bool StartSupplyOrder(int32 Seller);
