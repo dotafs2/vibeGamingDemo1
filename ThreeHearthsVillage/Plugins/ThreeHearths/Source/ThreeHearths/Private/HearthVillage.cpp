@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
+#include "Engine/Engine.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -545,7 +546,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     // Small, fixed simulation steps preserve transfers and task transitions at high speeds.
-    // Clamp long stalls to bound work per frame; HTTP timeouts continue using wall time.
+    // Clamp long stalls to bound work per frame; autonomous deadlines advance in simulation time below.
     const float RealDt=FMath::IsFinite(DeltaSeconds)?FMath::Clamp(DeltaSeconds,0.f,0.25f):0.f;
     if(!bAcceptanceCaptureDone && AcceptanceCaptureDelay>=0.f)
     {
@@ -554,7 +555,11 @@ void AHearthVillage::Tick(float DeltaSeconds)
         {
             bAcceptanceCaptureDone=true;
             const FString Capture=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/continuous-development/tool-action.png");
-            FScreenshotRequest::RequestScreenshot(Capture,false,false);
+            IFileManager::Get().MakeDirectory(*FPaths::GetPath(Capture),true);
+            const FString Command=FString::Printf(TEXT("HighResShot 1600x900 filename=\"%s\""),*Capture);
+            const bool bRequested=GEngine&&GEngine->Exec(GetWorld(),*Command);
+            if(!bRequested) FScreenshotRequest::RequestScreenshot(Capture,true,false);
+            UE_LOG(LogThreeHearths,Display,TEXT("ACCEPTANCE_CAPTURE requested=%s path=%s"),bRequested?TEXT("highres"):TEXT("standard"),*Capture);
         }
     }
     if(!bSimulationPaused && RealDt>0.f)
@@ -879,7 +884,7 @@ FString AHearthVillage::GetSnapshot() const
     for(const auto& P:WagePayables)
     {
         auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),P.Id); J->SetStringField(TEXT("task_id"),P.TaskId);
-        J->SetStringField(TEXT("status"),P.Status); J->SetNumberField(TEXT("worker"),P.Worker); J->SetNumberField(TEXT("amount"),P.Amount);
+        J->SetStringField(TEXT("status"),P.Status); J->SetNumberField(TEXT("worker"),P.Worker); J->SetNumberField(TEXT("funder"),P.Funder); J->SetNumberField(TEXT("amount"),P.Amount);
         J->SetBoolField(TEXT("tax_funded"),P.bTaxFunded);
         Payables.Add(MakeShared<FJsonValueObject>(J));
     }

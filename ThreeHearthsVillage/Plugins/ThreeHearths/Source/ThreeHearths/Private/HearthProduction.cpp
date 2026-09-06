@@ -211,7 +211,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
     if(!ToolAvailableFor(Index,Op)) return false;
-    if(Op==0) return S.Kind==EHearthSiteKind::Empty;
+    if(Op==0) return S.Kind==EHearthSiteKind::Empty && Residents[Index].Coins>=WageForOperation(Op);
     if(Op==5)
     {
         if(S.Kind!=EHearthSiteKind::Land && S.Kind!=EHearthSiteKind::House) return false;
@@ -389,10 +389,10 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     const FString Label=ProductionActionName(Action);
     R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     if(!TryBorrowTool(Index,Op)) { R.ActiveTaskId.Empty(); return false; }
-    const int32 WageFunder=Op==5?(bNeedsNewPlan?Index:S.Owner):-1;
+    const int32 WageFunder=Op==5?(bNeedsNewPlan?Index:S.Owner):(Op==0?Index:-1);
     if(!ReserveWage(Index,R.ActiveTaskId,WageForOperation(Op),false,WageFunder))
     {
-        ReturnTool(Index); R.ActiveTaskId.Empty(); R.LatestEvent=Op==5?TEXT("房主的钱包无法预留构件工资，这项工作暂不开始。"):TEXT("村库无法预留工资，这项工作暂不开始。"); return false;
+        ReturnTool(Index); R.ActiveTaskId.Empty(); R.LatestEvent=(Op==0||Op==5)?TEXT("房主的钱包无法预留地块或构件工资，这项工作暂不开始。"):TEXT("村库无法预留工资，这项工作暂不开始。"); return false;
     }
     int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
     FoodStock-=F; StoneStock-=T; Spent[0]+=F; Spent[1]+=W; Spent[2]+=T;
