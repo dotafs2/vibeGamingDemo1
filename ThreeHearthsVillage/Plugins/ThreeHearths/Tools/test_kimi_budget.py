@@ -211,7 +211,9 @@ class BudgetTests(unittest.TestCase):
         self.assertEqual(usage_cost(receipt,512)[0],1200*6500+200*27000)
 
     def test_expiry_and_disallowed_requests_never_send(self):
-        expired=Ledger(self.path,clock=lambda:NIGHT_POLICY.deadline_utc)
+        expired_policy=replace(NIGHT_POLICY,deadline_utc=1)
+        expired=Ledger(Path(self.folder.name)/'expired.sqlite3',policy=expired_policy,clock=lambda:1)
+        expired.initialize()
         with self.assertRaises(BudgetDenied): expired.reserve('one','resident',BODY)
         invalid=[dict(BODY,model='kimi-k3'),dict(BODY,max_tokens=513),dict(BODY,tools=[]),
             dict(BODY,stream=True),dict(BODY,thinking={'type':'enabled'}),dict(BODY,max_completion_tokens=256),

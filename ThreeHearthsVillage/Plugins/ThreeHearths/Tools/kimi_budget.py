@@ -5,7 +5,6 @@ gateway always uses NIGHT_POLICY and a fixed project path, never world state.
 """
 from contextlib import closing, contextmanager
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -16,7 +15,9 @@ import uuid
 
 NANO=1_000_000_000
 MODEL='kimi-k2.6'
-DEADLINE=int(datetime(2026,9,6,1,30,tzinfo=timezone.utc).timestamp())
+# Local development remains available until the cumulative CNY cap is reached.
+# A positive value can still impose a time window in a replaced test policy.
+DEADLINE=0
 
 @dataclass(frozen=True)
 class Policy:
@@ -181,7 +182,8 @@ class Ledger:
                 if fingerprint(response)!=old['response_sha']: raise LedgerCorrupt('Cached receipt corrupted')
                 return {'send':False,'response':response}
             if meta['halted']: raise BudgetDenied('Paid requests halted: '+meta['halted'])
-            if self.clock()>=self.policy.deadline_utc: raise BudgetDenied('Authorized night has ended')
+            if self.policy.deadline_utc and self.clock()>=self.policy.deadline_utc:
+                raise BudgetDenied('Authorized usage window has ended')
             active=db.execute("SELECT COUNT(*) FROM requests WHERE state IN ('reserved','uncertain')").fetchone()[0]
             if active>=self.policy.concurrency: raise BudgetDenied('Ten in-flight or unresolved requests already exist')
             if db.execute("SELECT 1 FROM requests WHERE resident=? AND state IN ('reserved','uncertain')",(resident,)).fetchone():
