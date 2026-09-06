@@ -79,6 +79,16 @@ bool FHearthPrivateHouseFinanceTest::RunTest(const FString&)
         if(!V->ReserveWage(2,Task,Amount) || !V->SettleWage(2,Task)) return false;
     }
     TestEqual(TEXT("Fixture spends all general funds without inventing coins"),V->GeneralFunds(),0);
+    V->PlotOwners[0]=0; V->Residents[0].Plot=0; V->Residents[0].DeliveredWood=V->CostFor(0); V->WoodStock[0]-=V->Residents[0].DeliveredWood;
+    V->Residents[0].BuildProgress=1.f; V->Residents[0].Task=EHearthTask::LifeChoosing;
+    const TArray<FHearthSite> OriginalSites=V->ProductionSites; V->ProductionSites.Reset();
+    FHearthSite PrivatePlot; PrivatePlot.StableId=Id(); PrivatePlot.Kind=EHearthSiteKind::Empty; PrivatePlot.Position=FVector(300,0,8); PrivatePlot.Approach=FVector(100,0,8); PrivatePlot.bReachable=true; V->ProductionSites.Add(PrivatePlot);
+    FHearthSite PublicQuarry; PublicQuarry.StableId=Id(); PublicQuarry.Kind=EHearthSiteKind::Stone; PublicQuarry.Position=FVector(-300,0,8); PublicQuarry.Approach=FVector(-100,0,8); PublicQuarry.bReachable=true; PublicQuarry.Units=10; V->ProductionSites.Add(PublicQuarry);
+    const int32 EmptySite=V->ProductionSites.IndexOfByPredicate([](const FHearthSite& Site){return Site.Kind==EHearthSiteKind::Empty&&Site.bReachable;});
+    const int32 StoneSite=V->ProductionSites.IndexOfByPredicate([](const FHearthSite& Site){return Site.Kind==EHearthSiteKind::Stone&&Site.bReachable&&Site.Units>0;});
+    TestTrue(TEXT("A resident may fund their own plot preparation after public funds run out"),EmptySite>=0&&V->IsProductionAllowed(0,100+EmptySite*16));
+    TestFalse(TEXT("An unfunded public production job is removed before local choice"),StoneSite>=0&&V->IsProductionAllowed(0,100+StoneSite*16+11));
+    V->ProductionSites=OriginalSites;
     const int32 Treasury=V->TreasuryCoins,TaxFund=V->TaxProjectCoins,Owner=V->Residents[0].Coins,Worker=V->Residents[1].Coins;
     TestFalse(TEXT("Public wage refuses empty general fund"),V->ReserveWage(1,Id(),2));
     TestFalse(TEXT("Private funding cannot also claim tax money"),V->ReserveWage(1,Id(),2,true,0));

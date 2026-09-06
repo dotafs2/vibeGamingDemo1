@@ -245,6 +245,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
         const int32 Type=Part->MaterialType,Amount=Part->MaterialAmount;
         return Type==2?StoneStock>=Amount:Type==3?PlankStock>=Amount:BeamStock>=Amount;
     }
+    if(GeneralFunds()<WageForOperation(Op)) return false;
     if(Op>=1 && Op<=7) return S.Kind==EHearthSiteKind::Land && S.BuildPlanId.IsEmpty();
     if(Op==8) return HearthProduction::IsCrop(S.Kind) && S.Stage==0;
     if(Op==9) return HearthProduction::IsCrop(S.Kind) && S.Stage==2 && S.Units>0;
