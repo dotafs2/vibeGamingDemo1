@@ -367,8 +367,8 @@ void AHearthVillage::ResetVillageState()
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
-    Conversations.Reset(); Commitments.Reset(); bSocialOpen=false; ++SocialRevision;
-    Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; bReportedComplete=false; bSimulationPaused=false;
+    Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); WagePayables.Reset(); TradeOffers.Reset(); TreasuryCoins=500; bSocialOpen=false; ++SocialRevision;
+    Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; NextTradeAt=8.f; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
     {
         WoodStock[I]=bUseCropoutMap?33:12;
@@ -608,6 +608,7 @@ void AHearthVillage::AdvanceSimulation(float Dt)
 {
     Elapsed+=Dt;
     AdvanceNeeds(Dt);
+    AdvanceEconomy(Dt);
     AdvanceProductionWorld(Dt);
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -805,6 +806,8 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("carried"),R.CarriedWood); J->SetNumberField(TEXT("delivered"),R.DeliveredWood);
         J->SetNumberField(TEXT("cost"),CostFor(I)); J->SetNumberField(TEXT("build_progress"),R.BuildProgress);
         J->SetNumberField(TEXT("energy"),R.Energy); J->SetNumberField(TEXT("social_need"),R.SocialNeed);
+        J->SetNumberField(TEXT("coins"),R.Coins);
+        J->SetNumberField(TEXT("personal_planks"),R.PersonalPlanks);
         J->SetNumberField(TEXT("life_action"),R.LifeAction); J->SetNumberField(TEXT("history_count"),HistoryCount(I));
         if(IsValid(R.Actor)) J->SetStringField(TEXT("position"),R.Actor->GetActorLocation().ToString());
         People.Add(MakeShared<FJsonValueObject>(J));
@@ -829,6 +832,33 @@ FString AHearthVillage::GetSnapshot() const
         Tools.Add(MakeShared<FJsonValueObject>(Tool));
     }
     Root->SetArrayField(TEXT("tool_inventory"),Tools);
+    Root->SetNumberField(TEXT("treasury_coins"),TreasuryCoins);
+    TArray<TSharedPtr<FJsonValue>> Economy;
+    for(const auto& T:Transactions)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),T.Id); J->SetStringField(TEXT("kind"),T.Kind);
+        J->SetStringField(TEXT("task_id"),T.TaskId); J->SetNumberField(TEXT("from"),T.From); J->SetNumberField(TEXT("to"),T.To);
+        J->SetNumberField(TEXT("amount"),T.Amount); J->SetStringField(TEXT("item"),T.Item); J->SetNumberField(TEXT("quantity"),T.Quantity);
+        J->SetNumberField(TEXT("at"),T.At); Economy.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("transactions"),Economy);
+    TArray<TSharedPtr<FJsonValue>> Payables;
+    for(const auto& P:WagePayables)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),P.Id); J->SetStringField(TEXT("task_id"),P.TaskId);
+        J->SetStringField(TEXT("status"),P.Status); J->SetNumberField(TEXT("worker"),P.Worker); J->SetNumberField(TEXT("amount"),P.Amount);
+        Payables.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("wage_payables"),Payables);
+    TArray<TSharedPtr<FJsonValue>> Trades;
+    for(const auto& T:TradeOffers)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),T.Id); J->SetStringField(TEXT("status"),T.Status); J->SetStringField(TEXT("result"),T.Result);
+        J->SetNumberField(TEXT("seller"),T.Seller); J->SetNumberField(TEXT("buyer"),T.Buyer); J->SetNumberField(TEXT("quantity"),T.Quantity);
+        J->SetNumberField(TEXT("price"),T.Price); J->SetNumberField(TEXT("reserved_quantity"),T.ReservedQuantity); J->SetNumberField(TEXT("remaining"),T.Remaining);
+        Trades.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Root->SetArrayField(TEXT("trade_offers"),Trades);
     Root->SetNumberField(TEXT("accounted_wood"),AccountedWood);
     Root->SetBoolField(TEXT("unique_plot_owners"),bUnique);
     FString Out; auto Writer=TJsonWriterFactory<>::Create(&Out); FJsonSerializer::Serialize(Root,Writer); return Out;

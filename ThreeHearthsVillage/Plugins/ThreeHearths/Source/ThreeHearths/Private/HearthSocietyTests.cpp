@@ -53,7 +53,7 @@ bool FHearthSocietyPopulationTest::RunTest(const FString&)
     TestEqual(TEXT("Food grant not replayed"),Migrated.Food,100);
     // Two finished meal timers contend for the final food. Only the eater gains satiety.
     V->FoodStock=1; V->Spent[0]=0;
-    for(int32 I=8;I<10;++I) { auto& R=V->Residents[I]; R.Task=EHearthTask::LifeActivity; R.LifeAction=50; R.Timer=0; R.Hunger=80; }
+    for(int32 I=8;I<10;++I) { auto& R=V->Residents[I]; R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); R.Task=EHearthTask::LifeActivity; R.LifeAction=50; R.Timer=0; R.Hunger=80; }
     V->AdvanceLife(8,.1f); V->AdvanceLife(9,.1f);
     TestEqual(TEXT("Final meal cannot make stock negative"),V->FoodStock,0); TestEqual(TEXT("Only one food consumed"),V->Spent[0],1);
     TestEqual(TEXT("Actual eater is satiated"),V->Residents[8].Hunger,25.f); TestEqual(TEXT("Unserved resident stays hungry"),V->Residents[9].Hunger,80.f);

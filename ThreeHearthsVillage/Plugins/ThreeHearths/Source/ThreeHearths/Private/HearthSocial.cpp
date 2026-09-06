@@ -59,14 +59,15 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
     if(S->Offer>=0 && S->Proposer!=Index)
     {
         TArray<int32> Choices={4};
-        if((S->Offer==1 && FoodStock>=2) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))) Choices.Insert(3,0);
+        const int32 Other=S->First==Index?S->Second:S->First;
+        if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))) Choices.Insert(3,0);
         return Choices;
     }
     TArray<int32> Choices={0,5};
     if(S->Lines.Num()>=2 && S->Offer<0)
     {
         const int32 Other=S->First==Index?S->Second:S->First;
-        if(FoodStock>=2) Choices.Add(1);
+        if(FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) Choices.Add(1);
         if(FindHelpActivity(Other)>=0) Choices.Add(2);
     }
     return Choices;

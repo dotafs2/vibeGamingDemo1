@@ -73,7 +73,7 @@ public:
         Panel->AddSlot().AutoHeight().Padding(0,10,0,6)[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); if(!V || !V->Residents.IsValidIndex(V->SelectedResident)) return FText::GetEmpty();
             const auto& R=V->Residents[V->SelectedResident];
-            return FText::FromString(FString::Printf(TEXT("%s · %d 岁\n精力 %.0f · 饥饿 %.0f · 心情 %.0f · 社交需求 %.0f"),*R.Role,R.Age,R.Energy,R.Hunger,R.Mood,R.SocialNeed));
+            return FText::FromString(FString::Printf(TEXT("%s · %d 岁 · 钱包 %d 枚 · 自有木板 %d\n精力 %.0f · 饥饿 %.0f · 心情 %.0f · 社交需求 %.0f\n村库 %d 枚"),*R.Role,R.Age,R.Coins,R.PersonalPlanks,R.Energy,R.Hunger,R.Mood,R.SocialNeed,V->TreasuryCoins));
         }).Font(HearthUI::Font(11)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Panel->AddSlot().AutoHeight().Padding(0,8,0,10)[SNew(STextBlock).Text_Lambda([this] {
             auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].Reason:TEXT(""));
@@ -133,7 +133,7 @@ public:
                     .MinDesiredValueWidth(65.f).Font(HearthUI::Font(12,true))
                     .Value_Lambda([this] { auto* V=Village.Get(); return TOptional<float>(V?V->SimulationSpeed:1.f); })
                     .OnValueCommitted_Lambda([this](float Value,ETextCommit::Type) { if(auto* V=Village.Get()) V->SetSimulationSpeed(Value); })
-                    .ToolTipText(FText::FromString(TEXT("输入 1～1000，按回车生效。模型回复按实际时间等待。")))
+                    .ToolTipText(FText::FromString(TEXT("输入 1～1000，按回车生效。NPC 工作、下一次选择与模型调用调度都跟随倍速。")))
                 ]
                 +SHorizontalBox::Slot().AutoWidth().VAlign(VAlign_Center).Padding(6,0,0,0)[
                     SNew(STextBlock).Text(FText::FromString(TEXT("倍速"))).Font(HearthUI::Font(12,true)).ColorAndOpacity(HearthUI::Ink)

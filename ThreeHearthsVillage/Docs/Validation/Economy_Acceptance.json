@@ -1,0 +1,52 @@
+{
+  "milestone": "persistent_wages_and_bilateral_plank_trade",
+  "engine": "Unreal Engine 5.8.1",
+  "full_suite": {
+    "result": "passed",
+    "tests": 15,
+    "log": "Saved/Logs/ThreeHearthsAutomation20.log"
+  },
+  "targeted_guarantees": [
+    "Production cannot start unless its wage is reserved from available treasury funds.",
+    "A reserved or migrated owed wage survives reload and can settle only once.",
+    "Invalid account endpoints and transaction shapes change no wallet, treasury balance, or ledger entry.",
+    "Every account is recomputed from its 12-coin resident or 500-coin treasury opening balance and the ordered ledger.",
+    "A seller reserves one personally owned plank; the buyer can accept or refuse; accepted delivery transfers two coins and plank ownership atomically.",
+    "Proposed and accepted trades survive reload; cancelled trades return reserved goods; completed trades cannot replay."
+  ],
+  "runtime_local_rules": {
+    "result": "passed",
+    "simulation_speed": 100,
+    "external_api": "disabled_for_deterministic_trade_trace",
+    "completed_bilateral_trades_before_reload": 2,
+    "transaction_count_before_reload": 133,
+    "coin_total_including_reserved_wages": 620,
+    "expected_coin_total": 620,
+    "accounted_planks": 0,
+    "pending_request_count": 0,
+    "schema_after_migration_and_save": 4
+  },
+  "runtime_after_reload": {
+    "simulation_speed": 1,
+    "paused": true,
+    "pending_request_count": 0,
+    "treasury_coins": 215,
+    "reserved_wage_coins": 13,
+    "transactions": 141,
+    "wage_transactions": 125,
+    "food_purchase_transactions": 12,
+    "plank_trade_transactions": 4,
+    "completed_bilateral_trades": 4,
+    "resident_owned_planks": 4,
+    "accounted_planks": 0,
+    "coin_total_including_reserved_wages": 620,
+    "screenshot": "Docs/Validation/Economy_Runtime.png"
+  },
+  "kimi_check": {
+    "request_limit_for_check": 1,
+    "requests": 1,
+    "successes": 0,
+    "result": "HTTP 402 from the existing persistent budget gateway; runtime fell back to local rules",
+    "claim": "The bilateral trade trace is local-rule evidence, not a Kimi-authored trade. Earlier wood-production acceptance separately recorded 50 successful Kimi decisions. No retry or budget reset was attempted."
+  }
+}

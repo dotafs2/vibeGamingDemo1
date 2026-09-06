@@ -82,6 +82,23 @@ struct FHearthCommitment
     FString Id, ConversationId, TaskId, Status=TEXT("promised"), Result;
     int32 Worker=-1, Beneficiary=-1, Action=-1;
 };
+struct FHearthTransaction
+{
+    FString Id, Kind, TaskId, Item;
+    int32 From=-1, To=-1, Amount=0, Quantity=0;
+    float At=0;
+};
+struct FHearthWagePayable
+{
+    FString Id, TaskId, Status=TEXT("reserved");
+    int32 Worker=-1, Amount=0;
+};
+struct FHearthTradeOffer
+{
+    FString Id, Status=TEXT("proposed"), Result;
+    int32 Seller=-1, Buyer=-1, Quantity=1, Price=2, ReservedQuantity=0;
+    float Remaining=0;
+};
 
 UCLASS()
 class THREEHEARTHS_API AHearthVillager : public AActor
@@ -141,6 +158,8 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) float BuildProgress = 0.f;
     UPROPERTY(BlueprintReadOnly) float Energy = 75.f;
     UPROPERTY(BlueprintReadOnly) float SocialNeed = 30.f;
+    UPROPERTY(BlueprintReadOnly) int32 Coins = 12;
+    UPROPERTY(BlueprintReadOnly) int32 PersonalPlanks = 0;
     UPROPERTY() TObjectPtr<AHearthVillager> Actor;
     int32 Source = -1;
     int32 Trips = 0;
@@ -210,6 +229,10 @@ public:
     UPROPERTY(BlueprintReadOnly) int32 StoneStock=0;
     UPROPERTY(BlueprintReadOnly) int32 PlankStock=0;
     UPROPERTY(BlueprintReadOnly) int32 BeamStock=0;
+    UPROPERTY(BlueprintReadOnly) int32 TreasuryCoins=500;
+    TArray<FHearthTransaction> Transactions;
+    TArray<FHearthWagePayable> WagePayables;
+    TArray<FHearthTradeOffer> TradeOffers;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Village") bool bUseCropoutMap = false;
     UPROPERTY(BlueprintReadOnly) TArray<FHearthResident> Residents;
     UPROPERTY(BlueprintReadOnly) int32 SelectedResident = 0;
@@ -239,6 +262,7 @@ private:
     friend class FHearthWorldRecoveryTest;
     friend class FHearthToolOwnershipTest;
     friend class FHearthDerivedMaterialsTest;
+    friend class FHearthEconomyPersistenceTest;
     friend class FHearthSocietyPopulationTest;
     friend class FHearthSocialIntegrationTest;
     FString WorldPath;
@@ -279,6 +303,11 @@ private:
     void ReturnTool(int32 Index);
     bool ToolAvailableFor(int32 Index,int32 Operation) const;
     void FinishProduction(int32 Index,const FString& Result);
+    bool TransferCoins(const FString& Kind,const FString& TaskId,int32 From,int32 To,int32 Amount,const FString& Item,int32 Quantity);
+    int32 WageForOperation(int32 Operation) const;
+    bool ReserveWage(int32 Worker,const FString& TaskId,int32 Amount);
+    bool SettleWage(int32 Worker,const FString& TaskId);
+    void AdvanceEconomy(float Dt);
     void AppendProductionContext(const TSharedRef<FJsonObject>& Context) const;
     bool IsLand(const FVector& Position) const;
     bool IsClearPoint(const FVector& Position) const;
@@ -293,6 +322,7 @@ private:
     int32 WoodStock[3] = {12,12,12};
     int32 PlotCosts[10] = {12,9,6,6,6,6,6,6,6,6};
     float SnapshotTimer = 0.f;
+    float NextTradeAt = 8.f;
     double SimulationRemainder = 0;
     float AcceptanceCaptureDelay = -1.f;
     bool bAcceptanceCaptureDone = false;

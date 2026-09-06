@@ -62,6 +62,7 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     R.CargoType=0; R.CargoAmount=6; R.WorkDuration=12; R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     FHearthSite Site; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); Site.Kind=EHearthSiteKind::Corn;
     Site.Units=6; Site.Capacity=12; Site.Stage=2; Site.ReservedBy=0; V->ProductionSites={Site}; V->Produced[0]=6;
+    TestTrue(TEXT("Synthetic harvest reserves its wage"),V->ReserveWage(0,R.ActiveTaskId,V->WageForOperation(R.ProductionOp)));
     R.NextLifeDecision=V->Elapsed+60;
     if(!TestTrue(TEXT("Checkpoint cargo before deposit"),V->SaveWorld())) { AddError(V->WorldSaveStatus); return false; }
     const FString CargoTask=R.ActiveTaskId; V->AdvanceSimulation(.3f); TestEqual(TEXT("First delivery credited"),V->FoodStock,36);
@@ -80,6 +81,7 @@ bool FHearthWorldPersistenceTest::RunTest(const FString&)
     // enter StartProduction a second time and therefore must not debit again.
     R.Task=EHearthTask::ProductionTravel; R.ProductionSite=0; R.ProductionOp=7; R.WorkDuration=25;
     R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); R.Route={R.Actor->GetActorLocation()};
+    TestTrue(TEXT("Synthetic planting reserves its wage"),V->ReserveWage(0,R.ActiveTaskId,V->WageForOperation(R.ProductionOp)));
     TestTrue(TEXT("Borrow one shared trowel for the operation"),V->TryBorrowTool(0,7));
     const FString BorrowedToolOperation=R.HeldToolOperationId;
     V->ProductionSites[0].Kind=EHearthSiteKind::Land; V->ProductionSites[0].Units=0; V->ProductionSites[0].Stage=0; V->ProductionSites[0].ReservedBy=0;
@@ -130,12 +132,13 @@ bool FHearthDerivedMaterialsTest::RunTest(const FString&)
     TestEqual(TEXT("Plank job borrows the shared saw"),R.HeldToolId,FString(TEXT("tool_saw")));
     R.Task=EHearthTask::ProductionWork; R.Timer=0; R.Actor->SetActorLocation(Depot);
     V->AdvanceProduction(0,.1f);
-    TestEqual(TEXT("Four planks become in-transit cargo"),R.CargoAmount,4); TestEqual(TEXT("Plank cargo type"),R.CargoType,3);
+    TestEqual(TEXT("Three planks become public in-transit cargo"),R.CargoAmount,3); TestEqual(TEXT("Plank cargo type"),R.CargoType,3);
+    TestEqual(TEXT("Worker owns one plank from the four-plank output"),R.PersonalPlanks,1);
     TestTrue(TEXT("Saw returns before delivery"),R.HeldToolId.IsEmpty()); TestEqual(TEXT("No credit before depot deposit"),V->PlankStock,0);
     TestTrue(TEXT("Save in-transit planks"),V->SaveWorld()); TestTrue(TEXT("Restore in-transit planks"),V->LoadWorld());
-    TestEqual(TEXT("In-transit planks survive restart"),V->Residents[0].CargoAmount,4); TestEqual(TEXT("Still no premature plank credit"),V->PlankStock,0);
+    TestEqual(TEXT("In-transit planks survive restart"),V->Residents[0].CargoAmount,3); TestEqual(TEXT("Still no premature plank credit"),V->PlankStock,0);
     V->Residents[0].Task=EHearthTask::ProductionDeposit; V->Residents[0].Timer=0; V->AdvanceProduction(0,.1f);
-    TestEqual(TEXT("Planks enter persistent stock exactly once"),V->PlankStock,4); TestEqual(TEXT("Plank completion counted"),V->ProductionTotals.FindRef(TEXT("mill_planks")),1);
+    TestEqual(TEXT("Public planks enter persistent stock exactly once"),V->PlankStock,3); TestEqual(TEXT("Plank completion counted"),V->ProductionTotals.FindRef(TEXT("mill_planks")),1);
     TestTrue(TEXT("Carpenter accepts a beam job"),V->StartProduction(0,114,TEXT("test beam chain"),false));
     TestEqual(TEXT("Three more source logs are reserved"),V->AvailableWood(),InitialLogs-5);
     TestEqual(TEXT("Beam job borrows the shared mallet"),V->Residents[0].HeldToolId,FString(TEXT("tool_mallet")));
@@ -144,7 +147,7 @@ bool FHearthDerivedMaterialsTest::RunTest(const FString&)
     TestEqual(TEXT("Two beams enter stock"),V->BeamStock,2); TestEqual(TEXT("Beam completion counted"),V->ProductionTotals.FindRef(TEXT("frame_beams")),1);
     FString Error; FHearthWorldImage Image;
     TestTrue(TEXT("Derived material ledger validates"),HearthWorld::Decode(V->ExportWorldState(),Image,Error));
-    TestEqual(TEXT("Persisted plank stock"),Image.Planks,4); TestEqual(TEXT("Persisted beam stock"),Image.Beams,2);
+    TestEqual(TEXT("Persisted public plank stock"),Image.Planks,3); TestEqual(TEXT("Persisted private plank stock"),Image.People[0].Person.PersonalPlanks,1); TestEqual(TEXT("Persisted beam stock"),Image.Beams,2);
     return true;
 }
 
@@ -188,7 +191,7 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     TestTrue(TEXT("Corrupt file retained as named archive"),Archives.Num()>=1);
     FFileHelper::SaveStringToFile(TEXT("broken_current"),*V->WorldPath); FFileHelper::SaveStringToFile(TEXT("broken_backup"),*(V->WorldPath+TEXT(".bak")));
     const FString Before=V->WorldId; TestFalse(TEXT("Both damaged files fail closed"),V->LoadWorld()); TestEqual(TEXT("Failed recovery retains current in-memory world"),V->WorldId,Before);
-    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":3"),TEXT("\"schema\":999")),Good,Error));
+    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":4"),TEXT("\"schema\":999")),Good,Error));
     return true;
 }
 #endif

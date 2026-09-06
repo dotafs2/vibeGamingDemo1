@@ -155,7 +155,7 @@ void AHearthVillage::CompleteHistory(int32 Index,const FString& Result)
 TArray<int32> AHearthVillage::AvailableLifeActions(int32 Index) const
 {
     TArray<int32> Actions={0,1,2};
-    if(FoodStock>0) Actions.Add(50);
+    if(FoodStock>0 && Residents.IsValidIndex(Index) && Residents[Index].Coins>0) Actions.Add(50);
     Actions.Append(AvailableProductionActions(Index));
     for(int32 I=0;I<Residents.Num();++I) if(I!=Index && IsSociallyAvailable(I)) Actions.Add(3+I);
     return Actions;
@@ -199,7 +199,7 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
 void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
 {
     const auto& Person=Residents[Index]; int32 Action=0;
-    if(Person.Hunger>=60 && FoodStock>0) Action=50;
+    if(Person.Hunger>=60 && FoodStock>0 && Person.Coins>0) Action=50;
     else if(Person.Energy<45) Action=0;
     else
     {
@@ -242,6 +242,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     Person->SetStringField(TEXT("stable_id"),R.StableId); Person->SetStringField(TEXT("role"),R.Role);
     Person->SetBoolField(TEXT("king"),R.bKing); Person->SetNumberField(TEXT("age"),R.Age);
     Person->SetNumberField(TEXT("hunger"),R.Hunger); Person->SetNumberField(TEXT("mood"),R.Mood);
+    Person->SetNumberField(TEXT("coins"),R.Coins); Context->SetNumberField(TEXT("treasury_coins"),TreasuryCoins);
     Person->SetStringField(TEXT("remembered_relationships"),RelationshipSummary(Index));
     Person->SetNumberField(TEXT("energy"),R.Energy); Person->SetNumberField(TEXT("social_need"),R.SocialNeed);
     Context->SetObjectField(TEXT("resident"),Person); Context->SetNumberField(TEXT("completed_homes"),CompletedHomes());
@@ -260,7 +261,7 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
         M->SetStringField(TEXT("reason"),D.Reason); M->SetStringField(TEXT("result"),D.Result); Memory.Add(MakeShared<FJsonValueObject>(M));
     }
     Context->SetArrayField(TEXT("available_actions"),Actions); Context->SetArrayField(TEXT("recent_decisions_newest_first"),Memory);
-    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Rest when energy is low; eat action 50 when hungry, consuming one real food. When social_need exceeds 55, consider visiting an available idle neighbor. Visits start a real two-way conversation: each person can invite, ask help, accept or refuse, and accepted commitments become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
+    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Completed production earns a real wage from the village treasury. Rest when energy is low; eat action 50 when hungry, buying one real food for one coin. When social_need exceeds 55, consider visiting an available idle neighbor. Visits start a real two-way conversation: each person can invite, ask help, accept or refuse, and accepted commitments become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
     SendDecisionRequest(Index,Context,Prompt,true);
 }
 
@@ -294,8 +295,9 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
         FString Extra; bool Ate=false;
         if(R.LifeAction==50)
         {
-            if(FoodStock>0) { --FoodStock; ++Spent[0]; Ate=true; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("吃掉1份食物，已记入消耗。"); }
-            else Extra=TEXT("到达时食物已用完，这次没有吃到饭。");
+            if(FoodStock>0 && TransferCoins(TEXT("food_purchase"),R.ActiveTaskId,Index,-1,1,TEXT("food"),1))
+            { --FoodStock; ++Spent[0]; Ate=true; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("花1枚钱购买并吃掉1份食物，交易与消耗均已入账。"); }
+            else Extra=FoodStock<=0?TEXT("到达时食物已用完，这次没有吃到饭。"):TEXT("钱包不足或这笔餐食已经结算。");
         }
         else if(R.LifeAction==0) R.Energy=FMath::Min(100.f,R.Energy+35.f);
         // Legacy visit timers without a conversation do not invent a mutual encounter.

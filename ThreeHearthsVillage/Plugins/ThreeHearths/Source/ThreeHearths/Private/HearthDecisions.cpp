@@ -127,6 +127,8 @@ void AHearthVillage::LoadApiConfig()
     Config->TryGetBoolField(TEXT("autonomous_life"),bAutonomousLifeEnabled);
     double Interval=6; Config->TryGetNumberField(TEXT("life_decision_interval_seconds"),Interval);
     if(FMath::IsFinite(Interval)) LifeDecisionInterval=FMath::Clamp(static_cast<float>(Interval),1.f,120.f);
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthDisableApi")))
+    { bApiConfigured=true; bApiDisabledThisRun=true; ApiStatus=TEXT("本轮强制使用本地规则"); return; }
     bool Enabled=false; Config->TryGetBoolField(TEXT("enabled"),Enabled);
     if(!Enabled) { ApiStatus=TEXT("API 已关闭 · 本地人设规则"); return; }
     bApiConfigured=true;
@@ -148,6 +150,7 @@ void AHearthVillage::LoadApiConfig()
     double Value=30; Config->TryGetNumberField(TEXT("timeout_seconds"),Value); ApiTimeout=FMath::Clamp(static_cast<float>(Value),2.f,60.f);
     Value=256; Config->TryGetNumberField(TEXT("max_output_tokens"),Value); ApiMaxTokens=FMath::Clamp(static_cast<int32>(Value),128,2048);
     Value=600; Config->TryGetNumberField(TEXT("max_requests_per_run"),Value); ApiMaxRequests=FMath::IsFinite(Value)?static_cast<int32>(FMath::Clamp(Value,1.0,1000.0)):600;
+    int32 RequestedMax=0; if(FParse::Value(FCommandLine::Get(),TEXT("HearthApiMaxRequests="),RequestedMax)) ApiMaxRequests=FMath::Clamp(RequestedMax,1,ApiMaxRequests);
     ApiTokenField=TEXT("max_completion_tokens"); Config->TryGetStringField(TEXT("token_limit_field"),ApiTokenField);
     ApiFormat=TEXT("json_object"); Config->TryGetStringField(TEXT("response_format"),ApiFormat);
     ApiThinkingMode.Empty(); Config->TryGetStringField(TEXT("thinking_mode"),ApiThinkingMode);

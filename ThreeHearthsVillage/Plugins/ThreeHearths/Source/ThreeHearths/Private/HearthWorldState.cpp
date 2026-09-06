@@ -54,12 +54,12 @@ namespace HearthWorld
 
     FString Encode(const FHearthWorldImage& W)
     {
-        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),3); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),4); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision); NUM(Elapsed); NUM(Speed); NUM(Remainder);
-        NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone); NUM(Planks); NUM(Beams);
+        NUM(Selected); NUM(LastLife); NUM(Food); NUM(Stone); NUM(Planks); NUM(Beams); NUM(TreasuryCoins);
         J->SetNumberField(TEXT("ProducedPlanks"),W.Manufactured[0]); J->SetNumberField(TEXT("ProducedBeams"),W.Manufactured[1]);
         J->SetNumberField(TEXT("SpentPlanks"),W.ManufacturedSpent[0]); J->SetNumberField(TEXT("SpentBeams"),W.ManufacturedSpent[1]);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
@@ -97,7 +97,7 @@ namespace HearthWorld
                 B->SetNumberField(TEXT("meetings"),Pair.Value.Meetings); B->SetStringField(TEXT("memory"),Pair.Value.Memory); Bonds.Add(MakeShared<FJsonValueObject>(B));
             }
             P->SetArrayField(TEXT("bonds"),Bonds);
-            NUM(Plot); NUM(CarriedWood); NUM(DeliveredWood); NUM(BuildProgress); NUM(Energy); NUM(SocialNeed);
+            NUM(Plot); NUM(CarriedWood); NUM(DeliveredWood); NUM(BuildProgress); NUM(Energy); NUM(SocialNeed); NUM(Coins); NUM(PersonalPlanks);
             NUM(Source); NUM(Trips); NUM(Timer); NUM(MoveSpeed); NUM(MoveRetry); NUM(HistoryIndex);
             NUM(LifeAction); NUM(ProductionSite); NUM(ProductionOp); NUM(CargoType); NUM(CargoAmount); NUM(WorkDuration);
 #undef STR
@@ -130,7 +130,7 @@ namespace HearthWorld
 #undef NUM
             History.Add(MakeShared<FJsonValueObject>(P));
         }
-        FArray Chats,Promises;
+        FArray Chats,Promises,Transactions;
         for(const auto& S:W.Conversations)
         {
             auto C=MakeShared<FJsonObject>();
@@ -154,7 +154,30 @@ namespace HearthWorld
 #undef NUM
             Promises.Add(MakeShared<FJsonValueObject>(C));
         }
+        for(const auto& T:W.Transactions)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),T.Id); Entry->SetStringField(TEXT("kind"),T.Kind);
+            Entry->SetStringField(TEXT("task_id"),T.TaskId); Entry->SetStringField(TEXT("item"),T.Item);
+            Entry->SetNumberField(TEXT("from"),T.From); Entry->SetNumberField(TEXT("to"),T.To); Entry->SetNumberField(TEXT("amount"),T.Amount);
+            Entry->SetNumberField(TEXT("quantity"),T.Quantity); Entry->SetNumberField(TEXT("at"),T.At); Transactions.Add(MakeShared<FJsonValueObject>(Entry));
+        }
+        FArray Payables,Trades;
+        for(const auto& P:W.WagePayables)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),P.Id); Entry->SetStringField(TEXT("task_id"),P.TaskId);
+            Entry->SetStringField(TEXT("status"),P.Status); Entry->SetNumberField(TEXT("worker"),P.Worker); Entry->SetNumberField(TEXT("amount"),P.Amount);
+            Payables.Add(MakeShared<FJsonValueObject>(Entry));
+        }
+        for(const auto& T:W.TradeOffers)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),T.Id); Entry->SetStringField(TEXT("status"),T.Status); Entry->SetStringField(TEXT("result"),T.Result);
+            Entry->SetNumberField(TEXT("seller"),T.Seller); Entry->SetNumberField(TEXT("buyer"),T.Buyer); Entry->SetNumberField(TEXT("quantity"),T.Quantity);
+            Entry->SetNumberField(TEXT("price"),T.Price); Entry->SetNumberField(TEXT("reserved_quantity"),T.ReservedQuantity); Entry->SetNumberField(TEXT("remaining"),T.Remaining);
+            Trades.Add(MakeShared<FJsonValueObject>(Entry));
+        }
         J->SetArrayField(TEXT("conversations"),Chats); J->SetArrayField(TEXT("commitments"),Promises);
+        J->SetArrayField(TEXT("transactions"),Transactions);
+        J->SetArrayField(TEXT("wage_payables"),Payables); J->SetArrayField(TEXT("trade_offers"),Trades);
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
         J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("resources"),Resources); J->SetArrayField(TEXT("people"),People);
         J->SetArrayField(TEXT("sites"),Sites); J->SetArrayField(TEXT("history"),History); return Json(J);
@@ -164,7 +187,8 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,3);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,4);
+        const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
         if(W.PlotCount!=3 && W.PlotCount!=10) return false;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
@@ -172,6 +196,7 @@ namespace HearthWorld
 #define BOOL(Field) C.Bool(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision,0,9007199254740991.0); NUM(Elapsed,0,1e9); NUM(Speed,1,1000); NUM(Remainder,0,300);
         NUM(Selected,0,W.PlotCount-1); NUM(LastLife,-1,W.PlotCount-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
+        if(W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"))) NUM(TreasuryCoins,0,1e8);
         if(Root->HasField(TEXT("Planks"))) NUM(Planks,0,1e8);
         if(Root->HasField(TEXT("Beams"))) NUM(Beams,0,1e8);
         if(Root->HasField(TEXT("ProducedPlanks"))) C.Num(TEXT("ProducedPlanks"),W.Manufactured[0],0,1e8);
@@ -221,6 +246,8 @@ namespace HearthWorld
                 }
             }
             NUM(Plot,-1,W.PlotCount-1); NUM(CarriedWood,0,3); NUM(DeliveredWood,0,1000000); NUM(BuildProgress,0,1); NUM(Energy,0,100); NUM(SocialNeed,0,100);
+            if(W.Schema>=4 || (P.J.IsValid() && P.J->HasField(TEXT("Coins")))) NUM(Coins,0,100000000);
+            if(W.Schema>=4) NUM(PersonalPlanks,0,100000000);
             NUM(Source,-1,2); NUM(Trips,0,1e8); NUM(Timer,-1e9,1e6); NUM(MoveSpeed,1,2000); NUM(MoveRetry,0,1e6); NUM(HistoryIndex,-1,49999);
             NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,14); NUM(CargoType,-1,4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
@@ -282,6 +309,31 @@ namespace HearthWorld
 #undef NUM
                 C.Good&=P.Good; W.Commitments.Add(MoveTemp(S));
             }
+            const FArray EmptyTransactions;
+            const FArray& SavedTransactions=(W.Schema>=4 || Root->HasField(TEXT("transactions")))?C.Array(TEXT("transactions"),100000):EmptyTransactions;
+            for(const auto& V:SavedTransactions)
+            {
+                FHearthTransaction T; FRead P{Object(V)};
+                P.Str(TEXT("id"),T.Id); P.Str(TEXT("kind"),T.Kind); P.Str(TEXT("task_id"),T.TaskId); P.Str(TEXT("item"),T.Item);
+                P.Num(TEXT("from"),T.From,-1,W.PlotCount-1); P.Num(TEXT("to"),T.To,-1,W.PlotCount-1);
+                P.Num(TEXT("amount"),T.Amount,1,100000000); P.Num(TEXT("quantity"),T.Quantity,1,100000000); P.Num(TEXT("at"),T.At,0,1e9);
+                C.Good&=P.Good; W.Transactions.Add(MoveTemp(T));
+            }
+            if(W.Schema>=4)
+            {
+                for(const auto& V:C.Array(TEXT("wage_payables"),100000))
+                {
+                    FHearthWagePayable S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("task_id"),S.TaskId); P.Str(TEXT("status"),S.Status);
+                    P.Num(TEXT("worker"),S.Worker,0,W.PlotCount-1); P.Num(TEXT("amount"),S.Amount,1,1000); C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
+                }
+                for(const auto& V:C.Array(TEXT("trade_offers"),100000))
+                {
+                    FHearthTradeOffer S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("status"),S.Status); P.Str(TEXT("result"),S.Result);
+                    P.Num(TEXT("seller"),S.Seller,0,W.PlotCount-1); P.Num(TEXT("buyer"),S.Buyer,0,W.PlotCount-1);
+                    P.Num(TEXT("quantity"),S.Quantity,1,1000); P.Num(TEXT("price"),S.Price,1,1000000); P.Num(TEXT("reserved_quantity"),S.ReservedQuantity,0,1000);
+                    P.Num(TEXT("remaining"),S.Remaining,0,1000); C.Good&=P.Good; W.TradeOffers.Add(MoveTemp(S));
+                }
+            }
         }
         const FObject* Totals=nullptr;
         if(!Root->TryGetObjectField(TEXT("totals"),Totals) || (*Totals)->Values.Num()>1000) C.Good=false;
@@ -290,6 +342,7 @@ namespace HearthWorld
         if(!C.Good || W.People.Num()!=W.PlotCount || !Guid(W.Id) || !Guid(W.Run)) return false;
         Error=TEXT("世界存档引用、任务或资源守恒校验失败");
         TSet<FString> Ids;
+        TSet<FString> TransactionKeys;
         TSet<FString> HeldTools;
         auto Unique=[&Ids](const FString& Id) { if(!Guid(Id) || Ids.Contains(Id)) return false; Ids.Add(Id); return true; };
         if(!Unique(W.Id)) return false;
@@ -326,6 +379,7 @@ namespace HearthWorld
             if(R.CargoAmount>0 && (R.CargoType<0 || R.ProductionOp<9 || (R.Task!=EHearthTask::ProductionDeliver && R.Task!=EHearthTask::ProductionDeposit))) return false;
             if(R.CargoType>=0 && R.CargoType<=2) Accounted[R.CargoType]+=R.CargoAmount;
             if(R.CargoType>=3) AccountedManufactured[R.CargoType-3]+=R.CargoAmount;
+            AccountedManufactured[0]+=R.PersonalPlanks;
             Accounted[1]+=R.CarriedWood+R.DeliveredWood;
         }
         for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
@@ -377,6 +431,64 @@ namespace HearthWorld
                 if(P.Status==TEXT("active") && (P.TaskId!=R.ActiveTaskId || R.LifeAction!=P.Action || (R.Task!=EHearthTask::LifeTravel && R.Task!=EHearthTask::LifeActivity && R.Task<EHearthTask::ProductionTravel))) return false;
                 if(P.Status==TEXT("promised") && R.ConversationId!=P.ConversationId) return false;
             }
+        }
+        int64 ExpectedTreasury=500; TArray<int64> ExpectedWallets; ExpectedWallets.Init(12,W.PlotCount);
+        for(const auto& T:W.Transactions)
+        {
+            const FString Key=T.Kind+TEXT("|")+T.TaskId;
+            if(!Unique(T.Id) || !Guid(T.TaskId) || TransactionKeys.Contains(Key) || T.From==T.To
+                || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade"))
+                || (T.Kind==TEXT("wage") && (T.From!=-1 || T.To<0 || T.Item!=TEXT("labor") || T.Quantity!=1))
+                || (T.Kind==TEXT("food_purchase") && (T.From<0 || T.To!=-1 || T.Item!=TEXT("food") || T.Quantity!=1 || T.Amount!=1))
+                || (T.Kind==TEXT("plank_trade") && (T.From<0 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))) return false;
+            TransactionKeys.Add(Key);
+            if(T.From<0) ExpectedTreasury-=T.Amount; else ExpectedWallets[T.From]-=T.Amount;
+            if(T.To<0) ExpectedTreasury+=T.Amount; else ExpectedWallets[T.To]+=T.Amount;
+            if(ExpectedTreasury<0 || ExpectedWallets.ContainsByPredicate([](int64 Balance) { return Balance<0; })) return false;
+        }
+        TMap<FString,const FHearthWagePayable*> PayableByTask;
+        for(const auto& P:W.WagePayables)
+        {
+            if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=W.PlotCount
+                || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid"))) return false;
+            PayableByTask.Add(P.TaskId,&P);
+            const auto* Wage=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Kind==TEXT("wage") && T.TaskId==P.TaskId; });
+            if(P.Status==TEXT("paid") && (!Wage || Wage->To!=P.Worker || Wage->Amount!=P.Amount)) return false;
+            if(P.Status!=TEXT("paid") && Wage) return false;
+            if(P.Status==TEXT("reserved")) { ExpectedTreasury-=P.Amount; if(ExpectedTreasury<0) return false; }
+        }
+        if(W.Schema>=4)
+        {
+            for(const auto& T:W.Transactions) if(T.Kind==TEXT("wage"))
+            {
+                const auto* const* P=PayableByTask.Find(T.TaskId); if(!P || (*P)->Status!=TEXT("paid")) return false;
+            }
+            for(int32 I=0;I<W.People.Num();++I)
+            {
+                const auto& R=W.People[I].Person; const bool Production=R.Task>=EHearthTask::ProductionTravel && R.Task<=EHearthTask::ProductionDeposit;
+                if(Production)
+                {
+                    const auto* const* P=PayableByTask.Find(R.ActiveTaskId);
+                    if(!P || ((*P)->Status!=TEXT("reserved") && (*P)->Status!=TEXT("owed")) || (*P)->Worker!=I) return false;
+                }
+            }
+        }
+        TSet<FString> TradeIds;
+        for(const auto& T:W.TradeOffers)
+        {
+            if(!Unique(T.Id) || T.Seller==T.Buyer || T.Quantity!=1 || T.Price!=2 || T.Remaining<0
+                || (T.Status!=TEXT("proposed") && T.Status!=TEXT("accepted") && T.Status!=TEXT("completed") && T.Status!=TEXT("cancelled"))) return false;
+            const bool Active=T.Status==TEXT("proposed") || T.Status==TEXT("accepted");
+            if(T.ReservedQuantity!=(Active?1:0)) return false;
+            const auto* Sale=W.Transactions.FindByPredicate([&](const FHearthTransaction& X) { return X.Kind==TEXT("plank_trade") && X.TaskId==T.Id; });
+            if((T.Status==TEXT("completed"))!=!!Sale || (Sale && (Sale->From!=T.Buyer || Sale->To!=T.Seller))) return false;
+            if(Active) AccountedManufactured[0]+=T.ReservedQuantity; TradeIds.Add(T.Id);
+        }
+        if(W.Schema>=4) for(const auto& T:W.Transactions) if(T.Kind==TEXT("plank_trade") && !TradeIds.Contains(T.TaskId)) return false;
+        if(HasEconomy)
+        {
+            if(W.TreasuryCoins!=ExpectedTreasury) return false;
+            for(int32 I=0;I<W.PlotCount;++I) if(W.People[I].Person.Coins!=ExpectedWallets[I]) return false;
         }
         if(Accounted[0]!=W.PlotCount*10 || Accounted[1]!=(W.PlotCount==3?36:99) || Accounted[2]!=0
             || AccountedManufactured[0]!=0 || AccountedManufactured[1]!=0) return false;
