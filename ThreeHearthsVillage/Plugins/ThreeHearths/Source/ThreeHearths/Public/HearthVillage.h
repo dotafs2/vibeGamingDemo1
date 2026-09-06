@@ -93,11 +93,14 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<USkeletalMeshComponent> Hat;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> SelectionDisc;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Bundle;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Tool;
     UPROPERTY(VisibleAnywhere) TArray<TObjectPtr<UStaticMeshComponent>> AppearanceParts;
     UFUNCTION(BlueprintCallable) void ConfigureAppearance(int32 Profile);
     void SetMotion(EHearthTask Task, float Rate, int32 WorkKind=-1);
+    FString EquippedToolId;
     int32 ResidentIndex = -1;
 private:
+    void UpdateTool(EHearthTask Task,int32 WorkKind);
     UPROPERTY() TObjectPtr<UAnimSequence> Idle;
     UPROPERTY() TObjectPtr<UAnimSequence> Walk;
     UPROPERTY() TObjectPtr<UAnimSequence> Chop;
@@ -281,6 +284,8 @@ private:
     int32 PlotCosts[10] = {12,9,6,6,6,6,6,6,6,6};
     float SnapshotTimer = 0.f;
     double SimulationRemainder = 0;
+    float AcceptanceCaptureDelay = -1.f;
+    bool bAcceptanceCaptureDone = false;
     void AdvanceSimulation(float Dt);
     bool bReportedComplete = false;
     bool bApiReady = false;

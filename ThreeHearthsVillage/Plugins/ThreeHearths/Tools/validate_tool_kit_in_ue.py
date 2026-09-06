@@ -23,6 +23,7 @@ def main():
         assert hashlib.sha256(source_path.read_bytes()).hexdigest() == row['source_sha256'] == expected['sha256']
         mesh = ue.load_asset(row['mesh'])
         assert isinstance(mesh, ue.StaticMesh) and mesh.get_num_lods() > 0, asset_id
+        assert not mesh.get_editor_property('nanite_settings').get_editor_property('enabled'), asset_id
         bounds = mesh.get_bounds().box_extent
         expected_extent = [size * 50 for size in expected['size_authoring_m']]
         actual_extent = [bounds.x, bounds.y, bounds.z]
@@ -32,7 +33,7 @@ def main():
         assert all(slot.get_editor_property('material_interface') is not None for slot in slots)
         rows.append({'id': asset_id, 'tool_id': expected['tool_id'], 'native_mesh': row['mesh'],
                      'source_hash_current': True, 'dimensions_cm': [value * 2 for value in actual_extent],
-                     'material_slots': len(slots)})
+                     'material_slots': len(slots), 'nanite_enabled': False})
     report = {'status': 'passed', 'engine': ue.SystemLibrary.get_engine_version(),
               'scope': 'native renderable meshes, source hashes, scale and material slots',
               'native_meshes': len(rows), 'unique_tool_count': len({row['tool_id'] for row in rows}),

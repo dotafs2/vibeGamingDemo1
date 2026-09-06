@@ -38,7 +38,14 @@ def main():
     }
     try:
         for asset_id, source in sources:
-            report['assets'].append(import_one(source, asset_id, previous, destination_root=DEST))
+            row = import_one(source, asset_id, previous, destination_root=DEST)
+            mesh = ue.load_asset(row['mesh'])
+            nanite = mesh.get_editor_property('nanite_settings')
+            nanite.set_editor_property('enabled', False)
+            mesh.set_editor_property('nanite_settings', nanite)
+            assert ue.EditorAssetLibrary.save_loaded_asset(mesh, only_if_is_dirty=False)
+            row['nanite_enabled'] = False
+            report['assets'].append(row)
             REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             ue.log('[ToolKitImport] ' + asset_id + ' saved')
         report['status'] = 'passed'

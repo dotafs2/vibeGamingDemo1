@@ -22,6 +22,8 @@
 #include "Widgets/Layout/SScrollBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Widgets/Notifications/SProgressBar.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 TSharedRef<SWidget> MakeHearthHistoryWidget(AHearthVillage* Village);
 TSharedRef<SWidget> MakeHearthSocialWidget(AHearthVillage* Village);
@@ -251,6 +253,14 @@ void AHearthPlayerController::BeginPlay()
             return Desired/FMath::Max(Inherited,0.1f);
         })[SNew(SHearthOverlay).Village(Village.Get())];
         GEngine->GameViewport->AddViewportWidgetContent(VillageUI.ToSharedRef(),10);
+    }
+    int32 AcceptanceFocus=-1;
+    if(Village.IsValid() && FParse::Value(FCommandLine::Get(),TEXT("HearthFocusResident="),AcceptanceFocus) && Village->Residents.IsValidIndex(AcceptanceFocus))
+    {
+        Village->SelectResident(AcceptanceFocus);
+        FocusResident();
+        CameraZoom=bIslandCamera?.075f:.45f;
+        UpdateCamera();
     }
 }
 void AHearthPlayerController::PlayerTick(float DeltaTime)

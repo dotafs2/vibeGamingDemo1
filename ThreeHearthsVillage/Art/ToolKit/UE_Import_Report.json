@@ -16,7 +16,8 @@
       ],
       "import_seconds": 0.5310000000754371,
       "saved_assets": 8,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_mallet",
@@ -31,7 +32,8 @@
       ],
       "import_seconds": 0.125,
       "saved_assets": 6,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_axe",
@@ -46,7 +48,8 @@
       ],
       "import_seconds": 0.1559999999590218,
       "saved_assets": 8,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_saw",
@@ -61,7 +64,8 @@
       ],
       "import_seconds": 0.0940000000409782,
       "saved_assets": 6,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_pickaxe",
@@ -76,7 +80,8 @@
       ],
       "import_seconds": 0.14099999994505197,
       "saved_assets": 7,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_shovel",
@@ -91,7 +96,8 @@
       ],
       "import_seconds": 0.14000000001396984,
       "saved_assets": 8,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_hoe",
@@ -106,7 +112,8 @@
       ],
       "import_seconds": 0.1410000000614673,
       "saved_assets": 7,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     },
     {
       "id": "tool_trowel",
@@ -121,7 +128,8 @@
       ],
       "import_seconds": 0.10899999993853271,
       "saved_assets": 7,
-      "collision": "not_generated_requires_gameplay_template"
+      "collision": "not_generated_requires_gameplay_template",
+      "nanite_enabled": false
     }
   ]
 }

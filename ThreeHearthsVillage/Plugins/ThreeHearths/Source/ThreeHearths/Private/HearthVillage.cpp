@@ -9,7 +9,10 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "HAL/FileManager.h"
+#include "HighResScreenshot.h"
 #include "Serialization/JsonSerializer.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -90,6 +93,11 @@ AHearthVillager::AHearthVillager()
     Bundle->SetRelativeScale3D(FVector(0.32f,0.60f,0.25f));
     Bundle->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Bundle->SetVisibility(false);
+    Tool = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WorkTool"));
+    Tool->SetupAttachment(Body,TEXT("hand_r"));
+    Tool->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Tool->SetCanEverAffectNavigation(false);
+    Tool->SetVisibility(false);
 }
 
 void AHearthVillager::ConfigureAppearance(int32 Profile)
@@ -133,6 +141,7 @@ void AHearthVillager::ConfigureAppearance(int32 Profile)
 
 void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
 {
+    UpdateTool(Task,WorkKind);
     if (Task != LastMotion || WorkKind != LastWorkKind || !Body->IsPlaying())
     {
         UAnimSequence* Animation = Idle;
@@ -148,6 +157,37 @@ void AHearthVillager::SetMotion(EHearthTask Task, float Rate, int32 WorkKind)
         LastMotion=Task;
     }
     Body->GlobalAnimRateScale=Rate;
+}
+
+void AHearthVillager::UpdateTool(EHearthTask Task,int32 WorkKind)
+{
+    FString Id; FVector Grip;
+    if(Task==EHearthTask::Chopping) { Id=TEXT("tool_axe"); Grip=FVector(-7.925f,0,12.5f); }
+    else if(Task==EHearthTask::Building) { Id=TEXT("tool_hammer"); Grip=FVector(1.8f,.1f,11.5f); }
+    else if(Task==EHearthTask::ProductionWork)
+    {
+        if(WorkKind==10) { Id=TEXT("tool_axe"); Grip=FVector(-7.925f,0,12.5f); }
+        else if(WorkKind==11) { Id=TEXT("tool_pickaxe"); Grip=FVector(1.347f,0,12.5f); }
+        else if(WorkKind==5) { Id=TEXT("tool_hammer"); Grip=FVector(1.8f,.1f,11.5f); }
+        else if(WorkKind==0 || WorkKind==6) { Id=TEXT("tool_shovel"); Grip=FVector(0,.3f,13.5f); }
+        else if(WorkKind==7 || WorkKind==12) { Id=TEXT("tool_trowel"); Grip=FVector(-.868f,.2f,9.8f); }
+        else if((WorkKind>=1 && WorkKind<=4) || WorkKind==8 || WorkKind==9) { Id=TEXT("tool_hoe"); Grip=FVector(0,0,13.5f); }
+    }
+    if(Id.IsEmpty())
+    {
+        EquippedToolId.Empty(); Tool->SetVisibility(false); return;
+    }
+    if(Id!=EquippedToolId)
+    {
+        const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/ToolKit/%s/%s.%s"),*Id,*Id,*Id);
+        UStaticMesh* Mesh=LoadObject<UStaticMesh>(nullptr,*Path);
+        if(!Mesh) { EquippedToolId.Empty(); Tool->SetVisibility(false); return; }
+        Tool->SetStaticMesh(Mesh); EquippedToolId=Id;
+    }
+    Tool->SetRelativeRotation(FRotator::ZeroRotator);
+    Tool->SetRelativeLocation(-Grip);
+    Tool->SetRelativeScale3D(FVector::OneVector);
+    Tool->SetVisibility(true);
 }
 
 AHearthVillage::AHearthVillage()
@@ -301,6 +341,7 @@ void AHearthVillage::OnConstruction(const FTransform& Transform)
 void AHearthVillage::BeginPlay()
 {
     Super::BeginPlay();
+    FParse::Value(FCommandLine::Get(),TEXT("HearthCaptureDelay="),AcceptanceCaptureDelay);
     BuildEnvironment();
     LoadHistory();
     ResetVillageState();
@@ -508,6 +549,16 @@ void AHearthVillage::Tick(float DeltaSeconds)
     // Small, fixed simulation steps preserve transfers and task transitions at high speeds.
     // Clamp long stalls to bound work per frame; HTTP timeouts continue using wall time.
     const float RealDt=FMath::IsFinite(DeltaSeconds)?FMath::Clamp(DeltaSeconds,0.f,0.25f):0.f;
+    if(!bAcceptanceCaptureDone && AcceptanceCaptureDelay>=0.f)
+    {
+        AcceptanceCaptureDelay-=RealDt;
+        if(AcceptanceCaptureDelay<=0.f)
+        {
+            bAcceptanceCaptureDone=true;
+            const FString Capture=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/continuous-development/tool-action.png");
+            FScreenshotRequest::RequestScreenshot(Capture,false,false);
+        }
+    }
     if(!bSimulationPaused && RealDt>0.f)
     {
         ConsumeDecision();
@@ -737,6 +788,7 @@ FString AHearthVillage::GetSnapshot() const
         J->SetStringField(TEXT("reason"),R.Reason); J->SetStringField(TEXT("status"),StatusFor(I));
         J->SetStringField(TEXT("decision_source"),R.DecisionSource); J->SetStringField(TEXT("decision_note"),R.DecisionNote);
         J->SetStringField(TEXT("house_blueprint"),R.HouseBlueprint); J->SetStringField(TEXT("wall_material"),R.WallMaterial); J->SetStringField(TEXT("roof_material"),R.RoofMaterial);
+        J->SetStringField(TEXT("equipped_tool"),IsValid(R.Actor)?R.Actor->EquippedToolId:FString());
         J->SetNumberField(TEXT("task"),static_cast<int32>(R.Task)); J->SetNumberField(TEXT("plot"),R.Plot);
         J->SetNumberField(TEXT("carried"),R.CarriedWood); J->SetNumberField(TEXT("delivered"),R.DeliveredWood);
         J->SetNumberField(TEXT("cost"),CostFor(I)); J->SetNumberField(TEXT("build_progress"),R.BuildProgress);

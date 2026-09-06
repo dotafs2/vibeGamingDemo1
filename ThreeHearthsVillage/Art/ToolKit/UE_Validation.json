@@ -18,7 +18,8 @@
         8.0,
         44.70000457763672
       ],
-      "material_slots": 7
+      "material_slots": 7,
+      "nanite_enabled": false
     },
     {
       "id": "tool_mallet",
@@ -30,7 +31,8 @@
         12.700000762939453,
         47.55000305175781
       ],
-      "material_slots": 5
+      "material_slots": 5,
+      "nanite_enabled": false
     },
     {
       "id": "tool_axe",
@@ -42,7 +44,8 @@
         6.800000190734863,
         75.54338073730469
       ],
-      "material_slots": 7
+      "material_slots": 7,
+      "nanite_enabled": false
     },
     {
       "id": "tool_saw",
@@ -54,7 +57,8 @@
         5.700000286102295,
         19.590627670288086
       ],
-      "material_slots": 5
+      "material_slots": 5,
+      "nanite_enabled": false
     },
     {
       "id": "tool_pickaxe",
@@ -66,7 +70,8 @@
         7.599999904632568,
         85.79999542236328
       ],
-      "material_slots": 6
+      "material_slots": 6,
+      "nanite_enabled": false
     },
     {
       "id": "tool_shovel",
@@ -78,7 +83,8 @@
         6.800000190734863,
         106.41661071777344
       ],
-      "material_slots": 7
+      "material_slots": 7,
+      "nanite_enabled": false
     },
     {
       "id": "tool_hoe",
@@ -90,7 +96,8 @@
         26.399999618530273,
         89.28477478027344
       ],
-      "material_slots": 6
+      "material_slots": 6,
+      "nanite_enabled": false
     },
     {
       "id": "tool_trowel",
@@ -102,7 +109,8 @@
         6.803999900817871,
         38.61701583862305
       ],
-      "material_slots": 6
+      "material_slots": 6,
+      "nanite_enabled": false
     }
   ]
 }

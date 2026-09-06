@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "engine": "5.8.1",
+  "scope": "runtime work-tool attachment, transition cleanup, persistence-derived restoration, and native asset settings",
+  "observations": {
+    "restored_resident": "林恩",
+    "restored_task": "ProductionWork",
+    "restored_operation": "harvest",
+    "restored_tool": "tool_hoe",
+    "attachment_bone": "hand_r",
+    "capture": "Tool_Action_Acceptance.png",
+    "capture_result": "tool visible with the real farming animation and held at the supplied grip anchor",
+    "following_task": "ProductionDeliver",
+    "following_equipped_tool": "",
+    "duplicate_component_prevention": "one reusable WorkTool component per AHearthVillager"
+  },
+  "native_assets": {
+    "validated_meshes": 8,
+    "unique_tool_ids": 8,
+    "nanite_enabled": false,
+    "reason": "small equipped meshes retain their authored material slots without runtime Nanite usage recompilation"
+  },
+  "automation": {
+    "log": "Saved/Logs/ThreeHearthsAutomation7.log",
+    "passed": 12,
+    "failed": 0,
+    "focused_test": "ThreeHearths.Residents.ToolTaskBinding"
+  }
+}
