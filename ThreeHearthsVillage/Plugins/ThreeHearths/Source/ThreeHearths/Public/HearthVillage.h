@@ -5,6 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
 #include "HAL/PlatformProcess.h"
+#include "HearthStructurePlan.h"
 #include "HearthVillage.generated.h"
 
 class USkeletalMeshComponent;
@@ -279,6 +280,7 @@ public:
     TArray<FHearthTransaction> Transactions;
     TArray<FHearthTaxAssessment> TaxAssessments;
     FHearthPublicProject PublicProject;
+    UPROPERTY(BlueprintReadOnly) TArray<FHearthStructurePlan> StructurePlans;
     UFUNCTION(BlueprintCallable) bool CancelPublicWork(int32 Resident);
     FString PublicWorksSummary() const;
     TArray<FHearthWagePayable> WagePayables;
@@ -310,6 +312,7 @@ private:
     friend class FHearthParallelCapacityTest;
     friend class FHearthWorldPersistenceTest;
     friend class FHearthPublicProjectPersistenceTest;
+    friend class FHearthStructurePlanPersistenceTest;
     friend class FHearthWorldRecoveryTest;
     friend class FHearthToolOwnershipTest;
     friend class FHearthDerivedMaterialsTest;

@@ -361,7 +361,7 @@ void AHearthVillage::ResetVillageState()
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
     for(auto& Mesh:PublicMeshes) if(IsValid(Mesh.Get())) Mesh->DestroyComponent();
-    PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); PublicVisualCount=-1; PublicScheduleTimer=0;
+    PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); StructurePlans.Reset(); PublicVisualCount=-1; PublicScheduleTimer=0;
     Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
     TreasuryCoins=500; TaxProjectCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
     bSocialOpen=false; ++SocialRevision;

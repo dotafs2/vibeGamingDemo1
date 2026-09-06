@@ -49,8 +49,75 @@ namespace HearthWorld
             { double N=0; if(!Value->AsArray()[I]->TryGetNumber(N) || !FMath::IsFinite(N) || FMath::Abs(N)>1000000) Good=false; else P[I]=N; }
         }
         void Vector(const TCHAR* K,FVector& P) { Vector(J.IsValid()?J->TryGetField(K):nullptr,P); }
+        void Vector2(const TSharedPtr<FJsonValue>& Value,FVector2D& P)
+        {
+            if(!Value.IsValid() || Value->Type!=EJson::Array || Value->AsArray().Num()!=2) { Good=false; return; }
+            for(int32 I=0;I<2;++I)
+            { double N=0; if(!Value->AsArray()[I]->TryGetNumber(N) || !FMath::IsFinite(N) || FMath::Abs(N)>1000000) Good=false; else P[I]=N; }
+        }
+        void Vector2(const TCHAR* K,FVector2D& P) { Vector2(J.IsValid()?J->TryGetField(K):nullptr,P); }
+        void Rotator(const TCHAR* K,FRotator& R)
+        {
+            const auto V=J.IsValid()?J->TryGetField(K):nullptr;
+            if(!V.IsValid() || V->Type!=EJson::Array || V->AsArray().Num()!=3) { Good=false; return; }
+            double N[3]={0,0,0};
+            for(int32 I=0;I<3;++I) if(!V->AsArray()[I]->TryGetNumber(N[I]) || !FMath::IsFinite(N[I]) || FMath::Abs(N[I])>360) Good=false;
+            if(Good) R=FRotator(N[1],N[2],N[0]);
+        }
     };
     FObject Object(const TSharedPtr<FJsonValue>& V) { return V.IsValid() && V->Type==EJson::Object?V->AsObject():nullptr; }
+
+    TSharedPtr<FJsonValue> Vec2(const FVector2D& P)
+    { return MakeShared<FJsonValueArray>(FArray{MakeShared<FJsonValueNumber>(P.X),MakeShared<FJsonValueNumber>(P.Y)}); }
+    TSharedPtr<FJsonValue> Rot(const FRotator& R)
+    { return MakeShared<FJsonValueArray>(FArray{MakeShared<FJsonValueNumber>(R.Roll),MakeShared<FJsonValueNumber>(R.Pitch),MakeShared<FJsonValueNumber>(R.Yaw)}); }
+    FArray Materials(const TArray<FHearthStructureMaterialQuantity>& Inputs)
+    {
+        FArray Out; for(const auto& M:Inputs) { auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("id"),M.MaterialId); J->SetNumberField(TEXT("quantity"),M.Quantity); Out.Add(MakeShared<FJsonValueObject>(J)); } return Out;
+    }
+    void EncodeStructurePlan(const FHearthStructurePlan& S,FArray& Out)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("plan_id"),S.PlanId); J->SetStringField(TEXT("stable_seed"),S.StableSeed); J->SetNumberField(TEXT("revision"),S.Revision);
+        auto F=MakeShared<FJsonObject>(); F->SetField(TEXT("size"),Vec2(S.Footprint.Size)); F->SetField(TEXT("origin"),Vec(S.Footprint.Origin)); F->SetField(TEXT("orientation"),Rot(S.Footprint.Orientation)); J->SetObjectField(TEXT("footprint"),F);
+        auto R=MakeShared<FJsonObject>(); R->SetStringField(TEXT("need"),S.Reasons.Need); R->SetStringField(TEXT("occupation"),S.Reasons.Occupation); R->SetStringField(TEXT("budget"),S.Reasons.Budget); R->SetStringField(TEXT("relationship"),S.Reasons.Relationship); R->SetStringField(TEXT("road_access"),S.Reasons.RoadAccess); J->SetObjectField(TEXT("reasons"),R);
+        FArray Recipes; for(const auto& Recipe:S.MaterialRecipes) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),Recipe.RecipeId); X->SetStringField(TEXT("catalog_id"),Recipe.CatalogId); X->SetArrayField(TEXT("inputs"),Materials(Recipe.Inputs)); Recipes.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("recipes"),Recipes);
+        FArray Rooms; for(const auto& Room:S.Rooms) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),Room.Id); X->SetStringField(TEXT("label"),Room.Label); FArray A; for(const auto& Id:Room.OpeningIds) A.Add(MakeShared<FJsonValueString>(Id)); X->SetArrayField(TEXT("opening_ids"),A); Rooms.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("rooms"),Rooms);
+        FArray Openings; for(const auto& O:S.Openings) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),O.Id); X->SetStringField(TEXT("room_id"),O.RoomId); X->SetField(TEXT("offset"),Vec2(O.Offset)); X->SetField(TEXT("access_direction"),Vec2(O.AccessDirection)); X->SetNumberField(TEXT("width"),O.Width); X->SetBoolField(TEXT("door"),O.bDoor); Openings.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("openings"),Openings);
+        FArray Components; for(const auto& C:S.Components) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),C.Id); X->SetStringField(TEXT("catalog_id"),C.CatalogId); X->SetStringField(TEXT("extension_id"),C.ExtensionId); X->SetField(TEXT("offset"),Vec(C.Offset)); X->SetField(TEXT("orientation"),Rot(C.Orientation)); X->SetField(TEXT("size"),Vec2(C.Size)); X->SetNumberField(TEXT("height"),C.Height); X->SetNumberField(TEXT("material_cost"),C.MaterialCost); X->SetStringField(TEXT("recipe_id"),C.RecipeId); X->SetArrayField(TEXT("materials"),Materials(C.Materials)); X->SetNumberField(TEXT("collision_radius"),C.CollisionRadius); X->SetBoolField(TEXT("requires_support"),C.bRequiresSupport); X->SetStringField(TEXT("supports_component_id"),C.SupportsComponentId); Components.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("components"),Components);
+        FArray Attachments; for(const auto& A:S.Attachments) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),A.Id); X->SetStringField(TEXT("parent_component_id"),A.ParentComponentId); X->SetStringField(TEXT("catalog_id"),A.CatalogId); X->SetStringField(TEXT("socket"),A.Socket); X->SetField(TEXT("offset"),Vec(A.Offset)); X->SetField(TEXT("orientation"),Rot(A.Orientation)); X->SetNumberField(TEXT("height"),A.Height); Attachments.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("attachments"),Attachments);
+        FArray Connections; for(const auto& C:S.Connections) { auto X=MakeShared<FJsonObject>(); X->SetStringField(TEXT("id"),C.Id); X->SetStringField(TEXT("from_component_id"),C.FromComponentId); X->SetStringField(TEXT("to_component_id"),C.ToComponentId); X->SetStringField(TEXT("from_socket"),C.FromSocket); X->SetStringField(TEXT("to_socket"),C.ToSocket); X->SetBoolField(TEXT("load_bearing"),C.bLoadBearing); Connections.Add(MakeShared<FJsonValueObject>(X)); } J->SetArrayField(TEXT("connections"),Connections);
+        Out.Add(MakeShared<FJsonValueObject>(J));
+    }
+
+    bool DecodeMaterials(const FArray& Values,TArray<FHearthStructureMaterialQuantity>& Out)
+    {
+        if(Values.Num()>100) return false;
+        for(const auto& V:Values)
+        {
+            FHearthStructureMaterialQuantity M; FRead P{Object(V)}; P.Str(TEXT("id"),M.MaterialId,256); P.Num(TEXT("quantity"),M.Quantity,1,100000000);
+            if(!P.Good || M.MaterialId.IsEmpty() || Out.ContainsByPredicate([&](const auto& Existing){ return Existing.MaterialId==M.MaterialId; })) return false;
+            Out.Add(MoveTemp(M));
+        }
+        return true;
+    }
+
+    bool DecodeStructurePlan(const TSharedPtr<FJsonValue>& Value,FHearthStructurePlan& S)
+    {
+        FRead P{Object(Value)}; P.Str(TEXT("plan_id"),S.PlanId,256); P.Str(TEXT("stable_seed"),S.StableSeed,256); P.Num(TEXT("revision"),S.Revision,1,100000000);
+        if(!P.J.IsValid()) return false;
+        FRead F{Object(P.J->TryGetField(TEXT("footprint")))}; F.Vector2(TEXT("size"),S.Footprint.Size); F.Vector(TEXT("origin"),S.Footprint.Origin); F.Rotator(TEXT("orientation"),S.Footprint.Orientation);
+        FRead R{Object(P.J->TryGetField(TEXT("reasons")))}; R.Str(TEXT("need"),S.Reasons.Need,4096); R.Str(TEXT("occupation"),S.Reasons.Occupation,4096); R.Str(TEXT("budget"),S.Reasons.Budget,4096); R.Str(TEXT("relationship"),S.Reasons.Relationship,4096); R.Str(TEXT("road_access"),S.Reasons.RoadAccess,4096);
+        P.Good &= F.Good && R.Good;
+        for(const auto& V:P.Array(TEXT("recipes"),1000)) { FHearthStructureMaterialRecipe X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.RecipeId,256); Q.Str(TEXT("catalog_id"),X.CatalogId,256); if(!DecodeMaterials(Q.Array(TEXT("inputs"),100),X.Inputs)) Q.Good=false; if(!Q.Good || X.RecipeId.IsEmpty() || X.CatalogId.IsEmpty() || S.MaterialRecipes.ContainsByPredicate([&](const auto& Existing){ return Existing.RecipeId==X.RecipeId; })) return false; S.MaterialRecipes.Add(MoveTemp(X)); }
+        for(const auto& V:P.Array(TEXT("rooms"),1000)) { FHearthStructureRoom X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.Id,256); Q.Str(TEXT("label"),X.Label,4096); for(const auto& Id:Q.Array(TEXT("opening_ids"),1000)) { FString SId; if(!Id->TryGetString(SId)||SId.Len()>256) Q.Good=false; else X.OpeningIds.Add(SId); } if(!Q.Good || S.Rooms.ContainsByPredicate([&](const auto& Existing){ return Existing.Id==X.Id; })) return false; S.Rooms.Add(MoveTemp(X)); }
+        for(const auto& V:P.Array(TEXT("openings"),2000)) { FHearthStructureOpening X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.Id,256); Q.Str(TEXT("room_id"),X.RoomId,256); Q.Vector2(TEXT("offset"),X.Offset); Q.Vector2(TEXT("access_direction"),X.AccessDirection); Q.Num(TEXT("width"),X.Width,0,10000); Q.Bool(TEXT("door"),X.bDoor); if(!Q.Good || S.Openings.ContainsByPredicate([&](const auto& Existing){ return Existing.Id==X.Id; })) return false; S.Openings.Add(MoveTemp(X)); }
+        for(const auto& V:P.Array(TEXT("components"),10000)) { FHearthStructureComponent X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.Id,256); Q.Str(TEXT("catalog_id"),X.CatalogId,256); Q.Str(TEXT("extension_id"),X.ExtensionId,256); Q.Vector(TEXT("offset"),X.Offset); Q.Rotator(TEXT("orientation"),X.Orientation); Q.Vector2(TEXT("size"),X.Size); Q.Num(TEXT("height"),X.Height,0,100000); Q.Num(TEXT("material_cost"),X.MaterialCost,0,100000000); Q.Str(TEXT("recipe_id"),X.RecipeId,256); if(!DecodeMaterials(Q.Array(TEXT("materials"),100),X.Materials)) Q.Good=false; Q.Num(TEXT("collision_radius"),X.CollisionRadius,0,100000); Q.Bool(TEXT("requires_support"),X.bRequiresSupport); Q.Str(TEXT("supports_component_id"),X.SupportsComponentId,256); if(!Q.Good || S.Components.ContainsByPredicate([&](const auto& Existing){ return Existing.Id==X.Id; })) return false; S.Components.Add(MoveTemp(X)); }
+        for(const auto& V:P.Array(TEXT("attachments"),10000)) { FHearthStructureAttachment X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.Id,256); Q.Str(TEXT("parent_component_id"),X.ParentComponentId,256); Q.Str(TEXT("catalog_id"),X.CatalogId,256); Q.Str(TEXT("socket"),X.Socket,256); Q.Vector(TEXT("offset"),X.Offset); Q.Rotator(TEXT("orientation"),X.Orientation); Q.Num(TEXT("height"),X.Height,0,100000); if(!Q.Good || S.Attachments.ContainsByPredicate([&](const auto& Existing){ return Existing.Id==X.Id; })) return false; S.Attachments.Add(MoveTemp(X)); }
+        for(const auto& V:P.Array(TEXT("connections"),10000)) { FHearthStructureConnection X; FRead Q{Object(V)}; Q.Str(TEXT("id"),X.Id,256); Q.Str(TEXT("from_component_id"),X.FromComponentId,256); Q.Str(TEXT("to_component_id"),X.ToComponentId,256); Q.Str(TEXT("from_socket"),X.FromSocket,256); Q.Str(TEXT("to_socket"),X.ToSocket,256); Q.Bool(TEXT("load_bearing"),X.bLoadBearing); if(!Q.Good || S.Connections.ContainsByPredicate([&](const auto& Existing){ return Existing.Id==X.Id; })) return false; S.Connections.Add(MoveTemp(X)); }
+        if(!P.Good || S.PlanId.IsEmpty() || S.StableSeed.IsEmpty()) return false;
+        FHearthStructureValidationContext Context; Context.AvailableBudget=0; for(const auto& C:S.Components) Context.AvailableBudget+=C.MaterialCost; for(const auto& C:S.Components) for(const auto& M:C.Materials) { auto* A=Context.AvailableMaterials.FindByPredicate([&](const auto& E){ return E.MaterialId==M.MaterialId; }); if(A) A->Quantity+=M.Quantity; else { FHearthStructureMaterialQuantity N=M; Context.AvailableMaterials.Add(N); } } Context.bRoadAccessible=true;
+        return HearthStructurePlan::Validate(S,Context).bValid;
+    }
 
     FString Encode(const FHearthWorldImage& W)
     {
@@ -230,14 +297,16 @@ namespace HearthWorld
         if(W.Schema>=8) J->SetObjectField(TEXT("public_project"),Project);
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
         J->SetObjectField(TEXT("totals"),Totals); J->SetArrayField(TEXT("plots"),Plots); J->SetArrayField(TEXT("resources"),Resources); J->SetArrayField(TEXT("people"),People);
-        J->SetArrayField(TEXT("sites"),Sites); J->SetArrayField(TEXT("history"),History); return Json(J);
+        J->SetArrayField(TEXT("sites"),Sites); J->SetArrayField(TEXT("history"),History);
+        if(W.Schema>=9) { FArray Plans; for(const auto& Plan:W.StructurePlans) EncodeStructurePlan(Plan,Plans); J->SetArrayField(TEXT("structure_plans"),Plans); }
+        return Json(J);
     }
 
     bool Decode(const FString& Text,FHearthWorldImage& Out,FString& Error)
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,8);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,9);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         const bool HasTaxes=W.Schema>=6 || Root->HasField(TEXT("tax_assessments"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,10);
@@ -307,7 +376,8 @@ namespace HearthWorld
             if(W.Schema>=4 || (P.J.IsValid() && P.J->HasField(TEXT("Coins")))) NUM(Coins,0,100000000);
             if(W.Schema>=4) NUM(PersonalPlanks,0,100000000);
             NUM(Source,-1,2); NUM(Trips,0,1e8); NUM(Timer,-1e9,1e6); NUM(MoveSpeed,1,2000); NUM(MoveRetry,0,1e6); NUM(HistoryIndex,-1,49999);
-            NUM(LifeAction,-1,100000); NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,14); NUM(CargoType,-1,4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
+            if(P.J.IsValid() && P.J->HasField(TEXT("LifeAction"))) NUM(LifeAction,-1,100000);
+            NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,14); NUM(CargoType,-1,4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
 #undef NUM
             P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::SupplyHandover)); R.Task=static_cast<EHearthTask>(Task);
@@ -438,6 +508,15 @@ namespace HearthWorld
             C.Good&=P.Good;
         }
         else if(W.Schema>=8) C.Good=false;
+        if(W.Schema>=9)
+        {
+            for(const auto& V:C.Array(TEXT("structure_plans"),100))
+            {
+                FHearthStructurePlan Plan;
+                if(!DecodeStructurePlan(V,Plan) || W.StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Existing){ return Existing.PlanId==Plan.PlanId; })) { C.Good=false; break; }
+                W.StructurePlans.Add(MoveTemp(Plan));
+            }
+        }
         const FObject* Totals=nullptr;
         if(!Root->TryGetObjectField(TEXT("totals"),Totals) || (*Totals)->Values.Num()>1000) C.Good=false;
         else for(const auto& Pair:(*Totals)->Values)
@@ -720,7 +799,7 @@ namespace HearthWorld
                     {
                         const auto& R=W.People[Part.Worker].Person;
                         if((R.Task!=EHearthTask::PublicTravel && R.Task!=EHearthTask::PublicWork) || R.ActiveTaskId!=Part.TaskId || R.ProductionSite!=-1 || R.ProductionOp!=-1 || !R.ProductionComponentId.IsEmpty() || R.CargoAmount>6) return Reject(TEXT("公共工程工人任务引用"));
-                        if(R.Task==EHearthTask::PublicTravel && R.LifeAction!=(R.CargoAmount>0?2:1)) return Reject(TEXT("公共工程运输阶段"));
+                        if(W.Schema>=9 && R.Task==EHearthTask::PublicTravel && R.LifeAction!=(R.CargoAmount>0?2:1)) return Reject(TEXT("公共工程运输阶段"));
                         if(!PublicPayable || !(*PublicPayable)->bTaxFunded || (*PublicPayable)->Status!=TEXT("reserved") || (*PublicPayable)->Worker!=Part.Worker || (*PublicPayable)->Amount!=2) return Reject(TEXT("公共工程在建工资"));
                     }
                 }

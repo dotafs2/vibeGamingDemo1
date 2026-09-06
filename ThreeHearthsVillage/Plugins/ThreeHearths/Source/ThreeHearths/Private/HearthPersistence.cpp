@@ -52,6 +52,7 @@ FString AHearthVillage::ExportWorldState() const
     W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
     W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers;
     W.PublicProject=PublicProject;
+    W.StructurePlans=StructurePlans;
     return HearthWorld::Encode(W);
 }
 
@@ -100,6 +101,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions); TaxAssessments=MoveTemp(W.TaxAssessments);
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
     PublicProject=MoveTemp(W.PublicProject);
+    StructurePlans=MoveTemp(W.StructurePlans);
     TaxProjectCoins=W.TaxProjectCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {

@@ -24,6 +24,10 @@ Only one owner may operate UE/Blender or run the native build at a time. Use the
 
 ## Current delivery target
 
+The current coordinator review and concrete completion contract are in `Current_Delivery_Contract.md`. They take precedence over completed public-wall lane descriptions below when choosing the next work. Keep the broader user direction in `Emergent_Town_Direction.md`. The five specialist lanes can be reassigned to current geometry, persistence, live NPC construction, layout and asset/runtime validation work; they are not permanently tied to completed finance work.
+
+The manager owns continuing from completed subunits to the next executable dependency. Finishing a commit or a worker task is not completion of the current delivery. Use the native thread goal for the user's explicitly requested continuing outcome, inspect its actual state, and distinguish a checkpoint from a completed goal. Keep pause/budget lifecycle controls with the user/system. Do not ask the coordinator to send another generic wakeup after every commit.
+
 The user's latest visual/layout clarification is in `Emergent_Town_Direction.md`. After safely integrating the current finance/procurement/wall unit, prioritize a continuous NPC-shaped street/neighborhood with genuinely varied component plans. Repeating fixed plot displays and one fixed cottage recipe does not satisfy that goal.
 
 The finance/procurement/public-wall slice is integrated and runtime accepted: a local-policy ten-NPC run completed 15/15 parts from 36 stone, 21 purchased resident-owned planks and 12 beams, then survived save/reload without duplicate transactions. The final suite passed 22/22. The next implementation target is the continuous settlement described below.

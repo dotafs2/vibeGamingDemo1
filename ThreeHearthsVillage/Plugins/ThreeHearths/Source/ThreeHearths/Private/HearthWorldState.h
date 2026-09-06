@@ -1,5 +1,6 @@
 #pragma once
 #include "HearthVillage.h"
+#include "HearthStructurePlan.h"
 
 // Logical world image. UObject pointers and wall-clock epochs never enter the file.
 struct FHearthSavedResident
@@ -13,7 +14,7 @@ struct FHearthSavedResident
 struct FHearthWorldImage
 {
     FString Id, Run, Event;
-    int32 Schema=8, PlotCount=3;
+    int32 Schema=9, PlotCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;
@@ -36,6 +37,7 @@ struct FHearthWorldImage
     FHearthPublicProject PublicProject;
     TArray<FHearthWagePayable> WagePayables;
     TArray<FHearthTradeOffer> TradeOffers;
+    TArray<FHearthStructurePlan> StructurePlans;
 };
 namespace HearthWorld
 {

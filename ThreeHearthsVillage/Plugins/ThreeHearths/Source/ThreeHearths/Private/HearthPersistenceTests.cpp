@@ -18,7 +18,7 @@ namespace HearthPersistenceTests
     { return FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir()/TEXT("ThreeHearths/Tests")/FGuid::NewGuid().ToString(EGuidFormats::Digits)/TEXT("world.json")); }
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPublicProjectPersistenceTest,"ThreeHearths.Persistence.PublicProjectSchema8RoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPublicProjectPersistenceTest,"ThreeHearths.Persistence.PublicProjectSchema9RoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
 {
     UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Isolated public persistence world"),World)) return false;
@@ -27,7 +27,7 @@ bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
     V->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); V->PublicProject.Status=TEXT("unapproved");
     const FString Text=V->ExportWorldState(); FHearthWorldImage Image; FString Error;
     if(!TestTrue(TEXT("Schema 8 public project decodes"),HearthWorld::Decode(Text,Image,Error))) { AddError(Error); return false; }
-    TestEqual(TEXT("Schema is 8"),Image.Schema,8); TestEqual(TEXT("Public project ID survives"),Image.PublicProject.Id,V->PublicProject.Id); TestEqual(TEXT("Public project status survives"),Image.PublicProject.Status,FString(TEXT("unapproved")));
+    TestEqual(TEXT("Schema is 9"),Image.Schema,9); TestEqual(TEXT("Public project ID survives"),Image.PublicProject.Id,V->PublicProject.Id); TestEqual(TEXT("Public project status survives"),Image.PublicProject.Status,FString(TEXT("unapproved")));
     return true;
 }
 
@@ -204,7 +204,38 @@ bool FHearthWorldRecoveryTest::RunTest(const FString&)
     TestTrue(TEXT("Corrupt file retained as named archive"),Archives.Num()>=1);
     FFileHelper::SaveStringToFile(TEXT("broken_current"),*V->WorldPath); FFileHelper::SaveStringToFile(TEXT("broken_backup"),*(V->WorldPath+TEXT(".bak")));
     const FString Before=V->WorldId; TestFalse(TEXT("Both damaged files fail closed"),V->LoadWorld()); TestEqual(TEXT("Failed recovery retains current in-memory world"),V->WorldId,Before);
-    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":8"),TEXT("\"schema\":999")),Good,Error));
+    TestFalse(TEXT("Unknown schema cannot silently migrate"),HearthWorld::Decode(V->ExportWorldState().Replace(TEXT("\"schema\":9"),TEXT("\"schema\":999")),Good,Error));
     return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthStructurePlanPersistenceTest,"ThreeHearths.Persistence.StructurePlanSchema9",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthStructurePlanPersistenceTest::RunTest(const FString&)
+{
+    UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Structure plan world"),World)) return false;
+    ON_SCOPE_EXIT { World->DestroyWorld(false); };
+    auto* Village=World->SpawnActor<AHearthVillage>(); Village->BuildEnvironment(); Village->ResetVillageState(); Village->bApiDisabledThisRun=true;
+    FHearthWorldImage Image; FString BaseError; if(!TestTrue(TEXT("Create valid schema9 base"),HearthWorld::Decode(Village->ExportWorldState(),Image,BaseError))) { AddError(BaseError); return false; }
+    FHearthStructureFootprint Footprint; Footprint.Size=FVector2D(500,500); Footprint.Origin=FVector(10,20,30); Footprint.Orientation=FRotator(7,13,29);
+    FHearthStructureReasonFields Reasons; Reasons.Need=TEXT("shelter"); Reasons.Occupation=TEXT("carpenter"); Reasons.Budget=TEXT("grant"); Reasons.Relationship=TEXT("family"); Reasons.RoadAccess=TEXT("east");
+    auto Plan=HearthStructurePlan::MakePlan(TEXT("plan-9"),TEXT("seed-9"),Footprint,Reasons);
+    FHearthStructureMaterialRecipe Recipe; Recipe.RecipeId=TEXT("wall-wood"); Recipe.CatalogId=TEXT("wall"); FHearthStructureMaterialQuantity Material; Material.MaterialId=TEXT("plank"); Material.Quantity=2; Recipe.Inputs.Add(Material);
+    TestTrue(TEXT("Register serializable recipe"),HearthStructurePlan::RegisterRecipe(Plan,Recipe));
+    FHearthStructureComponentSpec Spec; Spec.CatalogId=TEXT("wall"); Spec.SemanticKey=TEXT("wall-a"); Spec.Offset=FVector(0,0,100); Spec.Height=80; Spec.RecipeId=Recipe.RecipeId; Spec.Materials=Recipe.Inputs; Spec.MaterialCost=4;
+    TestTrue(TEXT("Append serializable upper component"),HearthStructurePlan::AppendComponent(Plan,Spec)); Image.Schema=9; Image.StructurePlans.Add(Plan);
+    FString Error; FHearthWorldImage Decoded;
+    TestTrue(TEXT("Schema9 structure plan roundtrips"),HearthWorld::Decode(HearthWorld::Encode(Image),Decoded,Error));
+    TestEqual(TEXT("Plan ID survives roundtrip"),Decoded.StructurePlans[0].PlanId,FString(TEXT("plan-9")));
+    TestEqual(TEXT("Stable seed survives roundtrip"),Decoded.StructurePlans[0].StableSeed,FString(TEXT("seed-9")));
+    TestEqual(TEXT("Upper component Z survives roundtrip"),Decoded.StructurePlans[0].Components[0].Offset.Z,100.0);
+    TestEqual(TEXT("Recipe material quantity survives roundtrip"),Decoded.StructurePlans[0].Components[0].Materials[0].Quantity,2);
+    FHearthWorldImage Legacy=Image; Legacy.Schema=6; Legacy.StructurePlans.Reset(); const FVector LegacyPosition=Legacy.People[0].Position;
+    TestTrue(TEXT("Schema6 migration decodes without structure plans"),HearthWorld::Decode(HearthWorld::Encode(Legacy),Decoded,Error));
+    TestEqual(TEXT("Schema6 has no implicit structure plans"),Decoded.StructurePlans.Num(),0);
+    TestTrue(TEXT("Schema6 resident position is unchanged"),Decoded.People[0].Position.Equals(LegacyPosition,.001f));
+    Image.StructurePlans[0].Components[0].Materials[0].Quantity=0;
+    TestFalse(TEXT("Invalid structure material quantity is rejected"),HearthWorld::Decode(HearthWorld::Encode(Image),Decoded,Error));
+    return true;
+}
+
 #endif
+

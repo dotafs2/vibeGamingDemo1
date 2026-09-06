@@ -734,5 +734,34 @@
     "Art/HearthCottage/*.glb",
     "Art/VillageKit/examples/*.glb"
   ],
+  "runtime_contract": {
+    "source_of_truth": "HearthStructureCatalog.cpp",
+    "asset_paths_are_native_imports_only": true,
+    "coordinate_units": "metres",
+    "default_rotation_degrees": {
+      "foundation_stone_2m": [0, 0, 0],
+      "floor_timber_2m": [0, 0, 0],
+      "post_timber_2_4m": [0, 0, 0],
+      "beam_timber_2m": [0, 0, 0],
+      "wall_timber_2m": [0, 0, 0],
+      "wall_door_timber_2m": [0, 0, 0],
+      "roof_slope_timber_2m": [0, 0, 0]
+    },
+    "support_socket_contacts": [
+      {"parent": "foundation_stone_2m", "parent_socket": "support_top", "child": "floor_timber_2m", "child_socket": "support_bottom"},
+      {"parent": "floor_timber_2m", "parent_socket": "support_top", "child": "post_timber_2_4m", "child_socket": "base"},
+      {"parent": "post_timber_2_4m", "parent_socket": "top", "child": "beam_timber_2m", "child_socket": "end_x_minus"},
+      {"parent": "floor_timber_2m", "parent_socket": "support_top", "child": "wall_timber_2m", "child_socket": "base"},
+      {"parent": "floor_timber_2m", "parent_socket": "support_top", "child": "wall_door_timber_2m", "child_socket": "base"},
+      {"parent": "beam_timber_2m", "parent_socket": "end_x_plus", "child": "roof_slope_timber_2m", "child_socket": "ridge"}
+    ],
+    "door_clearance": {
+      "component": "wall_door_timber_2m",
+      "min_xz": [-0.47, 0.16],
+      "max_xz": [0.47, 2.06],
+      "metres": true
+    },
+    "offline_townkit_excluded": true
+  },
   "runtime_stage_system_or_collision_modified": false
 }
