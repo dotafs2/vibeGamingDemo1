@@ -1,0 +1,7 @@
+{
+  "arguments": {
+    "code": "import runpy,sys; sys.argv=['render_goods_kit.py','--','overview']; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\GoodsKit\\render_goods_kit.py',run_name='__main__')",
+    "user_prompt": "Render GoodsKit overview using Cycles CPU at three threads."
+  },
+  "name": "execute_blender_code"
+}

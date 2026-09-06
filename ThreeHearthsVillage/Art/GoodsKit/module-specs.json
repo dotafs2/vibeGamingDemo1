@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "kit_id": "goods_kit_01",
+  "units": "metres",
+  "authoring_axes": {
+    "up": "+Z",
+    "front": "-Y"
+  },
+  "glb_axes": {
+    "up": "+Y",
+    "front": "+Z",
+    "convert_back_to_authoring": "(x,y,z) = (gltf.x,-gltf.z,gltf.y)"
+  },
+  "origin": "bottom centre of each exported mesh envelope",
+  "character_height_reference_m": 1.557142,
+  "carry_contract": "Anchor and grip positions are design proposals in authoring local metres. Align carry_anchor to an abdomen-front carry target; preserve authored scale. No socket, animation or IK is bound.",
+  "suggested_resident_target_m": [
+    0,
+    -0.6,
+    0.86
+  ],
+  "creates_inventory": false,
+  "runtime_integration_verified": false,
+  "modules": [
+    {
+      "id": "goods_raw_clay_basket",
+      "commodity_id": "raw_clay",
+      "label": "Raw clay basket",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_raw_clay_basket.glb",
+      "nominal_size_m": [
+        0.528,
+        0.449712,
+        0.363
+      ],
+      "carry_anchor": {
+        "position_m": [
+          0.0,
+          0.0,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.24500000476837158,
+          0.0,
+          0.28999999165534973
+        ],
+        "right_m": [
+          0.24500000476837158,
+          0.0,
+          0.28999999165534973
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 4,
+        "unit": "visual units",
+        "note": "visible clay lumps",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_bricks_crate",
+      "commodity_id": "bricks",
+      "label": "Fired brick crate",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_bricks_crate.glb",
+      "nominal_size_m": [
+        0.634,
+        0.411,
+        0.301
+      ],
+      "carry_anchor": {
+        "position_m": [
+          0.0,
+          0.009999997913837433,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.2919999957084656,
+          0.009999997913837433,
+          0.2800000011920929
+        ],
+        "right_m": [
+          0.2919999957084656,
+          0.009999997913837433,
+          0.2800000011920929
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 12,
+        "unit": "visual units",
+        "note": "visible fired bricks",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_tiles_terracotta_crate",
+      "commodity_id": "tiles_terracotta",
+      "label": "Terracotta tile crate",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_tiles_terracotta_crate.glb",
+      "nominal_size_m": [
+        0.654,
+        0.4135,
+        0.329
+      ],
+      "carry_anchor": {
+        "position_m": [
+          1.4901161193847656E-08,
+          0.011249996721744537,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.3019999861717224,
+          0.011249996721744537,
+          0.2800000011920929
+        ],
+        "right_m": [
+          0.3019999861717224,
+          0.011249996721744537,
+          0.2800000011920929
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 10,
+        "unit": "visual units",
+        "note": "visible terracotta tiles",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_tiles_slateblue_crate",
+      "commodity_id": "tiles_slateblue",
+      "label": "Slate blue tile crate",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_tiles_slateblue_crate.glb",
+      "nominal_size_m": [
+        0.654,
+        0.4135,
+        0.329
+      ],
+      "carry_anchor": {
+        "position_m": [
+          1.4901161193847656E-08,
+          0.011249996721744537,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.3019999861717224,
+          0.011249996721744537,
+          0.2800000011920929
+        ],
+        "right_m": [
+          0.3019999861717224,
+          0.011249996721744537,
+          0.2800000011920929
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 10,
+        "unit": "visual units",
+        "note": "visible slate blue tiles",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_lime_pail",
+      "commodity_id": "lime",
+      "label": "Lime pail",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_lime_pail.glb",
+      "nominal_size_m": [
+        0.443599,
+        0.389656,
+        0.452
+      ],
+      "carry_anchor": {
+        "position_m": [
+          0.0,
+          0.004827879369258881,
+          0.17000000178813934
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.07500000298023224,
+          -0.1321721076965332,
+          0.4300000071525574
+        ],
+        "right_m": [
+          0.07500000298023224,
+          -0.1321721076965332,
+          0.4300000071525574
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 1,
+        "unit": "visual units",
+        "note": "pail of lime; no physical mass specified",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_pigment_pots",
+      "commodity_id": "pigment",
+      "label": "Pigment pot carrier",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_pigment_pots.glb",
+      "nominal_size_m": [
+        0.644,
+        0.355903,
+        0.301
+      ],
+      "carry_anchor": {
+        "position_m": [
+          0.0,
+          0.007451273500919342,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.296999990940094,
+          0.007451273500919342,
+          0.2800000011920929
+        ],
+        "right_m": [
+          0.296999990940094,
+          0.007451273500919342,
+          0.2800000011920929
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 3,
+        "unit": "visual units",
+        "note": "pigment pots; colorways are visual only",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_iron_ingots_bundle",
+      "commodity_id": "iron_ingots",
+      "label": "Bound iron ingots",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_iron_ingots_bundle.glb",
+      "nominal_size_m": [
+        0.64,
+        0.433812,
+        0.318975
+      ],
+      "carry_anchor": {
+        "position_m": [
+          0.0,
+          0.01692315936088562,
+          0.1599999964237213
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.2199999988079071,
+          0.01692315936088562,
+          0.3050000071525574
+        ],
+        "right_m": [
+          0.2199999988079071,
+          0.01692315936088562,
+          0.3050000071525574
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 12,
+        "unit": "visual units",
+        "note": "visible iron ingots",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    },
+    {
+      "id": "goods_nails_box",
+      "commodity_id": "nails",
+      "label": "Forged nail box",
+      "category": "carry_goods",
+      "asset_glb": "modules/goods_nails_box.glb",
+      "nominal_size_m": [
+        0.484,
+        0.3795,
+        0.301
+      ],
+      "carry_anchor": {
+        "position_m": [
+          7.450580596923828E-09,
+          0.014249995350837708,
+          0.15000000596046448
+        ],
+        "orientation_euler_degrees": [
+          0,
+          0,
+          0
+        ]
+      },
+      "grip_points": {
+        "left_m": [
+          -0.21699997782707214,
+          0.014249995350837708,
+          0.25999999046325684
+        ],
+        "right_m": [
+          0.21700000762939453,
+          0.014249995350837708,
+          0.25999999046325684
+        ]
+      },
+      "visual_capacity_suggestion": {
+        "quantity": 13,
+        "unit": "visual units",
+        "note": "individually modeled nails plus visual underlayer",
+        "is_gameplay_capacity": false
+      },
+      "creates_inventory": false,
+      "recipe_bound": false,
+      "holding_animation_verified": false,
+      "pickup_clearance_suggestion_m": 0.12,
+      "collision_suggestion": "One simple convex hull; detailed visual parts have no individual gameplay collision."
+    }
+  ]
+}

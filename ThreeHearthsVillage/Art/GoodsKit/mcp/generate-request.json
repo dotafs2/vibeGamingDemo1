@@ -1,0 +1,7 @@
+{
+  "arguments": {
+    "code": "import runpy; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\GoodsKit\\create_goods_kit.py',run_name='__main__')",
+    "user_prompt": "Build eight original GoodsKit carry props with separate commodity identity, UV and portable PBR."
+  },
+  "name": "execute_blender_code"
+}

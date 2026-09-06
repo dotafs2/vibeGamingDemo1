@@ -1,0 +1,137 @@
+{
+  "kit_id": "goods_kit_01",
+  "artifacts": [
+    {
+      "file": "create_goods_kit.py",
+      "bytes": 16772,
+      "sha256": "c856deeb523fc09c46e42e462f068de3ecdd4ba78aa7ed856d799c535491b3c9"
+    },
+    {
+      "file": "goods_geometry.py",
+      "bytes": 5559,
+      "sha256": "da4ddfb9704ba4ddce294fad74bf652fe45d88a37e2da9e416300f6aa72cf84a"
+    },
+    {
+      "file": "GoodsKit.blend",
+      "bytes": 260169,
+      "sha256": "0f9ba3c59aadec7e898c2c68cf8dba6780a6b8ad0ff5e58f3c7651e21433bb91"
+    },
+    {
+      "file": "mcp/generate-request.json",
+      "bytes": 334,
+      "sha256": "225d0cc80bcb0dca5ba9af0dc74ff477cb750f4f88880447f225a9f8b276ae24"
+    },
+    {
+      "file": "mcp/render-overview-request.json",
+      "bytes": 351,
+      "sha256": "174e1f75b8942ea1d7d0eb3958c219ecc46218244abcbaf20bb08faf39ad7581"
+    },
+    {
+      "file": "mcp/render-scale-request.json",
+      "bytes": 402,
+      "sha256": "b12fcdc82c1a194823051144000a622d8bd908b1d65d6c1b31280229fee68fe2"
+    },
+    {
+      "file": "mcp/source-audit-request.json",
+      "bytes": 1047,
+      "sha256": "7b248deaf419fb9d5f715cc4224840805f3a818dda3d17a271d47c8dd509ce8d"
+    },
+    {
+      "file": "model-report.json",
+      "bytes": 5219,
+      "sha256": "4c30b57907894dcb27ecb44d02a6ab46b7a162134ef543462e0619ba372d0837"
+    },
+    {
+      "file": "module-specs.json",
+      "bytes": 11197,
+      "sha256": "3d809dce7d8fd4200f676e13022332771ddfcc02e6a95d1b7ae6097e84e82367"
+    },
+    {
+      "file": "modules/goods_bricks_crate.glb",
+      "bytes": 149056,
+      "sha256": "f53e21dac64d790b30b40f56c3b7c593f9b50e8088a3bebbd96bf1d9742bc3c2"
+    },
+    {
+      "file": "modules/goods_iron_ingots_bundle.glb",
+      "bytes": 34152,
+      "sha256": "4c2d01aacf2d213da9fccf796b03db69151f4f561a2b6d15374d676701572f27"
+    },
+    {
+      "file": "modules/goods_lime_pail.glb",
+      "bytes": 46408,
+      "sha256": "cd90a4d5f2fcdeb9b8a379c393ec2928b0458dda7b8eb767e53a4c663c05f265"
+    },
+    {
+      "file": "modules/goods_nails_box.glb",
+      "bytes": 133152,
+      "sha256": "2538ad2a232fb315a8b4aa578b47d9fc68ea5223ce8f2be1061367effaeb55b0"
+    },
+    {
+      "file": "modules/goods_pigment_pots.glb",
+      "bytes": 140824,
+      "sha256": "83c992196536268464946b0ef3959e2329daba38eb9b52dd342aeceaca3c67ab"
+    },
+    {
+      "file": "modules/goods_raw_clay_basket.glb",
+      "bytes": 57392,
+      "sha256": "b6119f837d01be99a9d7771035519bc477a8b5c9a6a1bd6418404d50810e1bea"
+    },
+    {
+      "file": "modules/goods_tiles_slateblue_crate.glb",
+      "bytes": 109676,
+      "sha256": "f1c608b5faa12d13f80bd3810b5130694aea86496158c9b8e588ff5f40d0c18a"
+    },
+    {
+      "file": "modules/goods_tiles_terracotta_crate.glb",
+      "bytes": 109684,
+      "sha256": "f18b6a7448908b01f66c07a24d87b9353e573579e677f7c8c9a2c23ff60633a6"
+    },
+    {
+      "file": "previews/GoodsKit_overview.png",
+      "bytes": 2543689,
+      "sha256": "5b9c8a0574f82dbe8e1e2d0f8c9bc7b002d7dd5f096da2723b1ea0c2201dd9d6"
+    },
+    {
+      "file": "previews/GoodsKit_scale.png",
+      "bytes": 2865660,
+      "sha256": "6f60ad5dccbd1671040e836bac942c37161ed13159bd6c5aae86262fe7be3ec0"
+    },
+    {
+      "file": "README.md",
+      "bytes": 4788,
+      "sha256": "0836b928f25a9b1b1e282edc6d7e4da81754f42b29a030836215ef6a6fd9bd98"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 976,
+      "sha256": "d9d2bb513ae5ebfcf9deed40394a1cbb6eac5cc02e7110b3be258d2e68b64c03"
+    },
+    {
+      "file": "render_goods_kit.py",
+      "bytes": 8450,
+      "sha256": "499b6dda179e11244fcf83b587aa18279a79fe77d611d5f2aa966cc29a407d68"
+    },
+    {
+      "file": "source-audit.json",
+      "bytes": 1588,
+      "sha256": "8876ed16855338b8ad79b84e66652817bba6737830872344328c11306f5c4576"
+    },
+    {
+      "file": "validate_goods_kit.py",
+      "bytes": 6661,
+      "sha256": "eed7c998ebbfc55c937c52edadb7eb3e65e7b326db4f04fd8bab9cb8dc22cc26"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 8604,
+      "sha256": "a887d31840bdf509f6a57afd0d3152fdf425489633dbb66353e3e66afbb28396"
+    },
+    {
+      "file": "visual-review.json",
+      "bytes": 897,
+      "sha256": "8053b1cd3b312cd11a575de46f1d57941516509a2108b3a0bc129faee332c9a0"
+    }
+  ],
+  "stock_recipe_or_hold_binding_verified": false,
+  "licensed_reference_source_included": false
+}

@@ -1,0 +1,18 @@
+{
+  "source_blend_sha256": "0f9ba3c59aadec7e898c2c68cf8dba6780a6b8ad0ff5e58f3c7651e21433bb91",
+  "reviewed_images": [
+    {
+      "sha256": "5b9c8a0574f82dbe8e1e2d0f8c9bc7b002d7dd5f096da2723b1ea0c2201dd9d6",
+      "notes": "All eight props fully framed; separate brick and tile silhouettes, matching warm wood and cream palette, ceramic highlights readable.",
+      "file": "previews/GoodsKit_overview.png"
+    },
+    {
+      "sha256": "6f60ad5dccbd1671040e836bac942c37161ed13159bd6c5aae86262fe7be3ec0",
+      "notes": "All eight props shown at authored scale beside the unchanged Cropout reference. Ground datum preserved, 1.557142m crown and 0.0021m sole offset. Frame margins checked.",
+      "file": "previews/GoodsKit_scale.png"
+    }
+  ],
+  "licensed_reference_geometry_delivered": false,
+  "overview_and_character_scale_reviewed": true,
+  "holding_pose_reviewed": false
+}

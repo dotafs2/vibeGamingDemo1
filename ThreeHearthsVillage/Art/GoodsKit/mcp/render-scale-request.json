@@ -1,0 +1,7 @@
+{
+  "name": "execute_blender_code",
+  "arguments": {
+    "code": "import runpy,sys; sys.argv=['render_goods_kit.py','--','scale']; runpy.run_path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\GoodsKit\\render_goods_kit.py',run_name='__main__')",
+    "user_prompt": "Render GoodsKit at actual size beside the measured Cropout reference; retain character geometry only under Saved."
+  }
+}

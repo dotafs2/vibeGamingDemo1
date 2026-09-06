@@ -1,0 +1,255 @@
+{
+  "kit_id": "goods_kit_01",
+  "blender_version": "5.2.0 LTS",
+  "built_via": "Blender MCP execute_blender_code",
+  "source_meshes_are_original_only": true,
+  "licensed_reference_mesh_included": false,
+  "modules": [
+    {
+      "id": "goods_raw_clay_basket",
+      "commodity_id": "raw_clay",
+      "triangles": 1324,
+      "size_m": [
+        0.528,
+        0.449712,
+        0.363
+      ],
+      "bounds_min_m": [
+        -0.264,
+        -0.224856,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.264,
+        0.224856,
+        0.363
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Golden_Wicker",
+        "GK_Wicker_Weave",
+        "GK_Hemp_Rope",
+        "GK_Clay_Cut",
+        "GK_Raw_Clay"
+      ],
+      "bytes": 57392
+    },
+    {
+      "id": "goods_bricks_crate",
+      "commodity_id": "bricks",
+      "triangles": 1936,
+      "size_m": [
+        0.634,
+        0.411,
+        0.301
+      ],
+      "bounds_min_m": [
+        -0.317,
+        -0.2055,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.317,
+        0.2055,
+        0.301
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Timber_Recess",
+        "GK_Honey_Plank",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak",
+        "GK_Cream_Label",
+        "GK_Fired_Brick",
+        "GK_Fired_Brick_Light"
+      ],
+      "bytes": 149056
+    },
+    {
+      "id": "goods_tiles_terracotta_crate",
+      "commodity_id": "tiles_terracotta",
+      "triangles": 1704,
+      "size_m": [
+        0.654,
+        0.4135,
+        0.329
+      ],
+      "bounds_min_m": [
+        -0.327,
+        -0.20675,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.327,
+        0.20675,
+        0.329
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Timber_Recess",
+        "GK_Honey_Plank",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak",
+        "GK_Cream_Label",
+        "GK_Terracotta_Tile",
+        "GK_Terracotta_Tile_Light"
+      ],
+      "bytes": 109684
+    },
+    {
+      "id": "goods_tiles_slateblue_crate",
+      "commodity_id": "tiles_slateblue",
+      "triangles": 1704,
+      "size_m": [
+        0.654,
+        0.4135,
+        0.329
+      ],
+      "bounds_min_m": [
+        -0.327,
+        -0.20675,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.327,
+        0.20675,
+        0.329
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Timber_Recess",
+        "GK_Honey_Plank",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak",
+        "GK_Cream_Label",
+        "GK_Slateblue_Tile",
+        "GK_Slateblue_Tile_Light"
+      ],
+      "bytes": 109676
+    },
+    {
+      "id": "goods_lime_pail",
+      "commodity_id": "lime",
+      "triangles": 1004,
+      "size_m": [
+        0.443599,
+        0.389656,
+        0.452
+      ],
+      "bounds_min_m": [
+        -0.221799,
+        -0.194828,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.221799,
+        0.194828,
+        0.452
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Cream_Glazed_Pail",
+        "GK_Forged_Iron",
+        "GK_Lime_Powder",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak"
+      ],
+      "bytes": 46408
+    },
+    {
+      "id": "goods_pigment_pots",
+      "commodity_id": "pigment",
+      "triangles": 2684,
+      "size_m": [
+        0.644,
+        0.355903,
+        0.301
+      ],
+      "bounds_min_m": [
+        -0.322,
+        -0.177951,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.322,
+        0.177951,
+        0.301
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Timber_Recess",
+        "GK_Honey_Plank",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak",
+        "GK_Cream_Label",
+        "GK_Cream_Glazed_Pail",
+        "GK_Ochre_Pigment",
+        "GK_Red_Pigment",
+        "GK_Blue_Pigment"
+      ],
+      "bytes": 140824
+    },
+    {
+      "id": "goods_iron_ingots_bundle",
+      "commodity_id": "iron_ingots",
+      "triangles": 456,
+      "size_m": [
+        0.64,
+        0.433812,
+        0.318975
+      ],
+      "bounds_min_m": [
+        -0.32,
+        -0.216906,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.32,
+        0.216906,
+        0.318975
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Warm_Oak",
+        "GK_Honey_Plank",
+        "GK_Forged_Iron",
+        "GK_Iron_Edge",
+        "GK_Hemp_Rope"
+      ],
+      "bytes": 34152
+    },
+    {
+      "id": "goods_nails_box",
+      "commodity_id": "nails",
+      "triangles": 1764,
+      "size_m": [
+        0.484,
+        0.3795,
+        0.301
+      ],
+      "bounds_min_m": [
+        -0.242,
+        -0.18975,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.242,
+        0.18975,
+        0.301
+      ],
+      "uv_layers": 1,
+      "materials": [
+        "GK_Timber_Recess",
+        "GK_Honey_Plank",
+        "GK_Cut_Edge",
+        "GK_Warm_Oak",
+        "GK_Cream_Label",
+        "GK_Forged_Iron",
+        "GK_Iron_Edge"
+      ],
+      "bytes": 133152
+    }
+  ],
+  "total_triangles": 12576,
+  "generation_seconds": 0.653
+}

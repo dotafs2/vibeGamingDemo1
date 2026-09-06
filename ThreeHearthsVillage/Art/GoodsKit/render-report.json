@@ -1,0 +1,35 @@
+{
+  "views": {
+    "overview": {
+      "file": "previews/GoodsKit_overview.png",
+      "resolution": [
+        1750,
+        1250
+      ],
+      "seconds": 31.525,
+      "licensed_cropout_reference_visible": false,
+      "reference_geometry_retained_only_under_saved": true,
+      "holding_animation_shown": false,
+      "saved_scene_in_art": false
+    },
+    "scale": {
+      "file": "previews/GoodsKit_scale.png",
+      "resolution": [
+        1850,
+        1400
+      ],
+      "seconds": 36.935,
+      "licensed_cropout_reference_visible": true,
+      "reference_geometry_retained_only_under_saved": true,
+      "holding_animation_shown": false,
+      "saved_scene_in_art": false,
+      "reference_ground_to_crown_m": 1.557141900062561,
+      "reference_sole_above_ground_m": 0.0020995012018829584,
+      "reference_vertex_extent_m": 1.555042398860678
+    }
+  },
+  "engine": "Cycles",
+  "device": "CPU",
+  "threads": 3,
+  "samples": 24
+}

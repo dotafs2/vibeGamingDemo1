@@ -1,0 +1,269 @@
+{
+  "status": "passed",
+  "scope": "Independent GLB binary accessors, indices, nondegenerate triangles, UV, normalized normals, PBR, bounds and metadata",
+  "asset_count": 8,
+  "total_triangles": 12576,
+  "max_asset_triangles": 2684,
+  "assets": [
+    {
+      "asset": "goods_raw_clay_basket.glb",
+      "bytes": 57392,
+      "triangles": 1324,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.8761329305135952,
+      "sha256": "b6119f837d01be99a9d7771035519bc477a8b5c9a6a1bd6418404d50810e1bea",
+      "id": "goods_raw_clay_basket",
+      "commodity_id": "raw_clay",
+      "bounds_authoring_m": [
+        [
+          -0.2639999985694885,
+          -0.22485610842704773,
+          0.0
+        ],
+        [
+          0.2639999985694885,
+          0.22485610842704773,
+          0.3630000054836273
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.37514389157295225,
+      "conservative_reference_torso_gap_m": 0.04514389157295223,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_bricks_crate.glb",
+      "bytes": 149056,
+      "triangles": 1936,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.0,
+      "sha256": "f53e21dac64d790b30b40f56c3b7c593f9b50e8088a3bebbd96bf1d9742bc3c2",
+      "id": "goods_bricks_crate",
+      "commodity_id": "bricks",
+      "bounds_authoring_m": [
+        [
+          -0.31700003147125244,
+          -0.20550000667572021,
+          0.0
+        ],
+        [
+          0.31700003147125244,
+          0.20550000667572021,
+          0.3009999990463257
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.4044999912381172,
+      "conservative_reference_torso_gap_m": 0.07449999123811718,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_tiles_terracotta_crate.glb",
+      "bytes": 109684,
+      "triangles": 1704,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.215962441314554,
+      "sha256": "f18b6a7448908b01f66c07a24d87b9353e573579e677f7c8c9a2c23ff60633a6",
+      "id": "goods_tiles_terracotta_crate",
+      "commodity_id": "tiles_terracotta",
+      "bounds_authoring_m": [
+        [
+          -0.3270000219345093,
+          -0.20675000548362732,
+          0.0
+        ],
+        [
+          0.3270000219345093,
+          0.20675000548362732,
+          0.32899999618530273
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.4044999912381172,
+      "conservative_reference_torso_gap_m": 0.07449999123811718,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_tiles_slateblue_crate.glb",
+      "bytes": 109676,
+      "triangles": 1704,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.215962441314554,
+      "sha256": "f1c608b5faa12d13f80bd3810b5130694aea86496158c9b8e588ff5f40d0c18a",
+      "id": "goods_tiles_slateblue_crate",
+      "commodity_id": "tiles_slateblue",
+      "bounds_authoring_m": [
+        [
+          -0.3270000219345093,
+          -0.20675000548362732,
+          0.0
+        ],
+        [
+          0.3270000219345093,
+          0.20675000548362732,
+          0.32899999618530273
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.4044999912381172,
+      "conservative_reference_torso_gap_m": 0.07449999123811718,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_lime_pail.glb",
+      "bytes": 46408,
+      "triangles": 1004,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.848605577689243,
+      "sha256": "cd90a4d5f2fcdeb9b8a379c393ec2928b0458dda7b8eb767e53a4c663c05f265",
+      "id": "goods_lime_pail",
+      "commodity_id": "lime",
+      "bounds_authoring_m": [
+        [
+          -0.22179937362670898,
+          -0.1948278844356537,
+          0.0
+        ],
+        [
+          0.22179937362670898,
+          0.1948278844356537,
+          0.4520000219345093
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.40999999493360517,
+      "conservative_reference_torso_gap_m": 0.07999999493360516,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_pigment_pots.glb",
+      "bytes": 140824,
+      "triangles": 2684,
+      "materials": 9,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.5588673621460507,
+      "sha256": "83c992196536268464946b0ef3959e2329daba38eb9b52dd342aeceaca3c67ab",
+      "id": "goods_pigment_pots",
+      "commodity_id": "pigment",
+      "bounds_authoring_m": [
+        [
+          -0.32200002670288086,
+          -0.17795127630233765,
+          0.0
+        ],
+        [
+          0.32200002670288086,
+          0.17795127630233765,
+          0.3009999990463257
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.4294999971985817,
+      "conservative_reference_torso_gap_m": 0.09949999719858166,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_iron_ingots_bundle.glb",
+      "bytes": 34152,
+      "triangles": 456,
+      "materials": 5,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.34210526315789475,
+      "sha256": "4c2d01aacf2d213da9fccf796b03db69151f4f561a2b6d15374d676701572f27",
+      "id": "goods_iron_ingots_bundle",
+      "commodity_id": "iron_ingots",
+      "bounds_authoring_m": [
+        [
+          -0.3199999928474426,
+          -0.21690598130226135,
+          0.0
+        ],
+        [
+          0.3199999928474426,
+          0.21690598130226135,
+          0.318975031375885
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.40001717805862425,
+      "conservative_reference_torso_gap_m": 0.07001717805862423,
+      "torso_gap_check_is_animation_fitting": false
+    },
+    {
+      "asset": "goods_nails_box.glb",
+      "bytes": 133152,
+      "triangles": 1764,
+      "materials": 7,
+      "uv0": true,
+      "unit_normals": true,
+      "smooth_triangle_fraction": 0.06802721088435375,
+      "sha256": "2538ad2a232fb315a8b4aa578b47d9fc68ea5223ce8f2be1061367effaeb55b0",
+      "id": "goods_nails_box",
+      "commodity_id": "nails",
+      "bounds_authoring_m": [
+        [
+          -0.24199998378753662,
+          -0.18975000083446503,
+          0.0
+        ],
+        [
+          0.24199998378753662,
+          0.18975000083446503,
+          0.3009999990463257
+        ]
+      ],
+      "bottom_center_origin": true,
+      "single_commodity_extras_verified": true,
+      "carry_contract_exported": true,
+      "portable_pbr_factors": true,
+      "nonconstant_uv0": true,
+      "proposed_carry_rear_y_m": -0.42449999451637266,
+      "conservative_reference_torso_gap_m": 0.09449999451637264,
+      "torso_gap_check_is_animation_fitting": false
+    }
+  ],
+  "unique_commodity_count": 8,
+  "stock_recipe_or_hold_binding_verified": false,
+  "render_review_verified": true,
+  "source_audit_original_goods_only": true
+}

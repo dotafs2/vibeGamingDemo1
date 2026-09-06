@@ -1,0 +1,7 @@
+{
+  "arguments": {
+    "user_prompt": "Inspect saved GoodsKit source datablocks to verify original goods only.",
+    "code": "from pathlib import Path\nimport bpy,json\nout=Path(r'D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\GoodsKit')\nwith bpy.data.libraries.load(str(out/'GoodsKit.blend'),link=False) as (src,dst):\n    report={'source_blend':'GoodsKit.blend','objects':sorted(src.objects),'meshes':sorted(src.meshes),'materials':sorted(src.materials),'armatures':list(src.armatures),'actions':list(src.actions)}\nassert len(report['objects'])==16 and len(report['meshes'])==8\nassert not report['armatures'] and not report['actions']\nassert all(name.startswith('goods_') for name in report['objects'])\nassert all(name.startswith('GK_') for name in report['materials'])\nreport['original_goods_only']=True\nreport['licensed_character_geometry_in_source']=False\n(out/'source-audit.json').write_text(json.dumps(report,indent=2)+'\\n',encoding='utf-8')\nprint('GOODS_SOURCE_AUDIT_PASSED')"
+  },
+  "name": "execute_blender_code"
+}
