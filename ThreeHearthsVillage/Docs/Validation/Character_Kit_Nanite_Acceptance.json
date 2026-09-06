@@ -1,0 +1,14 @@
+{
+  "verified_at": "2026-09-06T15:42:00+08:00",
+  "policy": "Nanite disabled for low-poly ResidentKit and SocietyKit static meshes",
+  "static_meshes_checked": 50,
+  "static_meshes_changed": 50,
+  "runtime": {
+    "all_nanite_material_warnings": 0,
+    "residentkit_warnings": 0,
+    "societykit_warnings": 0,
+    "fatal_errors": 0,
+    "log": "Saved/Logs/ThreeHearthsCharacterNaniteClean.log"
+  },
+  "reason": "These low-poly meshes shared imported materials without compiled Nanite usage, causing UE to substitute its default material at runtime."
+}

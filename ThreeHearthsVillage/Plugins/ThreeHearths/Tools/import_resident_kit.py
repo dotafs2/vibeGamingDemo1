@@ -47,6 +47,7 @@ def source_details(path):
 
 def verify_native(row,source):
     expected=source_details(source);sm=ue.load_asset(row['mesh']);assert isinstance(sm,ue.StaticMesh)
+    assert not sm.get_editor_property('nanite_settings').get_editor_property('enabled'),(row['id'],'low-poly kit must keep Nanite disabled')
     b=sm.get_bounds();origin=[b.origin.x,b.origin.y,b.origin.z];extent=[b.box_extent.x,b.box_extent.y,b.box_extent.z]
     assert max(abs(a-b) for a,b in zip(origin,expected['origin_cm']))<.15,(row['id'],'root/origin shifted',origin,expected['origin_cm'])
     assert max(abs(a-b) for a,b in zip(extent,expected['extent_cm']))<.15,(row['id'],'dimension mismatch',extent,expected['extent_cm'])
@@ -76,7 +77,7 @@ def verify_native(row,source):
         expected_extent_cm=expected['extent_cm'],origin_preserved=True,dimensions_verified=True,
         pbr_values_verified=True,uv_channels=uv,native_triangles=nanite or fallback,
         native_lod0_fallback_triangles=fallback,native_nanite_triangles=nanite,
-        source_triangles=expected['triangles'],material_details=details)
+        source_triangles=expected['triangles'],material_details=details,nanite='disabled_low_poly_kit')
     return row
 
 def import_kit(kit_name,include_examples=False):
