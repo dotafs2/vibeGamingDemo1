@@ -255,8 +255,19 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
                     const bool bHousingNeed=Applicant.Role.Contains(TEXT("木匠")) || Applicant.Role.Contains(TEXT("铁匠"))
                         || Applicant.Role.Contains(TEXT("陶工")) || Applicant.Role.Contains(TEXT("织工"))
                         || FMath::Max(Applicant.Hunger,Applicant.SocialNeed)>=45.f;
-                    return !bOwnsStructure && bHousingNeed && Applicant.BuildProgress>=1.f
-                        && Applicant.Coins>=WageForOperation(0);
+                    if(bOwnsStructure || !bHousingNeed || Applicant.BuildProgress<1.f || Applicant.Coins<WageForOperation(0)) return false;
+                    const int32 ApplicantIndex=static_cast<int32>(&Applicant-Residents.GetData());
+                    return ProductionSites.ContainsByPredicate([this,&Applicant,ApplicantIndex](const FHearthSite& Plot)
+                    {
+                        const int32 PlotIndex=static_cast<int32>(&Plot-ProductionSites.GetData());
+                        if(PlotIndex==PublicProject.Site || !Plot.bReachable || Plot.ReservedBy>=0 || !Plot.BuildPlanId.IsEmpty()
+                            || (Plot.Kind!=EHearthSiteKind::Empty && Plot.Kind!=EHearthSiteKind::Land)) return false;
+                        const auto Proposed=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(
+                            Applicant,Plot,StoneStock,PlankStock,BeamStock,Applicant.Coins/WageForOperation(5)));
+                        if(!Proposed.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Existing)
+                            { return Existing.PlanId==Proposed.Plan.PlanId; })) return false;
+                        return HearthPlannedConstructionAdapter::Convert(Proposed.Plan,ApplicantIndex,{}).bAccepted;
+                    });
                 });
                 if(bExecutableApplicant) return false;
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
