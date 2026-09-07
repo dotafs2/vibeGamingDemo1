@@ -1,0 +1,63 @@
+{
+  "world_id_before": "F8F4D755-4F2E-ABC0-3C1B-1A95B43F5938",
+  "world_id_after": "F8F4D755-4F2E-ABC0-3C1B-1A95B43F5938",
+  "revision_before": 26,
+  "revision_after": 36,
+  "schema_after": 10,
+  "speed_after": 300,
+  "resident_count": 10,
+  "plans_before": 9,
+  "plans_after": 9,
+  "components_before": 219,
+  "components_after": 354,
+  "old_components_missing": 0,
+  "old_components_changed": 13,
+  "tile_orders": 9,
+  "tile_order_statuses": {
+    "completed": 9
+  },
+  "tile_transactions": 9,
+  "terracotta_slopes": 4,
+  "terracotta_completed": 4,
+  "terracotta_private_order_source": 4,
+  "terracotta_home_owners": [
+    6,
+    8
+  ],
+  "production_totals": {
+    "dig_clay": 6,
+    "fire_tiles": 9,
+    "frame_beams": 196,
+    "build_house": 354
+  },
+  "stocks": {
+    "Stone": 29,
+    "Planks": 51,
+    "Beams": 196,
+    "Clay": 0,
+    "Tiles": 0,
+    "TreasuryCoins": 0,
+    "TaxProjectCoins": 0,
+    "TaxReleasedCoins": 732
+  },
+  "personal_tiles": [
+    12,
+    0,
+    12,
+    6,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "pending_api_requests": 0,
+  "old_component_geometry_changed": 0,
+  "completed_components_before": 206,
+  "completed_components_changed": 0,
+  "legitimate_status_transitions": {
+    "transporting->completed": 1,
+    "waiting_material->completed": 12
+  }
+}

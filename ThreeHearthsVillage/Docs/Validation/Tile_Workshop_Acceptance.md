@@ -17,12 +17,12 @@ High-speed scheduling now batches the separate decision-history archive by real 
 
 ## Evidence
 
-- `Saved/ThreeHearths/Acceptance/tile-workshop-live4-20260907.json` — final schema-10 continued world.
-- `Saved/ThreeHearths/Acceptance/tile-workshop-pre-reload.json` — pre-restart checkpoint.
-- `Saved/ThreeHearths/Acceptance/tile-workshop-reload-comparison.json` — component, order, inventory, and reload comparison.
-- `Saved/ThreeHearths/Acceptance/private-tile-home-closeup.png` — focused real-UE view of the native ceramic roof components and their specular response.
-- `Saved/ThreeHearths/Acceptance/tile-workshop-two-private-tile-homes.png` — real-UE neighborhood view after two private-tile homes completed.
-- `Saved/Logs/HistoryArchiveFull.log` — 35 successful `ThreeHearths` automation tests, zero failures, exit code 0.
+- `Saved/ThreeHearths/Acceptance/tile-workshop-live4-20260907.json` — local-only final schema-10 continued world; omitted from Git because it contains the complete 24 MiB runtime history.
+- `Saved/ThreeHearths/Acceptance/tile-workshop-pre-reload.json` — local-only pre-restart checkpoint.
+- [Reload comparison](Delivery_2026-09-07/tile-workshop-reload-comparison.json) — committed component, order, inventory, and reload comparison.
+- [Private tile home close-up](Delivery_2026-09-07/private-tile-home-closeup.png) — committed focused real-UE view of the native ceramic roof components and their specular response.
+- [Two private tile homes](Delivery_2026-09-07/tile-workshop-two-private-tile-homes.png) — committed real-UE neighborhood view after both homes completed.
+- `Saved/Logs/HistoryArchiveFull.log` — local-only test log: 35 successful `ThreeHearths` automation tests, zero failures, exit code 0.
 
 The automation suite separately covers accepted and refused orders, pre-work cancellation and refund, route interruption, idempotent settlement, material conservation, private-tile construction cancellation, schema-10 validation, and late-response dual-clock behavior.
 

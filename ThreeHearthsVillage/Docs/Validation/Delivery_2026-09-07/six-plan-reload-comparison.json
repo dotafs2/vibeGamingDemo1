@@ -1,0 +1,130 @@
+{
+  "generated_at": "2026-09-06T23:15:26.6118428+08:00",
+  "world_id_before": "F8F4D755-4F2E-ABC0-3C1B-1A95B43F5938",
+  "world_id_after": "F8F4D755-4F2E-ABC0-3C1B-1A95B43F5938",
+  "same_world": true,
+  "revision_before": 14,
+  "revision_after": 14,
+  "same_revision": true,
+  "plan_count_before": 6,
+  "plan_count_after": 6,
+  "all_plan_identity_stable": true,
+  "all_component_ids_transforms_and_bounds_stable": true,
+  "plans": [
+    {
+      "plan_id": "resident_01584B4B-49E4-09F6-93E0-0EBA1C236093_house",
+      "owner": 4,
+      "site_id": 27,
+      "rooms": 1,
+      "components": 16,
+      "installed_components": 16,
+      "extension_ids": [],
+      "reasons": {
+        "need": "shelter",
+        "occupation": "商人",
+        "budget": "budget=44; affordable_rooms=1; preferred wall=timber roof=slateblue; executable wall=timber roof=timber; conserved inputs stone=1 plank=7 beam=8 per room; slateblue tile preference deferred: no tile production inventory; executable timber selected",
+        "relationship": "friends_nearby=6",
+        "road_access": "road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    },
+    {
+      "plan_id": "resident_172085AF-4603-B12D-879C-4B87757EBE28_house",
+      "owner": 3,
+      "site_id": 22,
+      "rooms": 3,
+      "components": 46,
+      "installed_components": 46,
+      "extension_ids": [
+        "resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1",
+        "resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2"
+      ],
+      "reasons": {
+        "need": "shelter | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1] room_1 need=shelter | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2] room_2 need=shelter",
+        "occupation": "国王 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1] room_1 occupation=国王 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2] room_2 occupation=国王",
+        "budget": "budget=233; affordable_rooms=1 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1] room_1 budget=58 stone=70 planks=73 beams=8 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2] room_2 budget=57 stone=68 planks=61 beams=8",
+        "relationship": "friends_nearby=1 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1] room_1 friends_nearby=3 household=2 | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2] room_2 friends_nearby=5 household=3",
+        "road_access": "road-accessible | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:1] room_1 road-accessible | extension[resident_172085AF-4603-B12D-879C-4B87757EBE28_house:extension:2] room_2 road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    },
+    {
+      "plan_id": "resident_3CA02488-42F6-FD2A-2018-CEA8B496E6D9_house",
+      "owner": 2,
+      "site_id": 28,
+      "rooms": 1,
+      "components": 16,
+      "installed_components": 16,
+      "extension_ids": [],
+      "reasons": {
+        "need": "shelter",
+        "occupation": "石匠",
+        "budget": "budget=19; affordable_rooms=1; preferred wall=stone roof=terracotta; executable wall=stone roof=timber; conserved inputs stone=5 plank=3 beam=8 per room; terracotta preference deferred: no tile production inventory; executable timber selected",
+        "relationship": "friends_nearby=5",
+        "road_access": "road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    },
+    {
+      "plan_id": "resident_94C10B82-4B5D-1D75-7D29-FDB2B0BB4831_house",
+      "owner": 9,
+      "site_id": 25,
+      "rooms": 1,
+      "components": 16,
+      "installed_components": 16,
+      "extension_ids": [],
+      "reasons": {
+        "need": "shelter",
+        "occupation": "学徒",
+        "budget": "budget=19; affordable_rooms=1; preferred wall=plaster roof=terracotta; executable wall=timber roof=timber; conserved inputs stone=1 plank=7 beam=8 per room; plaster preference deferred: no plaster production inventory; executable timber selected; terracotta preference deferred: no tile production inventory; executable timber selected",
+        "relationship": "friends_nearby=5",
+        "road_access": "road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    },
+    {
+      "plan_id": "resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house",
+      "owner": 1,
+      "site_id": 24,
+      "rooms": 2,
+      "components": 31,
+      "installed_components": 31,
+      "extension_ids": [
+        "resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1"
+      ],
+      "reasons": {
+        "need": "shelter | extension[resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1] room_1 need=shelter",
+        "occupation": "农民 | extension[resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1] room_1 occupation=农民",
+        "budget": "budget=47; affordable_rooms=1 | extension[resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1] room_1 budget=39 stone=65 planks=44 beams=8 preferred wall=timber roof=slateblue executable wall=timber roof=timber; slateblue tile preference deferred: no tile production inventory; executable timber selected",
+        "relationship": "friends_nearby=7 | extension[resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1] room_1 friends_nearby=7 household=4",
+        "road_access": "road-accessible | extension[resident_D3BB9C54-4A79-A241-B322-DEAECC5F26B3_house:extension:1] room_1 road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    },
+    {
+      "plan_id": "resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house",
+      "owner": 5,
+      "site_id": 23,
+      "rooms": 2,
+      "components": 31,
+      "installed_components": 31,
+      "extension_ids": [
+        "resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1"
+      ],
+      "reasons": {
+        "need": "shelter | extension[resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1] room_1 need=shelter",
+        "occupation": "陶工 | extension[resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1] room_1 occupation=陶工",
+        "budget": "budget=118; affordable_rooms=1 | extension[resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1] room_1 budget=24 stone=69 planks=67 beams=8",
+        "relationship": "friends_nearby=3 | extension[resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1] room_1 friends_nearby=5 household=3",
+        "road_access": "road-accessible | extension[resident_D6AF1F97-495A-DDF3-36EB-BB8FF2CE8A6E_house:extension:1] room_1 road-accessible"
+      },
+      "identity_stable": true,
+      "all_component_ids_transforms_and_bounds_stable": true
+    }
+  ]
+}

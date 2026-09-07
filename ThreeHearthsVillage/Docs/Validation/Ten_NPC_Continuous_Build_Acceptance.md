@@ -57,13 +57,13 @@ It has 1 treasury coin, 0 protected project coins, 0 active escrow, 327 released
 ## Visual and machine evidence
 
 - `Saved/ThreeHearths/Acceptance/ten-npc-overview-two-homes.png` — real UE overview at 300x with multiple houses simultaneously at different component assembly stages on one continuous road grid.
-- `Saved/ThreeHearths/Acceptance/ten-npc-three-plans.png` — real UE overview showing the persistent one-, two-, and three-room neighborhood result.
+- [Three-plan neighborhood overview](Delivery_2026-09-07/ten-npc-three-plans.png) — committed real UE overview showing the persistent one-, two-, and three-room neighborhood result.
 - `Saved/ThreeHearths/Acceptance/six-plan-stone-house-closeup.png` — real UE close-up with the mason's stone-wall house, roof highlights, NPC, and component completion/payment history.
 - `Saved/ThreeHearths/Acceptance/ten-npc-neighborhood.json` — persisted acceptance world.
 - `Saved/ThreeHearths/Acceptance/scheduler-speed-tax-housing-state.json` and `scheduler-speed-tax-housing-restarted-state.json` — revision-14 pre/post restart snapshots.
-- `Saved/ThreeHearths/Acceptance/six-plan-reload-comparison.json` — generated field-by-field plan/component reload comparison.
-- `Saved/ThreeHearths/Acceptance/six-plan-conservation.json` — generated resource and settlement summary.
-- `Saved/ThreeHearths/Acceptance/six-plan-artifact-manifest.json` — SHA-256 and byte length for every evidence artifact.
+- [Six-plan reload comparison](Delivery_2026-09-07/six-plan-reload-comparison.json) — committed field-by-field plan/component reload comparison.
+- [Six-plan conservation summary](Delivery_2026-09-07/six-plan-conservation.json) — committed resource and settlement summary.
+- [Six-plan artifact manifest](Delivery_2026-09-07/six-plan-artifact-manifest.json) — committed SHA-256 and byte length for the original evidence artifacts.
 - `Saved/Logs/DeliveryContractFinal.log` — full `ThreeHearths` automation run: 31 successes, 0 failures, exit code 0.
 
 Key implementation and regression sources are `HearthStructureCatalog.cpp`, `HearthStructurePlan.cpp`, `HearthResidentBuildingPlanner.cpp`, `HearthProduction.cpp`, `HearthPlannedConstructionRuntimeTests.cpp`, `HearthPersistenceTests.cpp`, `HearthModularCottageTests.cpp`, and `HearthMovementTests.cpp` under `Plugins/ThreeHearths/Source/ThreeHearths/Private`.
@@ -77,4 +77,3 @@ The artifact manifest includes the following central hashes:
 | Three-plan overview | `2fa65d224c14e0af587acc5b611985edc36c4a28b2835cd014aed64f31f4a412` |
 | Stone-house close-up | `cbe5dedddc9f5c4a98906e7326afe68c3631ec4a90d145d9edb70ed4c36fe33b` |
 | Final 31-test log | `51e5893a088bdebf2648b5c3773cce08d0700e675bcb4711e788b9c5cf21fdbd` |
-

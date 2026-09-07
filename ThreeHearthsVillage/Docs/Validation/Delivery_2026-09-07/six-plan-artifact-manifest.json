@@ -1,0 +1,47 @@
+[
+  {
+    "path": "Saved/ThreeHearths/Acceptance/scheduler-speed-tax-housing-state.json",
+    "bytes": 1024731,
+    "sha256": "acafbd5576617ba3fee57f69fcd598a7cf3db87f261723dc6021214b3f27930c"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/scheduler-speed-tax-housing-restarted-state.json",
+    "bytes": 1023403,
+    "sha256": "fa623cad476e9c14383ddc654617bdeea3faaf859ea70047e3f4d07dd2d1a05f"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/six-plan-reload-comparison.json",
+    "bytes": 7174,
+    "sha256": "8ca4a664666dd4cbc6b7857023347ca7f2d9c0a74f1a1c7076c84403b7d11e28"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/six-plan-conservation.json",
+    "bytes": 768,
+    "sha256": "80024cbe0ed33bcfb23791127c91ced39a4ed4be3c5c287d3e79370a92a9e5e0"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/ten-npc-neighborhood.json",
+    "bytes": 9734128,
+    "sha256": "f9573c1ded3e04f296ecbafa8e5b9e7ac9dc3b656166d300bd880854edebd2eb"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/ten-npc-overview-two-homes.png",
+    "bytes": 1774082,
+    "sha256": "ca1366d38d5ce6cef55f66fb1e6b7ef51271902a7f1bc21c4ec91be2314d9028"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/ten-npc-three-plans.png",
+    "bytes": 1602157,
+    "sha256": "2fa65d224c14e0af587acc5b611985edc36c4a28b2835cd014aed64f31f4a412"
+  },
+  {
+    "path": "Saved/ThreeHearths/Acceptance/six-plan-stone-house-closeup.png",
+    "bytes": 1316184,
+    "sha256": "cbe5dedddc9f5c4a98906e7326afe68c3631ec4a90d145d9edb70ed4c36fe33b"
+  },
+  {
+    "path": "Saved/Logs/DeliveryContractFinal.log",
+    "bytes": 315087,
+    "sha256": "51e5893a088bdebf2648b5c3773cce08d0700e675bcb4711e788b9c5cf21fdbd"
+  }
+]
