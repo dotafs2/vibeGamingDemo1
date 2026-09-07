@@ -1,5 +1,25 @@
 #include "HearthVillage.h"
 
+namespace HearthTileOrderDelivery
+{
+static bool IsWaitingForOrder(const FHearthResident& Customer,const FString& OrderId)
+{
+    return Customer.Task==EHearthTask::TradeWaiting && Customer.ActiveTaskId==OrderId;
+}
+
+static bool CanHandover(const FHearthResident& Customer,int32 CustomerIndex,const FString& OrderId,const TArray<FHearthWagePayable>& WagePayables)
+{
+    if(IsWaitingForOrder(Customer,OrderId)) return true;
+    if(Customer.Task!=EHearthTask::LifeChoosing || !Customer.ActiveTaskId.IsEmpty()
+        || !Customer.HeldToolId.IsEmpty() || !Customer.HeldToolOperationId.IsEmpty()) return false;
+    return !WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P)
+    {
+        // owed/unfunded is a completed-work liability; it does not own the resident's current task.
+        return P.Worker==CustomerIndex && P.Status==TEXT("reserved");
+    });
+}
+}
+
 bool AHearthVillage::StartTileOrder(int32 Customer,int32 Potter,const FString& ConversationId)
 {
     if(!Residents.IsValidIndex(Customer) || !Residents.IsValidIndex(Potter) || Customer==Potter
@@ -42,18 +62,21 @@ bool AHearthVillage::SettleTileOrder(FHearthTileOrder& O)
     if(O.Status==TEXT("completed")) return true;
     if(O.Status!=TEXT("delivering") || O.ReservedTiles!=O.TileQuantity || O.Escrow!=O.Price
         || !Residents.IsValidIndex(O.Customer) || !Residents.IsValidIndex(O.Potter)) return false;
+    const auto& Customer=Residents[O.Customer];
+    const bool bWaitingForThisOrder=HearthTileOrderDelivery::IsWaitingForOrder(Customer,O.Id);
+    if(!HearthTileOrderDelivery::CanHandover(Customer,O.Customer,O.Id,WagePayables)) return false;
     const FString TransactionId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     FHearthTaxAssessment Tax; if(!PrepareIncomeTax(O.Potter,O.Price,TransactionId,false,Tax)) return false;
     if(Residents[O.Customer].PersonalTiles>100000000-O.TileQuantity || Residents[O.Potter].Coins>100000000-O.Price) return false;
     FHearthTransaction Sale; Sale.Id=TransactionId; Sale.Kind=TEXT("tile_order"); Sale.TaskId=O.Id; Sale.From=O.Customer; Sale.To=O.Potter;
     Sale.Amount=O.Price; Sale.Quantity=O.TileQuantity; Sale.Item=TEXT("tiles"); Sale.At=Elapsed;
     Residents[O.Potter].Coins+=O.Price; Residents[O.Customer].PersonalTiles+=O.TileQuantity; Transactions.Add(MoveTemp(Sale)); CommitIncomeTax(Tax);
-    auto& Potter=Residents[O.Potter]; auto& Customer=Residents[O.Customer];
+    auto& Potter=Residents[O.Potter]; auto& SettlingCustomer=Residents[O.Customer];
     Potter.CargoType=-1; Potter.CargoAmount=0; Potter.Route.Reset(); Potter.Task=EHearthTask::LifeChoosing; Potter.ActiveTaskId.Empty();
-    if(Customer.Task==EHearthTask::TradeWaiting) { Customer.Task=EHearthTask::LifeChoosing; Customer.ActiveTaskId.Empty(); }
+    if(bWaitingForThisOrder) { SettlingCustomer.Task=EHearthTask::LifeChoosing; SettlingCustomer.ActiveTaskId.Empty(); }
     O.ReservedTiles=0; O.Escrow=0; O.Status=TEXT("completed"); O.Result=TEXT("6片真实陶瓦已交付，4枚托管钱只结算一次并计税。");
-    auto& B=Customer.Bonds.FindOrAdd(Potter.StableId); B.Trust=FMath::Min(100.f,B.Trust+6.f); B.Memory=O.Result;
-    VillageEvent=Potter.Name+TEXT("向")+Customer.Name+TEXT("交付了陶瓦。"); return true;
+    auto& B=SettlingCustomer.Bonds.FindOrAdd(Potter.StableId); B.Trust=FMath::Min(100.f,B.Trust+6.f); B.Memory=O.Result;
+    VillageEvent=Potter.Name+TEXT("向")+SettlingCustomer.Name+TEXT("交付了陶瓦。"); return true;
 }
 
 void AHearthVillage::AdvanceTileOrders(float Dt)
@@ -76,9 +99,16 @@ void AHearthVillage::AdvanceTileOrders(float Dt)
             if(Potter.Task!=EHearthTask::TradeTravel || Potter.ActiveTaskId!=O.Id) continue;
             if(Potter.Route.IsEmpty())
             {
+                const bool bCanHandover=HearthTileOrderDelivery::CanHandover(Customer,O.Customer,O.Id,WagePayables);
+                if(!bCanHandover)
+                {
+                    O.Result=TEXT("客户正在完成既有事务，陶瓦保持预留并等待交接。");
+                    continue;
+                }
                 TArray<FVector> Route; const FVector Target=Customer.Actor->GetActorLocation()+FVector(0,120,0);
                 if(!FindActivityRoute(O.Potter,Target,Route)) { O.Result=TEXT("交货路线暂不可用，陶瓦保持预留并等待。"); continue; }
-                Potter.Route=MoveTemp(Route); Customer.Task=EHearthTask::TradeWaiting; Customer.ActiveTaskId=O.Id;
+                Potter.Route=MoveTemp(Route);
+                if(!HearthTileOrderDelivery::IsWaitingForOrder(Customer,O.Id)) { Customer.Task=EHearthTask::TradeWaiting; Customer.ActiveTaskId=O.Id; }
             }
             if(MoveResident(O.Potter,Dt)) SettleTileOrder(O);
         }

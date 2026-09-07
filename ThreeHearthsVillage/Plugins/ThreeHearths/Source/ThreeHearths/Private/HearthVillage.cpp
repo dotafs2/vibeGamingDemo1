@@ -1,11 +1,16 @@
 #include "HearthVillage.h"
+#include "HearthWorldState.h"
 #include "HearthMovement.h"
+#include "HearthTownLayout.h"
+#include "HearthTavernRuntime.h"
 #include "Animation/AnimSequence.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/StaticMeshActor.h"
+#include "EngineUtils.h"
 #include "Engine/SkeletalMesh.h"
 #include "Engine/Engine.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -19,6 +24,41 @@
 #include "UObject/ConstructorHelpers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogThreeHearths, Log, All);
+
+bool AHearthVillage::FindResidentHostSite(int32 Index,FHearthSite& OutSite) const
+{
+    if(!Residents.IsValidIndex(Index) || Residents[Index].Plot<0 || Residents[Index].Plot>=HearthVillageLimits::MaxPopulation) return false;
+    const int32 Plot=Residents[Index].Plot;
+    const FString& StableId=PlotIds[Plot];
+    if(const FHearthSite* Native=ProductionSites.FindByPredicate([&](const FHearthSite& Site)
+        { return Site.Kind==EHearthSiteKind::House && Site.Owner==Index && Site.StableId==StableId; }))
+    {
+        OutSite=*Native; return true;
+    }
+    OutSite=FHearthSite(); OutSite.StableId=StableId; OutSite.Kind=EHearthSiteKind::House; OutSite.Position=PlotPositions[Plot]; OutSite.Approach=HomeApproach(Plot); OutSite.Radius=420.f; OutSite.Owner=Index; OutSite.bExpansion=false;
+    return !OutSite.StableId.IsEmpty();
+}
+
+FString AHearthVillage::ExportTavernState() const
+{
+    return WorldId.IsEmpty()?FString(TEXT("{}")):HearthTavernRuntime::LiveExportReadOnly(WorldId);
+}
+
+bool AHearthVillage::RequestTavernCanopy(int32 Index)
+{
+    if(!Residents.IsValidIndex(Index)) return false;
+    FHearthSite Host; FString Error;
+    if(!FindResidentHostSite(Index,Host) || !HearthTavernRuntime::RequestTavernCanopy(Residents[Index],Host,WorldRequests,Error))
+    {
+        Residents[Index].LatestEvent=Error.IsEmpty()?TEXT("酒馆棚请求未能绑定到自家入口"):Error;
+        return false;
+    }
+    Residents[Index].LatestEvent=TEXT("已在自家入口提交户外棚请求，等待构件逐件施工。");
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    SaveWorld();
+    WriteSnapshot();
+    return true;
+}
 
 namespace Hearth
 {
@@ -227,6 +267,13 @@ UStaticMeshComponent* AHearthVillage::AddMesh(const FString& Path, const FVector
 
 void AHearthVillage::BuildEnvironment()
 {
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthCityV3")))
+    {
+        bUseCropoutMap=true;
+        bOrganicTownLayout=true;
+        TownLayoutVersion=3;
+    }
+    LandGrid.Reset(); // Terrain and collision may have changed since editor construction.
     TArray<UStaticMeshComponent*> Previous;
     GetComponents(Previous);
     for (auto* Component:Previous) if (Component->ComponentHasTag(Hearth::Generated)) Component->DestroyComponent();
@@ -282,20 +329,124 @@ void AHearthVillage::BuildEnvironment()
 
 void AHearthVillage::BuildIslandVillage()
 {
+    TownLayoutError.Empty();
     // This verified land corridor belongs to the copied /Game/Village island.
     // Keep props clear of the walking lanes and retain the terrain's own materials.
-    AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2130,0,3.6f),FVector(3.4f,52.f,0.012f),&Hearth::Path);
-    // The west craft spur makes a visible T-shaped workshop lane shared by the
-    // carpenter, kiln and depot instead of placing facilities along one line.
-    AddMesh(Hearth::Shapes+TEXT("Cube"),FVector(-2465,-1050,3.7f),FVector(6.7f,1.5f,0.013f),&Hearth::Path);
+    // Existing saves keep their recorded road generation; missing metadata means
+    // the legacy layout. New worlds use the same bent roads for visuals and sites.
+    FString LayoutPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/World/current-world.json");
+    FParse::Value(FCommandLine::Get(),TEXT("HearthWorld="),LayoutPath);
+    FString SavedLayout,LayoutError; FHearthWorldImage SavedNeighborhood;
+    bool bSavedLayout=false;
+    if(!FParse::Param(FCommandLine::Get(),TEXT("HearthNoWorldPersistence")))
+    {
+        // Read the checked payload, not the outer checksum envelope. Use the same
+        // backup policy as LoadWorld so an editor restart keeps the real streets.
+        if(HearthWorld::Read(LayoutPath,SavedLayout,LayoutError) || HearthWorld::Read(LayoutPath+TEXT(".bak"),SavedLayout,LayoutError))
+            bSavedLayout=HearthWorld::Decode(SavedLayout,SavedNeighborhood,LayoutError) && SavedNeighborhood.bIsland;
+    }
+    if(bSavedLayout) {bOrganicTownLayout=SavedNeighborhood.bOrganicTownLayout;TownLayoutVersion=SavedNeighborhood.TownLayoutVersion;}
+    const FName Town3TerrainTag(TEXT("ThreeHearthsTown3Terrain"));
+    // A copied Cropout island is base terrain too, but it is not the 300 m Town3 floor.
+    // Owner + dedicated tag also recover the actor when PIE duplicates the editor world.
+    if(!GeneratedTown3Terrain.IsValid() || GeneratedTown3Terrain->GetWorld()!=GetWorld()
+        || GeneratedTown3Terrain->GetOwner()!=this || !GeneratedTown3Terrain->ActorHasTag(Town3TerrainTag))
+    {
+        GeneratedTown3Terrain.Reset();
+        for(TActorIterator<AStaticMeshActor> It(GetWorld());It;++It)
+            if(It->GetOwner()==this && It->ActorHasTag(Town3TerrainTag)) { GeneratedTown3Terrain=*It; break; }
+    }
+    if(TownLayoutVersion>=3)
+    {
+        // The floor is transient geometry: saved Town3 worlds need it on cold load too.
+        const FTransform TerrainTransform(FRotator::ZeroRotator,FVector(6500.f,6500.f,-47.f),FVector(300.f,300.f,1.f));
+        const bool bNewTerrain=!GeneratedTown3Terrain.IsValid();
+        if(bNewTerrain)
+        {
+            FActorSpawnParameters Spawn; Spawn.Owner=this; Spawn.OverrideLevel=GetLevel(); Spawn.ObjectFlags|=RF_Transient;
+            Spawn.bAllowDuringConstructionScript=true; Spawn.bDeferConstruction=true;
+            Spawn.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+            GeneratedTown3Terrain=GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),TerrainTransform,Spawn);
+        }
+        auto* Terrain=GeneratedTown3Terrain.Get();
+        auto* Component=Terrain?Terrain->GetStaticMeshComponent():nullptr;
+        auto* Cube=LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube"));
+        if(!Component || !Cube) { TownLayoutError=TEXT("Town3 terrain actor or cube mesh could not be created"); UE_LOG(LogTemp,Error,TEXT("TOWN_LAYOUT_ERROR: %s"),*TownLayoutError); return; }
+        Terrain->Tags.AddUnique(TEXT("ThreeHearthsBaseTerrain")); Terrain->Tags.AddUnique(Town3TerrainTag);
+        Component->SetMobility(EComponentMobility::Movable);
+        Component->SetStaticMesh(Cube); Component->SetCollisionProfileName(TEXT("BlockAll"));
+        Component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+        if(TintMaterial)
+        {
+            auto* GrassMaterial=UMaterialInstanceDynamic::Create(TintMaterial,Terrain);
+            GrassMaterial->SetVectorParameterValue(TEXT("VillageTint"),Hearth::Grass); Component->SetMaterial(0,GrassMaterial);
+        }
+        if(bNewTerrain) Terrain->FinishSpawning(TerrainTransform);
+        Terrain->SetActorTransform(TerrainTransform);
+        if(!Component->IsRegistered()) Component->RegisterComponent();
+        Component->RecreatePhysicsState(); Component->UpdateBounds();
+        const FVector Extent=Component->Bounds.BoxExtent;
+        UE_LOG(LogTemp,Display,TEXT("TOWN3_TERRAIN actor=%s center=%s extent=%s registered=%d collision=%d"),
+            *Terrain->GetName(),*Component->Bounds.Origin.ToString(),*Extent.ToString(),Component->IsRegistered(),static_cast<int32>(Component->GetCollisionEnabled()));
+        if(!Component->Bounds.Origin.Equals(TerrainTransform.GetLocation(),1.f) || !Extent.Equals(FVector(15000.f,15000.f,50.f),1.f))
+        { TownLayoutError=TEXT("Town3 terrain bounds do not match the 300 m map"); UE_LOG(LogTemp,Error,TEXT("TOWN_LAYOUT_ERROR: %s"),*TownLayoutError); return; }
+    }
+    else if(GeneratedTown3Terrain.IsValid())
+    {
+        GeneratedTown3Terrain->Destroy(); GeneratedTown3Terrain.Reset();
+    }
+    const auto Roads=HearthTownLayout::VillageRoads(TownLayoutVersion>=3?true:bOrganicTownLayout,TownLayoutVersion);
+    auto PathSegment=[this](FVector A,FVector B,float Width)
+    {
+        FVector C=(A+B)*.5f; C.Z=3.7f; const FVector D=B-A;
+        auto* Mesh=AddMesh(Hearth::Shapes+TEXT("Cube"),C,FVector(D.Size2D()/100,Width/100,.013),&Hearth::Path);
+        Mesh->SetWorldRotation(FRotator(0,FMath::RadiansToDegrees(FMath::Atan2(D.Y,D.X)),0));
+    };
+    for(const auto& Road:Roads) PathSegment(Road.A,Road.B,Road.Width);
     const FVector AddedPlots[]={FVector(-2800,-1900,8),FVector(-2800,0,8),FVector(-2800,1900,8),
         FVector(400,-1900,8),FVector(-2800,-950,8),FVector(-2800,950,8),FVector(-1000,950,8)};
     for(int32 I=0;I<HousingPlotCount();++I)
     {
-        PlotPositions[I]=I<3?FVector(-1000,-1900+I*1900,8):AddedPlots[I-3];
-        const FVector P=PlotPositions[I];
-        AddMesh(Hearth::Shapes+TEXT("Cube"),FVector((-2130+P.X)*.5f,P.Y,3.8f),FVector(FMath::Abs(P.X+2130)/100.f,1.5f,.014f),&Hearth::Path);
+        if(TownLayoutVersion>=3) PlotPositions[I]=FVector(6500.f,1500.f+I*10.f,8.f);
+        else PlotPositions[I]=I<3?FVector(-1000,-1900+I*1900,8):AddedPlots[I-3];
+        // Keep the last starter entrance on its original mapped navigation cell.
+        if(bOrganicTownLayout && TownLayoutVersion<3 && I<9) PlotPositions[I]+=FVector((I%3-1)*110,((I*7)%5-2)*65,0);
+        PlotEntrances[I]=FVector::ZeroVector;
+        PlotYaws[I]=0;
+    }
+    if(bSavedLayout)
+    {
+        for(int32 I=0;I<FMath::Min(HousingPlotCount(),SavedNeighborhood.PlotCount);++I)
+        {PlotPositions[I]=SavedNeighborhood.Plots[I];PlotYaws[I]=SavedNeighborhood.PlotYaws[I];PlotEntrances[I]=SavedNeighborhood.PlotEntrances[I];}
+    }
+    else if((TownLayoutVersion>=3 || (bOrganicTownLayout && TownLayoutVersion>0)) && !GenerateStarterNeighborhood(Roads))
+    {
+        if(TownLayoutError.IsEmpty()) TownLayoutError=FString::Printf(TEXT("Town layout v%d failed to place %d safe homes"),TownLayoutVersion,HousingPlotCount());
+        UE_LOG(LogTemp,Error,TEXT("TOWN_LAYOUT_ERROR: %s"),*TownLayoutError);
+        return;
+    }
+    if(TownLayoutVersion>=3)
+    {
+        for(int32 I=0;I<HousingPlotCount();++I) if(PlotEntrances[I].IsNearlyZero())
+        {
+            double Best=DBL_MAX; FVector Nearest=PlotPositions[I];
+            for(const auto& Road:Roads)
+            {
+                const FVector Candidate=FMath::ClosestPointOnSegment(PlotPositions[I],Road.A,Road.B);
+                const double Distance=FVector::DistSquared2D(PlotPositions[I],Candidate);
+                if(Distance<Best) {Best=Distance;Nearest=Candidate;}
+            }
+            PlotEntrances[I]=Nearest;
+        }
+    }
+    for(int32 I=0;I<HousingPlotCount();++I)
+    {
+        const FVector P=PlotPositions[I],Entry=HomeApproach(I);
+        FVector Nearest(-2130,P.Y,8); double Best=DBL_MAX;
+        for(const auto& Road:Roads) { const FVector Q=FMath::ClosestPointOnSegment(P,Road.A,Road.B); const double D=FVector::DistSquared2D(P,Q); if(D<Best){Best=D;Nearest=Q;} }
+        PathSegment(Nearest,Entry,100);
         auto* House=AddMesh(Hearth::Houses+TEXT("SM_House_01"),P,FVector(1));
+        House->SetWorldRotation(FRotator(0,PlotYaws[I],0));
         HouseMeshes.Add(House); House->SetVisibility(false);
     }
     for(int32 I=0;I<3;++I)
@@ -358,29 +509,37 @@ FLinearColor AHearthVillage::ResidentColor(int32 I) const
 
 void AHearthVillage::ResetVillageState()
 {
+    if(TavernRuntimeState.IsValid() && !WorldId.IsEmpty()) HearthTavernRuntime::UnbindPersistentState(WorldId);
     CloseHistoryRun(TEXT("重新开始了新一轮，旧任务已结束。"));
     StopDecisionRequests();
     CurrentRun=FGuid::NewGuid().ToString(EGuidFormats::Digits);
     WorldId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    TavernRuntimeState=MakeShared<FHearthTavernRuntimeState>();
+    HearthTavernRuntime::BindPersistentState(WorldId,*TavernRuntimeState);
     WorldRevision=0; WorldSaveTimer=0;
     LastLifeResident=-1;
     LoadApiConfig();
     for (auto& R:Residents) if (IsValid(R.Actor)) R.Actor->Destroy();
     Residents.Empty();
     for(auto& Mesh:PublicMeshes) if(IsValid(Mesh.Get())) Mesh->DestroyComponent();
-    PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); StructurePlans.Reset(); PublicVisualCount=-1; PublicScheduleTimer=0;
+    PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); StructurePlans.Reset(); WorldRequests.Reset(); PublicVisualCount=-1; PublicScheduleTimer=0;
     Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
-    TreasuryCoins=500; TaxProjectCoins=0; TaxReleasedCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
+    TreasuryCoins=IsTownLayoutVersion3()?HearthVillageLimits::Town3TreasuryCoins:HearthVillageLimits::LegacyTreasuryCoins;
+    TaxProjectCoins=0; TaxReleasedCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
     bSocialOpen=false; ++SocialRevision;
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; NextTradeAt=8.f; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
     {
-        WoodStock[I]=bUseCropoutMap?33:12;
+        WoodStock[I]=IsTownLayoutVersion3()?HearthVillageLimits::Town3StarterWoodPerResident*(HearthVillageLimits::Town3Population/3):(bUseCropoutMap?33:12);
         if(StockMeshes.IsValidIndex(I)) { StockMeshes[I]->SetVisibility(true); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,.4f)); }
     }
+    const int32 LegacyCosts[]={12,9,6,6,6,6,6,6,6,6};
     for (int32 I=0;I<HousingPlotCount();++I)
     {
         PlotOwners[I]=-1;
+        PlotCosts[I]=IsTownLayoutVersion3()?6:LegacyCosts[FMath::Min(I,9)];
+        for(auto& M:StarterArchitectureMeshes[I]) if(M.IsValid()) M->DestroyComponent();
+        StarterArchitectureMeshes[I].Reset();
         PlotIds[I]=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if (HouseMeshes.IsValidIndex(I)) { HouseMeshes[I]->SetVisibility(false); HouseMeshes[I]->SetWorldScale3D(FVector(1)); }
         FHearthResident R;
@@ -409,9 +568,33 @@ void AHearthVillage::ResetVillageState()
             R.Actor->Bundle->SetMaterial(0,B);
         }
         Residents.Add(R);
+        EnsureResidentStory(I);
     }
     PendingDecisions.SetNum(Residents.Num());
     InitializeProduction();
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    if(bUseCropoutMap)
+    {
+        // Generated plots can occupy an old hard-coded arrival position.
+        // Place new arrivals on a reachable street before their first decision.
+        const FVector Depot(-1650,-1050,8);
+        for(int32 I=0;I<Residents.Num();++I)
+        {
+            auto* Actor=Residents[I].Actor.Get();TArray<FVector> Route;
+            const FVector Original=Actor->GetActorLocation();
+            if(FindProductionPath(Original,Depot,Route)) continue;
+            TArray<FVector> Candidates;
+            for(const FIntPoint& Cell:LandGrid)
+            {
+                const FVector P(Cell.X*300,Cell.Y*300,8);
+                if(IsClearPoint(P) && !Residents.ContainsByPredicate([&](const auto& Other){return Other.Actor!=Actor && IsValid(Other.Actor) && FVector::Dist2D(P,Other.Actor->GetActorLocation())<100;})) Candidates.Add(P);
+            }
+            Candidates.Sort([&](const FVector& A,const FVector& B){return FVector::DistSquared2D(A,Original)<FVector::DistSquared2D(B,Original);});
+            for(int32 C=0;C<FMath::Min(32,Candidates.Num());++C)
+                if(FindProductionPath(Candidates[C],Depot,Route)){Actor->SetActorLocation(Candidates[C]);break;}
+        }
+    }
+    RefreshBotanicalLandscape();
     SelectResident(0);
     bHistoryOpen=false;
     VillageEvent=FString::Printf(TEXT("%d位居民抵达了。每个人都带着自己的想法，准备在这里安家。"),Residents.Num());
@@ -444,6 +627,7 @@ void AHearthVillage::CycleSpeed()
 
 void AHearthVillage::Decide(int32 Index)
 {
+    EnsureResidentDesignGoal(Index);
     if(bApiReady) RequestDecision(Index);
     else DecideLocally(Index,bApiConfigured?ApiStatus:FString());
 }
@@ -456,16 +640,18 @@ void AHearthVillage::DecideLocally(int32 Index, const FString& Failure)
     for(int32 P=0;P<HousingPlotCount();++P)
     {
         if(PlotOwners[P]!=-1) continue;
+        if(bUseCropoutMap && !IsClearPoint(HomeApproach(P))) continue;
         float Score=0;
-        if(Index==0) Score=P==0?100.f:10.f; // Quiet woodland edge.
-        if(Index==1) Score=100.f-FMath::Abs(PlotPositions[P].Y)*0.1f; // Shared garden / center.
-        if(Index==2) Score=100.f-PlotCosts[P]*5.f; // Low material budget.
-        if(Index>=3) Score=100.f-FMath::Abs(P-Index)*12.f-PlotCosts[P]*2.f;
+        if(bUseCropoutMap) Score=100.f-EvaluateResidentSite(Index,PlotPositions[P]).Penalty-PlotCosts[P]*.15f;
+        else if(Index==0) Score=P==0?100.f:10.f; // Quiet woodland edge.
+        else if(Index==1) Score=100.f-FMath::Abs(PlotPositions[P].Y)*0.1f;
+        else if(Index==2) Score=100.f-PlotCosts[P]*5.f;
         if(Score>BestScore) { BestScore=Score; Best=P; }
     }
     if(Best<0) { R.Timer=2.f; R.Reason=TEXT("暂时没有空地，等一会儿再看看。"); return; }
     const TCHAR* Reasons[]={TEXT("树林边安静，离木材也近。多花一点木料，我也想住这里。"),TEXT("我想住在花园和邻居旁边。以后大家见面、互相帮忙都方便。"),TEXT("先建一间够住的小屋。只要六份木材，余下的留给村庄。")};
     FString Reason=Best==Index && Index<3?Reasons[Index]:FString::Printf(TEXT("我想在%s安家，准备好 %d 份木材，再慢慢添置我喜欢的东西。"),*PlotLabel(Best),PlotCosts[Best]);
+    if(bUseCropoutMap) Reason=EvaluateResidentSite(Index,PlotPositions[Best]).Reason;
     if(ReservePlot(Index,Best,Reason,false))
     {
         R.DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
@@ -484,7 +670,7 @@ bool AHearthVillage::ReservePlot(int32 Index,int32 Plot,const FString& Reason,bo
     {
         const FVector P=PlotPositions[Plot];
         if(!IsLand(P) || !IsLand(P+FVector(230,230,0)) || !IsLand(P+FVector(-230,230,0))
-            || !IsLand(P+FVector(230,-230,0)) || !IsLand(P-FVector(230,230,0)) || !IsClearPoint(P-FVector(245,0,0))) return false;
+            || !IsLand(P+FVector(230,-230,0)) || !IsLand(P-FVector(230,230,0)) || !IsClearPoint(HomeApproach(Plot))) return false;
     }
     auto& R=Residents[Index];
     if(R.Plot!=-1 || R.Task!=EHearthTask::Choosing) return false;
@@ -557,6 +743,7 @@ void AHearthVillage::SeekWood(int32 Index)
 void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)
 {
     if(!HouseMeshes.IsValidIndex(Plot)) return;
+    if(RefreshStarterArchitecture(Plot,Stage)) return;
     FString Path=Hearth::Houses+FString::Printf(TEXT("SM_House_%02d"),FMath::Clamp(Stage+1,1,4));
     if(Stage>=3 && Plot>=0 && Plot<UE_ARRAY_COUNT(PlotOwners) && Residents.IsValidIndex(PlotOwners[Plot]))
     {
@@ -569,6 +756,7 @@ void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)
         HouseMeshes[Plot]->SetVisibility(true);
         const float Size=Stage>=3?0.9f:(Plot==2?0.80f:(Plot==0?1.05f:0.95f));
         HouseMeshes[Plot]->SetWorldScale3D(FVector(Size));
+        HouseMeshes[Plot]->SetWorldRotation(FRotator(0,PlotYaws[Plot],0));
     }
 }
 
@@ -614,6 +802,9 @@ void AHearthVillage::Tick(float DeltaSeconds)
         SnapshotTimer+=RealDt;
         if(SnapshotTimer>=0.5f) { SnapshotTimer=0; WriteSnapshot(); }
     }
+    // Explicit visual reviews may finish while simulation is paused. Only
+    // design intent is recorded; resident movement and construction stay frozen.
+    if(bSimulationPaused && PendingDecisionCount()>0) ConsumeDecision();
     RefreshProductionVisuals();
     RefreshPublicVisuals();
     if(bWorldPersistenceEnabled && !bWorldWriteBlocked)
@@ -655,7 +846,6 @@ void AHearthVillage::AdvanceSimulation(float Dt)
     AdvanceNeeds(Dt);
     AdvanceEconomy(Dt);
     AdvanceProductionWorld(Dt);
-    AdvancePublicWorks(Dt);
     for(int32 I=0;I<Residents.Num();++I)
     {
         auto& R=Residents[I];
@@ -686,7 +876,7 @@ void AHearthVillage::AdvanceSimulation(float Dt)
                 {
                     R.Task=EHearthTask::ToHome;
                     R.LatestEvent=FString::Printf(TEXT("带着 %d 份木材回到工地。"),R.CarriedWood);
-                    SetRoute(I,PlotPositions[R.Plot]+FVector(-245,0,0));
+                    SetRoute(I,HomeApproach(R.Plot));
                 }
             }
             break;
@@ -751,6 +941,10 @@ void AHearthVillage::AdvanceSimulation(float Dt)
         default: break;
         }
     }
+    // Offer funded public work at the exact transition to idle, before the
+    // ordinary life scheduler consumes that transition in the same fixed step.
+    AdvanceTileOrders(Dt);
+    AdvancePublicWorks(Dt);
     if(!bReportedComplete && CompletedHomes()==Residents.Num())
     {
         bReportedComplete=true;
@@ -799,6 +993,8 @@ FString AHearthVillage::GetSnapshot() const
     Root->SetStringField(TEXT("world_id"),WorldId);
     Root->SetNumberField(TEXT("world_revision"),WorldRevision);
     Root->SetStringField(TEXT("world_save_status"),WorldSaveStatus);
+    Root->SetNumberField(TEXT("town_layout_version"),TownLayoutVersion);
+    Root->SetStringField(TEXT("town_layout_error"),TownLayoutError);
     Root->SetStringField(TEXT("backend"),bApiReady?ApiBackend:TEXT("local_personality_policy"));
     Root->SetStringField(TEXT("api_status"),ApiStatus);
     Root->SetStringField(TEXT("model"),ApiModel);
@@ -868,13 +1064,16 @@ FString AHearthVillage::GetSnapshot() const
         J->SetNumberField(TEXT("cost"),CostFor(I)); J->SetNumberField(TEXT("build_progress"),R.BuildProgress);
         J->SetNumberField(TEXT("energy"),R.Energy); J->SetNumberField(TEXT("social_need"),R.SocialNeed);
         J->SetNumberField(TEXT("coins"),R.Coins);
+        J->SetStringField(TEXT("inner_story"),R.InnerStory);J->SetStringField(TEXT("design_goal"),R.DesignGoal);
+        J->SetStringField(TEXT("building_archetype"),R.BuildingArchetype);J->SetStringField(TEXT("design_feedback"),R.DesignFeedback);
         J->SetNumberField(TEXT("personal_planks"),R.PersonalPlanks);
         J->SetNumberField(TEXT("life_action"),R.LifeAction); J->SetNumberField(TEXT("history_count"),HistoryCount(I));
         J->SetNumberField(TEXT("next_decision_in_simulation_seconds"),FMath::Max(0.0,R.NextLifeDecision-Elapsed));
         TArray<TSharedPtr<FJsonValue>> LocalProductionActions;
-        for(const int32 Action:AvailableProductionActions(I)) LocalProductionActions.Add(MakeShared<FJsonValueNumber>(Action));
+        const auto AvailableActions=AvailableProductionActions(I);
+        for(const int32 Action:AvailableActions) LocalProductionActions.Add(MakeShared<FJsonValueNumber>(Action));
         J->SetArrayField(TEXT("available_production_actions"),LocalProductionActions);
-        J->SetNumberField(TEXT("local_production_choice"),ChooseProductionLocally(I));
+        J->SetNumberField(TEXT("local_production_choice"),ChooseProductionLocally(I,AvailableActions));
         if(IsValid(R.Actor)) J->SetStringField(TEXT("position"),R.Actor->GetActorLocation().ToString());
         People.Add(MakeShared<FJsonValueObject>(J));
         AccountedWood+=R.CarriedWood+R.DeliveredWood+(R.CargoType==1?R.CargoAmount:0);
@@ -956,6 +1155,7 @@ void AHearthVillage::EndPlay(const EEndPlayReason::Type Reason)
     if(bWorldPersistenceEnabled) SaveWorld();
     else CloseHistoryRun(TEXT("本次播放已结束，任务在此中断。"));
     StopDecisionRequests();
+    if(!WorldId.IsEmpty()) HearthTavernRuntime::UnbindPersistentState(WorldId);
     WorldLease.Reset();
     WriteSnapshot();
     Super::EndPlay(Reason);

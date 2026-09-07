@@ -1,0 +1,377 @@
+{
+  "png": "C:\\vibeGamingDemo1\\ThreeHearthsVillage\\Docs\\Art_Daytime_2026-09-07.png",
+  "review_thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\poster-review.png",
+  "dimensions_px": [
+    3200,
+    2440
+  ],
+  "title": "今日美术扩展 · 2026.09.07",
+  "counts": {
+    "housing": 5,
+    "castle": 1,
+    "plants": 6,
+    "total": 12
+  },
+  "catalog_sha256": "b4e2faf5dd7638b7d59b41728c0180fe230b852b7693fa6a37c9596c55ab9c61",
+  "render_report": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\render-report.json",
+  "layout": "castle large hero; five housing medium cards; six plant small cards",
+  "lighting_note": "neutral studio lighting, not UE in-game lighting",
+  "source_note": "native UE StaticMesh assets and asset materials; only catalog color overrides use M_VillageTint",
+  "footer": [
+    "复用组件与程序化组合",
+    "城堡为完整方案预览，游戏实建14/1276",
+    "高地与国王雕像尚未制作"
+  ],
+  "placements": [
+    {
+      "number": 6,
+      "id": "royal_keep_garden_v2",
+      "name_zh": "王家花园城堡",
+      "kind": "assembly_preview",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\royal_keep_garden_v2.png",
+      "image_box": [
+        124,
+        492,
+        1428,
+        1242
+      ]
+    },
+    {
+      "number": 1,
+      "id": "rowhouse",
+      "name_zh": "排屋",
+      "kind": "building",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\rowhouse.png",
+      "image_box": [
+        1544,
+        494,
+        2032,
+        729
+      ]
+    },
+    {
+      "number": 2,
+      "id": "shop_house",
+      "name_zh": "店屋",
+      "kind": "building",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\shop_house.png",
+      "image_box": [
+        2065,
+        494,
+        2553,
+        729
+      ]
+    },
+    {
+      "number": 3,
+      "id": "courtyard_workshop",
+      "name_zh": "庭院工坊",
+      "kind": "building",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\courtyard_workshop.png",
+      "image_box": [
+        2586,
+        494,
+        3074,
+        729
+      ]
+    },
+    {
+      "number": 4,
+      "id": "warehouse",
+      "name_zh": "仓库",
+      "kind": "building",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\warehouse.png",
+      "image_box": [
+        1544,
+        889,
+        2032,
+        1124
+      ]
+    },
+    {
+      "number": 5,
+      "id": "inn",
+      "name_zh": "旅店",
+      "kind": "building",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\inn.png",
+      "image_box": [
+        2065,
+        889,
+        2553,
+        1124
+      ]
+    },
+    {
+      "number": 7,
+      "id": "oak",
+      "name_zh": "橡树",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\oak.png",
+      "image_box": [
+        124,
+        1602,
+        591,
+        1902
+      ]
+    },
+    {
+      "number": 8,
+      "id": "birch",
+      "name_zh": "白桦",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\birch.png",
+      "image_box": [
+        621,
+        1602,
+        1088,
+        1902
+      ]
+    },
+    {
+      "number": 9,
+      "id": "orchard",
+      "name_zh": "果树",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\orchard.png",
+      "image_box": [
+        1118,
+        1602,
+        1585,
+        1902
+      ]
+    },
+    {
+      "number": 10,
+      "id": "cypress",
+      "name_zh": "柏树",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\cypress.png",
+      "image_box": [
+        1615,
+        1602,
+        2082,
+        1902
+      ]
+    },
+    {
+      "number": 11,
+      "id": "flowering_shrub",
+      "name_zh": "开花灌木",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\flowering_shrub.png",
+      "image_box": [
+        2112,
+        1602,
+        2579,
+        1902
+      ]
+    },
+    {
+      "number": 12,
+      "id": "wildflowers",
+      "name_zh": "野花",
+      "kind": "botanical",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\wildflowers.png",
+      "image_box": [
+        2609,
+        1602,
+        3076,
+        1902
+      ]
+    }
+  ],
+  "qa": [
+    {
+      "id": "royal_keep_garden_v2",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\royal_keep_garden_v2.png",
+      "image_box": [
+        124,
+        492,
+        1428,
+        1242
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "rowhouse",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\rowhouse.png",
+      "image_box": [
+        1544,
+        494,
+        2032,
+        729
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "shop_house",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\shop_house.png",
+      "image_box": [
+        2065,
+        494,
+        2553,
+        729
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "courtyard_workshop",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\courtyard_workshop.png",
+      "image_box": [
+        2586,
+        494,
+        3074,
+        729
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "warehouse",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\warehouse.png",
+      "image_box": [
+        1544,
+        889,
+        2032,
+        1124
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "inn",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\inn.png",
+      "image_box": [
+        2065,
+        889,
+        2553,
+        1124
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "oak",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\oak.png",
+      "image_box": [
+        124,
+        1602,
+        591,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "birch",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\birch.png",
+      "image_box": [
+        621,
+        1602,
+        1088,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "orchard",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\orchard.png",
+      "image_box": [
+        1118,
+        1602,
+        1585,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "cypress",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\cypress.png",
+      "image_box": [
+        1615,
+        1602,
+        2082,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "flowering_shrub",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\flowering_shrub.png",
+      "image_box": [
+        2112,
+        1602,
+        2579,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    },
+    {
+      "id": "wildflowers",
+      "thumbnail": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\daily-art-20260907\\thumbs\\wildflowers.png",
+      "image_box": [
+        2609,
+        1602,
+        3076,
+        1902
+      ],
+      "source_size_px": [
+        960,
+        720
+      ],
+      "full_image_fitted": true,
+      "exists": true
+    }
+  ]
+}

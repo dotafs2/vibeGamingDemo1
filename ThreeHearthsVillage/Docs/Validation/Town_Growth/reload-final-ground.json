@@ -1,0 +1,118 @@
+{
+  "town_layout_version": 3,
+  "recommended_population": 30,
+  "population_limit": 40,
+  "town_layout_ready": true,
+  "town_layout_error": "",
+  "map_min": [
+    -8500,
+    -8500
+  ],
+  "map_max": [
+    21500,
+    21500
+  ],
+  "walkable_grid_cells": 9149,
+  "castle_radius_cm": 5000,
+  "castle_entrance_ground_z": 8,
+  "ground_probes": [
+    {
+      "id": "map_min",
+      "x": -8500,
+      "y": -8500,
+      "z": 8,
+      "is_land": true,
+      "is_clear": false
+    },
+    {
+      "id": "map_max",
+      "x": 21500,
+      "y": 21500,
+      "z": 8,
+      "is_land": true,
+      "is_clear": false
+    },
+    {
+      "id": "map_center",
+      "x": 6500,
+      "y": 6500,
+      "z": 8,
+      "is_land": true,
+      "is_clear": false
+    },
+    {
+      "id": "castle_center",
+      "x": 6500,
+      "y": 6500,
+      "z": 8,
+      "is_land": true,
+      "is_clear": false
+    },
+    {
+      "id": "castle_entrance",
+      "x": 6500,
+      "y": 1500,
+      "z": 8,
+      "is_land": true,
+      "is_clear": false
+    }
+  ],
+  "districts": [
+    {
+      "id": "castle_core",
+      "kind": "civic_core",
+      "x": 6500,
+      "y": 6500,
+      "radius": 5000
+    },
+    {
+      "id": "castle_gate_reserve",
+      "kind": "gatehouse_reserve",
+      "x": 6500,
+      "y": 1500,
+      "radius": 260
+    },
+    {
+      "id": "west_dense_block",
+      "kind": "residential_high_density",
+      "x": -2950,
+      "y": -550,
+      "radius": 2500
+    },
+    {
+      "id": "west_green_court",
+      "kind": "residential_green_court",
+      "x": -2950,
+      "y": -550,
+      "radius": 950
+    },
+    {
+      "id": "east_dense_block",
+      "kind": "residential_high_density",
+      "x": 5650,
+      "y": -800,
+      "radius": 2100
+    },
+    {
+      "id": "market_square",
+      "kind": "civic_market",
+      "x": -1100,
+      "y": -1050,
+      "radius": 500
+    },
+    {
+      "id": "work_yard",
+      "kind": "work_low_density",
+      "x": -2450,
+      "y": -1050,
+      "radius": 500
+    },
+    {
+      "id": "farm_reserve",
+      "kind": "farm_low_density",
+      "x": -1135,
+      "y": -2825,
+      "radius": 470
+    }
+  ]
+}

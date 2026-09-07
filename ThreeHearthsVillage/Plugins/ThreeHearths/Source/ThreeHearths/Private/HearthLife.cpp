@@ -1,4 +1,6 @@
 #include "HearthVillage.h"
+#include "HearthResidentAgenda.h"
+#include "HearthTavernRuntime.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Misc/FileHelper.h"
@@ -216,11 +218,15 @@ TArray<int32> AHearthVillage::AvailableLifeActions(int32 Index) const
     if(FoodStock>0 && Residents.IsValidIndex(Index) && Residents[Index].Coins>0) Actions.Add(50);
     Actions.Append(AvailableProductionActions(Index));
     for(int32 I=0;I<Residents.Num();++I) if(I!=Index && IsSociallyAvailable(I)) Actions.Add(3+I);
+    if(Residents.IsValidIndex(Index))
+        Actions.Append(HearthTavernRuntime::LiveAvailableSeatActions(WorldId,Residents[Index].StableId));
     return Actions;
 }
 
 FString AHearthVillage::LifeActionName(int32 Index,int32 Action) const
 {
+    if(HearthTavernRuntime::IsSeatAction(Action) && Residents.IsValidIndex(Index))
+        return HearthTavernRuntime::LiveActionName(WorldId,Action,Residents[Index].StableId);
     if(Action>=100) return ProductionActionName(Action);
     if(Action==0) return TEXT("回家休息");
     if(Action==1) return TEXT("去农田观察作物");
@@ -234,14 +240,29 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
 {
     if(!Residents.IsValidIndex(Index) || Residents[Index].Task!=EHearthTask::LifeChoosing) return false;
     if(Action>=100) return StartProduction(Index,Action,Reason,bFromApi);
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    if(HearthTavernRuntime::IsSeatAction(Action))
+    {
+        auto& R=Residents[Index]; FVector Target; FString SeatId;
+        if(!HearthTavernRuntime::LiveReserveSeat(WorldId,Action,R.StableId,Target,SeatId)) return false;
+        TArray<FVector> Route;
+        if(bUseCropoutMap && !FindActivityRoute(Index,Target,Route))
+        { HearthTavernRuntime::LiveCancelReservation(WorldId,SeatId,R.StableId); return false; }
+        if(!bUseCropoutMap) Route={Target};
+        R.LifeAction=Action; R.Reason=Reason; R.DecisionSource=bFromApi?TEXT("api"):TEXT("local");
+        R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); R.MoveRetry=0; R.bMovementBlocked=false;
+        R.Task=EHearthTask::LifeTravel; R.LatestEvent=LifeActionName(Index,Action)+TEXT("。"); R.Route=MoveTemp(Route);
+        AcceptHistory(Index,LifeActionName(Index,Action),Reason,R.DecisionSource);
+        VillageEvent=R.Name+TEXT("：")+R.LatestEvent; return true;
+    }
     if(!AvailableLifeActions(Index).Contains(Action)) return false;
     if(Residents.IsValidIndex(Action-3)) return BeginConversation(Index,Action-3,Reason,bFromApi);
     auto& R=Residents[Index];
-    FVector Target=PlotPositions[R.Plot]+FVector(-245,0,0);
+    FVector Target=HomeApproach(R.Plot);
     if(Action==1) Target=bUseCropoutMap?FVector(-1850,-2400,8):PlotPositions[1]+FVector(-245,0,0);
     if(Action==2) Target=WoodPositions[Index%3]+FVector(80,(Index%3)*120-120,0);
     if(Action==50) Target=bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,0);
-    if(Residents.IsValidIndex(Action-3)) Target=PlotPositions[Residents[Action-3].Plot]+FVector(-245,0,0);
+    if(Residents.IsValidIndex(Action-3)) Target=HomeApproach(Residents[Action-3].Plot);
     if(!bUseCropoutMap && Action!=2) Target.Y+=(Index-1)*120;
     TArray<FVector> Route;
     if(bUseCropoutMap && !ProductionSites.IsEmpty() && !FindActivityRoute(Index,Target,Route)) return false;
@@ -256,7 +277,16 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
 
 void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
 {
-    const auto& Person=Residents[Index]; int32 Action=0; FString LocalReason;
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    const auto& Person=Residents[Index];
+    int32 Action=0; FString LocalReason;
+    const TArray<int32> TavernActions=HearthTavernRuntime::LiveAvailableSeatActions(WorldId,Person.StableId);
+    if(!TavernActions.IsEmpty())
+    {
+        Action=TavernActions[0];
+        LocalReason=Person.StableId==Residents[0].StableId?TEXT("酒馆棚和座位已经逐件建成，我去棚下会面和休息。"):TEXT("我去酒馆棚下会面和休息，参加一次真实使用。");
+    }
+    else
     if(Person.Hunger>=60 && FoodStock>0 && Person.Coins>0) Action=50;
     else if(Person.Energy<45) Action=0;
     else
@@ -304,7 +334,7 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
     if(StartLifeAction(Index,Action,Reason,false))
     {
         Residents[Index].DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
-        Residents[Index].DecisionNote=Failure;
+        Residents[Index].DecisionNote=Failure.IsEmpty()?TEXT("本地确定性规则选择，依据生存需求、真实订单、社交状态和生产评分；议程仅供模型参考。"):TEXT("本地确定性备用规则选择：")+Failure;
         auto& Record=DecisionHistory[Residents[Index].HistoryIndex]; Record.Source=Residents[Index].DecisionSource;
         if(!Failure.IsEmpty() && !Record.Context.Contains(Failure)) Record.Context+=TEXT("\n采用备用规则：")+Failure;
         if(!Failure.IsEmpty()) Record.Result=TEXT("本地备用选择：")+Failure+TEXT("；正在执行。");
@@ -314,6 +344,8 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
 
 void AHearthVillage::RequestLifeDecision(int32 Index)
 {
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    EnsureResidentDesignGoal(Index);
     if(!HasDecisionCapacity(Index)) return;
     auto& R=Residents[Index];
     if(!bApiReady || ApiBackend==TEXT("codex_spark") || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests)
@@ -321,9 +353,16 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
         const FString Failure=!bApiConfigured?FString():ApiRequests>=ApiMaxRequests?TEXT("本轮模型预算已用完"):ApiBackend==TEXT("codex_spark")?TEXT("旧 Spark 通路暂只支持选址"):ApiStatus;
         DecideLifeLocally(Index,Failure); return;
     }
+    if(RequestVisualReview(Index))
+    {
+        // Review shares the resident HTTP slot but does not freeze ongoing life.
+        DecideLifeLocally(Index,FString());
+        return;
+    }
     auto Context=MakeShared<FJsonObject>();
     auto Person=MakeShared<FJsonObject>(); Person->SetNumberField(TEXT("id"),Index);
     Person->SetStringField(TEXT("name"),R.Name); Person->SetStringField(TEXT("personality"),R.Personality);
+    Person->SetStringField(TEXT("design_goal"),R.DesignGoal); Person->SetStringField(TEXT("design_feedback"),R.DesignFeedback);
     Person->SetStringField(TEXT("stable_id"),R.StableId); Person->SetStringField(TEXT("role"),R.Role);
     Person->SetBoolField(TEXT("king"),R.bKing); Person->SetNumberField(TEXT("age"),R.Age);
     Person->SetNumberField(TEXT("hunger"),R.Hunger); Person->SetNumberField(TEXT("mood"),R.Mood);
@@ -332,13 +371,31 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     Person->SetNumberField(TEXT("energy"),R.Energy); Person->SetNumberField(TEXT("social_need"),R.SocialNeed);
     Context->SetObjectField(TEXT("resident"),Person); Context->SetNumberField(TEXT("completed_homes"),CompletedHomes());
     Context->SetNumberField(TEXT("available_wood"),AvailableWood());
+    Context->SetStringField(TEXT("host_response"),WorldRequestSummary(Index));
+    const bool bKimiModel=ApiBackend.Contains(TEXT("kimi"),ESearchCase::IgnoreCase) || ApiModel.Contains(TEXT("kimi"),ESearchCase::IgnoreCase);
+    Context->SetStringField(TEXT("decision_provenance"),bKimiModel?TEXT("待模型返回：Kimi 配置的模型选择；行动仍由本地可执行性校验约束"):TEXT("待模型返回：已配置 API 模型选择；行动仍由本地可执行性校验约束"));
     AppendProductionContext(Context);
     TArray<TSharedPtr<FJsonValue>> Actions,Memory;
-    for(int32 Action:AvailableLifeActions(Index))
+    const TArray<int32> AvailableActions=AvailableLifeActions(Index);
+    for(int32 Action:AvailableActions)
     {
         auto A=MakeShared<FJsonObject>(); A->SetNumberField(TEXT("id"),Action);
         A->SetStringField(TEXT("description"),LifeActionName(Index,Action)); Actions.Add(MakeShared<FJsonValueObject>(A));
     }
+    FHearthResidentAgendaInput AgendaInput; AgendaInput.Role=R.Role; AgendaInput.Personality=R.Personality; AgendaInput.bKing=R.bKing;
+    AgendaInput.DesignGoal=R.DesignGoal; AgendaInput.DesignFeedback=R.DesignFeedback; AgendaInput.DesignRequest=R.DesignRequest;
+    AgendaInput.RelationshipSummary=RelationshipSummary(Index); AgendaInput.Hunger=R.Hunger; AgendaInput.Energy=R.Energy; AgendaInput.Mood=R.Mood; AgendaInput.SocialNeed=R.SocialNeed; AgendaInput.Coins=R.Coins;
+    AgendaInput.FoodStock=FoodStock; AgendaInput.WoodStock=AvailableWood(); AgendaInput.StoneStock=StoneStock; AgendaInput.ClayStock=ClayStock; AgendaInput.TileStock=TileStock;
+    AgendaInput.TreasuryCoins=TreasuryCoins; AgendaInput.TaxRatePercent=TaxRatePercent; AgendaInput.CompletedHomes=CompletedHomes(); AgendaInput.ResidentCount=Residents.Num();
+    for(const int32 Candidate:AvailableActions) AgendaInput.AvailableActions.Add({Candidate,LifeActionName(Index,Candidate)});
+    const FHearthResidentAgenda Agenda=HearthResidentAgenda::Build(AgendaInput);
+    Context->SetStringField(TEXT("authoritative_facts"),Agenda.AuthoritativeFacts);
+    Context->SetStringField(TEXT("private_aspirations"),Agenda.PrivateAspirations);
+    Context->SetStringField(TEXT("missing_inventory"),Agenda.MissingInventory);
+    Context->SetStringField(TEXT("missing_capability"),Agenda.MissingCapability);
+    TArray<TSharedPtr<FJsonValue>> PriorityActions;
+    for(const int32 Action:Agenda.GroundedPriorityActions) PriorityActions.Add(MakeShared<FJsonValueNumber>(Action));
+    Context->SetArrayField(TEXT("grounded_priority_actions"),PriorityActions);
     for(int32 H=DecisionHistory.Num()-1;H>=0 && Memory.Num()<3;--H)
     {
         const auto& D=DecisionHistory[H]; if(D.Resident!=Index || D.Run!=CurrentRun || D.Status!=TEXT("completed")) continue;
@@ -346,20 +403,28 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
         M->SetStringField(TEXT("reason"),D.Reason); M->SetStringField(TEXT("result"),D.Result); Memory.Add(MakeShared<FJsonValueObject>(M));
     }
     Context->SetArrayField(TEXT("available_actions"),Actions); Context->SetArrayField(TEXT("recent_decisions_newest_first"),Memory);
-    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. A house is a persistent four-job plan: transport and install its stone foundation, timber frame, plaster walls, then terracotta roof; choose its offered next stage when the required public material is available. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Completed production earns a real wage from the village treasury. Rest when energy is low; eat action 50 when hungry, buying one real food for one coin. A resident who owns a plank may visit an idle neighbor to offer it for two coins. Visits start a real two-way conversation: each person can invite, offer a plank sale, ask help, accept or refuse, and accepted obligations become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.");
+    const FString Prompt=TEXT("Choose one next activity for this medieval villager. All villagers have ALL skills; personality is a preference, not a restriction. Choose exactly one supplied available_actions id. Help create a productive village: gather/chop/quarry and deliver food/wood/stone, claim vacant land, construct corn/wheat/lettuce/pumpkin fields and houses, plant trees/shrubs, sow and harvest. Housing uses persistent catalog components with conserved materials, wages and ownership. A resident may add separately entered wings around a yard in their reviewed growth direction. Fulfil private aspirations through supplied actions, while treating authoritative_facts as binding. The king and taxation exist; children, imperial contracts and knights are aspirations unless the supplied state confirms them. Treat visual feedback as a preference, never invent completed work or resources. No monument or terrain creation exists. Prioritize sustainable stocks (food around 30, wood around 60, stone around 10), sow idle fields, harvest ripe crops, and diversify expansion using completed_production_operations; try each build/plant type when affordable instead of endlessly collecting. Costs and site availability are enforced by the game. Completed production earns a real wage from the village treasury. Rest when energy is low; eat action 50 when hungry, buying one real food for one coin. A resident who owns a plank may visit an idle neighbor to offer it for two coins. Visits start a real two-way conversation: each person can invite, offer a plank sale, ask help, accept or refuse, and accepted obligations become actual tasks. Remember relationships and vary whom you meet. Old observation actions 1/2 produce nothing. Use recent completed choices to avoid needless repetition. Return ONLY JSON with exactly action_id (integer) and reason (brief first-person Chinese, at most 60 Chinese characters). Do not invent actions or resources.\n\n")+HearthResidentAgenda::ToPromptText(Agenda);
     SendDecisionRequest(Index,Context,Prompt,true);
 }
 
 void AHearthVillage::UpdateLifeDecisions()
 {
     if(!bAutonomousLifeEnabled || bSimulationPaused) return;
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
     const double Now=Elapsed;
     const int32 StartAfter=LastLifeResident;
     for(int32 Offset=1;Offset<=Residents.Num();++Offset)
     {
         const int32 Index=(StartAfter+Offset)%Residents.Num();
         auto& R=Residents[Index];
-        if(R.Task!=EHearthTask::LifeChoosing || !R.Route.IsEmpty() || Now<R.NextLifeDecision || !HasDecisionCapacity(Index)) continue;
+        if(R.Task!=EHearthTask::LifeChoosing || !R.Route.IsEmpty() || Now<R.NextLifeDecision) continue;
+        if(IsDecisionPending(Index) && PendingDecisions[Index].bVisual)
+        {
+            R.NextLifeDecision=Now+LifeDecisionInterval;
+            DecideLifeLocally(Index,FString()); // The observer never owns the villager's life scheduler.
+            continue;
+        }
+        if(!HasDecisionCapacity(Index)) continue;
         LastLifeResident=Index; R.NextLifeDecision=Now+LifeDecisionInterval;
         RequestLifeDecision(Index);
     }
@@ -374,7 +439,16 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
         return;
     }
     if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt))
-    { R.Task=EHearthTask::LifeActivity; R.Timer=R.LifeAction==50?5.f:R.LifeAction==0?20.f:15.f; }
+    {
+        if(HearthTavernRuntime::IsSeatAction(R.LifeAction))
+        {
+            const FString SeatId=HearthTavernRuntime::LiveSeatForResident(WorldId,R.StableId); FString EventId;
+            if(!HearthTavernRuntime::LiveMarkArrived(WorldId,SeatId,R.StableId,Elapsed,EventId))
+            { R.Task=EHearthTask::LifeChoosing; R.LatestEvent=TEXT("酒馆座位抵达记录失败，未冒充已使用。 "); R.ActiveTaskId.Empty(); return; }
+            R.Task=EHearthTask::LifeActivity; R.Timer=12.f; R.LatestEvent=TEXT("已走到酒馆棚下可用点，开始真实会面/休息使用事件。");
+        }
+        else { R.Task=EHearthTask::LifeActivity; R.Timer=R.LifeAction==50?5.f:R.LifeAction==0?20.f:15.f; }
+    }
     else if(R.Task==EHearthTask::LifeActivity && R.Timer<=0)
     {
         FString Extra; bool Ate=false;
@@ -384,6 +458,12 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
             { --FoodStock; ++Spent[0]; Ate=true; R.Hunger=FMath::Max(0.f,R.Hunger-55.f); R.Mood=FMath::Min(100.f,R.Mood+5.f); Extra=TEXT("花1枚钱购买并吃掉1份食物，交易与消耗均已入账。"); }
             else Extra=FoodStock<=0?TEXT("到达时食物已用完，这次没有吃到饭。"):TEXT("钱包不足或这笔餐食已经结算。");
         }
+        else if(HearthTavernRuntime::IsSeatAction(R.LifeAction))
+        {
+            const FString SeatId=HearthTavernRuntime::LiveSeatForResident(WorldId,R.StableId); FString EventId;
+            if(HearthTavernRuntime::LiveReleaseSeat(WorldId,SeatId,R.StableId,Elapsed,EventId)) Extra=TEXT("酒馆座位使用事件已结束并释放，使用记录已入账。");
+            else Extra=TEXT("酒馆座位使用未完成释放，未声称使用成功。");
+        }
         else if(R.LifeAction==0) R.Energy=FMath::Min(100.f,R.Energy+35.f);
         // Legacy visit timers without a conversation do not invent a mutual encounter.
         else R.Energy=FMath::Max(0.f,R.Energy-10.f);
@@ -392,6 +472,7 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
         R.LatestEvent=Result; CompleteHistory(Index,Result);
         if(R.LifeAction==50) CompleteCommitments(Index,Ate,Result);
         R.Task=EHearthTask::LifeChoosing;
+        R.ActiveTaskId.Empty();
         VillageEvent=R.Name+TEXT("完成了活动，准备下一次选择。");
     }
 }

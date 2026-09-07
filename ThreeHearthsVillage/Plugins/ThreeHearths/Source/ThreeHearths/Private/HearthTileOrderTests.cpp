@@ -82,11 +82,45 @@ bool FHearthTileOrderTest::RunTest(const FString&)
     TestTrue(TEXT("Order potter has a physical route to the kiln"),V->FindActivityRoute(1,V->ProductionSites[KilnIndex].Approach,KilnRoute));
     TestTrue(TEXT("Kiln action passes current feasibility checks"),V->IsProductionAllowed(1,100+KilnIndex*16+15));
     TestTrue(TEXT("Accepted order can immediately claim its kiln execution unit"),V->StartProduction(1,100+KilnIndex*16+15,TEXT("履行已接受的制瓦订单。"),false));
+    for(int32 Step=0;Step<6000 && V->TileOrders.Last().Status!=TEXT("delivering");++Step) V->AdvanceSimulation(.05f);
+    TestEqual(TEXT("Real kiln output enters physical delivery with tiles reserved"),V->TileOrders.Last().Status,FString(TEXT("delivering")));
+    const FString BusyTask=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    TestTrue(TEXT("Customer can reserve an unrelated wage before handover"),V->ReserveWage(0,BusyTask,2));
+    V->Residents[0].Task=EHearthTask::LifeTravel; V->Residents[0].ActiveTaskId=BusyTask; V->Residents[0].LifeAction=0; V->Residents[0].Route.Reset();
+    V->Residents[1].Route.Reset();
+    const int32 BusyCoins=V->Residents[0].Coins;
+    const int32 TileSalesBeforeBusy=V->Transactions.FilterByPredicate([](const FHearthTransaction& T){return T.Kind==TEXT("tile_order");}).Num();
+    const FHearthTileOrder BeforeBusy=V->TileOrders.Last();
+    const int32 BusyCustomerCoins=V->Residents[0].Coins,BusyCustomerTiles=V->Residents[0].PersonalTiles;
+    const int32 BusyPotterCoins=V->Residents[1].Coins,BusyPotterCargo=V->Residents[1].CargoAmount;
+    const int32 BusyTransactions=V->Transactions.Num(),BusyTaxes=V->TaxAssessments.Num();
+    TestFalse(TEXT("Direct settlement rejects a busy customer"),V->SettleTileOrder(V->TileOrders.Last()));
+    TestEqual(TEXT("Direct rejection preserves delivery status"),V->TileOrders.Last().Status,BeforeBusy.Status);
+    TestEqual(TEXT("Direct rejection preserves tile reservation"),V->TileOrders.Last().ReservedTiles,BeforeBusy.ReservedTiles);
+    TestEqual(TEXT("Direct rejection preserves escrow"),V->TileOrders.Last().Escrow,BeforeBusy.Escrow);
+    TestEqual(TEXT("Direct rejection preserves customer coins"),V->Residents[0].Coins,BusyCustomerCoins);
+    TestEqual(TEXT("Direct rejection preserves customer tiles"),V->Residents[0].PersonalTiles,BusyCustomerTiles);
+    TestEqual(TEXT("Direct rejection preserves potter coins"),V->Residents[1].Coins,BusyPotterCoins);
+    TestEqual(TEXT("Direct rejection preserves potter cargo"),V->Residents[1].CargoAmount,BusyPotterCargo);
+    TestEqual(TEXT("Direct rejection adds no transaction"),V->Transactions.Num(),BusyTransactions);
+    TestEqual(TEXT("Direct rejection adds no tax assessment"),V->TaxAssessments.Num(),BusyTaxes);
+    FHearthWorldImage BusyImage; FString BusyError;
+    if(!TestTrue(TEXT("Deferred delivery with a valid busy task survives world decode"),HearthWorld::Decode(V->ExportWorldState(),BusyImage,BusyError))) { AddError(BusyError); return false; }
+    V->AdvanceTileOrders(.05f);
+    const auto* BusyPayable=V->WagePayables.FindByPredicate([&](const FHearthWagePayable& P){return P.TaskId==BusyTask;});
+    TestEqual(TEXT("Busy customer keeps the unrelated task during delivery"),V->Residents[0].ActiveTaskId,BusyTask);
+    TestNotNull(TEXT("Busy customer still has the unrelated wage payable"),BusyPayable);
+    if(BusyPayable) TestEqual(TEXT("Busy customer keeps the reserved wage during delivery"),BusyPayable->Status,FString(TEXT("reserved")));
+    TestEqual(TEXT("Busy customer is not forced into tile handover waiting"),V->Residents[0].Task,EHearthTask::LifeTravel);
+    TestEqual(TEXT("Deferred delivery does not settle early"),V->Transactions.FilterByPredicate([](const FHearthTransaction& T){return T.Kind==TEXT("tile_order");}).Num(),TileSalesBeforeBusy);
+    TestTrue(TEXT("The unrelated wage later settles once"),V->SettleWage(0,BusyTask));
+    V->Residents[0].Task=EHearthTask::LifeChoosing; V->Residents[0].ActiveTaskId.Empty(); V->Residents[0].HeldToolId.Empty(); V->Residents[0].HeldToolOperationId.Empty();
     for(int32 Step=0;Step<6000 && V->TileOrders.Last().Status!=TEXT("completed");++Step) V->AdvanceSimulation(.05f);
     TestEqual(TEXT("Accepted order reaches delivery and settlement"),V->TileOrders.Last().Status,FString(TEXT("completed")));
     TestEqual(TEXT("Customer owns the six produced tiles"),V->Residents[0].PersonalTiles,6);
     TestEqual(TEXT("Order escrow is empty after delivery"),V->TileOrders.Last().Escrow,0);
     TestEqual(TEXT("Exactly one tile sale is recorded"),V->Transactions.FilterByPredicate([](const FHearthTransaction& T){return T.Kind==TEXT("tile_order");}).Num(),1);
+    TestEqual(TEXT("Unrelated wage changes the customer balance only once"),V->Residents[0].Coins,BusyCoins+2);
     TestEqual(TEXT("Exactly one tax assessment is tied to tile income"),V->TaxAssessments.FilterByPredicate([V](const FHearthTaxAssessment& A)
     {
         return V->Transactions.ContainsByPredicate([&](const FHearthTransaction& T){return T.Kind==TEXT("tile_order") && T.Id==A.SourceTransactionId;});

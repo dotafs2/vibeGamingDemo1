@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-07",
+  "status": "generic_request_flow_verified",
+  "implementation": "Generic personal physical-object/space proposal and artist brief; model delivery and functional use not implemented",
+  "build": {
+    "passed": true,
+    "log": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\town-growth\\build-candidates.log"
+  },
+  "python": {
+    "passed": 10,
+    "failed": 0,
+    "log": "C:/vibeGamingDemo1/.codex-ue58-diagnostics/generic-needs/python-tests.log"
+  },
+  "native": {
+    "selected": 4,
+    "passed": 4,
+    "failed": 0,
+    "warnings": 0,
+    "report": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\generic-needs\\native02\\report\\index.json"
+  },
+  "runtime_new_copy_tested": true,
+  "cold_reload_tested": true,
+  "kimi_calls_new": 2,
+  "models_created": 0,
+  "previous_town3_failures_unresolved": 0,
+  "original_sample_overwritten": false,
+  "owned_ue_exited": true,
+  "owned_gateway_started": true,
+  "changed_project_files": [
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Public/HearthWorldRequests.h",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Public/HearthVillage.h",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldRequests.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldRequestJson.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldRequestRuntime.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthDesignReview.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldRequestsTests.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthDesignReviewTests.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthTavernRuntimeTests.cpp",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Tools/hearth_art_jobs.py",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Plugins/ThreeHearths/Tools/test_hearth_art_jobs.py",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Docs/Universal_NPC_Needs.md",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Docs/Art_Request_Workflow.md",
+    "C:/vibeGamingDemo1/ThreeHearthsVillage/Docs/Town_Growth_Iteration_Status.md"
+  ],
+  "previous_native_failure": {
+    "selected": 4,
+    "completed_pass": 3,
+    "crashed": 1,
+    "process_exit": 3,
+    "passed": [
+      "ThreeHearths.Design.FeedbackAndPersistence",
+      "ThreeHearths.Tavern.RequestBuildSeatsAndUse",
+      "ThreeHearths.WorldHost.RuntimePersistence"
+    ],
+    "crashed_test": "ThreeHearths.WorldRequests.TriageBoard",
+    "log": "C:/vibeGamingDemo1/.codex-ue58-diagnostics/generic-needs/native/ue.log",
+    "finding": "WrongPosition=Encoded shares nested TSharedPtr JSON objects. Mutating negative-test position also mutates the valid Encoded fixture. Decoding Encoded fails, then the test indexes DecodedAssets[0].",
+    "recommended_fix": "Create independent negative-test JSON with a fresh Encode(Assets), and guard successful decode/count before indexing. Rerun same native tests, then isolated runtime/cold reload and two real Kimi reviews.",
+    "report_json_generated": false
+  },
+  "other_town3_repairs": "native_and_runtime_smoke_verified",
+  "permission_boundary": "Repair code/build/test errors autonomously; ask only for ambiguous or infeasible gameplay semantics.",
+  "total_kimi_calls": 22,
+  "kimi_new_cost_cny": 0.027589,
+  "kimi_total_cost_cny": 0.270312,
+  "owned_gateway_exited": true,
+  "gateway_reserved_cny": 0.0,
+  "runtime_exit_codes": {
+    "local": -1073741819,
+    "reload": 0,
+    "kimi": 0,
+    "capture_recheck": 0
+  },
+  "capture_exit_limitation": "One late local-run exit exception after saved results; not reproduced by cold reload, Kimi or explicit two-capture recheck.",
+  "model_delivery_completed": false,
+  "functional_use_completed": false,
+  "evidence_directory": "C:\\vibeGamingDemo1\\ThreeHearthsVillage\\Docs\\Validation\\Generic_NPC_Needs",
+  "owned_agents_remaining": 0,
+  "full_native": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0,
+    "tests_with_warnings": 6,
+    "report": "C:\\vibeGamingDemo1\\ThreeHearthsVillage\\Docs\\Validation\\Town_Growth\\native-report.json"
+  },
+  "town3_record": "C:\\vibeGamingDemo1\\ThreeHearthsVillage\\Docs\\Validation\\Town_Growth_Acceptance.json"
+}

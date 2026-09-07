@@ -1,0 +1,52 @@
+{
+  "execution": "offline_review_only",
+  "jobs": [
+    {
+      "brief": {
+        "acceptance": [
+          "GLB opens without missing external textures or dependencies.",
+          "Grid scale and authoring coordinate convention match the catalog metadata above.",
+          "UVs are shared/reusable and the result stays within the request scope."
+        ],
+        "coordinate_convention": {
+          "authoring_axes": "+Z up / -Y front",
+          "glb_to_authoring_coordinates": "(x,-z,y)",
+          "units": "metres"
+        },
+        "deliverable": "A reviewable GLB with stable asset naming, clean transforms, UV0, and PBR materials.",
+        "failure_isolation": "Keep this asset in its own source/export folder; a failed job must not alter existing catalog files.",
+        "objective": "需要一个纯视觉的铁匠铺招牌模型",
+        "resolution": "记录为视觉资产提议；不会据此声称家族系统或其他玩法已实现。",
+        "style": "low-poly medieval village; shared tiled UV; reuse the existing catalog first"
+      },
+      "job_id": "art-request_1",
+      "provenance": {
+        "blender_launched": false,
+        "catalog_sha256": "e6536d920159aa0d6707abbb8b1c1f0eec54905e12cd4bd09c04fe8602c3423a",
+        "external_models_called": false,
+        "requester_ids": [
+          "63503ACB-4B38-F3E7-5312-85A4C73B1C0E",
+          "741D1D10-4E12-0488-B2A7-14AD96177328"
+        ],
+        "source_board_sha256": "1e580e11ac8ea439d69bfa7c905f4737288d18ffa453969474fa61cb4e381c7a",
+        "world_id": "F7E68E06-453F-3D13-4821-20824BAE682F"
+      },
+      "request_id": "request_1",
+      "requires_review": true,
+      "reuse_first": [
+        {
+          "asset_glb": "../VillageKit/modules/floor_timber_2m.glb",
+          "asset_id": "floor_timber_2m"
+        },
+        {
+          "asset_glb": "../VillageKit/modules/foundation_stone_2m.glb",
+          "asset_id": "foundation_stone_2m"
+        }
+      ],
+      "state": "proposed"
+    }
+  ],
+  "manifest_kind": "hearth_art_jobs",
+  "schema_version": 1,
+  "world_id": "F7E68E06-453F-3D13-4821-20824BAE682F"
+}

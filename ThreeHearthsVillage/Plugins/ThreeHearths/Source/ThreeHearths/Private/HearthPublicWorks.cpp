@@ -1,9 +1,23 @@
 #include "HearthVillage.h"
+#include "HearthRoyalWorksPlan.h"
 
 namespace HearthPublicWorks
 {
     void Populate(FHearthPublicProject& Project)
     {
+        if(Project.TemplateId==TEXT("royal_keep_garden_v1") || Project.TemplateId==TEXT("royal_keep_garden_v2"))
+        {
+            if(Project.Id.IsEmpty()) Project.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+            Project.Parts.Reset();
+            const FHearthRoyalWorksPlan Plan=HearthRoyalWorksPlan::BuildForTemplate(Project.TemplateId);
+            for(const auto& Module:Plan.Modules)
+            {
+                FHearthPublicPart Part;Part.Id=Project.Id+TEXT(":")+Module.Id;Part.Asset=Module.Id;Part.Offset=Module.Offset;Part.Stage=Module.Stage;
+                Part.Required[0]=Module.Materials.X;Part.Required[1]=Module.Materials.Y;Part.Required[2]=Module.Materials.Z;
+                Project.Parts.Add(MoveTemp(Part));
+            }
+            return;
+        }
         Project.TemplateId = TEXT("public_wall_6m");
         Project.Policy = TEXT("local_king_fixed_income_tax_25");
         if (Project.Id.IsEmpty()) Project.Id = FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
@@ -46,8 +60,14 @@ namespace
 
     FHearthPublicPart* FirstPart(FHearthPublicProject& P)
     {
-        return P.Parts.FindByPredicate([](const FHearthPublicPart& Part)
-        { return Part.Status != TEXT("completed"); });
+        int32 Stage=MAX_int32;
+        for(const auto& Part:P.Parts) if(Part.Status!=TEXT("completed")) Stage=FMath::Min(Stage,Part.Stage);
+        return P.Parts.FindByPredicate([&](const FHearthPublicPart& Part)
+        {
+            if(Part.Stage!=Stage || Part.Status!=TEXT("waiting") || Part.Worker>=0) return false;
+            for(int32 M=0;M<3;++M) if(Part.Required[M]>P.Stock[M]) return false;
+            return true;
+        });
     }
 
 }
@@ -63,12 +83,13 @@ bool AHearthVillage::ApprovePublicProject(int32 King)
     for (int32 I = 0; I < ProductionSites.Num(); ++I)
     {
         const FHearthSite& S = ProductionSites[I];
+        if(TownLayoutVersion>=2 && !IsRoyalSite(I)) continue;
         if (S.Kind != EHearthSiteKind::Empty || !S.bExpansion || S.ReservedBy >= 0 || !S.BuildPlanId.IsEmpty()) continue;
         if (FVector::DistSquared2D(S.Position, PublicDepotFor(*this)) < Best) { Best = FVector::DistSquared2D(S.Position, PublicDepotFor(*this)); SiteIndex = I; }
     }
     if (!ProductionSites.IsValidIndex(SiteIndex)) return false;
     const FHearthSite OriginalSite = ProductionSites[SiteIndex];
-    ProductionSites[SiteIndex].Radius = 350.f;
+    ProductionSites[SiteIndex].Radius = TownLayoutVersion>=3?5000.f:(TownLayoutVersion>=2?850.f:350.f);
     if (!ChooseSiteApproach(SiteIndex) || !ProductionSites[SiteIndex].bReachable) { ProductionSites[SiteIndex] = OriginalSite; return false; }
     TArray<FVector> Route;
     if (!FindActivityRoute(King, ProductionSites[SiteIndex].Approach, Route)) { ProductionSites[SiteIndex] = OriginalSite; return false; }
@@ -77,17 +98,19 @@ bool AHearthVillage::ApprovePublicProject(int32 King)
     History.Run = CurrentRun; History.Timestamp = FDateTime::Now().ToString(TEXT("%Y-%m-%d %H:%M:%S"));
     History.Kind = TEXT("public_project_policy"); History.Source = TEXT("local"); History.Model.Empty();
     History.Resident = King; History.At = Elapsed; History.Status = TEXT("completed");
-    History.Choice = TEXT("批准公共城墙工程"); History.Reason = TEXT("本地国王批准固定25%税收政策");
+    History.Choice = TownLayoutVersion>=2?TEXT("批准主堡与王国庭院工程"):TEXT("批准公共城墙工程"); History.Reason = TownLayoutVersion>=2?TEXT("国王长期目标：以真实税收、采购和工资分期建设主堡并美化公共庭院"):TEXT("本地国王批准固定25%税收政策");
     History.Context = TEXT("ApprovalHistoryId=") + FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    History.Result = TEXT("批准公共城墙工程");
+    History.Result = History.Choice;
     const FString ApprovalId = History.Context.Mid(18);
     const int32 HistoryIndex = DecisionHistory.Add(MoveTemp(History));
     PublicProject = FHearthPublicProject(); PublicProject.Id = FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    if(TownLayoutVersion>=3) PublicProject.TemplateId=TEXT("royal_keep_garden_v2");
+    else if(TownLayoutVersion>=2) PublicProject.TemplateId=TEXT("royal_keep_garden_v1");
     PublicProject.Status = TEXT("building"); PublicProject.ApprovalHistoryId = ApprovalId; PublicProject.King = King;
     PublicProject.Site = SiteIndex; PublicProject.ApprovedAt = Elapsed; HearthPublicWorks::Populate(PublicProject);
     ProductionSites[SiteIndex].Owner = -1; ProductionSites[SiteIndex].ReservedBy = -1;
     Residents[King].HistoryIndex = HistoryIndex; ++HistoryRevision;
-    VillageEvent = TEXT("国王批准公共城墙工程，固定25%税收用于工资。");
+    VillageEvent = TownLayoutVersion>=2?TEXT("国王启动主堡与公共庭院的分期建设，税收支付真实采购和工钱。"):TEXT("国王批准公共城墙工程，固定25%税收用于工资。");
     return true;
 }
 
@@ -95,6 +118,12 @@ bool AHearthVillage::StartPublicPart(int32 Worker)
 {
     if (!Residents.IsValidIndex(Worker) || !CanAssignActivity(Worker)
         || (PublicProject.Status != TEXT("building") && PublicProject.Status != TEXT("approved"))) return false;
+    if(Residents[Worker].Hunger>=65.f || Residents[Worker].Energy<25.f) return false;
+    // The shared forecourt has room for three delivery crews. More crews
+    // obstruct one another at its single entrance instead of adding throughput.
+    int32 ActiveCrews=0;
+    for(const auto& Existing:PublicProject.Parts) if(Existing.Worker>=0) ++ActiveCrews;
+    if(ActiveCrews>=3) return false;
     FHearthPublicPart* Part = FirstPart(PublicProject);
     if (!Part || Part->Worker >= 0) return false;
     TArray<FVector> Route;
@@ -104,21 +133,25 @@ bool AHearthVillage::StartPublicPart(int32 Worker)
     auto& R = Residents[Worker];
     const FString TaskId = FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     const FString PreviousTask=R.ActiveTaskId; R.ActiveTaskId=TaskId;
-    if (!TryBorrowTool(Worker, 5) || !ReserveWage(Worker, TaskId, 2, true)) { ReturnTool(Worker); R.ActiveTaskId=PreviousTask; return false; }
+    // Several workers can haul independent parts. Borrow the one physical
+    // hammer only when material delivery is complete and installation begins.
+    if (!ReserveWage(Worker, TaskId, 2, true)) { R.ActiveTaskId=PreviousTask; return false; }
     R.ProductionSite = -1; R.ProductionOp = -1; R.ProductionComponentId.Empty();
     R.CargoType = -1; R.CargoAmount = 0; R.Route = MoveTemp(Route); R.Task = EHearthTask::PublicTravel; R.Timer = 0.f; R.LifeAction = 1;
     Part->Worker = Worker; Part->TaskId = TaskId; Part->Status = TEXT("transporting");
     for (int32 M = 0; M < 3; ++M) { Part->Reserved[M] = Part->Required[M]; PublicProject.Stock[M] -= Part->Required[M]; }
     StartHistory(Worker,true,TEXT("local"));
-    AcceptHistory(Worker,TEXT("安装公共城墙构件"),TEXT("公共工程按顺序调度了一个可达构件。"),TEXT("local"));
-    R.LatestEvent = TEXT("前往公共仓库分批领取城墙材料。"); return true;
+    AcceptHistory(Worker,TEXT("安装公共工程构件"),TEXT("公共工程在已获支撑的同一阶段内并行施工。"),TEXT("local"));
+    R.LatestEvent = TEXT("前往公共仓库分批领取工程材料。"); return true;
 }
 
 void AHearthVillage::AdvancePublicWorks(float Dt)
 {
     if (!bAutonomousLifeEnabled) return;
     PublicScheduleTimer = FMath::Max(0.f, PublicScheduleTimer - FMath::Max(0.f, Dt));
-    if (PublicScheduleTimer > 0.f) return;
+    bool bIdleResident=false;
+    for(int32 I=0;I<Residents.Num();++I) if(CanAssignActivity(I)) { bIdleResident=true;break; }
+    if (PublicScheduleTimer > 0.f && !bIdleResident) return;
     PublicScheduleTimer = 1.f;
     if(PublicProject.Status==TEXT("unapproved"))
     {
@@ -126,11 +159,37 @@ void AHearthVillage::AdvancePublicWorks(float Dt)
         return;
     }
     if(PublicProject.Status != TEXT("building")) return;
-    // Physical depot grants are aggregate deductions from the real village depot.
+    // v1 keeps its accepted whole-project accounting. Town3 deliberately
+    // protects only the current stage's next small batch so ordinary homes
+    // and producers retain working capital throughout the long build.
+    const bool bTown3 = PublicProject.TemplateId == TEXT("royal_keep_garden_v2");
+    TArray<const FHearthPublicPart*> BudgetParts;
+    if (bTown3)
+    {
+        int32 CurrentStage = MAX_int32;
+        for (const auto& Part : PublicProject.Parts)
+            if (Part.Status != TEXT("completed")) CurrentStage = FMath::Min(CurrentStage, Part.Stage);
+        for (const auto& Part : PublicProject.Parts)
+            if (Part.Status != TEXT("completed") && Part.Stage == CurrentStage && BudgetParts.Num() < 3)
+                BudgetParts.Add(&Part);
+    }
+    int32 RemainingWages=0,NeededPlanks=0,HeldPlanks=PublicProject.Stock[1];
+    for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed") && (!bTown3 || BudgetParts.Contains(&Part)))
+    {
+        if(Part.Worker<0) RemainingWages+=2; // Active wages already left the treasury for escrow.
+        NeededPlanks+=Part.Required[1];HeldPlanks+=Part.Reserved[1]+Part.Delivered[1];
+    }
+    for(const auto& R:Residents) if((R.Task==EHearthTask::PublicTravel || R.Task==EHearthTask::PublicWork) && R.CargoType==3) HeldPlanks+=R.CargoAmount;
+    for(const auto& Order:PublicProject.Orders) if(Order.Status==TEXT("transporting")) HeldPlanks+=Order.ReservedQuantity;
+    const int32 RemainingBill=RemainingWages+2*FMath::Max(0,NeededPlanks-HeldPlanks);
+    const int32 Surplus=FMath::Max(0,TaxProjectCoins-RemainingBill);
+    if(Surplus>0) { TaxProjectCoins-=Surplus;TaxReleasedCoins+=Surplus; }
+    // Physical depot grants are deductions from the real village depot. v2's
+    // grant scope matches the same three-part budget window.
     for (int32 M : {0, 2})
     {
         int32 Need = 0, Held=PublicProject.Stock[M];
-        for (const auto& Part : PublicProject.Parts) if (Part.Status != TEXT("completed"))
+        for (const auto& Part : PublicProject.Parts) if (Part.Status != TEXT("completed") && (!bTown3 || BudgetParts.Contains(&Part)))
         { Need+=Part.Required[M]; Held+=Part.Reserved[M]+Part.Delivered[M]; }
         for(const auto& Resident:Residents) if((Resident.Task==EHearthTask::PublicTravel || Resident.Task==EHearthTask::PublicWork) && Resident.CargoType==M+2) Held+=Resident.CargoAmount;
         int32& Depot = M == 0 ? StoneStock : BeamStock;
@@ -188,6 +247,7 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
     }
     if (R.Task == EHearthTask::PublicWork)
     {
+        if(R.HeldToolId.IsEmpty() && !TryBorrowTool(Worker,5)) { R.Timer=.1f;return; }
         // AHearthVillage::AdvanceSimulation decrements resident timers once per tick.
         if (R.Timer > 0.f) return;
         if (!SettleWage(Worker, R.ActiveTaskId)) { R.Timer = 0.1f; return; }
@@ -202,8 +262,8 @@ void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)
             TaxProjectCoins = 0;
         }
         R.LatestEvent = Released>0
-            ? FString::Printf(TEXT("公共城墙构件已安装，项目 %s 完工；%d 枚未用税金解除专款保护。"),*PublicProject.Id,Released)
-            : TEXT("公共城墙构件已安装并结算税收工资。");
+            ? FString::Printf(TEXT("公共工程构件已安装，项目 %s 完工；%d 枚未用税金解除专款保护。"),*PublicProject.Id,Released)
+            : TEXT("公共工程构件已安装并结算税收工资。");
         CompleteHistory(Worker,R.LatestEvent); ReturnTool(Worker); ClearPublicResident(R);
         VillageEvent = R.Name + TEXT("：") + R.LatestEvent; return;
     }

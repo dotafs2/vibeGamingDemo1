@@ -1,4 +1,5 @@
 #include "HearthVillage.h"
+#include "HearthResidentStory.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
@@ -213,8 +214,11 @@ void AHearthVillage::RequestDecision(int32 Index)
     const TCHAR* Descriptions[]={TEXT("安静的林边，较大的小屋"),TEXT("公共花园旁，方便拜访邻居"),TEXT("紧凑的小屋，节约木材")};
     for(int32 P=0;P<HousingPlotCount();++P) if(PlotOwners[P]<0)
     {
+        if(bUseCropoutMap && !IsClearPoint(HomeApproach(P))) continue;
         auto Plot=MakeShared<FJsonObject>(); Plot->SetNumberField(TEXT("id"),P); Plot->SetNumberField(TEXT("wood_cost"),PlotCosts[P]);
-        Plot->SetStringField(TEXT("description"),P<3?FString(Descriptions[P]):PlotLabel(P)); Plots.Add(MakeShared<FJsonValueObject>(Plot));
+        Plot->SetStringField(TEXT("description"),bUseCropoutMap?EvaluateResidentSite(Index,PlotPositions[P]).Reason:(P<3?FString(Descriptions[P]):PlotLabel(P)));
+        Plot->SetStringField(TEXT("position"),PlotPositions[P].ToString()); Plot->SetNumberField(TEXT("frontage_yaw"),PlotYaws[P]);
+        Plots.Add(MakeShared<FJsonValueObject>(Plot));
     }
     if(Plots.IsEmpty()) { DecideLocally(Index); return; }
     Context->SetArrayField(TEXT("available_plots"),Plots);
@@ -231,15 +235,28 @@ void AHearthVillage::RequestDecision(int32 Index)
     SendDecisionRequest(Index,Context,Prompt,false);
 }
 
-void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife,bool bSocial)
+void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife,bool bSocial,const FString& ImageData)
 {
-    if(bSimulationPaused || !HasDecisionCapacity(Index) || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) return;
+    if((bSimulationPaused && ImageData.IsEmpty()) || !HasDecisionCapacity(Index) || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) return;
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthVisualOnly")) && ImageData.IsEmpty()) return;
     // Defense at the actual dispatch site: never issue a direct paid HTTPS call.
     if(ApiEndpoint.StartsWith(TEXT("https://")) || (ApiModel.StartsWith(TEXT("kimi-")) && (!bApiBudgeted || ApiEndpoint!=HearthDecision::BudgetBase+TEXT("/chat/completions"))))
     { bApiDisabledThisRun=true; ApiStatus=TEXT("已阻止绕过人民币预算的请求"); return; }
     auto System=MakeShared<FJsonObject>(); System->SetStringField(TEXT("role"),TEXT("system"));
-    System->SetStringField(TEXT("content"),Prompt);
+    EnsureResidentStory(Index);
+    Context->SetStringField(TEXT("persistent_character_id"),Residents[Index].StableId);
+    Context->SetStringField(TEXT("persistent_story"),Residents[Index].InnerStory);
+    Context->SetStringField(TEXT("personal_goal"),Residents[Index].DesignGoal);
+    System->SetStringField(TEXT("content"),HearthResidentStory::Prompt(Residents[Index].InnerStory)+TEXT("\n\n")+Prompt);
     auto User=MakeShared<FJsonObject>(); User->SetStringField(TEXT("role"),TEXT("user")); User->SetStringField(TEXT("content"),HearthDecision::Json(Context));
+    const bool bVisual=!ImageData.IsEmpty();
+    if(bVisual)
+    {
+        auto T=MakeShared<FJsonObject>(); T->SetStringField(TEXT("type"),TEXT("text")); T->SetStringField(TEXT("text"),HearthDecision::Json(Context));
+        auto I=MakeShared<FJsonObject>(); I->SetStringField(TEXT("type"),TEXT("image_url"));
+        auto U=MakeShared<FJsonObject>(); U->SetStringField(TEXT("url"),ImageData); I->SetObjectField(TEXT("image_url"),U);
+        User->SetArrayField(TEXT("content"),{MakeShared<FJsonValueObject>(T),MakeShared<FJsonValueObject>(I)});
+    }
     auto Body=MakeShared<FJsonObject>(); Body->SetStringField(TEXT("model"),ApiModel);
     Body->SetArrayField(TEXT("messages"),{MakeShared<FJsonValueObject>(System),MakeShared<FJsonValueObject>(User)});
     Body->SetBoolField(TEXT("stream"),false); Body->SetNumberField(ApiTokenField,ApiMaxTokens);
@@ -247,21 +264,22 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(ApiFormat==TEXT("json_object")) { auto Format=MakeShared<FJsonObject>(); Format->SetStringField(TEXT("type"),TEXT("json_object")); Body->SetObjectField(TEXT("response_format"),Format); }
     auto& Pending=PendingDecisions[Index]; Pending=FHearthPendingDecision();
     Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial;
+    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.bVisual=bVisual;
+    if(bVisual) Pending.VisualSignature=VisualSignature(Index);
     Pending.StartedAt=FPlatformTime::Seconds(); Pending.StartedAtSimulation=Elapsed;
     Pending.ConversationId=bSocial?Residents[Index].ConversationId:FString();
     Pending.Serial=++DecisionSerial;
-    Pending.AllowedActions=bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
-    if(bSocial)
+    Pending.AllowedActions=bVisual?TArray<int32>{0,1,2,3,4}:bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
+    if(bSocial || bVisual)
     {
         FHearthDecisionRecord H; H.Run=CurrentRun; H.Timestamp=FDateTime::Now().ToString(); H.Resident=Index; H.At=Elapsed;
-        H.Kind=TEXT("social_turn"); H.Source=TEXT("api"); H.Model=ApiModel; H.Context=HearthDecision::Json(Context); H.Choice=TEXT("准备回应对方");
+        H.Kind=bVisual?TEXT("design_review"):TEXT("social_turn"); H.Source=TEXT("api"); H.Model=ApiModel; H.Context=HearthDecision::Json(Context); H.Choice=bVisual?TEXT("评估自己的住所"):TEXT("准备回应对方");
         Pending.HistoryIndex=DecisionHistory.Add(MoveTemp(H)); ++HistoryRevision; SaveHistory();
     }
     else { StartHistory(Index,bLife,TEXT("api")); Pending.HistoryIndex=Residents[Index].HistoryIndex; }
     Residents[Index].DecisionSource=TEXT("waiting"); Residents[Index].DecisionNote=bLife?TEXT("正在考虑下一项活动"):TEXT("正在向模型询问选址");
     if(bSocial) Residents[Index].DecisionNote=TEXT("正在认真听对方说话，准备回应");
-    else Residents[Index].Reason=bLife?TEXT("家已经建好了，想想接下来做什么。"):TEXT("让我想想，这几块地哪一块更适合我。");
+    else if(!bVisual) Residents[Index].Reason=bLife?TEXT("家已经建好了，想想接下来做什么。"):TEXT("让我想想，这几块地哪一块更适合我。");
     ++ApiRequests;
     ApiStatus=FString::Printf(TEXT("%s正在思考 · 请求 %d / %d"),*Residents[Index].Name,ApiRequests,ApiMaxRequests);
     const uint64 Generation=DecisionGeneration;
@@ -281,7 +299,7 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     Request->SetTimeout(ApiTimeout);
     Request->SetContentAsString(HearthDecision::Json(Body));
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
-    Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
+    Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife,bVisual](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
         auto* V=WeakThis.Get();
         if(!V || V->DecisionGeneration!=Generation || !V->IsDecisionPending(Index) || V->PendingDecisions[Index].Serial!=Serial) return;
         auto& Reply=V->PendingDecisions[Index];
@@ -323,7 +341,7 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         FString Finish; Choice->TryGetStringField(TEXT("finish_reason"),Finish);
         if(Finish!=TEXT("stop") || !Choice->TryGetObjectField(TEXT("message"),Message)) { Reply.Error=TEXT("模型回答未完整生成"); return; }
         FString Content; FString Refusal; (*Message)->TryGetStringField(TEXT("refusal"),Refusal);
-        if(!Refusal.IsEmpty() || !(*Message)->TryGetStringField(TEXT("content"),Content) || !(bLife?HearthDecision::ParseLifePlan(Content,Reply.Choice,Reply.Reason):HearthDecision::ParsePlan(Content,Reply.Choice,Reply.HouseStyle,Reply.Reason))) { Reply.Error=TEXT("模型选择不符合格式要求"); return; }
+        if(!Refusal.IsEmpty() || !(*Message)->TryGetStringField(TEXT("content"),Content) || !((bLife||bVisual)?HearthDecision::ParseLifePlan(Content,Reply.Choice,Reply.Reason):HearthDecision::ParsePlan(Content,Reply.Choice,Reply.HouseStyle,Reply.Reason))) { Reply.Error=TEXT("模型选择不符合格式要求"); return; }
         V->ApiStatus=TEXT("已收到模型选择，等待执行");
     });
     // Persist the operation ID before a paid request can leave the process. A restart
@@ -336,13 +354,13 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
 
 void AHearthVillage::ConsumeDecision()
 {
-    if(bSimulationPaused) return;
     for(int32 Index=0;Index<PendingDecisions.Num();++Index)
     {
         auto& Slot=PendingDecisions[Index];
         if(!Slot.bActive) continue;
+        if(bSimulationPaused && !Slot.bVisual) continue;
         const bool bSimulationDeadline=HearthDecision::RequestExceededSimulationDeadline(Elapsed,Slot.StartedAtSimulation,ApiTimeout);
-        if(!Slot.bReturned && !Slot.bGameplayReleased && bSimulationDeadline)
+        if(!Slot.bVisual && !Slot.bReturned && !Slot.bGameplayReleased && bSimulationDeadline)
         {
             Slot.bGameplayReleased=true;
             const FString Reason=TEXT("模型未赶上当前游戏倍速；居民先按本地规则继续，真实请求仍在等待回执。");
@@ -364,6 +382,7 @@ void AHearthVillage::ConsumeDecision()
         }
         if(!Slot.bReturned) continue;
         auto Reply=MoveTemp(Slot); Slot=FHearthPendingDecision();
+        if(Reply.bVisual) { ApplyVisualReview(Index,Reply); continue; }
         if(Reply.bGameplayReleased)
         {
             if(DecisionHistory.IsValidIndex(Reply.HistoryIndex))

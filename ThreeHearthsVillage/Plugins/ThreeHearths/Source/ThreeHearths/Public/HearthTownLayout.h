@@ -47,8 +47,13 @@ struct FHearthTownLayoutInput
     TArray<FVector> Workpoints;
     TArray<FHearthTownRect> TerrainBlockers;
     TArray<FHearthTownFootprint> ExistingBuildings;
+    bool bOrganic = false;
     int32 RequestedHomes = 6;
+    float CandidateSpacing = 580.f;
     int32 Seed = 1;
+    int32 LayoutVersion = 1;
+    // Optional scene validation before a candidate consumes a home slot/clearance.
+    TFunction<bool(const FHearthTownFootprint&)> IsCandidateUsable;
 };
 
 struct FHearthTownLayoutPlan
@@ -62,6 +67,7 @@ struct FHearthTownLayoutPlan
 
 namespace HearthTownLayout
 {
+    THREEHEARTHS_API TArray<FHearthTownRoadSegment> VillageRoads(bool bOrganic,int32 LayoutVersion=1);
     THREEHEARTHS_API FHearthTownLayoutPlan Build(const FHearthTownLayoutInput& Input);
     THREEHEARTHS_API bool IsValid(const FHearthTownLayoutPlan& Plan, const FHearthTownLayoutInput& Input);
 }

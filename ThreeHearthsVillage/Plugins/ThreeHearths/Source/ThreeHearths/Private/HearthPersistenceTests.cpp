@@ -5,15 +5,16 @@
 #include "Engine/World.h"
 #include "HAL/PlatformFileManager.h"
 #include "Misc/AutomationTest.h"
+#include "Misc/CommandLine.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "Misc/ScopeExit.h"
 
 namespace HearthPersistenceTests
 {
-    UWorld* World()
+    UWorld* World(bool bCreatePhysicsScene=false)
     {
-        const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+        const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(bCreatePhysicsScene).CreateNavigation(false).CreateAISystem(false);
         return UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
     }
     FString TestPath()
@@ -24,13 +25,19 @@ namespace HearthPersistenceTests
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthPublicProjectPersistenceTest,"ThreeHearths.Persistence.PublicProjectSchema9RoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
 {
-    UWorld* World=HearthPersistenceTests::World(); if(!TestNotNull(TEXT("Isolated public persistence world"),World)) return false;
+    const FString PreviousCommandLine=FCommandLine::Get();
+    FCommandLine::Set(*(PreviousCommandLine.Replace(TEXT("-HearthCityV3"),TEXT(""))+TEXT(" -HearthNoWorldPersistence")));
+    ON_SCOPE_EXIT { FCommandLine::Set(*PreviousCommandLine); };
+    // Island planning uses real collision traces even in a persistence test.
+    UWorld* World=HearthPersistenceTests::World(true); if(!TestNotNull(TEXT("Isolated public persistence world"),World)) return false;
     ON_SCOPE_EXIT { World->DestroyWorld(false); };
     auto* Terrain=World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),FVector(0,0,-47.f),FRotator::ZeroRotator);
     Terrain->Tags.Add(TEXT("ThreeHearthsBaseTerrain"));
     Terrain->GetStaticMeshComponent()->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube")));
     Terrain->GetStaticMeshComponent()->SetWorldScale3D(FVector(140.f,140.f,1.f));
     auto* V=World->SpawnActor<AHearthVillage>(); V->bUseCropoutMap=true; V->BuildEnvironment(); V->ResetVillageState();
+    if(!TestTrue(TEXT("Public fixture has a traced base terrain"),V->IsLand(FVector(-1650.f,-1050.f,8.f)))) return false;
+    if(!TestTrue(TEXT("Public fixture has ten safe starter plots"),V->TownLayoutError.IsEmpty() && V->Residents.Num()==10)) return false;
     V->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); V->PublicProject.Status=TEXT("unapproved");
     const FString Text=V->ExportWorldState(); FHearthWorldImage Image; FString Error;
     if(!TestTrue(TEXT("Schema 8 public project decodes"),HearthWorld::Decode(Text,Image,Error))) { AddError(Error); return false; }
@@ -47,7 +54,8 @@ bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
     const int32 King=V->Residents.IndexOfByPredicate([](const FHearthResident& R) { return R.bKing; });
     if(!TestTrue(TEXT("Ten-person runtime has its real king"),King!=INDEX_NONE)) return false;
     V->FixedObstacles.Reset(); V->ProductionSites.Reset(); V->LandGrid.Reset();
-    for(int32 X=-22;X<=22;++X) for(int32 Y=-22;Y<=22;++Y) V->LandGrid.Add(FIntPoint(X,Y));
+    V->BuildLandGrid();
+    if(!TestTrue(TEXT("Public fixture rebuilds navigation from physical ground"),V->IsClearPoint(FVector(-1650.f,-1050.f,8.f)))) return false;
     FHearthSite PublicSite; PublicSite.StableId=Id(); PublicSite.Kind=EHearthSiteKind::Empty;
     PublicSite.Position=FVector(900.f,0.f,8.f); PublicSite.Approach=FVector(300.f,0.f,8.f);
     PublicSite.Radius=350.f; PublicSite.bExpansion=true; PublicSite.bReachable=true;
@@ -112,6 +120,10 @@ bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
     // An empty worker away from the depot and without waypoints must rebuild a route.
     if(!TestTrue(TEXT("Restore assigned runtime checkpoint again"),V->ApplyWorldState(Assigned,Error))) { AddError(Error); return false; }
     auto& Away=V->Residents[Worker];
+    const FVector FixtureAway=Depot+FVector(0.f,900.f,0.f);
+    if(!TestTrue(TEXT("Away fixture has physical ground and a clear depot path"),V->IsLand(FixtureAway) && V->IsClearPoint(FixtureAway) && V->IsClearSegment(FixtureAway,Depot))) return false;
+    if(!TestTrue(TEXT("Current worker actor reaches the explicit away position"),Away.Actor->SetActorLocation(FixtureAway)
+        && Away.Actor->GetActorLocation().Equals(FixtureAway,.001f))) return false;
     const FVector AwayPosition=Away.Actor->GetActorLocation(); Away.Route.Reset();
     if(!TestTrue(TEXT("Fixture is physically away from depot"),FVector::Dist2D(AwayPosition,Depot)>280.f)) return false;
     if(!Migrate(Migrated)) { AddError(Error); return false; }
@@ -120,6 +132,27 @@ bool FHearthPublicProjectPersistenceTest::RunTest(const FString&)
     TestTrue(TEXT("Empty-route migration preserves missing waypoints for runtime recovery"),V->Residents[Worker].Route.IsEmpty());
     TestEqual(TEXT("Empty-route migration cannot mint cargo"),V->Residents[Worker].CargoAmount,0);
     TestTrue(TEXT("Empty-route migration preserves off-depot position"),V->Residents[Worker].Actor->GetActorLocation().Equals(AwayPosition,.001f));
+    // Two independent haulers must survive saving together, with separate tax
+    // escrow and material reservations, while the single hammer stays exclusive.
+    for(int32 I=0;I<2;++I)
+    {
+        const FString ExtraIncome=Id();
+        if(!TestTrue(TEXT("Additional income supplies the second crew's tax escrow"),V->ReserveWage(1,ExtraIncome,3) && V->SettleWage(1,ExtraIncome))) return false;
+    }
+    const FString SecondTask=Id();
+    if(!TestTrue(TEXT("Second crew reserves another real tax wage"),V->ReserveWage(1,SecondTask,2,true))) return false;
+    auto& Second=V->Residents[1];Second.ActiveTaskId=SecondTask;
+    Second.Plot=1;Second.DeliveredWood=V->CostFor(1);Second.BuildProgress=1.f;V->PlotOwners[1]=1;
+    int32 SecondWood=Second.DeliveredWood;
+    for(int32 I=0;I<3 && SecondWood>0;++I){const int32 Used=FMath::Min(SecondWood,V->WoodStock[I]);V->WoodStock[I]-=Used;SecondWood-=Used;}
+    Second.Task=EHearthTask::PublicTravel;Second.LifeAction=1;Second.ProductionSite=-1;Second.ProductionOp=-1;
+    Second.CargoType=-1;Second.CargoAmount=0;Second.Route.Reset();
+    V->Produced[2]+=4;V->PublicProject.Grants[0]+=4;
+    auto& SecondPart=V->PublicProject.Parts[1];SecondPart.Worker=1;SecondPart.TaskId=SecondTask;SecondPart.Status=TEXT("transporting");SecondPart.Reserved[0]=4;
+    FHearthWorldImage Parallel;
+    TestTrue(TEXT("Parallel crews with conserved materials and wages validate for persistence"),HearthWorld::Decode(V->ExportWorldState(),Parallel,Error));
+    if(!Error.IsEmpty()) AddInfo(Error);
+    if(Parallel.PublicProject.Parts.Num()>1) TestEqual(TEXT("Second crew identity survives encoding"),Parallel.PublicProject.Parts[1].Worker,1);
     return true;
 }
 
@@ -332,5 +365,180 @@ bool FHearthStructurePlanPersistenceTest::RunTest(const FString&)
     return true;
 }
 
-#endif
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthTown3PersistenceTest,"ThreeHearths.Persistence.Town3ThirtyResidentsRoundTrip",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthTown3PersistenceTest::RunTest(const FString&)
+{
+    const FString PreviousCommandLine=FCommandLine::Get();
+    FCommandLine::Append(TEXT(" -HearthNoWorldPersistence"));
+    ON_SCOPE_EXIT { FCommandLine::Set(*PreviousCommandLine); };
+    UWorld* World=HearthPersistenceTests::World(true); if(!TestNotNull(TEXT("Isolated Town3 world"),World)) return false;
+    ON_SCOPE_EXIT { World->DestroyWorld(false); };
+    const auto AddSmallBase=[](UWorld* Scene)
+    {
+        auto* Base=Scene->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),FVector(0,0,-47.f),FRotator::ZeroRotator);
+        if(!Base) return Base;
+        Base->Tags.Add(TEXT("ThreeHearthsBaseTerrain"));
+        auto* Mesh=Base->GetStaticMeshComponent(); Mesh->SetMobility(EComponentMobility::Movable);
+        Mesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube")));
+        Mesh->SetWorldScale3D(FVector(100.f,100.f,1.f)); Mesh->SetCollisionProfileName(TEXT("BlockAll"));
+        return Base;
+    };
+    auto* SmallBase=AddSmallBase(World); if(!TestNotNull(TEXT("Pre-existing small island terrain"),SmallBase)) return false;
+    const FTransform SmallTransform=SmallBase->GetActorTransform();
+    auto* Village=World->SpawnActor<AHearthVillage>(); Village->bUseCropoutMap=true; Village->bOrganicTownLayout=true; Village->TownLayoutVersion=3;
+    TestTrue(TEXT("Small island is physical ground"),Village->IsLand(FVector(0,0,8)));
+    TestFalse(TEXT("Small island does not cover the castle"),Village->IsLand(FVector(6500,6500,8)));
+    Village->BuildLandGrid(); const int32 SmallGridCount=Village->LandGrid.Num();
+    Village->BuildEnvironment(); Village->ResetVillageState(); Village->bApiDisabledThisRun=true;
+    TestTrue(TEXT("Town3 preserves the existing island actor and transform"),IsValid(SmallBase) && SmallBase->GetActorTransform().Equals(SmallTransform));
+    TestTrue(TEXT("Town3 replaces the cached small-island navigation with traced large ground"),Village->LandGrid.Num()>SmallGridCount);
+    auto* LargeBase=Village->GeneratedTown3Terrain.Get();
+    if(!TestNotNull(TEXT("Town3 owns a separate terrain actor"),LargeBase)) return false;
+    TestTrue(TEXT("Town3 terrain has its own identity and owner"),LargeBase!=SmallBase && LargeBase->GetOwner()==Village && LargeBase->ActorHasTag(TEXT("ThreeHearthsTown3Terrain")));
+    TestTrue(TEXT("Town3 terrain has registered 300 m collision bounds"),LargeBase->GetStaticMeshComponent()->IsRegistered()
+        && LargeBase->GetStaticMeshComponent()->Bounds.BoxExtent.Equals(FVector(15000,15000,50),1.f));
+    TestTrue(TEXT("Large ground reaches the map center and opposite interior corners"),Village->IsLand(FVector(6500,6500,8))
+        && Village->IsLand(FVector(-8490,-8490,8)) && Village->IsLand(FVector(21490,21490,8)));
+    TestEqual(TEXT("Town3 retains its version after planning"),Village->TownLayoutVersion,3);
+    TestEqual(TEXT("Town3 starts with thirty real residents"),Village->Residents.Num(),30);
+    if(!TestTrue(TEXT("Town3 planner reports no placement error"),Village->TownLayoutError.IsEmpty())) { AddError(Village->TownLayoutError); return false; }
+    TestTrue(TEXT("Town3 generated terrain passes actual land traces"),Village->IsLand(FVector(6500.f,1500.f,8.f)));
+    TestFalse(TEXT("A point beyond the generated terrain is not land"),Village->IsLand(FVector(22000.f,6500.f,8.f)));
+    TestTrue(TEXT("Town3 navigation covers more than the old island grid"),Village->LandGrid.Num()>45*45);
+    TSet<FString> ResidentIds,PlotIds;
+    for(int32 I=0;I<Village->Residents.Num();++I)
+    {
+        ResidentIds.Add(Village->Residents[I].StableId); PlotIds.Add(Village->PlotIds[I]);
+        TestTrue(TEXT("Each Town3 resident has an actor and story"),IsValid(Village->Residents[I].Actor) && !Village->Residents[I].InnerStory.IsEmpty());
+        TestTrue(TEXT("Each Town3 plot and entrance lie on physical ground"),Village->IsLand(Village->PlotPositions[I]) && Village->IsLand(Village->HomeApproach(I)));
+    }
+    TestEqual(TEXT("All thirty residents have distinct identities"),ResidentIds.Num(),30);
+    TestEqual(TEXT("All thirty plots have distinct identities"),PlotIds.Num(),30);
+    const FString Text=Village->ExportWorldState(); FHearthWorldImage Image; FString Error;
+    if(!TestTrue(TEXT("Town3 state decodes in an isolated world"),HearthWorld::Decode(Text,Image,Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("Thirty plots survive persistence"),Image.PlotCount,30);
+    TestEqual(TEXT("Town3 version survives persistence"),Image.TownLayoutVersion,3);
+    TestEqual(TEXT("Population-sized food ledger is conserved"),Image.Food,300);
+    TestEqual(TEXT("Population-sized treasury follows the starter rule"),Image.TreasuryCoins,HearthVillageLimits::Town3TreasuryCoins);
+    TestTrue(TEXT("Actual frontage entries survive persistence"),Image.PlotEntrances[0].IsNearlyZero()==false && Image.PlotEntrances[29].IsNearlyZero()==false);
+    for(int32 I=0;I<Image.PlotCount;++I)
+    {
+        TestTrue(TEXT("Each plot position and entry roundtrip exactly"),Image.Plots[I].Equals(Village->PlotPositions[I],.001f) && Image.PlotEntrances[I].Equals(Village->PlotEntrances[I],.001f));
+        TestEqual(TEXT("Each resident identity roundtrips"),Image.People[I].Person.StableId,Village->Residents[I].StableId);
+    }
 
+    // A fresh world contains only the original small island, not transient Town3 actors.
+    const FString ColdPath=HearthPersistenceTests::TestPath();
+    auto& TestFiles=FPlatformFileManager::Get().GetPlatformFile();
+    ON_SCOPE_EXIT { TestFiles.DeleteFile(*ColdPath); TestFiles.DeleteFile(*(ColdPath+TEXT(".bak"))); };
+    if(!TestTrue(TEXT("Write isolated Town3 cold-load fixture"),HearthWorld::Write(ColdPath,Text,Error))) { AddError(Error); return false; }
+    {
+        const FString FixtureCommandLine=FCommandLine::Get();
+        FCommandLine::Set(*FString::Printf(TEXT("-HearthCityV3 -HearthWorld=\"%s\""),*ColdPath));
+        ON_SCOPE_EXIT { FCommandLine::Set(*FixtureCommandLine); };
+        UWorld* ColdWorld=HearthPersistenceTests::World(true); if(!TestNotNull(TEXT("Separate cold-load physics world"),ColdWorld)) return false;
+        ON_SCOPE_EXIT { ColdWorld->DestroyWorld(false); };
+        auto* PreservedBase=AddSmallBase(ColdWorld); if(!TestNotNull(TEXT("Cold scene preserves the small island"),PreservedBase)) return false;
+        const FTransform PreservedTransform=PreservedBase->GetActorTransform();
+        auto* ColdVillage=ColdWorld->SpawnActor<AHearthVillage>(); ColdVillage->BuildEnvironment(); ColdVillage->BuildLandGrid();
+        TestTrue(TEXT("Saved Town3 cold load recreates terrain without a layout error"),ColdVillage->TownLayoutError.IsEmpty() && ColdVillage->GeneratedTown3Terrain.IsValid());
+        TestTrue(TEXT("Cold Town3 has actual ground at the castle, gate and map corners"),ColdVillage->IsLand(FVector(6500,6500,8))
+            && ColdVillage->IsLand(FVector(6500,1500,8)) && ColdVillage->IsLand(FVector(-8490,-8490,8)) && ColdVillage->IsLand(FVector(21490,21490,8)));
+        TestTrue(TEXT("Cold scene retains its original island unchanged"),IsValid(PreservedBase) && PreservedBase->GetActorTransform().Equals(PreservedTransform));
+        TestTrue(TEXT("Cold load rebuilds the expanded navigation grid"),ColdVillage->LandGrid.Num()>45*45);
+        for(int32 I=0;I<Image.PlotCount;++I) TestTrue(TEXT("Cold load preserves each saved plot on real ground"),ColdVillage->PlotPositions[I].Equals(Image.Plots[I],.001f) && ColdVillage->IsLand(Image.Plots[I]));
+        auto* ColdBase=ColdVillage->GeneratedTown3Terrain.Get(); ColdVillage->BuildEnvironment(); ColdVillage->BuildLandGrid();
+        TestTrue(TEXT("Rebuilding reuses the same owned Town3 terrain"),ColdVillage->GeneratedTown3Terrain.Get()==ColdBase && IsValid(ColdBase));
+        TestTrue(TEXT("Rebuilding retains castle access on physical ground"),ColdVillage->IsLand(FVector(6500,1500,8)) && ColdVillage->LandGrid.Num()>45*45);
+    }
+
+    // Approval-only fixture: use the real reserved public site and mint no resources or completed work.
+    FHearthWorldImage ProjectImage=Image;
+    const auto NewId=[] { return FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); };
+    auto& Project=ProjectImage.PublicProject; Project=FHearthPublicProject();
+    Project.Id=NewId(); Project.TemplateId=TEXT("royal_keep_garden_v2");
+    Project.King=ProjectImage.People.IndexOfByPredicate([](const FHearthSavedResident& R) { return R.Person.bKing; });
+    for(int32 I=0;I<ProjectImage.Sites.Num();++I)
+    {
+        const auto& S=ProjectImage.Sites[I];
+        if(Village->IsRoyalSite(I) && S.Kind==EHearthSiteKind::Empty && S.bExpansion && S.bReachable
+            && S.Owner==-1 && S.ReservedBy==-1 && S.BuildPlanId.IsEmpty() && S.Radius>=350.f) { Project.Site=I; break; }
+    }
+    if(!TestTrue(TEXT("V2 fixture has a king and an existing available royal site"),Project.King>=0 && Project.Site>=0)) return false;
+    const auto& PublicSite=ProjectImage.Sites[Project.Site];
+    if(!TestTrue(TEXT("V2 public site and entrance have physical ground"),Village->IsLand(PublicSite.Position) && Village->IsLand(PublicSite.Approach))) return false;
+    Project.Status=TEXT("building"); Project.ApprovalHistoryId=NewId(); Project.ApprovedAt=ProjectImage.Elapsed;
+    HearthPublicWorks::Populate(Project);
+    if(!TestEqual(TEXT("Canonical v2 contains all 1276 modules"),Project.Parts.Num(),1276)) return false;
+    FHearthDecisionRecord Approval; Approval.Run=ProjectImage.Run; Approval.Timestamp=FDateTime::Now().ToString();
+    Approval.Resident=Project.King; Approval.At=ProjectImage.Elapsed; Approval.Kind=TEXT("public_project_policy");
+    Approval.Source=TEXT("local"); Approval.Status=TEXT("completed"); Approval.Context=TEXT("ApprovalHistoryId=")+Project.ApprovalHistoryId;
+    ProjectImage.History.Add(Approval);
+    FHearthDecisionRecord LastResidentHistory=Approval;
+    LastResidentHistory.Resident=29; LastResidentHistory.Kind=TEXT("life");
+    LastResidentHistory.Context=TEXT("thirtieth resident history regression");
+    ProjectImage.History.Add(LastResidentHistory);
+    FHearthWorldImage DecodedProject;
+    if(!TestTrue(TEXT("Approved canonical v2 roundtrips"),HearthWorld::Decode(HearthWorld::Encode(ProjectImage),DecodedProject,Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("All 1276 v2 parts survive persistence"),DecodedProject.PublicProject.Parts.Num(),1276);
+    TestTrue(TEXT("History from the thirtieth actual resident survives"),DecodedProject.History.ContainsByPredicate([](const FHearthDecisionRecord& H)
+        { return H.Resident==29 && H.Context==TEXT("thirtieth resident history regression"); }));
+    auto InvalidPersonHistory=ProjectImage;
+    InvalidPersonHistory.History.Last().Resident=30;
+    FHearthWorldImage HistoryRejected;
+    TestFalse(TEXT("History still rejects a nonexistent resident"),HearthWorld::Decode(HearthWorld::Encode(InvalidPersonHistory),HistoryRejected,Error));
+    TestEqual(TEXT("Approval does not complete any module"),DecodedProject.PublicProject.Completed,0);
+    TestFalse(TEXT("Every v2 module remains waiting without workers or materials"),DecodedProject.PublicProject.Parts.ContainsByPredicate([](const FHearthPublicPart& P)
+    {
+        if(P.Status!=TEXT("waiting") || P.Worker!=-1 || !P.TaskId.IsEmpty()) return true;
+        for(int32 M=0;M<3;++M) if(P.Reserved[M]!=0 || P.Delivered[M]!=0) return true;
+        return false;
+    }));
+    const int32 Seller=ProjectImage.People.IndexOfByPredicate([](const FHearthSavedResident& R) { return !R.Person.bKing; });
+    if(!TestTrue(TEXT("Cancelled orders reference a real resident seller"),Seller>=0)) return false;
+    for(int32 I=0;I<101;++I)
+    {
+        FHearthSupplyOrder Order; Order.Id=NewId(); Order.ProjectId=Project.Id; Order.Seller=Seller;
+        Order.Status=TEXT("cancelled"); Order.ReservedQuantity=0; Order.Escrow=0; Order.Remaining=0;
+        Order.Origin=TEXT("resident_owned_sawmill_share_or_completed_trade"); Project.Orders.Add(MoveTemp(Order));
+    }
+    if(!TestTrue(TEXT("More than 100 cancelled public orders roundtrip"),HearthWorld::Decode(HearthWorld::Encode(ProjectImage),DecodedProject,Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("All 101 cancelled orders survive persistence"),DecodedProject.PublicProject.Orders.Num(),101);
+    TestEqual(TEXT("Cancelled orders preserve treasury"),DecodedProject.TreasuryCoins,Image.TreasuryCoins);
+    TestEqual(TEXT("Cancelled orders preserve the seller wallet"),DecodedProject.People[Seller].Person.Coins,Image.People[Seller].Person.Coins);
+    for(int32 M=0;M<3;++M)
+    {
+        TestEqual(TEXT("Approval and cancellation grant no public materials"),DecodedProject.PublicProject.Grants[M],0);
+        TestEqual(TEXT("Approval and cancellation create no public stock"),DecodedProject.PublicProject.Stock[M],0);
+    }
+    FHearthPublicPart ExcessPart=Project.Parts.Last(); ExcessPart.Id+=TEXT(":excess"); Project.Parts.Add(MoveTemp(ExcessPart));
+    const FString ExcessText=HearthWorld::Encode(ProjectImage), BeforeDecoded=HearthWorld::Encode(DecodedProject);
+    TestFalse(TEXT("A 1277th v2 part is rejected"),HearthWorld::Decode(ExcessText,DecodedProject,Error));
+    TestEqual(TEXT("Excess parts leave the decoded image unchanged"),HearthWorld::Encode(DecodedProject),BeforeDecoded);
+    const FString BeforeLive=Village->ExportWorldState();
+    TestFalse(TEXT("Excess parts reject live import atomically"),Village->ApplyWorldState(ExcessText,Error));
+    TestEqual(TEXT("Rejected import leaves the live world unchanged"),Village->ExportWorldState(),BeforeLive);
+
+    // Reproduce scene-only rejection after the pure planner's first thirty choices.
+    const FVector Obstructed[2]={Village->PlotPositions[0],Village->PlotPositions[1]};
+    for(const FVector& Position:Obstructed)
+    {
+        auto* Obstacle=World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(),Position+FVector(0,0,60),FRotator::ZeroRotator);
+        if(!TestNotNull(TEXT("Physical scene obstacle over a first-choice home"),Obstacle)) return false;
+        auto* Mesh=Obstacle->GetStaticMeshComponent(); Mesh->SetMobility(EComponentMobility::Movable);
+        Mesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube")));
+        Mesh->SetWorldScale3D(FVector(.8f)); Mesh->SetCollisionProfileName(TEXT("BlockAll"));
+        TestFalse(TEXT("Actual land trace rejects the obstructed home"),Village->IsLand(Position));
+    }
+    Village->LandGrid.Reset();
+    TestTrue(TEXT("Runtime replaces both physically rejected homes and still requires thirty"),Village->GenerateStarterNeighborhood(HearthTownLayout::VillageRoads(true,3)));
+    TestTrue(TEXT("Replacement runtime layout reports no error"),Village->TownLayoutError.IsEmpty());
+    for(int32 I=0;I<30;++I)
+    {
+        TestTrue(TEXT("Replacement plots and entrances pass actual ground checks"),Village->IsLand(Village->PlotPositions[I]) && Village->IsLand(Village->HomeApproach(I)));
+        TestTrue(TEXT("Neither obstructed footprint is accepted"),!Village->PlotPositions[I].Equals(Obstructed[0],.01f) && !Village->PlotPositions[I].Equals(Obstructed[1],.01f));
+    }
+    return true;
+}
+
+#endif

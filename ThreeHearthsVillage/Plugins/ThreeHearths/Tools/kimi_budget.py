@@ -12,6 +12,8 @@ import re
 import sqlite3
 import time
 import uuid
+import zlib
+from kimi_vision import validate_png_url, MAX_REQUEST_BYTES
 
 NANO=1_000_000_000
 MODEL='kimi-k2.6'
@@ -38,6 +40,20 @@ class Policy:
     price_verified: str='2026-09-06 https://platform.kimi.com/ K2.6 China'
 
 NIGHT_POLICY=Policy()
+
+@dataclass(frozen=True)
+class CityValidationPolicy(Policy):
+    """Separate supplemental grant; initialization still requires approval.
+
+    Subclassing preserves the original policy fingerprint and old ledger.
+    """
+    authorized_nano: int=100*NANO
+    allocatable_nano: int=95*NANO
+    prior_unverified_nano: int=0
+    concurrency: int=10
+    request_limit: int=600
+
+CITY_VALIDATION_POLICY=CityValidationPolicy()
 
 class BudgetError(RuntimeError): pass
 class BudgetDenied(BudgetError): pass
@@ -68,15 +84,30 @@ def normalize_request(body, policy=NIGHT_POLICY):
     messages=body.get('messages')
     if not isinstance(messages,list) or not 1<=len(messages)<=8: raise InvalidRequest('Bounded messages required')
     length=0
+    images=0
     for message in messages:
         if not isinstance(message,dict) or set(message)!={'role','content'}: raise InvalidRequest('Text messages only')
-        if message['role'] not in ('system','user','assistant') or not isinstance(message['content'],str) or not message['content']:
-            raise InvalidRequest('Invalid text message')
-        length+=len(message['content'].encode('utf-8'))
+        if message['role'] not in ('system','user','assistant'):
+            raise InvalidRequest('Invalid message role')
+        content=message['content']
+        if isinstance(content,str) and content:
+            length+=len(content.encode('utf-8'))
+        elif message['role']=='user' and isinstance(content,list) and 1<=len(content)<=3:
+            for part in content:
+                if not isinstance(part,dict): raise InvalidRequest('Invalid content part')
+                if set(part)=={'type','text'} and part['type']=='text' and isinstance(part['text'],str) and part['text']:
+                    length+=len(part['text'].encode('utf-8'))
+                elif set(part)=={'type','image_url'} and part['type']=='image_url' and isinstance(part['image_url'],dict) and set(part['image_url'])=={'url'}:
+                    images+=1
+                    if images>1: raise InvalidRequest('One observation per decision')
+                    try: validate_png_url(part['image_url']['url'])
+                    except (ValueError, OverflowError, zlib.error): raise InvalidRequest('Invalid PNG observation') from None
+                else: raise InvalidRequest('Unsupported content part')
+        else: raise InvalidRequest('Invalid message content')
     if length>policy.max_context_utf8_bytes: raise InvalidRequest('Context byte limit exceeded')
     clean={'model':policy.model,'messages':messages,'stream':False,'max_tokens':maximum,
            'thinking':{'type':'disabled'},'response_format':{'type':'json_object'}}
-    if len(encoded(clean).encode('utf-8'))>policy.max_request_bytes: raise InvalidRequest('Request byte limit exceeded')
+    if len(encoded(clean).encode('utf-8'))>(MAX_REQUEST_BYTES if images else policy.max_request_bytes): raise InvalidRequest('Request byte limit exceeded')
     return clean
 
 def usage_cost(response, maximum, policy=NIGHT_POLICY):
@@ -188,6 +219,8 @@ class Ledger:
             if active>=self.policy.concurrency: raise BudgetDenied('Ten in-flight or unresolved requests already exist')
             if db.execute("SELECT 1 FROM requests WHERE resident=? AND state IN ('reserved','uncertain')",(resident,)).fetchone():
                 raise BudgetDenied('Resident already has an in-flight or unresolved request')
+            limit=getattr(self.policy,'request_limit',0)
+            if limit and meta['request_count']>=limit: raise BudgetDenied('Supplemental validation request limit reached')
             if meta['liability']+reserve>self.policy.allocatable_nano: raise BudgetDenied('CNY budget cannot cover worst-case reservation')
             db.execute("INSERT INTO requests(id,resident,payload_sha,maximum,reserve,state,created) VALUES(?,?,?,?,?,'reserved',?)",
                 (request_id,resident,payload,maximum,reserve,self.clock()))

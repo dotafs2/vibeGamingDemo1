@@ -54,6 +54,45 @@ namespace
         return Result;
     }
 
+    FHearthStructureCatalogEntry CanopyEntry(const TCHAR* Id)
+    {
+        const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/%s/%s.%s"),Id,Id,Id);
+        // Raw authoring bounds (m): (-1.1,-1.31000006,-.05500004) to
+        // (1.1,.02540396,.58715278), wall datum at (0,0,0), eave toward -Y.
+        // The UE import flips Y, without rebasing that datum. These are the
+        // loaded UStaticMesh bounds from generic-needs/loaded_mesh_bounds.json.
+        const FVector NativeOriginCm(0.0,64.22980499267578,26.607637405395508);
+        const FVector NativeExtentCm(110.0,66.77019500732422,32.107643127441406);
+        auto Result=Entry(Id,*Path,(NativeOriginCm-NativeExtentCm)/100.0,(NativeOriginCm+NativeExtentCm)/100.0,
+            TEXT("Source wall datum (0,0,0) preserved; source eave -Y imports as native +Y. Default yaw 180 restores the planned -Y front; bounds and sockets are native metres."));
+        Result.DefaultRotation=FRotator(0.f,180.f,0.f);
+        AddSocket(Result,TEXT("support_bottom"),FVector(0,1.25,Result.BoundsMin.Z),TEXT("rests_on_front_beam"));
+        AddSocket(Result,TEXT("ridge"),FVector(0,0,Result.BoundsMax.Z),TEXT("meets_roof_ridge"));
+        AddSupport(Result,TEXT("beam_timber_2m"),TEXT("support_top"),TEXT("support_bottom"));
+        return Result;
+    }
+
+    FHearthStructureCatalogEntry RidgeEntry(const TCHAR* Id)
+    {
+        const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/%s/%s.%s"),Id,Id,Id);
+        auto Result=Entry(Id,*Path,FVector(-.15f,-1.f,1.22000003f),FVector(.15f,1.f,1.40900004f),TEXT("Roof datum; ridge runs along Y, underside at local Z=1.22m."));
+        AddSocket(Result,TEXT("support_bottom"),FVector(0,0,1.22000003f),TEXT("rests_on_canopy"));
+        AddSocket(Result,TEXT("top"),FVector(0,0,1.40900004f),TEXT("ridge_top"));
+        AddSupport(Result,TEXT("canopy_terracotta_2m"),TEXT("ridge"),TEXT("support_bottom"));
+        AddSupport(Result,TEXT("canopy_slateblue_2m"),TEXT("ridge"),TEXT("support_bottom"));
+        return Result;
+    }
+
+    FHearthStructureCatalogEntry BenchEntry()
+    {
+        auto Result=Entry(TEXT("bench_timber"),TEXT("/Game/ThreeHearths/Generated/VillageKit/bench_timber/bench_timber.bench_timber"),
+            FVector(-.9f,-.1965f,0.f),FVector(.9f,.1965f,.46f),TEXT("Ground-level seating datum; 1.8m seat span, +Z up."));
+        AddSocket(Result,TEXT("feet"),FVector(0,0,0),TEXT("rests_on_floor"));
+        AddSocket(Result,TEXT("seat"),FVector(0,0,.46f),TEXT("usable_seat"));
+        AddSupport(Result,TEXT("floor_timber_2m"),TEXT("support_top"),TEXT("feet"));
+        return Result;
+    }
+
     TArray<FHearthStructureCatalogEntry> BuildEntries()
     {
         TArray<FHearthStructureCatalogEntry> Result;
@@ -77,6 +116,7 @@ namespace
         auto Beam = Entry(TEXT("beam_timber_2m"), TEXT("/Game/ThreeHearths/Generated/VillageKit/beam_timber_2m/beam_timber_2m.beam_timber_2m"), FVector(-.91f,-.09f,0.f), FVector(.91f,.09f,.2f), TEXT("Centre underside; span fits between .18m posts; underside at storey datum+2.2."));
         AddSocket(Beam, TEXT("end_x_minus"), FVector(-.91f,0,0), TEXT("rests_on_post"));
         AddSocket(Beam, TEXT("end_x_plus"), FVector(.91f,0,0), TEXT("rests_on_post"));
+        AddSocket(Beam, TEXT("support_top"), FVector(0,0,.2f), TEXT("supports_roof"));
         AddSupport(Beam, TEXT("post_timber_2_4m"), TEXT("top"), TEXT("end_x_minus"));
         Result.Add(MoveTemp(Beam));
 
@@ -104,6 +144,14 @@ namespace
         Result.Add(MoveTemp(Roof));
         Result.Add(RoofEntry(TEXT("roof_slope_terracotta_2m")));
         Result.Add(RoofEntry(TEXT("roof_slope_slateblue_2m")));
+
+        Result.Add(WallEntry(TEXT("gable_timber_4m"),FVector(-2.0262088f,-.12750004f,0.f),FVector(2.0262088f,.12750004f,1.297008f)));
+        Result.Add(CanopyEntry(TEXT("canopy_terracotta_2m")));
+        Result.Add(CanopyEntry(TEXT("canopy_slateblue_2m")));
+        Result.Add(RidgeEntry(TEXT("roof_ridge_terracotta_2m")));
+        Result.Add(RidgeEntry(TEXT("roof_ridge_slateblue_2m")));
+        Result.Add(RidgeEntry(TEXT("roof_ridge_timber_2m")));
+        Result.Add(BenchEntry());
 
         return Result;
     }
@@ -141,7 +189,7 @@ namespace HearthStructureCatalog
     bool HasFoundationToRoofSupportChain(FString* OutError)
     {
         auto Fail = [&](const FString& Error) { if (OutError) *OutError = Error; return false; };
-        const TCHAR* Required[] = { TEXT("foundation_stone_2m"), TEXT("floor_timber_2m"), TEXT("post_timber_2_4m"), TEXT("beam_timber_2m"), TEXT("wall_timber_2m"), TEXT("wall_door_timber_2m"), TEXT("roof_slope_timber_2m"), TEXT("roof_slope_terracotta_2m") };
+        const TCHAR* Required[] = { TEXT("foundation_stone_2m"), TEXT("floor_timber_2m"), TEXT("post_timber_2_4m"), TEXT("beam_timber_2m"), TEXT("wall_timber_2m"), TEXT("wall_door_timber_2m"), TEXT("roof_slope_timber_2m"), TEXT("roof_slope_terracotta_2m"), TEXT("canopy_terracotta_2m"), TEXT("canopy_slateblue_2m"), TEXT("roof_ridge_terracotta_2m"), TEXT("roof_ridge_slateblue_2m"), TEXT("bench_timber") };
         for (const TCHAR* Id : Required) if (!Find(Id)) return Fail(FString::Printf(TEXT("missing_chain_entry:%s"), Id));
         auto HasContact = [&](const TCHAR* Child, const TCHAR* Parent, const TCHAR* ParentSocket, const TCHAR* ChildSocket)
         {
@@ -155,6 +203,12 @@ namespace HearthStructureCatalog
         if (!HasContact(TEXT("wall_timber_2m"), TEXT("floor_timber_2m"), TEXT("support_top"), TEXT("base"))) return Fail(TEXT("floor_wall_contact_missing"));
         if (!HasContact(TEXT("roof_slope_timber_2m"), TEXT("beam_timber_2m"), TEXT("end_x_plus"), TEXT("ridge"))) return Fail(TEXT("beam_roof_contact_missing"));
         if (!HasContact(TEXT("roof_slope_terracotta_2m"), TEXT("beam_timber_2m"), TEXT("end_x_plus"), TEXT("ridge"))) return Fail(TEXT("beam_terracotta_roof_contact_missing"));
+        if (!Find(TEXT("gable_timber_4m"))) return Fail(TEXT("gable_missing"));
+        if (!HasContact(TEXT("canopy_terracotta_2m"), TEXT("beam_timber_2m"), TEXT("support_top"), TEXT("support_bottom"))) return Fail(TEXT("beam_canopy_contact_missing"));
+        if (!HasContact(TEXT("canopy_slateblue_2m"), TEXT("beam_timber_2m"), TEXT("support_top"), TEXT("support_bottom"))) return Fail(TEXT("beam_slateblue_canopy_contact_missing"));
+        if (!HasContact(TEXT("roof_ridge_terracotta_2m"), TEXT("canopy_terracotta_2m"), TEXT("ridge"), TEXT("support_bottom"))) return Fail(TEXT("terracotta_ridge_contact_missing"));
+        if (!HasContact(TEXT("roof_ridge_slateblue_2m"), TEXT("canopy_slateblue_2m"), TEXT("ridge"), TEXT("support_bottom"))) return Fail(TEXT("slateblue_ridge_contact_missing"));
+        if (!HasContact(TEXT("bench_timber"), TEXT("floor_timber_2m"), TEXT("support_top"), TEXT("feet"))) return Fail(TEXT("floor_bench_contact_missing"));
         const auto* Door = Find(TEXT("wall_door_timber_2m"));
         if (!Door || !Door->bHasDoorClearance) return Fail(TEXT("door_clearance_missing"));
         return true;

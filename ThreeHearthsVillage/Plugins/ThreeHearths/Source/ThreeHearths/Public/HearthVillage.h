@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerController.h"
 #include "HAL/PlatformProcess.h"
 #include "HearthStructurePlan.h"
+#include "HearthWorldRequests.h"
+#include "HearthResidentSiting.h"
+#include "HearthTownLayout.h"
 #include "HearthVillage.generated.h"
 
 class USkeletalMeshComponent;
@@ -16,6 +19,22 @@ class UCameraComponent;
 class IHttpRequest;
 class FJsonObject;
 class IFileHandle;
+class AStaticMeshActor;
+struct FHearthResidentBuildingPlan;
+struct FHearthTavernRuntimeState;
+
+namespace HearthVillageLimits
+{
+    constexpr int32 Town2LayoutVersion = 2;
+    constexpr int32 Town3LayoutVersion = 3;
+    constexpr int32 MaxPopulation = 40;
+    constexpr int32 Town3Population = 30;
+    constexpr int32 LegacyTown2Population = 10;
+    constexpr int32 StarterFoodPerResident = 10;
+    constexpr int32 Town3StarterWoodPerResident = 12;
+    constexpr int32 LegacyTreasuryCoins = 500;
+    constexpr int32 Town3TreasuryCoins = 620;
+}
 
 UENUM(BlueprintType)
 enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover };
@@ -41,7 +60,7 @@ struct FHearthSite
     TArray<TWeakObjectPtr<UStaticMeshComponent>> Meshes;
     TWeakObjectPtr<UStaticMeshComponent> Soil;
 };
-namespace HearthCottage { void Populate(FHearthSite& Site); }
+namespace HearthCottage { void Populate(FHearthSite& Site); float WalkRadius(const FHearthCottageComponent& Part); }
 
 struct FHearthDecisionRecord
 {
@@ -56,7 +75,8 @@ struct FHearthDecisionRecord
 // Each resident owns one request slot; replies never share mutable decision data.
 struct FHearthPendingDecision
 {
-    FString OperationId, ConversationId;
+    FString OperationId, ConversationId, VisualSignature;
+    bool bVisual=false;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
     bool bActive=false, bReturned=false, bGameplayReleased=false, bLife=false, bSocial=false, bHasUsage=false;
@@ -201,6 +221,15 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) FString HouseBlueprint;
     UPROPERTY(BlueprintReadOnly) FString WallMaterial;
     UPROPERTY(BlueprintReadOnly) FString RoofMaterial;
+    UPROPERTY(BlueprintReadOnly) FString DesignGoal;
+    UPROPERTY(BlueprintReadOnly) FString InnerStory;
+    UPROPERTY(BlueprintReadOnly) FString BuildingArchetype;
+    UPROPERTY(BlueprintReadOnly) FString DesignFeedback;
+    UPROPERTY(BlueprintReadOnly) FString DesignRequest;
+    UPROPERTY(BlueprintReadOnly) FString LastVisualSignature;
+    UPROPERTY(BlueprintReadOnly) int32 GrowthDirection = 0;
+    UPROPERTY(BlueprintReadOnly) bool bDesignSatisfied = false;
+    double NextVisualAt = 0;
     UPROPERTY(BlueprintReadOnly) FString HeldToolId;
     UPROPERTY(BlueprintReadOnly) FString HeldToolOperationId;
     UPROPERTY(BlueprintReadOnly) EHearthTask Task = EHearthTask::Choosing;
@@ -249,6 +278,19 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
     UFUNCTION(BlueprintCallable) void RestartVillage();
     UFUNCTION(BlueprintCallable) bool SaveWorld();
+    UFUNCTION(BlueprintCallable) FString ExportDesignObservation(int32 Index);
+    UFUNCTION(BlueprintCallable) FString ExportTownObservation();
+    UFUNCTION(BlueprintCallable) bool ReviewResidentHome(int32 Index);
+    UFUNCTION(BlueprintCallable) FString ExportCityGroundReport() const;
+    UFUNCTION(BlueprintCallable) bool SetResidentDesignGoal(int32 Index,const FString& Goal);
+    UFUNCTION(BlueprintCallable) bool SubmitResidentWorldRequest(int32 Index,const FString& Need);
+    UFUNCTION(BlueprintCallable) bool SubmitResidentAssetRequest(int32 Index,const FString& Need);
+    UFUNCTION(BlueprintCallable) FString ExportWorldRequests() const;
+    UFUNCTION(BlueprintCallable) FString ExportTavernState() const;
+    UFUNCTION(BlueprintCallable) bool RequestTavernCanopy(int32 Index);
+    bool FindResidentHostSite(int32 Index,FHearthSite& OutSite) const;
+    FString WorldRequestSummary(int32 Index) const;
+    TArray<FHearthWorldRequest> WorldRequests;
     UFUNCTION(BlueprintCallable) bool LoadWorld();
     UFUNCTION(BlueprintCallable) FString ExportWorldState() const;
     UPROPERTY(BlueprintReadOnly) FString WorldId;
@@ -311,6 +353,7 @@ public:
     UPROPERTY(BlueprintReadOnly) float Elapsed = 0.f;
     UPROPERTY(BlueprintReadOnly) FString VillageEvent;
     UPROPERTY(BlueprintReadOnly) FString ApiStatus;
+    UPROPERTY(BlueprintReadOnly) FString TownLayoutError;
     UPROPERTY(BlueprintReadOnly) int32 ApiRequests = 0;
     UPROPERTY(BlueprintReadOnly) int32 ApiSuccesses = 0;
     UPROPERTY(BlueprintReadOnly) int32 ApiTokens = 0;
@@ -322,11 +365,16 @@ public:
     FString PlotNameFor(int32 Resident) const;
     FString StatusFor(int32 Resident) const;
     FLinearColor ResidentColor(int32 Index) const;
-    int32 HousingPlotCount() const { return bUseCropoutMap?10:3; }
+    int32 HousingPlotCount() const { return bUseCropoutMap?(TownLayoutVersion>=3?HearthVillageLimits::Town3Population:HearthVillageLimits::LegacyTown2Population):3; }
+    bool IsTownLayoutVersion3() const { return bUseCropoutMap && TownLayoutVersion>=3; }
     FString PlotLabel(int32 Plot) const;
 private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HouseMeshes;
     friend class AHearthPlayerController;
+    friend class FHearthDesignFeedbackTest;
+    friend class FHearthWorldRequestRuntimeTest;
+    friend class FHearthOrganicReplacementCandidateTest;
+    void ReconcileWorldRequests();
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
     friend class FHearthHistoryArchiveTest;
@@ -351,7 +399,7 @@ private:
     friend class FHearthPrivateTileConstructionTest;
     friend class FHearthTileOrderTest;
     FString WorldPath;
-    FString PlotIds[10];
+    FString PlotIds[HearthVillageLimits::MaxPopulation];
     TSharedPtr<IFileHandle> WorldLease;
     int64 WorldRevision=0;
     float WorldSaveTimer=0;
@@ -375,6 +423,7 @@ private:
     int32 Manufactured[2]={0,0}, ManufacturedSpent[2]={0,0}; // Planks, beams.
     int32 ProducedClay=0, SpentClay=0, ProducedTiles=0, SpentTiles=0;
     FString ProductionStatus;
+    TSharedPtr<FHearthTavernRuntimeState> TavernRuntimeState;
     void InitializeProduction();
     void AdvanceProductionWorld(float Dt);
     void AdvanceProduction(int32 Index,float Dt);
@@ -384,6 +433,7 @@ private:
     bool IsProductionAllowed(int32 Index,int32 Action) const;
     FString ProductionActionName(int32 Action) const;
     int32 ChooseProductionLocally(int32 Index) const;
+    int32 ChooseProductionLocally(int32 Index,const TArray<int32>& Options) const;
     bool StartProduction(int32 Index,int32 Action,const FString& Reason,bool bFromApi);
     bool TryBorrowTool(int32 Index,int32 Operation);
     void ReturnTool(int32 Index);
@@ -420,25 +470,43 @@ private:
     void AdvanceEconomy(float Dt);
     void AppendProductionContext(const TSharedRef<FJsonObject>& Context) const;
     bool IsLand(const FVector& Position) const;
+    bool IsSiteWalkObstacle(const FHearthSite& Site) const;
     bool IsClearPoint(const FVector& Position) const;
     bool IsClearSegment(const FVector& A,const FVector& B) const;
     bool FindProductionPath(const FVector& Start,const FVector& End,TArray<FVector>& Out) const;
     void BuildLandGrid();
     bool ChooseSiteApproach(int32 Site);
     bool FindActivityRoute(int32 Index,const FVector& Target,TArray<FVector>& Route) const;
-    FVector PlotPositions[10];
+    FVector PlotPositions[HearthVillageLimits::MaxPopulation];
+    FVector PlotEntrances[HearthVillageLimits::MaxPopulation];
+    float PlotYaws[HearthVillageLimits::MaxPopulation]={0};
+    int32 TownLayoutVersion=2;
+    void EnsureResidentStory(int32 Index);
+    bool ResidentObservationTarget(int32 Index,FVector& Center,double& Width,FString& TargetId) const;
+    bool IsRoyalSite(int32 Index) const;
+    void RefreshBotanicalLandscape();
+    TArray<TObjectPtr<UStaticMeshComponent>> BotanicalMeshes;
+    TArray<TWeakObjectPtr<UStaticMeshComponent>> StarterArchitectureMeshes[HearthVillageLimits::MaxPopulation];
+    bool RefreshStarterArchitecture(int32 Plot,int32 Stage);
+    FVector HomeApproach(int32 Plot) const;
+    FHearthResidentSitingResult EvaluateResidentSite(int32 Index,const FVector& Position) const;
+    bool PrepareResidentHouse(int32 Index,int32 Site,FHearthResidentBuildingPlan& Out) const;
+    bool GenerateStarterNeighborhood(const TArray<FHearthTownRoadSegment>& Roads);
+    friend class FHearthNeighborhoodPersistenceTest;
+    friend class FHearthTown3PersistenceTest;
     FVector WoodPositions[3];
-    int32 PlotOwners[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    int32 PlotOwners[HearthVillageLimits::MaxPopulation] = {};
     int32 WoodStock[3] = {12,12,12};
-    int32 PlotCosts[10] = {12,9,6,6,6,6,6,6,6,6};
+    int32 PlotCosts[HearthVillageLimits::MaxPopulation] = {};
     float SnapshotTimer = 0.f;
     float NextTradeAt = 8.f;
-    int32 TaxRemainders[10] = {0,0,0,0,0,0,0,0,0,0};
+    int32 TaxRemainders[HearthVillageLimits::MaxPopulation] = {};
     double SimulationRemainder = 0;
     bool bReplacementPlotSearchDone = false;
     float AcceptanceCaptureDelay = -1.f;
     bool bAcceptanceCaptureDone = false;
     void AdvanceSimulation(float Dt);
+    bool bOrganicTownLayout = true;
     bool bReportedComplete = false;
     bool bApiReady = false;
     bool bApiConfigured = false;
@@ -472,8 +540,15 @@ private:
     void LoadApiConfig();
     void StopDecisionRequests();
     void RequestDecision(int32 Index);
-    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife, bool bSocial=false);
+    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife, bool bSocial=false, const FString& ImageData=FString());
     void ConsumeDecision();
+    void EnsureResidentDesignGoal(int32 Index);
+    bool RequestVisualReview(int32 Index);
+    void ApplyVisualReview(int32 Index, FHearthPendingDecision& Reply);
+    FString VisualSignature(int32 Index) const;
+    FString CaptureDesignObservation(int32 Index, FString& Path,bool bTown=false);
+    bool FitsResidentPlan(const FHearthStructurePlan& Plan, int32 SiteIndex) const;
+    double NextVisualCaptureAt = 0;
     void DecideLocally(int32 Index, const FString& Failure = FString());
     bool ReservePlot(int32 Index, int32 Plot, const FString& Reason, bool bFromApi);
     void LoadHistory();
@@ -498,6 +573,7 @@ private:
     void CompleteCommitments(int32 Worker,bool bSuccess,const FString& Result);
     int32 FindHelpActivity(int32 Worker) const;
     void BuildEnvironment();
+    TWeakObjectPtr<AStaticMeshActor> GeneratedTown3Terrain;
     void BuildIslandVillage();
     void Decide(int32 Index);
     void SeekWood(int32 Index);

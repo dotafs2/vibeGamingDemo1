@@ -57,6 +57,12 @@ bool FHearthTileProductionTest::RunTest(const FString&)
     TestEqual(TEXT("All six ordered tiles are reserved"),Village->TileOrders[0].ReservedTiles,6);
     TestEqual(TEXT("Potter physically carries the ordered tiles"),Potter.CargoType,6); TestEqual(TEXT("Order handoff uses trade travel"),Potter.Task,EHearthTask::TradeTravel);
     TestEqual(TEXT("Ordered tiles never enter public stock"),Village->TileStock,PublicTilesBeforeOrder);
+    auto& Customer=Village->Residents[1];Customer.Task=EHearthTask::LifeActivity;Customer.LifeAction=0;Customer.Timer=0;
+    Customer.ConversationId.Empty();Customer.Route.Reset();Customer.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    Customer.Actor->SetActorLocation(FVector(-400,800,8));
+    Village->AdvanceSimulation(.05f);
+    TestEqual(TEXT("Finishing rest makes a customer available for an already-paid tile delivery"),Customer.Task,EHearthTask::TradeWaiting);
+    TestEqual(TEXT("Delivery owns the customer only after their previous activity finishes"),Customer.ActiveTaskId,Village->TileOrders[0].Id);
     return true;
 }
 

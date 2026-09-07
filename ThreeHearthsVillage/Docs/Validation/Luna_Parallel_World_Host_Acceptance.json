@@ -1,0 +1,99 @@
+{
+  "scope": "Five parallel Luna modules supervised, corrected and integrated by GPT-6",
+  "engine": "UE 5.8.2 Development Editor",
+  "workers": {
+    "model": "gpt-5.6-luna",
+    "count": 5,
+    "parallel_spawn_succeeded": true,
+    "all_closed": true
+  },
+  "build": {
+    "succeeded": true,
+    "log": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\luna-build2.log"
+  },
+  "native_tests": {
+    "succeeded": 37,
+    "succeededWithWarnings": 5,
+    "failed": 0,
+    "notRun": 0
+  },
+  "art_export_tests": {
+    "passed": 5,
+    "reported_by": "Luna Volta",
+    "integration_cli_exit": 0
+  },
+  "runtime": {
+    "provenance": "real UE, local policies, explicitly injected request acceptance scenario",
+    "api_disabled": true,
+    "injected_requests": true,
+    "submissions": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "calls_after_submission": 0,
+    "save_success": true,
+    "reload_success": true,
+    "world_identity_preserved": true,
+    "board_preserved_exactly": true,
+    "plans_preserved_exactly": true,
+    "site_components_preserved_exactly": true,
+    "residents": 10,
+    "plans": 2,
+    "completed_starter_homes": 10,
+    "api_requests": 0,
+    "scene_png": "C:/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/DesignReviews/63503ACB-4B38-F3E7-5312-85A4C73B1C0E_63503ACB-4B38-F3E7-5312-85A4C73B1C0E7d512017.png",
+    "error": null,
+    "real_seconds": 65.23399999999674
+  },
+  "world_id": "F7E68E06-453F-3D13-4821-20824BAE682F",
+  "simulation_seconds": 5321.06640625,
+  "requests": {
+    "submitted": 6,
+    "deduplicated": 5,
+    "categories": {
+      "request_1": "asset",
+      "request_2": "mechanic",
+      "request_3": "narrative",
+      "request_4": "existing_action",
+      "request_5": "clarification"
+    },
+    "art_jobs": 1
+  },
+  "components": {
+    "total": 32,
+    "completed": 32
+  },
+  "artifacts": [
+    {
+      "path": "Docs/Validation/World_Host_2026-09-07/requests.json",
+      "sha256": "1e580e11ac8ea439d69bfa7c905f4737288d18ffa453969474fa61cb4e381c7a"
+    },
+    {
+      "path": "Docs/Validation/World_Host_2026-09-07/hearth_art_jobs.json",
+      "sha256": "97d377a1995da09adcdcee64518644a550431d183af8d01d329f182b71b93eaf"
+    },
+    {
+      "path": "Docs/Validation/World_Host_2026-09-07/hearth_art_jobs.md",
+      "sha256": "d92f89c3391cb035f29a30d76a8a6a433dc26308096afba7af10210e98c13940"
+    },
+    {
+      "path": "Docs/Validation/World_Host_2026-09-07/runtime-home.png",
+      "sha256": "f6d2a43aa5486708a86c3e7f0c2708060dd522bb888603e1b91e36ba42af0925"
+    },
+    {
+      "path": "Docs/Validation/World_Host_2026-09-07/runtime-result.json",
+      "sha256": "ad3ecc412154a67fe2e1c53bac3ee4f8cd6e5f66b38b32dbbb22af97b0dcb16a"
+    }
+  ],
+  "limitations": [
+    "Real UE scenario explicitly injected request text; it is not evidence of spontaneous paid Kimi proposals.",
+    "Host classification is a bounded deterministic local rule, not a separate DM model.",
+    "Art jobs are reviewable offline briefs; automatic Blender/model generation and gameplay import are not connected.",
+    "Busy task/wage preservation and deferred-order serialization are native-tested; a borrowed-tool production task is guarded in code but not independently replayed in this batch.",
+    "This batch did not spend Kimi budget, reset any ledger, commit or push."
+  ]
+}

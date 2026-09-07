@@ -173,7 +173,7 @@ bool FHearthMovementIntegrationTest::RunTest(const FString&)
         TestEqual(TEXT("Hammer operation remains attached to the construction task"),Builder.HeldToolOperationId,Builder.ActiveTaskId);
     }
     Village->FixedObstacles.Reset(); Village->ProductionSites.Reset();
-    FHearthSite SpawnBlocker; SpawnBlocker.Position=FVector(-2250,-1050,8); SpawnBlocker.Radius=190;
+    FHearthSite SpawnBlocker; SpawnBlocker.Kind=EHearthSiteKind::Carpenter; SpawnBlocker.Position=FVector(-2250,-1050,8); SpawnBlocker.Radius=190;
     Village->ProductionSites.Add(SpawnBlocker);
     Village->Residents[0].Actor->SetActorLocation(FVector(-2100,-850,8));
     Village->Residents[1].Actor->SetActorLocation(FVector(0,1000,8));

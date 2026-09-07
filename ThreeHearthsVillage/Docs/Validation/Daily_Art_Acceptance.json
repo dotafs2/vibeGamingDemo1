@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-07",
+  "source_baseline": "2366a8bb3f49c0543b64370260e87003024bf12a",
+  "ue_version": "5.8.2",
+  "exporter_build": {
+    "result": "succeeded",
+    "log": "daily-art-20260907/build.log"
+  },
+  "native_export": {
+    "entries": 12,
+    "exit_code": 0,
+    "run": "rotationcheck"
+  },
+  "native_render": {
+    "entries": 12,
+    "exit_code": 0,
+    "run": "full02",
+    "seconds": 85.829
+  },
+  "capture_checks": [
+    "all native mesh paths loaded",
+    "each actor yaw/pitch/roll matches catalog",
+    "all 12 nonblank PNGs",
+    "poster visually reviewed"
+  ],
+  "resolved_capture_issues": [
+    "UE Python API names",
+    "exposure",
+    "Python positional Rotator differs from C++",
+    "removed duplicate shutdown request; final run exited normally"
+  ],
+  "poster": {
+    "path": "Docs/Art_Daytime_2026-09-07.png",
+    "dimensions": [
+      3200,
+      2440
+    ],
+    "sha256": "2102ba43560febca8510519fd62537f21fe980da7fa2986199a0670619dbebed"
+  },
+  "entries": [
+    {
+      "id": "rowhouse",
+      "mesh_parts": 155
+    },
+    {
+      "id": "shop_house",
+      "mesh_parts": 190
+    },
+    {
+      "id": "courtyard_workshop",
+      "mesh_parts": 78
+    },
+    {
+      "id": "warehouse",
+      "mesh_parts": 105
+    },
+    {
+      "id": "inn",
+      "mesh_parts": 229
+    },
+    {
+      "id": "royal_keep_garden_v2",
+      "mesh_parts": 1319
+    },
+    {
+      "id": "oak",
+      "mesh_parts": 5
+    },
+    {
+      "id": "birch",
+      "mesh_parts": 5
+    },
+    {
+      "id": "orchard",
+      "mesh_parts": 9
+    },
+    {
+      "id": "cypress",
+      "mesh_parts": 3
+    },
+    {
+      "id": "flowering_shrub",
+      "mesh_parts": 11
+    },
+    {
+      "id": "wildflowers",
+      "mesh_parts": 14
+    }
+  ],
+  "castle": {
+    "preview_source_modules": 1276,
+    "last_verified_world_completed_modules": 14
+  },
+  "new_glb_vs_baseline": 0,
+  "paid_api_calls": 0,
+  "world_saved_or_mutated": false,
+  "deferred": [
+    "elevated terrain",
+    "spiral ascent road",
+    "king statue"
+  ]
+}

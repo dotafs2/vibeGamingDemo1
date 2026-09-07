@@ -1,4 +1,5 @@
 #include "HearthWorldState.h"
+#include "HearthTavernRuntime.h"
 #include "Dom/JsonObject.h"
 #include "Components/StaticMeshComponent.h"
 #include "HAL/PlatformFileManager.h"
@@ -32,16 +33,18 @@ FString AHearthVillage::ExportWorldState() const
     FHearthWorldImage W; W.Id=WorldId; W.Run=CurrentRun; W.Revision=WorldRevision;
     W.PlotCount=HousingPlotCount();
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
-    W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
+    W.bOrganicTownLayout=bOrganicTownLayout; W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
+    W.TownLayoutVersion=TownLayoutVersion;
+    for(int32 I=0;I<HousingPlotCount();++I) W.PlotYaws[I]=PlotYaws[I];
     W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock; W.Planks=PlankStock; W.Beams=BeamStock; W.Clay=ClayStock; W.Tiles=TileStock; W.TreasuryCoins=TreasuryCoins;
-    W.TaxProjectCoins=TaxProjectCoins; W.TaxReleasedCoins=TaxReleasedCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<10;++I) W.TaxRemainders[I]=TaxRemainders[I];
+    W.TaxProjectCoins=TaxProjectCoins; W.TaxReleasedCoins=TaxReleasedCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<HearthVillageLimits::MaxPopulation;++I) W.TaxRemainders[I]=TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         W.Wood[I]=WoodStock[I]; W.Stocks[I]=WoodPositions[I]; W.Produced[I]=Produced[I]; W.Spent[I]=Spent[I];
     }
     for(int32 I=0;I<2;++I) { W.Manufactured[I]=Manufactured[I]; W.ManufacturedSpent[I]=ManufacturedSpent[I]; }
     W.ProducedClay=ProducedClay; W.SpentClay=SpentClay; W.ProducedTiles=ProducedTiles; W.SpentTiles=SpentTiles;
-    for(int32 I=0;I<W.PlotCount;++I) { W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; }
+    for(int32 I=0;I<W.PlotCount;++I) { W.Owners[I]=PlotOwners[I]; W.Costs[I]=PlotCosts[I]; W.PlotIds[I]=PlotIds[I]; W.Plots[I]=PlotPositions[I]; W.PlotEntrances[I]=PlotEntrances[I]; }
     for(int32 I=0;I<Residents.Num();++I)
     {
         FHearthSavedResident S; S.Person=Residents[I]; S.Person.Actor=nullptr;
@@ -54,6 +57,8 @@ FString AHearthVillage::ExportWorldState() const
     W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers; W.TileOrders=TileOrders;
     W.PublicProject=PublicProject;
     W.StructurePlans=StructurePlans;
+    W.WorldRequests=WorldRequests;
+    if(TavernRuntimeState.IsValid()) W.TavernRuntime=*TavernRuntimeState;
     return HearthWorld::Encode(W);
 }
 
@@ -95,7 +100,12 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(const auto& R:Residents) if(!IsValid(R.Actor)) { Error=TEXT("居民表现对象未准备好"); return false; }
     // Everything above is read-only. Apply the validated image together on the game thread.
     StopDecisionRequests(); LoadApiConfig();
+    bOrganicTownLayout=W.bOrganicTownLayout; TownLayoutVersion=W.TownLayoutVersion;
+    if(WorldId!=W.Id && !WorldId.IsEmpty()) HearthTavernRuntime::UnbindPersistentState(WorldId);
     WorldId=W.Id; CurrentRun=W.Run; WorldRevision=W.Revision; VillageEvent=W.Event; Elapsed=W.Elapsed;
+    if(!TavernRuntimeState.IsValid()) TavernRuntimeState=MakeShared<FHearthTavernRuntimeState>();
+    *TavernRuntimeState=MoveTemp(W.TavernRuntime);
+    HearthTavernRuntime::BindPersistentState(WorldId,*TavernRuntimeState);
     SimulationSpeed=W.Speed; SimulationRemainder=W.Remainder; bSimulationPaused=W.bPaused;
     // Loading a world must not silently keep the whole village idle because an
     // earlier session closed autonomy. LoadApiConfig above establishes the current
@@ -106,7 +116,9 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TileOrders=MoveTemp(W.TileOrders); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
     PublicProject=MoveTemp(W.PublicProject);
     StructurePlans=MoveTemp(W.StructurePlans);
-    TaxProjectCoins=W.TaxProjectCoins; TaxReleasedCoins=W.TaxReleasedCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<10;++I) TaxRemainders[I]=W.TaxRemainders[I];
+    WorldRequests=MoveTemp(W.WorldRequests);
+    HearthWorldRequests::RefreshUnresolved(WorldRequests);
+    TaxProjectCoins=W.TaxProjectCoins; TaxReleasedCoins=W.TaxReleasedCoins; TaxRatePercent=W.TaxRatePercent; for(int32 I=0;I<HearthVillageLimits::MaxPopulation;++I) TaxRemainders[I]=W.TaxRemainders[I];
     for(int32 I=0;I<3;++I)
     {
         WoodStock[I]=W.Wood[I]; Produced[I]=W.Produced[I]; Spent[I]=W.Spent[I];
@@ -116,7 +128,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(int32 I=0;I<2;++I) { Manufactured[I]=W.Manufactured[I]; ManufacturedSpent[I]=W.ManufacturedSpent[I]; }
     ProducedClay=W.ProducedClay; SpentClay=W.SpentClay; ProducedTiles=W.ProducedTiles; SpentTiles=W.SpentTiles;
     for(int32 I=0;I<HousingPlotCount();++I)
-    { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
+    { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; PlotYaws[I]=W.PlotYaws[I]; PlotEntrances[I]=W.PlotEntrances[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
     PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -124,6 +136,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
         if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
         if(R.HouseBlueprint.IsEmpty()) AssignHouseStyle(I,R);
+        EnsureResidentStory(I);
         if((R.Task==EHearthTask::ProductionTravel || R.Task==EHearthTask::ProductionWork) && R.HeldToolId.IsEmpty()) TryBorrowTool(I,R.ProductionOp);
         R.NextLifeDecision=Elapsed+S.DecisionDelay;
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
@@ -140,6 +153,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
         }
         PendingDecisions[I]=FHearthPendingDecision();
     }
+    ReconcileWorldRequests();
     if(SourceSchema<4)
     {
         for(const auto& T:Transactions) if(T.Kind==TEXT("wage") && !WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P) { return P.TaskId==T.TaskId; }))
@@ -196,7 +210,8 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     // occupied by two builders at once.
     for(int32 I=0;I<Residents.Num();++I)
         if(Residents[I].Task==EHearthTask::ToWood) SeekWood(I);
-    RefreshProductionVisuals(); SelectResident(W.Selected); bHistoryOpen=false;
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
+    RefreshProductionVisuals();RefreshPublicVisuals();RefreshBotanicalLandscape(); SelectResident(W.Selected); bHistoryOpen=false;
     if(Interrupted) { bApiDisabledThisRun=true; ApiStatus=TEXT("已恢复世界；未确认请求不重试，本轮使用本地规则"); }
     SaveHistory(); WorldSaveTimer=0; return true;
 }
@@ -227,6 +242,10 @@ void AHearthVillage::RestartVillage()
         FString Error;
         if(!HearthWorld::Archive(WorldPath,Error) || !HearthWorld::Archive(WorldPath+TEXT(".bak"),Error)) { WorldSaveStatus=Error; return; }
     }
-    bWorldWriteBlocked=false; ResetVillageState();
+    bWorldWriteBlocked=false;
+    // A deliberate new world starts the current neighborhood generator after
+    // archiving the old save; loading an existing world never relocates it.
+    if(bUseCropoutMap) { bOrganicTownLayout=true; TownLayoutVersion=TownLayoutVersion>=3?3:2; LandGrid.Reset(); BuildEnvironment(); }
+    ResetVillageState();
     if(bWorldPersistenceEnabled) SaveWorld();
 }

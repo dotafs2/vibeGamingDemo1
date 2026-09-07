@@ -1,0 +1,135 @@
+{
+  "error": null,
+  "api_requests": 0,
+  "world_id": "DD9A3936-49E4-95C0-534E-DD8F416E8531",
+  "layout_version": 1,
+  "organic_roads": true,
+  "residents": 10,
+  "homes_complete": 10,
+  "plans": 4,
+  "room_counts": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "parts": 64,
+  "parts_complete": 64,
+  "town_png": "C:/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/DesignReviews/DD9A3936-49E4-95C0-534E-DD8F416E8531_town.png",
+  "home_png": "C:/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/DesignReviews/65E6E280-4849-7707-052B-A7916F35B281_65E6E280-4849-7707-052B-A7916F35B2817324c139.png",
+  "plots": [
+    {
+      "id": "D9025877-438D-106B-9E5E-ACA8AFD86AE0",
+      "position": [
+        -1207.2018774487728,
+        -1795.7929646315552,
+        8
+      ],
+      "yaw": -107.34664154052734,
+      "owner": 1,
+      "cost": 12
+    },
+    {
+      "id": "01E24FCB-4065-81AB-6723-D4A9401607C9",
+      "position": [
+        -1733.1534988770563,
+        -127.58208156275167,
+        8
+      ],
+      "yaw": 19.01453971862793,
+      "owner": 3,
+      "cost": 9
+    },
+    {
+      "id": "892264FE-4486-03A8-3D20-F3A0E8C6233A",
+      "position": [
+        -35.54161539577015,
+        -1024.7140164341831,
+        8
+      ],
+      "yaw": 124.25318908691406,
+      "owner": 8,
+      "cost": 6
+    },
+    {
+      "id": "5106F3EF-4597-6D85-0E2F-B1AF9630EFD1",
+      "position": [
+        -2679.877761823347,
+        -2086.9385782956347,
+        8
+      ],
+      "yaw": 157.14736938476562,
+      "owner": 0,
+      "cost": 6
+    },
+    {
+      "id": "9A7CEAC9-43E0-AF51-6FD3-B99BCCB3E343",
+      "position": [
+        -1815.8636280189482,
+        -4134.762665520311,
+        8
+      ],
+      "yaw": 3.377122163772583,
+      "owner": 9,
+      "cost": 6
+    },
+    {
+      "id": "71A2DF1E-49B1-C4C7-C367-9398B6E147E9",
+      "position": [
+        -1436.1988908284304,
+        2556.120662501337,
+        8
+      ],
+      "yaw": 1.5377610921859741,
+      "owner": 2,
+      "cost": 6
+    },
+    {
+      "id": "771DC5DC-4CCD-9530-E93C-949CED02CE0F",
+      "position": [
+        -2686.203732477899,
+        -427.1050526971835,
+        8
+      ],
+      "yaw": -159.11459350585938,
+      "owner": 4,
+      "cost": 6
+    },
+    {
+      "id": "86183332-43A8-9CB9-64DB-7FA1BAF4758C",
+      "position": [
+        -2831.769865831161,
+        236.22474471651515,
+        8
+      ],
+      "yaw": -178.61447143554688,
+      "owner": 5,
+      "cost": 6
+    },
+    {
+      "id": "363204CD-42C2-2858-8642-17B4EFF95DE1",
+      "position": [
+        -2722.1296881655876,
+        889.3759187603415,
+        8
+      ],
+      "yaw": 176.9224395751953,
+      "owner": 6,
+      "cost": 6
+    },
+    {
+      "id": "EBC1AC54-47C7-99AD-950F-16BA722FEF27",
+      "position": [
+        -2534.6097654536125,
+        1571.35785353485,
+        8
+      ],
+      "yaw": 152.12913513183594,
+      "owner": 7,
+      "cost": 6
+    }
+  ],
+  "goals_injected": false,
+  "save_success": true,
+  "real_seconds": 85.84299999999348
+}

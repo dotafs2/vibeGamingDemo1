@@ -200,7 +200,9 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
         };
         for(const FVector& Obstacle:FixedObstacles) IncludeContainingBox(Obstacle,Obstacle.Z);
         for(const FHearthSite& Site:ProductionSites)
-            if(!(Site.Kind==EHearthSiteKind::Empty && !Site.bExpansion && !Site.bReachable)) IncludeContainingBox(Site.Position,Site.Radius+25.f);
+            if(IsSiteWalkObstacle(Site)) IncludeContainingBox(Site.Position,Site.Radius+25.f);
+        for(const auto& Site:ProductionSites) for(const auto& C:Site.CottageComponents)
+            if(const float Radius=HearthCottage::WalkRadius(C); Radius>0) IncludeContainingBox(Site.Position+C.Offset,Radius);
         if(EscapeDistance>0.f)
         {
             if(EscapeDirection.IsNearlyZero()) EscapeDirection=FVector(1,0,0);

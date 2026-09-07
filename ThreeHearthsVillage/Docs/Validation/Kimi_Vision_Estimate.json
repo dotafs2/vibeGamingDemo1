@@ -1,0 +1,20 @@
+{
+  "queried_at_utc": "2026-09-07T04:38:54.132283+00:00",
+  "image_sha256": "dca220bb0c99c74c48375f3fa66448e6715a18fdee9065e88f3841544acb850b",
+  "model": "kimi-k2.6",
+  "image": "Carpenter_Observation.png",
+  "dimensions": [
+    512,
+    512
+  ],
+  "estimated_input_tokens": 482,
+  "output_token_assumption": 256,
+  "one_call_estimate_cny": 0.010045,
+  "ten_calls_estimate_cny": 0.10045,
+  "six_hundred_calls_estimate_cny": 6.027,
+  "price_cny_per_million": {
+    "input": 6.5,
+    "output": 27.0
+  },
+  "scope": "Sample prompt plus real image; actual resident context changes token count. No chat completion was sent. This does not reconstruct historical spend."
+}

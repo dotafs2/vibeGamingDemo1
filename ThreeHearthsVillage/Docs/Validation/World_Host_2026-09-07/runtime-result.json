@@ -1,0 +1,27 @@
+{
+  "provenance": "real UE, local policies, explicitly injected request acceptance scenario",
+  "api_disabled": true,
+  "injected_requests": true,
+  "submissions": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "calls_after_submission": 0,
+  "save_success": true,
+  "reload_success": true,
+  "world_identity_preserved": true,
+  "board_preserved_exactly": true,
+  "plans_preserved_exactly": true,
+  "site_components_preserved_exactly": true,
+  "residents": 10,
+  "plans": 2,
+  "completed_starter_homes": 10,
+  "api_requests": 0,
+  "scene_png": "C:/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/DesignReviews/63503ACB-4B38-F3E7-5312-85A4C73B1C0E_63503ACB-4B38-F3E7-5312-85A4C73B1C0E7d512017.png",
+  "error": null,
+  "real_seconds": 65.23399999999674
+}

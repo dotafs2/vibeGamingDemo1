@@ -87,7 +87,12 @@ public:
             auto* V=Village.Get(); return TOptional<float>(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].BuildProgress:0.f);
         }).FillColorAndOpacity(HearthUI::Green)]];
         Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
-            auto* V=Village.Get(); return FText::FromString(V&&V->Residents.IsValidIndex(V->SelectedResident)?V->Residents[V->SelectedResident].LatestEvent:TEXT(""));
+            auto* V=Village.Get(); if(!V || !V->Residents.IsValidIndex(V->SelectedResident)) return FText::GetEmpty();
+            const auto& R=V->Residents[V->SelectedResident]; FString Detail=R.LatestEvent;
+            if(!R.DesignGoal.IsEmpty()) Detail+=TEXT("\n想要的生活：")+R.DesignGoal.Left(65);
+            if(!R.DesignFeedback.IsEmpty()) Detail+=TEXT("\n看过自家后：")+R.DesignFeedback.Left(80);
+            if(!R.DesignRequest.IsEmpty()) Detail+=TEXT("\n向主持人提出：")+R.DesignRequest.Left(65)+TEXT("\n主持人：")+V->WorldRequestSummary(V->SelectedResident).Left(80);
+            return FText::FromString(Detail);
         }).Font(HearthUI::Font(11)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)];
         Footer->AddSlot().AutoHeight().Padding(0,8,0,6)[SNew(SSeparator)];
         Footer->AddSlot().AutoHeight().Padding(0,0,0,6)[ControlButton([] { return FText::FromString(TEXT("对话与关系")); },[this] {

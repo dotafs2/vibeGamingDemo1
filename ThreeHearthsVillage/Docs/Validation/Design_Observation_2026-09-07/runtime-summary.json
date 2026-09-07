@@ -1,0 +1,40 @@
+{
+  "source": "actual UE simulation with HearthDisableApi; local fallback, not Kimi-authored",
+  "elapsed_simulation_seconds": 8676.109375,
+  "world_id": "963A9C3C-4A24-7BD1-A121-EE8A19B7E0CB",
+  "organic_town_layout": true,
+  "plans": [
+    {
+      "plan_id": "resident_C831724D-486D-3B8B-9A79-FC81CE9CD52E_house",
+      "rooms": 1,
+      "components": 16
+    },
+    {
+      "plan_id": "resident_F1315B36-4425-99AF-A00F-09A99EC03922_house",
+      "rooms": 1,
+      "components": 16
+    },
+    {
+      "plan_id": "resident_ADA854A5-468D-B7E8-9C1F-2196C64E9B0D_house",
+      "rooms": 1,
+      "components": 16
+    }
+  ],
+  "observations": [
+    {
+      "file": "Carpenter_Observation.png",
+      "bytes": 311009,
+      "sha256": "dca220bb0c99c74c48375f3fa66448e6715a18fdee9065e88f3841544acb850b"
+    },
+    {
+      "file": "King_Observation.png",
+      "bytes": 348780,
+      "sha256": "b5c11e0f4c5255110e4c56a85cc9e23c9f33860a604d11569d762b8d81d955bd"
+    },
+    {
+      "file": "Potter_Observation.png",
+      "bytes": 366707,
+      "sha256": "b172f6693cca0c781a4ada6a8985b2bca369e6351c43889f36cbc82134b2a010"
+    }
+  ]
+}

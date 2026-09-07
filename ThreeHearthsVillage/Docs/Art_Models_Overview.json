@@ -1,0 +1,2088 @@
+{
+  "png": "Art_Models_Overview.png",
+  "dimensions_px": [
+    3360,
+    8758
+  ],
+  "entries": 138,
+  "counts": {
+    "module": 128,
+    "assembly": 7,
+    "whole_model_version": 3
+  },
+  "inventory_sha256": "4fd45214121d0ec1641030bc9d9ad31c9ab21f24f53c0d361e50e5193d2a13e9",
+  "source_ref": "2366a8bb3f49c0543b64370260e87003024bf12a",
+  "preview_note": "GLB geometry, material base colors and standardized Blender Workbench studio; individually fitted scale, not UE lighting or a PBR comparison.",
+  "models": [
+    {
+      "number": 1,
+      "id": "HearthCottage",
+      "name_zh": "原始小屋整模",
+      "kind": "whole_model_version",
+      "group": "HearthCottage",
+      "source": "ThreeHearthsVillage/Art/HearthCottage/HearthCottage.glb",
+      "source_sha256": "1bd25afc7d9ef2279c5ada6a26fbf9e7c5c029fadcced3b454a9b84869740b46",
+      "image_box": [
+        80,
+        446,
+        704,
+        782
+      ]
+    },
+    {
+      "number": 2,
+      "id": "HearthCottage_SharedUV",
+      "name_zh": "共享UV小屋整模",
+      "kind": "whole_model_version",
+      "group": "HearthCottage",
+      "source": "ThreeHearthsVillage/Art/HearthCottage/HearthCottage_SharedUV.glb",
+      "source_sha256": "9150a48c955c66dada6e1e3f2706ab92ae5d2e53a774be1ff65b71a5a3430a91",
+      "image_box": [
+        724,
+        446,
+        1348,
+        782
+      ]
+    },
+    {
+      "number": 3,
+      "id": "HearthCottage_SharedUV_Polished",
+      "name_zh": "共享UV与屋顶高光改进小屋整模",
+      "kind": "whole_model_version",
+      "group": "HearthCottage",
+      "source": "ThreeHearthsVillage/Art/HearthCottage/HearthCottage_SharedUV_Polished.glb",
+      "source_sha256": "fbbc8bd48eba1a55b9a9c88e51859353aae0609a3167d0d963a6585864aefdad",
+      "image_box": [
+        1368,
+        446,
+        1992,
+        782
+      ]
+    },
+    {
+      "number": 4,
+      "id": "cottage_terracotta",
+      "name_zh": "红陶瓦灰泥小屋组合",
+      "kind": "assembly",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/examples/cottage_terracotta.glb",
+      "source_sha256": "ebb2442fd54583441a1ee6d0a46d5fabebc36501f1045e4f567af20ecc14d94c",
+      "image_box": [
+        2012,
+        446,
+        2636,
+        782
+      ]
+    },
+    {
+      "number": 5,
+      "id": "longhouse_slateblue",
+      "name_zh": "蓝灰瓦木长屋组合",
+      "kind": "assembly",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/examples/longhouse_slateblue.glb",
+      "source_sha256": "0a8b2d954f564f70b53011bdf9450ed79ed507449ffcea6d7b7595688cf696d2",
+      "image_box": [
+        2656,
+        446,
+        3280,
+        782
+      ]
+    },
+    {
+      "number": 6,
+      "id": "townhouse_terracotta",
+      "name_zh": "红陶瓦双层石屋组合",
+      "kind": "assembly",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/examples/townhouse_terracotta.glb",
+      "source_sha256": "da995b3ff77d493b36da0e5add51fda7b4268e44850e4cd3dbfd5441f95399b3",
+      "image_box": [
+        80,
+        908,
+        704,
+        1244
+      ]
+    },
+    {
+      "number": 7,
+      "id": "guild_market_yard",
+      "name_zh": "行会市集院落组合",
+      "kind": "assembly",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/examples/guild_market_yard.glb",
+      "source_sha256": "34c02ecc0098072b0092af6ca0515a4538607fe4dd04158ce523ad8c49a95803",
+      "image_box": [
+        724,
+        908,
+        1348,
+        1244
+      ]
+    },
+    {
+      "number": 8,
+      "id": "kings_gate_courtyard",
+      "name_zh": "国王城门院落组合",
+      "kind": "assembly",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/examples/kings_gate_courtyard.glb",
+      "source_sha256": "d092e7a31027d489843185f7a80beb2f924ee705581d22ef1f591c9d36734e4b",
+      "image_box": [
+        1368,
+        908,
+        1992,
+        1244
+      ]
+    },
+    {
+      "number": 9,
+      "id": "cabin_living_4x4m",
+      "name_zh": "4×4米居住角组合",
+      "kind": "assembly",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/examples/cabin_living_4x4m.glb",
+      "source_sha256": "42420d5603cbf9c2054bb3a451f76cc8b25c263154262e6118a37a9036ccc06b",
+      "image_box": [
+        2012,
+        908,
+        2636,
+        1244
+      ]
+    },
+    {
+      "number": 10,
+      "id": "common_meal_10_seats",
+      "name_zh": "十人公共餐区组合",
+      "kind": "assembly",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/examples/common_meal_10_seats.glb",
+      "source_sha256": "de90cd29384eba9dac81500bc7a3535998194bfa4831e6b745956b29cab545f3",
+      "image_box": [
+        2656,
+        908,
+        3280,
+        1244
+      ]
+    },
+    {
+      "number": 11,
+      "id": "beam_timber_2m",
+      "name_zh": "2米木梁",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/beam_timber_2m.glb",
+      "source_sha256": "86f7356e44f90871e163b2f6e798652fb5962425c07a2b788b1336f188dcd921",
+      "image_box": [
+        80,
+        1492,
+        462,
+        1728
+      ]
+    },
+    {
+      "number": 12,
+      "id": "bench_timber",
+      "name_zh": "木长凳",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/bench_timber.glb",
+      "source_sha256": "8c65e74f06cabf3c77787901dba62b8aaf5fef58d104c230ba3adc27cbf84db5",
+      "image_box": [
+        482,
+        1492,
+        864,
+        1728
+      ]
+    },
+    {
+      "number": 13,
+      "id": "canopy_slateblue_2m",
+      "name_zh": "蓝灰瓦雨棚",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/canopy_slateblue_2m.glb",
+      "source_sha256": "d7f1a849578fbefd9e4e2ba71627c8d4b8484979798a66092572148659f29924",
+      "image_box": [
+        884,
+        1492,
+        1266,
+        1728
+      ]
+    },
+    {
+      "number": 14,
+      "id": "canopy_terracotta_2m",
+      "name_zh": "红陶瓦雨棚",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/canopy_terracotta_2m.glb",
+      "source_sha256": "7a4b6d1fa6f9a0d20d2d5deedd0aafe5a1bceb4a8ad27d0010aa5f432e6ad038",
+      "image_box": [
+        1286,
+        1492,
+        1668,
+        1728
+      ]
+    },
+    {
+      "number": 15,
+      "id": "carry_logs",
+      "name_zh": "搬运原木包",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/carry_logs.glb",
+      "source_sha256": "22081c8c7a4dc62d972524b6d262d852e9e597f659581cafc766285e71dc042e",
+      "image_box": [
+        1688,
+        1492,
+        2070,
+        1728
+      ]
+    },
+    {
+      "number": 16,
+      "id": "carry_planks",
+      "name_zh": "搬运木板包",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/carry_planks.glb",
+      "source_sha256": "7e6408af8b50f96b9a3bd01f33fc3ddc0be6fdfa0c5feed648e24bec205d4ed2",
+      "image_box": [
+        2090,
+        1492,
+        2472,
+        1728
+      ]
+    },
+    {
+      "number": 17,
+      "id": "carry_plaster",
+      "name_zh": "搬运灰浆桶",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/carry_plaster.glb",
+      "source_sha256": "7c00072f4d4aea9183116cbac1aad08f5c6d976a5f7b91885921126557ef1177",
+      "image_box": [
+        2492,
+        1492,
+        2874,
+        1728
+      ]
+    },
+    {
+      "number": 18,
+      "id": "carry_stones",
+      "name_zh": "搬运石料箱",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/carry_stones.glb",
+      "source_sha256": "e47d231ca303d807b9c40ca6a08d4c86ee78bb34207ca0f71d46f01a0426abbe",
+      "image_box": [
+        2894,
+        1492,
+        3276,
+        1728
+      ]
+    },
+    {
+      "number": 19,
+      "id": "carry_tiles",
+      "name_zh": "搬运瓦片箱",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/carry_tiles.glb",
+      "source_sha256": "bc6c1662b8806b43c2e32ac276839625075db28bca4dbd92a7310b4e84845c95",
+      "image_box": [
+        80,
+        1830,
+        462,
+        2066
+      ]
+    },
+    {
+      "number": 20,
+      "id": "door_oak",
+      "name_zh": "橡木门",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/door_oak.glb",
+      "source_sha256": "456f1041dd2e6486369a29a309cdbf9fb14c4d1a4e3eabe013ec65e789cd3883",
+      "image_box": [
+        482,
+        1830,
+        864,
+        2066
+      ]
+    },
+    {
+      "number": 21,
+      "id": "floor_opening_2m",
+      "name_zh": "楼梯井开口楼板",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/floor_opening_2m.glb",
+      "source_sha256": "9988f53b6691d6b8fe8e7c7ff2b8483a582dbbc7656b1843f8fe7f6aab1311fd",
+      "image_box": [
+        884,
+        1830,
+        1266,
+        2066
+      ]
+    },
+    {
+      "number": 22,
+      "id": "floor_timber_2m",
+      "name_zh": "木楼板",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/floor_timber_2m.glb",
+      "source_sha256": "04d19de6c2df4d629991d251027229fafe518a9f4e18df3bdc4c41cb5659032c",
+      "image_box": [
+        1286,
+        1830,
+        1668,
+        2066
+      ]
+    },
+    {
+      "number": 23,
+      "id": "foundation_stone_2m",
+      "name_zh": "石地基",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/foundation_stone_2m.glb",
+      "source_sha256": "6898bb09a0213b2ab2efacf8744b7a94445c879b0ff3bc3e144c48ee728524fc",
+      "image_box": [
+        1688,
+        1830,
+        2070,
+        2066
+      ]
+    },
+    {
+      "number": 24,
+      "id": "frame_timber_2m",
+      "name_zh": "木结构框架",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/frame_timber_2m.glb",
+      "source_sha256": "78a7712a689a4d827a0553715b68581142fb2dbd6ab812b67a9dd4a4e6223888",
+      "image_box": [
+        2090,
+        1830,
+        2472,
+        2066
+      ]
+    },
+    {
+      "number": 25,
+      "id": "gable_plaster_4m",
+      "name_zh": "灰泥山墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/gable_plaster_4m.glb",
+      "source_sha256": "e972423f82170d781da8e5a08925e412985f63607df524fa3bda34f1ab3cfdc8",
+      "image_box": [
+        2492,
+        1830,
+        2874,
+        2066
+      ]
+    },
+    {
+      "number": 26,
+      "id": "gable_stone_4m",
+      "name_zh": "石山墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/gable_stone_4m.glb",
+      "source_sha256": "8774b623d4d854f75855376f052f76b013ed7d92ea49a252a23a07f62fa66439",
+      "image_box": [
+        2894,
+        1830,
+        3276,
+        2066
+      ]
+    },
+    {
+      "number": 27,
+      "id": "gable_timber_4m",
+      "name_zh": "木山墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/gable_timber_4m.glb",
+      "source_sha256": "7447ab6ffa3ff0b0e8a4fb98d88c693912cc3d575ebd9df509cd1437ecee0600",
+      "image_box": [
+        80,
+        2168,
+        462,
+        2404
+      ]
+    },
+    {
+      "number": 28,
+      "id": "porch_post_timber",
+      "name_zh": "门廊木柱",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/porch_post_timber.glb",
+      "source_sha256": "f89a555f283fe2fa12ce7f5ad31baf4e9ffb01a77b3e035e083372275aeaad6d",
+      "image_box": [
+        482,
+        2168,
+        864,
+        2404
+      ]
+    },
+    {
+      "number": 29,
+      "id": "porch_steps_stone_2m",
+      "name_zh": "门廊石台阶",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/porch_steps_stone_2m.glb",
+      "source_sha256": "87ac5f8ec6ed2fff6bface4d690ec78e8eeeeffeba1f8ada0a0a09aea94f1c24",
+      "image_box": [
+        884,
+        2168,
+        1266,
+        2404
+      ]
+    },
+    {
+      "number": 30,
+      "id": "post_timber_2_4m",
+      "name_zh": "2.4米木柱",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/post_timber_2_4m.glb",
+      "source_sha256": "d37e8d67e0d4d3b0a9088d57fb8e7517b4f4c1c0ff751ebb6d66782232ed3559",
+      "image_box": [
+        1286,
+        2168,
+        1668,
+        2404
+      ]
+    },
+    {
+      "number": 31,
+      "id": "railing_timber_2m",
+      "name_zh": "木栏杆",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/railing_timber_2m.glb",
+      "source_sha256": "36748667d9021323d71285d267098e222e05eaeaff952f1dfc1f2d0436a05a53",
+      "image_box": [
+        1688,
+        2168,
+        2070,
+        2404
+      ]
+    },
+    {
+      "number": 32,
+      "id": "roof_ridge_slateblue_2m",
+      "name_zh": "蓝灰瓦屋脊",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_ridge_slateblue_2m.glb",
+      "source_sha256": "84c36710c698ee352df9dffe324b0df5f1e7124ecb95891fa827056a91a9a14f",
+      "image_box": [
+        2090,
+        2168,
+        2472,
+        2404
+      ]
+    },
+    {
+      "number": 33,
+      "id": "roof_ridge_terracotta_2m",
+      "name_zh": "红陶瓦屋脊",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_ridge_terracotta_2m.glb",
+      "source_sha256": "92e147d3ce80b8a26d43eb89838a812e28082fef85f7b64c98906a0220666204",
+      "image_box": [
+        2492,
+        2168,
+        2874,
+        2404
+      ]
+    },
+    {
+      "number": 34,
+      "id": "roof_ridge_timber_2m",
+      "name_zh": "木屋脊",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_ridge_timber_2m.glb",
+      "source_sha256": "5ed45fc00dcbb3c7ad0ef4ea499d2a5ecbdefa864be99492ef433d1193d7e3c2",
+      "image_box": [
+        2894,
+        2168,
+        3276,
+        2404
+      ]
+    },
+    {
+      "number": 35,
+      "id": "roof_slope_slateblue_2m",
+      "name_zh": "蓝灰瓦坡面",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_slope_slateblue_2m.glb",
+      "source_sha256": "131f0a6ebbfcc9b6d686aea2b8658c21df08460546bf3023fc948d292775ac8b",
+      "image_box": [
+        80,
+        2506,
+        462,
+        2742
+      ]
+    },
+    {
+      "number": 36,
+      "id": "roof_slope_terracotta_2m",
+      "name_zh": "红陶瓦坡面",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_slope_terracotta_2m.glb",
+      "source_sha256": "1ed7107ae6e69bb75dd92eda5ec236a66407e6c35a5dfee180dc9112cc32d559",
+      "image_box": [
+        482,
+        2506,
+        864,
+        2742
+      ]
+    },
+    {
+      "number": 37,
+      "id": "roof_slope_timber_2m",
+      "name_zh": "木屋顶坡面",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/roof_slope_timber_2m.glb",
+      "source_sha256": "5921bfc1f5897008cbf29b43178900e463dc4d7f712da535229529e64a3ced9a",
+      "image_box": [
+        884,
+        2506,
+        1266,
+        2742
+      ]
+    },
+    {
+      "number": 38,
+      "id": "shutter_sage",
+      "name_zh": "鼠尾草绿窗板",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/shutter_sage.glb",
+      "source_sha256": "2b9f4c149d512b0b710bd464fa2576da493c98da44665c263bbd2a50892bf75d",
+      "image_box": [
+        1286,
+        2506,
+        1668,
+        2742
+      ]
+    },
+    {
+      "number": 39,
+      "id": "stairs_switchback_2x4m",
+      "name_zh": "折返楼梯",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/stairs_switchback_2x4m.glb",
+      "source_sha256": "33dc7e1b1ab2e6c915dca5d60f023ace361ede49b25a84b11d87b65cf57dbfdb",
+      "image_box": [
+        1688,
+        2506,
+        2070,
+        2742
+      ]
+    },
+    {
+      "number": 40,
+      "id": "table_communal",
+      "name_zh": "公共木桌",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/table_communal.glb",
+      "source_sha256": "0eef427db2026d8119fb97b9473d348f228670dc9daca0ac8a9ece61ad1b9d76",
+      "image_box": [
+        2090,
+        2506,
+        2472,
+        2742
+      ]
+    },
+    {
+      "number": 41,
+      "id": "wall_door_plaster_2m",
+      "name_zh": "带门洞灰泥墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_door_plaster_2m.glb",
+      "source_sha256": "0b8b30fd835a2f2d2be3bdef7e452c2816068767ad8ff272df01e17a080950d8",
+      "image_box": [
+        2492,
+        2506,
+        2874,
+        2742
+      ]
+    },
+    {
+      "number": 42,
+      "id": "wall_door_stone_2m",
+      "name_zh": "带门洞石墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_door_stone_2m.glb",
+      "source_sha256": "6d878bb89f38c0e6063f27f870d71ff3ae5c5550d2d8a95ac736c8306ca1f4b1",
+      "image_box": [
+        2894,
+        2506,
+        3276,
+        2742
+      ]
+    },
+    {
+      "number": 43,
+      "id": "wall_door_timber_2m",
+      "name_zh": "带门洞木墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_door_timber_2m.glb",
+      "source_sha256": "0bae324426cb30195d54ded5d663e799869c10f865279ad0f715d88c60e9cfd5",
+      "image_box": [
+        80,
+        2844,
+        462,
+        3080
+      ]
+    },
+    {
+      "number": 44,
+      "id": "wall_plaster_2m",
+      "name_zh": "灰泥实墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_plaster_2m.glb",
+      "source_sha256": "23fd0a392e44560c1425c3e7a19d1bc8cff6091d0879e70c2e016c55a782e4a0",
+      "image_box": [
+        482,
+        2844,
+        864,
+        3080
+      ]
+    },
+    {
+      "number": 45,
+      "id": "wall_stone_2m",
+      "name_zh": "石实墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_stone_2m.glb",
+      "source_sha256": "2f926df7faee11bd6f009a21c404de4aa946310d4d73748512ae837d82eaac69",
+      "image_box": [
+        884,
+        2844,
+        1266,
+        3080
+      ]
+    },
+    {
+      "number": 46,
+      "id": "wall_timber_2m",
+      "name_zh": "木实墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_timber_2m.glb",
+      "source_sha256": "f65b37c567b0c3bb3c458db40219c698616b5ea57e0f52754f5a13b1877ab77a",
+      "image_box": [
+        1286,
+        2844,
+        1668,
+        3080
+      ]
+    },
+    {
+      "number": 47,
+      "id": "wall_window_plaster_2m",
+      "name_zh": "带窗灰泥墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_window_plaster_2m.glb",
+      "source_sha256": "b5c3ae18009e24c238be384a8ed43f8417fe72aa58cb98b3eba1c0080eb7f0b8",
+      "image_box": [
+        1688,
+        2844,
+        2070,
+        3080
+      ]
+    },
+    {
+      "number": 48,
+      "id": "wall_window_stone_2m",
+      "name_zh": "带窗石墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_window_stone_2m.glb",
+      "source_sha256": "44232b2e6d9ad440daf183a68e73ea3d73b46968d61b4eadc487d661e0a07169",
+      "image_box": [
+        2090,
+        2844,
+        2472,
+        3080
+      ]
+    },
+    {
+      "number": 49,
+      "id": "wall_window_timber_2m",
+      "name_zh": "带窗木墙",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/wall_window_timber_2m.glb",
+      "source_sha256": "2f7c42495d688b84bdbfd9e14b78afd6d85503ea3796c6a0e719dcb9161d587a",
+      "image_box": [
+        2492,
+        2844,
+        2874,
+        3080
+      ]
+    },
+    {
+      "number": 50,
+      "id": "workbench_carpenter",
+      "name_zh": "木工工作台",
+      "kind": "module",
+      "group": "VillageKit",
+      "source": "ThreeHearthsVillage/Art/VillageKit/modules/workbench_carpenter.glb",
+      "source_sha256": "1d967fc22e77e9e3980768f98c4282b173ffee9cdef545503533e0b5cd2b1294",
+      "image_box": [
+        2894,
+        2844,
+        3276,
+        3080
+      ]
+    },
+    {
+      "number": 51,
+      "id": "castle_buttress_stone",
+      "name_zh": "城堡石扶壁",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_buttress_stone.glb",
+      "source_sha256": "e84b8569bdc6744535ed3dc0ce1f6e8d41cfeafe6fa209e8402890cdcec57d65",
+      "image_box": [
+        80,
+        3304,
+        462,
+        3540
+      ]
+    },
+    {
+      "number": 52,
+      "id": "castle_gate_arch_4m",
+      "name_zh": "4米城门石拱",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_gate_arch_4m.glb",
+      "source_sha256": "88b2e68218e0fbcfa63788cab052a6ead47143c2b4c0431107504e7b966da75e",
+      "image_box": [
+        482,
+        3304,
+        864,
+        3540
+      ]
+    },
+    {
+      "number": 53,
+      "id": "castle_gate_oak_pair",
+      "name_zh": "双扇橡木城门",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_gate_oak_pair.glb",
+      "source_sha256": "735d116f70820a14bf255698889ce6b8e2c6047b920085657a814a5667b05682",
+      "image_box": [
+        884,
+        3304,
+        1266,
+        3540
+      ]
+    },
+    {
+      "number": 54,
+      "id": "castle_tower_battlement_cap_4m",
+      "name_zh": "塔楼垛口顶段",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_tower_battlement_cap_4m.glb",
+      "source_sha256": "f99690cf9c9ed4ef12c3b42849f4dfb22f9702f2bd336d270441cba194e25d03",
+      "image_box": [
+        1286,
+        3304,
+        1668,
+        3540
+      ]
+    },
+    {
+      "number": 55,
+      "id": "castle_tower_storey_4m",
+      "name_zh": "塔楼层段",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_tower_storey_4m.glb",
+      "source_sha256": "5d1fd63bcf8ee9c3f2a7c23c312c0df091f85816627c8b07fb74600b0a6fe95a",
+      "image_box": [
+        1688,
+        3304,
+        2070,
+        3540
+      ]
+    },
+    {
+      "number": 56,
+      "id": "castle_walkway_timber_2m",
+      "name_zh": "城墙木步道",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_walkway_timber_2m.glb",
+      "source_sha256": "ed947e16b5e342e864c1db77400000bd116664de49145536364c0def42e2ce4a",
+      "image_box": [
+        2090,
+        3304,
+        2472,
+        3540
+      ]
+    },
+    {
+      "number": 57,
+      "id": "castle_wall_battlement_2m",
+      "name_zh": "城墙垛口段",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_wall_battlement_2m.glb",
+      "source_sha256": "ce176ea7197553f074a8c510475e537a83436439e6704e1e9896f07858e1b04e",
+      "image_box": [
+        2492,
+        3304,
+        2874,
+        3540
+      ]
+    },
+    {
+      "number": 58,
+      "id": "castle_wall_stone_2m",
+      "name_zh": "城堡石墙段",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/castle_wall_stone_2m.glb",
+      "source_sha256": "43317cfd1e3132d74e498dbb7857f8a067435ecdd8c5fb0180d1bc698753c92a",
+      "image_box": [
+        2894,
+        3304,
+        3276,
+        3540
+      ]
+    },
+    {
+      "number": 59,
+      "id": "goods_beams_bundle",
+      "name_zh": "成品房梁捆",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/goods_beams_bundle.glb",
+      "source_sha256": "91d0a1f84ce842b096ca724e67e4402afce295e96e09980b61ad764beb76f675",
+      "image_box": [
+        80,
+        3642,
+        462,
+        3878
+      ]
+    },
+    {
+      "number": 60,
+      "id": "goods_bricks_tiles_crate",
+      "name_zh": "砖瓦混装箱",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/goods_bricks_tiles_crate.glb",
+      "source_sha256": "0725d65fc41b87e6ed32298d35fffe0d545bec3e06ee72b4431b944fa452a9e8",
+      "image_box": [
+        482,
+        3642,
+        864,
+        3878
+      ]
+    },
+    {
+      "number": 61,
+      "id": "goods_paint_pails",
+      "name_zh": "涂料桶组",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/goods_paint_pails.glb",
+      "source_sha256": "b65b8f1279d1b41a1a5daec15688eb38baa62819f25091a3d5f5a8f89cb522e7",
+      "image_box": [
+        884,
+        3642,
+        1266,
+        3878
+      ]
+    },
+    {
+      "number": 62,
+      "id": "goods_planks_bundle",
+      "name_zh": "成品木板捆",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/goods_planks_bundle.glb",
+      "source_sha256": "a6fa6816b1ae7efa845a2b2bc9133055d8ffab0b35c14641f5b1b1710fd2f5c6",
+      "image_box": [
+        1286,
+        3642,
+        1668,
+        3878
+      ]
+    },
+    {
+      "number": 63,
+      "id": "kingdom_banner_blue",
+      "name_zh": "蓝色王国旗",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/kingdom_banner_blue.glb",
+      "source_sha256": "ac46bd1ff3f38df7ae6f2bc894bd4da7dd5b84fd4513a9a37108664426f7b65d",
+      "image_box": [
+        1688,
+        3642,
+        2070,
+        3878
+      ]
+    },
+    {
+      "number": 64,
+      "id": "kingdom_banner_red",
+      "name_zh": "红色王国旗",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/kingdom_banner_red.glb",
+      "source_sha256": "83a040f48ff56c7b83c5413d57ee3b84bd4fa9328f49c3eb7643029b2341a960",
+      "image_box": [
+        2090,
+        3642,
+        2472,
+        3878
+      ]
+    },
+    {
+      "number": 65,
+      "id": "market_barrel_oak",
+      "name_zh": "市场橡木桶",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/market_barrel_oak.glb",
+      "source_sha256": "aac1300298945a752a824ac6dee570caaf9ca3ff7b7ddd988b82ddbbf81bd6c8",
+      "image_box": [
+        2492,
+        3642,
+        2874,
+        3878
+      ]
+    },
+    {
+      "number": 66,
+      "id": "market_crate_oak",
+      "name_zh": "市场橡木箱",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/market_crate_oak.glb",
+      "source_sha256": "3500eb09f6797fd1d18b53cc83cc248ec264a7ea4a8a059a988c6e3e0bab8eec",
+      "image_box": [
+        2894,
+        3642,
+        3276,
+        3878
+      ]
+    },
+    {
+      "number": 67,
+      "id": "market_stall_blue_2m",
+      "name_zh": "蓝色市集摊位",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/market_stall_blue_2m.glb",
+      "source_sha256": "83ebf209d5efc6cfc40cb811cef4729d281e9b0b35bf3b45fa8320e953fb1384",
+      "image_box": [
+        80,
+        3980,
+        462,
+        4216
+      ]
+    },
+    {
+      "number": 68,
+      "id": "market_stall_red_2m",
+      "name_zh": "红色市集摊位",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/market_stall_red_2m.glb",
+      "source_sha256": "bf32a2b01052a6d4d1004327e11f6ae3fc1bba3b98c162d62e8d8b64cd74a341",
+      "image_box": [
+        482,
+        3980,
+        864,
+        4216
+      ]
+    },
+    {
+      "number": 69,
+      "id": "profession_carpenter_cap",
+      "name_zh": "木匠帽",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/profession_carpenter_cap.glb",
+      "source_sha256": "b6b7780583c196f2e4f8bb8935116adaedf86ca28fe019160ce3c0c15bd27d3f",
+      "image_box": [
+        884,
+        3980,
+        1266,
+        4216
+      ]
+    },
+    {
+      "number": 70,
+      "id": "profession_mason_hood",
+      "name_zh": "石匠兜帽",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/profession_mason_hood.glb",
+      "source_sha256": "7ee645e1a559e55837b2f91a79983b74c7376394c5ee9f5a56ecd97b581f103d",
+      "image_box": [
+        1286,
+        3980,
+        1668,
+        4216
+      ]
+    },
+    {
+      "number": 71,
+      "id": "profession_smith_apron",
+      "name_zh": "铁匠围裙",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/profession_smith_apron.glb",
+      "source_sha256": "bd192e549ed5c815d939f74eb4ab2b6005ce63b2a47744431df8484c183ce826",
+      "image_box": [
+        1688,
+        3980,
+        2070,
+        4216
+      ]
+    },
+    {
+      "number": 72,
+      "id": "regalia_king_crown",
+      "name_zh": "国王皇冠",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/regalia_king_crown.glb",
+      "source_sha256": "f20f798b8e346401d01288ff5026df64b0f93e030caab512d243dd8da7de6208",
+      "image_box": [
+        2090,
+        3980,
+        2472,
+        4216
+      ]
+    },
+    {
+      "number": 73,
+      "id": "tool_carpenter_hammer",
+      "name_zh": "木工锤",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/tool_carpenter_hammer.glb",
+      "source_sha256": "4c9f1b6cdb612f132e43fb59c5f2758b29ec84b839bf4134762780f70cf62412",
+      "image_box": [
+        2492,
+        3980,
+        2874,
+        4216
+      ]
+    },
+    {
+      "number": 74,
+      "id": "tool_carpenter_saw",
+      "name_zh": "木工锯",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/tool_carpenter_saw.glb",
+      "source_sha256": "367d86dcd2bcd9eeff3674f5019a9951a39efabafd7de5cd58a70b75e2829e53",
+      "image_box": [
+        2894,
+        3980,
+        3276,
+        4216
+      ]
+    },
+    {
+      "number": 75,
+      "id": "tool_mason_chisel",
+      "name_zh": "石匠凿",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/tool_mason_chisel.glb",
+      "source_sha256": "bedfc549a6570f38baeff8aef37a81930ebb28e26a9399ff74542586675a8cc0",
+      "image_box": [
+        80,
+        4318,
+        462,
+        4554
+      ]
+    },
+    {
+      "number": 76,
+      "id": "tool_mason_trowel",
+      "name_zh": "石匠抹刀",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/tool_mason_trowel.glb",
+      "source_sha256": "9bff21cc340e35b62d03d872810e6cd32c563d4a777007cc770dbc1457f18d0d",
+      "image_box": [
+        482,
+        4318,
+        864,
+        4554
+      ]
+    },
+    {
+      "number": 77,
+      "id": "village_lantern_post",
+      "name_zh": "村庄灯柱",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/village_lantern_post.glb",
+      "source_sha256": "7d6a6d3d9af6915bb10706695be3e73e5d6673087004e1e6f975ab891fdb2dff",
+      "image_box": [
+        884,
+        4318,
+        1266,
+        4554
+      ]
+    },
+    {
+      "number": 78,
+      "id": "village_notice_board",
+      "name_zh": "村庄告示牌",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/village_notice_board.glb",
+      "source_sha256": "040669568449ff99eff635d506eefba896688d569a0f26e945a7f9b481a5929f",
+      "image_box": [
+        1286,
+        4318,
+        1668,
+        4554
+      ]
+    },
+    {
+      "number": 79,
+      "id": "workshop_blacksmith_forge",
+      "name_zh": "铁匠锻炉",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/workshop_blacksmith_forge.glb",
+      "source_sha256": "0b560d21c131a53f50982a9892cc6ac49d78e5a349a4775ce8ae65e4f3d15385",
+      "image_box": [
+        1688,
+        4318,
+        2070,
+        4554
+      ]
+    },
+    {
+      "number": 80,
+      "id": "workshop_carpenter_station",
+      "name_zh": "木工工位",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/workshop_carpenter_station.glb",
+      "source_sha256": "e0b15f7ab462fd8e7a3289eebe2aa66b67494da66f80741b45fecf22f062ffdb",
+      "image_box": [
+        2090,
+        4318,
+        2472,
+        4554
+      ]
+    },
+    {
+      "number": 81,
+      "id": "workshop_mason_station",
+      "name_zh": "石工工位",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/workshop_mason_station.glb",
+      "source_sha256": "c3e1fd42278dcd5b29ddda1c31d9d0aafaf3e6503a4f1e1d8af14d4cf53efe45",
+      "image_box": [
+        2492,
+        4318,
+        2874,
+        4554
+      ]
+    },
+    {
+      "number": 82,
+      "id": "workshop_tile_kiln",
+      "name_zh": "烧瓦窑",
+      "kind": "module",
+      "group": "SocietyKit",
+      "source": "ThreeHearthsVillage/Art/SocietyKit/modules/workshop_tile_kiln.glb",
+      "source_sha256": "e7754379b77efd113247420a5b7fd1aa222237cf7f0a232f3d5700327e04a5e4",
+      "image_box": [
+        2894,
+        4318,
+        3276,
+        4554
+      ]
+    },
+    {
+      "number": 83,
+      "id": "apron_linen_short",
+      "name_zh": "亚麻短围裙",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/apron_linen_short.glb",
+      "source_sha256": "819d1b0aa5ad40283640b4bf6a3f260f2822bc96d6e95034484ef9ec562f0b69",
+      "image_box": [
+        80,
+        4778,
+        462,
+        5014
+      ]
+    },
+    {
+      "number": 84,
+      "id": "backpack_bedroll",
+      "name_zh": "背包与铺盖卷",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/backpack_bedroll.glb",
+      "source_sha256": "8f1a7900216d27f0770872ee8a8969188cd05b0536dab6c63c22c077bc5e13fc",
+      "image_box": [
+        482,
+        4778,
+        864,
+        5014
+      ]
+    },
+    {
+      "number": 85,
+      "id": "bag_crossbody_leather",
+      "name_zh": "皮革斜挎包",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/bag_crossbody_leather.glb",
+      "source_sha256": "0518fbc2534bdf00aecd537b15c1b8fa713ca428674d2394525f958ce934ffe8",
+      "image_box": [
+        884,
+        4778,
+        1266,
+        5014
+      ]
+    },
+    {
+      "number": 86,
+      "id": "beard_neat_silver",
+      "name_zh": "整齐银胡须",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/beard_neat_silver.glb",
+      "source_sha256": "b0fcce52f3032e7440704e1d3de5cec4e1415d7e42f02b8d3c4f0acb9698b6da",
+      "image_box": [
+        1286,
+        4778,
+        1668,
+        5014
+      ]
+    },
+    {
+      "number": 87,
+      "id": "cap_merchant_plum",
+      "name_zh": "梅紫商人帽",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/cap_merchant_plum.glb",
+      "source_sha256": "fb7be070ce8ce7313cd0e0e1a83bf365e9a4db73ed5c455225ed52598cb4f2f8",
+      "image_box": [
+        1688,
+        4778,
+        2070,
+        5014
+      ]
+    },
+    {
+      "number": 88,
+      "id": "cape_royal_blue",
+      "name_zh": "王室蓝披风",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/cape_royal_blue.glb",
+      "source_sha256": "8f7eb63f4644e855555f8452abfc0a3439421b342802f69f9de847fbaa43d6b6",
+      "image_box": [
+        2090,
+        4778,
+        2472,
+        5014
+      ]
+    },
+    {
+      "number": 89,
+      "id": "hair_braid_auburn",
+      "name_zh": "赤褐辫发",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hair_braid_auburn.glb",
+      "source_sha256": "6500fa053cc3c646383b615e6f381a8ebddf83b5c5730680f26d165a6724acc5",
+      "image_box": [
+        2492,
+        4778,
+        2874,
+        5014
+      ]
+    },
+    {
+      "number": 90,
+      "id": "hair_bun_dark",
+      "name_zh": "深色发髻",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hair_bun_dark.glb",
+      "source_sha256": "b4dc8929290f90fbcbb6a41f6ac96b59d2f6d236c6baba79dd32a24b1749f29b",
+      "image_box": [
+        2894,
+        4778,
+        3276,
+        5014
+      ]
+    },
+    {
+      "number": 91,
+      "id": "hair_cropped_dark",
+      "name_zh": "深色短发",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hair_cropped_dark.glb",
+      "source_sha256": "c66e793a8a745753cdaefe915aaac8dc4f5001699a82483b627fdd8c159ee359",
+      "image_box": [
+        80,
+        5116,
+        462,
+        5352
+      ]
+    },
+    {
+      "number": 92,
+      "id": "hair_swept_silver",
+      "name_zh": "银色侧梳发",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hair_swept_silver.glb",
+      "source_sha256": "d8e97d1c3b09c46d034b171b757b09e8d22ec4f8fd69a2455505c9e56b5fdc3c",
+      "image_box": [
+        482,
+        5116,
+        864,
+        5352
+      ]
+    },
+    {
+      "number": 93,
+      "id": "hair_waves_chestnut",
+      "name_zh": "栗色波浪发",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hair_waves_chestnut.glb",
+      "source_sha256": "31949079e541422d0707b082d2044c4a608c18d4825477195f7c65c0c47fe5c9",
+      "image_box": [
+        884,
+        5116,
+        1266,
+        5352
+      ]
+    },
+    {
+      "number": 94,
+      "id": "hat_straw_wide",
+      "name_zh": "宽檐草帽",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/hat_straw_wide.glb",
+      "source_sha256": "dfacaac384c6e8d77ee68a341a679c45a86126d69a1151e668aeb15825f0ae1b",
+      "image_box": [
+        1286,
+        5116,
+        1668,
+        5352
+      ]
+    },
+    {
+      "number": 95,
+      "id": "headwrap_sage",
+      "name_zh": "鼠尾草绿头巾",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/headwrap_sage.glb",
+      "source_sha256": "a9b53a4bd9eb6992fc9d37715a38f5e393fd5a1b071ae0dcae62c6b4052e549d",
+      "image_box": [
+        1688,
+        5116,
+        2070,
+        5352
+      ]
+    },
+    {
+      "number": 96,
+      "id": "pouch_belt_double",
+      "name_zh": "双腰包",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/pouch_belt_double.glb",
+      "source_sha256": "31f724362f00152f8d54feff5225cfbc84bec5701e2a4ff688c1746a13a97ac9",
+      "image_box": [
+        2090,
+        5116,
+        2472,
+        5352
+      ]
+    },
+    {
+      "number": 97,
+      "id": "scarf_red",
+      "name_zh": "红围巾",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/scarf_red.glb",
+      "source_sha256": "ab05ae4c3067586decf11fa945b6e57fc2afedc5cab396c46fc70fad040657e6",
+      "image_box": [
+        2492,
+        5116,
+        2874,
+        5352
+      ]
+    },
+    {
+      "number": 98,
+      "id": "shawl_ochre",
+      "name_zh": "赭黄披肩",
+      "kind": "module",
+      "group": "ResidentKit",
+      "source": "ThreeHearthsVillage/Art/ResidentKit/modules/shawl_ochre.glb",
+      "source_sha256": "e376d12641859bfa1be3fc7d0a5086f144544776be950d47e6e71ef90eef4cb6",
+      "image_box": [
+        2894,
+        5116,
+        3276,
+        5352
+      ]
+    },
+    {
+      "number": 99,
+      "id": "basket_berries",
+      "name_zh": "浆果篮",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/basket_berries.glb",
+      "source_sha256": "405da7ca7dfb69b454257edc80565a4477b77dc2ae144876f6d56b0a159aaec6",
+      "image_box": [
+        80,
+        5576,
+        462,
+        5812
+      ]
+    },
+    {
+      "number": 100,
+      "id": "basket_empty",
+      "name_zh": "空篮",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/basket_empty.glb",
+      "source_sha256": "c0e59857dc34e3a197767112ccc209249aa78d07657d9f74aded0bd4a876eb8e",
+      "image_box": [
+        482,
+        5576,
+        864,
+        5812
+      ]
+    },
+    {
+      "number": 101,
+      "id": "bed_double_2x2m",
+      "name_zh": "双人床",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/bed_double_2x2m.glb",
+      "source_sha256": "f12f85f78ef58bc48fac72f04b268a45d4df481eb49f069f4e5255d58be33b84",
+      "image_box": [
+        884,
+        5576,
+        1266,
+        5812
+      ]
+    },
+    {
+      "number": 102,
+      "id": "bed_single_1_1x2m",
+      "name_zh": "单人床",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/bed_single_1_1x2m.glb",
+      "source_sha256": "752488c9b425acf16ad026183e1ec6eb11537f1f9a9846849a8aaaf26d33a3c8",
+      "image_box": [
+        1286,
+        5576,
+        1668,
+        5812
+      ]
+    },
+    {
+      "number": 103,
+      "id": "bench_backed_1_8m",
+      "name_zh": "靠背长凳",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/bench_backed_1_8m.glb",
+      "source_sha256": "2c69bf9b64210dbde821026634b0ba99a61f15c88fc5c3525cb635875f6cdd30",
+      "image_box": [
+        1688,
+        5576,
+        2070,
+        5812
+      ]
+    },
+    {
+      "number": 104,
+      "id": "chair_oak_wide",
+      "name_zh": "宽橡木椅",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/chair_oak_wide.glb",
+      "source_sha256": "5778d2fb450ef3ea608fc63bcdac91f502e95d7337b99e5837735b766236af80",
+      "image_box": [
+        2090,
+        5576,
+        2472,
+        5812
+      ]
+    },
+    {
+      "number": 105,
+      "id": "fence_low_2m",
+      "name_zh": "矮木围栏",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/fence_low_2m.glb",
+      "source_sha256": "b488479c436ac0270ef8979f7361870fae6965c455ba0a457c636c24b65b7c20",
+      "image_box": [
+        2492,
+        5576,
+        2874,
+        5812
+      ]
+    },
+    {
+      "number": 106,
+      "id": "firewood_stack",
+      "name_zh": "柴火堆",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/firewood_stack.glb",
+      "source_sha256": "da972ff72c0e5e32945acd3a6b0e083b45404bd7cdfd1f453b5a0da698a7fdc1",
+      "image_box": [
+        2894,
+        5576,
+        3276,
+        5812
+      ]
+    },
+    {
+      "number": 107,
+      "id": "food_tray_bread",
+      "name_zh": "面包餐盘",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/food_tray_bread.glb",
+      "source_sha256": "aac271915d7868d0b2769e411e6c42b290966f19af97cb42321411fcc3ec70ea",
+      "image_box": [
+        80,
+        5914,
+        462,
+        6150
+      ]
+    },
+    {
+      "number": 108,
+      "id": "grain_chest",
+      "name_zh": "粮食箱",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/grain_chest.glb",
+      "source_sha256": "56264fa912858bb781da6d5eee679395be7a2328581f0ecb2f479b50da46ee48",
+      "image_box": [
+        482,
+        5914,
+        864,
+        6150
+      ]
+    },
+    {
+      "number": 109,
+      "id": "table_communal_2_6m",
+      "name_zh": "2.6米公共餐桌",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/table_communal_2_6m.glb",
+      "source_sha256": "b0ea6771d216421948d5758665e471941121211e29587c977024ed9a977cc962",
+      "image_box": [
+        884,
+        5914,
+        1266,
+        6150
+      ]
+    },
+    {
+      "number": 110,
+      "id": "table_dining_1_2m",
+      "name_zh": "1.2米家用餐桌",
+      "kind": "module",
+      "group": "HomeLifeKit",
+      "source": "ThreeHearthsVillage/Art/HomeLifeKit/modules/table_dining_1_2m.glb",
+      "source_sha256": "b451d56c1a6e4b63dfd5704b327ed9b672a71093a35056ad19cbd839279cf8d5",
+      "image_box": [
+        1286,
+        5914,
+        1668,
+        6150
+      ]
+    },
+    {
+      "number": 111,
+      "id": "goods_bricks_crate",
+      "name_zh": "烧制砖块箱",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_bricks_crate.glb",
+      "source_sha256": "f53e21dac64d790b30b40f56c3b7c593f9b50e8088a3bebbd96bf1d9742bc3c2",
+      "image_box": [
+        80,
+        6374,
+        462,
+        6610
+      ]
+    },
+    {
+      "number": 112,
+      "id": "goods_iron_ingots_bundle",
+      "name_zh": "铁锭捆",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_iron_ingots_bundle.glb",
+      "source_sha256": "4c2d01aacf2d213da9fccf796b03db69151f4f561a2b6d15374d676701572f27",
+      "image_box": [
+        482,
+        6374,
+        864,
+        6610
+      ]
+    },
+    {
+      "number": 113,
+      "id": "goods_lime_pail",
+      "name_zh": "石灰桶",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_lime_pail.glb",
+      "source_sha256": "cd90a4d5f2fcdeb9b8a379c393ec2928b0458dda7b8eb767e53a4c663c05f265",
+      "image_box": [
+        884,
+        6374,
+        1266,
+        6610
+      ]
+    },
+    {
+      "number": 114,
+      "id": "goods_nails_box",
+      "name_zh": "铁钉盒",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_nails_box.glb",
+      "source_sha256": "2538ad2a232fb315a8b4aa578b47d9fc68ea5223ce8f2be1061367effaeb55b0",
+      "image_box": [
+        1286,
+        6374,
+        1668,
+        6610
+      ]
+    },
+    {
+      "number": 115,
+      "id": "goods_pigment_pots",
+      "name_zh": "颜料罐组",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_pigment_pots.glb",
+      "source_sha256": "83c992196536268464946b0ef3959e2329daba38eb9b52dd342aeceaca3c67ab",
+      "image_box": [
+        1688,
+        6374,
+        2070,
+        6610
+      ]
+    },
+    {
+      "number": 116,
+      "id": "goods_raw_clay_basket",
+      "name_zh": "黏土篮",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_raw_clay_basket.glb",
+      "source_sha256": "b6119f837d01be99a9d7771035519bc477a8b5c9a6a1bd6418404d50810e1bea",
+      "image_box": [
+        2090,
+        6374,
+        2472,
+        6610
+      ]
+    },
+    {
+      "number": 117,
+      "id": "goods_tiles_slateblue_crate",
+      "name_zh": "蓝灰瓦商品箱",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_tiles_slateblue_crate.glb",
+      "source_sha256": "f1c608b5faa12d13f80bd3810b5130694aea86496158c9b8e588ff5f40d0c18a",
+      "image_box": [
+        2492,
+        6374,
+        2874,
+        6610
+      ]
+    },
+    {
+      "number": 118,
+      "id": "goods_tiles_terracotta_crate",
+      "name_zh": "红陶瓦商品箱",
+      "kind": "module",
+      "group": "GoodsKit",
+      "source": "ThreeHearthsVillage/Art/GoodsKit/modules/goods_tiles_terracotta_crate.glb",
+      "source_sha256": "f18b6a7448908b01f66c07a24d87b9353e573579e677f7c8c9a2c23ff60633a6",
+      "image_box": [
+        2894,
+        6374,
+        3276,
+        6610
+      ]
+    },
+    {
+      "number": 119,
+      "id": "tool_axe",
+      "name_zh": "斧头",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_axe.glb",
+      "source_sha256": "b18a9d48833ef4a1dbb65f8fe84842ad4fa326da53d2c5a0e9895f3416bdb35f",
+      "image_box": [
+        80,
+        6834,
+        462,
+        7070
+      ]
+    },
+    {
+      "number": 120,
+      "id": "tool_hammer",
+      "name_zh": "铁锤",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_hammer.glb",
+      "source_sha256": "1a1d75e995814ddb3c547f7c61da05f4cfdc1d418050cae60c1e82e729e90fbf",
+      "image_box": [
+        482,
+        6834,
+        864,
+        7070
+      ]
+    },
+    {
+      "number": 121,
+      "id": "tool_hoe",
+      "name_zh": "锄头",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_hoe.glb",
+      "source_sha256": "6ec39bdf0ade4c59cdc56698573dd856a7eb026299471e5f2a1bb2186f8ea6bd",
+      "image_box": [
+        884,
+        6834,
+        1266,
+        7070
+      ]
+    },
+    {
+      "number": 122,
+      "id": "tool_mallet",
+      "name_zh": "木槌",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_mallet.glb",
+      "source_sha256": "f78ccef677b3467c27dcb7658f085608a89a57424b8a2ab175b61ce043ed663a",
+      "image_box": [
+        1286,
+        6834,
+        1668,
+        7070
+      ]
+    },
+    {
+      "number": 123,
+      "id": "tool_pickaxe",
+      "name_zh": "镐",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_pickaxe.glb",
+      "source_sha256": "4c1239ecf6be587d3df247d4bde10a04bea702ab417546875a0933b39e77c0f2",
+      "image_box": [
+        1688,
+        6834,
+        2070,
+        7070
+      ]
+    },
+    {
+      "number": 124,
+      "id": "tool_saw",
+      "name_zh": "手锯",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_saw.glb",
+      "source_sha256": "1346bf337524b70d91324ead7cfba9ef75e1efc5b5ce95578ed059818351fb5c",
+      "image_box": [
+        2090,
+        6834,
+        2472,
+        7070
+      ]
+    },
+    {
+      "number": 125,
+      "id": "tool_shovel",
+      "name_zh": "铲子",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_shovel.glb",
+      "source_sha256": "b83e27f2a77e5e22b2c9b2aed000dc06c5c8c7e595f1f38529f2b52aa07190bc",
+      "image_box": [
+        2492,
+        6834,
+        2874,
+        7070
+      ]
+    },
+    {
+      "number": 126,
+      "id": "tool_trowel",
+      "name_zh": "砌筑抹刀",
+      "kind": "module",
+      "group": "ToolKit",
+      "source": "ThreeHearthsVillage/Art/ToolKit/modules/tool_trowel.glb",
+      "source_sha256": "0c6466242469e31c1ecd3882bd53c8870fda8dd03fa116f92b2c98d9be957472",
+      "image_box": [
+        2894,
+        6834,
+        3276,
+        7070
+      ]
+    },
+    {
+      "number": 127,
+      "id": "public_wall_foundation_2m",
+      "name_zh": "公共城墙石基座",
+      "kind": "module",
+      "group": "PublicWallKit",
+      "source": "ThreeHearthsVillage/Art/PublicWallKit/modules/public_wall_foundation_2m.glb",
+      "source_sha256": "a3d89e3bbe6b95d14a398aad84535a82d8e2463f39569bba9c980fff13a2c3a3",
+      "image_box": [
+        80,
+        7294,
+        462,
+        7530
+      ]
+    },
+    {
+      "number": 128,
+      "id": "public_wall_parapet_2m",
+      "name_zh": "公共城墙木护栏",
+      "kind": "module",
+      "group": "PublicWallKit",
+      "source": "ThreeHearthsVillage/Art/PublicWallKit/modules/public_wall_parapet_2m.glb",
+      "source_sha256": "70b93c3ea26cc21607e73a677294fd13924f946441cefd0ed4aefef672dbf0f3",
+      "image_box": [
+        482,
+        7294,
+        864,
+        7530
+      ]
+    },
+    {
+      "number": 129,
+      "id": "public_wall_stone_2m",
+      "name_zh": "公共城墙石墙段（复用城堡墙几何）",
+      "kind": "module",
+      "group": "PublicWallKit",
+      "source": "ThreeHearthsVillage/Art/PublicWallKit/modules/public_wall_stone_2m.glb",
+      "source_sha256": "567ee1560dea93899fd662359406f9c7263701385f6d4071661948ababba1032",
+      "image_box": [
+        884,
+        7294,
+        1266,
+        7530
+      ]
+    },
+    {
+      "number": 130,
+      "id": "public_wall_walkway_2m",
+      "name_zh": "公共城墙木步道",
+      "kind": "module",
+      "group": "PublicWallKit",
+      "source": "ThreeHearthsVillage/Art/PublicWallKit/modules/public_wall_walkway_2m.glb",
+      "source_sha256": "809d85262fd4fe6285436e8abfdc6620731884e73198c3ff4978a0d1083feb43",
+      "image_box": [
+        1286,
+        7294,
+        1668,
+        7530
+      ]
+    },
+    {
+      "number": 131,
+      "id": "town_corner_stone_2m",
+      "name_zh": "街区直角石墙连接件",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_corner_stone_2m.glb",
+      "source_sha256": "1769835e0a1b5b13eeb8e5f990e4a73ebb4b3a1fe67c4431e843b14d26bf676d",
+      "image_box": [
+        80,
+        7754,
+        462,
+        7990
+      ]
+    },
+    {
+      "number": 132,
+      "id": "town_gable_end_timber_2m",
+      "name_zh": "木屋顶端封板",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_gable_end_timber_2m.glb",
+      "source_sha256": "bfb1e803a798baaf4424cb75a7c631aaf40d74977cf3a755a88b079bb0b124d4",
+      "image_box": [
+        482,
+        7754,
+        864,
+        7990
+      ]
+    },
+    {
+      "number": 133,
+      "id": "town_roof_ridge_joint_2m",
+      "name_zh": "屋脊连接节点",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_roof_ridge_joint_2m.glb",
+      "source_sha256": "66a6d4c7f58eebcbcf09622b77d468c42d1f0f78dfc6760fdc206ff2cdd19c29",
+      "image_box": [
+        884,
+        7754,
+        1266,
+        7990
+      ]
+    },
+    {
+      "number": 134,
+      "id": "town_roof_valley_joint_2m",
+      "name_zh": "L/T屋顶谷线节点",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_roof_valley_joint_2m.glb",
+      "source_sha256": "477bdd9cb7f7b6589d773d12219bef65bc2e1c91b49cd73f093f4f38de031308",
+      "image_box": [
+        1286,
+        7754,
+        1668,
+        7990
+      ]
+    },
+    {
+      "number": 135,
+      "id": "town_stair_timber_2m",
+      "name_zh": "八级木楼梯段",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_stair_timber_2m.glb",
+      "source_sha256": "724d720dfa91da452eeffef55ddc7397e1e5cae72e2b0cd8934b9d8633e872c0",
+      "image_box": [
+        1688,
+        7754,
+        2070,
+        7990
+      ]
+    },
+    {
+      "number": 136,
+      "id": "town_wall_gate_timber_2m",
+      "name_zh": "带中央通道木墙",
+      "kind": "module",
+      "group": "TownKit",
+      "source": "ThreeHearthsVillage/Art/TownKit/modules/town_wall_gate_timber_2m.glb",
+      "source_sha256": "ad70abff1007faa2c51a48c3a0831abe204ae5a799b254a4f254f554eef4e9e6",
+      "image_box": [
+        2090,
+        7754,
+        2472,
+        7990
+      ]
+    },
+    {
+      "number": 137,
+      "id": "wip_log_to_beam",
+      "name_zh": "原木加工房梁半成品",
+      "kind": "module",
+      "group": "WoodProductionKit",
+      "source": "ThreeHearthsVillage/Art/WoodProductionKit/modules/wip_log_to_beam.glb",
+      "source_sha256": "63917ac523b0123a1e99800e620e22500e784c4bf108ec1a15a8abc42801d78c",
+      "image_box": [
+        80,
+        8214,
+        462,
+        8450
+      ]
+    },
+    {
+      "number": 138,
+      "id": "wip_log_to_planks",
+      "name_zh": "原木锯板半成品",
+      "kind": "module",
+      "group": "WoodProductionKit",
+      "source": "ThreeHearthsVillage/Art/WoodProductionKit/modules/wip_log_to_planks.glb",
+      "source_sha256": "99345ee722159c6c5582b0050dbe2b2412e8fc8202768e0000db2ceb7679e10c",
+      "image_box": [
+        482,
+        8214,
+        864,
+        8450
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "date": "2026-09-07",
+  "build": "UE 5.8.2 Development Editor; succeeded",
+  "native_tests": {
+    "passed": 38,
+    "with_warnings": 5,
+    "failed": 0,
+    "process_exit_code": 0
+  },
+  "offline_python_tests": {
+    "budget": 14,
+    "vision": 4,
+    "failed": 0
+  },
+  "final_runtime": {
+    "real_seconds": 55.312999999994645,
+    "simulation_seconds": 4426.5244140625,
+    "completed_starter_homes": 10,
+    "native_plans": 2,
+    "valid_observations": 4,
+    "api": "disabled; local fallback",
+    "world_id": "C1FBE5B6-4DD0-0603-DBEF-708AA59A1B7D"
+  },
+  "financial_policy_unchanged": true,
+  "paid_chat_completions_this_task": 0,
+  "official_api_checks": [
+    "balance",
+    "image tokenizer estimate"
+  ],
+  "budget_limitation": "The original cumulative home-PC ledger is not present on this PC; it was not reset, replaced, or reconstructed from incomplete history.",
+  "implementation_limitations": [
+    "Courtyard wings have separate roofs and entrances; connected L/T roof geometry is not implemented.",
+    "Unsupported requests persist per resident; automatic Luna/art creation is not implemented.",
+    "Real provider visual judgments and full autonomous multi-wing town growth have not been demonstrated."
+  ],
+  "source_files": [
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthDecisions.cpp",
+      "sha256": "05db1e9cd070683c4d30f4ba83a00bd62035390af860a4bda947a7b6714c4d55"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthDesignReview.cpp",
+      "sha256": "ce7f5177bf80215e608dce17650abc13bf23c44e3ccc44c8b894c2abce2eab77"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthDesignReviewTests.cpp",
+      "sha256": "e1e262a77c3ad510f41a7c0d0b59b225b57696313d0dffdb8e6e815d87932714"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthInterface.cpp",
+      "sha256": "90705e8faa147fe5894caa77ab6577ca45f2b96f8c0b69f5dc31860c2fbbfb99"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthLife.cpp",
+      "sha256": "64673a351ba68b07178de5d0e966c3210c8a77eb66d39f8dbc4cadb914993151"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthMovement.cpp",
+      "sha256": "76aa62dd917a84d6420944e69fea0c02e7c42894676a361accd925ab1fb0ee16"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthPaths.cpp",
+      "sha256": "2cc56ec2089bf7f67e0d118b416c1eceafdf3532995e720c87e97d23ce5b2ec3"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthPersistence.cpp",
+      "sha256": "d9c9a55bd18dc39e987f307a87f39098c1dd95be8f221e67ae28ca8dfbd65c4d"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthPlannedConstructionRuntimeTests.cpp",
+      "sha256": "fff1bc664e706c4a5d83e83ecb93c10effd2bdc026d0dd068b3633cc46937da1"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthProduction.cpp",
+      "sha256": "5497a88c6f442b8e626340be1fcf8585b7dc46dadb725837e0e25d2a6bcc621a"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthResidentBuildingPlanner.cpp",
+      "sha256": "2297bbef78e8131f4a8bdd425762f31a97692fae9a9da00842f69f3eb8d0a242"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthTownLayout.cpp",
+      "sha256": "5ac61ea383535e6e5bb45d43e4315da1dba9fcc67a6e113ea35cc00a6cf0257e"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthTownLayoutTests.cpp",
+      "sha256": "9848f7437a5d5918a6014e89cb68327f9e2fdeac7c4fd7704d243b5549afad46"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthVillage.cpp",
+      "sha256": "95c8091405b03bba3168c0c7983a42f4fe26ed63dba23d8159902b4bd6e27acc"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldState.cpp",
+      "sha256": "84e98eaf75d7a08f7e69315c53bb1c6086c17a7eb654b2b8719b7cc8ef744dec"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthWorldState.h",
+      "sha256": "6fcc6ccc827a41f09033b28607f339e07d71dede48d25de63ca29d15d246296a"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Public/HearthResidentBuildingPlanner.h",
+      "sha256": "89af276bd9149645d3a0fab1517d5dec4034f913c5f26119ccbf375e0edf2f41"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Public/HearthTownLayout.h",
+      "sha256": "abb8ee41130584e55b30860e80b90daeb2b4890775b3c7487e2219a2754ac4b8"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/Public/HearthVillage.h",
+      "sha256": "e173218b0e21da1df6b22f2abed10cb1faf1dda860563958ef414e73ec22b780"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Source/ThreeHearths/ThreeHearths.Build.cs",
+      "sha256": "a1f2aaeec059154e4d7d725fdfd37050b8f7bd02491b46239acc22e06595a68d"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Tools/kimi_budget.py",
+      "sha256": "2e9848d842efae91f413866b9e642d72f820a9f4575436b2786d8ecdf4fc9c5a"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Tools/kimi_estimate_vision.py",
+      "sha256": "f6cb79e1a040a769a8655f8a87f8478545a140b6a787524851f96bc8ff90df35"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Tools/kimi_gateway.py",
+      "sha256": "a0101d7f22a2c6d995bf07d20d3919bc1da31adb04636ae9cb7b62261288030e"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Tools/kimi_vision.py",
+      "sha256": "a7f0cba66dcc6f82873012b22376fb5dbea1d058c171154d8ac844eb2d21e611"
+    },
+    {
+      "path": "Plugins/ThreeHearths/Tools/test_kimi_vision.py",
+      "sha256": "6e5e6304239a49a5234fdfc0fdb2d45579b332ccc0c0a84b0ae7df8ccbaf2dbd"
+    }
+  ]
+}

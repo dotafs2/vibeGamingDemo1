@@ -1,0 +1,162 @@
+{
+  "date": "2026-09-07",
+  "status": "native_and_runtime_smoke_verified",
+  "build": {
+    "passed": true,
+    "log": "C:\\vibeGamingDemo1\\.codex-ue58-diagnostics\\town-growth\\build-candidates.log"
+  },
+  "native": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0,
+    "tests_with_warnings": 6,
+    "report": "C:\\vibeGamingDemo1\\ThreeHearthsVillage\\Docs\\Validation\\Town_Growth\\native-report.json"
+  },
+  "runtime": {
+    "run": "runtime05",
+    "summary": {
+      "seconds": 120.5,
+      "elapsed": 4726.19921875,
+      "residents": 30,
+      "homes": 29,
+      "plans": 0,
+      "components": 0,
+      "completed_components": 0,
+      "royal_status": "building",
+      "royal_complete": 14,
+      "royal_total": 1276,
+      "royal_workers": 0,
+      "resources": {
+        "Food": 648,
+        "Stone": 46,
+        "Planks": 267,
+        "Beams": 40,
+        "Tiles": 48,
+        "TreasuryCoins": 2,
+        "TaxProjectCoins": 2
+      },
+      "pending": 0
+    },
+    "save_success": true,
+    "ground_cells": 9149,
+    "simulation_resources_injected": false
+  },
+  "cold_reload": {
+    "run": "reload05",
+    "equal": {
+      "Id": true,
+      "plots": true,
+      "structure_plans": true,
+      "public_project": true,
+      "world_requests": true
+    },
+    "stories_equal": true,
+    "layout_ready": true,
+    "save_success": true,
+    "exact_fields": {
+      "history": true,
+      "sites": true,
+      "resources": true,
+      "Food": true,
+      "Stone": true,
+      "Planks": true,
+      "Beams": true,
+      "Tiles": true,
+      "TreasuryCoins": true,
+      "TaxProjectCoins": true,
+      "transactions": true,
+      "wage_payables": true,
+      "tax_assessments": true,
+      "trade_offers": true,
+      "tile_orders": true,
+      "Elapsed": true
+    },
+    "resident_non_transform_fields_exact": true,
+    "max_position_error_cm": 9.094947017729282e-13,
+    "max_yaw_error_deg": 4.263256414560601e-14
+  },
+  "world_id": "0703ADAA-4FA7-E255-D257-CD9F9F50E6EA",
+  "screenshots": [
+    {
+      "index": 0,
+      "name": "林恩",
+      "archetype": "courtyard_workshop",
+      "file": "home-00.png"
+    },
+    {
+      "index": 1,
+      "name": "米拉",
+      "archetype": "warehouse",
+      "file": "home-01.png"
+    },
+    {
+      "index": 3,
+      "name": "阿尔登",
+      "archetype": "keep",
+      "file": "home-02.png"
+    },
+    {
+      "index": 4,
+      "name": "伊芙",
+      "archetype": "shop_house",
+      "file": "home-03.png"
+    },
+    {
+      "index": 7,
+      "name": "梅芙",
+      "archetype": "rowhouse",
+      "file": "home-04.png"
+    },
+    {
+      "index": 8,
+      "name": "托马斯",
+      "archetype": "inn",
+      "file": "home-05.png"
+    }
+  ],
+  "castle_v2": {
+    "modules": 1276,
+    "stages": 13,
+    "materials": {
+      "stone": 1288,
+      "planks": 2231,
+      "beams": 1416
+    },
+    "all_built_in_runtime": false
+  },
+  "previous_failures": {
+    "native01": 8,
+    "native02": 3,
+    "native03": 0,
+    "native04": 0,
+    "runtime03": "Old small island tag prevented expanded terrain creation",
+    "runtime04": "Ground rejection after selecting thirty plots left only twenty-eight"
+  },
+  "new_kimi_calls": 2,
+  "new_kimi_cost_cny": 0.027589,
+  "cumulative_kimi_calls": 22,
+  "cumulative_kimi_cost_cny": 0.270312,
+  "budget_reset": false,
+  "observed_funding_limit": {
+    "treasury": 2,
+    "castle_completed": 14,
+    "active_castle_workers": 0
+  },
+  "observed_visual_issues": [
+    "Dark house facades",
+    "Legacy water surface intersects expanded terrain"
+  ],
+  "model_delivery_completed": false,
+  "generic_functional_use_completed": false,
+  "visual_city_final_accepted": false,
+  "owned_agents_remaining": 0,
+  "original_sample_overwritten": false,
+  "git_committed_or_pushed": false,
+  "limitations": [
+    "The native tests include test-world cleanup warnings and intentional corrupt-save rejection.",
+    "One earlier generic local capture run had a late shutdown exception; three independent retries exited normally.",
+    "Castle assembly and persistence tests do not prove completion of the full long-term construction economy.",
+    "Generic NPC requests reach artist briefs; model delivery and storage/underground functionality remain pending.",
+    "Home entrances, asymmetric wings and the overall city art require further visual acceptance."
+  ]
+}

@@ -1,10 +1,9 @@
 #include "HearthTownLayout.h"
+#include "HearthCityPlan.h"
 
 namespace
 {
     // One native structural bay, including its roof projection, is about 500 x 480 cm.
-    constexpr float HomeLong = 250.f;
-    constexpr float HomeShort = 240.f;
     constexpr float Gap = 80.f;
 
     FVector2D XY(const FVector& P) { return FVector2D(P.X, P.Y); }
@@ -87,9 +86,29 @@ namespace
     };
 }
 
+TArray<FHearthTownRoadSegment> HearthTownLayout::VillageRoads(bool Organic,int32 LayoutVersion)
+{
+    if(Organic && LayoutVersion>=3) return HearthCityPlan::BuildVersion3().Roads;
+    if(Organic && LayoutVersion>=2) return HearthCityPlan::Build().Roads;
+    if(!Organic) return {{FVector(-2130,-5100,8),FVector(-2130,5100,8),340}, {FVector(-2800,-1050,8),FVector(-2130,-1050,8),300}};
+    const FVector Nodes[]={FVector(-2130,-5100,8),FVector(-2350,-2600,8),FVector(-2050,-1100,8),FVector(-2390,550,8),FVector(-1900,2250,8),FVector(-2130,5100,8)};
+    TArray<FHearthTownRoadSegment> Roads;
+    for(int32 I=1;I<UE_ARRAY_COUNT(Nodes);++I) Roads.Add({Nodes[I-1],Nodes[I],260});
+    Roads.Add({FVector(-2800,-1050,8),Nodes[2],240});
+    Roads.Add({Nodes[2],FVector(-100,-1600,8),220});
+    Roads.Add({FVector(-100,-1600,8),FVector(1050,-450,8),200});
+    return Roads;
+}
+
 FHearthTownLayoutPlan HearthTownLayout::Build(const FHearthTownLayoutInput& Input)
 {
     FHearthTownLayoutPlan Plan;
+    // Jason's largest Town3 authored form is asymmetric around its origin
+    // (up to about 9.43 m x 11.25 m). These conservative half extents include
+    // an 80 cm siting margin without pretending the origin is the bbox center.
+    const float HomeLong = Input.LayoutVersion >= 3 ? 560.f : 250.f;
+    const float HomeShort = Input.LayoutVersion >= 3 ? 650.f : 240.f;
+    const float CandidateGap = Input.LayoutVersion >= 3 ? 110.f : Gap;
     Plan.Homes = Input.ExistingBuildings;
     for (FHearthTownFootprint& Existing : Plan.Homes) Existing.bExisting = true;
 
@@ -103,7 +122,7 @@ FHearthTownLayoutPlan HearthTownLayout::Build(const FHearthTownLayoutInput& Inpu
         const FVector2D Tangent = Delta / Length;
         const FVector2D Normal(-Tangent.Y, Tangent.X);
         const float Yaw = FMath::RadiansToDegrees(FMath::Atan2(Tangent.Y, Tangent.X));
-        const int32 Count = FMath::Max(1, FMath::FloorToInt((Length - 2.f * HomeLong) / (2.f * HomeLong + Gap)) + 1);
+        const int32 Count = FMath::Max(1, FMath::FloorToInt((Length - 2.f * HomeLong) / FMath::Max(100.f,Input.CandidateSpacing)) + 1);
         for (int32 K = 0; K < Count; ++K)
         {
             const float Alpha = (K + .5f) / Count;
@@ -113,14 +132,28 @@ FHearthTownLayoutPlan HearthTownLayout::Build(const FHearthTownLayoutInput& Inpu
             {
                 const int32 Side = SidePass == 0 ? SideFirst : 1 - SideFirst;
                 const FVector2D Outward = Side == 0 ? Normal : -Normal;
-                const FVector2D Center = Street + Outward * (Road.Width * .5f + HomeShort + 30.f);
+                FRandomStream Variation(Input.Seed+RoadIndex*977+K*37+Side*13);
+                const float Along=Input.bOrganic?Variation.FRandRange(-85,85):0;
+                const float Setback=Input.bOrganic?Variation.FRandRange(20,140):30;
+                const FVector2D Center = Street + Tangent*Along + Outward * (Road.Width * .5f + HomeShort + Setback);
                 FCandidate Candidate;
                 Candidate.Footprint.Center = MakePoint(Center); Candidate.Footprint.HalfExtent = FVector2D(HomeLong, HomeShort);
-                Candidate.Footprint.Yaw = Yaw; Candidate.Footprint.Door = MakePoint(Street + Outward * (Road.Width * .5f + 20.f));
+                Candidate.Footprint.Door = MakePoint(Street + Outward * (Road.Width * .5f + 20.f));
+                // The appearance front is the frontage door. Rotate the
+                // footprint from that actual entry so the persisted yaw and
+                // runtime approach share one outward direction.
+                const FVector2D DoorVector = FVector2D(Candidate.Footprint.Door.X - Candidate.Footprint.Center.X, Candidate.Footprint.Door.Y - Candidate.Footprint.Center.Y);
+                const float DoorYaw = FMath::RadiansToDegrees(FMath::Atan2(DoorVector.Y, DoorVector.X));
+                // Town3 appearance fronts are local -Y. Align the persisted
+                // rotation with the actual frontage door.
+                Candidate.Footprint.Yaw = DoorYaw + 90.f + (Input.bOrganic ? Variation.FRandRange(-4.f, 4.f) : 0.f);
                 Candidate.StreetPoint = Street; Candidate.Serial = Serial++;
                 Candidate.RoadIndex = RoadIndex;
                 Candidate.StableKey = FString::Printf(TEXT("r%d_k%d_side%d"), RoadIndex, K, Side);
                 Candidate.Score = AnchorScore(Center, Input) + (Center - Street).Length() * .01f + SidePass * .001f;
+                // Reject unusable ground before selecting the requested number;
+                // the remaining finite street candidates can then fill the gap.
+                if(Input.IsCandidateUsable && !Input.IsCandidateUsable(Candidate.Footprint)) continue;
                 Candidates.Add(MoveTemp(Candidate));
             }
         }
@@ -144,7 +177,7 @@ FHearthTownLayoutPlan HearthTownLayout::Build(const FHearthTownLayoutInput& Inpu
     for (const FCandidate& Candidate : Candidates)
     {
         if (Plan.Homes.Num() >= Input.ExistingBuildings.Num() + Wanted) break;
-        if (!ClearRect(Candidate.Footprint, Input, Plan.Homes)) continue;
+                if (!ClearRect(Candidate.Footprint, Input, Plan.Homes)) continue;
         FHearthTownFootprint Home = Candidate.Footprint;
         Home.Id = TEXT("street_home_") + Candidate.StableKey;
         Plan.Homes.Add(MoveTemp(Home));
@@ -165,7 +198,7 @@ FHearthTownLayoutPlan HearthTownLayout::Build(const FHearthTownLayoutInput& Inpu
         FHearthTownExpansion Expansion;
         Expansion.Id = Parent.Id + TEXT(":expansion:rear");
         Expansion.ParentIndex = I; Expansion.Yaw = Parent.Yaw; Expansion.HalfExtent = Parent.HalfExtent;
-        const FVector2D BackOffset = Back * (Parent.HalfExtent.Y * 2.f + Gap);
+        const FVector2D BackOffset = Back * (Parent.HalfExtent.Y * 2.f + CandidateGap);
         const FVector2D DoorOffset = Back * Parent.HalfExtent.Y;
         Expansion.Center = Parent.Center + FVector(BackOffset.X, BackOffset.Y, 0.f);
         Expansion.Door = Parent.Center + FVector(DoorOffset.X, DoorOffset.Y, 0.f);

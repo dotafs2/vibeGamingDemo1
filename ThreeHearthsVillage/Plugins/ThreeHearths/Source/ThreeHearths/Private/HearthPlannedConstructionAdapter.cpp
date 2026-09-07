@@ -32,6 +32,17 @@ namespace
             OutRule = {4, 6, TEXT("tiles")};
             return true;
         }
+        if (CatalogId == TEXT("canopy_terracotta_2m") || CatalogId == TEXT("canopy_slateblue_2m") ||
+            CatalogId == TEXT("roof_ridge_terracotta_2m") || CatalogId == TEXT("roof_ridge_slateblue_2m"))
+        {
+            OutRule = {4, 6, TEXT("tiles")};
+            return true;
+        }
+        if (CatalogId == TEXT("bench_timber"))
+        {
+            OutRule = {3, 3, TEXT("plank")};
+            return true;
+        }
         return false;
     }
 

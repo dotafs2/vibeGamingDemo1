@@ -85,6 +85,24 @@ bool FHearthPlannedConstructionAdapterTest::RunTest(const FString&)
     TestTrue(TEXT("terracotta roof maps tiles to cargo type 6 at stage 4"), TerracottaResult.Components.ContainsByPredicate([](const FHearthCottageComponent& Part)
     { return Part.AssetId == TEXT("roof_slope_terracotta_2m") && Part.Stage == 4 && Part.MaterialType == 6 && Part.MaterialAmount == 6; }));
 
+    FHearthStructurePlan Canopy;
+    Canopy.PlanId=TEXT("tavern-canopy");
+    Canopy.Components.Add(Component(TEXT("canopy_deck"),TEXT("floor_timber_2m"),TEXT("plank"),1,FVector(0,0,0),0.f));
+    Canopy.Components.Add(Component(TEXT("canopy_post"),TEXT("post_timber_2_4m"),TEXT("beam"),1,FVector(-100,0,16),0.f));
+    Canopy.Components.Add(Component(TEXT("canopy_beam"),TEXT("beam_timber_2m"),TEXT("beam"),1,FVector(0,0,240),0.f));
+    Canopy.Components.Add(Component(TEXT("canopy_roof"),TEXT("canopy_terracotta_2m"),TEXT("tiles"),4,FVector(0,125,265.5),0.f));
+    Canopy.Components.Add(Component(TEXT("canopy_ridge"),TEXT("roof_ridge_terracotta_2m"),TEXT("tiles"),2,FVector(0,125,202.2153),90.f));
+    Canopy.Components.Add(Component(TEXT("canopy_bench_left"),TEXT("bench_timber"),TEXT("plank"),1,FVector(-70,0,16),90.f));
+    Canopy.Components.Add(Component(TEXT("canopy_bench_right"),TEXT("bench_timber"),TEXT("plank"),1,FVector(70,0,16),90.f));
+    const auto CanopyResult=HearthPlannedConstructionAdapter::Convert(Canopy,7,First.Components);
+    TestTrue(TEXT("canopy and real bench modules convert through the adapter"),CanopyResult.bAccepted);
+    AddInfo(TEXT("Canopy adapter: ")+CanopyResult.Reason);
+    TestEqual(TEXT("canopy conversion preserves both real benches"),CanopyResult.Components.FilterByPredicate([](const FHearthCottageComponent& Part){return Part.AssetId==TEXT("bench_timber");}).Num(),2);
+    TestTrue(TEXT("canopy roof and ridge use tile cargo"),CanopyResult.Components.ContainsByPredicate([](const FHearthCottageComponent& Part){return Part.AssetId==TEXT("canopy_terracotta_2m") && Part.Stage==4 && Part.MaterialType==6 && Part.MaterialAmount==4;})
+        && CanopyResult.Components.ContainsByPredicate([](const FHearthCottageComponent& Part){return Part.AssetId==TEXT("roof_ridge_terracotta_2m") && Part.Stage==4 && Part.MaterialType==6 && Part.MaterialAmount==2;}));
+    TestTrue(TEXT("canopy conversion preserves the source ridge datum and crosswise yaw"),CanopyResult.Components.ContainsByPredicate([](const FHearthCottageComponent& Part)
+    { return Part.Id==TEXT("canopy_ridge") && Part.Offset.Equals(FVector(0,125,202.2153)) && Part.Yaw==90.f; }));
+
     FHearthStructurePlan Unknown = Base;
     Unknown.Components[0].Materials[0].MaterialId = TEXT("tiles");
     const auto UnknownResult = HearthPlannedConstructionAdapter::Convert(Unknown, 7, First.Components);

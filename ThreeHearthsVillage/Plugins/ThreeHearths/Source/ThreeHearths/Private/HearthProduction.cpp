@@ -1,13 +1,19 @@
 #include "HearthVillage.h"
+#include "HearthRoyalWorksPlan.h"
 #include "HearthPlannedConstructionAdapter.h"
 #include "HearthResidentBuildingPlanner.h"
+#include "HearthTavernRuntime.h"
+#include "HearthSiteCandidates.h"
 #include "HearthTownLayout.h"
+#include "HearthSitePresentation.h"
+#include "HearthCityPlan.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/SkeletalMesh.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "Misc/Crc.h"
 
 namespace HearthProduction
 {
@@ -55,22 +61,32 @@ namespace HearthProduction
         int32 Stone, int32 Planks, int32 Beams, int32 Tiles, int32 ConstructionGrantBudget)
     {
         FHearthResidentBuildingInput Input;
+        Input.GrowthDirection=Resident.GrowthDirection;
         Input.ResidentId=Resident.StableId;
         Input.StableSeed=Resident.StableId+TEXT("|")+Resident.Personality+TEXT("|")+Resident.Role;
         Input.Need=Resident.Hunger>=65.f?TEXT("urgent shelter near food and neighbors"):
-            Resident.SocialNeed>=60.f?TEXT("social family shelter"):TEXT("shelter");
+            Resident.SocialNeed>=60.f?TEXT("social gathering shelter"):TEXT("shelter");
+        Input.Need+=TEXT(" | personal_goal: ")+Resident.DesignGoal;
+        if(Resident.BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(Resident.DesignRequest))
+        {
+            Input.Need=TEXT("tavern_canopy_seating | ")+Input.Need;
+            Input.ExtensionKey=TEXT("tavern_canopy_v1");
+        }
+        Input.MaxInitialRooms=3;
+        Input.Archetype=Resident.BuildingArchetype;
+        if(!Input.Archetype.IsEmpty()) Input.MaxInitialRooms=6;
         Input.Occupation=Resident.Role;
         Input.WallMaterial=Resident.WallMaterial;
         Input.RoofMaterial=Resident.RoofMaterial;
         Input.FriendsNearby=0;
         for(const auto& Bond:Resident.Bonds) if(Bond.Value.Meetings>0 && Bond.Value.Affinity>=0.f) ++Input.FriendsNearby;
-        Input.HouseholdSize=FMath::Clamp(1+Input.FriendsNearby/2,1,4);
-        // Cottage materials and wages are supplied by the existing village-construction grant,
-        // so its currently spendable treasury balance is the plan's real feasibility ceiling.
+        Input.HouseholdSize=1; // Friendships do not establish household members.
+        // The caller supplies the actually affordable construction units.
+        // Personal homes derive this ceiling from their owner's wage budget.
         Input.Budget=FMath::Max(0,ConstructionGrantBudget);
         Input.bRoadAccessible=Site.bReachable;
         const FVector Road=Site.Approach-Site.Position;
-        Input.RoadYaw=Road.IsNearlyZero()?0.f:FMath::RadiansToDegrees(FMath::Atan2(Road.Y,Road.X));
+        Input.RoadYaw=Road.IsNearlyZero()?0.f:90.f+FMath::RadiansToDegrees(FMath::Atan2(Road.Y,Road.X));
         Input.Origin=Site.Position;
         Input.Stone=FMath::Max(0,Stone);
         Input.Planks=FMath::Max(0,Planks);
@@ -80,15 +96,24 @@ namespace HearthProduction
     }
 
     bool PrepareExpansion(const FHearthResident& Resident,const FHearthSite& Site,const FHearthStructurePlan& Current,
-        int32 Stone,int32 Planks,int32 Beams,int32 Tiles,int32 Budget,FHearthStructurePlan& OutPlan,FHearthPlannedConstructionResult& OutComponents)
+        int32 Stone,int32 Planks,int32 Beams,int32 Tiles,int32 Budget,FHearthStructurePlan& OutPlan,FHearthPlannedConstructionResult& OutComponents, TFunctionRef<bool(const FHearthStructurePlan&)> Fits)
     {
-        FHearthResidentBuildingPlan Existing; Existing.Plan=Current; Existing.Expansion.ResultingPlan=Current; Existing.bBuildable=true;
         FHearthResidentBuildingInput Input=PlanningInput(Resident,Site,Stone,Planks,Beams,Tiles,Budget);
-        Input.ExtensionKey=FString::Printf(TEXT("%s:extension:%d"),*Current.PlanId,Current.Rooms.Num());
-        if(!HearthResidentBuildingPlanner::AppendExpansion(Existing,Input)) return false;
-        OutPlan=Existing.Expansion.ResultingPlan;
-        OutComponents=HearthPlannedConstructionAdapter::Convert(OutPlan,Site.Owner,Site.CottageComponents);
-        return OutComponents.bAccepted && OutComponents.Components.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");});
+        const bool bCanopy=Resident.BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(Resident.DesignRequest);
+        Input.ExtensionKey=bCanopy?TEXT("tavern_canopy_v1"):FString::Printf(TEXT("%s:extension:%d"),*Current.PlanId,Current.Rooms.Num());
+        if(bCanopy) Input.Need=TEXT("tavern_canopy_seating");
+        const int32 First=Resident.GrowthDirection==0?1+(Current.Rooms.Num()-1)%3:Resident.GrowthDirection;
+        for(int32 Attempt=0;Attempt<(Resident.GrowthDirection==0?3:1);++Attempt)
+        {
+            Input.GrowthDirection=1+(First-1+Attempt)%3;
+            FHearthResidentBuildingPlan Existing; Existing.Plan=Current; Existing.Expansion.ResultingPlan=Current; Existing.bBuildable=true;
+            if(bCanopy ? !HearthResidentBuildingPlanner::AppendCanopy(Existing,Input) : !HearthResidentBuildingPlanner::AppendExpansion(Existing,Input)) continue;
+            if(!Fits(Existing.Expansion.ResultingPlan)) continue;
+            auto Converted=HearthPlannedConstructionAdapter::Convert(Existing.Expansion.ResultingPlan,Site.Owner,Site.CottageComponents);
+            if(!Converted.bAccepted || !Converted.Components.ContainsByPredicate([](const auto& Part){return Part.Status!=TEXT("completed");})) continue;
+            OutPlan=MoveTemp(Existing.Expansion.ResultingPlan); OutComponents=MoveTemp(Converted); return true;
+        }
+        return false;
     }
 }
 
@@ -137,6 +162,32 @@ void AHearthVillage::EnsureCottageComponents(FHearthSite& S) const
     HearthCottage::Populate(S);
 }
 
+bool AHearthVillage::PrepareResidentHouse(int32 Index,int32 Site,FHearthResidentBuildingPlan& Out) const
+{
+    if(!Residents.IsValidIndex(Index) || !ProductionSites.IsValidIndex(Site)) return false;
+    auto Input=HearthProduction::PlanningInput(Residents[Index],ProductionSites[Site],StoneStock,PlankStock,BeamStock,
+        TileStock+Residents[Index].PersonalTiles,Residents[Index].Coins/WageForOperation(5));
+    Input.Need+=TEXT(" | siting_intent: ")+EvaluateResidentSite(Index,ProductionSites[Site].Position).Reason;
+    const int32 Affordable=HearthResidentBuildingPlanner::MaxAffordableInitialRooms(Input);
+    const int32 Minimum=HearthResidentBuildingPlanner::MinimumInitialRooms(Input);
+    if(Affordable<Minimum || Minimum<=0)
+    {
+        Out.bBuildable=false;Out.Reason=TEXT("先攒足该用途最小方案的真实工钱和材料，再提交几何方案。");return false;
+    }
+    const TArray<FVector> Offsets=Input.Archetype.IsEmpty()?TArray<FVector>{FVector::ZeroVector}:
+        TArray<FVector>{FVector::ZeroVector,FVector(0,300,0),FVector(0,600,0),FVector(300,300,0),FVector(-300,300,0)};
+    // Begin with an affordable functional core. A wealthier owner can choose
+    // one additional room; later growth keeps the existing component identity.
+    const int32 Desired=FMath::Min(Affordable,Minimum+(Residents[Index].Coins>=128?1:0));
+    for(int32 Rooms=Desired;Rooms>=Minimum;--Rooms) for(const FVector& Offset:Offsets)
+    {
+        Input.MaxInitialRooms=Rooms;Input.LayoutOffset=Offset;Out=HearthResidentBuildingPlanner::Build(Input);
+        if(Out.bBuildable && FitsResidentPlan(Out.Plan,Site)) return true;
+    }
+    Out.bBuildable=false;Out.Reason=TEXT("已有足够的最小方案预算，但有限摆放候选会压路、越过邻地或缺少陆地支撑。");
+    return false;
+}
+
 void AHearthVillage::InitializeProduction()
 {
     bReplacementPlotSearchDone=false;
@@ -179,10 +230,33 @@ void AHearthVillage::InitializeProduction()
     AddSite(EHearthSiteKind::Carpenter,FVector(-2250,-1050,8),190);
     AddSite(EHearthSiteKind::ClayPit,FVector(-2600,3100,8),160);
     AddSite(EHearthSiteKind::TileKiln,FVector(-2800,-1050,8),210);
+    if(TownLayoutVersion>=2) for(const auto& Landmark:HearthCityPlan::BuildForVersion(TownLayoutVersion).Landmarks)
+        if(Landmark.Kind==TEXT("castle"))
+        {
+            // The defensive radius includes empty corners. Validate the actual
+            // built footprint, and never mutate the previous site if rejected.
+            bool Supported=IsLand(Landmark.Position);
+            for(const auto& M:HearthRoyalWorksPlan::Build().Modules)
+            {
+                if(!M.PlantId.IsEmpty()) continue;
+                const FVector Ground=Landmark.Position+FVector(M.Offset.X,M.Offset.Y,0);
+                const FVector Half(M.Scale.X*50,M.Scale.Y*50,0);
+                for(int32 X:{-1,1}) for(int32 Y:{-1,1})
+                {
+                    const FVector P=Ground+FVector(X*Half.X,Y*Half.Y,0);
+                    if(!IsLand(P)) {Supported=false;UE_LOG(LogTemp,Warning,TEXT("ROYAL_GROUND_REJECT module=%s point=%s"),*M.Id,*P.ToString());}
+                }
+            }
+            if(Supported)
+            {
+                FHearthSite Site;Site.Kind=EHearthSiteKind::Empty;Site.Position=Landmark.Position;Site.Radius=850;
+                Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);Site.bExpansion=true;Site.Approach=Landmark.Approach;
+                ProductionSites.Add(MoveTemp(Site));
+            }
+        }
     FHearthTownLayoutInput TownInput;
     TownInput.IslandMin=FVector2D(-6000,-5700); TownInput.IslandMax=FVector2D(5700,5700);
-    TownInput.Roads.Add({FVector(-2130,-5100,8),FVector(-2130,5100,8),340.f});
-    TownInput.Roads.Add({FVector(-2800,-1050,8),FVector(-2130,-1050,8),300.f});
+    TownInput.Roads=HearthTownLayout::VillageRoads(bOrganicTownLayout,TownLayoutVersion); TownInput.bOrganic=bOrganicTownLayout;
     TownInput.Markets={FVector(-1100,-1050,8),FVector(-1650,-1050,8)};
     TownInput.Workpoints={FVector(-2250,-1050,8)};
     for(const FVector& Obstacle:FixedObstacles)
@@ -198,6 +272,7 @@ void AHearthVillage::InitializeProduction()
         if(ExistingSite.Kind==EHearthSiteKind::TileKiln) TownInput.Workpoints.Add(ExistingSite.Position);
     }
     TownInput.RequestedHomes=18; TownInput.Seed=583;
+    if(TownLayoutVersion>=2) TownInput.CandidateSpacing=290.f;
     const FHearthTownLayoutPlan TownPlan=HearthTownLayout::Build(TownInput);
     int32 Plots=0;
     for(const FHearthTownFootprint& Home:TownPlan.Homes)
@@ -218,10 +293,26 @@ void AHearthVillage::InitializeProduction()
 
 bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
 {
+    if(HearthTavernRuntime::IsLegacyBuildAction(Action))
+    {
+        const int32 InnOwner=HearthTavernRuntime::LegacyBuildResident(Action);
+        if(InnOwner!=Index || !Residents.IsValidIndex(InnOwner) || Residents[InnOwner].BuildProgress<1.f
+            || Residents[InnOwner].BuildingArchetype!=TEXT("inn") || !HearthTavernRuntime::IsCanopyNeed(Residents[InnOwner].DesignRequest)) return false;
+        FHearthSite Host;
+        if(!FindResidentHostSite(InnOwner,Host) || !Host.BuildPlanId.IsEmpty()) return false;
+        Host.bReachable=true;
+        if(!ToolAvailableFor(Index,5) || Residents[Index].Coins<WageForOperation(5)) return false;
+        FHearthResidentBuildingPlan Proposed;
+        if(!HearthTavernRuntime::BuildAttachedCanopyPlan(Residents[InnOwner],Host,Residents[InnOwner].Coins/WageForOperation(5),StoneStock,PlankStock,BeamStock,TileStock+Residents[InnOwner].PersonalTiles,Proposed)) return false;
+        const auto Converted=HearthPlannedConstructionAdapter::Convert(Proposed.Plan,InnOwner,{});
+        const auto* Part=Converted.Components.FindByPredicate([](const auto& C){return C.Status!=TEXT("completed");});
+        if(!Converted.bAccepted || !Part) return false;
+        return Part->MaterialType==2?StoneStock>=Part->MaterialAmount:Part->MaterialType==3?PlankStock>=Part->MaterialAmount:Part->MaterialType==4?BeamStock>=Part->MaterialAmount:Part->MaterialType==5?ClayStock>=Part->MaterialAmount:Part->MaterialType==6&&(TileStock+Residents[InnOwner].PersonalTiles)>=Part->MaterialAmount;
+    }
     int32 Site,Op;
     if(!Residents.IsValidIndex(Index) || Residents[Index].BuildProgress<1 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
     const auto& S=ProductionSites[Site];
-    if(!S.bReachable || S.ReservedBy>=0 || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
+    if(!S.bReachable || S.ReservedBy>=0 || IsRoyalSite(Site) || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
     if(FoodStock<Food || AvailableWood()<Wood || StoneStock<Stone) return false;
     if(!ToolAvailableFor(Index,Op)) return false;
@@ -234,9 +325,18 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
         TArray<FHearthCottageComponent> CandidateComponents=S.CottageComponents;
         if(S.BuildPlanId.IsEmpty())
         {
-            if(S.Kind!=EHearthSiteKind::Land) return false;
-            const auto Proposed=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(Residents[Index],S,StoneStock,PlankStock,BeamStock,TileStock+Residents[Index].PersonalTiles,Residents[Funder].Coins/WageForOperation(Op)));
-            if(!Proposed.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==Proposed.Plan.PlanId; })) return false;
+            if(IsDecisionPending(Index) && PendingDecisions[Index].bVisual) return false;
+            const bool bLegacyTavernHost=S.Kind==EHearthSiteKind::House && Residents[Index].BuildingArchetype==TEXT("inn")
+                && HearthTavernRuntime::IsCanopyNeed(Residents[Index].DesignRequest) && Residents[Index].Plot>=0
+                && Residents[Index].Plot<HousingPlotCount()
+                && PlotIds[Residents[Index].Plot]==S.StableId;
+            if(S.Kind!=EHearthSiteKind::Land && !bLegacyTavernHost) return false;
+            FHearthResidentBuildingPlan Proposed;
+            const bool bTavernNeed=Residents[Index].BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(Residents[Index].DesignRequest);
+            const bool bPrepared=bTavernNeed
+                ? HearthTavernRuntime::BuildAttachedCanopyPlan(Residents[Index],S,Residents[Index].Coins/WageForOperation(5),StoneStock,PlankStock,BeamStock,TileStock+Residents[Index].PersonalTiles,Proposed)
+                : PrepareResidentHouse(Index,Site,Proposed);
+            if(!bPrepared || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==Proposed.Plan.PlanId; })) return false;
             const auto Converted=HearthPlannedConstructionAdapter::Convert(Proposed.Plan,Index,{});
             if(!Converted.bAccepted) return false;
             CandidateComponents=Converted.Components;
@@ -248,7 +348,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
             CandidateComponents=Converted.Components;
             if(!CandidateComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
             {
-                if(S.Owner!=Index) return false; // Neighbors may build parts, but only the owner chooses an extension.
+                if(S.Owner!=Index || Residents[Index].bDesignSatisfied || (IsDecisionPending(Index) && PendingDecisions[Index].bVisual)) return false; // Neighbors may build parts, but only the owner chooses an extension.
                 // A resident who is ready to choose and can pay for a vacant plot gets this decision round before
                 // an owner starts another extension. The window disappears as soon as the applicant acts, becomes
                 // ineligible, or leaves the choosing state, so an unaffordable or abandoned request cannot lock housing.
@@ -281,7 +381,7 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
                 });
                 if(bExecutableApplicant) return false;
                 FHearthStructurePlan Expanded; FHearthPlannedConstructionResult ExpansionComponents;
-                if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,TileStock+Residents[Funder].PersonalTiles,Residents[Funder].Coins/WageForOperation(Op),Expanded,ExpansionComponents)) return false;
+                if(!HearthProduction::PrepareExpansion(Residents[Index],S,*Plan,StoneStock,PlankStock,BeamStock,TileStock+Residents[Funder].PersonalTiles,Residents[Funder].Coins/WageForOperation(Op),Expanded,ExpansionComponents,[&](const auto& Candidate){return FitsResidentPlan(Candidate,Site);})) return false;
                 CandidateComponents=MoveTemp(ExpansionComponents.Components);
             }
         }
@@ -309,12 +409,13 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
         // its houseless claimant while beams and other real inputs are being
         // produced. Without this reservation, high speed simulation can turn
         // each new plot into farmland just before the housing recipe is ready.
-        if(S.bExpansion && PublicProject.Status==TEXT("completed") && Residents.IsValidIndex(S.Owner))
+        if(S.bExpansion && Residents.IsValidIndex(S.Owner))
         {
             const auto& Claimant=Residents[S.Owner];
             const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan)
             { return Plan.PlanId.Contains(Claimant.StableId); });
-            if(!OwnsStructure) return false;
+            const bool WantsWorkshop=Claimant.Role.Contains(TEXT("木匠")) || Claimant.Role.Contains(TEXT("铁匠")) || Claimant.Role.Contains(TEXT("陶工")) || Claimant.Role.Contains(TEXT("织工"));
+            if(!OwnsStructure && (WantsWorkshop || PublicProject.Status==TEXT("completed"))) return false;
         }
         return true;
     }
@@ -368,7 +469,7 @@ TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
         TArray<int32> Candidates;
         for(int32 S=0;S<ProductionSites.Num();++S) if(IsProductionAllowed(Index,HearthProduction::Action(S,Op))) Candidates.Add(S);
         const FVector P=Residents[Index].Actor->GetActorLocation();
-        Candidates.Sort([this,P,Op](int32 A,int32 B)
+        Candidates.Sort([this,P,Op,Index](int32 A,int32 B)
         {
             if(Op==5)
             {
@@ -381,19 +482,41 @@ TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
                 const int32 APriority=Priority(A),BPriority=Priority(B);
                 if(APriority!=BPriority) return APriority<BPriority;
             }
+            if(Op==0 || (Op==5 && ProductionSites[A].BuildPlanId.IsEmpty() && ProductionSites[B].BuildPlanId.IsEmpty()))
+            {
+                const float AP=EvaluateResidentSite(Index,ProductionSites[A].Position).Penalty;
+                const float BP=EvaluateResidentSite(Index,ProductionSites[B].Position).Penalty;
+                if(!FMath::IsNearlyEqual(AP,BP)) return AP<BP;
+            }
             return FVector::DistSquared2D(P,ProductionSites[A].Approach)<FVector::DistSquared2D(P,ProductionSites[B].Approach);
         });
         for(int32 I=0;I<FMath::Min(2,Candidates.Num());++I) Actions.Add(HearthProduction::Action(Candidates[I],Op));
+    }
+    if(Residents[Index].BuildProgress>=1.f && Residents[Index].BuildingArchetype==TEXT("inn")
+        && HearthTavernRuntime::IsCanopyNeed(Residents[Index].DesignRequest))
+    {
+        FHearthSite Host;
+        if(FindResidentHostSite(Index,Host) && Host.BuildPlanId.IsEmpty())
+            Actions.Add(HearthTavernRuntime::MakeLegacyBuildAction(Index));
     }
     return Actions;
 }
 
 FString AHearthVillage::ProductionActionName(int32 Action) const
 {
+    if(HearthTavernRuntime::IsLegacyBuildAction(Action))
+    {
+        const int32 InnOwner=HearthTavernRuntime::LegacyBuildResident(Action);
+        FHearthSite Host;
+        if(Residents.IsValidIndex(InnOwner) && FindResidentHostSite(InnOwner,Host))
+            return FString::Printf(TEXT("逐件建造酒馆附属棚和座位 · 宿主 PlotId %s · 下一步由真实库存供给"),*Host.StableId);
+        return TEXT("逐件建造酒馆附属棚和座位 · 宿主不可用");
+    }
     int32 Site,Op; if(!HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return TEXT("不可用生产任务");
     const auto& S=ProductionSites[Site];
     const TCHAR* Verbs[]={TEXT("开垦新土地"),TEXT("建设玉米田"),TEXT("建设小麦田"),TEXT("建设生菜田"),TEXT("建设南瓜田"),TEXT("建造新住宅"),TEXT("栽种树木"),TEXT("种植浆果灌木"),TEXT("播种耕作"),TEXT("收获作物并运回"),TEXT("伐木并运回"),TEXT("采石并运回"),TEXT("采集浆果并运回"),TEXT("锯制木板并运回"),TEXT("加工房梁并运回"),TEXT("处理黏土")};
-    const TCHAR* Verb=Op==15?(S.Kind==EHearthSiteKind::ClayPit?TEXT("采挖黏土并运回"):TEXT("用黏土和原木燃料烧制屋瓦并运回")):Verbs[Op];
+    const bool bTavernConstruction=Op==5 && Residents.IsValidIndex(S.Owner) && Residents[S.Owner].BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(Residents[S.Owner].DesignRequest);
+        const TCHAR* Verb=bTavernConstruction?TEXT("逐件建造酒馆附属棚和座位"):Op==15?(S.Kind==EHearthSiteKind::ClayPit?TEXT("采挖黏土并运回"):TEXT("用黏土和原木燃料烧制屋瓦并运回")):Verbs[Op];
     FString Name=FString::Printf(TEXT("%s · %d号%s"),Verb,Site+1,HearthProduction::KindNames[static_cast<int32>(S.Kind)]);
     int32 F,W,T; HearthProduction::Cost(Op,F,W,T);
     if(F+W+T>0) Name+=FString::Printf(TEXT("（食物%d / 木材%d / 石材%d）"),F,W,T);
@@ -408,9 +531,28 @@ FString AHearthVillage::ProductionActionName(int32 Action) const
 
 int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
 {
-    const auto Options=AvailableProductionActions(Index); int32 Best=-1; float BestScore=-FLT_MAX;
+    return ChooseProductionLocally(Index,AvailableProductionActions(Index));
+}
+
+int32 AHearthVillage::ChooseProductionLocally(int32 Index,const TArray<int32>& Options) const
+{
+    int32 Best=-1; float BestScore=-FLT_MAX;
+    int32 PrivatePlanks=12,PrivateBeams=8,PrivateTiles=12;
+    for(const auto& Person:Residents) if(Person.BuildProgress>=1 && !Person.bKing && !Person.bDesignSatisfied)
+    {
+        FHearthResidentBuildingInput Demand;Demand.Archetype=Person.BuildingArchetype;
+        const int32 Rooms=FMath::Max(1,HearthResidentBuildingPlanner::MinimumInitialRooms(Demand));
+        PrivatePlanks=FMath::Max(PrivatePlanks,Rooms*7);PrivateBeams=FMath::Max(PrivateBeams,Rooms*8);
+        if(Person.RoofMaterial!=TEXT("timber")) PrivateTiles=FMath::Max(PrivateTiles,Rooms*12);
+    }
     for(int32 Action:Options)
     {
+        if(HearthTavernRuntime::IsLegacyBuildAction(Action))
+        {
+            if(HearthTavernRuntime::LegacyBuildResident(Action)==Index && 310.f>BestScore)
+            { BestScore=310.f; Best=Action; }
+            continue;
+        }
         int32 Site,Op; HearthProduction::Decode(Action,Site,Op); float Score=5;
         if(Op==9 || Op==12) Score=FoodStock<20?180:35;
         if(Op==10) Score=AvailableWood()<60?150:20;
@@ -419,12 +561,12 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
         if(PublicBuilding) for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed"))
             for(int32 M=0;M<3;++M) PublicNeed[M]+=Part.Required[M]-Part.Reserved[M]-Part.Delivered[M];
         if(Op==11) Score=PublicBuilding && PublicProject.Stock[0]<PublicNeed[0]?235:(StoneStock<10?140:15);
-        if(Op==13) Score=PublicBuilding && PublicProject.Stock[1]<PublicNeed[1]?245:(PlankStock<12?165:18);
-        if(Op==14) Score=PublicBuilding && PublicProject.Stock[2]<PublicNeed[2]?240:(BeamStock<8?155:16);
+        if(Op==13) Score=PublicBuilding && PublicProject.Stock[1]<PublicNeed[1]?245:(PlankStock<PrivatePlanks?165:18);
+        if(Op==14) Score=PublicBuilding && PublicProject.Stock[2]<PublicNeed[2]?240:(BeamStock<PrivateBeams?155:16);
         if(Op==15)
         {
             const auto* Order=TileOrders.FindByPredicate([Index](const FHearthTileOrder& Candidate){return Candidate.Status==TEXT("active") && Candidate.Potter==Index;});
-            Score=ProductionSites[Site].Kind==EHearthSiteKind::TileKiln?(Order?280:(TileStock<12?190:22)):(ClayStock<8?175:20);
+            Score=ProductionSites[Site].Kind==EHearthSiteKind::TileKiln?(Order?280:(TileStock<PrivateTiles?190:22)):(ClayStock<8?175:20);
         }
         if(Op==8) Score=FoodStock<40?125:45;
         if(Op==0)
@@ -450,12 +592,14 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
                 else if(CandidateSite.BuildPlanId.IsEmpty()) Score=!OwnsStructure?(WorkshopRole?205:(NeedPressure>=45.f?195:85)):20;
                 else if(CandidateSite.Owner==Index) Score=NeedPressure>=75.f?190:(WorkshopRole?175:50);
                 else Score=20;
+                if(CandidateSite.Owner==Index && Person.BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(Person.DesignRequest)) Score=310;
             }
         }
         if(Index==0 && (Op==10 || Op==6)) Score+=10;
         if(Index==1 && (Op==8 || Op==9 || (Op>=1 && Op<=4))) Score+=10;
         if(Index==2 && (Op==11 || Op==5)) Score+=10;
         Score-=FVector::Dist2D(Residents[Index].Actor->GetActorLocation(),ProductionSites[Site].Approach)/2000.f;
+        if(Op==0 || (Op==5 && ProductionSites[Site].BuildPlanId.IsEmpty())) Score-=EvaluateResidentSite(Index,ProductionSites[Site].Position).Penalty*.2f;
         if(Score>BestScore) { BestScore=Score; Best=Action; }
     }
     return Best;
@@ -463,6 +607,17 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
 
 bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Reason,bool bFromApi)
 {
+    if(HearthTavernRuntime::IsLegacyBuildAction(Action))
+    {
+        if(!IsProductionAllowed(Index,Action)) return false;
+        const int32 InnOwner=HearthTavernRuntime::LegacyBuildResident(Action);
+        FHearthSite Host;
+        if(!FindResidentHostSite(InnOwner,Host)) return false;
+        Host.bReachable=true;
+        int32 HostIndex=ProductionSites.IndexOfByPredicate([&](const FHearthSite& Site){return Site.StableId==Host.StableId;});
+        if(HostIndex==INDEX_NONE) { ProductionSites.Add(Host); HostIndex=ProductionSites.Num()-1; }
+        Action=HearthProduction::Action(HostIndex,5);
+    }
     if(!IsProductionAllowed(Index,Action)) return false;
     int32 Site,Op; HearthProduction::Decode(Action,Site,Op);
     TArray<FVector> Route;
@@ -475,8 +630,11 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     int32 ExpansionPlanIndex=INDEX_NONE;
     if(bNeedsNewPlan)
     {
-        ProposedPlan=HearthResidentBuildingPlanner::Build(HearthProduction::PlanningInput(R,S,StoneStock,PlankStock,BeamStock,TileStock+R.PersonalTiles,R.Coins/WageForOperation(Op)));
-        if(!ProposedPlan.bBuildable || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==ProposedPlan.Plan.PlanId; }))
+        const bool bTavernNeed=R.BuildingArchetype==TEXT("inn") && HearthTavernRuntime::IsCanopyNeed(R.DesignRequest);
+        const bool bPrepared=bTavernNeed
+            ? HearthTavernRuntime::BuildAttachedCanopyPlan(R,S,R.Coins/WageForOperation(5),StoneStock,PlankStock,BeamStock,TileStock+R.PersonalTiles,ProposedPlan)
+            : PrepareResidentHouse(Index,Site,ProposedPlan);
+        if(!bPrepared || StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& P){ return P.PlanId==ProposedPlan.Plan.PlanId; }))
         {
             R.LatestEvent=ProposedPlan.Reason.IsEmpty()?TEXT("当前需求、资源或道路条件无法生成可执行住宅计划。"):ProposedPlan.Reason;
             return false;
@@ -487,7 +645,7 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     else if(Op==5 && !S.CottageComponents.ContainsByPredicate([](const auto& C){return C.Status!=TEXT("completed");}))
     {
         ExpansionPlanIndex=StructurePlans.IndexOfByPredicate([&](const FHearthStructurePlan& P){return P.PlanId==S.BuildPlanId;});
-        if(!StructurePlans.IsValidIndex(ExpansionPlanIndex) || !HearthProduction::PrepareExpansion(R,S,StructurePlans[ExpansionPlanIndex],StoneStock,PlankStock,BeamStock,TileStock+Residents[S.Owner].PersonalTiles,Residents[S.Owner].Coins/WageForOperation(Op),ProposedPlan.Plan,ProposedComponents))
+        if(!StructurePlans.IsValidIndex(ExpansionPlanIndex) || !HearthProduction::PrepareExpansion(R,S,StructurePlans[ExpansionPlanIndex],StoneStock,PlankStock,BeamStock,TileStock+Residents[S.Owner].PersonalTiles,Residents[S.Owner].Coins/WageForOperation(Op),ProposedPlan.Plan,ProposedComponents,[&](const auto& Candidate){return FitsResidentPlan(Candidate,Site);}))
         { R.LatestEvent=TEXT("当前真实库存或预算不足以扩建住宅。"); return false; }
         bNeedsExpansion=true;
     }
@@ -605,11 +763,44 @@ void AHearthVillage::AdvanceProductionWorld(float Dt)
         {
             bReplacementPlotSearchDone=true;
             constexpr float Radius=260.f,Clearance=80.f;
-            const float Xs[]={-3010.f,-1250.f,-3450.f,-810.f,-3890.f,-370.f};
-            bool bAdded=false;
-            for(float X:Xs) for(float Y=-4800.f;Y<=4800.f && !bAdded;Y+=600.f)
+            int32 ApplicantIndex=-1;
+            for(int32 ResidentIndex=0;ResidentIndex<Residents.Num();++ResidentIndex)
             {
-                const FVector Candidate(X,Y,8);
+                const FHearthResident& Applicant=Residents[ResidentIndex];
+                const bool bOwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Applicant.StableId);});
+                const bool bNeed=Applicant.Role.Contains(TEXT("木匠")) || Applicant.Role.Contains(TEXT("铁匠"))
+                    || Applicant.Role.Contains(TEXT("陶工")) || Applicant.Role.Contains(TEXT("织工"))
+                    || FMath::Max(Applicant.Hunger,Applicant.SocialNeed)>=45.f;
+                if(!bOwnsStructure && bNeed && Applicant.BuildProgress>=1.f && Applicant.Coins>=WageForOperation(0)) { ApplicantIndex=ResidentIndex; break; }
+            }
+            const FVector ResidentAnchor=Residents.IsValidIndex(ApplicantIndex) && IsValid(Residents[ApplicantIndex].Actor)
+                ? Residents[ApplicantIndex].Actor->GetActorLocation() : FVector::ZeroVector;
+            const FString ApplicantId=Residents.IsValidIndex(ApplicantIndex)?Residents[ApplicantIndex].StableId:FString(TEXT("none"));
+            FString SeedText=FString::Printf(TEXT("replacement|%s|%d|%d|%s"),*PublicProject.Id,PublicProject.Site,ProductionSites.Num(),*ApplicantId);
+            for(const FHearthSite& Existing:ProductionSites)
+                SeedText+=FString::Printf(TEXT("|%.0f,%.0f,%.0f,%.0f"),Existing.Position.X,Existing.Position.Y,Existing.Approach.X,Existing.Approach.Y);
+            for(const FVector& Obstacle:FixedObstacles)
+                SeedText+=FString::Printf(TEXT("|o%.0f,%.0f,%.0f"),Obstacle.X,Obstacle.Y,Obstacle.Z);
+            FHearthReplacementCandidateInput CandidateInput;
+            CandidateInput.Roads=HearthTownLayout::VillageRoads(bOrganicTownLayout,TownLayoutVersion);
+            CandidateInput.ResidentAnchor=ResidentAnchor;
+            CandidateInput.PublicSite=ProductionSites[PublicProject.Site].Position;
+            CandidateInput.Seed=static_cast<int32>(FCrc::StrCrc32(*SeedText));
+            CandidateInput.MaxCandidates=40;
+            CandidateInput.SamplesPerRoad=5;
+            CandidateInput.PlotRadius=Radius;
+            CandidateInput.RoadClearance=Clearance;
+            for(const FHearthSite& Existing:ProductionSites)
+                CandidateInput.Occupied.Add({Existing.Position,Existing.Radius});
+            for(const FVector& Obstacle:FixedObstacles)
+                CandidateInput.Occupied.Add({Obstacle,static_cast<float>(FMath::Max(Obstacle.Z,80.0))});
+
+            bool bAdded=false;
+            const TArray<FHearthReplacementCandidate> Candidates=HearthSiteCandidates::Generate(CandidateInput);
+            for(const FHearthReplacementCandidate& CandidateData:Candidates)
+            {
+                if(bAdded) break;
+                const FVector Candidate=CandidateData.Position;
                 if(!IsLand(Candidate) || !IsLand(Candidate+FVector(Radius,Radius,0)) || !IsLand(Candidate-FVector(Radius,Radius,0))
                     || !IsLand(Candidate+FVector(-Radius,Radius,0)) || !IsLand(Candidate+FVector(Radius,-Radius,0))) continue;
                 bool bClear=true;
@@ -621,7 +812,12 @@ void AHearthVillage::AdvanceProductionWorld(float Dt)
                         && FMath::Abs(Candidate.Y-Obstacle.Y)<Radius+Obstacle.Z+Clearance) { bClear=false; break; }
                 if(!bClear) continue;
                 FHearthSite Plot; Plot.Kind=EHearthSiteKind::Empty; Plot.Position=Candidate; Plot.Radius=Radius; Plot.bExpansion=true;
-                Plot.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+                Plot.Approach=CandidateData.Approach;
+                const FString StableSource=SeedText+TEXT("|")+CandidateData.StableKey;
+                const FGuid StableGuid(
+                    FCrc::StrCrc32(*StableSource), FCrc::StrCrc32(*(StableSource+TEXT("|1"))),
+                    FCrc::StrCrc32(*(StableSource+TEXT("|2"))), FCrc::StrCrc32(*(StableSource+TEXT("|3"))));
+                Plot.StableId=StableGuid.ToString(EGuidFormats::DigitsWithHyphens);
                 const int32 NewIndex=ProductionSites.Add(MoveTemp(Plot));
                 if(ChooseSiteApproach(NewIndex))
                 {
@@ -792,6 +988,7 @@ void AHearthVillage::AdvanceProduction(int32 Index,float Dt)
         bReplacementPlotSearchDone=false;
         if(bWorldPersistenceEnabled && !bWorldWriteBlocked) SaveWorld();
     }
+    HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
 }
 
 bool AHearthVillage::CancelProduction(int32 Index)
@@ -832,7 +1029,6 @@ void AHearthVillage::FinishProduction(int32 Index,const FString& Result)
 
 void AHearthVillage::AdvanceEconomy(float Dt)
 {
-    AdvanceTileOrders(Dt);
     auto FundsFor=[this](const FHearthWagePayable& P)
     { return P.Funder>=0?(Residents.IsValidIndex(P.Funder)?Residents[P.Funder].Coins:0):(P.bTaxFunded?TaxProjectCoins:GeneralFunds()); };
     for(auto& P:WagePayables) if(P.Status==TEXT("owed") && FundsFor(P)>=P.Amount) SettleWage(P.Worker,P.TaskId);
@@ -898,14 +1094,20 @@ void AHearthVillage::UpdateSiteVisual(int32 Index)
         if(S.VisualStage==Key) return; S.VisualStage=Key;
         for(const auto& Weak:S.Meshes) if(auto* M=Weak.Get()) { ProductionMeshes.Remove(M); M->DestroyComponent(); }
         S.Meshes.Reset();
-        auto AddPart=[this,&S](const FHearthCottageComponent& Part)
+        const FHearthStructurePlan* Plan=StructurePlans.FindByPredicate([&](const FHearthStructurePlan& Candidate){return Candidate.PlanId==S.BuildPlanId;});
+        auto AddPart=[this,&S,Plan](const FHearthCottageComponent& Part)
         {
             const FString Path=FString::Printf(TEXT("/Game/ThreeHearths/Generated/VillageKit/%s/%s"),*Part.AssetId,*Part.AssetId);
-            if(auto* M=AddMesh(Path,S.Position+Part.Offset,FVector::OneVector))
-            { M->SetRelativeRotation(FRotator(0,Part.Yaw,0)); S.Meshes.Add(M); ProductionMeshes.Add(M); }
+            const FHearthStructureComponent* Source=Plan?Plan->Components.FindByPredicate([&](const FHearthStructureComponent& Candidate){return Candidate.Id==Part.Id;}):nullptr;
+            const FVector Origin=Plan?Plan->Footprint.Origin:S.Position;
+            const FRotator FootprintRotation=Plan?Plan->Footprint.Orientation:FRotator::ZeroRotator;
+            const FVector LocalOffset=Source?Source->Offset:Part.Offset;
+            const FRotator LocalRotation=Source?Source->Orientation:FRotator(0,Part.Yaw,0);
+            if(auto* M=AddMesh(Path,Origin+FootprintRotation.RotateVector(LocalOffset),FVector::OneVector))
+            { M->SetWorldRotation((FootprintRotation.Quaternion()*LocalRotation.Quaternion()).Rotator()); S.Meshes.Add(M); ProductionMeshes.Add(M); }
         };
         for(const auto& Part:S.CottageComponents) if(Part.Status==TEXT("completed")) AddPart(Part);
-        if(S.Soil.IsValid()) S.Soil->SetVisibility(S.Units==0);
+        if(S.Soil.IsValid()) S.Soil->SetVisibility(false);
         return;
     }
     int32 Visual=S.Stage;
@@ -914,22 +1116,16 @@ void AHearthVillage::UpdateSiteVisual(int32 Index)
         Visual=20+FMath::Min(3,FMath::FloorToInt(S.Progress*4));
     const int32 Key=static_cast<int32>(S.Kind)*100+Visual;
     if(S.VisualStage==Key) return; S.VisualStage=Key;
-    if(!S.Soil.IsValid())
+    // Ownership stays logical. Only cultivated earth gets a ground treatment;
+    // empty sites, houses, trees and workshops have no display pad or parcel frame.
+    if(!S.Soil.IsValid() && HearthProduction::IsCrop(S.Kind))
     {
-        const FLinearColor Soil(0.30f,0.22f,0.12f);
-        if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(0,0,-3),FVector(S.Radius*2/100,S.Radius*2/100,.018f),&Soil))
-        { S.Soil=M; ProductionMeshes.Add(M); }
-        if(S.bExpansion)
-        {
-            const FLinearColor Edge(.62f,.65f,.35f);
-            for(int32 Side=-1;Side<=1;Side+=2)
-            {
-                if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(0,Side*S.Radius,0),FVector(S.Radius*2/100,.07f,.025f),&Edge)) ProductionMeshes.Add(M);
-                if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cube"),S.Position+FVector(Side*S.Radius,0,0),FVector(.07f,S.Radius*2/100,.025f),&Edge)) ProductionMeshes.Add(M);
-            }
-        }
+        const FLinearColor Soil(.30f,.24f,.14f);
+        for(const auto& Patch:HearthSitePresentation::CropGround(S.StableId,S.Radius))
+            if(auto* M=AddMesh(TEXT("/Engine/BasicShapes/Cylinder"),S.Position+Patch.Offset,Patch.Scale,&Soil))
+            { M->SetWorldRotation(FRotator(0,Patch.Yaw,0)); if(!S.Soil.IsValid())S.Soil=M;else M->AttachToComponent(S.Soil.Get(),FAttachmentTransformRules::KeepWorldTransform); ProductionMeshes.Add(M); }
     }
-    if(S.Soil.IsValid()) S.Soil->SetVisibility(S.Kind!=EHearthSiteKind::Empty);
+    if(S.Soil.IsValid()) S.Soil->SetVisibility(HearthProduction::IsCrop(S.Kind),true);
     FString Path; float Scale=1.f;
     if(HearthProduction::IsCrop(S.Kind))
     {
@@ -985,6 +1181,7 @@ FString AHearthVillage::GetProductionState() const
     Root->SetNumberField(TEXT("planks"),PlankStock); Root->SetNumberField(TEXT("beams"),BeamStock); Root->SetNumberField(TEXT("stone"),StoneStock);
     Root->SetNumberField(TEXT("clay"),ClayStock); Root->SetNumberField(TEXT("tiles"),TileStock);
     Root->SetStringField(TEXT("status"),ProductionStatus); Root->SetNumberField(TEXT("land_grid_cells"),LandGrid.Num());
+    Root->SetStringField(TEXT("tavern_runtime_read_only"),HearthTavernRuntime::LiveExportReadOnly(WorldId));
     TArray<TSharedPtr<FJsonValue>> Sites;
     for(int32 I=0;I<ProductionSites.Num();++I)
     {
@@ -1101,6 +1298,7 @@ void AHearthVillage::AppendProductionContext(const TSharedRef<FJsonObject>& Cont
     Context->SetObjectField(TEXT("production_sites"),Counts);
     auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:ProductionTotals) Totals->SetNumberField(Pair.Key,Pair.Value);
     Context->SetObjectField(TEXT("completed_production_operations"),Totals);
+    Context->SetStringField(TEXT("tavern_runtime_read_only"),HearthTavernRuntime::LiveExportReadOnly(WorldId));
 }
 
 FString AHearthVillage::GetAvailableActivities(int32 Index) const

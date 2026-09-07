@@ -127,7 +127,9 @@ bool FHearthPlannedConstructionRuntimeTest::RunTest(const FString&)
     if(!TestTrue(TEXT("NPC completes every remaining base component through real haul/install work"),CompleteCurrentPlan(Village))) return false;
     const TArray<FHearthCottageComponent> BaseParts=Village->ProductionSites[0].CottageComponents;
     const int32 BaseRooms=Village->StructurePlans[0].Rooms.Num();
-    FHearthSite NeighborSite; NeighborSite.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); NeighborSite.Kind=EHearthSiteKind::Land; NeighborSite.Position=FVector(800,600,8); NeighborSite.Approach=FVector(400,600,8); NeighborSite.bReachable=true; Village->ProductionSites.Add(NeighborSite);
+    // Keep this fixture clear of the original prefab's real roof projection.
+    FHearthSite NeighborSite; NeighborSite.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); NeighborSite.Kind=EHearthSiteKind::Land;
+    NeighborSite.Position=FVector(950,800,8); NeighborSite.Approach=FVector(950,300,8); NeighborSite.bReachable=true; Village->ProductionSites.Add(NeighborSite);
     auto& NeighborBuilder=Village->Residents[1]; NeighborBuilder.BuildProgress=1.f; NeighborBuilder.Task=EHearthTask::LifeChoosing; NeighborBuilder.SocialNeed=80.f; NeighborBuilder.Role=TEXT("陶工"); NeighborBuilder.Actor->SetActorLocation(FVector(0,600,8)); NeighborBuilder.Route.Reset();
     TestFalse(TEXT("A neighbor may not decide an extension for somebody else's completed home"),Village->IsProductionAllowed(1,Action));
     const int32 PreferredAction=Village->ChooseProductionLocally(1); const int32 PreferredSite=(PreferredAction-100)/16,PreferredOperation=(PreferredAction-100)%16;

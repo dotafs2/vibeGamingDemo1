@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "world_id": "F7E68E06-453F-3D13-4821-20824BAE682F",
+  "requests": [
+    {
+      "id": "request_1",
+      "category": "asset",
+      "status": "proposed",
+      "summary": "需要一个纯视觉的铁匠铺招牌模型",
+      "resolution": "记录为视觉资产提议；不会据此声称家族系统或其他玩法已实现。",
+      "requester_ids": [
+        "63503ACB-4B38-F3E7-5312-85A4C73B1C0E",
+        "741D1D10-4E12-0488-B2A7-14AD96177328"
+      ]
+    },
+    {
+      "id": "request_2",
+      "category": "mechanic",
+      "status": "proposed",
+      "summary": "需要实现皇城订单的交易规则",
+      "resolution": "记录为待定义游戏规则；没有现成规则时不声称功能已实现。",
+      "requester_ids": [
+        "A602DA35-47C4-7855-74E3-AAA30A585A64"
+      ]
+    },
+    {
+      "id": "request_3",
+      "category": "narrative",
+      "status": "deferred",
+      "summary": "我盼望将来孩子能过上安稳生活",
+      "resolution": "仅作为叙事意图记录；不会据此声称已有家族、帝国或政治系统事实。",
+      "requester_ids": [
+        "09BB6523-4BAC-A8DF-E833-A586F613B0A1"
+      ]
+    },
+    {
+      "id": "request_4",
+      "category": "existing_action",
+      "status": "resolved_existing",
+      "summary": "我想吃饭",
+      "resolution": "已映射到现有可用选项；仅记录提议，不表示行动已完成，也不新增虚构系统。",
+      "requester_ids": [
+        "1F3CCABE-4679-D0D1-9AB1-55A252182B73"
+      ]
+    },
+    {
+      "id": "request_5",
+      "category": "clarification",
+      "status": "needs_details",
+      "summary": "让生活变得更好",
+      "resolution": "需要可验证的具体需求；当前文字不足以安全归类或执行。",
+      "requester_ids": [
+        "46C7298A-4BF5-59D8-EB3B-3499B348BF6F"
+      ]
+    }
+  ]
+}

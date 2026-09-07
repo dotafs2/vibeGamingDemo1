@@ -10,6 +10,16 @@ namespace HearthPaths
     FVector Point(const FIntPoint& C) { return FVector(C.X*Step,C.Y*Step,8); }
 }
 
+float HearthCottage::WalkRadius(const FHearthCottageComponent& Part)
+{
+    if(Part.AssetId!=TEXT("floor_timber_2m")) return 0;
+    // A named outdoor deck is traversable. Indoor floor bays retain the old
+    // blocking behavior until their interior routing is implemented.
+    if(Part.Id.EndsWith(TEXT(":component:canopy_deck"))) return 0;
+    const float R=FMath::DegreesToRadians(Part.Yaw);
+    return 100*(FMath::Abs(FMath::Sin(R))+FMath::Abs(FMath::Cos(R)))+35;
+}
+
 bool AHearthVillage::IsLand(const FVector& P) const
 {
     if(!bUseCropoutMap) return FMath::Abs(P.X)<1120 && FMath::Abs(P.Y)<960;
@@ -23,8 +33,12 @@ bool AHearthVillage::IsLand(const FVector& P) const
 void AHearthVillage::BuildLandGrid()
 {
     if(!LandGrid.IsEmpty()) return;
-    // Bounded once per world: 45 x 45 cells, five terrain probes per cell.
-    for(int32 X=-22;X<=22;++X) for(int32 Y=-22;Y<=22;++Y)
+    // Town2 keeps the original bounded probe. Town3 uses the generated 300 m
+    // square centered at (6500,6500), still with a fixed 102 x 102 probe
+    // window and five corners per cell so this cannot become an unbounded scan.
+    const int32 MinCell=TownLayoutVersion>=3?-29:-22;
+    const int32 MaxCell=TownLayoutVersion>=3?72:22;
+    for(int32 X=MinCell;X<=MaxCell;++X) for(int32 Y=MinCell;Y<=MaxCell;++Y)
     {
         const FVector P(X*HearthPaths::Step,Y*HearthPaths::Step,8);
         if(IsLand(P) && IsLand(P+FVector(120,120,0)) && IsLand(P+FVector(-120,120,0))
@@ -32,15 +46,29 @@ void AHearthVillage::BuildLandGrid()
     }
 }
 
+bool AHearthVillage::IsSiteWalkObstacle(const FHearthSite& Site) const
+{
+    if(!Site.BuildPlanId.IsEmpty()) return true;
+    if(!PublicProject.Id.IsEmpty() && PublicProject.Status!=TEXT("unapproved") && PublicProject.Status!=TEXT("cancelled")
+        && ProductionSites.IsValidIndex(PublicProject.Site) && &Site==&ProductionSites[PublicProject.Site]) return true;
+    return Site.Kind!=EHearthSiteKind::Empty && Site.Kind!=EHearthSiteKind::Land;
+}
+
 bool AHearthVillage::IsClearPoint(const FVector& P) const
 {
     if(!LandGrid.Contains(HearthPaths::Cell(P))) return false;
     for(const auto& Obstacle:FixedObstacles)
         if(FMath::Abs(P.X-Obstacle.X)<Obstacle.Z && FMath::Abs(P.Y-Obstacle.Y)<Obstacle.Z) return false;
-    // Empty expansion plots reserve their future footprint, keeping permanent paths between buildings.
+    // Ownership reserves building rights, not a physical wall across vacant ground.
     for(const auto& Site:ProductionSites)
-        if(!(Site.Kind==EHearthSiteKind::Empty && !Site.bExpansion && !Site.bReachable)
+        if(IsSiteWalkObstacle(Site)
             && FMath::Abs(P.X-Site.Position.X)<Site.Radius+25 && FMath::Abs(P.Y-Site.Position.Y)<Site.Radius+25) return false;
+    for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents)
+    {
+        const float Radius=HearthCottage::WalkRadius(C); if(Radius<=0) continue;
+        const FVector Center=S.Position+C.Offset;
+        if(FMath::Abs(P.X-Center.X)<Radius && FMath::Abs(P.Y-Center.Y)<Radius) return false;
+    }
     return true;
 }
 
@@ -57,8 +85,14 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
     };
     for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z) && !MayLeaveContainingBox(A,B,O,O.Z)) return false;
     for(const auto& S:ProductionSites)
-        if(!(S.Kind==EHearthSiteKind::Empty && !S.bExpansion && !S.bReachable)
+        if(IsSiteWalkObstacle(S)
             && HearthMovement::SegmentHitsBox(A,B,S.Position,S.Radius+25) && !MayLeaveContainingBox(A,B,S.Position,S.Radius+25)) return false;
+    for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents)
+    {
+        const float Radius=HearthCottage::WalkRadius(C); if(Radius<=0) continue;
+        const FVector Center=S.Position+C.Offset;
+        if(HearthMovement::SegmentHitsBox(A,B,Center,Radius) && !MayLeaveContainingBox(A,B,Center,Radius)) return false;
+    }
     return HearthMovement::GridSegmentClear(A,B,HearthPaths::Step,[this](FIntPoint Cell) { return LandGrid.Contains(Cell); });
 }
 
@@ -122,6 +156,20 @@ bool AHearthVillage::ChooseSiteApproach(int32 Index)
 {
     auto& Site=ProductionSites[Index]; float Best=FLT_MAX; bool Found=false;
     const FVector Depot(-1650,-1050,8);
+    TArray<FVector> PreferredRoute;
+    const float ExistingEntryDistance=FVector::Dist2D(Site.Approach,Site.Position);
+    if(ExistingEntryDistance>=Site.Radius+30 && ExistingEntryDistance<=FMath::Max(750.f,Site.Radius+250.f) && IsClearPoint(Site.Approach) && FindProductionPath(Depot,Site.Approach,PreferredRoute))
+    { Site.bReachable=true; return true; }
+    FVector RoadPoint=Site.Position; double RoadDistance=DBL_MAX;
+    for(const auto& Road:HearthTownLayout::VillageRoads(bOrganicTownLayout,TownLayoutVersion))
+    {
+        const FVector Q=FMath::ClosestPointOnSegment(Site.Position,Road.A,Road.B);
+        const double D=FVector::DistSquared2D(Q,Site.Position);
+        if(D<RoadDistance){RoadDistance=D;RoadPoint=Q;}
+    }
+    const FVector StreetEntry=Site.Position+(RoadPoint-Site.Position).GetSafeNormal2D()*(Site.Radius+90);
+    if(IsClearPoint(StreetEntry) && FindProductionPath(Depot,StreetEntry,PreferredRoute))
+    { Site.Approach=StreetEntry; Site.bReachable=true; return true; }
     const auto C=HearthPaths::Cell(Site.Position);
     for(int32 X=-3;X<=3;++X) for(int32 Y=-3;Y<=3;++Y)
     {

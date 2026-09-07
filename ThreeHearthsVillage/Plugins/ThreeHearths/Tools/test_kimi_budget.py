@@ -17,7 +17,7 @@ import unittest
 import urllib.error
 import urllib.request
 
-from kimi_budget import BudgetDenied,InvalidRequest,Ledger,LedgerCorrupt,NANO,NIGHT_POLICY,usage_cost
+from kimi_budget import BudgetDenied,InvalidRequest,Ledger,LedgerCorrupt,NANO,NIGHT_POLICY,CITY_VALIDATION_POLICY,usage_cost
 from kimi_gateway import BudgetServer,Gateway,UpstreamUnknown,handler_type
 
 BODY={'model':'kimi-k2.6','messages':[{'role':'user','content':'选择一个可执行动作，以中文JSON回答。'}],
@@ -61,6 +61,26 @@ class BudgetTests(unittest.TestCase):
         missing=Ledger(Path(self.folder.name)/'another-world'/'budget.sqlite3')
         with self.assertRaises(LedgerCorrupt): missing.status()
         self.assertFalse(missing.path.exists())
+
+    def test_separate_city_grant_preserves_old_budget_and_durable_call_limit(self):
+        self.assertEqual(CITY_VALIDATION_POLICY.authorized_nano,100*NANO)
+        self.assertEqual(CITY_VALIDATION_POLICY.allocatable_nano,95*NANO)
+        self.assertEqual(CITY_VALIDATION_POLICY.request_limit,600)
+        before=self.ledger.status()
+        path=Path(self.folder.name)/'city-validation.sqlite3'
+        policy=replace(CITY_VALIDATION_POLICY,request_limit=3)
+        separate=Ledger(path,policy,clock=lambda:1)
+        with self.assertRaises(LedgerCorrupt):separate.status()
+        separate.initialize()
+        provider=FakeProvider()
+        gateway=Gateway(separate,provider)
+        for index in range(3):gateway.complete('city-'+str(index),'resident',BODY)
+        reloaded=Ledger(path,policy,clock=lambda:1)
+        with self.assertRaises(BudgetDenied):reloaded.reserve('fourth','resident',BODY)
+        self.assertFalse(reloaded.reserve('city-0','resident',BODY)['send'])
+        self.assertEqual(provider.calls,3)
+        self.assertEqual(self.ledger.status(),before)
+        with self.assertRaises(LedgerCorrupt):Ledger(path,NIGHT_POLICY,clock=lambda:1).status()
 
     def test_integer_maximum_reservation_and_cached_settlement(self):
         self.assertEqual(RESERVATION,1_717_760_000)

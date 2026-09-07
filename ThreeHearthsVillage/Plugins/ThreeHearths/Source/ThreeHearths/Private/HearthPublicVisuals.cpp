@@ -1,4 +1,6 @@
 #include "HearthVillage.h"
+#include "HearthRoyalWorksPlan.h"
+#include "HearthBotanicalCatalog.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -76,7 +78,33 @@ void AHearthVillage::RefreshPublicVisuals()
     if (bCacheMatches) return;
 
     const FHearthSite& Site = ProductionSites[PublicProject.Site];
-    const int32 Limit = FMath::Min(Completed, PublicProject.Parts.Num());
+    const auto Royal=HearthRoyalWorksPlan::BuildForTemplate(PublicProject.TemplateId);
+    if(PublicProject.TemplateId==TEXT("royal_keep_garden_v1") || PublicProject.TemplateId==TEXT("royal_keep_garden_v2"))
+    {
+        auto Add=[&](const FString& Path,const FVector& Position,const FVector& Scale,float Yaw,const FLinearColor& Color,
+            const FHearthRoyalModule* Module=nullptr)
+        {
+            const bool bNativeCentre = Module && Module->bCenterMeshAtOffset;
+            if(auto* M=AddMesh(Path,Position,Scale,bNativeCentre ? nullptr : &Color))
+            {
+                if (bNativeCentre && M->GetStaticMesh())
+                    M->SetWorldTransform(HearthRoyalWorksPlan::MeshTransform(*Module,
+                        M->GetStaticMesh()->GetBounds().GetBox(), Position));
+                else M->SetWorldRotation(FRotator(0,Yaw,0));
+                M->ComponentTags.Add(FName(*FString::Printf(TEXT("PublicProject=%s"),*PublicProject.Id)));
+                PublicMeshes.Add(M);
+            }
+        };
+        for(const auto& Part:PublicProject.Parts) if(Part.Status==TEXT("completed"))
+        {
+            const auto* Module=Royal.Modules.FindByPredicate([&](const auto& M){return M.Id==Part.Asset;}); if(!Module) continue;
+            if(Module->PlantId.IsEmpty()) Add(Module->MeshPath,Site.Position+Part.Offset,Module->Scale,Module->Yaw,Module->Color,Module);
+            else for(const auto& Plant:HearthBotanicalCatalog::Build(Module->PlantId,FCrc::StrCrc32(*Part.Id)))
+                Add(Plant.MeshPath,Site.Position+Part.Offset+FRotator(0,Module->Yaw,0).RotateVector(Plant.Offset*Module->Scale),Plant.Scale*Module->Scale,Plant.Yaw+Module->Yaw,Plant.Color);
+        }
+        return;
+    }
+    const int32 Limit = PublicProject.Parts.Num();
     for (int32 Index = 0; Index < Limit; ++Index)
     {
         const FHearthPublicPart& Part = PublicProject.Parts[Index];
@@ -112,8 +140,11 @@ FString AHearthVillage::PublicWorksSummary() const
         if (Order.Status == TEXT("transporting")) { ++ActiveOrders; ActiveEscrow += Order.Escrow; }
     const int32 Total = PublicProject.Parts.Num();
     const TCHAR* Status = PublicProject.Status == TEXT("completed") ? TEXT("已完工") : TEXT("建设中");
-    return FString::Printf(TEXT("公共城墙：%s %d/%d · 石%d 木板%d 房梁%d · 供应单%d/托管%d · 固定税率%d%%"),
-        Status, PublicProject.Completed, Total, PublicProject.Stock[0], PublicProject.Stock[1], PublicProject.Stock[2],
+    const TCHAR* ProjectLabel = PublicProject.TemplateId == TEXT("royal_keep_garden_v2")
+        ? TEXT("Town3分期主堡与王国庭院")
+        : (PublicProject.TemplateId == TEXT("royal_keep_garden_v1") ? TEXT("主堡与王国花园") : TEXT("公共城墙"));
+    return FString::Printf(TEXT("%s：%s %d/%d · 石%d 木板%d 房梁%d · 供应单%d/托管%d · 固定税率%d%%"),
+        ProjectLabel,Status, PublicProject.Completed, Total, PublicProject.Stock[0], PublicProject.Stock[1], PublicProject.Stock[2],
         ActiveOrders, ActiveEscrow, TaxRatePercent);
 }
 

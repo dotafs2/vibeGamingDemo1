@@ -15,13 +15,15 @@ import sys
 import urllib.error
 import urllib.request
 
-from kimi_budget import BudgetDenied, BudgetError, InvalidRequest, Ledger, LedgerCorrupt, NIGHT_POLICY, encoded
+from kimi_budget import BudgetDenied, BudgetError, InvalidRequest, Ledger, LedgerCorrupt, NIGHT_POLICY, CITY_VALIDATION_POLICY, encoded
 
 ROOT=Path(__file__).resolve().parents[3]
 BUDGET_DIR=ROOT/'Saved/ThreeHearths/Budget'
 LEDGER_PATH=BUDGET_DIR/'kimi-overnight-2026-09-06.sqlite3'
 CONFIG_PATH=ROOT/'Saved/ThreeHearths/api-config.json'
 ENDPOINT_PATH=BUDGET_DIR/'gateway-endpoint.json'
+from kimi_vision import MAX_REQUEST_BYTES
+
 PORT=18766
 UPSTREAM='https://api.moonshot.cn/v1'
 
@@ -123,7 +125,7 @@ def handler_type(gateway,token):
             if self.path!='/v1/chat/completions': return self.reply(404,{'error':'Unknown route'})
             try:
                 length=int(self.headers.get('Content-Length','0'))
-                if not 1<=length<=gateway.ledger.policy.max_request_bytes: raise InvalidRequest('Request size rejected')
+                if not 1<=length<=max(gateway.ledger.policy.max_request_bytes,MAX_REQUEST_BYTES): raise InvalidRequest('Request size rejected')
                 if self.headers.get('Transfer-Encoding'): raise InvalidRequest('Chunked requests are not supported')
                 self.connection.settimeout(5)
                 raw=self.rfile.read(length)
@@ -149,8 +151,10 @@ def write_private_json(path,value):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=('init','serve','status'))
+    parser.add_argument('--profile',choices=('overnight','city-validation'),default='overnight',help='city-validation requires a separately authorized CNY 100 grant; never replaces the old cumulative ledger')
     args=parser.parse_args()
-    ledger=Ledger(LEDGER_PATH)
+    supplemental=args.profile=='city-validation'
+    ledger=Ledger(BUDGET_DIR/'kimi-city-validation-2026-09-07.sqlite3',CITY_VALIDATION_POLICY) if supplemental else Ledger(LEDGER_PATH)
     if args.command=='init':
         print(encoded(ledger.initialize()))
         return
@@ -171,8 +175,8 @@ def main():
     if ledger.status()['halted']: raise BudgetDenied('Provider balance does not permit requests')
     write_private_json(ENDPOINT_PATH,{'schema_version':1,'base_url':f'http://127.0.0.1:{PORT}/v1',
         'api_key':token,'model':NIGHT_POLICY.model,'ledger_id':status['ledger_id'],
-        'policy_sha256':ledger.policy_hash,'allocation_cap_cny':95,'pid':os.getpid()})
-    print('Kimi budget gateway ready on loopback; persistent allocation cap CNY 95',flush=True)
+        'policy_sha256':ledger.policy_hash,'allocation_cap_cny':status['allocation_cap_cny'],'budget_profile':args.profile,'pid':os.getpid()})
+    print('Kimi budget gateway ready on loopback; persistent allocation cap CNY '+str(status['allocation_cap_cny']),flush=True)
     try: server.serve_forever(poll_interval=0.5)
     finally:
         server.server_close()
