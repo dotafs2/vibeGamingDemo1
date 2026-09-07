@@ -329,6 +329,7 @@ private:
     friend class AHearthPlayerController;
     friend class FHearthMovementIntegrationTest;
     friend class FHearthParallelCapacityTest;
+    friend class FHearthHistoryArchiveTest;
     friend class FHearthWorldPersistenceTest;
     friend class FHearthPublicProjectPersistenceTest;
     friend class FHearthStructurePlanPersistenceTest;
@@ -477,6 +478,7 @@ private:
     bool ReservePlot(int32 Index, int32 Plot, const FString& Reason, bool bFromApi);
     void LoadHistory();
     void SaveHistory();
+    bool ArchiveCompletedHistoryIfNeeded();
     void CloseHistoryRun(const FString& Result);
     void StartHistory(int32 Index, bool bLife, const FString& Source);
     void AcceptHistory(int32 Index, const FString& Choice, const FString& Reason, const FString& Source);

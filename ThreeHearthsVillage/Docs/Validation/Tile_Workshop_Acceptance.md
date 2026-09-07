@@ -22,8 +22,14 @@ High-speed scheduling now batches the separate decision-history archive by real 
 - `Saved/ThreeHearths/Acceptance/tile-workshop-reload-comparison.json` — component, order, inventory, and reload comparison.
 - `Saved/ThreeHearths/Acceptance/private-tile-home-closeup.png` — focused real-UE view of the native ceramic roof components and their specular response.
 - `Saved/ThreeHearths/Acceptance/tile-workshop-two-private-tile-homes.png` — real-UE neighborhood view after two private-tile homes completed.
-- `Saved/Logs/TileWorkshopFinal.log` — 34 successful `ThreeHearths` automation tests, zero failures, exit code 0.
+- `Saved/Logs/HistoryArchiveFull.log` — 35 successful `ThreeHearths` automation tests, zero failures, exit code 0.
 
 The automation suite separately covers accepted and refused orders, pre-work cancellation and refund, route interruption, idempotent settlement, material conservation, private-tile construction cancellation, schema-10 validation, and late-response dual-clock behavior.
 
 This evidence came from deterministic local fallback and does not claim Kimi authored the decisions. No Kimi request was sent, and the existing cumulative CNY100 authorization, CNY95 allocation, CNY5 reserve, and original ledger were not changed.
+
+## High-speed archive follow-up and known limits
+
+The later 300x soak kept the live world history bounded at 10,790 records while moving 394,217 older completed records into 127 immutable JSON segments. The 341.7 MiB raw segments remain local runtime evidence rather than repository content; source, the focused regression, and this count are committed. The soak also exposed an older independent limit: absolute simulation time is still stored as a single-precision float and stopped gaining 0.05-second ticks at 1,048,576 simulated seconds. Long-running history storage is bounded, but unlimited-duration world-clock precision is not yet claimed.
+
+Two additional boundaries remain explicit. A delivering tile order currently puts its customer into `TradeWaiting`; the suite does not yet prove that an unrelated task, borrowed tool, or reserved wage already owned by a busy customer is restored after delivery. The kiln court visibly uses shared art modules in a bent, reachable layout, but those workshop props are spawned as one site presentation rather than each being constructed by an NPC as a separate persistent job.

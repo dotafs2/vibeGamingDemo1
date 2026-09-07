@@ -3,9 +3,36 @@
 #include "HearthVillage.h"
 #include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
+#include "HAL/FileManager.h"
+#include "Misc/Paths.h"
 namespace HearthDecision { bool ParsePlan(FString Text,int32& Plot,int32& HouseStyle,FString& Reason); bool ParseLifePlan(FString Text,int32& Action,FString& Reason); }
 namespace HearthDecision { bool RequiresBudgetGateway(const FString& Base,const FString& Model); bool ReadBudgetDescriptor(const FString& Text,FString& Token,FString& Ledger); }
 namespace HearthDecision { bool RequestExceededSimulationDeadline(double CurrentSimulationTime,double StartedSimulationTime,float TimeoutSeconds); }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthHistoryArchiveTest,"ThreeHearths.Decisions.CompletedHistoryArchivesWithoutBreakingReferences",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthHistoryArchiveTest::RunTest(const FString&)
+{
+    const auto Init=UWorld::InitializationValues().AllowAudioPlayback(false).CreatePhysicsScene(false).CreateNavigation(false).CreateAISystem(false);
+    UWorld* World=UWorld::CreateWorld(EWorldType::Game,false,NAME_None,nullptr,true,ERHIFeatureLevel::Num,&Init);
+    if(!TestNotNull(TEXT("Create history archive world"),World)) return false;
+    auto* Village=World->SpawnActor<AHearthVillage>(); Village->Residents.SetNum(10); Village->PendingDecisions.SetNum(10);
+    Village->CurrentRun=FGuid::NewGuid().ToString(EGuidFormats::Digits);
+    Village->HistoryPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/Tests/history-archive-")+Village->CurrentRun+TEXT(".json");
+    for(int32 I=0;I<12010;++I)
+    {
+        FHearthDecisionRecord R; R.Run=Village->CurrentRun; R.Resident=I%10; R.At=I; R.Kind=TEXT("life"); R.Status=TEXT("completed"); R.Choice=FString::FromInt(I);
+        Village->DecisionHistory.Add(MoveTemp(R));
+    }
+    Village->Residents[0].HistoryIndex=0; const FString ProtectedChoice=Village->DecisionHistory[0].Choice;
+    TestTrue(TEXT("Completed history can be archived"),Village->ArchiveCompletedHistoryIfNeeded());
+    TestEqual(TEXT("Recent live history is bounded"),Village->DecisionHistory.Num(),9000);
+    TestTrue(TEXT("Resident reference is remapped to a retained record"),Village->DecisionHistory.IsValidIndex(Village->Residents[0].HistoryIndex));
+    if(Village->DecisionHistory.IsValidIndex(Village->Residents[0].HistoryIndex))
+        TestEqual(TEXT("Protected resident record remains identical"),Village->DecisionHistory[Village->Residents[0].HistoryIndex].Choice,ProtectedChoice);
+    TArray<FString> Segments; IFileManager::Get().FindFiles(Segments,*(Village->HistoryPath+TEXT(".segments/*.json")),true,false);
+    TestEqual(TEXT("One immutable archive segment preserves removed records"),Segments.Num(),1);
+    World->DestroyWorld(false); return true;
+}
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthBudgetRoutingTest,"ThreeHearths.Decisions.PersistentBudgetRouting",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FHearthBudgetRoutingTest::RunTest(const FString&)

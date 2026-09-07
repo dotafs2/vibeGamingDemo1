@@ -7,6 +7,7 @@
 #include "Misc/Parse.h"
 #include "HAL/FileManager.h"
 #include "HAL/PlatformTime.h"
+#include "Misc/Crc.h"
 
 namespace HearthLife
 {
@@ -71,7 +72,9 @@ void AHearthVillage::LoadHistory()
             { R.Status=TEXT("cancelled"); R.Result=TEXT("上次运行已结束，执行结果未完整记录。"); }
             DecisionHistory.Add(MoveTemp(R));
         }
-        HistorySaveStatus=TEXT("完整历史已从本机载入"); ++HistoryRevision; return;
+        const FString SegmentDirectory=HistoryPath+TEXT(".segments");
+        HistorySaveStatus=IFileManager::Get().DirectoryExists(*SegmentDirectory)?TEXT("近期历史已载入 · 早期记录保存在只读分卷"):TEXT("完整历史已从本机载入");
+        ++HistoryRevision; return;
     }
     // The previous implementation kept only one snapshot. Never invent older decisions.
     const FString Legacy=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/legacy-decision-snapshot.json");
@@ -95,6 +98,51 @@ void AHearthVillage::LoadHistory()
     ++HistoryRevision; SaveHistory();
 }
 
+bool AHearthVillage::ArchiveCompletedHistoryIfNeeded()
+{
+    constexpr int32 ArchiveThreshold=12000,RetainedTarget=9000;
+    if(DecisionHistory.Num()<=ArchiveThreshold || HistoryPath.IsEmpty()) return true;
+
+    TSet<int32> Protected;
+    for(const auto& R:Residents) if(DecisionHistory.IsValidIndex(R.HistoryIndex)) Protected.Add(R.HistoryIndex);
+    for(const auto& P:PendingDecisions) if(P.bActive && DecisionHistory.IsValidIndex(P.HistoryIndex)) Protected.Add(P.HistoryIndex);
+    for(int32 I=0;I<DecisionHistory.Num();++I) if(DecisionHistory[I].Kind==TEXT("public_project_policy")) Protected.Add(I);
+
+    TBitArray<> Archive(false,DecisionHistory.Num());
+    int32 Needed=DecisionHistory.Num()-RetainedTarget,Selected=0;
+    for(int32 I=0;I<DecisionHistory.Num() && Selected<Needed;++I)
+    {
+        const FString& Status=DecisionHistory[I].Status;
+        const bool bTerminal=Status==TEXT("completed") || Status==TEXT("failed") || Status==TEXT("cancelled")
+            || Status==TEXT("interrupted") || Status==TEXT("archived") || Status==TEXT("completed_late") || Status==TEXT("failed_late");
+        if(bTerminal && !Protected.Contains(I)) { Archive[I]=true; ++Selected; }
+    }
+    if(Selected<=0) return true;
+
+    auto Root=MakeShared<FJsonObject>(); Root->SetNumberField(TEXT("version"),1); Root->SetNumberField(TEXT("record_count"),Selected);
+    Root->SetStringField(TEXT("source_history"),FPaths::GetCleanFilename(HistoryPath));
+    TArray<TSharedPtr<FJsonValue>> Rows; Rows.Reserve(Selected);
+    for(int32 I=0;I<DecisionHistory.Num();++I) if(Archive[I]) Rows.Add(MakeShared<FJsonValueObject>(HearthLife::RecordJson(DecisionHistory[I])));
+    Root->SetArrayField(TEXT("records"),Rows);
+    FString SegmentText; auto Writer=TJsonWriterFactory<>::Create(&SegmentText); FJsonSerializer::Serialize(Root,Writer);
+    const FString Directory=HistoryPath+TEXT(".segments"); IFileManager::Get().MakeDirectory(*Directory,true);
+    const FString Run=Rows.IsEmpty()?TEXT("unknown"):DecisionHistory[Archive.Find(true)].Run.Replace(TEXT("/"),TEXT("_"));
+    const FString Name=FString::Printf(TEXT("segment-%s-%08x-%d.json"),*Run,FCrc::StrCrc32(*SegmentText),Selected);
+    const FString Path=Directory/Name,Temp=Path+TEXT(".tmp");
+    if(!FFileHelper::SaveStringToFile(SegmentText,*Temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)
+        || !IFileManager::Get().Move(*Path,*Temp,true,true))
+    { HistorySaveStatus=TEXT("历史分卷失败 · 未删除任何记录"); return false; }
+
+    TArray<int32> Remap; Remap.Init(INDEX_NONE,DecisionHistory.Num());
+    TArray<FHearthDecisionRecord> Kept; Kept.Reserve(DecisionHistory.Num()-Selected);
+    for(int32 I=0;I<DecisionHistory.Num();++I) if(!Archive[I]) { Remap[I]=Kept.Num(); Kept.Add(MoveTemp(DecisionHistory[I])); }
+    for(auto& R:Residents) if(R.HistoryIndex>=0) R.HistoryIndex=Remap.IsValidIndex(R.HistoryIndex)?Remap[R.HistoryIndex]:INDEX_NONE;
+    for(auto& P:PendingDecisions) if(P.HistoryIndex>=0) P.HistoryIndex=Remap.IsValidIndex(P.HistoryIndex)?Remap[P.HistoryIndex]:INDEX_NONE;
+    DecisionHistory=MoveTemp(Kept); ++HistoryRevision;
+    HistorySaveStatus=FString::Printf(TEXT("较早历史已分卷 %d 条 · 主存档保留 %d 条"),Selected,DecisionHistory.Num());
+    return true;
+}
+
 void AHearthVillage::SaveHistory()
 {
     if(HistoryPath.IsEmpty()) return;
@@ -105,6 +153,7 @@ void AHearthVillage::SaveHistory()
     // still contains every in-memory record and keeps its 30-real-second cadence.
     if(SimulationSpeed>10.f && LastHistoryDiskWriteAt>=0.0 && Now-LastHistoryDiskWriteAt<2.0)
     { HistorySaveStatus=TEXT("历史有更新 · 正在批量写入"); return; }
+    if(!ArchiveCompletedHistoryIfNeeded()) return;
     IFileManager::Get().MakeDirectory(*FPaths::GetPath(HistoryPath),true);
     const FString Temp=HistoryPath+TEXT(".tmp");
     const bool bSaved=FFileHelper::SaveStringToFile(GetDecisionHistory(),*Temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)
