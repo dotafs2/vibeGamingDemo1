@@ -61,7 +61,7 @@ void AHearthVillage::LoadHistory()
         {
             if(Item->Type!=EJson::Object) continue;
             auto J=Item->AsObject(); double Index=-1; J->TryGetNumberField(TEXT("resident"),Index);
-            if(Index<0 || Index>9 || Index!=FMath::FloorToDouble(Index)) continue;
+            if(Index<0 || Index>=HearthVillageLimits::MaxPopulation || Index!=FMath::FloorToDouble(Index)) continue;
             FHearthDecisionRecord R; R.Resident=static_cast<int32>(Index);
             J->TryGetStringField(TEXT("run"),R.Run); J->TryGetStringField(TEXT("timestamp"),R.Timestamp);
             J->TryGetNumberField(TEXT("simulation_time"),R.At); J->TryGetStringField(TEXT("kind"),R.Kind);
@@ -179,7 +179,7 @@ void AHearthVillage::StartHistory(int32 Index,bool bLife,const FString& Source)
     Record.Timestamp=FDateTime::Now().ToString(TEXT("%Y-%m-%d %H:%M:%S")); Record.At=Elapsed;
     Record.Kind=bLife?TEXT("life"):TEXT("home"); Record.Source=Source; Record.Model=Source==TEXT("api")?ApiModel:FString();
     Record.Context=FString::Printf(TEXT("精力 %.0f · 饥饿 %.0f · 心情 %.0f · 社交需求 %.0f · 小屋 %s · 村庄木材 %d · 已建房屋 %d / %d"),
-        Person.Energy,Person.Hunger,Person.Mood,Person.SocialNeed,Person.BuildProgress>=1?TEXT("已完成"):TEXT("未完成"),AvailableWood(),CompletedHomes(),Residents.Num());
+        Person.Energy,Person.Hunger,Person.Mood,Person.SocialNeed,Person.BuildProgress>=1?TEXT("已完成"):TEXT("未完成"),AvailableWood(),CompletedHomes(),HousingPlotCount());
     Record.Context+=TEXT("\n人设：")+Person.Personality+TEXT("\n当时可选：");
     if(bLife)
     {
@@ -215,6 +215,14 @@ void AHearthVillage::CompleteHistory(int32 Index,const FString& Result)
 TArray<int32> AHearthVillage::AvailableLifeActions(int32 Index) const
 {
     TArray<int32> Actions={0,1,2};
+    if(IsSharedServiceResident(Index))
+    {
+        Actions={0};
+        if(FoodStock>0 && Residents[Index].Coins>0) Actions.Add(50);
+        for(int32 I=0;I<Residents.Num();++I) if(I!=Index && IsSociallyAvailable(I)) Actions.Add(3+I);
+        if(Residents.IsValidIndex(Index)) Actions.Append(HearthTavernRuntime::LiveAvailableSeatActions(WorldId,Residents[Index].StableId));
+        return Actions;
+    }
     if(FoodStock>0 && Residents.IsValidIndex(Index) && Residents[Index].Coins>0) Actions.Add(50);
     Actions.Append(AvailableProductionActions(Index));
     for(int32 I=0;I<Residents.Num();++I) if(I!=Index && IsSociallyAvailable(I)) Actions.Add(3+I);
@@ -227,8 +235,11 @@ FString AHearthVillage::LifeActionName(int32 Index,int32 Action) const
 {
     if(HearthTavernRuntime::IsSeatAction(Action) && Residents.IsValidIndex(Index))
         return HearthTavernRuntime::LiveActionName(WorldId,Action,Residents[Index].StableId);
+    if(Action==60) return TEXT("门楼站岗");
+    if(Action==61) return TEXT("公共道路巡逻");
+    if(Action==62) return TEXT("检查公共马厩与货运场地");
     if(Action>=100) return ProductionActionName(Action);
-    if(Action==0) return TEXT("回家休息");
+    if(Action==0) return IsSharedServiceResident(Index)?TEXT("去公共生活区休息"):TEXT("回家休息");
     if(Action==1) return TEXT("去农田观察作物");
     if(Action==2) return TEXT("巡查树林与木材站");
     if(Action==50) return TEXT("去村镇中心吃饭");
@@ -258,10 +269,10 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
     if(!AvailableLifeActions(Index).Contains(Action)) return false;
     if(Residents.IsValidIndex(Action-3)) return BeginConversation(Index,Action-3,Reason,bFromApi);
     auto& R=Residents[Index];
-    FVector Target=HomeApproach(R.Plot);
+    FVector Target=IsSharedServiceResident(Index)?SharedResidenceAnchor(Index):HomeApproach(R.Plot);
     if(Action==1) Target=bUseCropoutMap?FVector(-1850,-2400,8):PlotPositions[1]+FVector(-245,0,0);
     if(Action==2) Target=WoodPositions[Index%3]+FVector(80,(Index%3)*120-120,0);
-    if(Action==50) Target=bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,0);
+    if(Action==50) Target=IsSharedServiceResident(Index)?SharedResidenceAnchor(Index):(bUseCropoutMap?FVector(-1650,-1050,8):FVector(-250,-400,0));
     if(Residents.IsValidIndex(Action-3)) Target=HomeApproach(Residents[Action-3].Plot);
     if(!bUseCropoutMap && Action!=2) Target.Y+=(Index-1)*120;
     TArray<FVector> Route;
@@ -280,15 +291,20 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
     HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
     const auto& Person=Residents[Index];
     int32 Action=0; FString LocalReason;
+    const bool bUrgentEat=Person.Hunger>=60.f && FoodStock>0 && Person.Coins>0;
+    const bool bUrgentRest=Person.Energy<45.f;
     const TArray<int32> TavernActions=HearthTavernRuntime::LiveAvailableSeatActions(WorldId,Person.StableId);
-    if(!TavernActions.IsEmpty())
+    // In v4 survival needs remain ahead of optional tavern/social activity.
+    // Keep the legacy ordering untouched for older village modes.
+    if(IsOrganicVillage() && bUrgentEat) Action=50;
+    else if(IsOrganicVillage() && bUrgentRest) Action=0;
+    else if(!TavernActions.IsEmpty())
     {
         Action=TavernActions[0];
         LocalReason=Person.StableId==Residents[0].StableId?TEXT("酒馆棚和座位已经逐件建成，我去棚下会面和休息。"):TEXT("我去酒馆棚下会面和休息，参加一次真实使用。");
     }
-    else
-    if(Person.Hunger>=60 && FoodStock>0 && Person.Coins>0) Action=50;
-    else if(Person.Energy<45) Action=0;
+    else if(bUrgentEat) Action=50;
+    else if(bUrgentRest) Action=0;
     else
     {
         const auto HasOpenTileOrder=[](const TArray<FHearthTileOrder>& Orders,int32 Resident)
@@ -331,13 +347,78 @@ void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
         if(Action==0) { const int32 Work=ChooseProductionLocally(Index); if(Work>=0) Action=Work; }
     }
     const FString Reason=!LocalReason.IsEmpty()?LocalReason:Action>=100?TEXT("村庄需要生产和建设，我准备")+ProductionActionName(Action)+TEXT("。"):Action==50?TEXT("肚子饿了，去吃一份库存里的食物。"):Action==0?TEXT("先回家歇一会儿，恢复精力。"):Action>=3?TEXT("想找邻居聊聊，看看大家过得怎么样。"):Action==1?TEXT("去看看田里的作物，熟悉村庄的粮食来源。"):TEXT("去树林和木材站看看，了解村庄的材料情况。");
-    if(StartLifeAction(Index,Action,Reason,false))
+    bool bAccepted=StartLifeAction(Index,Action,Reason,false);
+    int32 AcceptedAction=Action;
+    bool bUsedExecutionFallback=false;
+    if(!bAccepted && IsOrganicVillage())
     {
-        Residents[Index].DecisionSource=Failure.IsEmpty()?TEXT("local"):TEXT("local_fallback");
-        Residents[Index].DecisionNote=Failure.IsEmpty()?TEXT("本地确定性规则选择，依据生存需求、真实订单、社交状态和生产评分；议程仅供模型参考。"):TEXT("本地确定性备用规则选择：")+Failure;
+        // A rejected production choice can be caused by a local route,
+        // reservation, or occupancy race. Try only a small deterministic set
+        // so one bad site cannot spin the resident forever. Survival actions
+        // stay ahead of production alternatives when they are urgent.
+        TArray<int32> FallbackActions;
+        const auto AddFallback=[&FallbackActions,Action](int32 Candidate)
+        {
+            if(Candidate!=Action && !FallbackActions.Contains(Candidate)) FallbackActions.Add(Candidate);
+        };
+        if(bUrgentRest || bUrgentEat)
+        {
+            if(bUrgentRest) AddFallback(0);
+            if(bUrgentEat) AddFallback(50);
+        }
+        else
+        {
+            constexpr int32 MaxProductionFallbacks=3;
+            int32 ProductionFallbacks=0;
+            for(const int32 Candidate:AvailableProductionActions(Index))
+            {
+                if(Candidate==Action || FallbackActions.Contains(Candidate)) continue;
+                FallbackActions.Add(Candidate);
+                if(++ProductionFallbacks>=MaxProductionFallbacks) break;
+            }
+            AddFallback(0); AddFallback(1); AddFallback(2);
+        }
+
+        for(const int32 Candidate:FallbackActions)
+        {
+            const FString CandidateReason=FString::Printf(TEXT("首选行动“%s”未能开始，改选“%s”；继续遵守当前资源、道路和占用约束。"),
+                *LifeActionName(Index,Action),*LifeActionName(Index,Candidate));
+            if(StartLifeAction(Index,Candidate,CandidateReason,false))
+            {
+                bAccepted=true; AcceptedAction=Candidate; bUsedExecutionFallback=true; break;
+            }
+        }
+        if(!bAccepted)
+        {
+            Residents[Index].DecisionNote=FString::Printf(TEXT("首选行动“%s”未能开始；有限备用行动也未通过当前资源、道路或占用校验，本轮不记录为已接受行动。"),
+                *LifeActionName(Index,Action));
+            return;
+        }
+    }
+    if(bAccepted)
+    {
+        Residents[Index].DecisionSource=(Failure.IsEmpty() && !bUsedExecutionFallback)?TEXT("local"):TEXT("local_fallback");
+        if(bUsedExecutionFallback)
+        {
+            Residents[Index].DecisionNote=FString::Printf(TEXT("首选行动“%s”未能开始；已接受备用行动“%s”。原因：当前资源、道路或占用约束未通过。"),
+                *LifeActionName(Index,Action),*LifeActionName(Index,AcceptedAction));
+            if(!Failure.IsEmpty()) Residents[Index].DecisionNote+=TEXT(" 本地决策触发原因：")+Failure;
+        }
+        else
+        {
+            Residents[Index].DecisionNote=Failure.IsEmpty()?TEXT("本地确定性规则选择，依据生存需求、真实订单、社交状态和生产评分；议程仅供模型参考。"):TEXT("本地确定性备用规则选择：")+Failure;
+        }
         auto& Record=DecisionHistory[Residents[Index].HistoryIndex]; Record.Source=Residents[Index].DecisionSource;
-        if(!Failure.IsEmpty() && !Record.Context.Contains(Failure)) Record.Context+=TEXT("\n采用备用规则：")+Failure;
-        if(!Failure.IsEmpty()) Record.Result=TEXT("本地备用选择：")+Failure+TEXT("；正在执行。");
+        if(bUsedExecutionFallback)
+        {
+            Record.Context+=FString::Printf(TEXT("\n首选行动%s未能开始，已接受备用行动%s。"),*LifeActionName(Index,Action),*LifeActionName(Index,AcceptedAction));
+            Record.Result=FString::Printf(TEXT("已接受备用行动：%s。"),*LifeActionName(Index,AcceptedAction));
+        }
+        else
+        {
+            if(!Failure.IsEmpty() && !Record.Context.Contains(Failure)) Record.Context+=TEXT("\n采用备用规则：")+Failure;
+            if(!Failure.IsEmpty()) Record.Result=TEXT("本地备用选择：")+Failure+TEXT("；正在执行。");
+        }
         ++HistoryRevision; SaveHistory();
     }
 }
@@ -363,6 +444,15 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     auto Person=MakeShared<FJsonObject>(); Person->SetNumberField(TEXT("id"),Index);
     Person->SetStringField(TEXT("name"),R.Name); Person->SetStringField(TEXT("personality"),R.Personality);
     Person->SetStringField(TEXT("design_goal"),R.DesignGoal); Person->SetStringField(TEXT("design_feedback"),R.DesignFeedback);
+    if(const auto* Home=OrganicHomes.Find(R.StableId))
+    {
+        auto House=MakeShared<FJsonObject>(); House->SetStringField(TEXT("current_recipe"),Home->CurrentRecipe);
+        House->SetStringField(TEXT("target_recipe"),Home->TargetRecipe); House->SetStringField(TEXT("choice_reason"),Home->ChoiceReason);
+        House->SetStringField(TEXT("choice_source"),Home->Source); House->SetNumberField(TEXT("installed_modules"),Home->InstalledKeys.Num());
+        House->SetNumberField(TEXT("reclaimed_stone"),Home->Reclaimed.Stone); House->SetNumberField(TEXT("reclaimed_planks"),Home->Reclaimed.Planks);
+        House->SetNumberField(TEXT("reclaimed_beams"),Home->Reclaimed.Beams); House->SetNumberField(TEXT("reclaimed_tiles"),Home->Reclaimed.Tiles);
+        Person->SetObjectField(TEXT("actual_modular_home"),House);
+    }
     Person->SetStringField(TEXT("stable_id"),R.StableId); Person->SetStringField(TEXT("role"),R.Role);
     Person->SetBoolField(TEXT("king"),R.bKing); Person->SetNumberField(TEXT("age"),R.Age);
     Person->SetNumberField(TEXT("hunger"),R.Hunger); Person->SetNumberField(TEXT("mood"),R.Mood);
@@ -487,5 +577,6 @@ FString AHearthVillage::LifeSummary() const
     if(!Thinking.IsEmpty()) return FString::Join(Thinking,TEXT("、"))+TEXT("正在各自思考，回复后独立执行");
     if(ApiRequests>=ApiMaxRequests && bApiReady) return TEXT("本轮模型预算已用完 · 后续采用本地规则");
     const float RealWait=LifeDecisionInterval/FMath::Max(1.f,SimulationSpeed);
+    if(IsOrganicVillage()) return TEXT("自主生活开启 · 站岗与巡逻在本地运行；普通思考间隔至少半小时现实时间，真实交谈另有冷却。");
     return FString::Printf(TEXT("自主生活开启 · 每人独立思考 · 间隔 %d 秒模拟时间（当前约 %.2f 秒现实时间）"),FMath::RoundToInt(LifeDecisionInterval),RealWait);
 }

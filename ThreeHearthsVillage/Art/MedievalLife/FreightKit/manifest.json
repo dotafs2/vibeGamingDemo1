@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "units": "meters",
+  "front": "-Y",
+  "up": "+Z",
+  "materials": {
+    "oak": "936442",
+    "oak_light": "C59460",
+    "oak_dark": "503B2D",
+    "endgrain": "C9A172",
+    "iron": "495258",
+    "steel": "A2B7BD",
+    "stone": "8D9996",
+    "stone_light": "B8BEAD",
+    "stone_dark": "687775",
+    "blue": "416B86",
+    "blue_light": "648B9D",
+    "gold": "D6AC61",
+    "linen": "E8D6AE",
+    "leather": "604231",
+    "leather_light": "AB7550",
+    "bay": "976249",
+    "bay_light": "B8805C",
+    "bay_dark": "704B3D",
+    "grey": "B9BDB0",
+    "grey_light": "D5D8C9",
+    "grey_dark": "919B95",
+    "mane": "3C3530",
+    "hoof": "44403B",
+    "eye": "252A2D",
+    "skin": "CE9976",
+    "skin_light": "E6B792",
+    "hair": "665041",
+    "hay": "B8A768",
+    "hay_light": "D6BD7B",
+    "water": "728E91",
+    "roof": "627987",
+    "roof_light": "8A9BA0",
+    "moss": "899364",
+    "earth": "757B62",
+    "flame": "E7AB5A",
+    "red": "A76452"
+  },
+  "modules": [
+    {
+      "id": "cargo_planks",
+      "fbx": "cargo_planks.fbx",
+      "sha256": "3fab685b4315acd20c8f7a7dfd78d5b0cfa44e06e432236c4081ba11fd8dd80b",
+      "glb": "cargo_planks.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "cargo_planks__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cargo_planks__structure"
+        }
+      ],
+      "triangles": 540,
+      "notes": "Exactly one sawn plank per instance. Bottom origin; stack without scaling.",
+      "bounds_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      }
+    },
+    {
+      "id": "cargo_beams",
+      "fbx": "cargo_beams.fbx",
+      "sha256": "0f6156d5c3e210cd0be8e0dedc4875a151ed70a2ec9c8d3e4c1bc154c95ed492",
+      "glb": "cargo_beams.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "cargo_beams__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cargo_beams__structure"
+        }
+      ],
+      "triangles": 756,
+      "notes": "Exactly one squared beam per instance. Bottom origin; stack without scaling.",
+      "bounds_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      }
+    },
+    {
+      "id": "cart_traces",
+      "fbx": "cart_traces.fbx",
+      "sha256": "dbb6db5910236f9bde4069a506db7c40d16c517e745764a1d9f481764d6d3f50",
+      "glb": "cart_traces.glb",
+      "layers": [
+        {
+          "layer": "attachments",
+          "object_name": "cart_traces__attachments"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cart_traces__structure"
+        }
+      ],
+      "triangles": 1240,
+      "notes": "Cart axle ground origin; links shafts to horse located at (0,-2.90,0).",
+      "bounds_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      }
+    },
+    {
+      "id": "freight_depot_rack",
+      "fbx": "freight_depot_rack.fbx",
+      "sha256": "7574863cb60ee8a7d5709a3c6c09d6b95f4765d7fd92514e8c0edb96918a2cd2",
+      "glb": "freight_depot_rack.glb",
+      "layers": [
+        {
+          "layer": "attachments",
+          "object_name": "freight_depot_rack__attachments"
+        },
+        {
+          "layer": "finish",
+          "object_name": "freight_depot_rack__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "freight_depot_rack__structure"
+        }
+      ],
+      "triangles": 4460,
+      "notes": "Empty modular loading rack. Stored cargo is a separate inventory-driven layer.",
+      "bounds_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      }
+    }
+  ]
+}

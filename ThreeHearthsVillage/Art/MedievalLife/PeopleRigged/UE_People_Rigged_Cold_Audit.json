@@ -1,0 +1,1419 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "destination_root": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged",
+  "people": [
+    {
+      "id": "gatekeeper",
+      "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+      "meshes": [
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments.gatekeeper__attachments",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___leather_light.Medieval___leather_light"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -27.0,
+              7.500000953674316,
+              89.50000762939453
+            ],
+            "max_cm": [
+              -12.999998092651367,
+              16.500001907348633,
+              106.50000762939453
+            ],
+            "extent_cm": [
+              7.000000953674316,
+              4.500000476837158,
+              8.5
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__finish.gatekeeper__finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___gate_brass.Medieval___gate_brass",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___steel.Medieval___steel",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___hair.Medieval___hair",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___eye.Medieval___eye"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -45.59730529785156,
+              -24.69999885559082,
+              0.20000016689300537
+            ],
+            "max_cm": [
+              45.59730911254883,
+              24.69999885559082,
+              195.0
+            ],
+            "extent_cm": [
+              45.597307205200195,
+              24.69999885559082,
+              97.3999999165535
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__helmet_finish.gatekeeper__helmet_finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___gate_brass.Medieval___gate_brass"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -2.050001621246338,
+              -18.84821891784668,
+              198.7080078125
+            ],
+            "max_cm": [
+              2.0500028133392334,
+              20.448225021362305,
+              215.7920379638672
+            ],
+            "extent_cm": [
+              2.0500022172927856,
+              19.648221969604492,
+              8.542015075683594
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__helmet_structure.gatekeeper__helmet_structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___steel.Medieval___steel",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___iron.Medieval___iron"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -31.0,
+              -30.20000457763672,
+              189.00001525878906
+            ],
+            "max_cm": [
+              31.0,
+              31.80000114440918,
+              218.00003051757812
+            ],
+            "extent_cm": [
+              31.0,
+              31.00000286102295,
+              14.500007629394531
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__spear_finish.gatekeeper__spear_finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___iron.Medieval___iron",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___steel.Medieval___steel"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              30.179174423217773,
+              12.815349578857422,
+              2.0000057220458984
+            ],
+            "max_cm": [
+              45.82082748413086,
+              21.184646606445312,
+              259.98272705078125
+            ],
+            "extent_cm": [
+              7.820826530456543,
+              4.184648513793945,
+              128.99136066436768
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__spear_structure.gatekeeper__spear_structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___oak_dark.Medieval___oak_dark"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              34.900001525878906,
+              14.05172348022461,
+              2.0000057220458984
+            ],
+            "max_cm": [
+              41.099998474121094,
+              19.948272705078125,
+              219.0
+            ],
+            "extent_cm": [
+              3.0999984741210938,
+              2.948274612426758,
+              108.49999713897705
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__structure.gatekeeper__structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "reference_bones": [
+            "gatekeeper_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "gatekeeper_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___oak_dark.Medieval___oak_dark",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___gate_olive.Medieval___gate_olive",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___linen.Medieval___linen",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Medieval___skin_light.Medieval___skin_light"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -47.83760070800781,
+              -18.0,
+              11.483442306518555
+            ],
+            "max_cm": [
+              47.83760452270508,
+              21.060100555419922,
+              193.70001220703125
+            ],
+            "extent_cm": [
+              47.837602615356445,
+              19.53005027770996,
+              91.10828495025635
+            ]
+          }
+        }
+      ],
+      "animations": {
+        "Idle": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper_Idle.gatekeeper_Idle",
+          "class": "AnimSequence",
+          "clip": "Idle",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "length_s": 2.0,
+          "frames": 60,
+          "keys": 61,
+          "track_names": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "gatekeeper_rig",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 2.0,
+            "frames": 60,
+            "keys": 61,
+            "fps": 30
+          }
+        },
+        "Walk": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/Walk/gatekeeper_Walk.gatekeeper_Walk",
+          "class": "AnimSequence",
+          "clip": "Walk",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/gatekeeper/gatekeeper__attachments_Skeleton.gatekeeper__attachments_Skeleton",
+          "length_s": 1.0,
+          "frames": 30,
+          "keys": 31,
+          "track_names": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "gatekeeper_rig",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 1.0,
+            "frames": 30,
+            "keys": 31,
+            "fps": 30
+          }
+        }
+      },
+      "source_hash_matches": true,
+      "source_sha256": {
+        "Idle": "99ae4b0cff2c5f09da979e64e964e673417b0803bc7e722ca6eb67b9cd11b7cb",
+        "Walk": "a1a2cd4864a010035b40f98f78b9978304189719ed4e9810fdb2e5b5b880c71c"
+      }
+    },
+    {
+      "id": "royal_guard",
+      "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+      "meshes": [
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments.royal_guard__attachments",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___leather_light.Medieval___leather_light"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -27.0,
+              7.500000953674316,
+              89.50000762939453
+            ],
+            "max_cm": [
+              -12.999998092651367,
+              16.500001907348633,
+              106.50000762939453
+            ],
+            "extent_cm": [
+              7.000000953674316,
+              4.500000476837158,
+              8.5
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__finish.royal_guard__finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___gold.Medieval___gold",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___steel.Medieval___steel",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___hair.Medieval___hair",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___eye.Medieval___eye"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -45.59730529785156,
+              -24.69999885559082,
+              0.20000016689300537
+            ],
+            "max_cm": [
+              45.59730911254883,
+              24.69999885559082,
+              195.0
+            ],
+            "extent_cm": [
+              45.597307205200195,
+              24.69999885559082,
+              97.3999999165535
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__helmet_finish.royal_guard__helmet_finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___gold.Medieval___gold"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -2.050001621246338,
+              -18.84821891784668,
+              198.7080078125
+            ],
+            "max_cm": [
+              2.0500028133392334,
+              20.448225021362305,
+              215.7920379638672
+            ],
+            "extent_cm": [
+              2.0500022172927856,
+              19.648221969604492,
+              8.542015075683594
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__helmet_structure.royal_guard__helmet_structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___steel.Medieval___steel",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___iron.Medieval___iron"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -31.0,
+              -30.20000457763672,
+              189.00001525878906
+            ],
+            "max_cm": [
+              31.0,
+              31.80000114440918,
+              218.00003051757812
+            ],
+            "extent_cm": [
+              31.0,
+              31.00000286102295,
+              14.500007629394531
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__shield_finish.royal_guard__shield_finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___gold.Medieval___gold"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -69.11494445800781,
+              30.949993133544922,
+              35.63428497314453
+            ],
+            "max_cm": [
+              -6.885046482086182,
+              34.80000686645508,
+              121.15001678466797
+            ],
+            "extent_cm": [
+              31.114948987960815,
+              1.9250068664550781,
+              42.75786590576172
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__shield_structure.royal_guard__shield_structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___blue.Medieval___blue",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___leather.Medieval___leather"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -67.94898223876953,
+              14.75000286102295,
+              36.54503631591797
+            ],
+            "max_cm": [
+              -8.051015853881836,
+              31.30000877380371,
+              120.00000762939453
+            ],
+            "extent_cm": [
+              29.948983192443848,
+              8.27500295639038,
+              41.72748565673828
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__spear_finish.royal_guard__spear_finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___iron.Medieval___iron",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___steel.Medieval___steel"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              30.179174423217773,
+              12.815349578857422,
+              2.0000057220458984
+            ],
+            "max_cm": [
+              45.82082748413086,
+              21.184646606445312,
+              259.98272705078125
+            ],
+            "extent_cm": [
+              7.820826530456543,
+              4.184648513793945,
+              128.99136066436768
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__spear_structure.royal_guard__spear_structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___oak_dark.Medieval___oak_dark"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              34.900001525878906,
+              14.05172348022461,
+              2.0000057220458984
+            ],
+            "max_cm": [
+              41.099998474121094,
+              19.948272705078125,
+              219.0
+            ],
+            "extent_cm": [
+              3.0999984741210938,
+              2.948274612426758,
+              108.49999713897705
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__structure.royal_guard__structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "reference_bones": [
+            "royal_guard_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "royal_guard_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___oak_dark.Medieval___oak_dark",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___blue.Medieval___blue",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___linen.Medieval___linen",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Medieval___skin_light.Medieval___skin_light"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -47.83760070800781,
+              -18.0,
+              11.483442306518555
+            ],
+            "max_cm": [
+              47.83760452270508,
+              21.060100555419922,
+              193.70001220703125
+            ],
+            "extent_cm": [
+              47.837602615356445,
+              19.53005027770996,
+              91.10828495025635
+            ]
+          }
+        }
+      ],
+      "animations": {
+        "Idle": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard_Idle.royal_guard_Idle",
+          "class": "AnimSequence",
+          "clip": "Idle",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "length_s": 2.0,
+          "frames": 60,
+          "keys": 61,
+          "track_names": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "royal_guard_rig",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 2.0,
+            "frames": 60,
+            "keys": 61,
+            "fps": 30
+          }
+        },
+        "Walk": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/Walk/royal_guard_Walk.royal_guard_Walk",
+          "class": "AnimSequence",
+          "clip": "Walk",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/royal_guard/royal_guard__attachments_Skeleton.royal_guard__attachments_Skeleton",
+          "length_s": 1.0,
+          "frames": 30,
+          "keys": 31,
+          "track_names": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "royal_guard_rig",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 1.0,
+            "frames": 30,
+            "keys": 31,
+            "fps": 30
+          }
+        }
+      },
+      "source_hash_matches": true,
+      "source_sha256": {
+        "Idle": "835b780eecef384eb0951a55e3013c8299457774bc70d574efd7b99df2d1b8bd",
+        "Walk": "68190e9869c1bbd0e14e81d7fa6d2d36e16205945801b38822077ebbb2e9039e"
+      }
+    },
+    {
+      "id": "carter",
+      "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+      "meshes": [
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments.carter__attachments",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "reference_bones": [
+            "carter_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "carter_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___leather_light.Medieval___leather_light"
+          ],
+          "material_slot_count": 1,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -27.0,
+              7.500000953674316,
+              89.50000762939453
+            ],
+            "max_cm": [
+              -12.999998092651367,
+              16.500001907348633,
+              106.50000762939453
+            ],
+            "extent_cm": [
+              7.000000953674316,
+              4.500000476837158,
+              8.5
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__finish.carter__finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "reference_bones": [
+            "carter_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "carter_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___gold.Medieval___gold",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___linen.Medieval___linen",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___hair.Medieval___hair",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___eye.Medieval___eye"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -45.59730529785156,
+              -24.69999885559082,
+              0.20000016689300537
+            ],
+            "max_cm": [
+              45.59730911254883,
+              24.69999885559082,
+              195.0
+            ],
+            "extent_cm": [
+              45.597307205200195,
+              24.69999885559082,
+              97.3999999165535
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__structure.carter__structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "reference_bones": [
+            "carter_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "carter_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___oak_dark.Medieval___oak_dark",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___red.Medieval___red",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___linen.Medieval___linen",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___skin.Medieval___skin",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___skin_light.Medieval___skin_light"
+          ],
+          "material_slot_count": 6,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -47.83760070800781,
+              -18.0,
+              11.483442306518555
+            ],
+            "max_cm": [
+              47.83760452270508,
+              21.060100555419922,
+              193.70001220703125
+            ],
+            "extent_cm": [
+              47.837602615356445,
+              19.53005027770996,
+              91.10828495025635
+            ]
+          }
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__wardrobe.carter__wardrobe",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "reference_bones": [
+            "carter_Rig",
+            "root",
+            "pelvis",
+            "spine",
+            "neck",
+            "head",
+            "upper_arm_l",
+            "forearm_l",
+            "hand_l",
+            "upper_arm_r",
+            "forearm_r",
+            "hand_r",
+            "thigh_l",
+            "shin_l",
+            "foot_l",
+            "thigh_r",
+            "shin_r",
+            "foot_r"
+          ],
+          "authored_bone_count": 17,
+          "object_root_bones": [
+            "carter_rig"
+          ],
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___leather_light_001.Medieval___leather_light_001",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___leather_001.Medieval___leather_001",
+            "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Medieval___grey_001.Medieval___grey_001"
+          ],
+          "material_slot_count": 3,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -18.151042938232422,
+              -17.863086700439453,
+              157.20001220703125
+            ],
+            "max_cm": [
+              18.151042938232422,
+              21.750003814697266,
+              198.50001525878906
+            ],
+            "extent_cm": [
+              18.151042938232422,
+              19.80654525756836,
+              20.650001525878906
+            ]
+          }
+        }
+      ],
+      "animations": {
+        "Idle": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter_Idle.carter_Idle",
+          "class": "AnimSequence",
+          "clip": "Idle",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "length_s": 2.0,
+          "frames": 60,
+          "keys": 61,
+          "track_names": [
+            "carter_rig",
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 2.0,
+            "frames": 60,
+            "keys": 61,
+            "fps": 30
+          }
+        },
+        "Walk": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/Walk/carter_Walk.carter_Walk",
+          "class": "AnimSequence",
+          "clip": "Walk",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/PeopleRigged/carter/carter__attachments_Skeleton.carter__attachments_Skeleton",
+          "length_s": 1.0,
+          "frames": 30,
+          "keys": 31,
+          "track_names": [
+            "carter_rig",
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "neck",
+            "pelvis",
+            "root",
+            "shin_l",
+            "shin_r",
+            "spine",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "changed_tracks": [
+            "foot_l",
+            "foot_r",
+            "forearm_l",
+            "forearm_r",
+            "hand_l",
+            "hand_r",
+            "head",
+            "pelvis",
+            "shin_l",
+            "shin_r",
+            "thigh_l",
+            "thigh_r",
+            "upper_arm_l",
+            "upper_arm_r"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 1.0,
+            "frames": 30,
+            "keys": 31,
+            "fps": 30
+          }
+        }
+      },
+      "source_hash_matches": true,
+      "source_sha256": {
+        "Idle": "1e030f7daad0915c07d484743e2544b1c68aa46a70f2e8e426175c48be5cdfbc",
+        "Walk": "32f7712e1cddd3219608b9e4f7c42eddb688f2d52acfe13ddd29d0b5c2438d5e"
+      }
+    }
+  ],
+  "source_to_unreal_matrix": [
+    [
+      100.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -100.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_to_unreal_matrix_basis": "expected authored X,+Z / Y,-Z, metres_to_centimetres",
+  "source_report": "Art/MedievalLife/PeopleRigged/people_rig_report.json",
+  "cold_load": true,
+  "static_meshes_rejected": true
+}

@@ -1,0 +1,540 @@
+{
+  "date": "2026-09-08",
+  "engine": "Unreal Engine 5.8",
+  "runtime_meshes": 114,
+  "source_modules": 28,
+  "master_houses": 3,
+  "growth_stages": 2,
+  "full_regression": {
+    "succeeded": 73,
+    "succeededWithWarnings": 6,
+    "failed": 0,
+    "notRun": 0
+  },
+  "final_policy_and_runtime_tests": {
+    "succeeded": 2,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "same_world_recovered": true,
+  "stalled_before_fix": {
+    "world_id": "109B0CF8-4E06-95E4-DAEB-D4BFE8D4EFF7",
+    "revision": 30,
+    "simulation_seconds": 21350.693359375,
+    "stock": {
+      "Food": 0,
+      "Planks": 252,
+      "Beams": 0,
+      "Stone": 32,
+      "Tiles": 24,
+      "TreasuryCoins": 186
+    },
+    "homes": [
+      {
+        "resident": "托马斯",
+        "recipe": "family_starter",
+        "target": "family_side_wing",
+        "installed": 37,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "米拉",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 53,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "奥斯卡",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "罗莎",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "梅芙",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 48,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "塞琳",
+        "recipe": "family_starter",
+        "target": "family_side_wing",
+        "installed": 37,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "林恩",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "伊芙",
+        "recipe": "merchant_steps",
+        "target": "merchant_steps",
+        "installed": 99,
+        "reason": "临街经营需要店面、仓储和高低相接的生活空间。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "伯恩",
+        "recipe": "family_starter",
+        "target": "family_side_wing",
+        "installed": 34,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      }
+    ],
+    "residents": [
+      {
+        "Name": "林恩",
+        "Energy": 44.83857727050781,
+        "Hunger": 100,
+        "Coins": 51,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 78，饥饿 100，社交需求 16。"
+      },
+      {
+        "Name": "米拉",
+        "Energy": 56.09270477294922,
+        "Hunger": 100,
+        "Coins": 49,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 78，饥饿 100，社交需求 66。"
+      },
+      {
+        "Name": "伯恩",
+        "Energy": 0,
+        "Hunger": 100,
+        "Coins": 15,
+        "Task": 7,
+        "LatestEvent": "农田建成，接下来可以播种耕作。 已领取预留工资 2 枚。 当前库存：食物 90、原木 26、木板 18、房梁 0、石材 0、黏土 2、屋瓦 0。"
+      },
+      {
+        "Name": "阿尔登",
+        "Energy": 71.89746856689453,
+        "Hunger": 100,
+        "Coins": 61,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 78，饥饿 100，社交需求 14。"
+      },
+      {
+        "Name": "伊芙",
+        "Energy": 46.027427673339844,
+        "Hunger": 100,
+        "Coins": 70,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 78，饥饿 100，社交需求 16。"
+      },
+      {
+        "Name": "罗莎",
+        "Energy": 60.943565368652344,
+        "Hunger": 100,
+        "Coins": 39,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 78，饥饿 100，社交需求 15。"
+      },
+      {
+        "Name": "奥斯卡",
+        "Energy": 56.20259094238281,
+        "Hunger": 100,
+        "Coins": 65,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 77，饥饿 100，社交需求 15。"
+      },
+      {
+        "Name": "梅芙",
+        "Energy": 0,
+        "Hunger": 100,
+        "Coins": 12,
+        "Task": 7,
+        "LatestEvent": "去村镇中心吃饭已完成。精力 37，饥饿 5，社交需求 1。花1枚钱购买并吃掉1份食物，交易与消耗均已入账。"
+      },
+      {
+        "Name": "托马斯",
+        "Energy": 69.29723358154297,
+        "Hunger": 100,
+        "Coins": 40,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 77，饥饿 100，社交需求 17。"
+      },
+      {
+        "Name": "塞琳",
+        "Energy": 61.17095947265625,
+        "Hunger": 100,
+        "Coins": 32,
+        "Task": 7,
+        "LatestEvent": "回家休息已完成。精力 77，饥饿 100，社交需求 15。"
+      }
+    ],
+    "organic_material_purchases": 7
+  },
+  "recovered_world": {
+    "world_id": "109B0CF8-4E06-95E4-DAEB-D4BFE8D4EFF7",
+    "revision": 40,
+    "simulation_seconds": 29570.806640625,
+    "stock": {
+      "Food": 396,
+      "Planks": 232,
+      "Beams": 424,
+      "Stone": 2,
+      "Tiles": 0,
+      "TreasuryCoins": 35
+    },
+    "homes": [
+      {
+        "resident": "托马斯",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 61,
+        "reason": "与邻居建立了联系，想增加能相聚的侧院空间。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "米拉",
+        "recipe": "family_cluster",
+        "target": "family_cluster",
+        "installed": 86,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "奥斯卡",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "罗莎",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "梅芙",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 53,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "塞琳",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 62,
+        "reason": "与邻居建立了联系，想增加能相聚的侧院空间。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "林恩",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "伊芙",
+        "recipe": "merchant_steps",
+        "target": "merchant_steps",
+        "installed": 99,
+        "reason": "临街经营需要店面、仓储和高低相接的生活空间。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "伯恩",
+        "recipe": "family_side_wing",
+        "target": "family_cluster",
+        "installed": 63,
+        "reason": "根据自己的安家愿望，先扩建一间侧翼，保留原来的家。",
+        "source": "local_rules"
+      }
+    ],
+    "residents": [
+      {
+        "Name": "林恩",
+        "Energy": 99.97998046875,
+        "Hunger": 40.98273468017578,
+        "Coins": 49,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "米拉",
+        "Energy": 99.7247314453125,
+        "Hunger": 59.866355895996094,
+        "Coins": 44,
+        "Task": 8,
+        "LatestEvent": "去村镇中心吃饭。"
+      },
+      {
+        "Name": "伯恩",
+        "Energy": 98.96273803710938,
+        "Hunger": 44.682701110839844,
+        "Coins": 18,
+        "Task": 12,
+        "LatestEvent": "携带 6 份原木回村镇中心，尚未入库。"
+      },
+      {
+        "Name": "阿尔登",
+        "Energy": 99.97747802734375,
+        "Hunger": 36.73153305053711,
+        "Coins": 132,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "伊芙",
+        "Energy": 99.99124145507812,
+        "Hunger": 35.173038482666016,
+        "Coins": 147,
+        "Task": 8,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "罗莎",
+        "Energy": 99.969970703125,
+        "Hunger": 52.022666931152344,
+        "Coins": 62,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "奥斯卡",
+        "Energy": 81.6427001953125,
+        "Hunger": 40.94475555419922,
+        "Coins": 60,
+        "Task": 11,
+        "LatestEvent": "加工房梁并运回 · 14号木工台（食物0 / 木材3 / 石材0）"
+      },
+      {
+        "Name": "梅芙",
+        "Energy": 99.1741943359375,
+        "Hunger": 35.90626907348633,
+        "Coins": 4,
+        "Task": 8,
+        "LatestEvent": "去村镇中心吃饭。"
+      },
+      {
+        "Name": "托马斯",
+        "Energy": 99.97998046875,
+        "Hunger": 44.62073516845703,
+        "Coins": 36,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "塞琳",
+        "Energy": 99.96746826171875,
+        "Hunger": 34.74933624267578,
+        "Coins": 28,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      }
+    ],
+    "organic_material_purchases": 120
+  },
+  "fresh_reviewed_world": {
+    "world_id": "52C2F8AA-4971-A979-F2B0-708A36FDA5A9",
+    "revision": 5,
+    "simulation_seconds": 3321.76513671875,
+    "stock": {
+      "Food": 388,
+      "Planks": 197,
+      "Beams": 72,
+      "Stone": 38,
+      "Tiles": 40,
+      "TreasuryCoins": 11
+    },
+    "homes": [
+      {
+        "resident": "米拉",
+        "recipe": "family_side_wing",
+        "target": "family_side_wing",
+        "installed": 50,
+        "reason": "希望侧院能接待朋友，保留向后扩建的余地。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "塞琳",
+        "recipe": "family_side_wing",
+        "target": "family_side_wing",
+        "installed": 50,
+        "reason": "用积攒的收入扩建一间侧翼，保留原来的小家和生活储备。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "梅芙",
+        "recipe": "family_side_wing",
+        "target": "family_side_wing",
+        "installed": 50,
+        "reason": "希望侧院能接待朋友，保留向后扩建的余地。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "托马斯",
+        "recipe": "family_side_wing",
+        "target": "family_side_wing",
+        "installed": 50,
+        "reason": "已经有 1 次邻里交往，留足生活钱后增加能相聚的空间。",
+        "source": "local_rules"
+      },
+      {
+        "resident": "伊芙",
+        "recipe": "merchant_steps",
+        "target": "merchant_steps",
+        "installed": 99,
+        "reason": "临街经营需要店面、仓储和高低相接的生活空间。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "奥斯卡",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "伯恩",
+        "recipe": "family_starter",
+        "target": "family_starter",
+        "installed": 35,
+        "reason": "先住进紧凑的小家，再按需要扩建。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "林恩",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      },
+      {
+        "resident": "罗莎",
+        "recipe": "carpenter_court",
+        "target": "carpenter_court",
+        "installed": 78,
+        "reason": "手艺人的家围绕工作院落和材料棚展开。",
+        "source": "founding_estate_local_rules"
+      }
+    ],
+    "residents": [
+      {
+        "Name": "林恩",
+        "Energy": 99.769775390625,
+        "Hunger": 32.773014068603516,
+        "Coins": 68,
+        "Task": 10,
+        "LatestEvent": "加工房梁并运回 · 14号木工台（食物0 / 木材3 / 石材0）"
+      },
+      {
+        "Name": "米拉",
+        "Energy": 99.97247314453125,
+        "Hunger": 21.46440315246582,
+        "Coins": 116,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "伯恩",
+        "Energy": 99.96746826171875,
+        "Hunger": 21.480676651000977,
+        "Coins": 106,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "阿尔登",
+        "Energy": 99.97747802734375,
+        "Hunger": 47.761165618896484,
+        "Coins": 58,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "伊芙",
+        "Energy": 99.97247314453125,
+        "Hunger": 21.235767364501953,
+        "Coins": 68,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "罗莎",
+        "Energy": 99.969970703125,
+        "Hunger": 21.24302101135254,
+        "Coins": 54,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "奥斯卡",
+        "Energy": 97.57638549804688,
+        "Hunger": 42.76507568359375,
+        "Coins": 64,
+        "Task": 9,
+        "LatestEvent": "去村镇中心吃饭。"
+      },
+      {
+        "Name": "梅芙",
+        "Energy": 38.365753173828125,
+        "Hunger": 21.049339294433594,
+        "Coins": 33,
+        "Task": 8,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "托马斯",
+        "Energy": 99.97747802734375,
+        "Hunger": 20.971960067749023,
+        "Coins": 6,
+        "Task": 9,
+        "LatestEvent": "回家休息。"
+      },
+      {
+        "Name": "塞琳",
+        "Energy": 99.10662841796875,
+        "Hunger": 37.76993942260742,
+        "Coins": 33,
+        "Task": 9,
+        "LatestEvent": "去村镇中心吃饭。"
+      }
+    ],
+    "organic_material_purchases": 30
+  },
+  "api_mode": "HearthDisableApi: local rules only; zero paid API calls in this review",
+  "initial_estate": "The nine initial homes are declared founding property, not construction completed by NPCs during this run.",
+  "limitations": [
+    "Resident architecture decisions currently use local rules, not verified live Kimi decisions.",
+    "Three master house families and two growth stages are not six independently authored masters.",
+    "Marriage, children, arbitrary cross-family replacement, interior navigation and paint trading are not implemented.",
+    "One-shot independent SceneCapture images underexpose shaded facades; delivered overview uses the actual game viewport.",
+    "Initial plot placement still follows deterministic roads; fully emergent terrain-aware settlement growth remains future work."
+  ]
+}

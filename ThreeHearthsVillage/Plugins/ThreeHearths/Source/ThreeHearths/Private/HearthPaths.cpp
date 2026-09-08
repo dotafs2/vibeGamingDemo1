@@ -26,8 +26,17 @@ bool AHearthVillage::IsLand(const FVector& P) const
     FCollisionQueryParams Query; Query.bTraceComplex=true; Query.AddIgnoredActor(this);
     for(const auto& R:Residents) if(IsValid(R.Actor)) Query.AddIgnoredActor(R.Actor);
     FHitResult Hit;
-    return GetWorld()->LineTraceSingleByChannel(Hit,P+FVector(0,0,900),P-FVector(0,0,900),ECC_Visibility,Query)
-        && Hit.GetActor() && Hit.GetActor()->ActorHasTag(TEXT("ThreeHearthsBaseTerrain")) && FMath::Abs(Hit.ImpactPoint.Z-2.8f)<2.f;
+    if(!GetWorld()->LineTraceSingleByChannel(Hit,P+FVector(0,0,900),P-FVector(0,0,900),ECC_Visibility,Query)
+        || !Hit.GetActor() || !Hit.GetActor()->ActorHasTag(TEXT("ThreeHearthsBaseTerrain"))) return false;
+    if(IsOrganicVillage())
+    {
+        // Organic v4 terrain is intentionally undulating. The old fixed-Z
+        // check would reject every valid hillside; normal Z keeps only
+        // walkable, reasonably sloped ground while GroundHeightAt supplies
+        // the actor's actual foot height to movement.
+        return FMath::IsFinite(Hit.ImpactPoint.Z) && Hit.ImpactNormal.Z>=0.55f;
+    }
+    return FMath::Abs(Hit.ImpactPoint.Z-2.8f)<2.f;
 }
 
 void AHearthVillage::BuildLandGrid()
@@ -57,6 +66,7 @@ bool AHearthVillage::IsSiteWalkObstacle(const FHearthSite& Site) const
 bool AHearthVillage::IsClearPoint(const FVector& P) const
 {
     if(!LandGrid.Contains(HearthPaths::Cell(P))) return false;
+    if(IsOrganicVillage() && OrganicBlocksPoint(P)) return false;
     for(const auto& Obstacle:FixedObstacles)
         if(FMath::Abs(P.X-Obstacle.X)<Obstacle.Z && FMath::Abs(P.Y-Obstacle.Y)<Obstacle.Z) return false;
     // Ownership reserves building rights, not a physical wall across vacant ground.
@@ -83,6 +93,7 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
         const bool bStartsInside=FMath::Abs(From.X)<Radius && FMath::Abs(From.Y)<Radius;
         return bStartsInside && FVector2D::DotProduct(From,Delta)>=0.f;
     };
+    if(IsOrganicVillage() && OrganicBlocksSegment(A,B)) return false;
     for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z) && !MayLeaveContainingBox(A,B,O,O.Z)) return false;
     for(const auto& S:ProductionSites)
         if(IsSiteWalkObstacle(S)
@@ -98,7 +109,11 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
 
 bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,TArray<FVector>& Out) const
 {
-    Out.Reset(); if(!IsClearPoint(Start) || !IsClearPoint(End)) return false;
+    Out.Reset();
+    // A field can finish growing around its worker, or construction can add
+    // a cell beside a passer-by. Permit an outward connector from that starting
+    // overlap; the destination and every attached grid node must remain clear.
+    if((!IsClearPoint(Start) && !(IsOrganicVillage() && LandGrid.Contains(HearthPaths::Cell(Start)))) || !IsClearPoint(End)) return false;
     if(Start.Equals(End,.01)) return true;
     auto Attach=[this](const FVector& P,FIntPoint& Found)
     {
@@ -107,7 +122,7 @@ bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,
         {
             const FIntPoint Candidate=C+FIntPoint(X,Y); const FVector Position=HearthPaths::Point(Candidate);
             const float Distance=FVector::DistSquared2D(Position,P);
-            if(LandGrid.Contains(Candidate) && Distance<Best && IsClearSegment(P,Position)) { Best=Distance; Found=Candidate; Valid=true; }
+            if(IsClearPoint(Position) && Distance<Best && IsClearSegment(P,Position)) { Best=Distance; Found=Candidate; Valid=true; }
         }
         return Valid;
     };

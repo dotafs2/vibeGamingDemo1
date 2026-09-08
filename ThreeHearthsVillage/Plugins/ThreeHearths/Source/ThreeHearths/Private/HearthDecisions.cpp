@@ -83,6 +83,12 @@ namespace HearthDecision
 void AHearthVillage::StopDecisionRequests()
 {
     ++DecisionGeneration;
+    if(ThinkingRuntime)
+    {
+        ThinkingRuntime->Flush();
+        delete ThinkingRuntime;
+        ThinkingRuntime=nullptr;
+    }
     for(auto& Pending:PendingDecisions) if(Pending.Request.IsValid())
     {
         Pending.Request->OnProcessRequestComplete().Unbind();
@@ -95,6 +101,12 @@ void AHearthVillage::StopDecisionRequests()
         FPlatformProcess::CloseProc(BridgeProcess);
         BridgeProcess.Reset();
     }
+}
+
+void AHearthVillage::EnsureThinkingRuntime()
+{
+    if(!IsOrganicVillage() || ThinkingRuntime || WorldId.IsEmpty()) return;
+    ThinkingRuntime=new FHearthThinkingRuntime(WorldId);
 }
 
 namespace HearthDecision
@@ -114,7 +126,13 @@ int32 AHearthVillage::PendingDecisionCount() const
 { int32 Count=0; for(const auto& Pending:PendingDecisions) Count+=Pending.bActive; return Count; }
 
 int32 AHearthVillage::DecisionConcurrencyLimit() const
-{ return ApiBackend==TEXT("codex_spark")?1:FMath::Min(10,Residents.Num()); }
+{
+    if(ApiBackend==TEXT("codex_spark")) return 1;
+    const int32 DefaultLimit=FMath::Min(10,Residents.Num());
+    int32 Requested=0;
+    return FParse::Value(FCommandLine::Get(),TEXT("HearthApiConcurrency="),Requested) && Requested>=1 && Requested<=10
+        ? FMath::Min(Requested,DefaultLimit) : DefaultLimit;
+}
 
 bool AHearthVillage::HasDecisionCapacity(int32 Index) const
 {
@@ -235,21 +253,100 @@ void AHearthVillage::RequestDecision(int32 Index)
     SendDecisionRequest(Index,Context,Prompt,false);
 }
 
-void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife,bool bSocial,const FString& ImageData)
+void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObject>& Context,const FString& Prompt,bool bLife,bool bSocial,const FString& ImageData,bool bDaydream)
 {
-    if((bSimulationPaused && ImageData.IsEmpty()) || !HasDecisionCapacity(Index) || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests) return;
-    if(FParse::Param(FCommandLine::Get(),TEXT("HearthVisualOnly")) && ImageData.IsEmpty()) return;
+    const bool bVisual=!ImageData.IsEmpty();
+    if((bSimulationPaused && !bVisual) || !HasDecisionCapacity(Index)) return;
+    auto LocalFallback=[&](const FString& Reason)
+    {
+        // A skipped reflection must not call DecideLifeLocally and replace
+        // a currently active shift. Duty and real conversations keep running.
+        if(bDaydream) return;
+        if(bVisual) { ApiStatus=Reason.IsEmpty()?TEXT("视觉请求跳过，使用本地规则"):Reason; return; }
+        if(bSocial) DecideSocialLocally(Index,Reason);
+        else if(bLife) DecideLifeLocally(Index,Reason);
+        else DecideLocally(Index,Reason);
+        ApiStatus=Reason.IsEmpty()?TEXT("使用本地规则"):Reason;
+    };
+    if(bApiDisabledThisRun || ApiRequests>=ApiMaxRequests)
+    {
+        if(IsOrganicVillage()) LocalFallback(TEXT("本轮模型调用已停止或达到上限"));
+        return;
+    }
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthVisualOnly")) && !bVisual)
+    {
+        if(IsOrganicVillage()) LocalFallback(TEXT("当前运行仅允许视觉请求"));
+        return;
+    }
     // Defense at the actual dispatch site: never issue a direct paid HTTPS call.
+    // Check before admission so a blocked transport cannot consume a policy slot.
     if(ApiEndpoint.StartsWith(TEXT("https://")) || (ApiModel.StartsWith(TEXT("kimi-")) && (!bApiBudgeted || ApiEndpoint!=HearthDecision::BudgetBase+TEXT("/chat/completions"))))
-    { bApiDisabledThisRun=true; ApiStatus=TEXT("已阻止绕过人民币预算的请求"); return; }
+    {
+        bApiDisabledThisRun=true;
+        if(IsOrganicVillage()) LocalFallback(TEXT("已阻止绕过人民币预算的请求"));
+        return;
+    }
+    FString ThinkingRequestId;
+    if(IsOrganicVillage())
+    {
+        EnsureThinkingRuntime();
+        if(!ThinkingRuntime) { LocalFallback(TEXT("思考运行时未准备好")); return; }
+        FHearthNpcThinkingRequest Thinking;
+        Thinking.ResidentId=Residents[Index].StableId;
+        Thinking.Role=HearthThinking::RoleFor(Residents[Index].Role);
+        Thinking.Trigger=bDaydream?EHearthNpcThinkingTrigger::Daydream:bVisual?EHearthNpcThinkingTrigger::ImportantEvent:(bSocial?EHearthNpcThinkingTrigger::ActualInteraction:(bLife?EHearthNpcThinkingTrigger::Routine:EHearthNpcThinkingTrigger::ImportantEvent));
+        // Survival needs are resolved by DecideLifeLocally; they must not
+        // bypass the 1800-second routine spacing through the paid urgent lane.
+        Thinking.bUrgent=false;
+        if(bDaydream)
+        {
+            Thinking.CoalesceKey=TEXT("daydream|")+Residents[Index].StableId;
+            // Stable across process restarts, with a real-time five-minute
+            // event bucket; the separate policy still enforces six hours.
+            Thinking.EventId=WorldId+TEXT("|daydream|")+Residents[Index].StableId+TEXT("|")
+                +LexToString(FDateTime::UtcNow().ToUnixTimestamp()/300);
+        }
+        else if(bSocial)
+        {
+            Thinking.CoalesceKey=TEXT("conversation|")+Residents[Index].ConversationId;
+            int32 Turn=0;
+            for(const auto& Conversation:Conversations) if(Conversation.Id==Residents[Index].ConversationId) { Turn=Conversation.Lines.Num(); break; }
+            Thinking.EventId=CurrentRun+TEXT("|conversation|")+Residents[Index].ConversationId+TEXT("|turn|")+FString::FromInt(Turn);
+        }
+        else if(bVisual)
+        {
+            Thinking.CoalesceKey=TEXT("visual|")+VisualSignature(Index);
+            Thinking.EventId=CurrentRun+TEXT("|visual|")+Residents[Index].StableId+TEXT("|")+VisualSignature(Index);
+        }
+        else if(bLife)
+        {
+            Thinking.CoalesceKey=TEXT("life|")+Residents[Index].StableId;
+            Thinking.EventId=CurrentRun+TEXT("|life|")+Residents[Index].StableId+TEXT("|")+FString::Printf(TEXT("%.3f"),Residents[Index].NextLifeDecision);
+        }
+        else
+        {
+            Thinking.CoalesceKey=TEXT("house|")+Residents[Index].StableId;
+            Thinking.EventId=CurrentRun+TEXT("|house|")+Residents[Index].StableId;
+        }
+        Thinking.Context=bDaydream?TEXT("guard_daydream"):bVisual?TEXT("visual_review"):bSocial?TEXT("social_turn"):bLife?TEXT("life_choice"):TEXT("house_choice");
+        const FHearthThinkingGateResult Gate=ThinkingRuntime->Admit(Thinking,0.0);
+        if(!Gate.bDispatch)
+        {
+            LocalFallback(Gate.Reason.IsEmpty()?TEXT("当前请求未获思考门控许可"):Gate.Reason);
+            return;
+        }
+        // The policy has already taken this request out of its queue and
+        // recorded the real-time cooldown. Only now may the HTTP slot wait.
+        // The operation remains idempotent through the policy request ID.
+        ThinkingRequestId=Gate.RequestId;
+    }
     auto System=MakeShared<FJsonObject>(); System->SetStringField(TEXT("role"),TEXT("system"));
-    EnsureResidentStory(Index);
+    if(!IsSharedServiceResident(Index)) EnsureResidentStory(Index);
     Context->SetStringField(TEXT("persistent_character_id"),Residents[Index].StableId);
     Context->SetStringField(TEXT("persistent_story"),Residents[Index].InnerStory);
     Context->SetStringField(TEXT("personal_goal"),Residents[Index].DesignGoal);
     System->SetStringField(TEXT("content"),HearthResidentStory::Prompt(Residents[Index].InnerStory)+TEXT("\n\n")+Prompt);
     auto User=MakeShared<FJsonObject>(); User->SetStringField(TEXT("role"),TEXT("user")); User->SetStringField(TEXT("content"),HearthDecision::Json(Context));
-    const bool bVisual=!ImageData.IsEmpty();
     if(bVisual)
     {
         auto T=MakeShared<FJsonObject>(); T->SetStringField(TEXT("type"),TEXT("text")); T->SetStringField(TEXT("text"),HearthDecision::Json(Context));
@@ -264,21 +361,23 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     if(ApiFormat==TEXT("json_object")) { auto Format=MakeShared<FJsonObject>(); Format->SetStringField(TEXT("type"),TEXT("json_object")); Body->SetObjectField(TEXT("response_format"),Format); }
     auto& Pending=PendingDecisions[Index]; Pending=FHearthPendingDecision();
     Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.bVisual=bVisual;
+    Pending.ThinkingRequestId=ThinkingRequestId;
+    Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.bVisual=bVisual; Pending.bDaydream=bDaydream;
     if(bVisual) Pending.VisualSignature=VisualSignature(Index);
     Pending.StartedAt=FPlatformTime::Seconds(); Pending.StartedAtSimulation=Elapsed;
     Pending.ConversationId=bSocial?Residents[Index].ConversationId:FString();
     Pending.Serial=++DecisionSerial;
-    Pending.AllowedActions=bVisual?TArray<int32>{0,1,2,3,4}:bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
-    if(bSocial || bVisual)
+    Pending.AllowedActions=bDaydream?TArray<int32>{0}:bVisual?TArray<int32>{0,1,2,3,4}:bSocial?AvailableSocialIntents(Index):bLife?AvailableLifeActions(Index):TArray<int32>();
+    if(bSocial || bVisual || bDaydream)
     {
         FHearthDecisionRecord H; H.Run=CurrentRun; H.Timestamp=FDateTime::Now().ToString(); H.Resident=Index; H.At=Elapsed;
-        H.Kind=bVisual?TEXT("design_review"):TEXT("social_turn"); H.Source=TEXT("api"); H.Model=ApiModel; H.Context=HearthDecision::Json(Context); H.Choice=bVisual?TEXT("评估自己的住所"):TEXT("准备回应对方");
+        H.Kind=bDaydream?TEXT("guard_daydream"):bVisual?TEXT("design_review"):TEXT("social_turn"); H.Source=TEXT("api"); H.Model=ApiModel; H.Context=HearthDecision::Json(Context); H.Choice=bDaydream?TEXT("站岗时想起自己的生活"):bVisual?TEXT("评估自己的住所"):TEXT("准备回应对方");
         Pending.HistoryIndex=DecisionHistory.Add(MoveTemp(H)); ++HistoryRevision; SaveHistory();
     }
     else { StartHistory(Index,bLife,TEXT("api")); Pending.HistoryIndex=Residents[Index].HistoryIndex; }
     Residents[Index].DecisionSource=TEXT("waiting"); Residents[Index].DecisionNote=bLife?TEXT("正在考虑下一项活动"):TEXT("正在向模型询问选址");
     if(bSocial) Residents[Index].DecisionNote=TEXT("正在认真听对方说话，准备回应");
+    else if(bDaydream) Residents[Index].DecisionNote=TEXT("仍在值勤，短暂想起自己的生活");
     else if(!bVisual) Residents[Index].Reason=bLife?TEXT("家已经建好了，想想接下来做什么。"):TEXT("让我想想，这几块地哪一块更适合我。");
     ++ApiRequests;
     ApiStatus=FString::Printf(TEXT("%s正在思考 · 请求 %d / %d"),*Residents[Index].Name,ApiRequests,ApiMaxRequests);
@@ -299,10 +398,11 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     Request->SetTimeout(ApiTimeout);
     Request->SetContentAsString(HearthDecision::Json(Body));
     Request->SetDelegateThreadPolicy(EHttpRequestDelegateThreadPolicy::CompleteOnGameThread);
-    Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife,bVisual](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
+    Request->OnProcessRequestComplete().BindLambda([WeakThis,Generation,Serial,Index,bLife,bVisual,ThinkingRequestId](FHttpRequestPtr, FHttpResponsePtr Response, bool bOk) {
         auto* V=WeakThis.Get();
         if(!V || V->DecisionGeneration!=Generation || !V->IsDecisionPending(Index) || V->PendingDecisions[Index].Serial!=Serial) return;
         auto& Reply=V->PendingDecisions[Index];
+        if(!ThinkingRequestId.IsEmpty() && V->ThinkingRuntime) V->ThinkingRuntime->Complete(ThinkingRequestId,bOk && Response.IsValid());
         Reply.Request.Reset(); Reply.bReturned=true;
         Reply.Latency=FPlatformTime::Seconds()-Reply.StartedAt;
         if(V->DecisionHistory.IsValidIndex(Reply.HistoryIndex)) V->DecisionHistory[Reply.HistoryIndex].Latency=Reply.Latency;
@@ -347,8 +447,8 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     // Persist the operation ID before a paid request can leave the process. A restart
     // recognizes the interrupted operation and never sends a second paid attempt.
     if(bApiBudgeted && bWorldPersistenceEnabled && !SaveWorld())
-    { Request->OnProcessRequestComplete().Unbind(); Pending.Request.Reset(); Pending.Error=TEXT("世界存档失败，未发送付费请求"); Pending.bReturned=true; bApiDisabledThisRun=true; return; }
-    if(!Request->ProcessRequest()) { Request->OnProcessRequestComplete().Unbind(); Pending.Request.Reset(); Pending.Error=TEXT("请求未能发出"); Pending.bReturned=true; }
+    { Request->OnProcessRequestComplete().Unbind(); if(!ThinkingRequestId.IsEmpty() && ThinkingRuntime) ThinkingRuntime->Complete(ThinkingRequestId,false); Pending.Request.Reset(); Pending.Error=TEXT("世界存档失败，未发送付费请求"); Pending.bReturned=true; bApiDisabledThisRun=true; return; }
+    if(!Request->ProcessRequest()) { Request->OnProcessRequestComplete().Unbind(); if(!ThinkingRequestId.IsEmpty() && ThinkingRuntime) ThinkingRuntime->Complete(ThinkingRequestId,false); Pending.Request.Reset(); Pending.Error=TEXT("请求未能发出"); Pending.bReturned=true; }
     WriteSnapshot();
 }
 
@@ -360,7 +460,7 @@ void AHearthVillage::ConsumeDecision()
         if(!Slot.bActive) continue;
         if(bSimulationPaused && !Slot.bVisual) continue;
         const bool bSimulationDeadline=HearthDecision::RequestExceededSimulationDeadline(Elapsed,Slot.StartedAtSimulation,ApiTimeout);
-        if(!Slot.bVisual && !Slot.bReturned && !Slot.bGameplayReleased && bSimulationDeadline)
+        if(!Slot.bVisual && !Slot.bDaydream && !Slot.bReturned && !Slot.bGameplayReleased && bSimulationDeadline)
         {
             Slot.bGameplayReleased=true;
             const FString Reason=TEXT("模型未赶上当前游戏倍速；居民先按本地规则继续，真实请求仍在等待回执。");
@@ -383,6 +483,7 @@ void AHearthVillage::ConsumeDecision()
         if(!Slot.bReturned) continue;
         auto Reply=MoveTemp(Slot); Slot=FHearthPendingDecision();
         if(Reply.bVisual) { ApplyVisualReview(Index,Reply); continue; }
+        if(Reply.bDaydream) { ApplyGuardDaydream(Index,Reply); continue; }
         if(Reply.bGameplayReleased)
         {
             if(DecisionHistory.IsValidIndex(Reply.HistoryIndex))

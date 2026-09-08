@@ -1,0 +1,5151 @@
+{
+  "schema_version": 1,
+  "source_catalog": "Art/MedievalLife/catalog.json",
+  "source_catalog_sha256": "f8e87534cb83a2e6f923f48489bd8318d0c4c036a1ef9f5f5c20203595594e92",
+  "destination_root": "/Game/ThreeHearths/Generated/MedievalLife",
+  "source_to_unreal_matrix": [
+    [
+      100.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -100.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_to_unreal_units": "metres_to_centimetres; reflected Y",
+  "yaw_conversion": "yaw_ue = -yaw_blender",
+  "assets": [
+    {
+      "id": "cart_body/attachments",
+      "module_id": "cart_body",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/cart_body.glb",
+      "source_sha256": "8b9eb8d2426b2b2139b227fe490662f4e7495508c9d22d704f6a604928471417",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__attachments.cart_body__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cart_body",
+      "anchors_m": {
+        "wheel_left": [
+          -1.04,
+          0,
+          0.63
+        ],
+        "wheel_right": [
+          1.04,
+          0,
+          0.63
+        ],
+        "cargo": [
+          0,
+          0.18,
+          0.88
+        ],
+        "driver": [
+          0,
+          -0.76,
+          1.7
+        ],
+        "horse": [
+          0,
+          -2.9,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "wheel_left": [
+          -104.0,
+          0.0,
+          63.0
+        ],
+        "wheel_right": [
+          104.0,
+          0.0,
+          63.0
+        ],
+        "cargo": [
+          0.0,
+          -18.0,
+          88.0
+        ],
+        "driver": [
+          0.0,
+          76.0,
+          170.0
+        ],
+        "horse": [
+          0.0,
+          290.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ],
+        "size": [
+          2.0799996852874756,
+          5.070000052452087,
+          1.1649999618530273
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          118.0
+        ],
+        "min_cm": [
+          -95.29000091552734,
+          -108.33187103271484,
+          87.66812133789062
+        ],
+        "max_cm": [
+          95.29000091552734,
+          108.33187103271484,
+          148.33187866210938
+        ],
+        "extent_cm": [
+          95.29000091552734,
+          108.33187103271484,
+          30.331878662109375
+        ]
+      },
+      "module_notes": "Two-wheel farm cart; wheels pivot around local X. Front is -Y.",
+      "import_seconds": 0.43799999996554106,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___iron.Medieval___iron"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cart_body/finish",
+      "module_id": "cart_body",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/cart_body.glb",
+      "source_sha256": "8b9eb8d2426b2b2139b227fe490662f4e7495508c9d22d704f6a604928471417",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__finish.cart_body__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cart_body",
+      "anchors_m": {
+        "wheel_left": [
+          -1.04,
+          0,
+          0.63
+        ],
+        "wheel_right": [
+          1.04,
+          0,
+          0.63
+        ],
+        "cargo": [
+          0,
+          0.18,
+          0.88
+        ],
+        "driver": [
+          0,
+          -0.76,
+          1.7
+        ],
+        "horse": [
+          0,
+          -2.9,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "wheel_left": [
+          -104.0,
+          0.0,
+          63.0
+        ],
+        "wheel_right": [
+          104.0,
+          0.0,
+          63.0
+        ],
+        "cargo": [
+          0.0,
+          -18.0,
+          88.0
+        ],
+        "driver": [
+          0.0,
+          76.0,
+          170.0
+        ],
+        "horse": [
+          0.0,
+          290.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ],
+        "size": [
+          2.0799996852874756,
+          5.070000052452087,
+          1.1649999618530273
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          139.82500457763672,
+          115.52725601196289
+        ],
+        "min_cm": [
+          -93.28999328613281,
+          -110.34999084472656,
+          75.05451202392578
+        ],
+        "max_cm": [
+          93.28999328613281,
+          390.0,
+          156.0
+        ],
+        "extent_cm": [
+          93.28999328613281,
+          250.17499542236328,
+          40.47274398803711
+        ]
+      },
+      "module_notes": "Two-wheel farm cart; wheels pivot around local X. Front is -Y.",
+      "import_seconds": 0.43799999996554106,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___leather.Medieval___leather"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cart_body/structure",
+      "module_id": "cart_body",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/cart_body.glb",
+      "source_sha256": "8b9eb8d2426b2b2139b227fe490662f4e7495508c9d22d704f6a604928471417",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__structure.cart_body__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cart_body",
+      "anchors_m": {
+        "wheel_left": [
+          -1.04,
+          0,
+          0.63
+        ],
+        "wheel_right": [
+          1.04,
+          0,
+          0.63
+        ],
+        "cargo": [
+          0,
+          0.18,
+          0.88
+        ],
+        "driver": [
+          0,
+          -0.76,
+          1.7
+        ],
+        "horse": [
+          0,
+          -2.9,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "wheel_left": [
+          -104.0,
+          0.0,
+          63.0
+        ],
+        "wheel_right": [
+          104.0,
+          0.0,
+          63.0
+        ],
+        "cargo": [
+          0.0,
+          -18.0,
+          88.0
+        ],
+        "driver": [
+          0.0,
+          76.0,
+          170.0
+        ],
+        "horse": [
+          0.0,
+          290.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ],
+        "size": [
+          2.0799996852874756,
+          5.070000052452087,
+          1.1649999618530273
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          135.58281326293945,
+          109.75
+        ],
+        "min_cm": [
+          -103.99998474121094,
+          -116.99999237060547,
+          51.5
+        ],
+        "max_cm": [
+          103.99998474121094,
+          388.1656188964844,
+          168.0
+        ],
+        "extent_cm": [
+          103.99998474121094,
+          252.58280563354492,
+          58.25
+        ]
+      },
+      "module_notes": "Two-wheel farm cart; wheels pivot around local X. Front is -Y.",
+      "import_seconds": 0.4529999999795109,
+      "reused": true,
+      "material_slots": 4,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___oak_light.Medieval___oak_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_body/Medieval___oak.Medieval___oak"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cart_wheel/finish",
+      "module_id": "cart_wheel",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/cart_wheel.glb",
+      "source_sha256": "39ac690376f883db30533a58f554d7e79c91a8b820c440c4f575a0a649a06269",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/cart_wheel__finish.cart_wheel__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel",
+      "anchors_m": {
+        "axle": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "axle": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.1380000114440918,
+          -0.637999951839447,
+          -0.637999951839447
+        ],
+        "max": [
+          0.1380000114440918,
+          0.637999951839447,
+          0.637999951839447
+        ],
+        "size": [
+          0.2760000228881836,
+          1.275999903678894,
+          1.275999903678894
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "min_cm": [
+          -13.80000114440918,
+          -63.79999542236328,
+          -63.79999542236328
+        ],
+        "max_cm": [
+          13.80000114440918,
+          63.79999542236328,
+          63.79999542236328
+        ],
+        "extent_cm": [
+          13.80000114440918,
+          63.79999542236328,
+          63.79999542236328
+        ]
+      },
+      "module_notes": "Axle origin, radius 0.638m. Rotate local X to roll.",
+      "import_seconds": 0.3279999999795109,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/Medieval___iron.Medieval___iron"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cart_wheel/structure",
+      "module_id": "cart_wheel",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/cart_wheel.glb",
+      "source_sha256": "39ac690376f883db30533a58f554d7e79c91a8b820c440c4f575a0a649a06269",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/cart_wheel__structure.cart_wheel__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel",
+      "anchors_m": {
+        "axle": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "axle": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.1380000114440918,
+          -0.637999951839447,
+          -0.637999951839447
+        ],
+        "max": [
+          0.1380000114440918,
+          0.637999951839447,
+          0.637999951839447
+        ],
+        "size": [
+          0.2760000228881836,
+          1.275999903678894,
+          1.275999903678894
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "min_cm": [
+          -13.000000953674316,
+          -60.69999313354492,
+          -60.69999313354492
+        ],
+        "max_cm": [
+          13.000000953674316,
+          60.69999313354492,
+          60.69999313354492
+        ],
+        "extent_cm": [
+          13.000000953674316,
+          60.69999313354492,
+          60.69999313354492
+        ]
+      },
+      "module_notes": "Axle origin, radius 0.638m. Rotate local X to roll.",
+      "import_seconds": 0.3279999999795109,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/Medieval___oak_light.Medieval___oak_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/Medieval___oak.Medieval___oak"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cargo_logs/attachments",
+      "module_id": "cargo_logs",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/cargo_logs.glb",
+      "source_sha256": "3e296d4dcadacd07018550edc981beabb753d7370ee5125b27b10b8d39d8d5fb",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/cargo_logs__attachments.cargo_logs__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6043232083320618,
+          -0.8105000257492065,
+          0.012143561616539955
+        ],
+        "max": [
+          0.6044682860374451,
+          0.9300000667572021,
+          0.7178564071655273
+        ],
+        "size": [
+          1.2087914943695068,
+          1.7405000925064087,
+          0.7057128455489874
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0072536468505859375,
+          13.350000381469727,
+          36.80745208263397
+        ],
+        "min_cm": [
+          -60.43231964111328,
+          -54.35000228881836,
+          3.964895009994507
+        ],
+        "max_cm": [
+          60.44682693481445,
+          81.05000305175781,
+          69.65000915527344
+        ],
+        "extent_cm": [
+          60.43957328796387,
+          67.70000267028809,
+          32.842557072639465
+        ]
+      },
+      "module_notes": "Removable cargo visual; runtime inventory must authorize loading.",
+      "import_seconds": 0.21899999992456287,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/Medieval___leather.Medieval___leather"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cargo_logs/structure",
+      "module_id": "cargo_logs",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/cargo_logs.glb",
+      "source_sha256": "3e296d4dcadacd07018550edc981beabb753d7370ee5125b27b10b8d39d8d5fb",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/cargo_logs__structure.cargo_logs__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6043232083320618,
+          -0.8105000257492065,
+          0.012143561616539955
+        ],
+        "max": [
+          0.6044682860374451,
+          0.9300000667572021,
+          0.7178564071655273
+        ],
+        "size": [
+          1.2087914943695068,
+          1.7405000925064087,
+          0.7057128455489874
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -0.3843879699707031,
+          -8.0,
+          36.50000035762787
+        ],
+        "min_cm": [
+          -55.978816986083984,
+          -93.00000762939453,
+          1.2143561840057373
+        ],
+        "max_cm": [
+          55.21004104614258,
+          77.00000762939453,
+          71.78564453125
+        ],
+        "extent_cm": [
+          55.59442901611328,
+          85.00000762939453,
+          35.28564417362213
+        ]
+      },
+      "module_notes": "Removable cargo visual; runtime inventory must authorize loading.",
+      "import_seconds": 0.21899999992456287,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/Medieval___oak_dark.Medieval___oak_dark"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cargo_sacks/attachments",
+      "module_id": "cargo_sacks",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/cargo_sacks.glb",
+      "source_sha256": "9148d230531455746e56637854b1b5a3a79c3f1d29592fc8f4a0f390246dfab7",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/cargo_sacks__attachments.cargo_sacks__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6776071786880493,
+          -0.6448274850845337,
+          0.03500000014901161
+        ],
+        "max": [
+          0.6460000276565552,
+          0.7007240653038025,
+          0.7649999856948853
+        ],
+        "size": [
+          1.3236072063446045,
+          1.3455515503883362,
+          0.7299999855458736
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -4.833839416503906,
+          7.144828796386719,
+          43.83500289916992
+        ],
+        "min_cm": [
+          -53.76768112182617,
+          -47.10000228881836,
+          18.0
+        ],
+        "max_cm": [
+          44.10000228881836,
+          61.3896598815918,
+          69.67000579833984
+        ],
+        "extent_cm": [
+          48.933841705322266,
+          54.24483108520508,
+          25.835002899169922
+        ]
+      },
+      "module_notes": "Four tied linen sacks; no implied resource creation.",
+      "import_seconds": 0.1410000000614673,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/Medieval___leather_light.Medieval___leather_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "cargo_sacks/structure",
+      "module_id": "cargo_sacks",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/cargo_sacks.glb",
+      "source_sha256": "9148d230531455746e56637854b1b5a3a79c3f1d29592fc8f4a0f390246dfab7",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/cargo_sacks__structure.cargo_sacks__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6776071786880493,
+          -0.6448274850845337,
+          0.03500000014901161
+        ],
+        "max": [
+          0.6460000276565552,
+          0.7007240653038025,
+          0.7649999856948853
+        ],
+        "size": [
+          1.3236072063446045,
+          1.3455515503883362,
+          0.7299999855458736
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -1.5803565979003906,
+          -2.7948265075683594,
+          40.0
+        ],
+        "min_cm": [
+          -67.7607192993164,
+          -70.07240295410156,
+          3.5
+        ],
+        "max_cm": [
+          64.60000610351562,
+          64.48274993896484,
+          76.5
+        ],
+        "extent_cm": [
+          66.18036270141602,
+          67.2775764465332,
+          36.5
+        ]
+      },
+      "module_notes": "Four tied linen sacks; no implied resource creation.",
+      "import_seconds": 0.1410000000614673,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/Medieval___linen.Medieval___linen"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_bay/attachments",
+      "module_id": "horse_bay",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/horse_bay.glb",
+      "source_sha256": "9a5372f457807056e38405f7b0516ca936bf53a0b9006b6803224e236d59a23c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__attachments.horse_bay__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -1.9073486328125e-06,
+          48.37499237060547,
+          177.50725936889648
+        ],
+        "min_cm": [
+          -44.66996765136719,
+          -80.00001525878906,
+          117.70000457763672
+        ],
+        "max_cm": [
+          44.66996383666992,
+          176.75,
+          237.31451416015625
+        ],
+        "extent_cm": [
+          44.669965744018555,
+          128.37500762939453,
+          59.807254791259766
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.4690000000409782,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_bay/finish",
+      "module_id": "horse_bay",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/horse_bay.glb",
+      "source_sha256": "9a5372f457807056e38405f7b0516ca936bf53a0b9006b6803224e236d59a23c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__finish.horse_bay__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          23.102569580078125,
+          132.76351928710938
+        ],
+        "min_cm": [
+          -40.34843826293945,
+          -139.79486083984375,
+          1.5
+        ],
+        "max_cm": [
+          40.34843826293945,
+          186.0,
+          264.02703857421875
+        ],
+        "extent_cm": [
+          40.34843826293945,
+          162.89743041992188,
+          131.26351928710938
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.4690000000409782,
+      "reused": true,
+      "material_slots": 4,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___bay_dark.Medieval___bay_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___eye.Medieval___eye",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___hoof.Medieval___hoof",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___mane.Medieval___mane"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_bay/structure",
+      "module_id": "horse_bay",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/horse_bay.glb",
+      "source_sha256": "9a5372f457807056e38405f7b0516ca936bf53a0b9006b6803224e236d59a23c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__structure.horse_bay__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          26.769996643066406,
+          140.37225484848022
+        ],
+        "min_cm": [
+          -46.92927169799805,
+          -125.0,
+          10.74450969696045
+        ],
+        "max_cm": [
+          46.92927169799805,
+          178.5399932861328,
+          270.0
+        ],
+        "extent_cm": [
+          46.92927169799805,
+          151.7699966430664,
+          129.62774515151978
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.48400000005494803,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___bay.Medieval___bay",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___bay_light.Medieval___bay_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/Medieval___mane.Medieval___mane"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_grey/attachments",
+      "module_id": "horse_grey",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/horse_grey.glb",
+      "source_sha256": "5673825b3b2a19a7580da5256152973b56aab5acbbba0ec5fdc761bc1786c9d0",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__attachments.horse_grey__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -1.9073486328125e-06,
+          48.37499237060547,
+          177.50725936889648
+        ],
+        "min_cm": [
+          -44.66996765136719,
+          -80.00001525878906,
+          117.70000457763672
+        ],
+        "max_cm": [
+          44.66996383666992,
+          176.75,
+          237.31451416015625
+        ],
+        "extent_cm": [
+          44.669965744018555,
+          128.37500762939453,
+          59.807254791259766
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.5309999999590218,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_grey/finish",
+      "module_id": "horse_grey",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/horse_grey.glb",
+      "source_sha256": "5673825b3b2a19a7580da5256152973b56aab5acbbba0ec5fdc761bc1786c9d0",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__finish.horse_grey__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          23.102569580078125,
+          132.76351928710938
+        ],
+        "min_cm": [
+          -40.34843826293945,
+          -139.79486083984375,
+          1.5
+        ],
+        "max_cm": [
+          40.34843826293945,
+          186.0,
+          264.02703857421875
+        ],
+        "extent_cm": [
+          40.34843826293945,
+          162.89743041992188,
+          131.26351928710938
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.5309999999590218,
+      "reused": true,
+      "material_slots": 4,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___grey_dark.Medieval___grey_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___eye.Medieval___eye",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___hoof.Medieval___hoof",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___mane.Medieval___mane"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "horse_grey/structure",
+      "module_id": "horse_grey",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/horse_grey.glb",
+      "source_sha256": "5673825b3b2a19a7580da5256152973b56aab5acbbba0ec5fdc761bc1786c9d0",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__structure.horse_grey__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey",
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          26.769996643066406,
+          140.37225484848022
+        ],
+        "min_cm": [
+          -46.92927169799805,
+          -125.0,
+          10.74450969696045
+        ],
+        "max_cm": [
+          46.92927169799805,
+          178.5399932861328,
+          270.0
+        ],
+        "extent_cm": [
+          46.92927169799805,
+          151.7699966430664,
+          129.62774515151978
+        ]
+      },
+      "module_notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "import_seconds": 0.5469999999040738,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___grey.Medieval___grey",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___grey_light.Medieval___grey_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/Medieval___mane.Medieval___mane"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_helmet/finish",
+      "module_id": "guard_helmet",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/guard_helmet.glb",
+      "source_sha256": "1804ad00ca5a00f267345768e06a188ce164012625b186b29638d0f9d7d575f6",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/guard_helmet__finish.guard_helmet__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet",
+      "anchors_m": {
+        "head": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.3100000023841858,
+          -0.3100000023841858,
+          0.0
+        ],
+        "max": [
+          0.3100000023841858,
+          0.3100000023841858,
+          0.28999999165534973
+        ],
+        "size": [
+          0.6200000047683716,
+          0.6200000047683716,
+          0.28999999165534973
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          9.5367431640625e-07,
+          18.250000476837158
+        ],
+        "min_cm": [
+          -2.0500009059906006,
+          -19.648216247558594,
+          9.708014488220215
+        ],
+        "max_cm": [
+          2.0500009059906006,
+          19.648218154907227,
+          26.7919864654541
+        ],
+        "extent_cm": [
+          2.0500009059906006,
+          19.64821720123291,
+          8.541985988616943
+        ]
+      },
+      "module_notes": "Helmet attachment origin at forehead; adjust per skeletal head socket.",
+      "import_seconds": 0.10900000005494803,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_helmet/structure",
+      "module_id": "guard_helmet",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/guard_helmet.glb",
+      "source_sha256": "1804ad00ca5a00f267345768e06a188ce164012625b186b29638d0f9d7d575f6",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/guard_helmet__structure.guard_helmet__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet",
+      "anchors_m": {
+        "head": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.3100000023841858,
+          -0.3100000023841858,
+          0.0
+        ],
+        "max": [
+          0.3100000023841858,
+          0.3100000023841858,
+          0.28999999165534973
+        ],
+        "size": [
+          0.6200000047683716,
+          0.6200000047683716,
+          0.28999999165534973
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          14.5
+        ],
+        "min_cm": [
+          -31.0,
+          -31.0,
+          0.0
+        ],
+        "max_cm": [
+          31.0,
+          31.0,
+          29.0
+        ],
+        "extent_cm": [
+          31.0,
+          31.0,
+          14.5
+        ]
+      },
+      "module_notes": "Helmet attachment origin at forehead; adjust per skeletal head socket.",
+      "import_seconds": 0.125,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/Medieval___steel.Medieval___steel",
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/Medieval___iron.Medieval___iron"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_shield/finish",
+      "module_id": "guard_shield",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/guard_shield.glb",
+      "source_sha256": "d8faf5a9301ef7d4f467f6f95b247b85d60068fd9552b7c03be8b9c42aa1127c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/guard_shield__finish.guard_shield__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield",
+      "anchors_m": {
+        "grip": [
+          0,
+          0.095,
+          0.44
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          -9.5,
+          44.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.311149537563324,
+          -0.08300000429153442,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.311149537563324,
+          0.11749999970197678,
+          0.7315000891685486
+        ],
+        "size": [
+          0.622299075126648,
+          0.2005000039935112,
+          0.8551572859287262
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          6.374994993209839,
+          30.392144680023193
+        ],
+        "min_cm": [
+          -31.114953994750977,
+          4.4499897956848145,
+          -12.36571979522705
+        ],
+        "max_cm": [
+          31.114953994750977,
+          8.300000190734863,
+          73.15000915527344
+        ],
+        "extent_cm": [
+          31.114953994750977,
+          1.9250051975250244,
+          42.757864475250244
+        ]
+      },
+      "module_notes": "Separate heater shield with royal crossroads device.",
+      "import_seconds": 0.0940000000409782,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_shield/structure",
+      "module_id": "guard_shield",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/guard_shield.glb",
+      "source_sha256": "d8faf5a9301ef7d4f467f6f95b247b85d60068fd9552b7c03be8b9c42aa1127c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/guard_shield__structure.guard_shield__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield",
+      "anchors_m": {
+        "grip": [
+          0,
+          0.095,
+          0.44
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          -9.5,
+          44.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.311149537563324,
+          -0.08300000429153442,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.311149537563324,
+          0.11749999970197678,
+          0.7315000891685486
+        ],
+        "size": [
+          0.622299075126648,
+          0.2005000039935112,
+          0.8551572859287262
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          -3.4749999046325684,
+          30.2725191116333
+        ],
+        "min_cm": [
+          -29.94898223876953,
+          -11.75,
+          -11.454961776733398
+        ],
+        "max_cm": [
+          29.94898223876953,
+          4.800000190734863,
+          72.0
+        ],
+        "extent_cm": [
+          29.94898223876953,
+          8.275000095367432,
+          41.7274808883667
+        ]
+      },
+      "module_notes": "Separate heater shield with royal crossroads device.",
+      "import_seconds": 0.0940000000409782,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/Medieval___blue.Medieval___blue",
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/Medieval___leather.Medieval___leather"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_spear/finish",
+      "module_id": "guard_spear",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/guard_spear.glb",
+      "source_sha256": "f210c3a970ddca881247d0962e23750d08d8aa647581731ecaf86bfd91cd7729",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/guard_spear__finish.guard_spear__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear",
+      "anchors_m": {
+        "grip": [
+          0,
+          0,
+          1.1
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          0.0,
+          110.00000000000001
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.07820826768875122,
+          -0.041846487671136856,
+          0.0
+        ],
+        "max": [
+          0.07820826768875122,
+          0.041846487671136856,
+          2.579827308654785
+        ],
+        "size": [
+          0.15641653537750244,
+          0.08369297534227371,
+          2.579827308654785
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          128.99136352539062
+        ],
+        "min_cm": [
+          -7.820826530456543,
+          -4.1846489906311035,
+          0.0
+        ],
+        "max_cm": [
+          7.820826530456543,
+          4.1846489906311035,
+          257.98272705078125
+        ],
+        "extent_cm": [
+          7.820826530456543,
+          4.1846489906311035,
+          128.99136352539062
+        ]
+      },
+      "module_notes": "2.6m spear, bottom origin; no attack logic is implied.",
+      "import_seconds": 0.03200000000651926,
+      "reused": true,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/Medieval___steel.Medieval___steel"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "guard_spear/structure",
+      "module_id": "guard_spear",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/guard_spear.glb",
+      "source_sha256": "f210c3a970ddca881247d0962e23750d08d8aa647581731ecaf86bfd91cd7729",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/guard_spear__structure.guard_spear__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear",
+      "anchors_m": {
+        "grip": [
+          0,
+          0,
+          1.1
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          0.0,
+          110.00000000000001
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.07820826768875122,
+          -0.041846487671136856,
+          0.0
+        ],
+        "max": [
+          0.07820826768875122,
+          0.041846487671136856,
+          2.579827308654785
+        ],
+        "size": [
+          0.15641653537750244,
+          0.08369297534227371,
+          2.579827308654785
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          108.5
+        ],
+        "min_cm": [
+          -3.0999999046325684,
+          -2.948275089263916,
+          0.0
+        ],
+        "max_cm": [
+          3.0999999046325684,
+          2.948275089263916,
+          217.0
+        ],
+        "extent_cm": [
+          3.0999999046325684,
+          2.948275089263916,
+          108.5
+        ]
+      },
+      "module_notes": "2.6m spear, bottom origin; no attack logic is implied.",
+      "import_seconds": 0.03200000000651926,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/Medieval___oak_dark.Medieval___oak_dark"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "royal_guard_body/attachments",
+      "module_id": "royal_guard_body",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/royal_guard_body.glb",
+      "source_sha256": "2e9469e581456e0786f3611c48829e992a5ad2add0ccd5cb5a12de0b8825f5b3",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__attachments.royal_guard_body__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -20.000000953674316,
+          11.999999761581421,
+          98.00000762939453
+        ],
+        "min_cm": [
+          -27.000001907348633,
+          7.499999523162842,
+          89.50000762939453
+        ],
+        "max_cm": [
+          -13.0,
+          16.5,
+          106.50000762939453
+        ],
+        "extent_cm": [
+          7.000000953674316,
+          4.500000238418579,
+          8.5
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.29599999997299165,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___leather_light.Medieval___leather_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "royal_guard_body/finish",
+      "module_id": "royal_guard_body",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/royal_guard_body.glb",
+      "source_sha256": "2e9469e581456e0786f3611c48829e992a5ad2add0ccd5cb5a12de0b8825f5b3",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__finish.royal_guard_body__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          97.60000020265579
+        ],
+        "min_cm": [
+          -45.59730529785156,
+          -24.69999885559082,
+          0.20000040531158447
+        ],
+        "max_cm": [
+          45.59730529785156,
+          24.69999885559082,
+          195.0
+        ],
+        "extent_cm": [
+          45.59730529785156,
+          24.69999885559082,
+          97.39999979734421
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.31200000003445894,
+      "reused": true,
+      "material_slots": 6,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___gold.Medieval___gold",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___skin.Medieval___skin",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___steel.Medieval___steel",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___hair.Medieval___hair",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___eye.Medieval___eye"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "royal_guard_body/structure",
+      "module_id": "royal_guard_body",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/royal_guard_body.glb",
+      "source_sha256": "2e9469e581456e0786f3611c48829e992a5ad2add0ccd5cb5a12de0b8825f5b3",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__structure.royal_guard_body__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          1.5300483703613281,
+          102.59171962738037
+        ],
+        "min_cm": [
+          -47.83760070800781,
+          -18.0,
+          11.483442306518555
+        ],
+        "max_cm": [
+          47.83760070800781,
+          21.060096740722656,
+          193.6999969482422
+        ],
+        "extent_cm": [
+          47.83760070800781,
+          19.530048370361328,
+          91.10827732086182
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.31200000003445894,
+      "reused": true,
+      "material_slots": 6,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___blue.Medieval___blue",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___linen.Medieval___linen",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___skin.Medieval___skin",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/Medieval___skin_light.Medieval___skin_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "carter_body/attachments",
+      "module_id": "carter_body",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/carter_body.glb",
+      "source_sha256": "ecdfa00e43983d3736b0bf6edc000b17da67ab2fa667f512ed3c1bb087206a7a",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__attachments.carter_body__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/carter_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -20.000000953674316,
+          11.999999761581421,
+          98.00000762939453
+        ],
+        "min_cm": [
+          -27.000001907348633,
+          7.499999523162842,
+          89.50000762939453
+        ],
+        "max_cm": [
+          -13.0,
+          16.5,
+          106.50000762939453
+        ],
+        "extent_cm": [
+          7.000000953674316,
+          4.500000238418579,
+          8.5
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.2190000000409782,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___leather_light.Medieval___leather_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "carter_body/finish",
+      "module_id": "carter_body",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/carter_body.glb",
+      "source_sha256": "ecdfa00e43983d3736b0bf6edc000b17da67ab2fa667f512ed3c1bb087206a7a",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__finish.carter_body__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/carter_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          97.60000020265579
+        ],
+        "min_cm": [
+          -45.59730529785156,
+          -24.69999885559082,
+          0.20000040531158447
+        ],
+        "max_cm": [
+          45.59730529785156,
+          24.69999885559082,
+          195.0
+        ],
+        "extent_cm": [
+          45.59730529785156,
+          24.69999885559082,
+          97.39999979734421
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.23499999998603016,
+      "reused": true,
+      "material_slots": 6,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___gold.Medieval___gold",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___linen.Medieval___linen",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___skin.Medieval___skin",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___hair.Medieval___hair",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___eye.Medieval___eye"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "carter_body/structure",
+      "module_id": "carter_body",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/carter_body.glb",
+      "source_sha256": "ecdfa00e43983d3736b0bf6edc000b17da67ab2fa667f512ed3c1bb087206a7a",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__structure.carter_body__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/carter_body",
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          1.5300483703613281,
+          102.59171962738037
+        ],
+        "min_cm": [
+          -47.83760070800781,
+          -18.0,
+          11.483442306518555
+        ],
+        "max_cm": [
+          47.83760070800781,
+          21.060096740722656,
+          193.6999969482422
+        ],
+        "extent_cm": [
+          47.83760070800781,
+          19.530048370361328,
+          91.10827732086182
+        ]
+      },
+      "module_notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "import_seconds": 0.23499999998603016,
+      "reused": true,
+      "material_slots": 6,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___leather.Medieval___leather",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___red.Medieval___red",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___linen.Medieval___linen",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___skin.Medieval___skin",
+        "/Game/ThreeHearths/Generated/MedievalLife/carter_body/Medieval___skin_light.Medieval___skin_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "gate_pier/structure",
+      "module_id": "gate_pier",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/gate_pier.glb",
+      "source_sha256": "1f40362aaa06b0d5116e6ded82a4f78f3d17c4be0555921e612b6eadd0ccb719",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/gate_pier__structure.gate_pier__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier",
+      "anchors_m": {
+        "hinge": [
+          0.57,
+          0,
+          0.3
+        ],
+        "banner": [
+          0,
+          -0.62,
+          2.65
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          56.99999999999999,
+          0.0,
+          30.0
+        ],
+        "banner": [
+          0.0,
+          62.0,
+          265.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6499999761581421,
+          -0.625,
+          0.0
+        ],
+        "max": [
+          0.6549999713897705,
+          0.625,
+          3.380000114440918
+        ],
+        "size": [
+          1.3049999475479126,
+          1.25,
+          3.380000114440918
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          169.0
+        ],
+        "min_cm": [
+          -65.0,
+          -62.5,
+          0.0
+        ],
+        "max_cm": [
+          65.0,
+          62.5,
+          338.0
+        ],
+        "extent_cm": [
+          65.0,
+          62.5,
+          169.0
+        ]
+      },
+      "module_notes": "Masonry gate pier, 1.3m footprint; opening width set by assembly.",
+      "import_seconds": 0.39099999994505197,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/Medieval___stone_dark.Medieval___stone_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/Medieval___stone_light.Medieval___stone_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/Medieval___stone.Medieval___stone"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "gate_pier/weathering",
+      "module_id": "gate_pier",
+      "layer": "weathering",
+      "source": "Art/MedievalLife/Modules/gate_pier.glb",
+      "source_sha256": "1f40362aaa06b0d5116e6ded82a4f78f3d17c4be0555921e612b6eadd0ccb719",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/gate_pier__weathering.gate_pier__weathering",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier",
+      "anchors_m": {
+        "hinge": [
+          0.57,
+          0,
+          0.3
+        ],
+        "banner": [
+          0,
+          -0.62,
+          2.65
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          56.99999999999999,
+          0.0,
+          30.0
+        ],
+        "banner": [
+          0.0,
+          62.0,
+          265.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.6499999761581421,
+          -0.625,
+          0.0
+        ],
+        "max": [
+          0.6549999713897705,
+          0.625,
+          3.380000114440918
+        ],
+        "size": [
+          1.3049999475479126,
+          1.25,
+          3.380000114440918
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          6.000001907348633,
+          -1.0000019073486328,
+          6.5
+        ],
+        "min_cm": [
+          -53.499996185302734,
+          -59.000003814697266,
+          5.25
+        ],
+        "max_cm": [
+          65.5,
+          57.0,
+          7.75
+        ],
+        "extent_cm": [
+          59.49999809265137,
+          58.00000190734863,
+          1.25
+        ]
+      },
+      "module_notes": "Masonry gate pier, 1.3m footprint; opening width set by assembly.",
+      "import_seconds": 0.39099999994505197,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/Medieval___moss.Medieval___moss"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "gate_leaf/finish",
+      "module_id": "gate_leaf",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/gate_leaf.glb",
+      "source_sha256": "8a4c64c670e3e60f95497fca89e79a3bfd3da10a04c49626cbba1478aa6489ec",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/gate_leaf__finish.gate_leaf__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf",
+      "anchors_m": {
+        "hinge": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.09000000357627869,
+          -0.10900000482797623,
+          0.08999991416931152
+        ],
+        "max": [
+          1.340000033378601,
+          0.14500004053115845,
+          2.2300000190734863
+        ],
+        "size": [
+          1.4300000369548798,
+          0.2540000453591347,
+          2.140000104904175
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          55.500003814697266,
+          0.9500002861022949,
+          110.0
+        ],
+        "min_cm": [
+          -9.0,
+          -9.0,
+          36.0
+        ],
+        "max_cm": [
+          120.00000762939453,
+          10.90000057220459,
+          184.0
+        ],
+        "extent_cm": [
+          64.50000381469727,
+          9.950000286102295,
+          74.0
+        ]
+      },
+      "module_notes": "Single hinged leaf, local Z rotation. Reverse X for opposite leaf.",
+      "import_seconds": 0.2029999999795109,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/Medieval___iron.Medieval___iron"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "gate_leaf/structure",
+      "module_id": "gate_leaf",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/gate_leaf.glb",
+      "source_sha256": "8a4c64c670e3e60f95497fca89e79a3bfd3da10a04c49626cbba1478aa6489ec",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/gate_leaf__structure.gate_leaf__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf",
+      "anchors_m": {
+        "hinge": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.09000000357627869,
+          -0.10900000482797623,
+          0.08999991416931152
+        ],
+        "max": [
+          1.340000033378601,
+          0.14500004053115845,
+          2.2300000190734863
+        ],
+        "size": [
+          1.4300000369548798,
+          0.2540000453591347,
+          2.140000104904175
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          67.49999952316284,
+          -4.625001907348633,
+          115.99999570846558
+        ],
+        "min_cm": [
+          0.9999990463256836,
+          -14.500003814697266,
+          8.999991416931152
+        ],
+        "max_cm": [
+          134.0,
+          5.25,
+          223.0
+        ],
+        "extent_cm": [
+          66.50000047683716,
+          9.875001907348633,
+          107.00000429153442
+        ]
+      },
+      "module_notes": "Single hinged leaf, local Z rotation. Reverse X for opposite leaf.",
+      "import_seconds": 0.2029999999795109,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/Medieval___oak_light.Medieval___oak_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/Medieval___oak_dark.Medieval___oak_dark"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "royal_banner/finish",
+      "module_id": "royal_banner",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/royal_banner.glb",
+      "source_sha256": "29d01bc477a1c6cf799299d639f1d01141b9e28719759f0435d938f6380b6075",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/royal_banner__finish.royal_banner__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.3699999749660492,
+          -0.10000000149011612,
+          0.0
+        ],
+        "max": [
+          0.3699999749660492,
+          0.03500000387430191,
+          2.0999999046325684
+        ],
+        "size": [
+          0.7399999499320984,
+          0.13500000536441803,
+          2.0999999046325684
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          6.400000095367432,
+          138.0
+        ],
+        "min_cm": [
+          -20.0,
+          5.200000286102295,
+          110.5
+        ],
+        "max_cm": [
+          20.0,
+          7.599999904632568,
+          165.5
+        ],
+        "extent_cm": [
+          20.0,
+          1.1999998092651367,
+          27.5
+        ]
+      },
+      "module_notes": "Royal blue hanging pennant; static cloth study, material double-sided on import.",
+      "import_seconds": 0.09399999992456287,
+      "reused": true,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 1,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "royal_banner/structure",
+      "module_id": "royal_banner",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/royal_banner.glb",
+      "source_sha256": "29d01bc477a1c6cf799299d639f1d01141b9e28719759f0435d938f6380b6075",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/royal_banner__structure.royal_banner__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.3699999749660492,
+          -0.10000000149011612,
+          0.0
+        ],
+        "max": [
+          0.3699999749660492,
+          0.03500000387430191,
+          2.0999999046325684
+        ],
+        "size": [
+          0.7399999499320984,
+          0.13500000536441803,
+          2.0999999046325684
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          3.249999761581421,
+          104.99999237060547
+        ],
+        "min_cm": [
+          -36.999996185302734,
+          -3.500000476837158,
+          0.0
+        ],
+        "max_cm": [
+          36.999996185302734,
+          10.0,
+          209.99998474121094
+        ],
+        "extent_cm": [
+          36.999996185302734,
+          6.750000238418579,
+          104.99999237060547
+        ]
+      },
+      "module_notes": "Royal blue hanging pennant; static cloth study, material double-sided on import.",
+      "import_seconds": 0.09399999992456287,
+      "reused": true,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/Medieval___blue.Medieval___blue"
+      ],
+      "banner_masked_two_sided_slots": 3,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "watch_bench/structure",
+      "module_id": "watch_bench",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/watch_bench.glb",
+      "source_sha256": "8bcb0d8c888d447868f0400b26932e6c73021a144baca2839891df0a50fb2f5c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_bench/watch_bench.watch_bench",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/watch_bench",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.7250000238418579,
+          -0.320000022649765,
+          0.029999971389770508
+        ],
+        "max": [
+          0.7250000238418579,
+          0.33500000834465027,
+          0.9150000214576721
+        ],
+        "size": [
+          1.4500000476837158,
+          0.6550000309944153,
+          0.8850000500679016
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          -0.7499980926513672,
+          47.249998569488525
+        ],
+        "min_cm": [
+          -72.5,
+          -33.5,
+          2.999997138977051
+        ],
+        "max_cm": [
+          72.5,
+          32.000003814697266,
+          91.5
+        ],
+        "extent_cm": [
+          72.5,
+          32.75000190734863,
+          44.250001430511475
+        ]
+      },
+      "module_notes": "Shared rest bench; supports duty rest transitions.",
+      "import_seconds": 0.09299999999348074,
+      "reused": false,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_bench/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_bench/Medieval___oak_light.Medieval___oak_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_bench/Medieval___oak.Medieval___oak"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "watch_shelter/finish",
+      "module_id": "watch_shelter",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/watch_shelter.glb",
+      "source_sha256": "a8601bcd506c55567ed33e06658ed405f2e30f69f2a4ff8a250094944e8e7a25",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/watch_shelter__finish.watch_shelter__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter",
+      "anchors_m": {
+        "bench": [
+          0,
+          0.2,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "bench": [
+          0.0,
+          -20.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.369999885559082,
+          -0.9502261877059937,
+          0.0
+        ],
+        "max": [
+          1.369999885559082,
+          0.9502261877059937,
+          2.9625000953674316
+        ],
+        "size": [
+          2.739999771118164,
+          1.9004523754119873,
+          2.9625000953674316
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -0.04999542236328125,
+          0.0,
+          251.6899871826172
+        ],
+        "min_cm": [
+          -135.99998474121094,
+          -95.02262115478516,
+          215.88253784179688
+        ],
+        "max_cm": [
+          135.89999389648438,
+          95.02262115478516,
+          287.4974365234375
+        ],
+        "extent_cm": [
+          135.94998931884766,
+          95.02262115478516,
+          35.80744934082031
+        ]
+      },
+      "module_notes": "Open tiled shelter, shared snap scale with village timber kit.",
+      "import_seconds": 0.5320000000065193,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/Medieval___roof_light.Medieval___roof_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/Medieval___roof.Medieval___roof"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "watch_shelter/structure",
+      "module_id": "watch_shelter",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/watch_shelter.glb",
+      "source_sha256": "a8601bcd506c55567ed33e06658ed405f2e30f69f2a4ff8a250094944e8e7a25",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/watch_shelter__structure.watch_shelter__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter",
+      "anchors_m": {
+        "bench": [
+          0,
+          0.2,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "bench": [
+          0.0,
+          -20.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.369999885559082,
+          -0.9502261877059937,
+          0.0
+        ],
+        "max": [
+          1.369999885559082,
+          0.9502261877059937,
+          2.9625000953674316
+        ],
+        "size": [
+          2.739999771118164,
+          1.9004523754119873,
+          2.9625000953674316
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          148.125
+        ],
+        "min_cm": [
+          -136.99998474121094,
+          -92.04759216308594,
+          0.0
+        ],
+        "max_cm": [
+          136.99998474121094,
+          92.04759216308594,
+          296.25
+        ],
+        "extent_cm": [
+          136.99998474121094,
+          92.04759216308594,
+          148.125
+        ]
+      },
+      "module_notes": "Open tiled shelter, shared snap scale with village timber kit.",
+      "import_seconds": 0.5320000000065193,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/Medieval___oak.Medieval___oak"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "water_trough/finish",
+      "module_id": "water_trough",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/water_trough.glb",
+      "source_sha256": "2b804f8951252363e17a5ae478436e84009dd772277335a1b7d4d77a4724d1da",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/water_trough/water_trough__finish.water_trough__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/water_trough",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.8149999976158142,
+          -0.45499998331069946,
+          0.0
+        ],
+        "max": [
+          0.8149999976158142,
+          0.45499998331069946,
+          0.7849999666213989
+        ],
+        "size": [
+          1.6299999952316284,
+          0.9099999666213989,
+          0.7849999666213989
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          62.0
+        ],
+        "min_cm": [
+          -67.0,
+          -31.0,
+          61.19999694824219
+        ],
+        "max_cm": [
+          67.0,
+          31.0,
+          62.80000305175781
+        ],
+        "extent_cm": [
+          67.0,
+          31.0,
+          0.8000030517578125
+        ]
+      },
+      "module_notes": "Hollow trough with replaceable water surface.",
+      "import_seconds": 0.125,
+      "reused": false,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/water_trough/Medieval___water.Medieval___water"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "water_trough/structure",
+      "module_id": "water_trough",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/water_trough.glb",
+      "source_sha256": "2b804f8951252363e17a5ae478436e84009dd772277335a1b7d4d77a4724d1da",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/water_trough/water_trough__structure.water_trough__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/water_trough",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.8149999976158142,
+          -0.45499998331069946,
+          0.0
+        ],
+        "max": [
+          0.8149999976158142,
+          0.45499998331069946,
+          0.7849999666213989
+        ],
+        "size": [
+          1.6299999952316284,
+          0.9099999666213989,
+          0.7849999666213989
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          39.25
+        ],
+        "min_cm": [
+          -81.5,
+          -45.5,
+          0.0
+        ],
+        "max_cm": [
+          81.5,
+          45.5,
+          78.5
+        ],
+        "extent_cm": [
+          81.5,
+          45.5,
+          39.25
+        ]
+      },
+      "module_notes": "Hollow trough with replaceable water surface.",
+      "import_seconds": 0.125,
+      "reused": false,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/water_trough/Medieval___stone_dark.Medieval___stone_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/water_trough/Medieval___stone.Medieval___stone",
+        "/Game/ThreeHearths/Generated/MedievalLife/water_trough/Medieval___stone_light.Medieval___stone_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "hay_rack/attachments",
+      "module_id": "hay_rack",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/hay_rack.glb",
+      "source_sha256": "fe168caa7ce2c332b70a8db5b56d0de3e7c5c47396444a61172747f67da57f26",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/hay_rack__attachments.hay_rack__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.7199999690055847,
+          -0.3500000238418579,
+          0.0
+        ],
+        "max": [
+          0.7199999690055847,
+          0.3500000238418579,
+          1.0725001096725464
+        ],
+        "size": [
+          1.4399999380111694,
+          0.7000000476837158,
+          1.0725001096725464
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -3.0,
+          -2.0000009536743164,
+          83.7500057220459
+        ],
+        "min_cm": [
+          -63.942710876464844,
+          -29.116647720336914,
+          63.28275680541992
+        ],
+        "max_cm": [
+          57.942710876464844,
+          25.11664581298828,
+          104.21725463867188
+        ],
+        "extent_cm": [
+          60.942710876464844,
+          27.116646766662598,
+          20.467248916625977
+        ]
+      },
+      "module_notes": "Hay is removable; future feeding must debit stored hay.",
+      "import_seconds": 0.25,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/Medieval___hay_light.Medieval___hay_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/Medieval___hay.Medieval___hay"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "hay_rack/structure",
+      "module_id": "hay_rack",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/hay_rack.glb",
+      "source_sha256": "fe168caa7ce2c332b70a8db5b56d0de3e7c5c47396444a61172747f67da57f26",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/hay_rack__structure.hay_rack__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.7199999690055847,
+          -0.3500000238418579,
+          0.0
+        ],
+        "max": [
+          0.7199999690055847,
+          0.3500000238418579,
+          1.0725001096725464
+        ],
+        "size": [
+          1.4399999380111694,
+          0.7000000476837158,
+          1.0725001096725464
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          53.625003814697266
+        ],
+        "min_cm": [
+          -72.0,
+          -35.000003814697266,
+          0.0
+        ],
+        "max_cm": [
+          72.0,
+          35.000003814697266,
+          107.25000762939453
+        ],
+        "extent_cm": [
+          72.0,
+          35.000003814697266,
+          53.625003814697266
+        ]
+      },
+      "module_notes": "Hay is removable; future feeding must debit stored hay.",
+      "import_seconds": 0.25,
+      "reused": false,
+      "material_slots": 3,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "stable_rail/structure",
+      "module_id": "stable_rail",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/stable_rail.glb",
+      "source_sha256": "cf1455f1c70f565b3e8f950b77c99c8e4ccdcf3defe238d2204240a011cca88c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/stable_rail/stable_rail.stable_rail",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/stable_rail",
+      "anchors_m": {
+        "left": [
+          -1,
+          0,
+          0
+        ],
+        "right": [
+          1,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "left": [
+          -100.0,
+          0.0,
+          0.0
+        ],
+        "right": [
+          100.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.065000057220459,
+          -0.0650000050663948,
+          0.0
+        ],
+        "max": [
+          1.065000057220459,
+          0.0650000050663948,
+          1.2799999713897705
+        ],
+        "size": [
+          2.130000114440918,
+          0.1300000101327896,
+          1.2799999713897705
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          64.0
+        ],
+        "min_cm": [
+          -106.50000762939453,
+          -6.500000476837158,
+          0.0
+        ],
+        "max_cm": [
+          106.50000762939453,
+          6.500000476837158,
+          128.0
+        ],
+        "extent_cm": [
+          106.50000762939453,
+          6.500000476837158,
+          64.0
+        ]
+      },
+      "module_notes": "2m repeatable paddock and stable rail.",
+      "import_seconds": 0.062000000034458935,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/stable_rail/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/stable_rail/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "road_signpost/finish",
+      "module_id": "road_signpost",
+      "layer": "finish",
+      "source": "Art/MedievalLife/Modules/road_signpost.glb",
+      "source_sha256": "76391e482e6db3ebcef99ce6d88240389c272e90858813460b4bb7d704e27e5c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/road_signpost__finish.road_signpost__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.45499998331069946,
+          -0.08350000530481339,
+          0.0
+        ],
+        "max": [
+          0.7494983077049255,
+          0.07000000774860382,
+          2.450000047683716
+        ],
+        "size": [
+          1.204498291015625,
+          0.1535000130534172,
+          2.450000047683716
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          -15.000000476837158,
+          6.674999952316284,
+          204.5
+        ],
+        "min_cm": [
+          -24.5,
+          4.999999523162842,
+          183.0
+        ],
+        "max_cm": [
+          -5.500000953674316,
+          8.350000381469727,
+          226.0
+        ],
+        "extent_cm": [
+          9.499999523162842,
+          1.6750004291534424,
+          21.5
+        ]
+      },
+      "module_notes": "Pictographic road sign, no baked lettering.",
+      "import_seconds": 0.06300000008195639,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/Medieval___blue.Medieval___blue",
+        "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/Medieval___gold.Medieval___gold"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "road_signpost/structure",
+      "module_id": "road_signpost",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/road_signpost.glb",
+      "source_sha256": "76391e482e6db3ebcef99ce6d88240389c272e90858813460b4bb7d704e27e5c",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/road_signpost__structure.road_signpost__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.45499998331069946,
+          -0.08350000530481339,
+          0.0
+        ],
+        "max": [
+          0.7494983077049255,
+          0.07000000774860382,
+          2.450000047683716
+        ],
+        "size": [
+          1.204498291015625,
+          0.1535000130534172,
+          2.450000047683716
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          14.72491455078125,
+          0.0,
+          122.5
+        ],
+        "min_cm": [
+          -45.5,
+          -7.000000953674316,
+          0.0
+        ],
+        "max_cm": [
+          74.9498291015625,
+          7.000000953674316,
+          245.0
+        ],
+        "extent_cm": [
+          60.22491455078125,
+          7.000000953674316,
+          122.5
+        ]
+      },
+      "module_notes": "Pictographic road sign, no baked lettering.",
+      "import_seconds": 0.06300000008195639,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "watch_brazier/attachments",
+      "module_id": "watch_brazier",
+      "layer": "attachments",
+      "source": "Art/MedievalLife/Modules/watch_brazier.glb",
+      "source_sha256": "2c94689018f7357e082347cd95c308c1d580b85b1fcb9f2053d6f8f163673bac",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/watch_brazier__attachments.watch_brazier__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.32317304611206055,
+          -0.32317304611206055,
+          0.0023933639749884605
+        ],
+        "max": [
+          0.32317304611206055,
+          0.3231731057167053,
+          1.1399999856948853
+        ],
+        "size": [
+          0.6463460922241211,
+          0.6463461518287659,
+          1.1376066217198968
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          84.49999809265137
+        ],
+        "min_cm": [
+          -19.021129608154297,
+          -18.09016990661621,
+          54.999996185302734
+        ],
+        "max_cm": [
+          19.021129608154297,
+          18.09016990661621,
+          114.0
+        ],
+        "extent_cm": [
+          19.021129608154297,
+          18.09016990661621,
+          29.500001907348633
+        ]
+      },
+      "module_notes": "Removable stylized flame mesh; no runtime fire light or fuel logic yet.",
+      "import_seconds": 0.15600000007543713,
+      "reused": false,
+      "material_slots": 2,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/Medieval___flame.Medieval___flame"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    },
+    {
+      "id": "watch_brazier/structure",
+      "module_id": "watch_brazier",
+      "layer": "structure",
+      "source": "Art/MedievalLife/Modules/watch_brazier.glb",
+      "source_sha256": "2c94689018f7357e082347cd95c308c1d580b85b1fcb9f2053d6f8f163673bac",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/watch_brazier__structure.watch_brazier__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier",
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.32317304611206055,
+          -0.32317304611206055,
+          0.0023933639749884605
+        ],
+        "max": [
+          0.32317304611206055,
+          0.3231731057167053,
+          1.1399999856948853
+        ],
+        "size": [
+          0.6463460922241211,
+          0.6463461518287659,
+          1.1376066217198968
+        ]
+      },
+      "bounds_ue": {
+        "origin_cm": [
+          0.0,
+          -1.9073486328125e-06,
+          41.3311016112566
+        ],
+        "min_cm": [
+          -32.31730651855469,
+          -32.31731033325195,
+          0.23933640122413635
+        ],
+        "max_cm": [
+          32.31730651855469,
+          32.31730651855469,
+          82.42286682128906
+        ],
+        "extent_cm": [
+          32.31730651855469,
+          32.31730842590332,
+          41.09176521003246
+        ]
+      },
+      "module_notes": "Removable stylized flame mesh; no runtime fire light or fuel logic yet.",
+      "import_seconds": 0.15600000007543713,
+      "reused": false,
+      "material_slots": 1,
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/Medieval___iron.Medieval___iron"
+      ],
+      "banner_masked_two_sided_slots": 0,
+      "nanite": "disabled_low_poly_runtime_layer"
+    }
+  ],
+  "assemblies": [
+    {
+      "id": "loaded_horse_cart",
+      "label": "Horse, cart and removable log load",
+      "notes": "Authored stationary art master; not a runtime transport screenshot.",
+      "path": "Assemblies/loaded_horse_cart.glb",
+      "pieces": [
+        {
+          "key": "cargo_logs.001",
+          "parent_key": null,
+          "module": "cargo_logs",
+          "position_m": [
+            0.0,
+            0.12999999523162842,
+            0.8799999952316284
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "cart_body.001",
+          "parent_key": null,
+          "module": "cart_body",
+          "position_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "carter_body.001",
+          "parent_key": null,
+          "module": "carter_body",
+          "position_m": [
+            1.6799999475479126,
+            -1.399999976158142,
+            0.0
+          ],
+          "yaw_degrees": -25.00000012650595,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "horse_bay.001",
+          "parent_key": null,
+          "module": "horse_bay",
+          "position_m": [
+            0.0,
+            -2.9000000953674316,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "wheel_left",
+          "parent_key": null,
+          "module": "cart_wheel",
+          "position_m": [
+            -1.0399999618530273,
+            0.0,
+            0.6380000114440918
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "wheel_right",
+          "parent_key": null,
+          "module": "cart_wheel",
+          "position_m": [
+            1.0399999618530273,
+            0.0,
+            0.6380000114440918
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 35666,
+      "meshes": 15,
+      "uv_meshes": 15,
+      "bounds_m": {
+        "min": [
+          -1.1779999732971191,
+          -4.760000228881836,
+          5.960464477539063e-08
+        ],
+        "max": [
+          2.1059060096740723,
+          1.1699999570846558,
+          2.700000047683716
+        ],
+        "size": [
+          3.2839059829711914,
+          5.930000185966492,
+          2.699999988079071
+        ]
+      }
+    },
+    {
+      "id": "royal_gate_watch",
+      "label": "Royal gate and watch post",
+      "notes": "Two working hinge anchors; guards shown as unrigged art studies.",
+      "path": "Assemblies/royal_gate_watch.glb",
+      "pieces": [
+        {
+          "key": "gate_leaf.001",
+          "parent_key": null,
+          "module": "gate_leaf",
+          "position_m": [
+            -1.4299999475479126,
+            0.0,
+            0.05999999865889549
+          ],
+          "yaw_degrees": -33.99999866940647,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_leaf.002",
+          "parent_key": null,
+          "module": "gate_leaf",
+          "position_m": [
+            1.4299999475479126,
+            0.0,
+            0.05999999865889549
+          ],
+          "yaw_degrees": 28.99999966863366,
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_pier.001",
+          "parent_key": null,
+          "module": "gate_pier",
+          "position_m": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_pier.002",
+          "parent_key": null,
+          "module": "gate_pier",
+          "position_m": [
+            2.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_0",
+          "parent_key": null,
+          "module": "royal_guard_body",
+          "position_m": [
+            -2.859999895095825,
+            -0.6800000071525574,
+            0.0
+          ],
+          "yaw_degrees": 7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_helmet.001",
+          "parent_key": "guard_0",
+          "module": "guard_helmet",
+          "position_m": [
+            0.0,
+            -0.00800000037997961,
+            1.8899999856948853
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_shield.001",
+          "parent_key": "guard_0",
+          "module": "guard_shield",
+          "position_m": [
+            -0.38999998569488525,
+            -0.25999999046325684,
+            0.4000000059604645
+          ],
+          "yaw_degrees": -7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_spear.001",
+          "parent_key": "guard_0",
+          "module": "guard_spear",
+          "position_m": [
+            0.4300000071525574,
+            -0.18000000715255737,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_1",
+          "parent_key": null,
+          "module": "royal_guard_body",
+          "position_m": [
+            1.0299999713897705,
+            -1.0399999618530273,
+            0.0
+          ],
+          "yaw_degrees": -15.999999876058132,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_helmet.002",
+          "parent_key": "guard_1",
+          "module": "guard_helmet",
+          "position_m": [
+            0.0,
+            -0.00800000037997961,
+            1.8899999856948853
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_shield.002",
+          "parent_key": "guard_1",
+          "module": "guard_shield",
+          "position_m": [
+            -0.38999998569488525,
+            -0.25999999046325684,
+            0.4000000059604645
+          ],
+          "yaw_degrees": -7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_spear.002",
+          "parent_key": "guard_1",
+          "module": "guard_spear",
+          "position_m": [
+            0.4300000071525574,
+            -0.18000000715255737,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "road_signpost.001",
+          "parent_key": null,
+          "module": "road_signpost",
+          "position_m": [
+            5.300000190734863,
+            -0.3499999940395355,
+            0.0
+          ],
+          "yaw_degrees": -15.000000417413029,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "royal_banner.001",
+          "parent_key": null,
+          "module": "royal_banner",
+          "position_m": [
+            -2.0,
+            -0.6000000238418579,
+            1.3200000524520874
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "royal_banner.002",
+          "parent_key": null,
+          "module": "royal_banner",
+          "position_m": [
+            2.0,
+            -0.6000000238418579,
+            1.3200000524520874
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_bench.001",
+          "parent_key": null,
+          "module": "watch_bench",
+          "position_m": [
+            3.9200000762939453,
+            0.44999998807907104,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_brazier.001",
+          "parent_key": null,
+          "module": "watch_brazier",
+          "position_m": [
+            -3.799999952316284,
+            -0.6800000071525574,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_shelter.001",
+          "parent_key": null,
+          "module": "watch_shelter",
+          "position_m": [
+            3.9200000762939453,
+            0.3499999940395355,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 44388,
+      "meshes": 37,
+      "uv_meshes": 37,
+      "bounds_m": {
+        "min": [
+          -4.123172760009766,
+          -1.3785195350646973,
+          0.0
+        ],
+        "max": [
+          6.032759666442871,
+          1.3002262115478516,
+          3.4200000762939453
+        ],
+        "size": [
+          10.155932426452637,
+          2.678745746612549,
+          3.4200000762939453
+        ]
+      }
+    },
+    {
+      "id": "paddock_corner",
+      "label": "Paddock, feeding and water",
+      "notes": "Modular rail corner; horse study remains unrigged.",
+      "path": "Assemblies/paddock_corner.glb",
+      "pieces": [
+        {
+          "key": "cargo_sacks.001",
+          "parent_key": null,
+          "module": "cargo_sacks",
+          "position_m": [
+            -2.549999952316284,
+            0.949999988079071,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "hay_rack.001",
+          "parent_key": null,
+          "module": "hay_rack",
+          "position_m": [
+            -0.6499999761581421,
+            1.059999942779541,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "horse_grey.001",
+          "parent_key": null,
+          "module": "horse_grey",
+          "position_m": [
+            -0.4000000059604645,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": -30.000000834826057,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.001",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            -1.0,
+            1.649999976158142,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.002",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            1.0,
+            1.649999976158142,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.003",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            -2.0,
+            0.6499999761581421,
+            0.0
+          ],
+          "yaw_degrees": 90.00000250447816,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "water_trough.001",
+          "parent_key": null,
+          "module": "water_trough",
+          "position_m": [
+            1.100000023841858,
+            -0.6499999761581421,
+            0.0
+          ],
+          "yaw_degrees": 90.00000250447816,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 20026,
+      "meshes": 12,
+      "uv_meshes": 12,
+      "bounds_m": {
+        "min": [
+          -3.227607250213623,
+          -1.6591503620147705,
+          0.0
+        ],
+        "max": [
+          2.065000057220459,
+          1.715000033378601,
+          2.700000047683716
+        ],
+        "size": [
+          5.292607307434082,
+          3.3741503953933716,
+          2.700000047683716
+        ]
+      }
+    }
+  ],
+  "modules": [
+    {
+      "id": "cart_body",
+      "path": "Modules/cart_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "wheel_left": [
+          -1.04,
+          0,
+          0.63
+        ],
+        "wheel_right": [
+          1.04,
+          0,
+          0.63
+        ],
+        "cargo": [
+          0,
+          0.18,
+          0.88
+        ],
+        "driver": [
+          0,
+          -0.76,
+          1.7
+        ],
+        "horse": [
+          0,
+          -2.9,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "wheel_left": [
+          -104.0,
+          0.0,
+          63.0
+        ],
+        "wheel_right": [
+          104.0,
+          0.0,
+          63.0
+        ],
+        "cargo": [
+          0.0,
+          -18.0,
+          88.0
+        ],
+        "driver": [
+          0.0,
+          76.0,
+          170.0
+        ],
+        "horse": [
+          0.0,
+          290.0,
+          0.0
+        ]
+      },
+      "notes": "Two-wheel farm cart; wheels pivot around local X. Front is -Y."
+    },
+    {
+      "id": "cart_wheel",
+      "path": "Modules/cart_wheel.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "axle": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "axle": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Axle origin, radius 0.638m. Rotate local X to roll."
+    },
+    {
+      "id": "cargo_logs",
+      "path": "Modules/cargo_logs.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Removable cargo visual; runtime inventory must authorize loading."
+    },
+    {
+      "id": "cargo_sacks",
+      "path": "Modules/cargo_sacks.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Four tied linen sacks; no implied resource creation."
+    },
+    {
+      "id": "horse_bay",
+      "path": "Modules/horse_bay.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack."
+    },
+    {
+      "id": "horse_grey",
+      "path": "Modules/horse_grey.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "anchors_cm": {
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "withers": [
+          0.0,
+          48.0,
+          183.0
+        ],
+        "hitch_left": [
+          -44.0,
+          63.0,
+          138.0
+        ],
+        "hitch_right": [
+          44.0,
+          63.0,
+          138.0
+        ]
+      },
+      "notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack."
+    },
+    {
+      "id": "guard_helmet",
+      "path": "Modules/guard_helmet.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "head": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Helmet attachment origin at forehead; adjust per skeletal head socket."
+    },
+    {
+      "id": "guard_shield",
+      "path": "Modules/guard_shield.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "grip": [
+          0,
+          0.095,
+          0.44
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          -9.5,
+          44.0
+        ]
+      },
+      "notes": "Separate heater shield with royal crossroads device."
+    },
+    {
+      "id": "guard_spear",
+      "path": "Modules/guard_spear.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "grip": [
+          0,
+          0,
+          1.1
+        ]
+      },
+      "anchors_cm": {
+        "grip": [
+          0.0,
+          0.0,
+          110.00000000000001
+        ]
+      },
+      "notes": "2.6m spear, bottom origin; no attack logic is implied."
+    },
+    {
+      "id": "royal_guard_body",
+      "path": "Modules/royal_guard_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Unrigged character art study; local runtime NPC duties are a separate implementation."
+    },
+    {
+      "id": "carter_body",
+      "path": "Modules/carter_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "head": [
+          0.0,
+          0.8,
+          189.0
+        ],
+        "left_hand": [
+          -38.0,
+          17.0,
+          92.0
+        ],
+        "right_hand": [
+          38.0,
+          17.0,
+          92.0
+        ],
+        "ground": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Unrigged character art study; local runtime NPC duties are a separate implementation."
+    },
+    {
+      "id": "gate_pier",
+      "path": "Modules/gate_pier.glb",
+      "layers": [
+        "structure",
+        "weathering"
+      ],
+      "anchors_m": {
+        "hinge": [
+          0.57,
+          0,
+          0.3
+        ],
+        "banner": [
+          0,
+          -0.62,
+          2.65
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          56.99999999999999,
+          0.0,
+          30.0
+        ],
+        "banner": [
+          0.0,
+          62.0,
+          265.0
+        ]
+      },
+      "notes": "Masonry gate pier, 1.3m footprint; opening width set by assembly."
+    },
+    {
+      "id": "gate_leaf",
+      "path": "Modules/gate_leaf.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "hinge": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "hinge": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Single hinged leaf, local Z rotation. Reverse X for opposite leaf."
+    },
+    {
+      "id": "royal_banner",
+      "path": "Modules/royal_banner.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Royal blue hanging pennant; static cloth study, material double-sided on import."
+    },
+    {
+      "id": "watch_bench",
+      "path": "Modules/watch_bench.glb",
+      "layers": [
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Shared rest bench; supports duty rest transitions."
+    },
+    {
+      "id": "watch_shelter",
+      "path": "Modules/watch_shelter.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "bench": [
+          0,
+          0.2,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "bench": [
+          0.0,
+          -20.0,
+          0.0
+        ]
+      },
+      "notes": "Open tiled shelter, shared snap scale with village timber kit."
+    },
+    {
+      "id": "water_trough",
+      "path": "Modules/water_trough.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Hollow trough with replaceable water surface."
+    },
+    {
+      "id": "hay_rack",
+      "path": "Modules/hay_rack.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Hay is removable; future feeding must debit stored hay."
+    },
+    {
+      "id": "stable_rail",
+      "path": "Modules/stable_rail.glb",
+      "layers": [
+        "structure"
+      ],
+      "anchors_m": {
+        "left": [
+          -1,
+          0,
+          0
+        ],
+        "right": [
+          1,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "left": [
+          -100.0,
+          0.0,
+          0.0
+        ],
+        "right": [
+          100.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "2m repeatable paddock and stable rail."
+    },
+    {
+      "id": "road_signpost",
+      "path": "Modules/road_signpost.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Pictographic road sign, no baked lettering."
+    },
+    {
+      "id": "watch_brazier",
+      "path": "Modules/watch_brazier.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "anchors_m": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_cm": {
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "notes": "Removable stylized flame mesh; no runtime fire light or fuel logic yet."
+    }
+  ],
+  "limitations": [
+    "Authored art prototypes; runtime integration reported separately.",
+    "Characters and horses are unrigged, with no armature or animation yet.",
+    "Portable PBR colours and planar UVs; no baked texture maps or authored LODs.",
+    "horse_bay and horse_grey are static unrigged art; no skeleton or animation is included",
+    "royal_guard_body and carter_body are static unrigged art; no rig or animation is included"
+  ]
+}

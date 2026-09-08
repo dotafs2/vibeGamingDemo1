@@ -1,6 +1,20 @@
 #include "HearthMovement.h"
 #include "HearthVillage.h"
 
+namespace HearthMovementOrganic
+{
+    constexpr float FootOffset=5.2f;
+
+    FVector FootPoint(const AHearthVillage& Village,const FVector& Point)
+    {
+        if(!Village.IsOrganicVillage()) return Point;
+        FVector Result=Point; Result.Z=Village.GroundHeightAt(Point)+FootOffset; return Result;
+    }
+
+    bool Reached(const AHearthVillage& Village,const FVector& A,const FVector& B)
+    { return Village.IsOrganicVillage()?FVector::Dist2D(A,B)<=12.f:A.Equals(B,.01); }
+}
+
 bool HearthMovement::SegmentHitsBox(const FVector& Start,const FVector& End,const FVector& Center,double Radius)
 {
     double Enter=0,Leave=1;
@@ -111,7 +125,8 @@ bool AHearthVillage::TryYieldFor(int32 Walker)
         for(float Radius:{120.f,240.f}) for(int32 Side=0;Side<16;++Side)
         {
             const double Angle=Side*UE_DOUBLE_PI/8.;
-            const FVector Target=Start+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0);
+            FVector Target=Start+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0);
+            Target=HearthMovementOrganic::FootPoint(*this,Target);
             if(!HearthMovement::SegmentClear(Start,Target,People) || !HearthMovement::SegmentClear(Target,Target,Destinations)
                 || !HearthMovement::SegmentClear(Walking.Actor->GetActorLocation(),Walking.Route[0],TArray<FVector>{Target})) continue;
             if(bUseCropoutMap && !IsClearSegment(Start,Target)) continue;
@@ -143,9 +158,9 @@ bool AHearthVillage::TryYieldFor(int32 Walker)
     const FVector Forward=(Yielding.Route[0]-Start).GetSafeNormal2D();
     for(float Backoff:{0.f,120.f,240.f,360.f}) for(float Radius:{120.f,180.f,240.f}) for(int32 Side=0;Side<16;++Side)
     {
-        const FVector Retreat=Start-Forward*Backoff;
+        const FVector Retreat=HearthMovementOrganic::FootPoint(*this,Start-Forward*Backoff);
         const double Angle=Side*UE_DOUBLE_PI/8.;
-        const FVector Target=Retreat+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0);
+        const FVector Target=HearthMovementOrganic::FootPoint(*this,Retreat+FVector(Radius*FMath::Cos(Angle),Radius*FMath::Sin(Angle),0));
         if(!HearthMovement::SegmentClear(Start,Retreat,People) || !HearthMovement::SegmentClear(Retreat,Target,People)
             || (bUseCropoutMap && (!IsClearSegment(Start,Retreat) || !IsClearSegment(Retreat,Target)))) continue;
         bool ClearsTraffic=true;
@@ -185,9 +200,12 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
     auto& R=Residents[Index];
     R.bMovementBlocked=false;
     if(R.Route.IsEmpty()) { R.bYieldingForTraffic=false; return true; }
-    while(!R.Route.IsEmpty() && R.Actor->GetActorLocation().Equals(R.Route[0],.01)) R.Route.RemoveAt(0);
+    while(!R.Route.IsEmpty() && HearthMovementOrganic::Reached(*this,R.Actor->GetActorLocation(),R.Route[0])) R.Route.RemoveAt(0);
     if(R.Route.IsEmpty()) { R.bYieldingForTraffic=false; return true; }
-    const FVector Current=R.Actor->GetActorLocation();
+    const bool bOrganicVillage=IsOrganicVillage();
+    const FVector CurrentLocation=R.Actor->GetActorLocation();
+    const FVector Current=HearthMovementOrganic::FootPoint(*this,CurrentLocation);
+    if(bOrganicVillage && !CurrentLocation.Equals(Current,.01)) R.Actor->SetActorLocation(Current);
     if(bUseCropoutMap && !IsClearPoint(Current))
     {
         FVector EscapeDirection=FVector::ZeroVector; float EscapeDistance=0.f;
@@ -208,13 +226,13 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
             if(EscapeDirection.IsNearlyZero()) EscapeDirection=FVector(1,0,0);
             const FVector Escape=Current+EscapeDirection.GetSafeNormal2D()*EscapeDistance;
             if(IsLand(Escape) && IsClearSegment(Current,Escape)
-                && !R.Route[0].Equals(Escape,.01)) R.Route.Insert(Escape,0);
+                && !HearthMovementOrganic::Reached(*this,R.Route[0],Escape)) R.Route.Insert(Escape,0);
         }
     }
-    if(R.bYieldingForTraffic && !R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01)
-        && !R.Route.ContainsByPredicate([&](const FVector& Point) { return Point.Equals(R.TrafficYieldTarget,.01); }))
+    if(R.bYieldingForTraffic && !HearthMovementOrganic::Reached(*this,R.Actor->GetActorLocation(),R.TrafficYieldTarget)
+        && !R.Route.ContainsByPredicate([&](const FVector& Point) { return HearthMovementOrganic::Reached(*this,Point,R.TrafficYieldTarget); }))
     { R.bYieldingForTraffic=false; R.TrafficYieldWaiters.Reset(); }
-    if(R.bYieldingForTraffic && R.Actor->GetActorLocation().Equals(R.TrafficYieldTarget,.01))
+    if(R.bYieldingForTraffic && HearthMovementOrganic::Reached(*this,R.Actor->GetActorLocation(),R.TrafficYieldTarget))
     {
         // Wait for the actual opposing traffic to clear the mouth, rather than
         // a wall-clock timeout that can let us re-enter ahead of a slower walker.
@@ -233,10 +251,19 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
     float Budget=Dt*R.MoveSpeed;
     for(int32 Step=0;Step<64 && !R.Route.IsEmpty() && Budget>0;++Step)
     {
-        const FVector Start=R.Actor->GetActorLocation(), Delta=R.Route[0]-Start;
-        const double Distance=Delta.Size();
+        const FVector Start=R.Actor->GetActorLocation();
+        if(bOrganicVillage) R.Route[0]=HearthMovementOrganic::FootPoint(*this,R.Route[0]);
+        const FVector Target=R.Route[0], Delta=Target-Start;
+        const double Distance=bOrganicVillage?FVector::Dist2D(Start,Target):Delta.Size();
         if(Distance<0.01) { R.Route.RemoveAt(0); continue; }
-        const FVector Next=Start+Delta*(FMath::Min<double>(Distance,Budget)/Distance);
+        const float Travel=static_cast<float>(FMath::Min<double>(Distance,Budget)/Distance);
+        FVector Next=Start;
+        if(bOrganicVillage)
+        {
+            Next.X=Start.X+Delta.X*Travel; Next.Y=Start.Y+Delta.Y*Travel;
+            Next=HearthMovementOrganic::FootPoint(*this,Next);
+        }
+        else Next=Start+Delta*Travel;
         if(bUseCropoutMap && !ProductionSites.IsEmpty() && !IsClearSegment(Start,Next))
         {
             TArray<FVector> NewRoute;
@@ -293,13 +320,14 @@ bool AHearthVillage::MoveResident(int32 Index,float Dt)
             }
             continue;
         }
-        R.Actor->SetActorRotation(FRotator(0,Delta.Rotation().Yaw,0));
+        const FVector Facing=bOrganicVillage?FVector(Delta.X,Delta.Y,0):Delta;
+        R.Actor->SetActorRotation(FRotator(0,Facing.Rotation().Yaw,0));
         R.Actor->SetActorLocation(Next);
         Budget-=FMath::Min<double>(Distance,Budget);
-        if(Next.Equals(R.Route[0],0.01))
+        if(HearthMovementOrganic::Reached(*this,Next,R.Route[0]))
         {
             R.Route.RemoveAt(0);
-            if(R.bYieldingForTraffic && Next.Equals(R.TrafficYieldTarget,.01))
+            if(R.bYieldingForTraffic && HearthMovementOrganic::Reached(*this,Next,R.TrafficYieldTarget))
             {
                 return false;
             }

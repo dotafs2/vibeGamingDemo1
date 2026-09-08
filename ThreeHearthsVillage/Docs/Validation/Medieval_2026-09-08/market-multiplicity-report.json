@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "checked_utc": "2026-09-08T01:00:27.844376+00:00",
+  "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+  "actual_existing_kimi_proposal": "看见：灰瓦屋顶、烟囱、门侧已有一张低矮木长凳，小径从门前穿过；未知：屋后是否有适合种果树的空地或现有果树的阴影；打算：在门前另一侧添一张同样低矮的木长凳，让邻居歇脚时不必挤在一处，也衬出对称的季节色块。",
+  "kits": [
+    {
+      "request_id": "request_2",
+      "module_id": "bench_low",
+      "task_id": "1B6B51E9-41D2-0C49-C37F-F7860D902E9E",
+      "status": "installed",
+      "cost": {
+        "stone": 0,
+        "planks": 2,
+        "beams": 1,
+        "tiles": 0
+      },
+      "anchor": [
+        733.3200345205959,
+        583.2434171069289,
+        139.43753051757812
+      ],
+      "work_progress": 1,
+      "install_position": [
+        856.7054779922989,
+        438.75801182566465,
+        132.75872802734375
+      ],
+      "install_yaw": 171.41053771972656,
+      "revision": 1
+    },
+    {
+      "request_id": "request_11",
+      "module_id": "bench_low",
+      "task_id": "B75B0A8E-42CF-A21E-AEF8-90B414170A37",
+      "status": "installed",
+      "cost": {
+        "stone": 0,
+        "planks": 2,
+        "beams": 1,
+        "tiles": 0
+      },
+      "anchor": [
+        99.36448475796038,
+        515.7369847539546,
+        139.4331512451172
+      ],
+      "work_progress": 1,
+      "install_position": [
+        -73.8851678819538,
+        437.7334088093284,
+        132.8217010498047
+      ],
+      "install_yaw": 171.41053771972656,
+      "revision": 1
+    }
+  ],
+  "payments": [
+    {
+      "id": "AB3A1012-4629-05FB-71F8-4A813DADC044",
+      "kind": "market_kit_purchase",
+      "task_id": "1B6B51E9-41D2-0C49-C37F-F7860D902E9E",
+      "item": "bench_low",
+      "from": 1,
+      "to": -1,
+      "amount": 3,
+      "quantity": 3,
+      "at": 12058.8935546875
+    },
+    {
+      "id": "A879619D-4833-D0AD-0CF9-C5946D19BAB9",
+      "kind": "market_kit_purchase",
+      "task_id": "B75B0A8E-42CF-A21E-AEF8-90B414170A37",
+      "item": "bench_low",
+      "from": 1,
+      "to": -1,
+      "amount": 3,
+      "quantity": 3,
+      "at": 13105.73828125
+    }
+  ],
+  "real_duration_seconds": 600,
+  "cold_real_duration_seconds": 35,
+  "simulation_speed": 1,
+  "baseline_elapsed": 13084.2724609375,
+  "soak_elapsed": 13672.5654296875,
+  "cold_elapsed": 13705.9345703125,
+  "instance_spacing_cm": 930.5912099305473,
+  "extra_calls_during_offline_soak": 0,
+  "duplicate_payments_after_cold": 0,
+  "world_sha256": "f1142ba04f5a2e441b834d9739a4f5292e167f7d3722231293974e2fb58748b3",
+  "unresolved_second_freight": [
+    "ED104C19-402A-2AC0-0135-71A2882623D9"
+  ]
+}

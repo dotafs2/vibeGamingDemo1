@@ -19,6 +19,8 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "HAL/FileManager.h"
+#include "HAL/PlatformTime.h"
+#include "HAL/PlatformMisc.h"
 #include "HighResScreenshot.h"
 #include "Serialization/JsonSerializer.h"
 #include "UObject/ConstructorHelpers.h"
@@ -273,6 +275,10 @@ void AHearthVillage::BuildEnvironment()
         bOrganicTownLayout=true;
         TownLayoutVersion=3;
     }
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthOrganicVillage")))
+    { bUseCropoutMap=true; bOrganicTownLayout=true; TownLayoutVersion=4; }
+    if(OrganicGroundActor.IsValid()) { OrganicGroundActor->Destroy(); OrganicGroundActor.Reset(); }
+    OrganicTerrainGrid.Reset(); OrganicTerrainSettings.Reset();
     LandGrid.Reset(); // Terrain and collision may have changed since editor construction.
     TArray<UStaticMeshComponent*> Previous;
     GetComponents(Previous);
@@ -334,7 +340,7 @@ void AHearthVillage::BuildIslandVillage()
     // Keep props clear of the walking lanes and retain the terrain's own materials.
     // Existing saves keep their recorded road generation; missing metadata means
     // the legacy layout. New worlds use the same bent roads for visuals and sites.
-    FString LayoutPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/World/current-world.json");
+    FString LayoutPath=FPaths::ProjectSavedDir()/(IsOrganicVillage()?TEXT("ThreeHearths/World/organic-world.json"):TEXT("ThreeHearths/World/current-world.json"));
     FParse::Value(FCommandLine::Get(),TEXT("HearthWorld="),LayoutPath);
     FString SavedLayout,LayoutError; FHearthWorldImage SavedNeighborhood;
     bool bSavedLayout=false;
@@ -345,7 +351,7 @@ void AHearthVillage::BuildIslandVillage()
         if(HearthWorld::Read(LayoutPath,SavedLayout,LayoutError) || HearthWorld::Read(LayoutPath+TEXT(".bak"),SavedLayout,LayoutError))
             bSavedLayout=HearthWorld::Decode(SavedLayout,SavedNeighborhood,LayoutError) && SavedNeighborhood.bIsland;
     }
-    if(bSavedLayout) {bOrganicTownLayout=SavedNeighborhood.bOrganicTownLayout;TownLayoutVersion=SavedNeighborhood.TownLayoutVersion;}
+    if(bSavedLayout) {bOrganicTownLayout=SavedNeighborhood.bOrganicTownLayout;TownLayoutVersion=SavedNeighborhood.TownLayoutVersion;OrganicWorldSeed=SavedNeighborhood.OrganicWorldSeed;}
     const FName Town3TerrainTag(TEXT("ThreeHearthsTown3Terrain"));
     // A copied Cropout island is base terrain too, but it is not the 300 m Town3 floor.
     // Owner + dedicated tag also recover the actor when PIE duplicates the editor world.
@@ -375,6 +381,7 @@ void AHearthVillage::BuildIslandVillage()
         Terrain->Tags.AddUnique(TEXT("ThreeHearthsBaseTerrain")); Terrain->Tags.AddUnique(Town3TerrainTag);
         Component->SetMobility(EComponentMobility::Movable);
         Component->SetStaticMesh(Cube); Component->SetCollisionProfileName(TEXT("BlockAll"));
+        Component->SetVisibility(true); Terrain->SetActorHiddenInGame(false); Terrain->SetActorEnableCollision(true);
         Component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
         if(TintMaterial)
         {
@@ -398,6 +405,7 @@ void AHearthVillage::BuildIslandVillage()
     const auto Roads=HearthTownLayout::VillageRoads(TownLayoutVersion>=3?true:bOrganicTownLayout,TownLayoutVersion);
     auto PathSegment=[this](FVector A,FVector B,float Width)
     {
+        if(IsOrganicVillage()) return; // Real graded ribbons are created after the height field.
         FVector C=(A+B)*.5f; C.Z=3.7f; const FVector D=B-A;
         auto* Mesh=AddMesh(Hearth::Shapes+TEXT("Cube"),C,FVector(D.Size2D()/100,Width/100,.013),&Hearth::Path);
         Mesh->SetWorldRotation(FRotator(0,FMath::RadiansToDegrees(FMath::Atan2(D.Y,D.X)),0));
@@ -457,6 +465,9 @@ void AHearthVillage::BuildIslandVillage()
     }
     auto Decorate=[this](const FString& Asset,FVector Position,float Scale)
     {
+        if(IsOrganicVillage() && (Asset.Contains(TEXT("Tree")) || Asset.Contains(TEXT("Shrub")) || Asset.Contains(TEXT("Stone"))))
+            for(int32 Plot=0;Plot<HousingPlotCount();++Plot)
+                if(FVector::DistSquared2D(Position,PlotPositions[Plot])<1100.f*1100.f) return;
         FHitResult Hit;
         FCollisionQueryParams Query; Query.bTraceComplex=true; Query.AddIgnoredActor(this);
         if(GetWorld()->LineTraceSingleByChannel(Hit,Position+FVector(0,0,1000),Position-FVector(0,0,1000),ECC_Visibility,Query)
@@ -477,6 +488,7 @@ void AHearthVillage::BuildIslandVillage()
             Crops+(Kind==3?TEXT("SM_Stone_02"):TEXT("SM_Shrub_01"));
         Decorate(Asset,P,Scatter.FRandRange(0.8f,1.25f));
     }
+    if(IsOrganicVillage()) { BuildOrganicGround(); LandGrid.Reset(); }
 }
 
 void AHearthVillage::OnConstruction(const FTransform& Transform)
@@ -496,8 +508,15 @@ void AHearthVillage::BeginPlay()
     float RequestedSpeed=0;
     if(FParse::Value(FCommandLine::Get(),TEXT("HearthSimulationSpeed="),RequestedSpeed) && FMath::IsFinite(RequestedSpeed))
         SetSimulationSpeed(RequestedSpeed);
-    if(FParse::Param(FCommandLine::Get(),TEXT("HearthUnpaused"))) bSimulationPaused=false;
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthUnpaused")) && !bWorldWriteBlocked) bSimulationPaused=false;
     if(FParse::Param(FCommandLine::Get(),TEXT("HearthPaused"))) bSimulationPaused=true;
+    double ReviewDuration=0;
+    if(FParse::Value(FCommandLine::Get(),TEXT("HearthReviewDurationSeconds="),ReviewDuration)
+        && FMath::IsFinite(ReviewDuration) && ReviewDuration>=30 && ReviewDuration<=3600)
+    {
+        RuntimeReviewExitAt=FPlatformTime::Seconds()+ReviewDuration;
+        UE_LOG(LogThreeHearths,Display,TEXT("HEARTH_REVIEW_BEGIN world=%s duration=%.1f elapsed=%.3f"),*WorldId,ReviewDuration,Elapsed);
+    }
 }
 
 FLinearColor AHearthVillage::ResidentColor(int32 I) const
@@ -523,14 +542,14 @@ void AHearthVillage::ResetVillageState()
     Residents.Empty();
     for(auto& Mesh:PublicMeshes) if(IsValid(Mesh.Get())) Mesh->DestroyComponent();
     PublicMeshes.Reset(); PublicProject=FHearthPublicProject(); StructurePlans.Reset(); WorldRequests.Reset(); PublicVisualCount=-1; PublicScheduleTimer=0;
-    Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); TradeOffers.Reset();
-    TreasuryCoins=IsTownLayoutVersion3()?HearthVillageLimits::Town3TreasuryCoins:HearthVillageLimits::LegacyTreasuryCoins;
+    Conversations.Reset(); Commitments.Reset(); Transactions.Reset(); TaxAssessments.Reset(); WagePayables.Reset(); ServiceDuties.Reset(); FreightOrders.Reset(); TradeOffers.Reset();
+    TreasuryCoins=TownLayoutVersion==3?HearthVillageLimits::Town3TreasuryCoins:HearthVillageLimits::LegacyTreasuryCoins;
     TaxProjectCoins=0; TaxReleasedCoins=0; TaxRatePercent=25; for(int32& Remainder:TaxRemainders) Remainder=0;
     bSocialOpen=false; ++SocialRevision;
     Elapsed=0; SnapshotTimer=0; SimulationRemainder=0; NextTradeAt=8.f; bReportedComplete=false; bSimulationPaused=false;
     for(int32 I=0;I<3;++I)
     {
-        WoodStock[I]=IsTownLayoutVersion3()?HearthVillageLimits::Town3StarterWoodPerResident*(HearthVillageLimits::Town3Population/3):(bUseCropoutMap?33:12);
+        WoodStock[I]=TownLayoutVersion==3?HearthVillageLimits::Town3StarterWoodPerResident*(HearthVillageLimits::Town3Population/3):(bUseCropoutMap?33:12);
         if(StockMeshes.IsValidIndex(I)) { StockMeshes[I]->SetVisibility(true); StockMeshes[I]->SetRelativeScale3D(FVector(1.1f,1.2f,.4f)); }
     }
     const int32 LegacyCosts[]={12,9,6,6,6,6,6,6,6,6};
@@ -558,6 +577,7 @@ void AHearthVillage::ResetVillageState()
             R.Actor->Hat->SetLeaderPoseComponent(R.Actor->Body,true);
         }
         R.Actor->ConfigureAppearance(I);
+        if(!R.ServiceRoleKey.IsEmpty() && IsValid(R.Actor)) R.Actor->ConfigureServiceAppearance(R.ServiceRoleKey);
         if (TintMaterial)
         {
             auto* M=UMaterialInstanceDynamic::Create(TintMaterial,this);
@@ -570,7 +590,19 @@ void AHearthVillage::ResetVillageState()
         Residents.Add(R);
         EnsureResidentStory(I);
     }
+    if(IsOrganicVillage())
+    {
+        for(int32 I=10;I<13;++I)
+        {
+            FHearthResident R; InitializeServiceResident(I,R);
+            const FVector SpawnPoint=SharedResidenceAnchor(I);
+            R.Actor=GetWorld()->SpawnActor<AHearthVillager>(AHearthVillager::StaticClass(),SpawnPoint,FRotator(0,180,0));
+            if(IsValid(R.Actor)) { R.Actor->ResidentIndex=I; R.Actor->ConfigureAppearance(I); if(!R.ServiceRoleKey.IsEmpty()) R.Actor->ConfigureServiceAppearance(R.ServiceRoleKey); }
+            Residents.Add(MoveTemp(R));
+        }
+    }
     PendingDecisions.SetNum(Residents.Num());
+    if(IsOrganicVillage()) InitializeOrganicHomes(true);
     InitializeProduction();
     HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
     if(bUseCropoutMap)
@@ -580,6 +612,7 @@ void AHearthVillage::ResetVillageState()
         const FVector Depot(-1650,-1050,8);
         for(int32 I=0;I<Residents.Num();++I)
         {
+            if(IsSharedServiceResident(I)) continue;
             auto* Actor=Residents[I].Actor.Get();TArray<FVector> Route;
             const FVector Original=Actor->GetActorLocation();
             if(FindProductionPath(Original,Depot,Route)) continue;
@@ -595,6 +628,9 @@ void AHearthVillage::ResetVillageState()
         }
     }
     RefreshBotanicalLandscape();
+    if(IsOrganicVillage()) for(auto& R:Residents) if(IsValid(R.Actor))
+    { FVector P=R.Actor->GetActorLocation(); P.Z=GroundHeightAt(P)+5.2f; R.Actor->SetActorLocation(P); }
+    if(IsOrganicVillage()) BuildMedievalPublicVisuals();
     SelectResident(0);
     bHistoryOpen=false;
     VillageEvent=FString::Printf(TEXT("%d位居民抵达了。每个人都带着自己的想法，准备在这里安家。"),Residents.Num());
@@ -763,6 +799,15 @@ void AHearthVillage::SetHouseStage(int32 Plot,int32 Stage)
 void AHearthVillage::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(RuntimeReviewExitAt>0 && FPlatformTime::Seconds()>=RuntimeReviewExitAt)
+    {
+        RuntimeReviewExitAt=0;
+        StopDecisionRequests();
+        const bool bSaved=SaveWorld();
+        UE_LOG(LogThreeHearths,Display,TEXT("HEARTH_REVIEW_EXIT world=%s elapsed=%.3f saved=%d"),*WorldId,Elapsed,bSaved?1:0);
+        FPlatformMisc::RequestExit(false);
+        return;
+    }
     // Small, fixed simulation steps preserve transfers and task transitions at high speeds.
     // Clamp long stalls to bound work per frame; autonomous deadlines advance in simulation time below.
     const float RealDt=FMath::IsFinite(DeltaSeconds)?FMath::Clamp(DeltaSeconds,0.f,0.25f):0.f;
@@ -776,12 +821,28 @@ void AHearthVillage::Tick(float DeltaSeconds)
             IFileManager::Get().MakeDirectory(*FPaths::GetPath(Capture),true);
             const FString Command=FString::Printf(TEXT("HighResShot 1600x900 filename=\"%s\""),*Capture);
             const bool bRequested=GEngine&&GEngine->Exec(GetWorld(),*Command);
-            if(!bRequested) FScreenshotRequest::RequestScreenshot(Capture,true,false);
+            if(!bRequested) FScreenshotRequest::RequestScreenshot(Capture,false,false);
             UE_LOG(LogThreeHearths,Display,TEXT("ACCEPTANCE_CAPTURE requested=%s path=%s"),bRequested?TEXT("highres"):TEXT("standard"),*Capture);
+            if(IsOrganicVillage())
+            {
+                const FString ReviewDir=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/OrganicReview");
+                IFileManager::Get().MakeDirectory(*ReviewDir,true);
+                FFileHelper::SaveStringToFile(ExportOrganicState(),*(ReviewDir/TEXT("runtime-state.json")));
+                FFileHelper::SaveStringToFile(ExportWorldState(),*(ReviewDir/TEXT("world-payload.json")));
+                const FString TownImage=ExportTownObservation();
+                if(!TownImage.IsEmpty()) IFileManager::Get().Copy(*(ReviewDir/TEXT("village.png")),*TownImage,true);
+                for(int32 Resident:{0,4,7})
+                {
+                    const FString HomeImage=ExportDesignObservation(Resident);
+                    if(!HomeImage.IsEmpty()) IFileManager::Get().Copy(*(ReviewDir/FString::Printf(TEXT("home-%d.png"),Resident)),*HomeImage,true);
+                }
+            }
         }
     }
     if(!bSimulationPaused && RealDt>0.f)
     {
+        // This is deliberately outside the accelerated fixed-step loop.
+        AdvanceGuardThoughts();
         constexpr double Step=0.05;
         // Do not turn a startup/render hitch into thousands of synchronous
         // simulation iterations. A normal 30 Hz frame still advances the full
@@ -814,8 +875,11 @@ void AHearthVillage::Tick(float DeltaSeconds)
     }
     for(auto& R:Residents) if(IsValid(R.Actor))
     {
-        const float MotionRate=!R.ConversationId.IsEmpty() && R.Task==EHearthTask::LifeActivity?1.f:SimulationSpeed;
-        const EHearthTask Motion=R.Task==EHearthTask::LifeChoosing && !R.Route.IsEmpty()?EHearthTask::LifeTravel:R.Task;
+        const EHearthTask Motion=R.Task==EHearthTask::OrganicTravel?EHearthTask::ToHome:R.Task==EHearthTask::OrganicWork?EHearthTask::Building:
+            R.Task==EHearthTask::LifeChoosing && !R.Route.IsEmpty()?EHearthTask::LifeTravel:R.Task;
+        const bool bWalking=Motion==EHearthTask::LifeTravel || Motion==EHearthTask::ToHome || Motion==EHearthTask::ProductionTravel || Motion==EHearthTask::ProductionDeliver || Motion==EHearthTask::TradeTravel || Motion==EHearthTask::PublicTravel || Motion==EHearthTask::SupplyTravel;
+        const float MotionRate=!R.ConversationId.IsEmpty() && R.Task==EHearthTask::LifeActivity?1.f:
+            (bWalking && R.Actor->bServiceAppearanceReady?SimulationSpeed*(R.MoveSpeed/90.f):SimulationSpeed);
         R.Actor->EquippedToolId=R.HeldToolId;
         R.Actor->SetMotion(R.bMovementBlocked?EHearthTask::LifeChoosing:Motion,bSimulationPaused?0.f:MotionRate,R.ProductionOp);
         const bool bTradeCargo=(R.Task==EHearthTask::TradeTravel || R.Task==EHearthTask::TradeWaiting)
@@ -856,8 +920,22 @@ void AHearthVillage::AdvanceSimulation(float Dt)
             R.SocialNeed=FMath::Min(100.f,R.SocialNeed+Dt*(I==1?0.10f:0.025f));
             if(R.Task!=EHearthTask::LifeActivity) R.Energy=FMath::Max(0.f,R.Energy-Dt*0.025f);
         }
+        if(IsSharedServiceResident(I) && I==12 && FreightOrders.ContainsByPredicate([&R](const FHearthFreightOrder& O){return O.Status==TEXT("transporting") && O.Id==R.ActiveTaskId;}))
+        {
+            AdvanceFreightResident(I,Dt);
+            continue;
+        }
+        if(IsSharedServiceResident(I) && ServiceDuties.ContainsByPredicate([&R](const FHearthServiceDutyRecord& D){return D.Status==TEXT("active") && D.TaskId==R.ActiveTaskId;}))
+        {
+            AdvanceServiceResident(I,Dt);
+            continue;
+        }
         switch(R.Task)
         {
+        case EHearthTask::OrganicTravel:
+        case EHearthTask::OrganicWork:
+            AdvanceOrganicWorker(I,Dt);
+            break;
         case EHearthTask::Choosing:
             if(R.Timer<=0) Decide(I);
             break;
@@ -944,8 +1022,11 @@ void AHearthVillage::AdvanceSimulation(float Dt)
     // Offer funded public work at the exact transition to idle, before the
     // ordinary life scheduler consumes that transition in the same fixed step.
     AdvanceTileOrders(Dt);
+    AdvanceFreightRuntime(Dt);
+    AdvanceServiceRuntime(Dt);
+    AdvanceOrganicHomes(Dt);
     AdvancePublicWorks(Dt);
-    if(!bReportedComplete && CompletedHomes()==Residents.Num())
+    if(!bReportedComplete && CompletedHomes()==HousingPlotCount())
     {
         bReportedComplete=true;
         VillageEvent=TEXT("所有人的小屋都建好了。大家开始安排接下来的生活。");
@@ -954,7 +1035,7 @@ void AHearthVillage::AdvanceSimulation(float Dt)
     }
 }
 
-int32 AHearthVillage::CompletedHomes() const { int32 N=0; for(const auto& R:Residents) N+=(R.BuildProgress>=1.f); return N; }
+int32 AHearthVillage::CompletedHomes() const { int32 N=0; for(const auto& R:Residents) N+=(R.Plot>=0 && R.BuildProgress>=1.f); return N; }
 int32 AHearthVillage::AvailableWood() const { return WoodStock[0]+WoodStock[1]+WoodStock[2]; }
 int32 AHearthVillage::CostFor(int32 I) const { return Residents.IsValidIndex(I) && Residents[I].Plot>=0?PlotCosts[Residents[I].Plot]:0; }
 FString AHearthVillage::PlotNameFor(int32 I) const
@@ -976,6 +1057,8 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::PublicWork) return TEXT("安装公共城墙构件");
     if(Residents[I].Task==EHearthTask::SupplyTravel) return TEXT("运送自有木板给公共工程");
     if(Residents[I].Task==EHearthTask::SupplyHandover) return TEXT("交付木板并等待结算");
+    if(Residents[I].Task==EHearthTask::OrganicTravel) return TEXT("回家调整建筑构件");
+    if(Residents[I].Task==EHearthTask::OrganicWork) return TEXT("安装或回收自家构件");
     if(Residents[I].Task==EHearthTask::LifeChoosing)
     {
         if(!bAutonomousLifeEnabled) return TEXT("自主生活已关闭");
@@ -985,7 +1068,8 @@ FString AHearthVillage::StatusFor(int32 I) const
     if(Residents[I].Task==EHearthTask::LifeTravel) return TEXT("前往活动地点");
     if(Residents[I].Task==EHearthTask::LifeActivity) return LifeActionName(I,Residents[I].LifeAction);
     const TCHAR* Status[]={TEXT("观察地块"),TEXT("前往木材堆"),TEXT("整理木材"),TEXT("搬运木材"),TEXT("放下木材"),TEXT("搭建小屋"),TEXT("新家落成")};
-    return Status[static_cast<int32>(Residents[I].Task)];
+    const int32 TaskIndex=static_cast<int32>(Residents[I].Task);
+    return TaskIndex<UE_ARRAY_COUNT(Status)?Status[TaskIndex]:TEXT("正在处理事务");
 }
 FString AHearthVillage::GetSnapshot() const
 {
@@ -995,6 +1079,12 @@ FString AHearthVillage::GetSnapshot() const
     Root->SetStringField(TEXT("world_save_status"),WorldSaveStatus);
     Root->SetNumberField(TEXT("town_layout_version"),TownLayoutVersion);
     Root->SetStringField(TEXT("town_layout_error"),TownLayoutError);
+    if(IsOrganicVillage())
+    {
+        TSharedPtr<FJsonObject> Organic;
+        if(FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(ExportOrganicState()),Organic))
+            Root->SetObjectField(TEXT("organic_village"),Organic);
+    }
     Root->SetStringField(TEXT("backend"),bApiReady?ApiBackend:TEXT("local_personality_policy"));
     Root->SetStringField(TEXT("api_status"),ApiStatus);
     Root->SetStringField(TEXT("model"),ApiModel);

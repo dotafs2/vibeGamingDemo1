@@ -3,7 +3,7 @@
 bool AHearthVillage::PrepareIncomeTax(int32 Resident,int32 Gross,const FString& SourceId,bool bIncomeRecorded,FHearthTaxAssessment& Out) const
 {
     // This first policy is fixed at 25%. There is deliberately no rate-changing action.
-    if(!Residents.IsValidIndex(Resident) || Resident>=10 || Gross<=0 || Gross>100000000 || TaxRatePercent!=25
+    if(!Residents.IsValidIndex(Resident) || Gross<=0 || Gross>100000000 || TaxRatePercent!=25
         || TaxRemainders[Resident]<0 || TaxRemainders[Resident]>99 || TaxAssessments.Num()>=100000
         || TaxAssessments.ContainsByPredicate([&](const auto& A){ return A.SourceTransactionId==SourceId; })) return false;
     FGuid Id; if(!FGuid::Parse(SourceId,Id) || !Id.IsValid()) return false;

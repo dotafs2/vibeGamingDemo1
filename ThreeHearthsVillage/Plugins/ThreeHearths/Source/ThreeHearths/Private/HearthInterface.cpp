@@ -1,4 +1,5 @@
 #include "HearthVillage.h"
+#include "HearthFreightVisual.h"
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/Engine.h"
@@ -57,7 +58,19 @@ public:
         Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text(FText::FromString(TEXT("炉火与王国"))).Font(HearthUI::Font(25,true)).ColorAndOpacity(HearthUI::Ink)];
         Panel->AddSlot().AutoHeight().Padding(0,3,0,14)[SNew(STextBlock).Text_Lambda([this] { auto* V=Village.Get(); return FText::FromString(FString::Printf(TEXT("%d 位居民，共同生活。"),V?V->Residents.Num():0)); }).Font(HearthUI::Font(12)).ColorAndOpacity(HearthUI::Muted)];
         Panel->AddSlot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
-            auto* V=Village.Get(); return FText::FromString(V?V->ProductionSummary():TEXT(""));
+            auto* V=Village.Get();
+            if(!V) return FText::GetEmpty();
+            FString Summary=V->ProductionSummary();
+            if(V->IsOrganicVillage())
+            {
+                int32 Expanding=0;
+                for(const auto& Pair:V->OrganicHomes)
+                    if(Pair.Value.CurrentRecipe!=Pair.Value.TargetRecipe || !Pair.Value.ActivePieceKey.IsEmpty()) ++Expanding;
+                const int32 Tail=Summary.Find(TEXT("\n农田 "));
+                if(Tail!=INDEX_NONE) Summary.LeftInline(Tail);
+                Summary+=FString::Printf(TEXT("\n有机住宅 %d 户 · 正在扩建 %d 户"),V->OrganicHomes.Num(),Expanding);
+            }
+            return FText::FromString(Summary);
         }).Font(HearthUI::Font(12,true)).ColorAndOpacity(HearthUI::Ink).AutoWrapText(true)];
         Panel->AddSlot().AutoHeight().Padding(0,12,0,12)[SNew(SSeparator).ColorAndOpacity(FLinearColor(0.45f,0.44f,0.35f,0.35f))];
         Panel->AddSlot().AutoHeight().Padding(0,0,0,8)[SNew(STextBlock).Text(FText::FromString(TEXT("村民"))).Font(HearthUI::Font(11,true)).ColorAndOpacity(HearthUI::Muted)];
@@ -237,6 +250,9 @@ void AHearthPlayerController::BeginPlay()
     for(TActorIterator<AHearthVillage> It(GetWorld());It;++It) { Village=*It; break; }
     bIslandCamera=Village.IsValid() && Village->bUseCropoutMap;
     CameraOffset=bIslandCamera?FVector(-9000,-11000,14500):FVector(-2300,-2800,3300);
+    float ReviewOrbit=0.f;
+    if(FParse::Value(FCommandLine::Get(),TEXT("HearthReviewOrbit="),ReviewOrbit) && FMath::IsFinite(ReviewOrbit))
+        CameraOffset=FRotator(0,FMath::Fmod(ReviewOrbit,360.f),0).RotateVector(CameraOffset);
     CameraCenter=bIslandCamera?FVector(-2200,-200,0):FVector::ZeroVector;
     CameraZoom=bIslandCamera?0.48f:1.f;
     const FRotator Rotation=(-CameraOffset).Rotation();
@@ -245,6 +261,7 @@ void AHearthPlayerController::BeginPlay()
     Camera->GetCameraComponent()->SetConstraintAspectRatio(false);
     SetViewTarget(Camera);
     UpdateCamera();
+    if(Village.IsValid() && Village->IsOrganicVillage()) ShowIsland();
     FInputModeGameAndUI Mode; Mode.SetHideCursorDuringCapture(false); Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
     SetInputMode(Mode);
     if(Village.IsValid() && GEngine && GEngine->GameViewport)
@@ -274,6 +291,29 @@ void AHearthPlayerController::BeginPlay()
         CameraZoom=bIslandCamera?.14f:.6f;
         UpdateCamera();
     }
+    int32 ServiceFocus=-1;
+    if(Village.IsValid() && FParse::Value(FCommandLine::Get(),TEXT("HearthFocusService="),ServiceFocus)
+        && Village->IsSharedServiceResident(ServiceFocus))
+    {
+        CameraCenter=ServiceFocus==12?Village->GetServiceDutyAnchor(ServiceFocus)+FVector(0,-250,100)
+            :Village->GetServiceGateFrame().TransformPosition(FVector(100,0,140));
+        CameraZoom=bIslandCamera?.10f:.6f;
+        UpdateCamera();
+    }
+    int32 KitFocus=-1;
+    if(Village.IsValid() && FParse::Value(FCommandLine::Get(),TEXT("HearthFocusMarketKit="),KitFocus)
+        && Village->Residents.IsValidIndex(KitFocus))
+    {
+        const auto* Home=Village->OrganicHomes.Find(Village->Residents[KitFocus].StableId);
+        if(Home && !Home->MarketKitInstalled.IsEmpty())
+        { CameraCenter=Home->MarketKitInstalled[0].InstallPosition+FVector(0,0,90); CameraZoom=.12f; UpdateCamera(); }
+    }
+    float ReviewZoom=0.f;
+    float ReviewHeight=0.f;
+    if(FParse::Value(FCommandLine::Get(),TEXT("HearthReviewHeight="),ReviewHeight) && FMath::IsFinite(ReviewHeight))
+    { CameraCenter.Z+=FMath::Clamp(ReviewHeight,-500.f,500.f); UpdateCamera(); }
+    if(FParse::Value(FCommandLine::Get(),TEXT("HearthReviewZoom="),ReviewZoom) && FMath::IsFinite(ReviewZoom))
+    { CameraZoom=FMath::Clamp(ReviewZoom,.025f,1.f); UpdateCamera(); }
 }
 void AHearthPlayerController::PlayerTick(float DeltaTime)
 {
@@ -302,12 +342,33 @@ void AHearthPlayerController::PlayerTick(float DeltaTime)
     const float Right=(IsInputKeyDown(EKeys::D)||IsInputKeyDown(EKeys::Right)?1.f:0.f)-(IsInputKeyDown(EKeys::A)||IsInputKeyDown(EKeys::Left)?1.f:0.f);
     const float PanSpeed=(bIslandCamera?5000.f:1500.f)*CameraZoom*FMath::Min(DeltaTime,0.1f);
     PanCamera(Right*PanSpeed,Forward*PanSpeed);
+    if(FParse::Param(FCommandLine::Get(),TEXT("HearthFocusFreight")))
+    {
+        const auto Freight=Village->GetFreightVisualState();
+        if(Freight.bEnabled)
+        {
+            CameraCenter=Freight.CartPosition+FRotator(0,Freight.CartYaw,0).Vector()*160.f+FVector(0,0,135.f);
+            float ReviewZoom=.075f;
+            FParse::Value(FCommandLine::Get(),TEXT("HearthReviewZoom="),ReviewZoom);
+            CameraZoom=FMath::IsFinite(ReviewZoom)?FMath::Clamp(ReviewZoom,.025f,1.f):.075f;
+        }
+    }
     UpdateCamera();
 }
 void AHearthPlayerController::ShowIsland()
 {
     CameraCenter=bIslandCamera?FVector(-350,-50,0):FVector::ZeroVector;
     CameraZoom=1.f;
+    if(Village.IsValid() && Village->IsOrganicVillage())
+    {
+        FBox Homes(ForceInit);
+        for(int32 Plot=0;Plot<Village->HousingPlotCount();++Plot) Homes+=Village->PlotPositions[Plot];
+        if(Homes.IsValid)
+        {
+            CameraCenter=Homes.GetCenter();
+            CameraZoom=FMath::Clamp((FMath::Max(Homes.GetSize().X,Homes.GetSize().Y)+2400.f)/16500.f,.65f,1.4f);
+        }
+    }
     UpdateCamera();
 }
 void AHearthPlayerController::FocusResident()
@@ -342,7 +403,7 @@ void AHearthPlayerController::UpdateCamera()
     if(auto* Camera=Cast<ACameraActor>(GetViewTarget()))
     {
         const FVector ScreenRight=(-CameraOffset).Rotation().Quaternion().GetRightVector();
-        const float PanelOffset=(bIslandCamera?2400.f:620.f)*CameraZoom;
+        const float PanelOffset=FParse::Param(FCommandLine::Get(),TEXT("HearthCleanReview"))?0.f:(bIslandCamera?2400.f:620.f)*CameraZoom;
         Camera->SetActorLocation(CameraCenter+CameraOffset*CameraZoom-ScreenRight*PanelOffset);
         FVector2D Size(1440,900);
         if(GEngine && GEngine->GameViewport) GEngine->GameViewport->GetViewportSize(Size);

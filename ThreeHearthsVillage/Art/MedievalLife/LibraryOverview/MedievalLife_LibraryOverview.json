@@ -1,0 +1,909 @@
+{
+  "schema_version": 1,
+  "status": "rendered_by_this_script",
+  "source_blend": "MedievalLife_Masters.blend",
+  "source_catalog": "catalog.json",
+  "source_catalog_sha256": "f8e87534cb83a2e6f923f48489bd8318d0c4c036a1ef9f5f5c20203595594e92",
+  "freight_manifest": "FreightKit/manifest.json",
+  "freight_manifest_sha256": "6d5c87959b97641f4b0554c499b4627ac3a543b1e8683b42a916682537f2dfad",
+  "market_manifest": "MarketLifeKit/manifest.json",
+  "market_manifest_sha256": "6df317289ee139c7b93f4ee11bc654c95dfdbf9c1df28b73488bd377c021cf23",
+  "grid": {
+    "columns": 5,
+    "rows": 6,
+    "tile_count": 30
+  },
+  "groups": {
+    "MedievalLife": 21,
+    "FreightKit": 4,
+    "MarketLifeKit": 5
+  },
+  "display_policy": "complete declared layer composition per module; each tile uniformly fitted",
+  "axis": {
+    "up": "+Z",
+    "front": "-Y",
+    "units": "meters"
+  },
+  "modules": [
+    {
+      "index": 0,
+      "id": "cart_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cart_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 0
+      },
+      "display_scale": 0.7129306162093505,
+      "source_bounds_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text"
+    },
+    {
+      "index": 1,
+      "id": "cart_wheel",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cart_wheel.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 0
+      },
+      "display_scale": 1.640144713091144,
+      "source_bounds_m": {
+        "min": [
+          -0.1380000114440918,
+          -0.637999951839447,
+          -0.637999951839447
+        ],
+        "max": [
+          0.1380000114440918,
+          0.637999951839447,
+          0.637999951839447
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.001"
+    },
+    {
+      "index": 2,
+      "id": "cargo_logs",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cargo_logs.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 0
+      },
+      "display_scale": 1.6711128993992166,
+      "source_bounds_m": {
+        "min": [
+          -0.6043232083320618,
+          -0.8105000257492065,
+          0.012143561616539955
+        ],
+        "max": [
+          0.6044682860374451,
+          0.9300000667572021,
+          0.7178564071655273
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.002"
+    },
+    {
+      "index": 3,
+      "id": "cargo_sacks",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cargo_sacks.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 0
+      },
+      "display_scale": 1.7994239586635912,
+      "source_bounds_m": {
+        "min": [
+          -0.6776071786880493,
+          -0.6448274850845337,
+          0.03500000014901161
+        ],
+        "max": [
+          0.6460000276565552,
+          0.7007240653038025,
+          0.7649999856948853
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.003"
+    },
+    {
+      "index": 4,
+      "id": "horse_bay",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/horse_bay.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 0
+      },
+      "display_scale": 0.7208439000293323,
+      "source_bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.004"
+    },
+    {
+      "index": 5,
+      "id": "horse_grey",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/horse_grey.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 1
+      },
+      "display_scale": 0.7208439000293323,
+      "source_bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.005"
+    },
+    {
+      "index": 6,
+      "id": "guard_helmet",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_helmet.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 1
+      },
+      "display_scale": 4.100580666409943,
+      "source_bounds_m": {
+        "min": [
+          -0.3100000023841858,
+          -0.3100000023841858,
+          0.0
+        ],
+        "max": [
+          0.3100000023841858,
+          0.3100000023841858,
+          0.28999999165534973
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.006"
+    },
+    {
+      "index": 7,
+      "id": "guard_shield",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_shield.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 1
+      },
+      "display_scale": 3.086929519170646,
+      "source_bounds_m": {
+        "min": [
+          -0.311149537563324,
+          -0.08300000429153442,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.311149537563324,
+          0.11749999970197678,
+          0.7315000891685486
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.007"
+    },
+    {
+      "index": 8,
+      "id": "guard_spear",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_spear.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 1
+      },
+      "display_scale": 1.3268367146785973,
+      "source_bounds_m": {
+        "min": [
+          -0.07820826768875122,
+          -0.041846487671136856,
+          0.0
+        ],
+        "max": [
+          0.07820826768875122,
+          0.041846487671136856,
+          2.579827308654785
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.008"
+    },
+    {
+      "index": 9,
+      "id": "royal_guard_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/royal_guard_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 1
+      },
+      "display_scale": 1.4043435568516605,
+      "source_bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.009"
+    },
+    {
+      "index": 10,
+      "id": "carter_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/carter_body.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 2
+      },
+      "display_scale": 1.4043435568516605,
+      "source_bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.010"
+    },
+    {
+      "index": 11,
+      "id": "gate_pier",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/gate_pier.glb",
+      "layers": [
+        "structure",
+        "weathering"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 2
+      },
+      "display_scale": 0.7799328054689872,
+      "source_bounds_m": {
+        "min": [
+          -0.6499999761581421,
+          -0.625,
+          0.0
+        ],
+        "max": [
+          0.6549999713897705,
+          0.625,
+          3.380000114440918
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.011"
+    },
+    {
+      "index": 12,
+      "id": "gate_leaf",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/gate_leaf.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 2
+      },
+      "display_scale": 1.3369754171845236,
+      "source_bounds_m": {
+        "min": [
+          -0.09000000357627869,
+          -0.10900000482797623,
+          0.08999991416931152
+        ],
+        "max": [
+          1.340000033378601,
+          0.14500004053115845,
+          2.2300000190734863
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.012"
+    },
+    {
+      "index": 13,
+      "id": "royal_banner",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/royal_banner.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 2
+      },
+      "display_scale": 1.4783406586390355,
+      "source_bounds_m": {
+        "min": [
+          -0.3699999749660492,
+          -0.10000000149011612,
+          0.0
+        ],
+        "max": [
+          0.3699999749660492,
+          0.03500000387430191,
+          2.0999999046325684
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.013"
+    },
+    {
+      "index": 14,
+      "id": "watch_bench",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_bench.glb",
+      "layers": [
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 2
+      },
+      "display_scale": 2.055149701536851,
+      "source_bounds_m": {
+        "min": [
+          -0.7250000238418579,
+          -0.320000022649765,
+          0.029999971389770508
+        ],
+        "max": [
+          0.7250000238418579,
+          0.33500000834465027,
+          0.9150000214576721
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.014"
+    },
+    {
+      "index": 15,
+      "id": "watch_shelter",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_shelter.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 3
+      },
+      "display_scale": 0.7193819350974933,
+      "source_bounds_m": {
+        "min": [
+          -1.369999885559082,
+          -0.9502261877059937,
+          0.0
+        ],
+        "max": [
+          1.369999885559082,
+          0.9502261877059937,
+          2.9625000953674316
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.015"
+    },
+    {
+      "index": 16,
+      "id": "water_trough",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/water_trough.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 3
+      },
+      "display_scale": 1.9269402158998032,
+      "source_bounds_m": {
+        "min": [
+          -0.8149999976158142,
+          -0.45499998331069946,
+          0.0
+        ],
+        "max": [
+          0.8149999976158142,
+          0.45499998331069946,
+          0.7849999666213989
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.016"
+    },
+    {
+      "index": 17,
+      "id": "hay_rack",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/hay_rack.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 3
+      },
+      "display_scale": 1.8297341815795503,
+      "source_bounds_m": {
+        "min": [
+          -0.7199999690055847,
+          -0.3500000238418579,
+          0.0
+        ],
+        "max": [
+          0.7199999690055847,
+          0.3500000238418579,
+          1.0725001096725464
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.017"
+    },
+    {
+      "index": 18,
+      "id": "stable_rail",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/stable_rail.glb",
+      "layers": [
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 3
+      },
+      "display_scale": 1.783861610883504,
+      "source_bounds_m": {
+        "min": [
+          -1.065000057220459,
+          -0.0650000050663948,
+          0.0
+        ],
+        "max": [
+          1.065000057220459,
+          0.0650000050663948,
+          1.2799999713897705
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.018"
+    },
+    {
+      "index": 19,
+      "id": "road_signpost",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/road_signpost.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 3
+      },
+      "display_scale": 1.2278244564174965,
+      "source_bounds_m": {
+        "min": [
+          -0.45499998331069946,
+          -0.08350000530481339,
+          0.0
+        ],
+        "max": [
+          0.7494983077049255,
+          0.07000000774860382,
+          2.450000047683716
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.019"
+    },
+    {
+      "index": 20,
+      "id": "watch_brazier",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_brazier.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 4
+      },
+      "display_scale": 2.208811917711727,
+      "source_bounds_m": {
+        "min": [
+          -0.32317304611206055,
+          -0.32317304611206055,
+          0.0023933639749884605
+        ],
+        "max": [
+          0.32317304611206055,
+          0.3231731057167053,
+          1.1399999856948853
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.020"
+    },
+    {
+      "index": 21,
+      "id": "cargo_planks",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cargo_planks.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 4
+      },
+      "display_scale": 2.4464837513858577,
+      "source_bounds_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.021"
+    },
+    {
+      "index": 22,
+      "id": "cargo_beams",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cargo_beams.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 4
+      },
+      "display_scale": 2.1548075309681134,
+      "source_bounds_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.022"
+    },
+    {
+      "index": 23,
+      "id": "cart_traces",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cart_traces.glb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 4
+      },
+      "display_scale": 3.211889814243216,
+      "source_bounds_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.023"
+    },
+    {
+      "index": 24,
+      "id": "freight_depot_rack",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/freight_depot_rack.glb",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 4
+      },
+      "display_scale": 1.0913993705279776,
+      "source_bounds_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.024"
+    },
+    {
+      "index": 25,
+      "id": "bench_low",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/bench_low.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 0,
+        "row": 5
+      },
+      "display_scale": 2.1783578616810124,
+      "source_bounds_m": {
+        "min": [
+          -0.8629999756813049,
+          -0.2942429482936859,
+          0.014744235202670097
+        ],
+        "max": [
+          0.8600000143051147,
+          0.29424306750297546,
+          0.5189999938011169
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.025"
+    },
+    {
+      "index": 26,
+      "id": "work_table",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/work_table.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 1,
+        "row": 5
+      },
+      "display_scale": 1.7420045593180946,
+      "source_bounds_m": {
+        "min": [
+          -0.9649999737739563,
+          -0.4424999952316284,
+          0.022058218717575073
+        ],
+        "max": [
+          0.9679999947547913,
+          0.4424999952316284,
+          0.9440000057220459
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.026"
+    },
+    {
+      "index": 27,
+      "id": "tool_rack",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/tool_rack.glb",
+      "layers": [
+        "equipment",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 2,
+        "row": 5
+      },
+      "display_scale": 1.4644907421163114,
+      "source_bounds_m": {
+        "min": [
+          -0.675000011920929,
+          -0.3399999737739563,
+          0.004999989178031683
+        ],
+        "max": [
+          0.675000011920929,
+          0.261438250541687,
+          1.6512261629104614
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.027"
+    },
+    {
+      "index": 28,
+      "id": "linen_canopy",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/linen_canopy.glb",
+      "layers": [
+        "cover",
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 3,
+        "row": 5
+      },
+      "display_scale": 0.8099850015859741,
+      "source_bounds_m": {
+        "min": [
+          -1.225000023841858,
+          -0.925000011920929,
+          0.0
+        ],
+        "max": [
+          1.225000023841858,
+          0.8399999737739563,
+          2.62147855758667
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.028"
+    },
+    {
+      "index": 29,
+      "id": "clay_jar",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/clay_jar.glb",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "grid": {
+        "column": 4,
+        "row": 5
+      },
+      "display_scale": 3.9869621172417857,
+      "source_bounds_m": {
+        "min": [
+          -0.30950865149497986,
+          -0.22499999403953552,
+          0.0
+        ],
+        "max": [
+          0.30950865149497986,
+          0.22499999403953552,
+          0.422878623008728
+        ]
+      },
+      "presentation": "rotated vignette fitted to projected bounds; not game placement",
+      "label_object": "Text.029"
+    }
+  ],
+  "outputs": {
+    "blend": "LibraryOverview/MedievalLife_LibraryOverview.blend",
+    "png": "LibraryOverview/MedievalLife_LibraryOverview.png"
+  }
+}

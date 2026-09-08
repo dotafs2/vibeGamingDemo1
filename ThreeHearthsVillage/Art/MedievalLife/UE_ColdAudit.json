@@ -1,0 +1,459 @@
+{
+  "status": "passed",
+  "audit": "cold native reload; no assets modified",
+  "layers": [
+    {
+      "id": "cart_body/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__attachments.cart_body__attachments",
+      "uv_channels": 1,
+      "vertices": 4152,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "cart_body/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__finish.cart_body__finish",
+      "uv_channels": 1,
+      "vertices": 1304,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "cart_body/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_body/cart_body__structure.cart_body__structure",
+      "uv_channels": 1,
+      "vertices": 7560,
+      "material_slots": 4,
+      "nanite": false
+    },
+    {
+      "id": "cart_wheel/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/cart_wheel__finish.cart_wheel__finish",
+      "uv_channels": 1,
+      "vertices": 6736,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "cart_wheel/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cart_wheel/cart_wheel__structure.cart_wheel__structure",
+      "uv_channels": 1,
+      "vertices": 3832,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "cargo_logs/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/cargo_logs__attachments.cargo_logs__attachments",
+      "uv_channels": 1,
+      "vertices": 4638,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "cargo_logs/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_logs/cargo_logs__structure.cargo_logs__structure",
+      "uv_channels": 1,
+      "vertices": 1210,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "cargo_sacks/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/cargo_sacks__attachments.cargo_sacks__attachments",
+      "uv_channels": 1,
+      "vertices": 2972,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "cargo_sacks/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/cargo_sacks/cargo_sacks__structure.cargo_sacks__structure",
+      "uv_channels": 1,
+      "vertices": 1808,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "horse_bay/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__attachments.horse_bay__attachments",
+      "uv_channels": 1,
+      "vertices": 3616,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "horse_bay/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__finish.horse_bay__finish",
+      "uv_channels": 1,
+      "vertices": 9426,
+      "material_slots": 4,
+      "nanite": false
+    },
+    {
+      "id": "horse_bay/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_bay/horse_bay__structure.horse_bay__structure",
+      "uv_channels": 1,
+      "vertices": 6952,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "horse_grey/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__attachments.horse_grey__attachments",
+      "uv_channels": 1,
+      "vertices": 3616,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "horse_grey/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__finish.horse_grey__finish",
+      "uv_channels": 1,
+      "vertices": 9426,
+      "material_slots": 4,
+      "nanite": false
+    },
+    {
+      "id": "horse_grey/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/horse_grey/horse_grey__structure.horse_grey__structure",
+      "uv_channels": 1,
+      "vertices": 6952,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "guard_helmet/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/guard_helmet__finish.guard_helmet__finish",
+      "uv_channels": 1,
+      "vertices": 432,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "guard_helmet/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_helmet/guard_helmet__structure.guard_helmet__structure",
+      "uv_channels": 1,
+      "vertices": 1184,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "guard_shield/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/guard_shield__finish.guard_shield__finish",
+      "uv_channels": 1,
+      "vertices": 1512,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "guard_shield/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_shield/guard_shield__structure.guard_shield__structure",
+      "uv_channels": 1,
+      "vertices": 422,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "guard_spear/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/guard_spear__finish.guard_spear__finish",
+      "uv_channels": 1,
+      "vertices": 496,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "guard_spear/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/guard_spear/guard_spear__structure.guard_spear__structure",
+      "uv_channels": 1,
+      "vertices": 220,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "royal_guard_body/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__attachments.royal_guard_body__attachments",
+      "uv_channels": 1,
+      "vertices": 216,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "royal_guard_body/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__finish.royal_guard_body__finish",
+      "uv_channels": 1,
+      "vertices": 5608,
+      "material_slots": 6,
+      "nanite": false
+    },
+    {
+      "id": "royal_guard_body/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_guard_body/royal_guard_body__structure.royal_guard_body__structure",
+      "uv_channels": 1,
+      "vertices": 4276,
+      "material_slots": 6,
+      "nanite": false
+    },
+    {
+      "id": "carter_body/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__attachments.carter_body__attachments",
+      "uv_channels": 1,
+      "vertices": 216,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "carter_body/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__finish.carter_body__finish",
+      "uv_channels": 1,
+      "vertices": 4624,
+      "material_slots": 6,
+      "nanite": false
+    },
+    {
+      "id": "carter_body/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/carter_body/carter_body__structure.carter_body__structure",
+      "uv_channels": 1,
+      "vertices": 4276,
+      "material_slots": 6,
+      "nanite": false
+    },
+    {
+      "id": "gate_pier/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/gate_pier__structure.gate_pier__structure",
+      "uv_channels": 1,
+      "vertices": 9072,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "gate_pier/weathering",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/gate_pier__weathering.gate_pier__weathering",
+      "uv_channels": 1,
+      "vertices": 648,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "gate_leaf/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/gate_leaf__finish.gate_leaf__finish",
+      "uv_channels": 1,
+      "vertices": 3786,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "gate_leaf/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/gate_leaf/gate_leaf__structure.gate_leaf__structure",
+      "uv_channels": 1,
+      "vertices": 2160,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "royal_banner/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/royal_banner__finish.royal_banner__finish",
+      "uv_channels": 1,
+      "vertices": 432,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "royal_banner/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/royal_banner/royal_banner__structure.royal_banner__structure",
+      "uv_channels": 1,
+      "vertices": 437,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "watch_bench/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_bench/watch_bench.watch_bench",
+      "uv_channels": 1,
+      "vertices": 2160,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "watch_shelter/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/watch_shelter__finish.watch_shelter__finish",
+      "uv_channels": 1,
+      "vertices": 13824,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "watch_shelter/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_shelter/watch_shelter__structure.watch_shelter__structure",
+      "uv_channels": 1,
+      "vertices": 2808,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "water_trough/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/water_trough/water_trough__finish.water_trough__finish",
+      "uv_channels": 1,
+      "vertices": 168,
+      "material_slots": 1,
+      "nanite": false
+    },
+    {
+      "id": "water_trough/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/water_trough/water_trough__structure.water_trough__structure",
+      "uv_channels": 1,
+      "vertices": 1512,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "hay_rack/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/hay_rack__attachments.hay_rack__attachments",
+      "uv_channels": 1,
+      "vertices": 5408,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "hay_rack/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/hay_rack/hay_rack__structure.hay_rack__structure",
+      "uv_channels": 1,
+      "vertices": 5616,
+      "material_slots": 3,
+      "nanite": false
+    },
+    {
+      "id": "stable_rail/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/stable_rail/stable_rail.stable_rail",
+      "uv_channels": 1,
+      "vertices": 864,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "road_signpost/finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/road_signpost__finish.road_signpost__finish",
+      "uv_channels": 1,
+      "vertices": 864,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "road_signpost/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/road_signpost/road_signpost__structure.road_signpost__structure",
+      "uv_channels": 1,
+      "vertices": 972,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "watch_brazier/attachments",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/watch_brazier__attachments.watch_brazier__attachments",
+      "uv_channels": 1,
+      "vertices": 1758,
+      "material_slots": 2,
+      "nanite": false
+    },
+    {
+      "id": "watch_brazier/structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/watch_brazier/watch_brazier__structure.watch_brazier__structure",
+      "uv_channels": 1,
+      "vertices": 3300,
+      "material_slots": 1,
+      "nanite": false
+    }
+  ],
+  "modules": [
+    {
+      "id": "cart_body",
+      "bounds_axis_error_cm": 9.5367431640625e-06
+    },
+    {
+      "id": "cart_wheel",
+      "bounds_axis_error_cm": 2.384185791015625e-07
+    },
+    {
+      "id": "cargo_logs",
+      "bounds_axis_error_cm": 3.814697265625e-06
+    },
+    {
+      "id": "cargo_sacks",
+      "bounds_axis_error_cm": 3.5762786865234375e-06
+    },
+    {
+      "id": "horse_bay",
+      "bounds_axis_error_cm": 4.76837158203125e-06
+    },
+    {
+      "id": "horse_grey",
+      "bounds_axis_error_cm": 4.76837158203125e-06
+    },
+    {
+      "id": "guard_helmet",
+      "bounds_axis_error_cm": 8.344650268554688e-07
+    },
+    {
+      "id": "guard_shield",
+      "bounds_axis_error_cm": 2.384185791015625e-07
+    },
+    {
+      "id": "guard_spear",
+      "bounds_axis_error_cm": 3.814697265625e-06
+    },
+    {
+      "id": "royal_guard_body",
+      "bounds_axis_error_cm": 7.152557373046875e-06
+    },
+    {
+      "id": "carter_body",
+      "bounds_axis_error_cm": 7.152557373046875e-06
+    },
+    {
+      "id": "gate_pier",
+      "bounds_axis_error_cm": 1.1444091796875e-05
+    },
+    {
+      "id": "gate_leaf",
+      "bounds_axis_error_cm": 3.337860107421875e-06
+    },
+    {
+      "id": "royal_banner",
+      "bounds_axis_error_cm": 5.7220458984375e-06
+    },
+    {
+      "id": "watch_bench",
+      "bounds_axis_error_cm": 2.384185791015625e-06
+    },
+    {
+      "id": "watch_shelter",
+      "bounds_axis_error_cm": 9.5367431640625e-06
+    },
+    {
+      "id": "water_trough",
+      "bounds_axis_error_cm": 3.337860107421875e-06
+    },
+    {
+      "id": "hay_rack",
+      "bounds_axis_error_cm": 3.337860107421875e-06
+    },
+    {
+      "id": "stable_rail",
+      "bounds_axis_error_cm": 2.86102294921875e-06
+    },
+    {
+      "id": "road_signpost",
+      "bounds_axis_error_cm": 4.76837158203125e-06
+    },
+    {
+      "id": "watch_brazier",
+      "bounds_axis_error_cm": 1.9073486328125e-06
+    }
+  ],
+  "layer_count": 45,
+  "module_count": 21,
+  "material_slots": 108,
+  "limitations": [
+    "No runtime NPC/transport behavior tested here.",
+    "No animation or rig verification."
+  ]
+}

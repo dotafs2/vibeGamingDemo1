@@ -1,0 +1,256 @@
+[
+  {
+    "id": "horse_bay",
+    "meshes": [
+      {
+        "layer": "attachments",
+        "bones": [
+          "Horse_bay_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      },
+      {
+        "layer": "finish",
+        "bones": [
+          "Horse_bay_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      },
+      {
+        "layer": "structure",
+        "bones": [
+          "Horse_bay_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      }
+    ],
+    "animations": [
+      {
+        "clip": "Idle",
+        "tracks": [
+          "horse_bay_rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "fl_upper",
+          "fl_lower",
+          "fl_foot",
+          "hl_upper",
+          "hl_lower",
+          "hl_foot",
+          "fr_upper",
+          "fr_lower",
+          "fr_foot",
+          "hr_upper",
+          "hr_lower",
+          "hr_foot"
+        ]
+      },
+      {
+        "clip": "Walk",
+        "tracks": [
+          "horse_bay_rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "fl_upper",
+          "fl_lower",
+          "fl_foot",
+          "hl_upper",
+          "hl_lower",
+          "hl_foot",
+          "fr_upper",
+          "fr_lower",
+          "fr_foot",
+          "hr_upper",
+          "hr_lower",
+          "hr_foot"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "horse_grey",
+    "meshes": [
+      {
+        "layer": "attachments",
+        "bones": [
+          "Horse_grey_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      },
+      {
+        "layer": "finish",
+        "bones": [
+          "Horse_grey_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      },
+      {
+        "layer": "structure",
+        "bones": [
+          "Horse_grey_Rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "FL_upper",
+          "FL_lower",
+          "FL_foot",
+          "HL_upper",
+          "HL_lower",
+          "HL_foot",
+          "FR_upper",
+          "FR_lower",
+          "FR_foot",
+          "HR_upper",
+          "HR_lower",
+          "HR_foot"
+        ]
+      }
+    ],
+    "animations": [
+      {
+        "clip": "Idle",
+        "tracks": [
+          "horse_grey_rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "fl_upper",
+          "fl_lower",
+          "fl_foot",
+          "hl_upper",
+          "hl_lower",
+          "hl_foot",
+          "fr_upper",
+          "fr_lower",
+          "fr_foot",
+          "hr_upper",
+          "hr_lower",
+          "hr_foot"
+        ]
+      },
+      {
+        "clip": "Walk",
+        "tracks": [
+          "horse_grey_rig",
+          "root",
+          "body",
+          "neck",
+          "head",
+          "tail_base",
+          "tail_tip",
+          "fl_upper",
+          "fl_lower",
+          "fl_foot",
+          "hl_upper",
+          "hl_lower",
+          "hl_foot",
+          "fr_upper",
+          "fr_lower",
+          "fr_foot",
+          "hr_upper",
+          "hr_lower",
+          "hr_foot"
+        ]
+      }
+    ]
+  }
+]

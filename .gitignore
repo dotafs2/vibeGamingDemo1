@@ -8,3 +8,6 @@ editor-jobs/*
 /editor-*.png
 /fracture-preview-test*.png
 v2-scene-match-*.png
+
+# Local diagnostic scratch; selected evidence lives under Docs/Validation.
+/.codex-ue58-diagnostics/

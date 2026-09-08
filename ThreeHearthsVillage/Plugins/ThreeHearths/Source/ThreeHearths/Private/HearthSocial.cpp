@@ -23,6 +23,7 @@ namespace HearthSocial
     bool TileParties(const AHearthVillage& Village,const FHearthConversation& Conversation,int32& Customer,int32& Potter)
     {
         if(!Village.Residents.IsValidIndex(Conversation.First) || !Village.Residents.IsValidIndex(Conversation.Second)) return false;
+        if(!Village.Residents[Conversation.First].ServiceRoleKey.IsEmpty() || !Village.Residents[Conversation.Second].ServiceRoleKey.IsEmpty()) return false;
         const bool FirstPotter=Village.Residents[Conversation.First].Role==TEXT("陶工");
         const bool SecondPotter=Village.Residents[Conversation.Second].Role==TEXT("陶工");
         if(FirstPotter==SecondPotter) return false;
@@ -43,17 +44,39 @@ namespace HearthSocial
         return HasTileNeed(Buyer) && Maker.Role.Contains(TEXT("陶工")) && Buyer.Coins>=4 && Maker.Energy>=25.f && Trust>=35.f
             && Village.ClayStock>=4 && Village.AvailableWood()>=2 && !Busy;
     }
+
+    bool IsDutyVisitorTarget(const AHearthVillage& Village,int32 Index)
+    {
+        if(!Village.Residents.IsValidIndex(Index)) return false;
+        const FHearthResident& Resident=Village.Residents[Index];
+        if(Resident.ServiceRoleKey!=TEXT("gatekeeper") && Resident.ServiceRoleKey!=TEXT("royal_guard")) return false;
+        if(Resident.Task!=EHearthTask::LifeActivity || !Resident.Route.IsEmpty() || Resident.ConversationId.IsEmpty()==false || Resident.ActiveTaskId.IsEmpty()) return false;
+        return Village.ServiceDuties.ContainsByPredicate([&Resident,Index](const FHearthServiceDutyRecord& Duty)
+        { return Duty.Status==TEXT("active") && Duty.Resident==Index && Duty.TaskId==Resident.ActiveTaskId; });
+    }
+
+    bool IsDutyConversationTarget(const AHearthVillage& Village,int32 Index,const FString& ConversationId)
+    {
+        if(!Village.Residents.IsValidIndex(Index)) return false;
+        const FHearthResident& Resident=Village.Residents[Index];
+        if(Resident.ServiceRoleKey!=TEXT("gatekeeper") && Resident.ServiceRoleKey!=TEXT("royal_guard")) return false;
+        return Village.ServiceDuties.ContainsByPredicate([&Resident,Index](const FHearthServiceDutyRecord& Duty)
+        { return Duty.Status==TEXT("active") && Duty.Resident==Index && Duty.TaskId==Resident.ActiveTaskId; }) && Resident.ConversationId==ConversationId;
+    }
 }
 
 bool AHearthVillage::IsSociallyAvailable(int32 Index) const
 {
-    return Residents.IsValidIndex(Index) && Residents[Index].BuildProgress>=1 && Residents[Index].Task==EHearthTask::LifeChoosing
-        && Residents[Index].ConversationId.IsEmpty() && Residents[Index].Route.IsEmpty() && !IsDecisionPending(Index);
+    if(!Residents.IsValidIndex(Index) || !Residents[Index].ConversationId.IsEmpty() || IsDecisionPending(Index)) return false;
+    const auto& Resident=Residents[Index];
+    if((Resident.BuildProgress>=1 || IsSharedServiceResident(Index)) && Resident.Task==EHearthTask::LifeChoosing && Resident.Route.IsEmpty()) return true;
+    return HearthSocial::IsDutyVisitorTarget(*this,Index);
 }
 
 bool AHearthVillage::BeginConversation(int32 Index,int32 Other,const FString& Reason,bool bFromApi)
 {
-    if(Index==Other || !IsSociallyAvailable(Index) || !IsSociallyAvailable(Other)) return false;
+    if(Index==Other || HearthSocial::IsDutyVisitorTarget(*this,Index) || !IsSociallyAvailable(Index)
+        || !IsSociallyAvailable(Other)) return false;
     TArray<FVector> Route; const FVector HostPosition=Residents[Other].Actor->GetActorLocation();
     if(bUseCropoutMap)
     { if(!FindActivityRoute(Index,HostPosition,Route)) return false; }
@@ -62,13 +85,18 @@ bool AHearthVillage::BeginConversation(int32 Index,int32 Other,const FString& Re
     S.First=Index; S.Second=Other; S.FirstId=Residents[Index].StableId; S.SecondId=Residents[Other].StableId; S.Speaker=Index;
     for(int32 I:{Index,Other})
     {
-        auto& R=Residents[I]; R.ConversationId=S.Id; R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
-        R.LifeAction=3+(I==Index?Other:Index); R.Task=I==Index?EHearthTask::LifeTravel:EHearthTask::LifeActivity;
-        R.Timer=0; R.Route.Reset(); R.MoveRetry=0; R.bMovementBlocked=false;
+        auto& R=Residents[I]; const bool bDutyTarget=I==Other && HearthSocial::IsDutyVisitorTarget(*this,I);
+        R.ConversationId=S.Id;
+        if(!bDutyTarget)
+        {
+            R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+            R.LifeAction=3+(I==Index?Other:Index); R.Task=I==Index?EHearthTask::LifeTravel:EHearthTask::LifeActivity;
+            R.Timer=0; R.Route.Reset(); R.MoveRetry=0; R.bMovementBlocked=false;
+        }
         R.DecisionSource=I==Index && bFromApi?TEXT("api"):TEXT("social_event");
-        if(I==Other) StartHistory(I,true,TEXT("social_event"));
-        AcceptHistory(I,TEXT("与")+Residents[I==Index?Other:Index].Name+TEXT("交谈"),Reason,R.DecisionSource);
-        R.LatestEvent=I==Index?TEXT("走过去，等见面后再开口。"):TEXT("有人来访，等对方走近再决定聊些什么。");
+        if(I==Other && !bDutyTarget) StartHistory(I,true,TEXT("social_event"));
+        if(!bDutyTarget) AcceptHistory(I,TEXT("与")+Residents[I==Index?Other:Index].Name+TEXT("交谈"),Reason,R.DecisionSource);
+        R.LatestEvent=I==Index?TEXT("走过去，等见面后再开口。"):TEXT("有人来访，继续值守，等对方走近再决定聊些什么。");
     }
     Residents[Index].Route=MoveTemp(Route); Conversations.Add(MoveTemp(S)); ++SocialRevision;
     return true;
@@ -77,6 +105,7 @@ bool AHearthVillage::BeginConversation(int32 Index,int32 Other,const FString& Re
 int32 AHearthVillage::FindHelpActivity(int32 Worker) const
 {
     // Help is an actual available gathering/transport job, never free inventory.
+    if(IsSharedServiceResident(Worker)) return -1;
     int32 Best=-1; float Score=-FLT_MAX;
     for(int32 Action:AvailableProductionActions(Worker))
     {
@@ -91,26 +120,37 @@ TArray<int32> AHearthVillage::AvailableSocialIntents(int32 Index) const
 {
     const auto* S=Conversations.FindByPredicate([Index](const auto& C) { return !C.bClosed && C.bMet && C.Speaker==Index; });
     if(!S) return {};
+    // A staffed gatekeeper/guard is a stationary host. Keep the active duty
+    // conversation bounded to chat/goodbye: no meal, help, trade, or tile
+    // commitment can be offered or accepted while the duty is active.
+    const int32 Counterpart=S->First==Index?S->Second:S->First;
+    const bool bDutyVisit=HearthSocial::IsDutyConversationTarget(*this,Index,S->Id)
+        || HearthSocial::IsDutyConversationTarget(*this,Counterpart,S->Id);
+    if(bDutyVisit)
+        return S->Lines.IsEmpty()?TArray<int32>{0}:TArray<int32>{0,5};
     if(S->Lines.IsEmpty()) return {0};
     if(S->bAccepted) return {0,5};
     if(S->Offer>=0 && S->Proposer!=Index)
     {
         TArray<int32> Choices={4};
         const int32 Other=S->First==Index?S->Second:S->First;
+        const bool bServiceParticipant=IsSharedServiceResident(Index) || IsSharedServiceResident(Other);
         const auto* Trade=TradeOffers.FindByPredicate([&](const FHearthTradeOffer& T) { return T.ConversationId==S->Id && T.Status==TEXT("proposed"); });
-        if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) || (S->Offer==2 && IsProductionAllowed(Index,S->OfferAction))
-            || (S->Offer==3 && Trade && Trade->Buyer==Index && Residents[Index].PersonalPlanks==0 && Residents[Index].Coins>=Trade->Price)
-            || (S->Offer==4 && HearthSocial::CanOfferTiles(*this,*S))) Choices.Insert(3,0);
+        if((S->Offer==1 && FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0)
+            || (S->Offer==2 && !bServiceParticipant && IsProductionAllowed(Index,S->OfferAction))
+            || (S->Offer==3 && !bServiceParticipant && Trade && Trade->Buyer==Index && Residents[Index].PersonalPlanks==0 && Residents[Index].Coins>=Trade->Price)
+            || (S->Offer==4 && !bServiceParticipant && HearthSocial::CanOfferTiles(*this,*S))) Choices.Insert(3,0);
         return Choices;
     }
     TArray<int32> Choices={0,5};
     if(S->Lines.Num()>=2 && S->Offer<0)
     {
         const int32 Other=S->First==Index?S->Second:S->First;
+        const bool bServiceParticipant=IsSharedServiceResident(Index) || IsSharedServiceResident(Other);
         if(FoodStock>=2 && Residents[Index].Coins>0 && Residents[Other].Coins>0) Choices.Add(1);
-        if(FindHelpActivity(Other)>=0) Choices.Add(2);
-        if(Residents[Index].PersonalPlanks>1 && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2) Choices.Add(6);
-        if(HearthSocial::CanOfferTiles(*this,*S))
+        if(!bServiceParticipant && FindHelpActivity(Other)>=0) Choices.Add(2);
+        if(!bServiceParticipant && Residents[Index].PersonalPlanks>1 && Residents[Other].PersonalPlanks==0 && Residents[Other].Coins>=2) Choices.Add(6);
+        if(!bServiceParticipant && HearthSocial::CanOfferTiles(*this,*S))
         {
             int32 Customer=-1,Potter=-1; HearthSocial::TileParties(*this,*S,Customer,Potter);
             Choices.Add(Index==Customer?7:8);
@@ -125,6 +165,8 @@ bool AHearthVillage::ResolveSocialTurn(int32 Index,int32 Intent,const FString& W
     auto* S=Conversations.FindByPredicate([Index](const auto& C) { return !C.bClosed && C.bMet && C.Speaker==Index; });
     if(!S) return false;
     const int32 Other=S->First==Index?S->Second:S->First;
+    const bool bServiceParticipant=IsSharedServiceResident(Index) || IsSharedServiceResident(Other);
+    if(bServiceParticipant && (Intent==2 || Intent==6 || Intent==7 || Intent==8 || (Intent==3 && S->Offer>=2))) return false;
     if(FVector::Dist2D(Residents[Index].Actor->GetActorLocation(),Residents[Other].Actor->GetActorLocation())>300) return false;
     auto& R=Residents[Index]; auto& Listener=Residents[Other]; FHearthTradeOffer* PendingTrade=nullptr;
     int32 TileCustomer=-1,TilePotter=-1;
@@ -219,8 +261,22 @@ void AHearthVillage::CloseConversation(FHearthConversation& S,const FString& Out
     S.bClosed=true; S.Outcome=Outcome;
     for(int32 Index:{S.First,S.Second})
     {
-        auto& R=Residents[Index]; R.ConversationId.Empty(); R.Route.Reset(); R.Task=EHearthTask::LifeChoosing;
-        R.Timer=0; R.NextLifeDecision=Elapsed+LifeDecisionInterval; R.LatestEvent=Outcome;
+        auto& R=Residents[Index]; const bool bDutyTarget=HearthSocial::IsDutyConversationTarget(*this,Index,S.Id);
+        R.ConversationId.Empty(); R.LatestEvent=Outcome;
+        if(bDutyTarget)
+        {
+            const auto* Duty=ServiceDuties.FindByPredicate([&R](const FHearthServiceDutyRecord& D)
+                {return D.Status==TEXT("active") && D.TaskId==R.ActiveTaskId;});
+            const float SegmentEnd=Duty->Kind==TEXT("guard_patrol")
+                ?FMath::Min(Duty->ShiftSeconds,(Duty->PatrolPoint+1)*(Duty->ShiftSeconds/3.f)):Duty->ShiftSeconds;
+            R.Timer=FMath::Max(0.f,SegmentEnd-Duty->DutySeconds);
+            continue;
+        }
+        R.Route.Reset(); R.Task=EHearthTask::LifeChoosing;
+        // The social reservation has ended. Shared service residents need an
+        // empty task ID before a later shift can be scheduled.
+        R.ActiveTaskId.Empty(); R.LifeAction=0;
+        R.Timer=0; R.NextLifeDecision=Elapsed+LifeDecisionInterval;
         CompleteHistory(Index,Outcome);
     }
     // Commitments only count as fulfilled after the real task deposits output or consumes food.
@@ -246,7 +302,11 @@ void AHearthVillage::CloseConversation(FHearthConversation& S,const FString& Out
             if(Routed)
             {
                 auto& Seller=Residents[Trade->Seller]; auto& Buyer=Residents[Trade->Buyer]; Seller.Task=EHearthTask::TradeTravel; Buyer.Task=EHearthTask::TradeWaiting;
-                Seller.ActiveTaskId=Trade->Id; Seller.Route=MoveTemp(Route); Trade->Remaining=90.f;
+                Seller.ActiveTaskId=Trade->Id;
+                // Residents have distinct active-task identities. The order
+                // links the buyer separately through Trade.Buyer.
+                Buyer.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+                Seller.Route=MoveTemp(Route); Trade->Remaining=90.f;
                 Seller.LatestEvent=TEXT("携带预留木板前往买方交货。"); Buyer.LatestEvent=TEXT("等待卖方送来木板，交货后才付款。");
             }
             else
@@ -313,8 +373,14 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
         P->SetNumberField(TEXT("energy"),R.Energy); P->SetNumberField(TEXT("hunger"),R.Hunger); P->SetNumberField(TEXT("mood"),R.Mood);
         P->SetNumberField(TEXT("coins"),R.Coins); P->SetNumberField(TEXT("personally_owned_planks"),R.PersonalPlanks); P->SetNumberField(TEXT("personally_owned_tiles"),R.PersonalTiles);
         P->SetStringField(TEXT("roof_material_need"),R.RoofMaterial);
-        P->SetBoolField(TEXT("home_completed"),R.BuildProgress>=1.f); P->SetStringField(TEXT("home_plot"),PlotLabel(R.Plot));
+        const bool bSharedResidence=IsSharedServiceResident(I);
+        P->SetBoolField(TEXT("home_completed"),!bSharedResidence && R.BuildProgress>=1.f);
+        P->SetBoolField(TEXT("has_private_home"),!bSharedResidence && R.BuildProgress>=1.f);
+        P->SetStringField(TEXT("residence_status"),bSharedResidence?TEXT("shared_public_residence"):(R.BuildProgress>=1.f?TEXT("private_home_completed"):TEXT("private_home_pending")));
+        P->SetStringField(TEXT("residence_id"),bSharedResidence?R.ResidenceId:FString());
+        P->SetStringField(TEXT("home_plot"),bSharedResidence?TEXT("公共共享生活区"):PlotLabel(R.Plot));
         P->SetStringField(TEXT("latest_event"),R.LatestEvent);
+        AppendMarketLifeContext(I,P);
         P->SetStringField(TEXT("relationships"),RelationshipSummary(I)); People.Add(MakeShared<FJsonValueObject>(P));
     }
     Context->SetArrayField(TEXT("participants_speaker_first"),People); Context->SetNumberField(TEXT("your_id"),Index);
@@ -336,7 +402,7 @@ void AHearthVillage::RequestSocialDecision(int32 Index)
     const int32 HelpAction=FindHelpActivity(Other);
     Context->SetStringField(TEXT("available_help_job"),HelpAction<0?TEXT("无可用采集工作"):ProductionActionName(HelpAction));
     AppendProductionContext(Context);
-    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed home already belongs to its resident; a terracotta roof may still create demand for owned replacement tiles. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye; 6=offer one personally owned plank for exactly two coins; 7=as the customer, commission the potter to turn four village-stock clay and two village-stock logs into six tiles for four coins; 8=as the potter, quote those same fixed terms to a customer with a terracotta tile roof need. Previous words alone do not create an offer. An accepted tile order only reserves customer escrow; real production later consumes recorded clay and logs, creates the tiles, and delivery settles payment. Do not claim completed work, income, ownership or transferred resources before the real order state records it. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
+    const FString Prompt=TEXT("You are the named medieval resident (your_id) speaking directly to the other present resident, who has a separate mind and may refuse. Continue in natural first-person Chinese, respecting current participant facts, needs and remembered relationship. A completed private home belongs to its resident; a terracotta roof may still create demand for owned replacement tiles. A participant with residence_status=shared_public_residence lives in the established public shared residence/生活区, has no private plot or private home, and is never choosing, buying, extending, or building a private home; never describe that resident as 正在选址 or 自建房. Select exactly one allowed_intents id and make your spoken words match it: 0=chat only; 1=invite both to eat; 2=ask the other to perform the supplied available_help_job; 3=accept the supplied pending_offer; 4=politely decline that offer; 5=say goodbye; 6=offer one personally owned plank for exactly two coins; 7=as the customer, commission the potter to turn four village-stock clay and two village-stock logs into six tiles for four coins; 8=as the potter, quote those same fixed terms to a customer with a terracotta tile roof need. Previous words alone do not create an offer. An accepted tile order only reserves customer escrow; real production later consumes recorded clay and logs, creates the tiles, and delivery settles payment. Do not claim completed work, income, ownership or transferred resources before the real order state records it. No new offer while responding to an existing offer. Return only JSON with action_id (integer) and reason (your spoken words, Chinese, at most 60 Chinese characters). reason is actual dialogue, not a description of your decision. Keep each turn brief and give the other person room to reply.");
     SendDecisionRequest(Index,Context,Prompt,true,true);
 }
 

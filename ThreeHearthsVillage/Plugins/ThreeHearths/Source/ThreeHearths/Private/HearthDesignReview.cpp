@@ -37,6 +37,9 @@ FString AHearthVillage::VisualSignature(int32 Index) const
     if(!Residents.IsValidIndex(Index)) return FString();
     const auto& R=Residents[Index];
     FString State=TEXT("front_evidence_v2|")+WorldId+TEXT("|")+R.StableId+TEXT("|")+R.DesignGoal+TEXT("|")+R.InnerStory+TEXT("|")+R.BuildingArchetype+TEXT("|")+R.HouseBlueprint;
+    if(const auto* Home=OrganicHomes.Find(R.StableId))
+        for(const auto& Kit:Home->MarketKitInstalled)
+            State+=TEXT("|fixture:")+Kit.RequestId+TEXT(":")+Kit.ModuleId+TEXT(":")+Kit.InstallPosition.ToString();
     if(R.bKing && (PublicProject.TemplateId==TEXT("royal_keep_garden_v1") || PublicProject.TemplateId==TEXT("royal_keep_garden_v2")) && PublicProject.Completed>0)
     {
         const bool bV2=PublicProject.TemplateId==TEXT("royal_keep_garden_v2");
@@ -80,13 +83,28 @@ FString AHearthVillage::CaptureDesignObservation(int32 Index,FString& Path,bool 
         Center=TownBounds.GetCenter(); Width=FMath::Max(TownBounds.GetSize().X,TownBounds.GetSize().Y)+600.0;
     }
     if(!bTown && !ResidentObservationTarget(Index,Center,Width,TargetId)) return FString();
+    if(bTown && IsOrganicVillage())
+    {
+        FBox Settlement(ForceInit);
+        for(int32 Plot=0;Plot<HousingPlotCount();++Plot)
+            Settlement+=FBox(PlotPositions[Plot]-FVector(800,800,0),PlotPositions[Plot]+FVector(800,800,850));
+        for(int32 Site=0;Site<ProductionSites.Num();++Site)
+            if(!IsRoyalSite(Site) && ProductionSites[Site].Kind!=EHearthSiteKind::Empty)
+                Settlement+=FBox(ProductionSites[Site].Position-FVector(400,400,0),ProductionSites[Site].Position+FVector(400,400,600));
+        Center=Settlement.GetCenter(); Width=FMath::Max(Settlement.GetSize().X,Settlement.GetSize().Y)+1600.0;
+    }
     auto* Target=NewObject<UTextureRenderTarget2D>(this);
     Target->RenderTargetFormat=RTF_RGBA8; Target->ClearColor=FLinearColor::Black;
-    const int32 Resolution=bTown?1024:512;
+    const int32 Resolution=bTown?(IsOrganicVillage()?1536:1024):512;
     Target->InitAutoFormat(Resolution,Resolution); Target->UpdateResourceImmediate(true);
     auto* Capture=NewObject<USceneCaptureComponent2D>(this);
     Capture->TextureTarget=Target; Capture->bCaptureEveryFrame=false; Capture->bCaptureOnMovement=false;
     Capture->bAlwaysPersistRenderingState=true;
+    if(IsOrganicVillage())
+    {
+        Capture->PostProcessSettings.bOverride_DynamicGlobalIlluminationMethod=true;
+        Capture->PostProcessSettings.DynamicGlobalIlluminationMethod=EDynamicGlobalIlluminationMethod::Lumen;
+    }
     Capture->CaptureSource=ESceneCaptureSource::SCS_FinalColorLDR;
     Capture->ProjectionType=ECameraProjectionMode::Orthographic;
     const double MaxCaptureWidth=bTown?(TownLayoutVersion>=3?32000.0:14000.0):(bRoyalV2?12000.0:8000.0);
@@ -197,6 +215,7 @@ bool AHearthVillage::RequestVisualReview(int32 Index)
     Context->SetStringField(TEXT("personality"),R.Personality); Context->SetStringField(TEXT("goal"),R.DesignGoal);
     Context->SetStringField(TEXT("previous_review"),R.DesignFeedback); Context->SetStringField(TEXT("observation_id"),Signature);
     Context->SetStringField(TEXT("host_response"),WorldRequestSummary(Index));
+    AppendMarketLifeContext(Index,Context);
     Context->SetStringField(TEXT("view"),TEXT("Actual UE orthographic scene centered on my home; other visible homes are neighbors, not mine."));
     Context->SetStringField(TEXT("image_file"),FPaths::GetCleanFilename(Path));
     FVector TargetCenter;double TargetWidth=0;FString TargetId;ResidentObservationTarget(Index,TargetCenter,TargetWidth,TargetId);

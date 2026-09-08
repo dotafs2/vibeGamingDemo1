@@ -1,0 +1,1198 @@
+{
+  "reportCreatedOn": "2026.09.08-00.46.09",
+  "succeeded": 94,
+  "succeededWithWarnings": 6,
+  "failed": 0,
+  "notRun": 0,
+  "inProcess": 0,
+  "totalDuration": 11.022748947143555,
+  "source": "Saved/ThreeHearths/MedievalReview/MarketMultiplicityRegression/index.json",
+  "tests": [
+    {
+      "fullTestPath": "ThreeHearths.Appearance.NativeModularStarter",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.BotanicalCatalog.NativeLowPolyPlants",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.CityPlan.ConnectedCivicAndResidentialStreets",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.CityPlan.DeterministicSkeleton",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.CityPlan.KeepsMainOccupancyClear",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.CityPlan.Town3VersionedNonOrthogonalBlocks",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Construction.OrganicAtomicLedger",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.CompletedHistoryArchivesWithoutBreakingReferences",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.CooldownUsesSimulationClock",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.GuardReflectionPreservesDuty",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.OneSlotPerResident",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.PersistentBudgetRouting",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.RequestTimeoutUsesSimulationClock",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Decisions.ValidateModelOutput",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.ResidentChoice.NeedsAndConstraints",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.ResidentChoice.Stability",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.ResidentChoice.StructuredValidation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.CourtyardGrowth",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.FeedbackAndPersistence",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.45.57"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Design.OrganicStreets",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.LegacyUnfundedWorkMigration",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.PrivateHouseWageEscrow",
+      "state": "Success",
+      "warnings": 3,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_7.Untitled:PersistentLevel.HearthVillager_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.45.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_7.Untitled:PersistentLevel.HearthVillager_1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.45.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_7.Untitled:PersistentLevel.HearthVillager_2",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.45.57"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.ProtectedProjectFundsAndAtomicIncome",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.PublicConstructionRecipe",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.PublicProcurement",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.Town3CastleCanonicalRecipe",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Economy.WalletsTradesAndWages",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.FreightNavigation.BoundedFailure",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.FreightNavigation.CallbackAndCurvature",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.FreightNavigation.ForwardUTurn",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.FreightNavigation.ObstacleDetour",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.FreightNavigation.StraightForward",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.ImportPreview.WorldIsolation",
+      "state": "Success",
+      "warnings": 1,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_13.Untitled:PersistentLevel.StaticMeshActor_1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.45.58"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Layout.ContinuousStreetPlan",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Layout.RuntimeContinuousStreetSites",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Layout.Town3ThirtyFrontageHomes",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Life.GroundedResidentAgenda",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Life.ResidentStory",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Medieval.FreightRuntime",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Medieval.GateVisitRuntime",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Medieval.ServiceDutyRuntime",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.MedievalPersistence.RoundTripAndAtomicValidation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.MedievalSociety.RosterGuardsAndExactlyOnceFreight",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Movement.ResidentTraffic",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Movement.SweptSeparation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.BoundedQueueColdRestoreAndDeadlines",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.DaydreamColdRestoreAndInvalidClock",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.DaydreamIndependentRealClock",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.DiscardPendingPreservesInFlightAndState",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.EventCoalescingAndUrgentCap",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.RolePacingAndLocalGuards",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.RuntimeDaydreamJsonMigration",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.NpcThinking.RuntimeRoleAndCorruptSidecar",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Organic.MarketLifeKit.RuntimeAndColdRecovery",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Organic.RuntimeInitializationAndColdRecovery",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicCatalog.Matrix",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicCatalog.RealContent",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.05"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicCatalog.Transform",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.05"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicCatalog.Validation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicTerrain.ContinuityAndBounds",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicTerrain.Determinism",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicTerrain.FlattenRoadAndSlope",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.OrganicTerrain.GridTopology",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Paths.Town3BoundedGroundCoverage",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.CorruptionAndExclusiveWorld",
+      "state": "Success",
+      "warnings": 1,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogTemp: WORLD_SAVE_REJECTED path=D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/Tests/751101A94406A92A6289638A27D89CD2/world.json revision=3 reason=世界文件不存在、损坏或校验和不匹配",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.05"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.MedievalPopulationSchema12",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.OrganicConstructionColdRecovery",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.PublicProjectSchema9RoundTrip",
+      "state": "Success",
+      "warnings": 10,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_2",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_3",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_4",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_5",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_6",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_7",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_8",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_24.Untitled:PersistentLevel.HearthVillager_9",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.06"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.ResumeMaterialsAndTasks",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.StructurePlanSchema9",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Persistence.Town3ThirtyResidentsRoundTrip",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.ClayFuelAndTileKiln",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.LogsToConstructionTimber",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.ModularCottageLifecycle",
+      "state": "Success",
+      "warnings": 1,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_31.Untitled:PersistentLevel.HearthVillage_1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.07"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.OrganicReplacementCandidates",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.OrganicShortagePolicy",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.PrivateOrderedTilesBuildRoof",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Production.ResidentPlanRuntimeExecution",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Planner diagnostic: buildable=true components=16 reason=Built 1 room(s) with timber walls and timber roof; stone=100; planks=100; beams=100 from finite current resources; intended use: living.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.08"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Residents.ExclusiveToolOwnership",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Residents.SitingGoals",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Residents.SitingPreferences",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Residents.SitingRobustness",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Residents.ToolTaskBinding",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.RoyalWorksPlan.ManifestInvariants",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.RoyalWorksPlan.RejectsBrokenGeometryAndBudgets",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.RoyalWorksPlan.Town3CastleIsModularAndStaged",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Audited Town3 BOM: 1276 parts, stone=1288 plank=2231 beam=1416.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.08"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.Society.PopulationMigrationAndMeals",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Society.TileOrderNegotiation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Society.TwoWayPromisesAndPersistence",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Structure.PlannedConstructionAdapter",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Canopy adapter: accepted",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.08"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructureCatalog.NativeStage4Assets",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructurePlan.ArchetypeAffordability",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructurePlan.ArchetypeExpansion",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructurePlan.BuildingArchetypes",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructurePlan.ResidentBuildingPlanner",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Small planner: Built 1 room(s) with timber walls and timber roof; stone=16; planks=40; beams=40 from finite current resources; intended use: living.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Family planner: Built 2 room(s) with timber walls and timber roof; stone=16; planks=40; beams=40 from finite current resources; intended use: living.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Archetype rowhouse: Built rowhouse with 6 catalog-backed room(s), distinct single-storey geometry, and connected usable entrances.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Archetype shop_house: Built shop_house with 4 catalog-backed room(s), distinct single-storey geometry, and connected usable entrances.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Archetype courtyard_workshop: Built courtyard_workshop with 5 catalog-backed room(s), distinct single-storey geometry, and connected usable entrances.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Archetype warehouse: Built warehouse with 6 catalog-backed room(s), distinct single-storey geometry, and connected usable entrances.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Archetype inn: Built inn with 6 catalog-backed room(s), distinct single-storey geometry, and connected usable entrances.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Native canopy: Half-open canopy appended to the existing plan: 2 posts, beam, roof, ridge, deck and 2 real benches; only incremental materials and budget charged.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Native canopy adapter: accepted",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Legacy canopy: Half-open canopy appended to the existing plan: 2 posts, beam, roof, ridge, deck and 2 real benches; only incremental materials and budget charged.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Legacy validation: ",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.StructurePlan.StableExtensionsAndValidation",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Tavern.RequestBuildSeatsAndUse",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.Town.ConnectedStarterNeighborhood",
+      "state": "Success",
+      "warnings": 10,
+      "errors": 0,
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_2",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_3",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_4",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_5",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_6",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_7",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_8",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogSpawn: UWorld::DestroyActor: World has no context! World: Untitled, Actor: /Temp/Untitled_41.Untitled:PersistentLevel.HearthVillager_9",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.08-00.46.09"
+        }
+      ]
+    },
+    {
+      "fullTestPath": "ThreeHearths.WorldHost.RuntimePersistence",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    },
+    {
+      "fullTestPath": "ThreeHearths.WorldRequests.TriageBoard",
+      "state": "Success",
+      "warnings": 0,
+      "errors": 0,
+      "entries": []
+    }
+  ]
+}

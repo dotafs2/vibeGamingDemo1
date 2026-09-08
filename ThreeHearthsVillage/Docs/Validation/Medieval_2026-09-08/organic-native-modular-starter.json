@@ -1,0 +1,44 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-T89GBDJ",
+			"instance": "C52FE8C047149CDEDA7CB8BAC1A5A3DD",
+			"instanceName": "DESKTOP-T89GBDJ-90004",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9278] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 5080",
+			"cPUModel": "Intel(R) Core(TM) i7-14700K",
+			"rAMInGB": 128,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.07-15.39.51",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.0074159987270832062,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NativeModularStarter",
+			"fullTestPath": "ThreeHearths.Appearance.NativeModularStarter",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"C52FE8C047149CDEDA7CB8BAC1A5A3DD"
+			],
+			"duration": 0.0074159987270832062,
+			"dateTime": "2026.09.07-15.39.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

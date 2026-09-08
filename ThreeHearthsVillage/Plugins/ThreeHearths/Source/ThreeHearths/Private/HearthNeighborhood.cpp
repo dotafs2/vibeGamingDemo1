@@ -11,20 +11,48 @@ FVector AHearthVillage::HomeApproach(int32 Plot) const
         if(!Entry.IsNearlyZero())
         {
             const FVector Outward=(Entry-PlotPositions[Plot]).GetSafeNormal2D();
-            return Entry+Outward*120.f;
+            FVector Approach=Entry+Outward*120.f;
+            if(IsOrganicVillage())
+            {
+                // Older checkpoints can contain a tree or enlarged field at
+                // the recorded standing point. Keep the owned entrance, but
+                // select a nearby clear exterior place to rest/build from.
+                if(!LandGrid.IsEmpty() && !IsClearPoint(Approach))
+                {
+                    const FVector Side(-Outward.Y,Outward.X,0);
+                    bool Found=false;
+                    for(float Radius:{160.f,320.f,480.f})
+                    {
+                        for(int32 Step=0;Step<16;++Step)
+                        {
+                            const float Angle=Step*UE_PI/8.f;
+                            const FVector Candidate=Approach+Radius*(Outward*FMath::Cos(Angle)+Side*FMath::Sin(Angle));
+                            if(IsClearPoint(Candidate)) { Approach=Candidate; Found=true; break; }
+                        }
+                        if(Found) break;
+                    }
+                }
+                Approach.Z=GroundHeightAt(Approach)+5.2f;
+            }
+            return Approach;
         }
         // Old Town3 saves may not have an entry field. Keep their recorded
         // position/yaw and use a short safe exterior offset until the next
         // layout rebuild derives the exact frontage point.
-        return PlotPositions[Plot]+FRotator(0,PlotYaws[Plot]-90.f,0).RotateVector(FVector(220.f,0,0));
+        FVector Approach=PlotPositions[Plot]+FRotator(0,PlotYaws[Plot]-90.f,0).RotateVector(FVector(220.f,0,0));
+        if(IsOrganicVillage()) Approach.Z=GroundHeightAt(Approach)+5.2f;
+        return Approach;
     }
-    return PlotPositions[Plot]+FRotator(0,PlotYaws[Plot],0).RotateVector(FVector(bUseCropoutMap && TownLayoutVersion>0?-370.f:-245.f,0,0));
+    FVector Approach=PlotPositions[Plot]+FRotator(0,PlotYaws[Plot],0).RotateVector(FVector(bUseCropoutMap && TownLayoutVersion>0?-370.f:-245.f,0,0));
+    if(IsOrganicVillage()) Approach.Z=GroundHeightAt(Approach)+5.2f;
+    return Approach;
 }
 
 bool AHearthVillage::GenerateStarterNeighborhood(const TArray<FHearthTownRoadSegment>& Roads)
 {
-    FHearthTownLayoutInput Input; Input.Roads=Roads; Input.bOrganic=true; Input.Seed=7919; Input.LayoutVersion=TownLayoutVersion;
-    Input.RequestedHomes=TownLayoutVersion>=3?HearthVillageLimits::Town3Population:32;
+    const bool bOrganicVillage=IsOrganicVillage();
+    FHearthTownLayoutInput Input; Input.Roads=Roads; Input.bOrganic=true; Input.Seed=bOrganicVillage?OrganicWorldSeed:7919; Input.LayoutVersion=TownLayoutVersion;
+    Input.RequestedHomes=bOrganicVillage?10:(TownLayoutVersion>=3?HearthVillageLimits::Town3Population:32);
     Input.CandidateSpacing=TownLayoutVersion>=3?760.f:Input.CandidateSpacing;
     Input.IslandMin=TownLayoutVersion>=3?FVector2D(-8500.f,-8500.f):FVector2D(-4700,-4600);
     Input.IslandMax=TownLayoutVersion>=3?FVector2D(21500.f,21500.f):FVector2D(1500,4500);

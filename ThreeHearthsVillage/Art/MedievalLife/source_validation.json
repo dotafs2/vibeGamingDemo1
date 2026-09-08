@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "catalog": "Art/MedievalLife/catalog.json",
+  "module_count": 21,
+  "layer_asset_count": 45,
+  "layer_counts": {
+    "attachments": 9,
+    "finish": 14,
+    "structure": 21,
+    "weathering": 1
+  },
+  "royal_banner_layers": [
+    "finish",
+    "structure"
+  ],
+  "static_unrigged_character_modules": [
+    "carter_body",
+    "horse_bay",
+    "horse_grey",
+    "royal_guard_body"
+  ],
+  "authoring": {
+    "up": "+Z",
+    "front": "-Y",
+    "units": "meters"
+  },
+  "ue_conversion": {
+    "matrix": [
+      [
+        100.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        -100.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        100.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "yaw": "yaw_ue = -yaw_blender"
+  }
+}

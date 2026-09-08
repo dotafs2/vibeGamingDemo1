@@ -14,11 +14,13 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest import mock
 import urllib.error
 import urllib.request
 
 from kimi_budget import BudgetDenied,InvalidRequest,Ledger,LedgerCorrupt,NANO,NIGHT_POLICY,CITY_VALIDATION_POLICY,usage_cost
-from kimi_gateway import BudgetServer,Gateway,UpstreamUnknown,handler_type
+import kimi_gateway
+from kimi_gateway import BudgetServer,Gateway,UpstreamUnknown,handler_type,active_gateway_pid,parse_deadline
 
 BODY={'model':'kimi-k2.6','messages':[{'role':'user','content':'选择一个可执行动作，以中文JSON回答。'}],
       'max_tokens':512,'thinking':{'type':'disabled'},'stream':False}
@@ -242,6 +244,42 @@ class BudgetTests(unittest.TestCase):
         for body in invalid:
             with self.assertRaises(InvalidRequest): self.ledger.reserve('one','resident',body)
         self.assertEqual(self.ledger.status()['counts'],{})
+
+    def test_runtime_night_lock_preserves_policy_fingerprint_and_stops_before_send(self):
+        now=[10]
+        policy=replace(NIGHT_POLICY,deadline_utc=0)
+        path=Path(self.folder.name)/'night-lock.sqlite3'
+        ledger=Ledger(path,policy,clock=lambda:now[0],runtime_deadline_utc=20)
+        before=ledger.policy_hash
+        ledger.initialize()
+        self.assertEqual(ledger.policy_hash,before)
+        self.assertEqual(ledger.status()['deadline_utc'],20)
+        provider=FakeProvider(); gateway=Gateway(ledger,provider)
+        now[0]=20
+        with self.assertRaises(BudgetDenied): gateway.complete('expired','resident',BODY)
+        self.assertEqual(provider.calls,0)
+        self.assertEqual(ledger.status()['counts'],{})
+        self.assertFalse(ledger.status()['halted'])
+
+    def test_runtime_deadline_cannot_extend_earlier_policy_deadline(self):
+        policy=replace(NIGHT_POLICY,deadline_utc=20)
+        path=Path(self.folder.name)/'earlier-policy.sqlite3'
+        ledger=Ledger(path,policy,clock=lambda:20,runtime_deadline_utc=30)
+        ledger.initialize()
+        self.assertEqual(ledger.status()['deadline_utc'],20)
+        with self.assertRaises(BudgetDenied): ledger.reserve('expired','resident',BODY)
+
+    def test_deadline_parser_and_active_gateway_probe_are_offline(self):
+        self.assertEqual(parse_deadline('2030-01-01T00:00:00Z'),1893456000)
+        with self.assertRaises(BudgetDenied): parse_deadline('2030-01-01T00:00:00')
+        endpoint=Path(self.folder.name)/'endpoint.json'
+        endpoint.write_text(json.dumps({'pid':multiprocessing.current_process().pid,'api_key':'redacted'}),encoding='utf-8')
+        self.assertEqual(active_gateway_pid(endpoint),multiprocessing.current_process().pid)
+        endpoint.write_text(json.dumps({'pid':12345}),encoding='utf-8')
+        with mock.patch.object(kimi_gateway.os,'name','nt'), \
+             mock.patch.object(kimi_gateway,'_windows_process_active',return_value=False), \
+             mock.patch.object(kimi_gateway.os,'kill',side_effect=AssertionError('os.kill must not run on Windows')):
+            self.assertIsNone(active_gateway_pid(endpoint))
 
     def test_http_gateway_auth_and_idempotency(self):
         provider=FakeProvider(); gateway=Gateway(self.ledger,provider)

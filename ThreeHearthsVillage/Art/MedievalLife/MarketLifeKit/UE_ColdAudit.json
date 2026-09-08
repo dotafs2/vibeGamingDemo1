@@ -1,0 +1,818 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "audit": "cold native reload; no assets modified",
+  "destination_root": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit",
+  "assets": [
+    {
+      "id": "bench_low/finish",
+      "module_id": "bench_low",
+      "layer": "finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/bench_low__finish.bench_low__finish",
+      "source": "Art/MedievalLife/MarketLifeKit/bench_low.fbx",
+      "source_sha256": "b16a50806e05c68c12d5493b6342ac537259ca44e07861c14497b50370d09be7",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/bench_low.fbx",
+      "anchors_m": {
+        "seat_left": [
+          -0.43,
+          0,
+          0.505
+        ],
+        "seat_right": [
+          0.43,
+          0,
+          0.505
+        ]
+      },
+      "anchors_ue_cm": {
+        "seat_left": [
+          -43.0,
+          -0.0,
+          50.5
+        ],
+        "seat_right": [
+          43.0,
+          -0.0,
+          50.5
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -86.30000305175781,
+          -22.349992752075195,
+          9.75
+        ],
+        "max_cm": [
+          67.30000305175781,
+          22.350008010864258,
+          51.89999771118164
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/Medieval___endgrain.Medieval___endgrain"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 4006,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "bench_low/structure",
+      "module_id": "bench_low",
+      "layer": "structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/bench_low__structure.bench_low__structure",
+      "source": "Art/MedievalLife/MarketLifeKit/bench_low.fbx",
+      "source_sha256": "b16a50806e05c68c12d5493b6342ac537259ca44e07861c14497b50370d09be7",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/bench_low.fbx",
+      "anchors_m": {
+        "seat_left": [
+          -0.43,
+          0,
+          0.505
+        ],
+        "seat_right": [
+          0.43,
+          0,
+          0.505
+        ]
+      },
+      "anchors_ue_cm": {
+        "seat_left": [
+          -43.0,
+          -0.0,
+          50.5
+        ],
+        "seat_right": [
+          43.0,
+          -0.0,
+          50.5
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -86.0,
+          -29.424312591552734,
+          1.4744235277175903
+        ],
+        "max_cm": [
+          86.0,
+          29.424299240112305,
+          50.5
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/bench_low/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 3,
+      "uv_channels": 1,
+      "vertex_count": 2912,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "work_table/finish",
+      "module_id": "work_table",
+      "layer": "finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/work_table__finish.work_table__finish",
+      "source": "Art/MedievalLife/MarketLifeKit/work_table.fbx",
+      "source_sha256": "78cb99e42fbbcd37ba3abed17e4101f512b0e7af1b879dceffcdf1b88b1a7e16",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/work_table.fbx",
+      "anchors_m": {
+        "surface": [
+          0,
+          0,
+          0.93
+        ],
+        "front_work": [
+          0,
+          -0.88,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "surface": [
+          0.0,
+          -0.0,
+          93.0
+        ],
+        "front_work": [
+          0.0,
+          88.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -82.56999969482422,
+          -43.800010681152344,
+          11.499999046325684
+        ],
+        "max_cm": [
+          96.80000305175781,
+          43.79999542236328,
+          94.4000015258789
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 3,
+      "uv_channels": 1,
+      "vertex_count": 9072,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "work_table/structure",
+      "module_id": "work_table",
+      "layer": "structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/work_table__structure.work_table__structure",
+      "source": "Art/MedievalLife/MarketLifeKit/work_table.fbx",
+      "source_sha256": "78cb99e42fbbcd37ba3abed17e4101f512b0e7af1b879dceffcdf1b88b1a7e16",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/work_table.fbx",
+      "anchors_m": {
+        "surface": [
+          0,
+          0,
+          0.93
+        ],
+        "front_work": [
+          0,
+          -0.88,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "surface": [
+          0.0,
+          -0.0,
+          93.0
+        ],
+        "front_work": [
+          0.0,
+          88.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -96.5,
+          -44.25000762939453,
+          2.205821990966797
+        ],
+        "max_cm": [
+          96.5,
+          44.25000762939453,
+          93.0
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/work_table/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 3,
+      "uv_channels": 1,
+      "vertex_count": 4276,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "tool_rack/equipment",
+      "module_id": "tool_rack",
+      "layer": "equipment",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/tool_rack__equipment.tool_rack__equipment",
+      "source": "Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "source_sha256": "ca84ddce3258969d5f2f81c444e957115abae04f5059bcaa710fe1d3a75ee51e",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "anchors_m": {
+        "front_work": [
+          0,
+          -0.65,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "front_work": [
+          0.0,
+          65.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -57.5,
+          4.750003337860107,
+          85.0
+        ],
+        "max_cm": [
+          45.97999954223633,
+          16.300004959106445,
+          142.8000030517578
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___oak_light.Medieval___oak_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___steel.Medieval___steel",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___oak_dark.Medieval___oak_dark"
+      ],
+      "material_slot_count": 4,
+      "uv_channels": 1,
+      "vertex_count": 3178,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "tool_rack/finish",
+      "module_id": "tool_rack",
+      "layer": "finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/tool_rack__finish.tool_rack__finish",
+      "source": "Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "source_sha256": "ca84ddce3258969d5f2f81c444e957115abae04f5059bcaa710fe1d3a75ee51e",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "anchors_m": {
+        "front_work": [
+          0,
+          -0.65,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "front_work": [
+          0.0,
+          65.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -60.5463981628418,
+          3.099994659423828,
+          68.45359802246094
+        ],
+        "max_cm": [
+          60.5463981628418,
+          14.662102699279785,
+          156.5620880126953
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___iron.Medieval___iron"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 8469,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "tool_rack/structure",
+      "module_id": "tool_rack",
+      "layer": "structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/tool_rack__structure.tool_rack__structure",
+      "source": "Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "source_sha256": "ca84ddce3258969d5f2f81c444e957115abae04f5059bcaa710fe1d3a75ee51e",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/tool_rack.fbx",
+      "anchors_m": {
+        "front_work": [
+          0,
+          -0.65,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "front_work": [
+          0.0,
+          65.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -67.5,
+          -26.143831253051758,
+          0.49999892711639404
+        ],
+        "max_cm": [
+          67.5,
+          34.000003814697266,
+          165.12261962890625
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/tool_rack/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 3,
+      "uv_channels": 1,
+      "vertex_count": 2678,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "linen_canopy/cover",
+      "module_id": "linen_canopy",
+      "layer": "cover",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/linen_canopy__cover.linen_canopy__cover",
+      "source": "Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "source_sha256": "43c23fb9aecac2ffcc99603f40c4f20b0e79a3e6f73509c8429c4606f1a1379c",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "anchors_m": {
+        "table": [
+          0,
+          0,
+          0
+        ],
+        "next_bay": [
+          2.4,
+          0,
+          0
+        ],
+        "front_work": [
+          0,
+          -1.35,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "table": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "next_bay": [
+          240.0,
+          -0.0,
+          0.0
+        ],
+        "front_work": [
+          0.0,
+          135.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -121.00000762939453,
+          -84.00000762939453,
+          199.0
+        ],
+        "max_cm": [
+          121.15000915527344,
+          92.50000762939453,
+          261.0046691894531
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___blue_light.Medieval___blue_light",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___linen.Medieval___linen"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 456,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "linen_canopy/finish",
+      "module_id": "linen_canopy",
+      "layer": "finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/linen_canopy__finish.linen_canopy__finish",
+      "source": "Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "source_sha256": "43c23fb9aecac2ffcc99603f40c4f20b0e79a3e6f73509c8429c4606f1a1379c",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "anchors_m": {
+        "table": [
+          0,
+          0,
+          0
+        ],
+        "next_bay": [
+          2.4,
+          0,
+          0
+        ],
+        "front_work": [
+          0,
+          -1.35,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "table": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "next_bay": [
+          240.0,
+          -0.0,
+          0.0
+        ],
+        "front_work": [
+          0.0,
+          135.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -118.60000610351562,
+          -73.10001373291016,
+          216.46339416503906
+        ],
+        "max_cm": [
+          118.60000610351562,
+          75.40000915527344,
+          258.9482727050781
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___leather.Medieval___leather"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 4708,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "linen_canopy/structure",
+      "module_id": "linen_canopy",
+      "layer": "structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/linen_canopy__structure.linen_canopy__structure",
+      "source": "Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "source_sha256": "43c23fb9aecac2ffcc99603f40c4f20b0e79a3e6f73509c8429c4606f1a1379c",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/linen_canopy.fbx",
+      "anchors_m": {
+        "table": [
+          0,
+          0,
+          0
+        ],
+        "next_bay": [
+          2.4,
+          0,
+          0
+        ],
+        "front_work": [
+          0,
+          -1.35,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "table": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "next_bay": [
+          240.0,
+          -0.0,
+          0.0
+        ],
+        "front_work": [
+          0.0,
+          135.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -122.50000762939453,
+          -82.12667083740234,
+          0.0
+        ],
+        "max_cm": [
+          122.50000762939453,
+          82.12667083740234,
+          262.1478576660156
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___stone_dark.Medieval___stone_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/linen_canopy/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 4,
+      "uv_channels": 1,
+      "vertex_count": 4398,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "clay_jar/finish",
+      "module_id": "clay_jar",
+      "layer": "finish",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/clay_jar/clay_jar__finish.clay_jar__finish",
+      "source": "Art/MedievalLife/MarketLifeKit/clay_jar.fbx",
+      "source_sha256": "35e673b829bccdaf99dbda38a8cce47632e309e5bcdd3d73033252270d9f836e",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/clay_jar.fbx",
+      "anchors_m": {
+        "bottom": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "bottom": [
+          0.0,
+          -0.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -12.800000190734863,
+          -12.800000190734863,
+          39.29999923706055
+        ],
+        "max_cm": [
+          12.800000190734863,
+          12.800000190734863,
+          41.70000076293945
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/clay_jar/Medieval___linen.Medieval___linen"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 1248,
+      "nanite": false,
+      "cold_loaded": true
+    },
+    {
+      "id": "clay_jar/structure",
+      "module_id": "clay_jar",
+      "layer": "structure",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/clay_jar/clay_jar__structure.clay_jar__structure",
+      "source": "Art/MedievalLife/MarketLifeKit/clay_jar.fbx",
+      "source_sha256": "35e673b829bccdaf99dbda38a8cce47632e309e5bcdd3d73033252270d9f836e",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/MarketLifeKit/clay_jar.fbx",
+      "anchors_m": {
+        "bottom": [
+          0,
+          0,
+          0
+        ]
+      },
+      "anchors_ue_cm": {
+        "bottom": [
+          0.0,
+          -0.0,
+          0.0
+        ]
+      },
+      "bounds_ue_cm": {
+        "min_cm": [
+          -30.950864791870117,
+          -22.5,
+          0.0
+        ],
+        "max_cm": [
+          30.950864791870117,
+          22.5,
+          42.28786087036133
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/MarketLifeKit/clay_jar/Medieval___red.Medieval___red"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 7126,
+      "nanite": false,
+      "cold_loaded": true
+    }
+  ],
+  "modules": [
+    {
+      "id": "bench_low",
+      "bounds_axis_error_cm": 5.841255187988281e-06,
+      "bounds_ue_cm": {
+        "min_cm": [
+          -86.30000305175781,
+          -29.424312591552734,
+          1.4744235277175903
+        ],
+        "max_cm": [
+          86.0,
+          29.424299240112305,
+          51.89999771118164
+        ]
+      },
+      "expected_bounds_ue_cm": {
+        "min_cm": [
+          -86.2999975681305,
+          -29.424306750297546,
+          1.4744235202670097
+        ],
+        "max_cm": [
+          86.00000143051147,
+          29.42429482936859,
+          51.899999380111694
+        ]
+      }
+    },
+    {
+      "id": "work_table",
+      "bounds_axis_error_cm": 8.106231689453125e-06,
+      "bounds_ue_cm": {
+        "min_cm": [
+          -96.5,
+          -44.25000762939453,
+          2.205821990966797
+        ],
+        "max_cm": [
+          96.80000305175781,
+          44.25000762939453,
+          94.4000015258789
+        ]
+      },
+      "expected_bounds_ue_cm": {
+        "min_cm": [
+          -96.49999737739563,
+          -44.24999952316284,
+          2.2058218717575073
+        ],
+        "max_cm": [
+          96.79999947547913,
+          44.24999952316284,
+          94.40000057220459
+        ]
+      }
+    },
+    {
+      "id": "tool_rack",
+      "bounds_axis_error_cm": 6.4373016357421875e-06,
+      "bounds_ue_cm": {
+        "min_cm": [
+          -67.5,
+          -26.143831253051758,
+          0.49999892711639404
+        ],
+        "max_cm": [
+          67.5,
+          34.000003814697266,
+          165.12261962890625
+        ]
+      },
+      "expected_bounds_ue_cm": {
+        "min_cm": [
+          -67.5000011920929,
+          -26.1438250541687,
+          0.4999989178031683
+        ],
+        "max_cm": [
+          67.5000011920929,
+          33.99999737739563,
+          165.12261629104614
+        ]
+      }
+    },
+    {
+      "id": "linen_canopy",
+      "bounds_axis_error_cm": 1.0251998901367188e-05,
+      "bounds_ue_cm": {
+        "min_cm": [
+          -122.50000762939453,
+          -84.00000762939453,
+          0.0
+        ],
+        "max_cm": [
+          122.50000762939453,
+          92.50000762939453,
+          262.1478576660156
+        ]
+      },
+      "expected_bounds_ue_cm": {
+        "min_cm": [
+          -122.50000238418579,
+          -83.99999737739563,
+          0.0
+        ],
+        "max_cm": [
+          122.50000238418579,
+          92.5000011920929,
+          262.147855758667
+        ]
+      }
+    },
+    {
+      "id": "clay_jar",
+      "bounds_axis_error_cm": 1.430511474609375e-06,
+      "bounds_ue_cm": {
+        "min_cm": [
+          -30.950864791870117,
+          -22.5,
+          0.0
+        ],
+        "max_cm": [
+          30.950864791870117,
+          22.5,
+          42.28786087036133
+        ]
+      },
+      "expected_bounds_ue_cm": {
+        "min_cm": [
+          -30.950865149497986,
+          -22.499999403953552,
+          0.0
+        ],
+        "max_cm": [
+          30.950865149497986,
+          22.499999403953552,
+          42.2878623008728
+        ]
+      }
+    }
+  ],
+  "source_manifest": "Art/MedievalLife/MarketLifeKit/manifest.json",
+  "source_manifest_sha256": "6df317289ee139c7b93f4ee11bc654c95dfdbf9c1df28b73488bd377c021cf23",
+  "source_to_unreal_matrix": [
+    [
+      100.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -100.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "layer_count": 12,
+  "module_count": 5,
+  "limitations": [
+    "Static MarketLifeKit geometry only; no runtime commerce behavior tested.",
+    "No animation or rig verification is applicable."
+  ]
+}

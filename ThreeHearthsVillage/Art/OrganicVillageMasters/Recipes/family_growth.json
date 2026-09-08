@@ -1,0 +1,1183 @@
+{
+  "id": "family_house_expansion",
+  "source": "authored art demonstration, not live NPC history",
+  "stages": [
+    "family_starter",
+    "family_side_wing",
+    "family_cluster"
+  ],
+  "rules": [
+    "Preserve stable module instance keys across stages.",
+    "Dismantle newly internal facade modules before adding the wing; retain reusable materials.",
+    "Remove the old roof over a room before raising its upper floor.",
+    "Only use these authored roof joins until a new join is visually reviewed.",
+    "A future resident decision must fund the added components and have a valid site."
+  ],
+  "transitions": [
+    {
+      "from": "family_starter",
+      "to": "family_side_wing",
+      "retain": [
+        "011d15279aafb4f5f3af",
+        "0266f00bdb6f2833037d",
+        "07bea612fcc3a179915b",
+        "196997b8240f49d482a6",
+        "30dd58689dafe2f0045e",
+        "30f38f17075fd64dfa6e",
+        "34d89d477fa506fcf358",
+        "51b10604c83365102ce2",
+        "54f2ccea9cf32b07a5b7",
+        "5e88e96706e71529e250",
+        "661f64225225a9a531a4",
+        "6c63e4000844086829d8",
+        "6fade5db3c036a5e5952",
+        "725fec0979ea05cba76b",
+        "74e8384fc3cbc05673fb",
+        "760832d7421a69cba741",
+        "79d3ce2eb65e7152e3bd",
+        "819767692d00011c483d",
+        "8801e2cb0600cbfe7dd9",
+        "9468a8ee15a49cb9e399",
+        "95ca279e215ce4433821",
+        "994a9d0604c9c5a84921",
+        "a3a5dd25d103f2c69d16",
+        "a4986e46ab7309e6c06d",
+        "a792ba6d7d3e4472bc7f",
+        "a7f4cc4a277180d22636",
+        "b640db7d301628680d7f",
+        "bc1983028ad4889792c3",
+        "bcacfd64340e365becb3",
+        "c484fa7cbc3add8fedb7",
+        "c9fdffc46c2cfe19196a",
+        "e395402f04b2ca7ad784"
+      ],
+      "dismantle": [
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            0,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "0c13d437cb2beda0b7ec"
+        },
+        {
+          "module": "attachment_flowerbox",
+          "translation_m": [
+            0,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "46f7791b760004b99dba"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            0,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "96d94606f431d0cfd2b1"
+        }
+      ],
+      "add": [
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            -2,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "07b73cf95d411bf67d68"
+        },
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            -1,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "07f0e666170ce4b3dcd4"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            -1,
+            2,
+            0.4
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "0f9ab4d728840badf71b"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            -2,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "1259c84abcbfcce4b194"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            -1,
+            -2,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "31674750ddb6f15bec6e"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            0,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "3b1c78342ebe2d9a34de"
+        },
+        {
+          "module": "roof_gable_2x2m",
+          "translation_m": [
+            -1.0,
+            -1.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "42f75400f88c9df4117a"
+        },
+        {
+          "module": "roof_gable_2x2m",
+          "translation_m": [
+            -1.0,
+            1.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "4d75d7c1c3dcbc3be459"
+        },
+        {
+          "module": "foundation_cell_2m",
+          "translation_m": [
+            -1,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "5ed1271200c1b7888302"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            -2,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "5f7387e9472496b4a405"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            -1,
+            2,
+            0.0
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "65748bfdb527ac6c6125"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            -1.0,
+            2.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "9045cc8b03fd4301a246"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            -1.0,
+            -2.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "a664eb1f38c4dc1c2e44"
+        },
+        {
+          "module": "foundation_cell_2m",
+          "translation_m": [
+            -1,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "c3ba01f15d23a7535565"
+        },
+        {
+          "module": "wall_plain_2m",
+          "translation_m": [
+            -2,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "d0fa9bb47c1ab39bae0e"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            0,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "db327fa72f550332039b"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            -1,
+            -2,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "e176f8ce4440b693c8b8"
+        },
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            -1,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "f4e051743e99932fbe9f"
+        }
+      ]
+    },
+    {
+      "from": "family_side_wing",
+      "to": "family_cluster",
+      "retain": [
+        "011d15279aafb4f5f3af",
+        "0266f00bdb6f2833037d",
+        "07b73cf95d411bf67d68",
+        "07f0e666170ce4b3dcd4",
+        "0f9ab4d728840badf71b",
+        "1259c84abcbfcce4b194",
+        "196997b8240f49d482a6",
+        "30dd58689dafe2f0045e",
+        "30f38f17075fd64dfa6e",
+        "31674750ddb6f15bec6e",
+        "34d89d477fa506fcf358",
+        "3b1c78342ebe2d9a34de",
+        "42f75400f88c9df4117a",
+        "4d75d7c1c3dcbc3be459",
+        "51b10604c83365102ce2",
+        "54f2ccea9cf32b07a5b7",
+        "5e88e96706e71529e250",
+        "5ed1271200c1b7888302",
+        "5f7387e9472496b4a405",
+        "65748bfdb527ac6c6125",
+        "661f64225225a9a531a4",
+        "6fade5db3c036a5e5952",
+        "74e8384fc3cbc05673fb",
+        "760832d7421a69cba741",
+        "79d3ce2eb65e7152e3bd",
+        "819767692d00011c483d",
+        "8801e2cb0600cbfe7dd9",
+        "9045cc8b03fd4301a246",
+        "9468a8ee15a49cb9e399",
+        "95ca279e215ce4433821",
+        "994a9d0604c9c5a84921",
+        "a3a5dd25d103f2c69d16",
+        "a4986e46ab7309e6c06d",
+        "a664eb1f38c4dc1c2e44",
+        "a792ba6d7d3e4472bc7f",
+        "a7f4cc4a277180d22636",
+        "b640db7d301628680d7f",
+        "bc1983028ad4889792c3",
+        "c3ba01f15d23a7535565",
+        "d0fa9bb47c1ab39bae0e",
+        "db327fa72f550332039b",
+        "e176f8ce4440b693c8b8",
+        "e395402f04b2ca7ad784",
+        "f4e051743e99932fbe9f"
+      ],
+      "dismantle": [
+        {
+          "module": "overlay_lime_repair",
+          "translation_m": [
+            4,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "07bea612fcc3a179915b"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            4,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "6c63e4000844086829d8"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            4,
+            3,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "725fec0979ea05cba76b"
+        },
+        {
+          "module": "attachment_flowerbox",
+          "translation_m": [
+            4,
+            3,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "bcacfd64340e365becb3"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            4,
+            3,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "c484fa7cbc3add8fedb7"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            4,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "c9fdffc46c2cfe19196a"
+        }
+      ],
+      "add": [
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            5,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "046661e5e7bfe111a490"
+        },
+        {
+          "module": "overlay_ivy",
+          "translation_m": [
+            -2,
+            1.0,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "10936213e947095ede3d"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            5.0,
+            2.0,
+            5.199999809265137
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "1a2ed0bc4a2a5192494e"
+        },
+        {
+          "module": "wall_plain_2m",
+          "translation_m": [
+            6,
+            3,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "1b4cfcc3f20b129dcccd"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            5,
+            -2,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "24227f803f145037e3e5"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            6,
+            3,
+            2.8
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "380a5e4435bc0b56be19"
+        },
+        {
+          "module": "overlay_ivy",
+          "translation_m": [
+            6,
+            2.8,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "3dec8322430967306f84"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            5.0,
+            -2.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "4970ed826806f177ab5a"
+        },
+        {
+          "module": "prop_barrel",
+          "translation_m": [
+            -2.7,
+            -0.9,
+            0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "50c9627530e4176b7584"
+        },
+        {
+          "module": "foundation_cell_2m",
+          "translation_m": [
+            5,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "5323a2908898ba7572b2"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            5,
+            4,
+            0.4
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "567fb70dff024b931055"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            5,
+            4,
+            2.8
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "577a36e2bce7b884c907"
+        },
+        {
+          "module": "attachment_garden_fence_2m",
+          "translation_m": [
+            3,
+            -2.7,
+            0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "5ef0ecbf654236247b69"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            4,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "65344f325cfd6c8b5832"
+        },
+        {
+          "module": "attachment_steps_040",
+          "translation_m": [
+            4.1,
+            -1,
+            0
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "68c62e719484bb8003a4"
+        },
+        {
+          "module": "foundation_cell_2m",
+          "translation_m": [
+            5,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "6e042f8fe2e68e604ac7"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            6,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "6ea1370a2d6ef7d9508d"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            6,
+            1,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "7cf9af0976384279c81c"
+        },
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            5,
+            3,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "7fafb6e600ec4f092f41"
+        },
+        {
+          "module": "overlay_lime_repair",
+          "translation_m": [
+            4,
+            3,
+            2.8
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "869672adf61cdc8602a0"
+        },
+        {
+          "module": "roof_gable_2x2m",
+          "translation_m": [
+            5.0,
+            1.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "89fbb957468d84014976"
+        },
+        {
+          "module": "wall_door_2m",
+          "translation_m": [
+            4,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "8c212afb71bdf4b2c3d7"
+        },
+        {
+          "module": "attachment_flowerbox",
+          "translation_m": [
+            5,
+            2,
+            2.8
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "956c61578b44fc3d19ec"
+        },
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            5,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "966c5ae3f31b3fb6ef67"
+        },
+        {
+          "module": "roof_gable_2x2m",
+          "translation_m": [
+            5.0,
+            -1.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "9b837d8826d11e141042"
+        },
+        {
+          "module": "floor_cell_2m",
+          "translation_m": [
+            5,
+            3,
+            2.8
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "9db7a09fd245191a0d9a"
+        },
+        {
+          "module": "attachment_flowerbox",
+          "translation_m": [
+            6,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "a2e4d47ba9dc01f662d4"
+        },
+        {
+          "module": "foundation_cell_2m",
+          "translation_m": [
+            5,
+            3,
+            0.0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "a3f45bf020848fc7dbda"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            5,
+            2,
+            2.8
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "c1c0f9a22bf63cf04827"
+        },
+        {
+          "module": "overlay_lime_repair",
+          "translation_m": [
+            6,
+            1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "c1c96704b6a701a5756b"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            6,
+            -1,
+            0.4
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "c95f44727026e23877b8"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            5,
+            4,
+            0.0
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "cf971ee332f05e69a887"
+        },
+        {
+          "module": "wall_plain_2m",
+          "translation_m": [
+            4,
+            3,
+            2.8
+          ],
+          "yaw_degrees": 270,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "d0426cdebf875fb5972a"
+        },
+        {
+          "module": "attachment_garden_fence_2m",
+          "translation_m": [
+            -1,
+            -3.0,
+            0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "",
+          "instance_key": "d1b1d37112ab0be0c97f"
+        },
+        {
+          "module": "prop_bench",
+          "translation_m": [
+            2.8,
+            -2.1,
+            0
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "attachments"
+          ],
+          "purpose": "household shared courtyard; main and annex doors clear",
+          "instance_key": "d3df8a661d9cd024cf4c"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            6,
+            -1,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "dba6d5ac1ef746bac2ee"
+        },
+        {
+          "module": "stone_skirt_2m",
+          "translation_m": [
+            6,
+            3,
+            0.0
+          ],
+          "yaw_degrees": 90,
+          "palette": "sage_clay",
+          "layers": [
+            "finish"
+          ],
+          "purpose": "",
+          "instance_key": "dcc51533aa8fa056ea51"
+        },
+        {
+          "module": "roof_gable_2x2m",
+          "translation_m": [
+            5.0,
+            3.0,
+            5.199999809265137
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "e338c6066fee2945a43e"
+        },
+        {
+          "module": "wall_window_2m",
+          "translation_m": [
+            5,
+            -2,
+            0.4
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "boundary only; interior shared wall omitted",
+          "instance_key": "e5c715a850be0b52e8c1"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            5.0,
+            2.0,
+            2.799999952316284
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "e8b326b3896264040a05"
+        },
+        {
+          "module": "overlay_lime_repair",
+          "translation_m": [
+            5,
+            2,
+            2.8
+          ],
+          "yaw_degrees": 0,
+          "palette": "sage_clay",
+          "layers": [
+            "weathering"
+          ],
+          "purpose": "",
+          "instance_key": "fbdac3daf122c8635264"
+        },
+        {
+          "module": "gable_end_2m",
+          "translation_m": [
+            5.0,
+            4.0,
+            5.199999809265137
+          ],
+          "yaw_degrees": 180,
+          "palette": "sage_clay",
+          "layers": [
+            "finish",
+            "structure"
+          ],
+          "purpose": "",
+          "instance_key": "fc9a55b7df4ce8433bf8"
+        }
+      ]
+    }
+  ]
+}

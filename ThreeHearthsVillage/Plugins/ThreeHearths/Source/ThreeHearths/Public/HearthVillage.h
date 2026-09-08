@@ -9,6 +9,10 @@
 #include "HearthWorldRequests.h"
 #include "HearthResidentSiting.h"
 #include "HearthTownLayout.h"
+#include "HearthOrganicConstruction.h"
+#include "HearthOrganicCatalog.h"
+#include "HearthOrganicTerrain.h"
+#include "HearthNpcThinkingPolicy.h"
 #include "HearthVillage.generated.h"
 
 class USkeletalMeshComponent;
@@ -22,6 +26,7 @@ class IFileHandle;
 class AStaticMeshActor;
 struct FHearthResidentBuildingPlan;
 struct FHearthTavernRuntimeState;
+struct FHearthFreightVisualState;
 
 namespace HearthVillageLimits
 {
@@ -37,7 +42,7 @@ namespace HearthVillageLimits
 }
 
 UENUM(BlueprintType)
-enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover };
+enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover, OrganicTravel, OrganicWork };
 
 // Stable operation IDs: each site offers only the operations its current state permits.
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter, ClayPit, TileKiln };
@@ -75,8 +80,8 @@ struct FHearthDecisionRecord
 // Each resident owns one request slot; replies never share mutable decision data.
 struct FHearthPendingDecision
 {
-    FString OperationId, ConversationId, VisualSignature;
-    bool bVisual=false;
+    FString OperationId, ConversationId, VisualSignature, ThinkingRequestId;
+    bool bVisual=false, bDaydream=false;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
     bool bActive=false, bReturned=false, bGameplayReleased=false, bLife=false, bSocial=false, bHasUsage=false;
@@ -84,6 +89,40 @@ struct FHearthPendingDecision
     double StartedAt=0, StartedAtSimulation=0, Latency=0;
     FString Reason, Error;
     TArray<int32> AllowedActions;
+};
+
+/** Result of the organic-village thought gate. The runtime never performs HTTP. */
+struct FHearthThinkingGateResult
+{
+    bool bDispatch = false;
+    bool bUseLocalBehavior = false;
+    FString RequestId;
+    FString Reason;
+};
+
+namespace HearthThinking
+{
+    /** Stable role mapping used by the organic HTTP gate; a king is civilian. */
+    THREEHEARTHS_API EHearthNpcThinkingRole RoleFor(const FString& Role);
+}
+
+/** Runtime adapter for the pure NPC thinking policy and its world-scoped save. */
+class THREEHEARTHS_API FHearthThinkingRuntime
+{
+public:
+    explicit FHearthThinkingRuntime(const FString& WorldName);
+    ~FHearthThinkingRuntime();
+    FHearthThinkingRuntime(const FHearthThinkingRuntime&) = delete;
+    FHearthThinkingRuntime& operator=(const FHearthThinkingRuntime&) = delete;
+
+    FHearthThinkingGateResult Admit(const FHearthNpcThinkingRequest& Request,
+        double DeadlineUtcSeconds);
+    bool Complete(const FString& RequestId, bool bAccepted);
+    void Flush();
+
+private:
+    class FImpl;
+    FImpl* Impl = nullptr;
 };
 
 struct FHearthBond
@@ -130,6 +169,30 @@ struct FHearthWagePayable
     FString Id, TaskId, Status=TEXT("reserved");
     int32 Worker=-1, Amount=0, Funder=-1;
     bool bTaxFunded=false;
+};
+struct FHearthServiceDutyRecord
+{
+    FString Id, TaskId, Kind, Status=TEXT("active");
+    int32 Resident=-1, Wage=3;
+    float Progress=0.f, DutySeconds=0.f, ShiftSeconds=600.f, MoveSpeed=90.f;
+    int32 PatrolPoint=0;
+    double NextDutyAt=0.0;
+    bool bWagePaid=false;
+    FVector Anchor=FVector::ZeroVector;
+};
+/** Persistent cart load. The source depot is decremented when this record is created. */
+struct FHearthFreightOrder
+{
+    FString Id, ProjectId, Status=TEXT("transporting");
+    int32 Carter=12, CargoType=-1, CargoQuantity=0, Phase=0;
+    FVector Source=FVector::ZeroVector, Destination=FVector::ZeroVector;
+    FVector VehiclePosition=FVector::ZeroVector;
+    float VehicleYaw=0.f, WheelDistanceCm=0.f;
+    float StopRemaining=0.f, LastVehicleMoveAt=-1.f;
+    double CreatedAt=0.0, NextRouteAttempt=0.0;
+    TArray<FVector> VehicleRoute;
+    TArray<float> VehicleRouteYaws;
+    bool bLoaded=false, bWagePaid=false, bVehicleKnown=false, bPausedForNeeds=false, bCarterAttached=false;
 };
 struct FHearthTradeOffer
 {
@@ -184,7 +247,10 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Bundle;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Tool;
     UPROPERTY(VisibleAnywhere) TArray<TObjectPtr<UStaticMeshComponent>> AppearanceParts;
+    UPROPERTY() TArray<TObjectPtr<USkeletalMeshComponent>> ServiceAppearanceParts;
+    UPROPERTY() bool bServiceAppearanceReady=false;
     UFUNCTION(BlueprintCallable) void ConfigureAppearance(int32 Profile);
+    bool ConfigureServiceAppearance(const FString& RoleKey);
     void SetMotion(EHearthTask Task, float Rate, int32 WorkKind=-1);
     FString EquippedToolId;
     int32 ResidentIndex = -1;
@@ -206,6 +272,10 @@ struct FHearthResident
 {
     GENERATED_BODY()
     UPROPERTY(BlueprintReadOnly) FString StableId;
+    // StableId is the persisted identity. These two fields are catalog metadata
+    // for the three shared medieval service residents and are never identity keys.
+    UPROPERTY(BlueprintReadOnly) FString ServiceRoleKey;
+    UPROPERTY(BlueprintReadOnly) FString ResidenceId;
     UPROPERTY(BlueprintReadOnly) FString ActiveTaskId;
     UPROPERTY(BlueprintReadOnly) FString Role;
     UPROPERTY(BlueprintReadOnly) float Hunger=15.f;
@@ -293,6 +363,21 @@ public:
     TArray<FHearthWorldRequest> WorldRequests;
     UFUNCTION(BlueprintCallable) bool LoadWorld();
     UFUNCTION(BlueprintCallable) FString ExportWorldState() const;
+    FHearthFreightVisualState GetFreightVisualState() const;
+    /** Logical occupied footprint of completed MarketLifeKit furniture. */
+    bool IsMarketLifeKitBlockingPoint(const FVector& Position) const;
+    bool IsMarketLifeKitBlockingSegment(const FVector& A,const FVector& B) const;
+    FVector GetServiceDutyAnchor(int32 ResidentIndex) const;
+    FTransform GetServiceGateFrame() const;
+    void BuildMedievalPublicVisuals();
+    void RefreshMedievalPublicVisuals(float Dt);
+    // Reflections run alongside an existing guard shift; they cannot choose
+    // a job, release the guard from duty, or manufacture a world event.
+    bool RequestGuardDaydream(int32 Index);
+    void AdvanceGuardThoughts();
+    void ApplyGuardDaydream(int32 Index,const FHearthPendingDecision& Reply);
+    double NextGuardThoughtProbeAt=0;
+    bool bGuardVisitCaptured=false;
     UPROPERTY(BlueprintReadOnly) FString WorldId;
     UPROPERTY(BlueprintReadOnly) FString WorldSaveStatus;
     UFUNCTION(BlueprintCallable) void TogglePause();
@@ -343,6 +428,8 @@ public:
     UFUNCTION(BlueprintCallable) bool CancelPublicWork(int32 Resident);
     FString PublicWorksSummary() const;
     TArray<FHearthWagePayable> WagePayables;
+    TArray<FHearthServiceDutyRecord> ServiceDuties;
+    TArray<FHearthFreightOrder> FreightOrders;
     TArray<FHearthTradeOffer> TradeOffers;
     TArray<FHearthTileOrder> TileOrders;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Village") bool bUseCropoutMap = false;
@@ -365,10 +452,39 @@ public:
     FString PlotNameFor(int32 Resident) const;
     FString StatusFor(int32 Resident) const;
     FLinearColor ResidentColor(int32 Index) const;
-    int32 HousingPlotCount() const { return bUseCropoutMap?(TownLayoutVersion>=3?HearthVillageLimits::Town3Population:HearthVillageLimits::LegacyTown2Population):3; }
+    int32 HousingPlotCount() const { return bUseCropoutMap?(TownLayoutVersion==3?HearthVillageLimits::Town3Population:HearthVillageLimits::LegacyTown2Population):3; }
     bool IsTownLayoutVersion3() const { return bUseCropoutMap && TownLayoutVersion>=3; }
+    bool IsOrganicVillage() const { return bUseCropoutMap && TownLayoutVersion==4; }
+    TMap<FString,FOrganicConstructionHomeState> OrganicHomes;
+    int32 OrganicWorldSeed=7919;
+    void InitializeOrganicHomes(bool bFresh);
+    void RefreshOrganicHomes();
+    UFUNCTION(BlueprintCallable) bool RequestOrganicExpansion(int32 Index,const FString& RecipeId);
+    UFUNCTION(BlueprintCallable) FString ExportOrganicState() const;
+    float GroundHeightAt(const FVector& Position) const;
     FString PlotLabel(int32 Plot) const;
 private:
+    friend class FOrganicWorldPersistenceTest;
+    friend class FHearthOrganicRuntimeTest;
+    friend class FHearthOrganicProductionPolicyTest;
+    TSharedPtr<FHearthOrganicCatalog> OrganicCatalog;
+    TMap<FString,float> OrganicNextAttempt;
+    TMap<FString,int32> OrganicVisualRevision;
+    TSharedPtr<HearthOrganicTerrain::FSettings> OrganicTerrainSettings;
+    TSharedPtr<HearthOrganicTerrain::FGrid> OrganicTerrainGrid;
+    TWeakObjectPtr<AActor> OrganicGroundActor;
+    void BuildOrganicGround();
+    float OrganicGroundHeightAt(const FVector& Position) const;
+    void AdvanceOrganicHomes(float Dt);
+    void AdvanceOrganicWorker(int32 Index,float Dt);
+    void AdvanceMarketLifeKits(float Dt);
+    bool AdvanceMarketKitWorker(int32 Index,float Dt);
+    bool HasMarketKitWork(int32 Index) const;
+    void RefreshMarketLifeKitHome(int32 Index);
+    void RefreshOrganicHome(int32 Index);
+    bool OrganicBlocksPoint(const FVector& Position) const;
+    bool OrganicBlocksSegment(const FVector& A,const FVector& B) const;
+    FTransform OrganicHomeTransform(int32 Plot) const;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HouseMeshes;
     friend class AHearthPlayerController;
     friend class FHearthDesignFeedbackTest;
@@ -394,6 +510,14 @@ private:
     friend class FHearthPlannedConstructionRuntimeTest;
     friend class FHearthTownLayoutRuntimeTest;
     friend class FHearthSocietyPopulationTest;
+    friend class FHearthMedievalPopulationMigrationTest;
+    friend class FHearthServiceRuntimeTest;
+    friend class FHearthGateVisitRuntimeTest;
+    friend class FHearthMarketLifeRuntimeTest;
+    bool IsEligibleMarketLifeRequest(int32 Index,const FHearthWorldRequest& Request,FString& OutModule) const;
+    bool FindMarketLifeAnchor(int32 Index,const FString& Module,const FOrganicConstructionHomeState& Home,FVector& OutWork,FVector& OutInstall,float& OutYaw) const;
+    friend class FHearthGuardReflectionRuntimeTest;
+    friend class FHearthFreightRuntimeTest;
     friend class FHearthSocialIntegrationTest;
     friend class FHearthTileProductionTest;
     friend class FHearthPrivateTileConstructionTest;
@@ -408,6 +532,9 @@ private:
     void ResetVillageState();
     bool ApplyWorldState(const FString& Text, FString& Error);
     void InitializeResidentIdentity(int32 Index,FHearthResident& Resident) const;
+    void InitializeServiceResident(int32 Index,FHearthResident& Resident) const;
+    bool IsSharedServiceResident(int32 Index) const;
+    FVector SharedResidenceAnchor(int32 Index) const;
     void AssignHouseStyle(int32 Index,FHearthResident& Resident) const;
     bool SetHouseStyle(int32 Style,FHearthResident& Resident) const;
     void AdvanceNeeds(float Dt);
@@ -487,6 +614,7 @@ private:
     void RefreshBotanicalLandscape();
     TArray<TObjectPtr<UStaticMeshComponent>> BotanicalMeshes;
     TArray<TWeakObjectPtr<UStaticMeshComponent>> StarterArchitectureMeshes[HearthVillageLimits::MaxPopulation];
+    TArray<TWeakObjectPtr<UStaticMeshComponent>> MarketLifeKitMeshes[HearthVillageLimits::MaxPopulation];
     bool RefreshStarterArchitecture(int32 Plot,int32 Stage);
     FVector HomeApproach(int32 Plot) const;
     FHearthResidentSitingResult EvaluateResidentSite(int32 Index,const FVector& Position) const;
@@ -504,8 +632,19 @@ private:
     double SimulationRemainder = 0;
     bool bReplacementPlotSearchDone = false;
     float AcceptanceCaptureDelay = -1.f;
+    double RuntimeReviewExitAt = 0;
     bool bAcceptanceCaptureDone = false;
     void AdvanceSimulation(float Dt);
+    void AdvanceServiceRuntime(float Dt);
+    bool StartServiceDuty(int32 ResidentIndex);
+    bool CancelServiceDuty(int32 ResidentIndex);
+    void AdvanceServiceResident(int32 ResidentIndex,float Dt);
+    bool StartFreightOrder();
+    bool CancelFreightOrder(int32 ResidentIndex);
+    void AdvanceFreightRuntime(float Dt);
+    void AdvanceFreightResident(int32 ResidentIndex,float Dt);
+    bool BuildFreightVehicleRoute(const FVector& AxleStart,float StartYaw,const FVector& AxleGoal,TArray<FVector>& Out,TArray<float>& OutYaws) const;
+    bool IsFreightPoseSafe(const FVector& AxlePosition,float Yaw,bool bIncludePeople=false) const;
     bool bOrganicTownLayout = true;
     bool bReportedComplete = false;
     bool bApiReady = false;
@@ -532,6 +671,7 @@ private:
     uint64 DecisionGeneration = 0;
     uint64 DecisionSerial = 0;
     TArray<FHearthPendingDecision> PendingDecisions;
+    FHearthThinkingRuntime* ThinkingRuntime = nullptr;
     bool IsDecisionPending(int32 Index) const;
     int32 PendingDecisionCount() const;
     int32 DecisionConcurrencyLimit() const;
@@ -539,13 +679,15 @@ private:
     FProcHandle BridgeProcess;
     void LoadApiConfig();
     void StopDecisionRequests();
+    void EnsureThinkingRuntime();
     void RequestDecision(int32 Index);
-    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife, bool bSocial=false, const FString& ImageData=FString());
+    void SendDecisionRequest(int32 Index, const TSharedRef<FJsonObject>& Context, const FString& Prompt, bool bLife, bool bSocial=false, const FString& ImageData=FString(), bool bDaydream=false);
     void ConsumeDecision();
     void EnsureResidentDesignGoal(int32 Index);
     bool RequestVisualReview(int32 Index);
     void ApplyVisualReview(int32 Index, FHearthPendingDecision& Reply);
     FString VisualSignature(int32 Index) const;
+    void AppendMarketLifeContext(int32 Index,const TSharedRef<FJsonObject>& Context) const;
     FString CaptureDesignObservation(int32 Index, FString& Path,bool bTown=false);
     bool FitsResidentPlan(const FHearthStructurePlan& Plan, int32 SiteIndex) const;
     double NextVisualCaptureAt = 0;

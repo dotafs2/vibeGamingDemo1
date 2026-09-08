@@ -76,7 +76,7 @@ bool AHearthVillage::IsRoyalSite(int32 Index) const
 {
     if(TownLayoutVersion<2 || !ProductionSites.IsValidIndex(Index)) return false;
     for(const auto& Landmark:HearthCityPlan::BuildForVersion(TownLayoutVersion).Landmarks)
-        if(Landmark.Kind==TEXT("castle") && ProductionSites[Index].Position.Equals(Landmark.Position,1.f)) return true;
+        if(Landmark.Kind==TEXT("castle") && FVector::DistSquared2D(ProductionSites[Index].Position,Landmark.Position)<=1.f) return true;
     return false;
 }
 
@@ -84,7 +84,10 @@ void AHearthVillage::RefreshBotanicalLandscape()
 {
     for(auto& M:BotanicalMeshes) if(IsValid(M)) M->DestroyComponent();
     BotanicalMeshes.Reset();
-    if(!bUseCropoutMap || TownLayoutVersion<2) return;
+    // Organic v4 keeps the existing authored landscape scatter. The older
+    // primitive botanical prototypes use a different visual language and
+    // should not be mixed into the new modular houses' presentation.
+    if(!bUseCropoutMap || TownLayoutVersion<2 || IsOrganicVillage()) return;
     // Wild planting belongs to the initial terrain. Paid palace planting is
     // installed separately as completed royal construction modules.
     FRandomStream Random(9017); const auto Species=HearthBotanicalCatalog::Species();
@@ -93,12 +96,13 @@ void AHearthVillage::RefreshBotanicalLandscape()
     for(int32 Attempt=0;Attempt<240 && Planted<36;++Attempt)
     {
         const FString Kind=Species[Planted%Species.Num()]; const float Radius=HearthBotanicalCatalog::Radius(Kind);
-        const FVector Position(Random.FRandRange(-4400,1100),Random.FRandRange(-4000,4200),8);
+        FVector Position(Random.FRandRange(-4400,1100),Random.FRandRange(-4000,4200),0);
+        Position.Z=IsOrganicVillage()?GroundHeightAt(Position)+5.2f:8.f;
         if(!IsLand(Position) || !IsClearPoint(Position) || !IsLand(Position+FVector(Radius,Radius,0)) || !IsLand(Position-FVector(Radius,Radius,0))) continue;
         bool Clear=true;
         for(const auto& L:City.Landmarks) if(FVector::Dist2D(Position,L.Position)<L.Radius+Radius+100) Clear=false;
         for(const auto& Road:City.Roads) if(FVector::Dist2D(Position,FMath::ClosestPointOnSegment(Position,Road.A,Road.B))<Radius+Road.Width*.5f+100) Clear=false;
-        for(int32 I=0;I<HousingPlotCount();++I) if(FVector::Dist2D(Position,PlotPositions[I])<Radius+360 || FVector::Dist2D(Position,HomeApproach(I))<Radius+160) Clear=false;
+        for(int32 I=0;I<HousingPlotCount();++I) if(FVector::Dist2D(Position,PlotPositions[I])<Radius+(IsOrganicVillage()?850:360) || FVector::Dist2D(Position,HomeApproach(I))<Radius+160) Clear=false;
         for(const auto& S:ProductionSites) if(FVector::Dist2D(Position,S.Position)<Radius+S.Radius+100 || FVector::Dist2D(Position,S.Approach)<Radius+160) Clear=false;
         if(!Clear) continue;
         for(const auto& Part:HearthBotanicalCatalog::Build(Kind,Attempt))

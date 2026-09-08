@@ -6,6 +6,8 @@
 bool AHearthVillage::RefreshStarterArchitecture(int32 Plot,int32 Stage)
 {
     if(Plot<0 || Plot>=HousingPlotCount()) return false;
+    if(IsOrganicVillage() && Residents.IsValidIndex(PlotOwners[Plot]) && !Residents[PlotOwners[Plot]].bKing)
+    { RefreshOrganicHome(PlotOwners[Plot]); return true; }
     for(auto& Mesh:StarterArchitectureMeshes[Plot]) if(Mesh.IsValid()) Mesh->DestroyComponent();
     StarterArchitectureMeshes[Plot].Reset();
     if(TownLayoutVersion<2 || Stage<3 || !Residents.IsValidIndex(PlotOwners[Plot])) return false;

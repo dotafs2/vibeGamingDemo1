@@ -2,6 +2,7 @@
 #include "HearthVillage.h"
 #include "HearthStructurePlan.h"
 #include "HearthTavernRuntime.h"
+#include "HearthOrganicConstruction.h"
 
 // Logical world image. UObject pointers and wall-clock epochs never enter the file.
 struct FHearthSavedResident
@@ -21,7 +22,7 @@ struct FHearthWorldImage
         for(FVector& Entry:PlotEntrances) Entry=FVector::ZeroVector;
     }
     FString Id, Run, Event;
-    int32 Schema=10, PlotCount=3;
+    int32 Schema=11, PlotCount=3, PopulationCount=3;
     int64 Revision=0;
     float Elapsed=0, Speed=1;
     double Remainder=0;
@@ -48,11 +49,15 @@ struct FHearthWorldImage
     TArray<FHearthTaxAssessment> TaxAssessments;
     FHearthPublicProject PublicProject;
     TArray<FHearthWagePayable> WagePayables;
+    TArray<FHearthServiceDutyRecord> ServiceDuties;
+    TArray<FHearthFreightOrder> FreightOrders;
     TArray<FHearthTradeOffer> TradeOffers;
     TArray<FHearthTileOrder> TileOrders;
     TArray<FHearthStructurePlan> StructurePlans;
     TArray<FHearthWorldRequest> WorldRequests;
     FHearthTavernRuntimeState TavernRuntime;
+    TMap<FString,FOrganicConstructionHomeState> OrganicHomes;
+    int32 OrganicWorldSeed=7919;
 };
 namespace HearthWorld
 {

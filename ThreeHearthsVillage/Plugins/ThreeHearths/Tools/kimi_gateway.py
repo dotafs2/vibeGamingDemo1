@@ -5,6 +5,7 @@ After offline tests and explicit local enabled=true: python kimi_gateway.py serv
 Inspect without contacting Kimi: python kimi_gateway.py status
 """
 import argparse
+from datetime import datetime, timezone
 import hmac
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -14,6 +15,8 @@ import secrets
 import sys
 import urllib.error
 import urllib.request
+import ctypes
+from ctypes import wintypes
 
 from kimi_budget import BudgetDenied, BudgetError, InvalidRequest, Ledger, LedgerCorrupt, NIGHT_POLICY, CITY_VALIDATION_POLICY, encoded
 
@@ -77,6 +80,12 @@ class Gateway:
         if not reservation['send']:
             response=reservation['response']
         else:
+            # Recheck after the durable reservation.  A night lock may expire
+            # between reserve() and the upstream call; retain the reservation
+            # as uncertain and halt so no paid request crosses the deadline.
+            if self.ledger.deadline_reached():
+                self.ledger.uncertain(request_id,'Night deadline reached before upstream call',halt=True)
+                raise BudgetDenied('Authorized usage window has ended')
             try:
                 response=self.provider.complete(reservation['body'])
                 self.ledger.settle(request_id,response)
@@ -148,13 +157,63 @@ def write_private_json(path,value):
         os.fsync(file.fileno())
     os.replace(temporary,path)
 
+def parse_deadline(value):
+    if value is None: return 0
+    if value.isdigit(): result=int(value)
+    else:
+        text=value[:-1]+'+00:00' if value.endswith('Z') else value
+        try:
+            parsed=datetime.fromisoformat(text)
+            if parsed.tzinfo is None: raise ValueError
+            result=int(parsed.astimezone(timezone.utc).timestamp())
+        except ValueError: raise BudgetDenied('Deadline must be UTC epoch seconds or ISO-8601') from None
+    if result<=0: raise BudgetDenied('Deadline must be a positive UTC timestamp')
+    return result
+
+def _windows_process_active(pid):
+    kernel32=ctypes.WinDLL('kernel32',use_last_error=True)
+    kernel32.OpenProcess.argtypes=[wintypes.DWORD,wintypes.BOOL,wintypes.DWORD]
+    kernel32.OpenProcess.restype=wintypes.HANDLE
+    kernel32.GetExitCodeProcess.argtypes=[wintypes.HANDLE,ctypes.POINTER(wintypes.DWORD)]
+    kernel32.GetExitCodeProcess.restype=wintypes.BOOL
+    kernel32.CloseHandle.argtypes=[wintypes.HANDLE]
+    kernel32.CloseHandle.restype=wintypes.BOOL
+    handle=kernel32.OpenProcess(0x1000,False,pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+    if not handle:
+        # Access denied is conservatively treated as active.
+        return ctypes.get_last_error()==5
+    code=wintypes.DWORD()
+    try:
+        if not kernel32.GetExitCodeProcess(handle,ctypes.byref(code)): return True
+        return code.value==259  # STILL_ACTIVE
+    finally: kernel32.CloseHandle(handle)
+
+def active_gateway_pid(path):
+    """Return a live prior gateway PID, without exposing endpoint credentials."""
+    if not path.exists(): return None
+    try: data=json.loads(path.read_text(encoding='utf-8')); pid=data.get('pid')
+    except (OSError,ValueError,TypeError):
+        raise BudgetDenied('Existing gateway endpoint is unreadable; refusing to bind') from None
+    if type(pid) is not int or pid<=0: raise BudgetDenied('Existing gateway endpoint is invalid')
+    if pid==os.getpid(): return pid
+    if os.name=='nt': return pid if _windows_process_active(pid) else None
+    try: os.kill(pid,0)
+    except ProcessLookupError: return None
+    except PermissionError: return pid
+    except (OSError,SystemError): return None
+    return pid
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=('init','serve','status'))
     parser.add_argument('--profile',choices=('overnight','city-validation'),default='overnight',help='city-validation requires a separately authorized CNY 100 grant; never replaces the old cumulative ledger')
+    parser.add_argument('--deadline-utc',help='runtime-only UTC epoch or ISO-8601 deadline; does not alter the ledger policy fingerprint')
+    parser.add_argument('--nightlock',action='store_true',help='require an explicit runtime deadline before serving')
     args=parser.parse_args()
+    deadline=parse_deadline(args.deadline_utc)
+    if args.nightlock and not deadline: raise BudgetDenied('--nightlock requires --deadline-utc')
     supplemental=args.profile=='city-validation'
-    ledger=Ledger(BUDGET_DIR/'kimi-city-validation-2026-09-07.sqlite3',CITY_VALIDATION_POLICY) if supplemental else Ledger(LEDGER_PATH)
+    ledger=Ledger(BUDGET_DIR/'kimi-city-validation-2026-09-07.sqlite3',CITY_VALIDATION_POLICY,runtime_deadline_utc=deadline) if supplemental else Ledger(LEDGER_PATH,runtime_deadline_utc=deadline)
     if args.command=='init':
         print(encoded(ledger.initialize()))
         return
@@ -164,6 +223,9 @@ def main():
     # Check existing budget first: server startup cannot initialize or reset it.
     status=ledger.status()
     if status['halted']: raise BudgetDenied('Budget is halted')
+    old_pid=active_gateway_pid(ENDPOINT_PATH)
+    if old_pid and old_pid!=os.getpid(): raise BudgetDenied('An existing gateway is active; refusing a second paid gateway')
+    if ledger.deadline_reached(): raise BudgetDenied('Authorized usage window has ended')
     config=json.loads(CONFIG_PATH.read_text(encoding='utf-8-sig'))
     if config.get('enabled') is not True: raise BudgetDenied('Paid provider remains disabled in local config')
     provider=KimiProvider(config)

@@ -360,6 +360,289 @@ namespace HearthBuildingAppearance_Impl
         OutCore = FVector2D(CoreMaxX - CoreMinX, CoreMaxY - CoreMinY);
         OutOccupied = FVector2D(MaxX - MinX, MaxY - MinY);
     }
+
+    // Version 4 uses the same two metre kit pieces as the legacy builder, but
+    // composes several independent volumes.  A volume's local +X is its four
+    // metre gable and local +Y runs from the entrance toward the rear.  Keeping
+    // all placement in this local frame makes a 90 degree wing a real rotated
+    // building rather than a stretched footprint.
+    struct FComposedVolume
+    {
+        FVector2D Center = FVector2D::ZeroVector;
+        float Depth = 400.f;
+        int32 Floors = 1;
+        float Yaw = 0.f;
+    };
+
+    struct FComposedLayout
+    {
+        TArray<FComposedVolume> Volumes;
+        FString ShapeId;
+        bool bHasCourtyard = false;
+        bool bFrontPorch = false;
+    };
+
+    FVector2D RotateLocal2D(const FVector2D& Local, float Yaw)
+    {
+        const float Radians = FMath::DegreesToRadians(Yaw);
+        const float C = FMath::Cos(Radians);
+        const float S = FMath::Sin(Radians);
+        return FVector2D(Local.X * C - Local.Y * S, Local.X * S + Local.Y * C);
+    }
+
+    FVector ComposedOffset(const FComposedVolume& Volume, const FVector& Local)
+    {
+        const FVector2D Rotated = RotateLocal2D(FVector2D(Local.X, Local.Y), Volume.Yaw);
+        return FVector(Volume.Center.X + Rotated.X, Volume.Center.Y + Rotated.Y, Local.Z);
+    }
+
+    void AddComposedPart(FHearthBuildingAppearance& Out, const FString& AssetId, const TCHAR* Role,
+        const FComposedVolume& Volume, const FVector& LocalOffset, float LocalYaw = 0.f)
+    {
+        FHearthBuildingAppearancePart Part;
+        Part.AssetId = AssetId;
+        Part.AssetPath = NativePath(AssetId);
+        Part.Role = Role;
+        Part.Offset = ComposedOffset(Volume, LocalOffset);
+        Part.Yaw = Volume.Yaw + LocalYaw;
+        Part.Scale = FVector::OneVector;
+        Out.Parts.Add(MoveTemp(Part));
+    }
+
+    FComposedLayout MakeComposedLayout(int32 LayoutId, uint32 Seed)
+    {
+        FComposedLayout Layout;
+        const int32 SeedVariant = static_cast<int32>((Seed ^ (Seed >> 16)) % 3u);
+        const int32 SecondaryVariant = static_cast<int32>(((Seed >> 8) ^ Seed) % 3u);
+        const float Drift = static_cast<float>(SeedVariant - 1) * 20.f;
+        const float SideDrift = static_cast<float>(SecondaryVariant - 1) * 15.f;
+        auto Add = [&Layout](float X, float Y, float Depth, int32 Floors, float Yaw)
+        {
+            FComposedVolume Volume;
+            Volume.Center = FVector2D(X, Y);
+            Volume.Depth = Depth;
+            Volume.Floors = Floors;
+            Volume.Yaw = Yaw;
+            Layout.Volumes.Add(Volume);
+        };
+
+        switch (LayoutId)
+        {
+        case 0: // compact cluster: staggered central house and two low annexes.
+            Layout.ShapeId = TEXT("compact_cluster");
+            Add(0.f + Drift, 0.f, 600.f, 2, 0.f);
+            Add(-390.f + SideDrift, -70.f, 400.f, 1, 90.f);
+            Add(380.f - SideDrift, 180.f, 400.f, 1, 0.f);
+            Layout.bFrontPorch = true;
+            break;
+        case 1: // L court: a tall spine and a lower rotated wing leave a real court.
+            Layout.ShapeId = TEXT("L_court");
+            Add(0.f + Drift, 0.f, 800.f, 2, 0.f);
+            Add(390.f + SideDrift, 210.f, 600.f, 1, 90.f);
+            Layout.bHasCourtyard = true;
+            Layout.bFrontPorch = true;
+            break;
+        case 2: // stepped wings: three heights and two opposing rotated wings.
+            Layout.ShapeId = TEXT("stepped_wings");
+            Add(0.f + Drift, 0.f, 600.f, 3, 0.f);
+            Add(-390.f + SideDrift, -130.f, 400.f, 2, 90.f);
+            Add(390.f - SideDrift, 150.f, 600.f, 1, 90.f);
+            Layout.bHasCourtyard = true;
+            break;
+        case 3: // U court: back hall plus two rotated wings.
+            Layout.ShapeId = TEXT("U_court");
+            Add(0.f + Drift, 320.f, 400.f, 2, 0.f);
+            Add(-300.f + SideDrift, 0.f, 600.f, 2, 90.f);
+            Add(300.f - SideDrift, 0.f, 600.f, 1, 90.f);
+            Layout.bHasCourtyard = true;
+            Layout.bFrontPorch = true;
+            break;
+        case 4: // offset workshop: house, rotated shop/work bay, and an outdoor threshold.
+            Layout.ShapeId = TEXT("offset_workshop");
+            Add(-90.f + Drift, 0.f, 800.f, 2, 0.f);
+            Add(350.f + SideDrift, 210.f, 400.f, 1, 90.f);
+            Layout.bHasCourtyard = true;
+            Layout.bFrontPorch = true;
+            break;
+        case 5: // tower annex: a high central stair core with two visibly low pieces.
+            Layout.ShapeId = TEXT("tower_annex");
+            Add(0.f + Drift, 0.f, 400.f, 3, 0.f);
+            Add(350.f + SideDrift, 230.f, 400.f, 1, 90.f);
+            Add(-350.f - SideDrift, -200.f, 400.f, 1, 0.f);
+            Layout.bHasCourtyard = true;
+            break;
+        default:
+            Layout.ShapeId.Reset();
+            break;
+        }
+        return Layout;
+    }
+
+    void AddComposedFoundationAndFloors(FHearthBuildingAppearance& Out, const FComposedVolume& Volume)
+    {
+        const int32 YBayCount = BayCount(Volume.Depth);
+        const float FrontY = -Volume.Depth * .5f;
+        for (int32 Floor = 0; Floor < Volume.Floors; ++Floor)
+        {
+            const float Z = Floor * Out.FloorHeightCm;
+            for (int32 XBay = 0; XBay < 2; ++XBay)
+            {
+                const float X = XBay == 0 ? -100.f : 100.f;
+                for (int32 YBay = 0; YBay < YBayCount; ++YBay)
+                {
+                    const float Y = FrontY + (YBay + .5f) * HearthAppearanceGridCm;
+                    if (Floor == 0)
+                    {
+                        AddComposedPart(Out, TEXT("foundation_stone_2m"), TEXT("foundation"), Volume, FVector(X, Y, 0.f));
+                    }
+                    AddComposedPart(Out, TEXT("floor_timber_2m"), TEXT("floor"), Volume, FVector(X, Y, Z));
+                }
+            }
+        }
+    }
+
+    void AddComposedFrame(FHearthBuildingAppearance& Out, const FComposedVolume& Volume)
+    {
+        const int32 YBayCount = BayCount(Volume.Depth);
+        const float FrontY = -Volume.Depth * .5f;
+        const float BackY = Volume.Depth * .5f;
+        for (int32 Floor = 0; Floor < Volume.Floors; ++Floor)
+        {
+            const float BaseZ = Floor * Out.FloorHeightCm;
+            for (int32 YVertex = 0; YVertex <= YBayCount; ++YVertex)
+            {
+                const float Y = FrontY + YVertex * HearthAppearanceGridCm;
+                AddComposedPart(Out, TEXT("post_timber_2_4m"), TEXT("post"), Volume, FVector(-200.f, Y, BaseZ));
+                AddComposedPart(Out, TEXT("post_timber_2_4m"), TEXT("post"), Volume, FVector(200.f, Y, BaseZ));
+            }
+            const float BeamHeights[] = {230.f, 250.f, 270.f};
+            for (const float BeamHeight : BeamHeights)
+            {
+                const float Z = BaseZ + BeamHeight;
+                for (int32 YBay = 0; YBay < YBayCount; ++YBay)
+                {
+                    const float Y = FrontY + (YBay + .5f) * HearthAppearanceGridCm;
+                    AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_side"), Volume, FVector(-200.f, Y, Z), 90.f);
+                    AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_side"), Volume, FVector(200.f, Y, Z), -90.f);
+                }
+                AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_front"), Volume, FVector(-100.f, FrontY, Z));
+                AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_front"), Volume, FVector(100.f, FrontY, Z));
+                AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_back"), Volume, FVector(-100.f, BackY, Z), 180.f);
+                AddComposedPart(Out, TEXT("beam_timber_2m"), TEXT("beam_back"), Volume, FVector(100.f, BackY, Z), 180.f);
+            }
+        }
+    }
+
+    void AddComposedWalls(FHearthBuildingAppearance& Out, const FString& WallMaterial,
+        const FComposedVolume& Volume, bool bEntranceVolume)
+    {
+        const FString Wall = WallId(WallMaterial);
+        const FString Window = WindowId(WallMaterial);
+        const FString Door = DoorId(WallMaterial);
+        const int32 YBayCount = BayCount(Volume.Depth);
+        const float FrontY = -Volume.Depth * .5f;
+        const float BackY = Volume.Depth * .5f;
+        for (int32 Floor = 0; Floor < Volume.Floors; ++Floor)
+        {
+            const float Z = Floor * Out.FloorHeightCm;
+            for (int32 XBay = 0; XBay < 2; ++XBay)
+            {
+                const float X = XBay == 0 ? -100.f : 100.f;
+                const bool bFrontDoor = bEntranceVolume && Floor == 0 && XBay == 0;
+                AddComposedPart(Out, bFrontDoor ? Door : Window,
+                    bFrontDoor ? TEXT("front_door") : TEXT("front_window"), Volume, FVector(X, FrontY, Z));
+                AddComposedPart(Out, Window, TEXT("rear_window"), Volume, FVector(X, BackY, Z), 180.f);
+            }
+            for (int32 YBay = 0; YBay < YBayCount; ++YBay)
+            {
+                const float Y = FrontY + (YBay + .5f) * HearthAppearanceGridCm;
+                AddComposedPart(Out, Window, TEXT("side_window"), Volume, FVector(-200.f, Y, Z), -90.f);
+                AddComposedPart(Out, YBay % 2 == 0 ? Window : Wall,
+                    YBay % 2 == 0 ? TEXT("side_window") : TEXT("side_wall"), Volume, FVector(200.f, Y, Z), 90.f);
+            }
+        }
+    }
+
+    void AddComposedRoof(FHearthBuildingAppearance& Out, const FString& WallMaterial, const FString& RoofMaterial,
+        const FComposedVolume& Volume)
+    {
+        const FString Gable = GableId(WallMaterial);
+        const FString Roof = RoofId(RoofMaterial);
+        const FString Ridge = RidgeId(RoofMaterial);
+        const int32 YBayCount = BayCount(Volume.Depth);
+        const float FrontY = -Volume.Depth * .5f;
+        const float RoofZ = Volume.Floors * Out.FloorHeightCm;
+        AddComposedPart(Out, Gable, TEXT("front_gable"), Volume, FVector(0.f, FrontY, RoofZ));
+        AddComposedPart(Out, Gable, TEXT("rear_gable"), Volume, FVector(0.f, -FrontY, RoofZ), 180.f);
+        for (int32 YBay = 0; YBay < YBayCount; ++YBay)
+        {
+            const float Y = FrontY + (YBay + .5f) * HearthAppearanceGridCm;
+            AddComposedPart(Out, Roof, TEXT("roof_slope_front"), Volume, FVector(0.f, Y, RoofZ), 180.f);
+            AddComposedPart(Out, Roof, TEXT("roof_slope_back"), Volume, FVector(0.f, Y, RoofZ));
+            AddComposedPart(Out, Ridge, TEXT("roof_ridge"), Volume, FVector(0.f, Y, RoofZ));
+        }
+    }
+
+    void AddComposedPorch(FHearthBuildingAppearance& Out, const FString& RoofMaterial, const FComposedVolume& Volume)
+    {
+        const FString Canopy = CanopyId(RoofMaterial);
+        const float FrontY = -Volume.Depth * .5f;
+        for (int32 XBay = 0; XBay < 2; ++XBay)
+        {
+            const float X = XBay == 0 ? -100.f : 100.f;
+            AddComposedPart(Out, Canopy, TEXT("front_canopy"), Volume, FVector(X, FrontY - 62.5f, 180.f));
+        }
+        AddComposedPart(Out, TEXT("porch_post_timber"), TEXT("porch_post"), Volume, FVector(-200.f, FrontY - 125.f, 0.f));
+        AddComposedPart(Out, TEXT("porch_post_timber"), TEXT("porch_post"), Volume, FVector(200.f, FrontY - 125.f, 0.f));
+        AddComposedPart(Out, TEXT("porch_steps_stone_2m"), TEXT("porch_steps"), Volume, FVector(-100.f, FrontY - 45.f, 0.f));
+    }
+
+    void ComputeComposedBounds(const FComposedLayout& Layout, FVector2D& OutCoreMin, FVector2D& OutCoreMax,
+        FVector2D& OutMin, FVector2D& OutMax)
+    {
+        OutCoreMin = FVector2D(FLT_MAX, FLT_MAX);
+        OutCoreMax = FVector2D(-FLT_MAX, -FLT_MAX);
+        OutMin = FVector2D(FLT_MAX, FLT_MAX);
+        OutMax = FVector2D(-FLT_MAX, -FLT_MAX);
+        for (const FComposedVolume& Volume : Layout.Volumes)
+        {
+            const float CoreHalfWidth = 200.f;
+            const float CoreHalfDepth = Volume.Depth * .5f;
+            const float BoundHalfWidth = FMath::Max(HearthAppearanceRoofHalfSpanCm, HearthAppearanceGableHalfSpanCm);
+            const float BoundHalfDepth = Volume.Depth * .5f;
+            const FVector2D CoreCorners[] = {
+                FVector2D(-CoreHalfWidth, -CoreHalfDepth), FVector2D(CoreHalfWidth, -CoreHalfDepth),
+                FVector2D(-CoreHalfWidth, CoreHalfDepth), FVector2D(CoreHalfWidth, CoreHalfDepth) };
+            const FVector2D BoundCorners[] = {
+                FVector2D(-BoundHalfWidth, -BoundHalfDepth), FVector2D(BoundHalfWidth, -BoundHalfDepth),
+                FVector2D(-BoundHalfWidth, BoundHalfDepth), FVector2D(BoundHalfWidth, BoundHalfDepth) };
+            for (const FVector2D& Corner : CoreCorners)
+            {
+                const FVector2D P = Volume.Center + RotateLocal2D(Corner, Volume.Yaw);
+                OutCoreMin.X = FMath::Min(OutCoreMin.X, P.X); OutCoreMin.Y = FMath::Min(OutCoreMin.Y, P.Y);
+                OutCoreMax.X = FMath::Max(OutCoreMax.X, P.X); OutCoreMax.Y = FMath::Max(OutCoreMax.Y, P.Y);
+            }
+            for (const FVector2D& Corner : BoundCorners)
+            {
+                const FVector2D P = Volume.Center + RotateLocal2D(Corner, Volume.Yaw);
+                OutMin.X = FMath::Min(OutMin.X, P.X); OutMin.Y = FMath::Min(OutMin.Y, P.Y);
+                OutMax.X = FMath::Max(OutMax.X, P.X); OutMax.Y = FMath::Max(OutMax.Y, P.Y);
+            }
+        }
+        if (Layout.bFrontPorch && Layout.Volumes.Num() > 0)
+        {
+            const FComposedVolume& Entry = Layout.Volumes[0];
+            const FVector2D PorchCorners[] = {
+                FVector2D(-200.f, -Entry.Depth * .5f - 125.f),
+                FVector2D(200.f, -Entry.Depth * .5f - 125.f) };
+            for (const FVector2D& Corner : PorchCorners)
+            {
+                const FVector2D P = Entry.Center + RotateLocal2D(Corner, Entry.Yaw);
+                OutMin.X = FMath::Min(OutMin.X, P.X); OutMin.Y = FMath::Min(OutMin.Y, P.Y);
+                OutMax.X = FMath::Max(OutMax.X, P.X); OutMax.Y = FMath::Max(OutMax.Y, P.Y);
+            }
+        }
+    }
 }
 
 namespace HearthBuildingAppearance
@@ -397,6 +680,65 @@ namespace HearthBuildingAppearance
         return Validate(Out, nullptr);
     }
 
+    bool BuildComposed(const FString& Archetype, const FString& WallMaterial, const FString& RoofMaterial,
+        uint32 Seed, int32 LayoutId, FHearthBuildingAppearance& Out)
+    {
+        Out = FHearthBuildingAppearance();
+        const HearthBuildingAppearance_Impl::FComposedLayout Layout =
+            HearthBuildingAppearance_Impl::MakeComposedLayout(LayoutId, Seed);
+        if (Layout.ShapeId.IsEmpty() || Layout.Volumes.IsEmpty()) return false;
+
+        Out.Archetype = Archetype;
+        Out.bTown3 = true;
+        Out.bComposed = true;
+        Out.FloorHeightCm = 280.f;
+        Out.ShapeId = Layout.ShapeId;
+        Out.LayoutVariant = FString::Printf(TEXT("v4_%s_seed_%u"), *Layout.ShapeId, Seed);
+        Out.bHasCourtyard = Layout.bHasCourtyard;
+        Out.MassCount = Layout.Volumes.Num();
+        Out.Floors = 1;
+        Out.StairCount = 0;
+        Out.RoofSpanCount = 0;
+
+        FVector2D CoreMin, CoreMax, OccupiedMin, OccupiedMax;
+        HearthBuildingAppearance_Impl::ComputeComposedBounds(Layout, CoreMin, CoreMax, OccupiedMin, OccupiedMax);
+        Out.CoreFootprintCm = CoreMax - CoreMin;
+        Out.OccupiedFootprintCm = OccupiedMax - OccupiedMin;
+        Out.ShapeBoundsMinCm = OccupiedMin;
+        Out.ShapeBoundsMaxCm = OccupiedMax;
+
+        const HearthBuildingAppearance_Impl::FComposedVolume& Entrance = Layout.Volumes[0];
+        const FVector EntranceWorld = HearthBuildingAppearance_Impl::ComposedOffset(
+            Entrance, FVector(-100.f, -Entrance.Depth * .5f, 0.f));
+        Out.EntranceOffsetCm = FVector2D(EntranceWorld.X, EntranceWorld.Y);
+        Out.EntranceYaw = Entrance.Yaw;
+
+        for (int32 VolumeIndex = 0; VolumeIndex < Layout.Volumes.Num(); ++VolumeIndex)
+        {
+            const HearthBuildingAppearance_Impl::FComposedVolume& Volume = Layout.Volumes[VolumeIndex];
+            Out.Floors = FMath::Max(Out.Floors, Volume.Floors);
+            Out.HeightTiers.Add(Volume.Floors);
+            Out.RoofSpanCount += HearthBuildingAppearance_Impl::BayCount(Volume.Depth);
+            Out.StairCount += FMath::Max(0, Volume.Floors - 1);
+
+            HearthBuildingAppearance_Impl::AddComposedFoundationAndFloors(Out, Volume);
+            HearthBuildingAppearance_Impl::AddComposedFrame(Out, Volume);
+            HearthBuildingAppearance_Impl::AddComposedWalls(Out, WallMaterial, Volume, VolumeIndex == 0);
+            HearthBuildingAppearance_Impl::AddComposedRoof(Out, WallMaterial, RoofMaterial, Volume);
+            if (VolumeIndex == 0 && Layout.bFrontPorch)
+            {
+                HearthBuildingAppearance_Impl::AddComposedPorch(Out, RoofMaterial, Volume);
+            }
+            for (int32 Floor = 0; Floor < Volume.Floors - 1; ++Floor)
+            {
+                HearthBuildingAppearance_Impl::AddComposedPart(Out, TEXT("stairs_switchback_2x4m"), TEXT("stairs"),
+                    Volume, FVector(-100.f, 0.f, Floor * Out.FloorHeightCm));
+            }
+        }
+        Out.RoofRidgeHeightCm = Out.Floors * Out.FloorHeightCm + 120.f;
+        return Validate(Out, nullptr);
+    }
+
     bool Validate(const FHearthBuildingAppearance& Appearance, FString* OutError)
     {
         auto Fail = [&](const FString& Error)
@@ -409,9 +751,23 @@ namespace HearthBuildingAppearance
         if (!FMath::IsNearlyEqual(Appearance.FloorHeightCm, 280.f, .01f)) return Fail(TEXT("invalid_floor_height"));
         if (Appearance.Floors < 1 || Appearance.CoreFootprintCm.X < 400.f || Appearance.CoreFootprintCm.Y < 200.f) return Fail(TEXT("invalid_core_footprint"));
         if (Appearance.Parts.IsEmpty() || Appearance.RoofSpanCount < 1) return Fail(TEXT("empty_appearance"));
-        if (Appearance.StairCount != FMath::Max(0, Appearance.Floors - 1)) return Fail(TEXT("stair_transition_count_mismatch"));
-        if (Appearance.bTown3 && (Appearance.OccupiedFootprintCm.X > 950.f || Appearance.OccupiedFootprintCm.Y > 1125.f)) return Fail(TEXT("town3_footprint_exceeds_contract"));
-        if (!Appearance.bTown3 && (Appearance.OccupiedFootprintCm.X > 500.f || Appearance.OccupiedFootprintCm.Y > 500.f)) return Fail(TEXT("town2_footprint_exceeds_contract"));
+        int32 ExpectedStairs = FMath::Max(0, Appearance.Floors - 1);
+        if (Appearance.bComposed)
+        {
+            if (Appearance.MassCount < 1 || Appearance.HeightTiers.Num() != Appearance.MassCount || Appearance.ShapeId.IsEmpty())
+                return Fail(TEXT("invalid_composed_metadata"));
+            ExpectedStairs = 0;
+            for (const int32 Tier : Appearance.HeightTiers) ExpectedStairs += FMath::Max(0, Tier - 1);
+            if (Appearance.OccupiedFootprintCm.X > 1400.f || Appearance.OccupiedFootprintCm.Y > 1400.f)
+                return Fail(TEXT("composed_footprint_exceeds_contract"));
+            const FVector2D ShapeSize = Appearance.ShapeBoundsMaxCm - Appearance.ShapeBoundsMinCm;
+            if (!ShapeSize.Equals(Appearance.OccupiedFootprintCm, .01f)) return Fail(TEXT("composed_bounds_mismatch"));
+        }
+        else if (Appearance.bTown3 && (Appearance.OccupiedFootprintCm.X > 950.f || Appearance.OccupiedFootprintCm.Y > 1125.f))
+            return Fail(TEXT("town3_footprint_exceeds_contract"));
+        else if (!Appearance.bTown3 && (Appearance.OccupiedFootprintCm.X > 500.f || Appearance.OccupiedFootprintCm.Y > 500.f))
+            return Fail(TEXT("town2_footprint_exceeds_contract"));
+        if (Appearance.StairCount != ExpectedStairs) return Fail(TEXT("stair_transition_count_mismatch"));
         for (const FHearthBuildingAppearancePart& Part : Appearance.Parts)
         {
             if (Part.AssetId.IsEmpty() || !Part.AssetPath.StartsWith(TEXT("/Game/ThreeHearths/Generated/VillageKit/"))) return Fail(TEXT("non_native_asset"));

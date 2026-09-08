@@ -38,6 +38,39 @@ bool FHearthBuildingAppearanceTest::RunTest(const FString&)
     TestTrue(TEXT("Seeded workshop variant A builds"), HearthBuildingAppearance::Build(TEXT("courtyard_workshop"), TEXT("timber"), TEXT("slateblue"), 1u, true, VariantA));
     TestTrue(TEXT("Seeded workshop variant B builds"), HearthBuildingAppearance::Build(TEXT("courtyard_workshop"), TEXT("timber"), TEXT("slateblue"), 2u, true, VariantB));
     TestTrue(TEXT("Persistent seed changes layout variant"), VariantA.LayoutVariant != VariantB.LayoutVariant || !VariantA.CoreFootprintCm.Equals(VariantB.CoreFootprintCm));
+
+    const TCHAR* ComposedShapes[] = {
+        TEXT("compact_cluster"), TEXT("L_court"), TEXT("stepped_wings"),
+        TEXT("U_court"), TEXT("offset_workshop"), TEXT("tower_annex") };
+    for (int32 LayoutId = 0; LayoutId < UE_ARRAY_COUNT(ComposedShapes); ++LayoutId)
+    {
+        FHearthBuildingAppearance Composed;
+        TestTrue(FString::Printf(TEXT("Version 4 layout %d builds"), LayoutId),
+            HearthBuildingAppearance::BuildComposed(TEXT("rowhouse"), TEXT("plaster"), TEXT("terracotta"), 177u, LayoutId, Composed));
+        TestEqual(FString::Printf(TEXT("Version 4 layout %d shape id"), LayoutId), Composed.ShapeId, FString(ComposedShapes[LayoutId]));
+        TestEqual(FString::Printf(TEXT("Version 4 layout %d reports one tier per mass"), LayoutId), Composed.HeightTiers.Num(), Composed.MassCount);
+        TestTrue(FString::Printf(TEXT("Version 4 layout %d stays within 14m siting bound"), LayoutId),
+            Composed.OccupiedFootprintCm.X <= 1400.f && Composed.OccupiedFootprintCm.Y <= 1400.f);
+        TestTrue(FString::Printf(TEXT("Version 4 layout %d has supported entrance"), LayoutId),
+            Composed.Parts.ContainsByPredicate([&Composed](const auto& Part)
+            {
+                return Part.Role == TEXT("front_door") && FVector2D(Part.Offset.X, Part.Offset.Y).Equals(Composed.EntranceOffsetCm, .01f);
+            }));
+        TestTrue(FString::Printf(TEXT("Version 4 layout %d contains an authored rotated wing"), LayoutId),
+            Composed.Parts.ContainsByPredicate([](const auto& Part) { return FMath::IsNearlyEqual(FMath::Abs(Part.Yaw), 90.f, .01f); }));
+    }
+
+    FHearthBuildingAppearance SeedA, SeedB, SeedARepeat;
+    TestTrue(TEXT("Seeded composed layout A builds"), HearthBuildingAppearance::BuildComposed(
+        TEXT("courtyard_workshop"), TEXT("timber"), TEXT("slateblue"), 101u, 2, SeedA));
+    TestTrue(TEXT("Seeded composed layout B builds"), HearthBuildingAppearance::BuildComposed(
+        TEXT("courtyard_workshop"), TEXT("timber"), TEXT("slateblue"), 102u, 2, SeedB));
+    TestTrue(TEXT("Same composed seed is persistent"), HearthBuildingAppearance::BuildComposed(
+        TEXT("courtyard_workshop"), TEXT("timber"), TEXT("slateblue"), 101u, 2, SeedARepeat) &&
+        SeedA.LayoutVariant == SeedARepeat.LayoutVariant && SeedA.Parts.Num() == SeedARepeat.Parts.Num() &&
+        SeedA.Parts[0].Offset.Equals(SeedARepeat.Parts[0].Offset, .01f));
+    TestTrue(TEXT("Different composed seed changes authored placement"),
+        SeedA.LayoutVariant != SeedB.LayoutVariant || !SeedA.Parts[0].Offset.Equals(SeedB.Parts[0].Offset, .01f));
     return true;
 }
 #endif

@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "units": "meters",
+  "front": "-Y",
+  "up": "+Z",
+  "materials": {
+    "oak": "936442",
+    "oak_light": "C59460",
+    "oak_dark": "503B2D",
+    "endgrain": "C9A172",
+    "iron": "495258",
+    "steel": "A2B7BD",
+    "stone": "8D9996",
+    "stone_light": "B8BEAD",
+    "stone_dark": "687775",
+    "blue": "416B86",
+    "blue_light": "648B9D",
+    "gold": "D6AC61",
+    "linen": "E8D6AE",
+    "leather": "604231",
+    "leather_light": "AB7550",
+    "bay": "976249",
+    "bay_light": "B8805C",
+    "bay_dark": "704B3D",
+    "grey": "B9BDB0",
+    "grey_light": "D5D8C9",
+    "grey_dark": "919B95",
+    "mane": "3C3530",
+    "hoof": "44403B",
+    "eye": "252A2D",
+    "skin": "CE9976",
+    "skin_light": "E6B792",
+    "hair": "665041",
+    "hay": "B8A768",
+    "hay_light": "D6BD7B",
+    "water": "728E91",
+    "roof": "627987",
+    "roof_light": "8A9BA0",
+    "moss": "899364",
+    "earth": "757B62",
+    "flame": "E7AB5A",
+    "red": "A76452"
+  },
+  "modules": [
+    {
+      "id": "bench_low",
+      "fbx": "bench_low.fbx",
+      "sha256": "b16a50806e05c68c12d5493b6342ac537259ca44e07861c14497b50370d09be7",
+      "glb": "bench_low.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "bench_low__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "bench_low__structure"
+        }
+      ],
+      "triangles": 2716,
+      "notes": "Two-person porch bench; human seat height 0.505m. Empty seating, not a seated character.",
+      "anchors_m": {
+        "seat_left": [
+          -0.43,
+          0,
+          0.505
+        ],
+        "seat_right": [
+          0.43,
+          0,
+          0.505
+        ]
+      },
+      "bounds_m": {
+        "min": [
+          -0.8629999756813049,
+          -0.2942429482936859,
+          0.014744235202670097
+        ],
+        "max": [
+          0.8600000143051147,
+          0.29424306750297546,
+          0.5189999938011169
+        ]
+      }
+    },
+    {
+      "id": "work_table",
+      "fbx": "work_table.fbx",
+      "sha256": "78cb99e42fbbcd37ba3abed17e4101f512b0e7af1b879dceffcdf1b88b1a7e16",
+      "glb": "work_table.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "work_table__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "work_table__structure"
+        }
+      ],
+      "triangles": 5224,
+      "notes": "Empty freestanding craft table with braced legs. Counter and drying support share this same module.",
+      "anchors_m": {
+        "surface": [
+          0,
+          0,
+          0.93
+        ],
+        "front_work": [
+          0,
+          -0.88,
+          0
+        ]
+      },
+      "bounds_m": {
+        "min": [
+          -0.9649999737739563,
+          -0.4424999952316284,
+          0.022058218717575073
+        ],
+        "max": [
+          0.9679999947547913,
+          0.4424999952316284,
+          0.9440000057220459
+        ]
+      }
+    },
+    {
+      "id": "tool_rack",
+      "fbx": "tool_rack.fbx",
+      "sha256": "ca84ddce3258969d5f2f81c444e957115abae04f5059bcaa710fe1d3a75ee51e",
+      "glb": "tool_rack.glb",
+      "layers": [
+        {
+          "layer": "equipment",
+          "object_name": "tool_rack__equipment"
+        },
+        {
+          "layer": "finish",
+          "object_name": "tool_rack__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "tool_rack__structure"
+        }
+      ],
+      "triangles": 5461,
+      "notes": "Craft equipment board; equipment layer can be omitted. Tools are workshop equipment, never tradeable stock grants.",
+      "anchors_m": {
+        "front_work": [
+          0,
+          -0.65,
+          0
+        ]
+      },
+      "bounds_m": {
+        "min": [
+          -0.675000011920929,
+          -0.3399999737739563,
+          0.004999989178031683
+        ],
+        "max": [
+          0.675000011920929,
+          0.261438250541687,
+          1.6512261629104614
+        ]
+      }
+    },
+    {
+      "id": "linen_canopy",
+      "fbx": "linen_canopy.fbx",
+      "sha256": "43c23fb9aecac2ffcc99603f40c4f20b0e79a3e6f73509c8429c4606f1a1379c",
+      "glb": "linen_canopy.glb",
+      "layers": [
+        {
+          "layer": "cover",
+          "object_name": "linen_canopy__cover"
+        },
+        {
+          "layer": "finish",
+          "object_name": "linen_canopy__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "linen_canopy__structure"
+        }
+      ],
+      "triangles": 3784,
+      "notes": "Standalone 2.42m craft canopy. Duplicate bays at 2.4m intervals; table, bench and stock stay independent.",
+      "anchors_m": {
+        "table": [
+          0,
+          0,
+          0
+        ],
+        "next_bay": [
+          2.4,
+          0,
+          0
+        ],
+        "front_work": [
+          0,
+          -1.35,
+          0
+        ]
+      },
+      "bounds_m": {
+        "min": [
+          -1.225000023841858,
+          -0.925000011920929,
+          0.0
+        ],
+        "max": [
+          1.225000023841858,
+          0.8399999737739563,
+          2.62147855758667
+        ]
+      }
+    },
+    {
+      "id": "clay_jar",
+      "fbx": "clay_jar.fbx",
+      "sha256": "35e673b829bccdaf99dbda38a8cce47632e309e5bcdd3d73033252270d9f836e",
+      "glb": "clay_jar.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "clay_jar__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "clay_jar__structure"
+        }
+      ],
+      "triangles": 3460,
+      "notes": "One empty hollow vessel, not a stack of manufactured pottery. Separate painted rim.",
+      "anchors_m": {
+        "bottom": [
+          0,
+          0,
+          0
+        ]
+      },
+      "bounds_m": {
+        "min": [
+          -0.30950865149497986,
+          -0.22499999403953552,
+          0.0
+        ],
+        "max": [
+          0.30950865149497986,
+          0.22499999403953552,
+          0.422878623008728
+        ]
+      }
+    }
+  ]
+}

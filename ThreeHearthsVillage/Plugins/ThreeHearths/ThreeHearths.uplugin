@@ -7,5 +7,6 @@
   "Category": "Gameplay",
   "CanContainContent": false,
   "EnabledByDefault": true,
+  "Plugins": [{"Name": "ProceduralMeshComponent", "Enabled": true}],
   "Modules": [{"Name": "ThreeHearths", "Type": "Runtime", "LoadingPhase": "Default"}]
 }

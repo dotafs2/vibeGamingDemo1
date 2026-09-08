@@ -5,6 +5,6 @@ public class ThreeHearths : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "InputCore" });
-        PrivateDependencyModuleNames.AddRange(new[] { "Slate", "SlateCore", "Json", "HTTP", "ImageWrapper", "RenderCore", "RHI" });
+        PrivateDependencyModuleNames.AddRange(new[] { "Slate", "SlateCore", "Json", "HTTP", "ImageWrapper", "RenderCore", "RHI", "ProceduralMeshComponent" });
     }
 }

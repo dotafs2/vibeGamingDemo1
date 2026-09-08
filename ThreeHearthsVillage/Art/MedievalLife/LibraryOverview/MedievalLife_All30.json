@@ -1,0 +1,2927 @@
+{
+  "schema_version": 1,
+  "status": "built_by_this_script",
+  "scope": "MedievalLife static library 30 pieces authored tonight",
+  "source_declarations": {
+    "catalog": "catalog.json",
+    "catalog_sha256": "f8e87534cb83a2e6f923f48489bd8318d0c4c036a1ef9f5f5c20203595594e92",
+    "freight_manifest": "FreightKit/manifest.json",
+    "freight_manifest_sha256": "6d5c87959b97641f4b0554c499b4627ac3a543b1e8683b42a916682537f2dfad",
+    "market_manifest": "MarketLifeKit/manifest.json",
+    "market_manifest_sha256": "6df317289ee139c7b93f4ee11bc654c95dfdbf9c1df28b73488bd377c021cf23"
+  },
+  "counts": {
+    "modules": 30,
+    "mesh_layers": 66,
+    "MedievalLife": 21,
+    "FreightKit": 4,
+    "MarketLifeKit": 5
+  },
+  "axis": {
+    "units": "meters",
+    "up": "+Z",
+    "front": "-Y",
+    "fbx_axis_forward": "-Y",
+    "fbx_axis_up": "Z"
+  },
+  "placement": {
+    "grid_columns": 5,
+    "grid_rows": 6,
+    "gap_m": 0.75,
+    "column_widths_m": [
+      2.739999771118164,
+      1.9329999685287476,
+      1.4399999380111694,
+      2.450000047683716,
+      2.8400001525878906
+    ],
+    "row_depths_m": [
+      5.070000052452087,
+      3.257948637008667,
+      1.25,
+      1.9004523754119873,
+      2.2089998722076416,
+      1.7649999856948853
+    ],
+    "scale_policy": "1.0; authored dimensions preserved",
+    "origin_policy": "module local origin preserved; parent empty supplies world placement"
+  },
+  "zeroing": "To use a module at its authored local origin, detach LIB__<module_id> from its parent and set location=(0,0,0), rotation=(0,0,0), scale=(1,1,1). Keep the child layer transforms unchanged.",
+  "outputs": {
+    "blend": "LibraryOverview/MedievalLife_All30.blend",
+    "fbx": "LibraryOverview/MedievalLife_All30.fbx",
+    "glb": "LibraryOverview/MedievalLife_All30.glb"
+  },
+  "modules": [
+    {
+      "id": "MedievalLife/cart_body",
+      "module_id": "cart_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cart_body.glb",
+      "source_sha256": "8b9eb8d2426b2b2139b227fe490662f4e7495508c9d22d704f6a604928471417",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__cart_body__attachments",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4784,
+          "bounds_m": {
+            "min": [
+              -0.9528999924659729,
+              -1.0833187103271484,
+              0.8766812086105347
+            ],
+            "max": [
+              0.9528999924659729,
+              1.0833187103271484,
+              1.48331880569458
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__cart_body__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | iron",
+            "Medieval | leather"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1304,
+          "bounds_m": {
+            "min": [
+              -0.9328999519348145,
+              -3.9000000953674316,
+              0.750545084476471
+            ],
+            "max": [
+              0.9328999519348145,
+              1.1034998893737793,
+              1.559999942779541
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__cart_body__structure",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | oak_dark",
+            "Medieval | iron",
+            "Medieval | oak_light",
+            "Medieval | oak"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 7560,
+          "bounds_m": {
+            "min": [
+              -1.0399998426437378,
+              -3.8816561698913574,
+              0.5149999856948853
+            ],
+            "max": [
+              1.0399998426437378,
+              1.1699999570846558,
+              1.6799999475479126
+            ]
+          }
+        }
+      ],
+      "material_slots": 7,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ]
+      },
+      "world_placement_m": [
+        -5.831500053405762,
+        -5.701200008392334,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        -7.066200256347656,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cart_body"
+    },
+    {
+      "id": "MedievalLife/cart_wheel",
+      "module_id": "cart_wheel",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cart_wheel.glb",
+      "source_sha256": "39ac690376f883db30533a58f554d7e79c91a8b820c440c4f575a0a649a06269",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__cart_wheel__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 6764,
+          "bounds_m": {
+            "min": [
+              -0.1380000114440918,
+              -0.637999951839447,
+              -0.637999951839447
+            ],
+            "max": [
+              0.1380000114440918,
+              0.637999951839447,
+              0.637999951839447
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__cart_wheel__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.001",
+            "Medieval | oak_light.001",
+            "Medieval | oak.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3832,
+          "bounds_m": {
+            "min": [
+              -0.1300000101327896,
+              -0.606999933719635,
+              -0.606999933719635
+            ],
+            "max": [
+              0.1300000101327896,
+              0.606999933719635,
+              0.606999933719635
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.1380000114440918,
+          -0.637999951839447,
+          -0.637999951839447
+        ],
+        "max": [
+          0.1380000114440918,
+          0.637999951839447,
+          0.637999951839447
+        ]
+      },
+      "world_placement_m": [
+        -2.745000123977661,
+        -7.066200256347656,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        -7.066200256347656,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cart_wheel"
+    },
+    {
+      "id": "MedievalLife/cargo_logs",
+      "module_id": "cargo_logs",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cargo_logs.glb",
+      "source_sha256": "3e296d4dcadacd07018550edc981beabb753d7370ee5125b27b10b8d39d8d5fb",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__cargo_logs__attachments",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | endgrain",
+            "Medieval | oak.002",
+            "Medieval | leather.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4666,
+          "bounds_m": {
+            "min": [
+              -0.6043232083320618,
+              -0.8105000257492065,
+              0.03964895009994507
+            ],
+            "max": [
+              0.6044682860374451,
+              0.5435000061988831,
+              0.6965000629425049
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__cargo_logs__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | oak_dark.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1210,
+          "bounds_m": {
+            "min": [
+              -0.559788167476654,
+              -0.7700000405311584,
+              0.012143561616539955
+            ],
+            "max": [
+              0.552100419998169,
+              0.9300000667572021,
+              0.7178564071655273
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.6043232083320618,
+          -0.8105000257492065,
+          0.012143561616539955
+        ],
+        "max": [
+          0.6044682860374451,
+          0.9300000667572021,
+          0.7178564071655273
+        ]
+      },
+      "world_placement_m": [
+        -0.30857276916503906,
+        -7.125950336456299,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        -7.066200256347656,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cargo_logs"
+    },
+    {
+      "id": "MedievalLife/cargo_sacks",
+      "module_id": "cargo_sacks",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/cargo_sacks.glb",
+      "source_sha256": "9148d230531455746e56637854b1b5a3a79c3f1d29592fc8f4a0f390246dfab7",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__cargo_sacks__attachments",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | leather.002",
+            "Medieval | leather_light"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2974,
+          "bounds_m": {
+            "min": [
+              -0.5376768112182617,
+              -0.6138966083526611,
+              0.17999999225139618
+            ],
+            "max": [
+              0.4410000145435333,
+              0.4710000157356262,
+              0.6967000365257263
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__cargo_sacks__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | linen"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1808,
+          "bounds_m": {
+            "min": [
+              -0.6776071786880493,
+              -0.6448274850845337,
+              0.03500000014901161
+            ],
+            "max": [
+              0.6460000276565552,
+              0.7007240653038025,
+              0.7649999856948853
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.6776071786880493,
+          -0.6448274850845337,
+          0.03500000014901161
+        ],
+        "max": [
+          0.6460000276565552,
+          0.7007240653038025,
+          0.7649999856948853
+        ]
+      },
+      "world_placement_m": [
+        2.402303457260132,
+        -7.094148635864258,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        -7.066200256347656,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cargo_sacks"
+    },
+    {
+      "id": "MedievalLife/horse_bay",
+      "module_id": "horse_bay",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/horse_bay.glb",
+      "source_sha256": "9a5372f457807056e38405f7b0516ca936bf53a0b9006b6803224e236d59a23c",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__horse_bay__attachments",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | leather.003",
+            "Medieval | gold"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3646,
+          "bounds_m": {
+            "min": [
+              -0.44669967889785767,
+              -1.7675000429153442,
+              1.1770000457763672
+            ],
+            "max": [
+              0.4466996490955353,
+              0.8000001907348633,
+              2.37314510345459
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__horse_bay__finish",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | bay_dark",
+            "Medieval | eye",
+            "Medieval | hoof",
+            "Medieval | mane"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 9352,
+          "bounds_m": {
+            "min": [
+              -0.40348437428474426,
+              -1.8600000143051147,
+              0.014999999664723873
+            ],
+            "max": [
+              0.40348437428474426,
+              1.3979486227035522,
+              2.640270471572876
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__horse_bay__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | bay",
+            "Medieval | bay_light",
+            "Medieval | mane"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 6952,
+          "bounds_m": {
+            "min": [
+              -0.46929270029067993,
+              -1.7853999137878418,
+              0.10744509845972061
+            ],
+            "max": [
+              0.46929270029067993,
+              1.25,
+              2.700000047683716
+            ]
+          }
+        }
+      ],
+      "material_slots": 9,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ]
+      },
+      "world_placement_m": [
+        5.781499862670898,
+        -6.835174560546875,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        -7.066200256347656,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__horse_bay"
+    },
+    {
+      "id": "MedievalLife/horse_grey",
+      "module_id": "horse_grey",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/horse_grey.glb",
+      "source_sha256": "5673825b3b2a19a7580da5256152973b56aab5acbbba0ec5fdc761bc1786c9d0",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__horse_grey__attachments",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | leather.004",
+            "Medieval | gold.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3646,
+          "bounds_m": {
+            "min": [
+              -0.44669967889785767,
+              -1.7675000429153442,
+              1.1770000457763672
+            ],
+            "max": [
+              0.4466996490955353,
+              0.8000001907348633,
+              2.37314510345459
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__horse_grey__finish",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | grey_dark",
+            "Medieval | eye.001",
+            "Medieval | hoof.001",
+            "Medieval | mane.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 9352,
+          "bounds_m": {
+            "min": [
+              -0.40348437428474426,
+              -1.8600000143051147,
+              0.014999999664723873
+            ],
+            "max": [
+              0.40348437428474426,
+              1.3979486227035522,
+              2.640270471572876
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__horse_grey__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | grey",
+            "Medieval | grey_light",
+            "Medieval | mane.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 6952,
+          "bounds_m": {
+            "min": [
+              -0.46929270029067993,
+              -1.7853999137878418,
+              0.10744509845972061
+            ],
+            "max": [
+              0.46929270029067993,
+              1.25,
+              2.700000047683716
+            ]
+          }
+        }
+      ],
+      "material_slots": 9,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ]
+      },
+      "world_placement_m": [
+        -5.831500053405762,
+        -1.9212002754211426,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        -2.152225971221924,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__horse_grey"
+    },
+    {
+      "id": "MedievalLife/guard_helmet",
+      "module_id": "guard_helmet",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_helmet.glb",
+      "source_sha256": "1804ad00ca5a00f267345768e06a188ce164012625b186b29638d0f9d7d575f6",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__guard_helmet__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | gold.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 432,
+          "bounds_m": {
+            "min": [
+              -0.02050000987946987,
+              -0.19648218154907227,
+              0.09708014130592346
+            ],
+            "max": [
+              0.02050000987946987,
+              0.19648216664791107,
+              0.2679198682308197
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__guard_helmet__structure",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | steel",
+            "Medieval | iron.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1184,
+          "bounds_m": {
+            "min": [
+              -0.3100000023841858,
+              -0.3100000023841858,
+              0.0
+            ],
+            "max": [
+              0.3100000023841858,
+              0.3100000023841858,
+              0.28999999165534973
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.3100000023841858,
+          -0.3100000023841858,
+          0.0
+        ],
+        "max": [
+          0.3100000023841858,
+          0.3100000023841858,
+          0.28999999165534973
+        ]
+      },
+      "world_placement_m": [
+        -2.745000123977661,
+        -2.152225971221924,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        -2.152225971221924,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__guard_helmet"
+    },
+    {
+      "id": "MedievalLife/guard_shield",
+      "module_id": "guard_shield",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_shield.glb",
+      "source_sha256": "d8faf5a9301ef7d4f467f6f95b247b85d60068fd9552b7c03be8b9c42aa1127c",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__guard_shield__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | gold.003"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1512,
+          "bounds_m": {
+            "min": [
+              -0.311149537563324,
+              -0.08300000429153442,
+              -0.12365719676017761
+            ],
+            "max": [
+              0.311149537563324,
+              -0.044499900192022324,
+              0.7315000891685486
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__guard_shield__structure",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | blue",
+            "Medieval | leather.005"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 422,
+          "bounds_m": {
+            "min": [
+              -0.299489825963974,
+              -0.04800000041723251,
+              -0.11454962193965912
+            ],
+            "max": [
+              0.299489825963974,
+              0.11749999970197678,
+              0.7200000286102295
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.311149537563324,
+          -0.08300000429153442,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.311149537563324,
+          0.11749999970197678,
+          0.7315000891685486
+        ]
+      },
+      "world_placement_m": [
+        -0.3085002303123474,
+        -2.16947603225708,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        -2.152225971221924,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__guard_shield"
+    },
+    {
+      "id": "MedievalLife/guard_spear",
+      "module_id": "guard_spear",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/guard_spear.glb",
+      "source_sha256": "f210c3a970ddca881247d0962e23750d08d8aa647581731ecaf86bfd91cd7729",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__guard_spear__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | iron.003",
+            "Medieval | steel.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 496,
+          "bounds_m": {
+            "min": [
+              -0.07820826768875122,
+              -0.041846487671136856,
+              0.0
+            ],
+            "max": [
+              0.07820826768875122,
+              0.041846487671136856,
+              2.579827308654785
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__guard_spear__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | oak_dark.003"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 220,
+          "bounds_m": {
+            "min": [
+              -0.03099999949336052,
+              -0.029482752084732056,
+              0.0
+            ],
+            "max": [
+              0.03099999949336052,
+              0.029482752084732056,
+              2.1700000762939453
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.07820826768875122,
+          -0.041846487671136856,
+          0.0
+        ],
+        "max": [
+          0.07820826768875122,
+          0.041846487671136856,
+          2.579827308654785
+        ]
+      },
+      "world_placement_m": [
+        2.3864998817443848,
+        -2.152225971221924,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        -2.152225971221924,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__guard_spear"
+    },
+    {
+      "id": "MedievalLife/royal_guard_body",
+      "module_id": "royal_guard_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/royal_guard_body.glb",
+      "source_sha256": "2e9469e581456e0786f3611c48829e992a5ad2add0ccd5cb5a12de0b8825f5b3",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__royal_guard_body__attachments",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | leather_light.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 216,
+          "bounds_m": {
+            "min": [
+              -0.27000001072883606,
+              -0.16499999165534973,
+              0.8950000405311584
+            ],
+            "max": [
+              -0.12999999523162842,
+              -0.07499999552965164,
+              1.065000057220459
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__royal_guard_body__finish",
+          "material_slots": 6,
+          "material_names": [
+            "Medieval | leather.006",
+            "Medieval | gold.004",
+            "Medieval | skin",
+            "Medieval | steel.002",
+            "Medieval | hair",
+            "Medieval | eye.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 5632,
+          "bounds_m": {
+            "min": [
+              -0.4559730589389801,
+              -0.24699999392032623,
+              0.0020000040531158447
+            ],
+            "max": [
+              0.4559730589389801,
+              0.24699999392032623,
+              1.9499999284744263
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__royal_guard_body__structure",
+          "material_slots": 6,
+          "material_names": [
+            "Medieval | oak_dark.004",
+            "Medieval | leather.006",
+            "Medieval | blue.001",
+            "Medieval | linen.001",
+            "Medieval | skin",
+            "Medieval | skin_light"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4276,
+          "bounds_m": {
+            "min": [
+              -0.47837600111961365,
+              -0.21060097217559814,
+              0.11483442038297653
+            ],
+            "max": [
+              0.47837600111961365,
+              0.18000000715255737,
+              1.937000036239624
+            ]
+          }
+        }
+      ],
+      "material_slots": 13,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ]
+      },
+      "world_placement_m": [
+        5.781499862670898,
+        -2.152225971221924,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        -2.152225971221924,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__royal_guard_body"
+    },
+    {
+      "id": "MedievalLife/carter_body",
+      "module_id": "carter_body",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/carter_body.glb",
+      "source_sha256": "ecdfa00e43983d3736b0bf6edc000b17da67ab2fa667f512ed3c1bb087206a7a",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__carter_body__attachments",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | leather_light.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 216,
+          "bounds_m": {
+            "min": [
+              -0.27000001072883606,
+              -0.16499999165534973,
+              0.8950000405311584
+            ],
+            "max": [
+              -0.12999999523162842,
+              -0.07499999552965164,
+              1.065000057220459
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__carter_body__finish",
+          "material_slots": 6,
+          "material_names": [
+            "Medieval | leather.007",
+            "Medieval | gold.005",
+            "Medieval | linen.002",
+            "Medieval | skin.001",
+            "Medieval | hair.001",
+            "Medieval | eye.003"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4648,
+          "bounds_m": {
+            "min": [
+              -0.4559730589389801,
+              -0.24699999392032623,
+              0.0020000040531158447
+            ],
+            "max": [
+              0.4559730589389801,
+              0.24699999392032623,
+              1.9499999284744263
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__carter_body__structure",
+          "material_slots": 6,
+          "material_names": [
+            "Medieval | oak_dark.005",
+            "Medieval | leather.007",
+            "Medieval | red",
+            "Medieval | linen.002",
+            "Medieval | skin.001",
+            "Medieval | skin_light.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4276,
+          "bounds_m": {
+            "min": [
+              -0.47837600111961365,
+              -0.21060097217559814,
+              0.11483442038297653
+            ],
+            "max": [
+              0.47837600111961365,
+              0.18000000715255737,
+              1.937000036239624
+            ]
+          }
+        }
+      ],
+      "material_slots": 13,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ]
+      },
+      "world_placement_m": [
+        -5.831500053405762,
+        0.8517482280731201,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        0.8517482280731201,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__carter_body"
+    },
+    {
+      "id": "MedievalLife/gate_pier",
+      "module_id": "gate_pier",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/gate_pier.glb",
+      "source_sha256": "1f40362aaa06b0d5116e6ded82a4f78f3d17c4be0555921e612b6eadd0ccb719",
+      "layers": [
+        "structure",
+        "weathering"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__gate_pier__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | stone_dark",
+            "Medieval | stone_light",
+            "Medieval | stone"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 9072,
+          "bounds_m": {
+            "min": [
+              -0.6499999761581421,
+              -0.625,
+              0.0
+            ],
+            "max": [
+              0.6499999761581421,
+              0.625,
+              3.380000114440918
+            ]
+          }
+        },
+        {
+          "layer": "weathering",
+          "object": "LIB__MedievalLife__gate_pier__weathering",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | moss"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 648,
+          "bounds_m": {
+            "min": [
+              -0.5349999666213989,
+              -0.5699999928474426,
+              0.05249999836087227
+            ],
+            "max": [
+              0.6549999713897705,
+              0.5900000333786011,
+              0.07750000059604645
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.6499999761581421,
+          -0.625,
+          0.0
+        ],
+        "max": [
+          0.6549999713897705,
+          0.625,
+          3.380000114440918
+        ]
+      },
+      "world_placement_m": [
+        -2.74750018119812,
+        0.8517482280731201,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        0.8517482280731201,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__gate_pier"
+    },
+    {
+      "id": "MedievalLife/gate_leaf",
+      "module_id": "gate_leaf",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/gate_leaf.glb",
+      "source_sha256": "8a4c64c670e3e60f95497fca89e79a3bfd3da10a04c49626cbba1478aa6489ec",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__gate_leaf__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron.004"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 4060,
+          "bounds_m": {
+            "min": [
+              -0.09000000357627869,
+              -0.10900000482797623,
+              0.36000001430511475
+            ],
+            "max": [
+              1.2000000476837158,
+              0.09000000357627869,
+              1.840000033378601
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__gate_leaf__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_light.002",
+            "Medieval | oak.003",
+            "Medieval | oak_dark.006"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2160,
+          "bounds_m": {
+            "min": [
+              0.009999990463256836,
+              -0.05249999836087227,
+              0.08999991416931152
+            ],
+            "max": [
+              1.340000033378601,
+              0.14500004053115845,
+              2.2300000190734863
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.09000000357627869,
+          -0.10900000482797623,
+          0.08999991416931152
+        ],
+        "max": [
+          1.340000033378601,
+          0.14500004053115845,
+          2.2300000190734863
+        ]
+      },
+      "world_placement_m": [
+        -0.9335002303123474,
+        0.8337482213973999,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        0.8517482280731201,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__gate_leaf"
+    },
+    {
+      "id": "MedievalLife/royal_banner",
+      "module_id": "royal_banner",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/royal_banner.glb",
+      "source_sha256": "29d01bc477a1c6cf799299d639f1d01141b9e28719759f0435d938f6380b6075",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__royal_banner__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | gold.006"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 432,
+          "bounds_m": {
+            "min": [
+              -0.20000000298023224,
+              -0.07599999755620956,
+              1.1050000190734863
+            ],
+            "max": [
+              0.20000000298023224,
+              -0.052000001072883606,
+              1.6549999713897705
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__royal_banner__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.007",
+            "Medieval | iron.005",
+            "Medieval | blue.002"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 437,
+          "bounds_m": {
+            "min": [
+              -0.3699999749660492,
+              -0.10000000149011612,
+              0.0
+            ],
+            "max": [
+              0.3699999749660492,
+              0.03500000387430191,
+              2.0999999046325684
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.3699999749660492,
+          -0.10000000149011612,
+          0.0
+        ],
+        "max": [
+          0.3699999749660492,
+          0.03500000387430191,
+          2.0999999046325684
+        ]
+      },
+      "world_placement_m": [
+        2.3864998817443848,
+        0.8842482566833496,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        0.8517482280731201,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__royal_banner"
+    },
+    {
+      "id": "MedievalLife/watch_bench",
+      "module_id": "watch_bench",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_bench.glb",
+      "source_sha256": "8bcb0d8c888d447868f0400b26932e6c73021a144baca2839891df0a50fb2f5c",
+      "layers": [
+        "structure"
+      ],
+      "mesh_layer_count": 1,
+      "mesh_layers": [
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__watch_bench__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.008",
+            "Medieval | oak_light.003",
+            "Medieval | oak.004"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2160,
+          "bounds_m": {
+            "min": [
+              -0.7250000238418579,
+              -0.320000022649765,
+              0.029999971389770508
+            ],
+            "max": [
+              0.7250000238418579,
+              0.33500000834465027,
+              0.9150000214576721
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.7250000238418579,
+          -0.320000022649765,
+          0.029999971389770508
+        ],
+        "max": [
+          0.7250000238418579,
+          0.33500000834465027,
+          0.9150000214576721
+        ]
+      },
+      "world_placement_m": [
+        5.781499862670898,
+        0.8442482352256775,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        0.8517482280731201,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__watch_bench"
+    },
+    {
+      "id": "MedievalLife/watch_shelter",
+      "module_id": "watch_shelter",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_shelter.glb",
+      "source_sha256": "a8601bcd506c55567ed33e06658ed405f2e30f69f2a4ff8a250094944e8e7a25",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__watch_shelter__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | roof_light",
+            "Medieval | roof"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 13824,
+          "bounds_m": {
+            "min": [
+              -1.3599998950958252,
+              -0.9502261877059937,
+              2.158825397491455
+            ],
+            "max": [
+              1.3589999675750732,
+              0.9502261877059937,
+              2.874974250793457
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__watch_shelter__structure",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | oak_dark.009",
+            "Medieval | oak.005"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2808,
+          "bounds_m": {
+            "min": [
+              -1.369999885559082,
+              -0.9204759001731873,
+              0.0
+            ],
+            "max": [
+              1.369999885559082,
+              0.9204759001731873,
+              2.9625000953674316
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -1.369999885559082,
+          -0.9502261877059937,
+          0.0
+        ],
+        "max": [
+          1.369999885559082,
+          0.9502261877059937,
+          2.9625000953674316
+        ]
+      },
+      "world_placement_m": [
+        -5.831500053405762,
+        3.176974296569824,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        3.176974296569824,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__watch_shelter"
+    },
+    {
+      "id": "MedievalLife/water_trough",
+      "module_id": "water_trough",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/water_trough.glb",
+      "source_sha256": "2b804f8951252363e17a5ae478436e84009dd772277335a1b7d4d77a4724d1da",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__water_trough__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | water"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 200,
+          "bounds_m": {
+            "min": [
+              -0.6700000166893005,
+              -0.3100000023841858,
+              0.6119999885559082
+            ],
+            "max": [
+              0.6700000166893005,
+              0.3100000023841858,
+              0.628000020980835
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__water_trough__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | stone_dark.001",
+            "Medieval | stone.001",
+            "Medieval | stone_light.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1512,
+          "bounds_m": {
+            "min": [
+              -0.8149999976158142,
+              -0.45499998331069946,
+              0.0
+            ],
+            "max": [
+              0.8149999976158142,
+              0.45499998331069946,
+              0.7849999666213989
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.8149999976158142,
+          -0.45499998331069946,
+          0.0
+        ],
+        "max": [
+          0.8149999976158142,
+          0.45499998331069946,
+          0.7849999666213989
+        ]
+      },
+      "world_placement_m": [
+        -2.745000123977661,
+        3.176974296569824,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        3.176974296569824,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__water_trough"
+    },
+    {
+      "id": "MedievalLife/hay_rack",
+      "module_id": "hay_rack",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/hay_rack.glb",
+      "source_sha256": "fe168caa7ce2c332b70a8db5b56d0de3e7c5c47396444a61172747f67da57f26",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__hay_rack__attachments",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | hay_light",
+            "Medieval | hay"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 5408,
+          "bounds_m": {
+            "min": [
+              -0.639427125453949,
+              -0.2511664628982544,
+              0.6328275799751282
+            ],
+            "max": [
+              0.5794271230697632,
+              0.2911664843559265,
+              1.0421725511550903
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__hay_rack__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.010",
+            "Medieval | oak.006",
+            "Medieval | oak_light.004"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 5616,
+          "bounds_m": {
+            "min": [
+              -0.7199999690055847,
+              -0.3500000238418579,
+              0.0
+            ],
+            "max": [
+              0.7199999690055847,
+              0.3500000238418579,
+              1.0725001096725464
+            ]
+          }
+        }
+      ],
+      "material_slots": 5,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.7199999690055847,
+          -0.3500000238418579,
+          0.0
+        ],
+        "max": [
+          0.7199999690055847,
+          0.3500000238418579,
+          1.0725001096725464
+        ]
+      },
+      "world_placement_m": [
+        -0.3085002303123474,
+        3.176974296569824,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        3.176974296569824,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__hay_rack"
+    },
+    {
+      "id": "MedievalLife/stable_rail",
+      "module_id": "stable_rail",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/stable_rail.glb",
+      "source_sha256": "cf1455f1c70f565b3e8f950b77c99c8e4ccdcf3defe238d2204240a011cca88c",
+      "layers": [
+        "structure"
+      ],
+      "mesh_layer_count": 1,
+      "mesh_layers": [
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__stable_rail__structure",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | oak_dark.011",
+            "Medieval | oak_light.005"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 864,
+          "bounds_m": {
+            "min": [
+              -1.065000057220459,
+              -0.0650000050663948,
+              0.0
+            ],
+            "max": [
+              1.065000057220459,
+              0.0650000050663948,
+              1.2799999713897705
+            ]
+          }
+        }
+      ],
+      "material_slots": 2,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -1.065000057220459,
+          -0.0650000050663948,
+          0.0
+        ],
+        "max": [
+          1.065000057220459,
+          0.0650000050663948,
+          1.2799999713897705
+        ]
+      },
+      "world_placement_m": [
+        2.3864998817443848,
+        3.176974296569824,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        3.176974296569824,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__stable_rail"
+    },
+    {
+      "id": "MedievalLife/road_signpost",
+      "module_id": "road_signpost",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/road_signpost.glb",
+      "source_sha256": "76391e482e6db3ebcef99ce6d88240389c272e90858813460b4bb7d704e27e5c",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MedievalLife__road_signpost__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | blue.003",
+            "Medieval | gold.007"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 864,
+          "bounds_m": {
+            "min": [
+              -0.24500000476837158,
+              -0.08350000530481339,
+              1.8299999237060547
+            ],
+            "max": [
+              -0.05500000715255737,
+              -0.04999999701976776,
+              2.259999990463257
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__road_signpost__structure",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | oak_dark.012",
+            "Medieval | oak_light.006"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 972,
+          "bounds_m": {
+            "min": [
+              -0.45499998331069946,
+              -0.07000000774860382,
+              0.0
+            ],
+            "max": [
+              0.7494983077049255,
+              0.07000000774860382,
+              2.450000047683716
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.45499998331069946,
+          -0.08350000530481339,
+          0.0
+        ],
+        "max": [
+          0.7494983077049255,
+          0.07000000774860382,
+          2.450000047683716
+        ]
+      },
+      "world_placement_m": [
+        5.634250640869141,
+        3.1837244033813477,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        3.176974296569824,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__road_signpost"
+    },
+    {
+      "id": "MedievalLife/watch_brazier",
+      "module_id": "watch_brazier",
+      "kind": "MedievalLife",
+      "source_glb": "Modules/watch_brazier.glb",
+      "source_sha256": "2c94689018f7357e082347cd95c308c1d580b85b1fcb9f2053d6f8f163673bac",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__MedievalLife__watch_brazier__attachments",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | oak_dark.013",
+            "Medieval | flame"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1758,
+          "bounds_m": {
+            "min": [
+              -0.19021129608154297,
+              -0.18090170621871948,
+              0.5499999523162842
+            ],
+            "max": [
+              0.19021129608154297,
+              0.18090170621871948,
+              1.1399999856948853
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MedievalLife__watch_brazier__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron.006"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3300,
+          "bounds_m": {
+            "min": [
+              -0.32317304611206055,
+              -0.32317304611206055,
+              0.0023933639749884605
+            ],
+            "max": [
+              0.32317304611206055,
+              0.3231731057167053,
+              0.8242287039756775
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.32317304611206055,
+          -0.32317304611206055,
+          0.0023933639749884605
+        ],
+        "max": [
+          0.32317304611206055,
+          0.3231731057167053,
+          1.1399999856948853
+        ]
+      },
+      "world_placement_m": [
+        -5.831500053405762,
+        5.981700420379639,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        5.981700420379639,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__watch_brazier"
+    },
+    {
+      "id": "FreightKit/cargo_planks",
+      "module_id": "cargo_planks",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cargo_planks.glb",
+      "source_sha256": "54cceb072b850931cb69bd262e39d08a2851b6bee93732d46c84a35c17527c5c",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__FreightKit__cargo_planks__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | endgrain.001",
+            "Medieval | oak.007"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 838,
+          "bounds_m": {
+            "min": [
+              -0.09749999642372131,
+              -1.0429999828338623,
+              0.005000000819563866
+            ],
+            "max": [
+              0.09749999642372131,
+              1.0429999828338623,
+              0.07200006395578384
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__FreightKit__cargo_planks__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | oak_light.007"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 216,
+          "bounds_m": {
+            "min": [
+              -0.10249999910593033,
+              -1.0399999618530273,
+              0.0
+            ],
+            "max": [
+              0.10249999910593033,
+              1.0399999618530273,
+              0.07000000029802322
+            ]
+          }
+        }
+      ],
+      "material_slots": 3,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      },
+      "world_placement_m": [
+        -2.745000123977661,
+        5.981700420379639,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        5.981700420379639,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cargo_planks"
+    },
+    {
+      "id": "FreightKit/cargo_beams",
+      "module_id": "cargo_beams",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cargo_beams.glb",
+      "source_sha256": "4c08f3941bb2bb38431206212368027de1df19ab6f59ea483857350b8467ee58",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__FreightKit__cargo_beams__finish",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | endgrain.002",
+            "Medieval | oak_dark.014",
+            "Medieval | oak_light.008"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1290,
+          "bounds_m": {
+            "min": [
+              -0.10199999809265137,
+              -1.1059999465942383,
+              0.005499996244907379
+            ],
+            "max": [
+              0.10950000584125519,
+              1.1029999256134033,
+              0.18450000882148743
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__FreightKit__cargo_beams__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | oak.008"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 216,
+          "bounds_m": {
+            "min": [
+              -0.10750000178813934,
+              -1.100000023841858,
+              0.0
+            ],
+            "max": [
+              0.10750000178813934,
+              1.100000023841858,
+              0.1899999976158142
+            ]
+          }
+        }
+      ],
+      "material_slots": 4,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      },
+      "world_placement_m": [
+        -0.30950021743774414,
+        5.983200550079346,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        5.981700420379639,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cargo_beams"
+    },
+    {
+      "id": "FreightKit/cart_traces",
+      "module_id": "cart_traces",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/cart_traces.glb",
+      "source_sha256": "786c66a29bd9e32f4afb736554edd30c2c1b07ac71551858ed600e8eb1448300",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__FreightKit__cart_traces__attachments",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron.007"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1562,
+          "bounds_m": {
+            "min": [
+              -0.5550000071525574,
+              -3.803999900817871,
+              0.7771746516227722
+            ],
+            "max": [
+              0.5550000071525574,
+              -3.6590001583099365,
+              1.121000051498413
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__FreightKit__cart_traces__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | leather.008"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 864,
+          "bounds_m": {
+            "min": [
+              -0.5415861010551453,
+              -3.7927746772766113,
+              0.800000011920929
+            ],
+            "max": [
+              0.5415861010551453,
+              -3.5224955081939697,
+              1.3808212280273438
+            ]
+          }
+        }
+      ],
+      "material_slots": 2,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      },
+      "world_placement_m": [
+        2.3864998817443848,
+        9.64494800567627,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        5.981700420379639,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__cart_traces"
+    },
+    {
+      "id": "FreightKit/freight_depot_rack",
+      "module_id": "freight_depot_rack",
+      "kind": "FreightKit",
+      "source_glb": "FreightKit/freight_depot_rack.glb",
+      "source_sha256": "499700884c40d635bfd29971b8f9f0cfebd38cd0d233088e008793a9745c8d07",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "attachments",
+          "object": "LIB__FreightKit__freight_depot_rack__attachments",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | iron.008"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3456,
+          "bounds_m": {
+            "min": [
+              -1.2197319269180298,
+              -0.5230000019073486,
+              0.33026808500289917
+            ],
+            "max": [
+              1.2197319269180298,
+              0.5230000019073486,
+              1.519731879234314
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__FreightKit__freight_depot_rack__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | iron.008",
+            "Medieval | blue.004"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1512,
+          "bounds_m": {
+            "min": [
+              -1.2964000701904297,
+              -0.562999963760376,
+              0.2199999988079071
+            ],
+            "max": [
+              1.2964000701904297,
+              0.5332499742507935,
+              1.5
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__FreightKit__freight_depot_rack__structure",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | stone_dark.002",
+            "Medieval | oak_dark.015",
+            "Medieval | oak.009",
+            "Medieval | oak_light.009"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3888,
+          "bounds_m": {
+            "min": [
+              -1.4200000762939453,
+              -0.6399999856948853,
+              0.0
+            ],
+            "max": [
+              1.4200000762939453,
+              0.6399999856948853,
+              1.604483723640442
+            ]
+          }
+        }
+      ],
+      "material_slots": 7,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      },
+      "world_placement_m": [
+        5.781499862670898,
+        5.981700420379639,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        5.981700420379639,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__freight_depot_rack"
+    },
+    {
+      "id": "MarketLifeKit/bench_low",
+      "module_id": "bench_low",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/bench_low.glb",
+      "source_sha256": "08828bf6544055c558c15d793dd610a63ae10e9cf7453b5453f5fd2099c8df04",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MarketLifeKit__bench_low__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | oak_dark.016",
+            "Medieval | endgrain.003"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3024,
+          "bounds_m": {
+            "min": [
+              -0.8629999756813049,
+              -0.22349999845027924,
+              0.09750000387430191
+            ],
+            "max": [
+              0.6730000376701355,
+              0.22349999845027924,
+              0.5189999938011169
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MarketLifeKit__bench_low__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.016",
+            "Medieval | oak.010",
+            "Medieval | oak_light.010"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2376,
+          "bounds_m": {
+            "min": [
+              -0.8600000143051147,
+              -0.2942429482936859,
+              0.014744235202670097
+            ],
+            "max": [
+              0.8600000143051147,
+              0.29424306750297546,
+              0.5049999952316284
+            ]
+          }
+        }
+      ],
+      "material_slots": 5,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.8629999756813049,
+          -0.2942429482936859,
+          0.014744235202670097
+        ],
+        "max": [
+          0.8600000143051147,
+          0.29424306750297546,
+          0.5189999938011169
+        ]
+      },
+      "world_placement_m": [
+        -5.829999923706055,
+        8.718700408935547,
+        0.0
+      ],
+      "cell_center_m": [
+        -5.831500053405762,
+        8.718700408935547,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__bench_low"
+    },
+    {
+      "id": "MarketLifeKit/work_table",
+      "module_id": "work_table",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/work_table.glb",
+      "source_sha256": "c3632ebb363411e71513354de72ed782260718fe6aec8c80f4c341086a29cca7",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MarketLifeKit__work_table__finish",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | iron.009",
+            "Medieval | endgrain.004",
+            "Medieval | oak_light.011"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 6832,
+          "bounds_m": {
+            "min": [
+              -0.8256999850273132,
+              -0.43800002336502075,
+              0.11499999463558197
+            ],
+            "max": [
+              0.9679999947547913,
+              0.43800002336502075,
+              0.9440000057220459
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MarketLifeKit__work_table__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.017",
+            "Medieval | oak.011",
+            "Medieval | oak_light.011"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3456,
+          "bounds_m": {
+            "min": [
+              -0.9649999737739563,
+              -0.4424999952316284,
+              0.022058218717575073
+            ],
+            "max": [
+              0.9649999737739563,
+              0.4424999952316284,
+              0.9300000071525574
+            ]
+          }
+        }
+      ],
+      "material_slots": 6,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.9649999737739563,
+          -0.4424999952316284,
+          0.022058218717575073
+        ],
+        "max": [
+          0.9679999947547913,
+          0.4424999952316284,
+          0.9440000057220459
+        ]
+      },
+      "world_placement_m": [
+        -2.746500015258789,
+        8.718700408935547,
+        0.0
+      ],
+      "cell_center_m": [
+        -2.745000123977661,
+        8.718700408935547,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__work_table"
+    },
+    {
+      "id": "MarketLifeKit/tool_rack",
+      "module_id": "tool_rack",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/tool_rack.glb",
+      "source_sha256": "e863f60cd0a5f7bdcee19ba6bcdba5ac489b5f227f0d3ae6b7b7b34333476d5c",
+      "layers": [
+        "equipment",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "equipment",
+          "object": "LIB__MarketLifeKit__tool_rack__equipment",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | oak_light.012",
+            "Medieval | iron.010",
+            "Medieval | steel.003",
+            "Medieval | oak_dark.018"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2487,
+          "bounds_m": {
+            "min": [
+              -0.574999988079071,
+              -0.16300000250339508,
+              0.8500000238418579
+            ],
+            "max": [
+              0.45980000495910645,
+              -0.04750000312924385,
+              1.4279999732971191
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MarketLifeKit__tool_rack__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | endgrain.005",
+            "Medieval | iron.010"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 6072,
+          "bounds_m": {
+            "min": [
+              -0.605463981628418,
+              -0.1466209888458252,
+              0.6845359802246094
+            ],
+            "max": [
+              0.605463981628418,
+              -0.03099999949336052,
+              1.5656208992004395
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MarketLifeKit__tool_rack__structure",
+          "material_slots": 3,
+          "material_names": [
+            "Medieval | oak_dark.018",
+            "Medieval | oak.012",
+            "Medieval | oak_light.012"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 2160,
+          "bounds_m": {
+            "min": [
+              -0.675000011920929,
+              -0.3399999737739563,
+              0.004999989178031683
+            ],
+            "max": [
+              0.675000011920929,
+              0.261438250541687,
+              1.6512261629104614
+            ]
+          }
+        }
+      ],
+      "material_slots": 9,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.675000011920929,
+          -0.3399999737739563,
+          0.004999989178031683
+        ],
+        "max": [
+          0.675000011920929,
+          0.261438250541687,
+          1.6512261629104614
+        ]
+      },
+      "world_placement_m": [
+        -0.3085002303123474,
+        8.757981300354004,
+        0.0
+      ],
+      "cell_center_m": [
+        -0.3085002303123474,
+        8.718700408935547,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__tool_rack"
+    },
+    {
+      "id": "MarketLifeKit/linen_canopy",
+      "module_id": "linen_canopy",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/linen_canopy.glb",
+      "source_sha256": "1f418eba79affe5bdcf7212747e922886a25c4791874e1f09e8d66185e851ecd",
+      "layers": [
+        "cover",
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 3,
+      "mesh_layers": [
+        {
+          "layer": "cover",
+          "object": "LIB__MarketLifeKit__linen_canopy__cover",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | blue_light",
+            "Medieval | linen.003"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 424,
+          "bounds_m": {
+            "min": [
+              -1.2100000381469727,
+              -0.925000011920929,
+              1.9900000095367432
+            ],
+            "max": [
+              1.2115000486373901,
+              0.8399999737739563,
+              2.610046625137329
+            ]
+          }
+        },
+        {
+          "layer": "finish",
+          "object": "LIB__MarketLifeKit__linen_canopy__finish",
+          "material_slots": 2,
+          "material_names": [
+            "Medieval | endgrain.006",
+            "Medieval | leather.009"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3488,
+          "bounds_m": {
+            "min": [
+              -1.1859999895095825,
+              -0.7540000081062317,
+              2.1646339893341064
+            ],
+            "max": [
+              1.1859999895095825,
+              0.7310000061988831,
+              2.5894827842712402
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MarketLifeKit__linen_canopy__structure",
+          "material_slots": 4,
+          "material_names": [
+            "Medieval | stone_dark.003",
+            "Medieval | oak_dark.019",
+            "Medieval | oak.013",
+            "Medieval | oak_light.013"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 3456,
+          "bounds_m": {
+            "min": [
+              -1.225000023841858,
+              -0.8212665915489197,
+              0.0
+            ],
+            "max": [
+              1.225000023841858,
+              0.8212665915489197,
+              2.62147855758667
+            ]
+          }
+        }
+      ],
+      "material_slots": 8,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -1.225000023841858,
+          -0.925000011920929,
+          0.0
+        ],
+        "max": [
+          1.225000023841858,
+          0.8399999737739563,
+          2.62147855758667
+        ]
+      },
+      "world_placement_m": [
+        2.3864998817443848,
+        8.761199951171875,
+        0.0
+      ],
+      "cell_center_m": [
+        2.3864998817443848,
+        8.718700408935547,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__linen_canopy"
+    },
+    {
+      "id": "MarketLifeKit/clay_jar",
+      "module_id": "clay_jar",
+      "kind": "MarketLifeKit",
+      "source_glb": "MarketLifeKit/clay_jar.glb",
+      "source_sha256": "94a4a5dbb2501dd7e002901e4ed1f892de2096b432b8c838412f6c5fde6725af",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "mesh_layer_count": 2,
+      "mesh_layers": [
+        {
+          "layer": "finish",
+          "object": "LIB__MarketLifeKit__clay_jar__finish",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | linen.004"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 1056,
+          "bounds_m": {
+            "min": [
+              -0.12800000607967377,
+              -0.12800000607967377,
+              0.3930000066757202
+            ],
+            "max": [
+              0.12800000607967377,
+              0.12800000607967377,
+              0.4169999957084656
+            ]
+          }
+        },
+        {
+          "layer": "structure",
+          "object": "LIB__MarketLifeKit__clay_jar__structure",
+          "material_slots": 1,
+          "material_names": [
+            "Medieval | red.001"
+          ],
+          "uv_layers": 1,
+          "vertex_count": 5648,
+          "bounds_m": {
+            "min": [
+              -0.30950865149497986,
+              -0.22499999403953552,
+              0.0
+            ],
+            "max": [
+              0.30950865149497986,
+              0.22499999403953552,
+              0.422878623008728
+            ]
+          }
+        }
+      ],
+      "material_slots": 2,
+      "uv_layers_min": 1,
+      "source_bounds_m": {
+        "min": [
+          -0.30950865149497986,
+          -0.22499999403953552,
+          0.0
+        ],
+        "max": [
+          0.30950865149497986,
+          0.22499999403953552,
+          0.422878623008728
+        ]
+      },
+      "world_placement_m": [
+        5.781499862670898,
+        8.718700408935547,
+        0.0
+      ],
+      "cell_center_m": [
+        5.781499862670898,
+        8.718700408935547,
+        0.0
+      ],
+      "local_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "group_object": "LIB__clay_jar"
+    }
+  ],
+  "limitations": [
+    "Static library scope only; people and horse animation remain in their rigged files.",
+    "This package covers these 30 declared pieces, not every historical art file in the repository."
+  ]
+}

@@ -69,6 +69,107 @@ namespace HearthWorld
     };
     FObject Object(const TSharedPtr<FJsonValue>& V) { return V.IsValid() && V->Type==EJson::Object?V->AsObject():nullptr; }
 
+    void EncodeOrganicStock(const FOrganicConstructionStock& Stock, const TCHAR* Name, FObject Root)
+    {
+        auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("stone"),Stock.Stone); J->SetNumberField(TEXT("planks"),Stock.Planks);
+        J->SetNumberField(TEXT("beams"),Stock.Beams); J->SetNumberField(TEXT("tiles"),Stock.Tiles); Root->SetObjectField(Name,J);
+    }
+
+    bool DecodeOrganicStock(const FObject& Root, const TCHAR* Name, FOrganicConstructionStock& Stock)
+    {
+        FRead P{Object(Root.IsValid()?Root->TryGetField(Name):nullptr)};
+        P.Num(TEXT("stone"),Stock.Stone,0,100000000); P.Num(TEXT("planks"),Stock.Planks,0,100000000);
+        P.Num(TEXT("beams"),Stock.Beams,0,100000000); P.Num(TEXT("tiles"),Stock.Tiles,0,100000000);
+        return P.Good && HearthOrganicConstruction::Validate(Stock);
+    }
+
+    void EncodeMarketKitRecord(const FOrganicMarketKitRecord& Record, FObject Root)
+    {
+        Root->SetStringField(TEXT("request_id"),Record.RequestId); Root->SetStringField(TEXT("module_id"),Record.ModuleId);
+        Root->SetStringField(TEXT("task_id"),Record.TaskId);
+        Root->SetStringField(TEXT("status"),Record.Status); EncodeOrganicStock(Record.Cost,TEXT("cost"),Root);
+        Root->SetField(TEXT("anchor"),Vec(Record.Anchor)); Root->SetNumberField(TEXT("work_progress"),Record.WorkProgress);
+        Root->SetField(TEXT("install_position"),Vec(Record.InstallPosition)); Root->SetNumberField(TEXT("install_yaw"),Record.InstallYaw);
+        Root->SetNumberField(TEXT("revision"),Record.Revision);
+    }
+
+    bool DecodeMarketKitRecord(const FObject& Root, FOrganicMarketKitRecord& Record, bool bPending)
+    {
+        FRead P{Root}; P.Str(TEXT("request_id"),Record.RequestId,256); P.Str(TEXT("module_id"),Record.ModuleId,64);
+        P.Str(TEXT("task_id"),Record.TaskId,64);
+        P.Str(TEXT("status"),Record.Status,32); if(!DecodeOrganicStock(Root,TEXT("cost"),Record.Cost)) P.Good=false;
+        P.Vector(TEXT("anchor"),Record.Anchor); P.Vector(TEXT("install_position"),Record.InstallPosition); P.Num(TEXT("install_yaw"),Record.InstallYaw,-360,360);
+        P.Num(TEXT("work_progress"),Record.WorkProgress,0,1); P.Num(TEXT("revision"),Record.Revision,0,100000000);
+        return P.Good && HearthOrganicConstruction::Validate(Record,bPending);
+    }
+
+    void EncodeOrganicHomes(const TMap<FString,FOrganicConstructionHomeState>& Homes, int32 Seed, FObject Root)
+    {
+        Root->SetNumberField(TEXT("organic_world_seed"),Seed);
+        FArray Values; TArray<FString> Keys; Homes.GetKeys(Keys); Keys.Sort();
+        for(const FString& ResidentId:Keys)
+        {
+            const auto* Home=Homes.Find(ResidentId); if(!Home) continue;
+            auto J=MakeShared<FJsonObject>(); J->SetStringField(TEXT("resident_id"),ResidentId);
+            FArray Installed; for(const FString& Key:Home->InstalledKeys) Installed.Add(MakeShared<FJsonValueString>(Key)); J->SetArrayField(TEXT("installed_keys"),Installed);
+            auto Costs=MakeShared<FJsonObject>();
+            TArray<FString> CostKeys; Home->InstalledCosts.GetKeys(CostKeys); CostKeys.Sort();
+            for(const FString& Key:CostKeys) { const auto* Stock=Home->InstalledCosts.Find(Key); if(Stock) EncodeOrganicStock(*Stock,*Key,Costs); }
+            J->SetObjectField(TEXT("installed_costs"),Costs); EncodeOrganicStock(Home->Reclaimed,TEXT("reclaimed"),J);
+            J->SetStringField(TEXT("active_piece_key"),Home->ActivePieceKey); J->SetNumberField(TEXT("work_progress"),Home->WorkProgress);
+            J->SetStringField(TEXT("current_recipe"),Home->CurrentRecipe); J->SetStringField(TEXT("target_recipe"),Home->TargetRecipe);
+            J->SetStringField(TEXT("choice_reason"),Home->ChoiceReason); J->SetStringField(TEXT("source"),Home->Source); J->SetStringField(TEXT("seed"),Home->Seed); J->SetNumberField(TEXT("revision"),Home->Revision);
+            FArray MarketInstalled; for(const auto& Record:Home->MarketKitInstalled) { auto M=MakeShared<FJsonObject>(); EncodeMarketKitRecord(Record,M); MarketInstalled.Add(MakeShared<FJsonValueObject>(M)); }
+            J->SetArrayField(TEXT("market_kit_installed"),MarketInstalled); J->SetBoolField(TEXT("has_market_kit_pending"),Home->bHasMarketKitPending);
+            if(Home->bHasMarketKitPending) { auto M=MakeShared<FJsonObject>(); EncodeMarketKitRecord(Home->MarketKitPending,M); J->SetObjectField(TEXT("market_kit_pending"),M); }
+            Values.Add(MakeShared<FJsonValueObject>(J));
+        }
+        Root->SetArrayField(TEXT("organic_homes"),Values);
+    }
+
+    bool DecodeOrganicHomes(const FObject& Root, TMap<FString,FOrganicConstructionHomeState>& OutHomes, int32& OutSeed)
+    {
+        FRead C{Root}; C.Num(TEXT("organic_world_seed"),OutSeed,0,2147483647);
+        const auto& Values=C.Array(TEXT("organic_homes"),40); TSet<FString> ResidentIds; OutHomes.Reset();
+        for(const auto& Value:Values)
+        {
+            FObject J=Object(Value); FRead P{J}; FString ResidentId; P.Str(TEXT("resident_id"),ResidentId,256);
+            FOrganicConstructionHomeState Home; const auto& Installed=P.Array(TEXT("installed_keys"),256); TSet<FString> Keys;
+            for(const auto& KeyValue:Installed) { FString Key; if(!KeyValue->TryGetString(Key)||Key.IsEmpty()||Key.Len()>256||Keys.Contains(Key)) P.Good=false; else { Keys.Add(Key); Home.InstalledKeys.Add(Key); } }
+            const auto& CostsObject=Object(J.IsValid()?J->TryGetField(TEXT("installed_costs")):nullptr);
+            if(!CostsObject.IsValid()) P.Good=false;
+            else for(const auto& Pair:CostsObject->Values)
+            {
+                FOrganicConstructionStock Stock; if(Pair.Key.IsEmpty()||Pair.Key.Len()>256||!DecodeOrganicStock(CostsObject, *Pair.Key, Stock)) { P.Good=false; break; }
+                Home.InstalledCosts.Add(FString(*Pair.Key),Stock);
+            }
+            if(!DecodeOrganicStock(J,TEXT("reclaimed"),Home.Reclaimed)) P.Good=false;
+            P.Str(TEXT("active_piece_key"),Home.ActivePieceKey,256); P.Num(TEXT("work_progress"),Home.WorkProgress,0,1);
+            P.Str(TEXT("current_recipe"),Home.CurrentRecipe,256); P.Str(TEXT("target_recipe"),Home.TargetRecipe,256); P.Str(TEXT("choice_reason"),Home.ChoiceReason,4096); P.Str(TEXT("source"),Home.Source,64); P.Str(TEXT("seed"),Home.Seed,256); P.Num(TEXT("revision"),Home.Revision,0,100000000);
+            if(J.IsValid() && J->HasField(TEXT("market_kit_installed")))
+                for(const auto& MarketValue:P.Array(TEXT("market_kit_installed"),HearthOrganicConstruction::MaxMarketKitsPerHome))
+                { FOrganicMarketKitRecord Record; if(!DecodeMarketKitRecord(Object(MarketValue),Record,false)) P.Good=false; else Home.MarketKitInstalled.Add(MoveTemp(Record)); }
+            bool bPendingFieldPresent=false;
+            if(J.IsValid() && J->HasField(TEXT("has_market_kit_pending")))
+            {
+                bPendingFieldPresent=true;
+                P.Bool(TEXT("has_market_kit_pending"),Home.bHasMarketKitPending);
+            }
+            // A pending object without its presence bit is ambiguous and could
+            // otherwise be silently discarded during a cold load.
+            if(J.IsValid() && J->HasField(TEXT("market_kit_pending")) && !bPendingFieldPresent)
+                P.Good=false;
+            if(J.IsValid() && J->HasField(TEXT("market_kit_pending")) && !Home.bHasMarketKitPending) P.Good=false;
+            if(Home.bHasMarketKitPending)
+            {
+                if(!J.IsValid() || !J->HasField(TEXT("market_kit_pending")) || !DecodeMarketKitRecord(Object(J->TryGetField(TEXT("market_kit_pending"))),Home.MarketKitPending,true)) P.Good=false;
+            }
+            if(!P.Good || ResidentId.IsEmpty() || ResidentIds.Contains(ResidentId) || !HearthOrganicConstruction::Validate(Home)) return false;
+            ResidentIds.Add(ResidentId); OutHomes.Add(ResidentId,MoveTemp(Home));
+        }
+        return C.Good;
+    }
+
     void EncodeTavernRuntime(const FHearthTavernRuntimeState& State, FObject Root)
     {
         auto Runtime=MakeShared<FJsonObject>(); FArray Venues,Events;
@@ -173,6 +274,7 @@ namespace HearthWorld
     FString Encode(const FHearthWorldImage& W)
     {
         auto J=MakeShared<FJsonObject>(); J->SetNumberField(TEXT("schema"),W.Schema); J->SetNumberField(TEXT("plot_count"),W.PlotCount);
+        if(W.Schema>=12) J->SetNumberField(TEXT("population_count"),W.PopulationCount);
 #define STR(Field) J->SetStringField(TEXT(#Field),W.Field)
 #define NUM(Field) J->SetNumberField(TEXT(#Field),W.Field)
 #define BOOL(Field) J->SetBoolField(TEXT(#Field),W.Field)
@@ -186,12 +288,14 @@ namespace HearthWorld
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
         J->SetBoolField(TEXT("organic_town_layout"),W.bOrganicTownLayout);
         J->SetNumberField(TEXT("town_layout_version"),W.TownLayoutVersion);
+        if(W.Schema>=11) EncodeOrganicHomes(W.OrganicHomes,W.OrganicWorldSeed,J);
 #undef STR
 #undef NUM
 #undef BOOL
         if(W.Schema>=6)
         {
-            FArray TaxRemainders; for(int32 I=0;I<W.PlotCount;++I) TaxRemainders.Add(MakeShared<FJsonValueNumber>(W.TaxRemainders[I]));
+            const int32 ResidentLimit=W.Schema>=12?W.PopulationCount:W.PlotCount;
+            FArray TaxRemainders; for(int32 I=0;I<ResidentLimit;++I) TaxRemainders.Add(MakeShared<FJsonValueNumber>(W.TaxRemainders[I]));
             J->SetArrayField(TEXT("tax_remainders"),TaxRemainders);
         }
         FArray Plots,Resources,People,Sites,History;
@@ -214,7 +318,7 @@ namespace HearthWorld
             const auto& R=Saved.Person; auto P=MakeShared<FJsonObject>();
 #define STR(Field) P->SetStringField(TEXT(#Field),R.Field)
 #define NUM(Field) P->SetNumberField(TEXT(#Field),R.Field)
-            STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
+            STR(StableId); if(W.Schema>=12) { STR(ServiceRoleKey); STR(ResidenceId); } STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             STR(HouseBlueprint); STR(WallMaterial); STR(RoofMaterial);
             STR(DesignGoal); STR(DesignFeedback); STR(DesignRequest); STR(LastVisualSignature);
             STR(InnerStory); STR(BuildingArchetype);
@@ -314,7 +418,7 @@ namespace HearthWorld
             Entry->SetNumberField(TEXT("net"),T.Net); Entry->SetNumberField(TEXT("remainder_before"),T.RemainderBefore); Entry->SetNumberField(TEXT("remainder_after"),T.RemainderAfter);
             Entry->SetNumberField(TEXT("at"),T.At); Entry->SetBoolField(TEXT("legacy_exempt"),T.bLegacyExempt); Taxes.Add(MakeShared<FJsonValueObject>(Entry));
         }
-        FArray Payables,Trades,TileOrders;
+        FArray Payables,ServiceDuties,FreightOrders,Trades,TileOrders;
         for(const auto& P:W.WagePayables)
         {
             auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),P.Id); Entry->SetStringField(TEXT("task_id"),P.TaskId);
@@ -322,6 +426,23 @@ namespace HearthWorld
             if(W.Schema>=7) Entry->SetBoolField(TEXT("tax_funded"),P.bTaxFunded);
             if(W.Schema>=9) Entry->SetNumberField(TEXT("funder"),P.Funder);
             Payables.Add(MakeShared<FJsonValueObject>(Entry));
+        }
+        if(W.Schema>=12) for(const auto& D:W.ServiceDuties)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),D.Id); Entry->SetStringField(TEXT("task_id"),D.TaskId);
+            Entry->SetStringField(TEXT("kind"),D.Kind); Entry->SetStringField(TEXT("status"),D.Status); Entry->SetNumberField(TEXT("resident"),D.Resident);
+            Entry->SetNumberField(TEXT("wage"),D.Wage); Entry->SetNumberField(TEXT("progress"),D.Progress); Entry->SetNumberField(TEXT("duty_seconds"),D.DutySeconds); Entry->SetNumberField(TEXT("shift_seconds"),D.ShiftSeconds); Entry->SetNumberField(TEXT("move_speed"),D.MoveSpeed);
+            Entry->SetNumberField(TEXT("patrol_point"),D.PatrolPoint); Entry->SetNumberField(TEXT("next_duty_at"),D.NextDutyAt); Entry->SetBoolField(TEXT("wage_paid"),D.bWagePaid);
+            Entry->SetField(TEXT("anchor"),Vec(D.Anchor)); ServiceDuties.Add(MakeShared<FJsonValueObject>(Entry));
+        }
+        if(W.Schema>=12) for(const auto& O:W.FreightOrders)
+        {
+            auto Entry=MakeShared<FJsonObject>(); Entry->SetStringField(TEXT("id"),O.Id); Entry->SetStringField(TEXT("project_id"),O.ProjectId); Entry->SetStringField(TEXT("status"),O.Status);
+            Entry->SetNumberField(TEXT("carter"),O.Carter); Entry->SetNumberField(TEXT("cargo_type"),O.CargoType); Entry->SetNumberField(TEXT("cargo_quantity"),O.CargoQuantity); Entry->SetNumberField(TEXT("phase"),O.Phase);
+            Entry->SetField(TEXT("source"),Vec(O.Source)); Entry->SetField(TEXT("destination"),Vec(O.Destination)); Entry->SetField(TEXT("vehicle_position"),Vec(O.VehiclePosition)); Entry->SetNumberField(TEXT("vehicle_yaw"),O.VehicleYaw); Entry->SetNumberField(TEXT("wheel_distance_cm"),O.WheelDistanceCm); Entry->SetNumberField(TEXT("stop_remaining"),O.StopRemaining); Entry->SetNumberField(TEXT("created_at"),O.CreatedAt); Entry->SetNumberField(TEXT("next_route_attempt"),O.NextRouteAttempt);
+            FArray VehicleRoute; for(const FVector& Point:O.VehicleRoute) VehicleRoute.Add(Vec(Point)); Entry->SetArrayField(TEXT("vehicle_route"),VehicleRoute);
+            FArray VehicleRouteYaws; for(const float Yaw:O.VehicleRouteYaws) VehicleRouteYaws.Add(MakeShared<FJsonValueNumber>(Yaw)); Entry->SetArrayField(TEXT("vehicle_route_yaws"),VehicleRouteYaws);
+            Entry->SetBoolField(TEXT("loaded"),O.bLoaded); Entry->SetBoolField(TEXT("wage_paid"),O.bWagePaid); Entry->SetBoolField(TEXT("vehicle_known"),O.bVehicleKnown); Entry->SetBoolField(TEXT("paused_for_needs"),O.bPausedForNeeds); Entry->SetBoolField(TEXT("carter_attached"),O.bCarterAttached); FreightOrders.Add(MakeShared<FJsonValueObject>(Entry));
         }
         for(const auto& T:W.TradeOffers)
         {
@@ -363,6 +484,8 @@ namespace HearthWorld
         J->SetArrayField(TEXT("transactions"),Transactions);
         if(W.Schema>=6) J->SetArrayField(TEXT("tax_assessments"),Taxes);
         J->SetArrayField(TEXT("wage_payables"),Payables); J->SetArrayField(TEXT("trade_offers"),Trades);
+        if(W.Schema>=12) J->SetArrayField(TEXT("service_duties"),ServiceDuties);
+        if(W.Schema>=12) J->SetArrayField(TEXT("freight_orders"),FreightOrders);
         if(W.Schema>=10) J->SetArrayField(TEXT("tile_orders"),TileOrders);
         if(W.Schema>=8) J->SetObjectField(TEXT("public_project"),Project);
         auto Totals=MakeShared<FJsonObject>(); for(const auto& Pair:W.Totals) Totals->SetNumberField(Pair.Key,Pair.Value);
@@ -378,23 +501,26 @@ namespace HearthWorld
     {
         Error=TEXT("世界存档格式或字段无效"); FObject Root;
         if(Text.Len()>MaxBytes || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Root) || !Root.IsValid()) return false;
-        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,10);
+        FHearthWorldImage W; FRead C{Root}; C.Num(TEXT("schema"),W.Schema,1,12);
         const bool HasEconomy=W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"));
         const bool HasTaxes=W.Schema>=6 || Root->HasField(TEXT("tax_assessments"));
         const bool HasTaxReleaseField=Root->HasField(TEXT("TaxReleasedCoins"));
         if(W.Schema>=2) C.Num(TEXT("plot_count"),W.PlotCount,3,HearthVillageLimits::MaxPopulation);
         if(W.PlotCount!=3 && W.PlotCount!=10 && W.PlotCount!=HearthVillageLimits::Town3Population) return false;
+        if(W.Schema>=12) C.Num(TEXT("population_count"),W.PopulationCount,1,HearthVillageLimits::MaxPopulation);
+        else W.PopulationCount=W.PlotCount;
 #define STR(Field) C.Str(TEXT(#Field),W.Field)
 #define NUM(Field,Min,Max) C.Num(TEXT(#Field),W.Field,Min,Max)
 #define BOOL(Field) C.Bool(TEXT(#Field),W.Field)
         STR(Id); STR(Run); STR(Event); NUM(Revision,0,9007199254740991.0); NUM(Elapsed,0,1e9); NUM(Speed,1,1000); NUM(Remainder,0,300);
-        NUM(Selected,0,W.PlotCount-1); NUM(LastLife,-1,W.PlotCount-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
+        const int32 ResidentLimit=W.Schema>=12?W.PopulationCount:W.PlotCount;
+        NUM(Selected,0,ResidentLimit-1); NUM(LastLife,-1,ResidentLimit-1); NUM(Food,0,1e8); NUM(Stone,0,1e8);
         if(W.Schema>=4 || Root->HasField(TEXT("TreasuryCoins"))) NUM(TreasuryCoins,0,1e8);
         if(HasTaxes)
         {
             NUM(TaxProjectCoins,0,1e8); if(HasTaxReleaseField) NUM(TaxReleasedCoins,0,1e8); NUM(TaxRatePercent,0,100);
-            const auto& Remainders=C.Array(TEXT("tax_remainders"),HearthVillageLimits::MaxPopulation); if(Remainders.Num()!=W.PlotCount) return false;
-            for(int32 I=0;I<W.PlotCount;++I) { double N=0; if(!Remainders[I]->TryGetNumber(N) || N<0 || N>=100 || N!=FMath::FloorToDouble(N)) return false; W.TaxRemainders[I]=static_cast<int32>(N); }
+            const auto& Remainders=C.Array(TEXT("tax_remainders"),HearthVillageLimits::MaxPopulation); if(Remainders.Num()!=ResidentLimit) return false;
+            for(int32 I=0;I<ResidentLimit;++I) { double N=0; if(!Remainders[I]->TryGetNumber(N) || N<0 || N>=100 || N!=FMath::FloorToDouble(N)) return false; W.TaxRemainders[I]=static_cast<int32>(N); }
         }
         if(Root->HasField(TEXT("Planks"))) NUM(Planks,0,1e8);
         if(Root->HasField(TEXT("Beams"))) NUM(Beams,0,1e8);
@@ -405,12 +531,17 @@ namespace HearthWorld
         if(Root->HasField(TEXT("SpentBeams"))) C.Num(TEXT("SpentBeams"),W.ManufacturedSpent[1],0,1e8);
         BOOL(bIsland); BOOL(bPaused); BOOL(bAutonomy); BOOL(bComplete);
         if(C.J.IsValid()) C.J->TryGetBoolField(TEXT("organic_town_layout"),W.bOrganicTownLayout);
-        if(Root->HasField(TEXT("town_layout_version"))) C.Num(TEXT("town_layout_version"),W.TownLayoutVersion,0,3);
+        if(Root->HasField(TEXT("town_layout_version"))) C.Num(TEXT("town_layout_version"),W.TownLayoutVersion,0,4);
 #undef STR
 #undef NUM
 #undef BOOL
-        if((W.PlotCount==HearthVillageLimits::Town3Population && W.TownLayoutVersion<3)
-            || (W.TownLayoutVersion>=3 && W.PlotCount!=HearthVillageLimits::Town3Population)) return false;
+        if((W.TownLayoutVersion==3 && W.PlotCount!=HearthVillageLimits::Town3Population)
+            || (W.TownLayoutVersion>=4 && W.PlotCount!=10)
+            || (W.TownLayoutVersion<3 && W.PlotCount==HearthVillageLimits::Town3Population)) return false;
+        // Schema 12 introduces this exact service roster. Reject incompatible
+        // counts before following plot-owner or resident references below.
+        if(W.Schema>=12 && (W.TownLayoutVersion!=4 || W.PlotCount!=10 || W.PopulationCount!=13)) return false;
+        if(W.Schema>=11 && !DecodeOrganicHomes(Root,W.OrganicHomes,W.OrganicWorldSeed)) return false;
         const auto& Plots=C.Array(TEXT("plots"),HearthVillageLimits::MaxPopulation); if(Plots.Num()!=W.PlotCount) return false;
         for(int32 I=0;I<Plots.Num();++I)
         {
@@ -431,7 +562,7 @@ namespace HearthWorld
             FHearthSavedResident Saved; auto& R=Saved.Person; FRead P{Object(V)}; int32 Task=0;
 #define STR(Field) P.Str(TEXT(#Field),R.Field)
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),R.Field,Min,Max)
-            STR(StableId); STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
+            STR(StableId); if(W.Schema>=12) { STR(ServiceRoleKey); STR(ResidenceId); } STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             if(P.J.IsValid())
             {
                 P.J->TryGetStringField(TEXT("HouseBlueprint"),R.HouseBlueprint);
@@ -472,19 +603,21 @@ namespace HearthWorld
             NUM(ProductionSite,-1,1023); NUM(ProductionOp,-1,W.Schema>=10?15:14); NUM(CargoType,-1,W.Schema>=10?6:4); NUM(CargoAmount,0,6); NUM(WorkDuration,0,1e6);
 #undef STR
 #undef NUM
-            P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::SupplyHandover)); R.Task=static_cast<EHearthTask>(Task);
+            P.Num(TEXT("Task"),Task,0,static_cast<int32>(EHearthTask::OrganicWork)); R.Task=static_cast<EHearthTask>(Task);
             P.Bool(TEXT("bMovementBlocked"),R.bMovementBlocked); P.Vector(TEXT("position"),Saved.Position); P.Num(TEXT("yaw"),Saved.Yaw,-360,360);
             P.Num(TEXT("decision_delay"),Saved.DecisionDelay,0,86400); P.Bool(TEXT("pending"),Saved.bPending); P.Str(TEXT("pending_operation"),Saved.PendingOperation);
             for(const auto& Point:P.Array(TEXT("route"),4096)) { FVector Position; P.Vector(Point,Position); R.Route.Add(Position); }
             C.Good&=P.Good; W.People.Add(MoveTemp(Saved));
         }
+        if(W.Schema>=11) for(const auto& Pair:W.OrganicHomes)
+            if(!W.People.ContainsByPredicate([&](const FHearthSavedResident& Saved){ return Saved.Person.StableId==Pair.Key; })) C.Good=false;
         for(const auto& V:C.Array(TEXT("sites"),1024))
         {
             FHearthSite S; FRead P{Object(V)}; int32 Kind=0; P.Str(TEXT("id"),S.StableId); if(P.J.IsValid()) P.J->TryGetStringField(TEXT("build_plan_id"),S.BuildPlanId); P.Num(TEXT("kind"),Kind,0,W.Schema>=10?12:10); S.Kind=static_cast<EHearthSiteKind>(Kind);
             P.Vector(TEXT("position"),S.Position); P.Vector(TEXT("approach"),S.Approach);
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
             NUM(Radius,1,10000); NUM(Growth,0,1e6); NUM(GrowDuration,1,1e6); NUM(Progress,0,1); NUM(Stage,0,4);
-            NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,W.PlotCount-1); NUM(Owner,-1,W.PlotCount-1);
+            NUM(Units,0,1e6); NUM(Capacity,0,1e6); NUM(ReservedBy,-1,ResidentLimit-1); NUM(Owner,-1,ResidentLimit-1);
 #undef NUM
             P.Bool(TEXT("reachable"),S.bReachable); P.Bool(TEXT("expansion"),S.bExpansion);
             if(W.Schema>=5)
@@ -495,7 +628,7 @@ namespace HearthWorld
                     Q.Str(TEXT("status"),Part.Status); Q.Str(TEXT("source"),Part.Source); Q.Str(TEXT("supply_policy"),Part.SupplyPolicy);
                     Q.Vector(TEXT("offset"),Part.Offset); Q.Num(TEXT("yaw"),Part.Yaw,-360,360); Q.Num(TEXT("stage"),Part.Stage,1,4);
                     Q.Num(TEXT("material_type"),Part.MaterialType,2,W.Schema>=10?6:4); Q.Num(TEXT("material_amount"),Part.MaterialAmount,1,6);
-                    Q.Num(TEXT("owner"),Part.Owner,-1,W.PlotCount-1); Q.Num(TEXT("reserved_by"),Part.ReservedBy,-1,W.PlotCount-1);
+                    Q.Num(TEXT("owner"),Part.Owner,-1,ResidentLimit-1); Q.Num(TEXT("reserved_by"),Part.ReservedBy,-1,ResidentLimit-1);
                     P.Good&=Q.Good; S.CottageComponents.Add(MoveTemp(Part));
                 }
             }
@@ -507,7 +640,7 @@ namespace HearthWorld
 #define STR(Field) P.Str(TEXT(#Field),H.Field,32768)
             STR(Run); STR(Timestamp); STR(Kind); STR(Context); STR(Choice); STR(Reason); STR(Result); STR(Source); STR(Model); STR(Status);
 #undef STR
-            P.Num(TEXT("Resident"),H.Resident,0,W.PlotCount-1); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
+            P.Num(TEXT("Resident"),H.Resident,0,ResidentLimit-1); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
             P.Bool(TEXT("bHasUsage"),H.bHasUsage); C.Good&=P.Good; W.History.Add(MoveTemp(H));
         }
         if(W.Schema>=3)
@@ -518,15 +651,15 @@ namespace HearthWorld
 #define STR(Field) P.Str(TEXT(#Field),S.Field)
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
                 STR(Id); STR(FirstId); STR(SecondId); STR(Outcome);
-                NUM(First,0,W.PlotCount-1); NUM(Second,0,W.PlotCount-1); NUM(Speaker,0,W.PlotCount-1);
-                NUM(Offer,-1,W.Schema>=10?4:3); NUM(Proposer,-1,W.PlotCount-1); NUM(OfferAction,-1,20000); NUM(TravelTime,0,1000); NUM(TurnDelay,0,60);
+                NUM(First,0,ResidentLimit-1); NUM(Second,0,ResidentLimit-1); NUM(Speaker,0,ResidentLimit-1);
+                NUM(Offer,-1,W.Schema>=10?4:3); NUM(Proposer,-1,ResidentLimit-1); NUM(OfferAction,-1,20000); NUM(TravelTime,0,1000); NUM(TurnDelay,0,60);
 #undef STR
 #undef NUM
                 P.Bool(TEXT("met"),S.bMet); P.Bool(TEXT("closed"),S.bClosed); P.Bool(TEXT("accepted"),S.bAccepted);
                 for(const auto& Value:P.Array(TEXT("lines"),8))
                 {
                     FRead L{Object(Value)}; FHearthDialogueLine Line;
-                    L.Num(TEXT("speaker"),Line.Speaker,0,W.PlotCount-1); L.Num(TEXT("intent"),Line.Intent,0,W.Schema>=10?8:6); L.Num(TEXT("at"),Line.At,0,1e9);
+                    L.Num(TEXT("speaker"),Line.Speaker,0,ResidentLimit-1); L.Num(TEXT("intent"),Line.Intent,0,W.Schema>=10?8:6); L.Num(TEXT("at"),Line.At,0,1e9);
                     L.Str(TEXT("text"),Line.Text,180); L.Str(TEXT("source"),Line.Source); P.Good&=L.Good; S.Lines.Add(MoveTemp(Line));
                 }
                 C.Good&=P.Good; W.Conversations.Add(MoveTemp(S));
@@ -537,7 +670,7 @@ namespace HearthWorld
 #define STR(Field) P.Str(TEXT(#Field),S.Field)
 #define NUM(Field,Min,Max) P.Num(TEXT(#Field),S.Field,Min,Max)
                 STR(Id); STR(ConversationId); STR(TaskId); STR(Status); STR(Result);
-                NUM(Worker,0,W.PlotCount-1); NUM(Beneficiary,0,W.PlotCount-1); NUM(Action,0,20000);
+                NUM(Worker,0,ResidentLimit-1); NUM(Beneficiary,0,ResidentLimit-1); NUM(Action,0,20000);
 #undef STR
 #undef NUM
                 C.Good&=P.Good; W.Commitments.Add(MoveTemp(S));
@@ -548,7 +681,7 @@ namespace HearthWorld
             {
                 FHearthTransaction T; FRead P{Object(V)};
                 P.Str(TEXT("id"),T.Id); P.Str(TEXT("kind"),T.Kind); P.Str(TEXT("task_id"),T.TaskId); P.Str(TEXT("item"),T.Item);
-                P.Num(TEXT("from"),T.From,-1,W.PlotCount-1); P.Num(TEXT("to"),T.To,-1,W.PlotCount-1);
+                P.Num(TEXT("from"),T.From,-1,ResidentLimit-1); P.Num(TEXT("to"),T.To,-1,ResidentLimit-1);
                 P.Num(TEXT("amount"),T.Amount,1,100000000); P.Num(TEXT("quantity"),T.Quantity,1,100000000); P.Num(TEXT("at"),T.At,0,1e9);
                 C.Good&=P.Good; W.Transactions.Add(MoveTemp(T));
             }
@@ -556,7 +689,7 @@ namespace HearthWorld
             {
                 FHearthTaxAssessment T; FRead P{Object(V)};
                 P.Str(TEXT("id"),T.Id); P.Str(TEXT("source_transaction_id"),T.SourceTransactionId);
-                P.Num(TEXT("resident"),T.Resident,0,W.PlotCount-1); P.Num(TEXT("gross"),T.Gross,1,100000000);
+                P.Num(TEXT("resident"),T.Resident,0,ResidentLimit-1); P.Num(TEXT("gross"),T.Gross,1,100000000);
                 P.Num(TEXT("tax"),T.Tax,0,T.Gross); P.Num(TEXT("net"),T.Net,0,T.Gross);
                 P.Num(TEXT("remainder_before"),T.RemainderBefore,0,99); P.Num(TEXT("remainder_after"),T.RemainderAfter,0,99); P.Num(TEXT("at"),T.At,0,1e9);
                 P.Bool(TEXT("legacy_exempt"),T.bLegacyExempt);
@@ -567,23 +700,60 @@ namespace HearthWorld
                 for(const auto& V:C.Array(TEXT("wage_payables"),100000))
                 {
                     FHearthWagePayable S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); P.Str(TEXT("task_id"),S.TaskId); P.Str(TEXT("status"),S.Status);
-                    P.Num(TEXT("worker"),S.Worker,0,W.PlotCount-1); P.Num(TEXT("amount"),S.Amount,1,1000);
+                    P.Num(TEXT("worker"),S.Worker,0,ResidentLimit-1); P.Num(TEXT("amount"),S.Amount,1,1000);
                     if(W.Schema>=7) P.Bool(TEXT("tax_funded"),S.bTaxFunded);
                     // Earlier schema-nine saves funded every wage from the treasury.
-                    if(W.Schema>=9 && P.J.IsValid() && P.J->HasField(TEXT("funder"))) P.Num(TEXT("funder"),S.Funder,-1,W.PlotCount-1);
+                    if(W.Schema>=9 && P.J.IsValid() && P.J->HasField(TEXT("funder"))) P.Num(TEXT("funder"),S.Funder,-1,ResidentLimit-1);
                     C.Good&=P.Good; W.WagePayables.Add(MoveTemp(S));
+                }
+                if(W.Schema>=12 && Root->HasField(TEXT("service_duties"))) for(const auto& V:C.Array(TEXT("service_duties"),1000))
+                {
+                    FHearthServiceDutyRecord D; FRead P{Object(V)};
+                    P.Str(TEXT("id"),D.Id); P.Str(TEXT("task_id"),D.TaskId); P.Str(TEXT("kind"),D.Kind); P.Str(TEXT("status"),D.Status);
+                    P.Num(TEXT("resident"),D.Resident,10,12); P.Num(TEXT("wage"),D.Wage,2,3); P.Num(TEXT("progress"),D.Progress,0,1);
+                    if(P.J.IsValid() && P.J->HasField(TEXT("duty_seconds"))) P.Num(TEXT("duty_seconds"),D.DutySeconds,0,1200);
+                    else D.DutySeconds=D.Progress*1200.f;
+                    if(P.J.IsValid() && P.J->HasField(TEXT("shift_seconds"))) P.Num(TEXT("shift_seconds"),D.ShiftSeconds,600,1200);
+                    else D.ShiftSeconds=1200.f;
+                    P.Num(TEXT("move_speed"),D.MoveSpeed,1,1000);
+                    if(P.J.IsValid() && P.J->HasField(TEXT("patrol_point"))) P.Num(TEXT("patrol_point"),D.PatrolPoint,0,2);
+                    if(P.J.IsValid() && P.J->HasField(TEXT("next_duty_at"))) P.Num(TEXT("next_duty_at"),D.NextDutyAt,0,1e9);
+                    if(P.J.IsValid() && P.J->HasField(TEXT("wage_paid"))) P.Bool(TEXT("wage_paid"),D.bWagePaid);
+                    P.Vector(TEXT("anchor"),D.Anchor);
+                    C.Good&=P.Good; W.ServiceDuties.Add(MoveTemp(D));
+                }
+                if(W.Schema>=12 && Root->HasField(TEXT("freight_orders"))) for(const auto& V:C.Array(TEXT("freight_orders"),1000))
+                {
+                    FHearthFreightOrder O; FRead P{Object(V)};
+                    P.Str(TEXT("id"),O.Id); P.Str(TEXT("project_id"),O.ProjectId); P.Str(TEXT("status"),O.Status);
+                    P.Num(TEXT("carter"),O.Carter,12,12); P.Num(TEXT("cargo_type"),O.CargoType,4,4); P.Num(TEXT("cargo_quantity"),O.CargoQuantity,1,6); P.Num(TEXT("phase"),O.Phase,0,3);
+                    P.Vector(TEXT("source"),O.Source); P.Vector(TEXT("destination"),O.Destination); P.Vector(TEXT("vehicle_position"),O.VehiclePosition); P.Num(TEXT("vehicle_yaw"),O.VehicleYaw,-360,360); P.Num(TEXT("wheel_distance_cm"),O.WheelDistanceCm,0,1e9);
+                    if(P.J.IsValid() && P.J->HasField(TEXT("stop_remaining"))) P.Num(TEXT("stop_remaining"),O.StopRemaining,0,5);
+                    P.Num(TEXT("created_at"),O.CreatedAt,0,1e9); if(P.J.IsValid() && P.J->HasField(TEXT("next_route_attempt"))) P.Num(TEXT("next_route_attempt"),O.NextRouteAttempt,0,86400);
+                    const bool bHasRoute=P.J.IsValid() && P.J->HasField(TEXT("vehicle_route"));
+                    const bool bHasRouteYaws=P.J.IsValid() && P.J->HasField(TEXT("vehicle_route_yaws"));
+                    if(bHasRoute!=bHasRouteYaws) P.Good=false;
+                    if(bHasRoute)
+                    {
+                        for(const auto& Point:P.Array(TEXT("vehicle_route"),2048)) { FVector Position; P.Vector(Point,Position); O.VehicleRoute.Add(Position); }
+                        for(const auto& Value:P.Array(TEXT("vehicle_route_yaws"),2048))
+                        {
+                            double Yaw=0; if(!Value.IsValid() || !Value->TryGetNumber(Yaw) || !FMath::IsFinite(Yaw) || Yaw<-360.0 || Yaw>360.0) P.Good=false; else O.VehicleRouteYaws.Add(static_cast<float>(Yaw));
+                        }
+                    }
+                    P.Bool(TEXT("loaded"),O.bLoaded); P.Bool(TEXT("wage_paid"),O.bWagePaid); P.Bool(TEXT("vehicle_known"),O.bVehicleKnown); if(P.J.IsValid() && P.J->HasField(TEXT("paused_for_needs"))) P.Bool(TEXT("paused_for_needs"),O.bPausedForNeeds); if(P.J.IsValid() && P.J->HasField(TEXT("carter_attached"))) P.Bool(TEXT("carter_attached"),O.bCarterAttached); C.Good&=P.Good; W.FreightOrders.Add(MoveTemp(O));
                 }
                 for(const auto& V:C.Array(TEXT("trade_offers"),100000))
                 {
                     FHearthTradeOffer S; FRead P{Object(V)}; P.Str(TEXT("id"),S.Id); if(P.J.IsValid()) P.J->TryGetStringField(TEXT("conversation_id"),S.ConversationId); P.Str(TEXT("status"),S.Status); P.Str(TEXT("result"),S.Result);
-                    P.Num(TEXT("seller"),S.Seller,0,W.PlotCount-1); P.Num(TEXT("buyer"),S.Buyer,0,W.PlotCount-1);
+                    P.Num(TEXT("seller"),S.Seller,0,ResidentLimit-1); P.Num(TEXT("buyer"),S.Buyer,0,ResidentLimit-1);
                     P.Num(TEXT("quantity"),S.Quantity,1,1000); P.Num(TEXT("price"),S.Price,1,1000000); P.Num(TEXT("reserved_quantity"),S.ReservedQuantity,0,1000);
                     P.Num(TEXT("remaining"),S.Remaining,0,1000); C.Good&=P.Good; W.TradeOffers.Add(MoveTemp(S));
                 }
                 if(W.Schema>=10) for(const auto& V:C.Array(TEXT("tile_orders"),100000))
                 {
                     FHearthTileOrder O; FRead P{Object(V)}; P.Str(TEXT("id"),O.Id); P.Str(TEXT("conversation_id"),O.ConversationId); P.Str(TEXT("status"),O.Status); P.Str(TEXT("result"),O.Result);
-                    P.Num(TEXT("customer"),O.Customer,0,W.PlotCount-1); P.Num(TEXT("potter"),O.Potter,0,W.PlotCount-1); P.Num(TEXT("clay_quantity"),O.ClayQuantity,4,4); P.Num(TEXT("tile_quantity"),O.TileQuantity,6,6); P.Num(TEXT("price"),O.Price,4,4);
+                    P.Num(TEXT("customer"),O.Customer,0,ResidentLimit-1); P.Num(TEXT("potter"),O.Potter,0,ResidentLimit-1); P.Num(TEXT("clay_quantity"),O.ClayQuantity,4,4); P.Num(TEXT("tile_quantity"),O.TileQuantity,6,6); P.Num(TEXT("price"),O.Price,4,4);
                     P.Num(TEXT("reserved_clay"),O.ReservedClay,0,4); P.Num(TEXT("reserved_tiles"),O.ReservedTiles,0,6); P.Num(TEXT("escrow"),O.Escrow,0,4); P.Num(TEXT("remaining"),O.Remaining,0,1e6); C.Good&=P.Good; W.TileOrders.Add(MoveTemp(O));
                 }
             }
@@ -596,12 +766,12 @@ namespace HearthWorld
             HearthPublicWorks::Populate(Capacity);
             // Match the bounded canonical plan, including large modular projects.
             const int32 PartLimit=FMath::Max(100,Capacity.Parts.Num());
-            P.Num(TEXT("king"),Q.King,-1,W.PlotCount-1); P.Num(TEXT("site"),Q.Site,-1,W.Sites.Num()-1); P.Num(TEXT("completed"),Q.Completed,0,PartLimit); P.Num(TEXT("approved_at"),Q.ApprovedAt,0,1e9);
+            P.Num(TEXT("king"),Q.King,-1,ResidentLimit-1); P.Num(TEXT("site"),Q.Site,-1,W.Sites.Num()-1); P.Num(TEXT("completed"),Q.Completed,0,PartLimit); P.Num(TEXT("approved_at"),Q.ApprovedAt,0,1e9);
             const auto& Stock=P.Array(TEXT("stock"),3); const auto& Grants=P.Array(TEXT("grants"),3); if(Stock.Num()!=3 || Grants.Num()!=3) P.Good=false;
             for(int32 I=0;I<3 && I<Stock.Num();++I) { double N=0; if(!Stock[I]->TryGetNumber(N)||N<0||N!=FMath::FloorToDouble(N)) P.Good=false; else Q.Stock[I]=static_cast<int32>(N); if(!Grants[I]->TryGetNumber(N)||N<0||N!=FMath::FloorToDouble(N)) P.Good=false; else Q.Grants[I]=static_cast<int32>(N); }
             for(const auto& V:P.Array(TEXT("parts"),PartLimit))
             {
-                FHearthPublicPart S; FRead X{Object(V)}; X.Str(TEXT("id"),S.Id); X.Str(TEXT("asset"),S.Asset); X.Str(TEXT("task_id"),S.TaskId); X.Str(TEXT("status"),S.Status); X.Vector(TEXT("offset"),S.Offset); X.Num(TEXT("stage"),S.Stage,1,13); X.Num(TEXT("worker"),S.Worker,-1,W.PlotCount-1);
+                FHearthPublicPart S; FRead X{Object(V)}; X.Str(TEXT("id"),S.Id); X.Str(TEXT("asset"),S.Asset); X.Str(TEXT("task_id"),S.TaskId); X.Str(TEXT("status"),S.Status); X.Vector(TEXT("offset"),S.Offset); X.Num(TEXT("stage"),S.Stage,1,13); X.Num(TEXT("worker"),S.Worker,-1,ResidentLimit-1);
                 const auto& A=X.Array(TEXT("required"),3); const auto& B=X.Array(TEXT("reserved"),3); const auto& D=X.Array(TEXT("delivered"),3); if(A.Num()!=3||B.Num()!=3||D.Num()!=3) X.Good=false;
                 for(int32 I=0;I<3 && I<A.Num();++I) { double N=0; if(!A[I]->TryGetNumber(N)||N<0||N!=FMath::FloorToDouble(N)) X.Good=false; else S.Required[I]=static_cast<int32>(N); if(!B[I]->TryGetNumber(N)||N<0||N!=FMath::FloorToDouble(N)) X.Good=false; else S.Reserved[I]=static_cast<int32>(N); if(!D[I]->TryGetNumber(N)||N<0||N!=FMath::FloorToDouble(N)) X.Good=false; else S.Delivered[I]=static_cast<int32>(N); }
                 P.Good&=X.Good; Q.Parts.Add(MoveTemp(S));
@@ -609,7 +779,7 @@ namespace HearthWorld
             // Same order cap as the live procurement path; the document also has a 64 MiB limit.
             for(const auto& V:P.Array(TEXT("orders"),100000))
             {
-                FHearthSupplyOrder S; FRead X{Object(V)}; X.Str(TEXT("id"),S.Id); X.Str(TEXT("project_id"),S.ProjectId); X.Str(TEXT("status"),S.Status); X.Str(TEXT("result"),S.Result); X.Str(TEXT("origin"),S.Origin); X.Num(TEXT("seller"),S.Seller,0,W.PlotCount-1); X.Num(TEXT("quantity"),S.Quantity,1,1); X.Num(TEXT("price"),S.Price,2,2); X.Num(TEXT("reserved_quantity"),S.ReservedQuantity,0,1); X.Num(TEXT("escrow"),S.Escrow,0,2); X.Num(TEXT("remaining"),S.Remaining,0,1e6); P.Good&=X.Good; Q.Orders.Add(MoveTemp(S));
+                FHearthSupplyOrder S; FRead X{Object(V)}; X.Str(TEXT("id"),S.Id); X.Str(TEXT("project_id"),S.ProjectId); X.Str(TEXT("status"),S.Status); X.Str(TEXT("result"),S.Result); X.Str(TEXT("origin"),S.Origin); X.Num(TEXT("seller"),S.Seller,0,ResidentLimit-1); X.Num(TEXT("quantity"),S.Quantity,1,1); X.Num(TEXT("price"),S.Price,2,2); X.Num(TEXT("reserved_quantity"),S.ReservedQuantity,0,1); X.Num(TEXT("escrow"),S.Escrow,0,2); X.Num(TEXT("remaining"),S.Remaining,0,1e6); P.Good&=X.Good; Q.Orders.Add(MoveTemp(S));
             }
             C.Good&=P.Good;
         }
@@ -631,6 +801,7 @@ namespace HearthWorld
                 W.StructurePlans.Add(MoveTemp(Plan));
             }
         }
+        TSet<FString> MarketTaskIds;
         if(Root->HasField(TEXT("world_requests")))
         {
             FString RequestError;
@@ -639,12 +810,57 @@ namespace HearthWorld
             for(const auto& Request:W.WorldRequests) for(const auto& Id:Request.RequesterIds)
                 if(!W.People.ContainsByPredicate([&](const auto& P){return P.Person.StableId==Id;}))
                 { Error=TEXT("主持人需求引用了不存在的村民"); return false; }
+            // A life-kit record is an installation ledger, so it must still
+            // point at the exact resident-owned home request that authorized it.
+            for(const auto& Pair:W.OrganicHomes)
+            {
+                if(Pair.Value.MarketKitInstalled.IsEmpty() && !Pair.Value.bHasMarketKitPending) continue;
+                const int32 Owner=W.People.IndexOfByPredicate([&](const FHearthSavedResident& Saved){ return Saved.Person.StableId==Pair.Key; });
+                if(Owner<0 || W.Schema<12) { Error=TEXT("生活物件账本缺少居民归属"); return false; }
+                const auto VerifyKitRequest=[&](const FOrganicMarketKitRecord& Kit)
+                {
+                    if(MarketTaskIds.Contains(Kit.TaskId)) return false;
+                    MarketTaskIds.Add(Kit.TaskId);
+                    const FHearthWorldRequest* Request=W.WorldRequests.FindByPredicate([&](const FHearthWorldRequest& Candidate){ return Candidate.Id==Kit.RequestId; });
+                    return Request && Request->Category==TEXT("asset") && Request->Status==TEXT("proposed")
+                        && Request->RequesterIds.Num()==1 && Request->RequesterIds[0]==Pair.Key
+                        && W.People[Owner].Person.Plot>=0 && W.People[Owner].Person.Plot<W.PlotCount
+                        && Request->bHasAssetContext && Request->AssetContext.TargetId==W.PlotIds[W.People[Owner].Person.Plot];
+                };
+                for(const FOrganicMarketKitRecord& Kit:Pair.Value.MarketKitInstalled)
+                {
+                    if(!VerifyKitRequest(Kit)) { Error=TEXT("已安装生活物件的请求归属无效"); return false; }
+                    const auto Payments=W.Transactions.FilterByPredicate([&](const FHearthTransaction& T){return T.TaskId==Kit.TaskId && T.Kind==TEXT("market_kit_purchase");});
+                    if(Payments.Num()!=1 || Payments[0].From!=Owner || Payments[0].To!=-1 || Payments[0].Item!=Kit.ModuleId
+                        || Payments[0].Quantity!=Kit.Cost.Total() || Payments[0].Amount!=Kit.Cost.Total())
+                    { Error=TEXT("已安装生活物件缺少唯一真实材料付款"); return false; }
+                }
+                if(Pair.Value.bHasMarketKitPending && !VerifyKitRequest(Pair.Value.MarketKitPending))
+                { Error=TEXT("待安装生活物件的请求归属无效"); return false; }
+                if(Pair.Value.bHasMarketKitPending)
+                {
+                    const auto& Kit=Pair.Value.MarketKitPending;
+                    const auto& Resident=W.People[Owner].Person;
+                    const bool bOwnerWorking=Resident.ActiveTaskId==Kit.TaskId;
+                    const bool bTravel=Kit.Status==TEXT("traveling") && Resident.Task==EHearthTask::OrganicTravel;
+                    const bool bWork=Kit.Status==TEXT("working") && Resident.Task==EHearthTask::OrganicWork;
+                    if((Kit.Status==TEXT("pending") && bOwnerWorking)
+                        || (Kit.Status!=TEXT("pending") && (!bOwnerWorking || (!bTravel && !bWork))))
+                    { Error=TEXT("生活物件进度与居民的真实施工任务不一致"); return false; }
+                }
+            }
+        }
+        else
+        {
+            for(const auto& Pair:W.OrganicHomes)
+                if(!Pair.Value.MarketKitInstalled.IsEmpty() || Pair.Value.bHasMarketKitPending)
+                { Error=TEXT("生活物件账本缺少来源请求"); return false; }
         }
         const FObject* Totals=nullptr;
         if(!Root->TryGetObjectField(TEXT("totals"),Totals) || (*Totals)->Values.Num()>1000) C.Good=false;
         else for(const auto& Pair:(*Totals)->Values)
         { int32 Count=0; FRead T{*Totals}; T.Num(*Pair.Key,Count,0,1e8); C.Good&=T.Good && Pair.Key.Len()<100; W.Totals.Add(FString(Pair.Key),Count); }
-        if(!C.Good || W.People.Num()!=W.PlotCount || !Guid(W.Id) || !Guid(W.Run)) return false;
+        if(!C.Good || W.People.Num()!=W.PopulationCount || !Guid(W.Id) || !Guid(W.Run)) return false;
         if(W.Schema<5)
         {
             for(auto& Site:W.Sites) if(!Site.BuildPlanId.IsEmpty()) HearthCottage::Populate(Site);
@@ -687,6 +903,24 @@ namespace HearthWorld
         {
             const auto& Saved=W.People[I]; const auto& R=Saved.Person;
             if(!Unique(R.StableId) || (!R.ActiveTaskId.IsEmpty() && !Unique(R.ActiveTaskId)) || !Guid(Saved.PendingOperation,true) || R.Name.IsEmpty()) return Reject(FString::Printf(TEXT("居民 %d 身份或任务 ID"),I));
+            const bool Shared=!R.ServiceRoleKey.IsEmpty() || !R.ResidenceId.IsEmpty();
+            if(W.Schema>=12)
+            {
+                static const TCHAR* ServiceKeys[]={TEXT("gatekeeper"),TEXT("royal_guard"),TEXT("carter")};
+                if((I<10 && Shared) || (I>=10 && (!Shared || R.ServiceRoleKey!=ServiceKeys[I-10])))
+                    return Reject(FString::Printf(TEXT("居民 %d 服务身份位置"),I));
+            }
+            if(Shared)
+            {
+                const bool KnownRole=R.ServiceRoleKey==TEXT("gatekeeper") || R.ServiceRoleKey==TEXT("royal_guard") || R.ServiceRoleKey==TEXT("carter");
+                if(W.Schema<12 || !KnownRole || R.ResidenceId!=TEXT("v4_public_life_rest_anchor") || R.Plot!=-1 || R.Coins<0 || R.PersonalPlanks!=0 || R.PersonalTiles!=0
+                    || !R.HouseBlueprint.IsEmpty() || !R.WallMaterial.IsEmpty() || !R.RoofMaterial.IsEmpty()
+                    || R.BuildingArchetype!=TEXT("") || R.ServiceRoleKey.IsEmpty() || R.ResidenceId.IsEmpty())
+                    return Reject(FString::Printf(TEXT("居民 %d 共享居住标记"),I));
+                if(R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing && R.Task!=EHearthTask::LifeTravel && R.Task!=EHearthTask::LifeActivity)
+                    return Reject(FString::Printf(TEXT("居民 %d 共享居民任务"),I));
+            }
+            else if(!R.ServiceRoleKey.IsEmpty() || !R.ResidenceId.IsEmpty()) return Reject(FString::Printf(TEXT("居民 %d 不完整服务居民标记"),I));
             const bool NoHouseStyle=R.HouseBlueprint.IsEmpty() && R.WallMaterial.IsEmpty() && R.RoofMaterial.IsEmpty();
             const bool Cottage=R.HouseBlueprint==TEXT("cottage_terracotta") && R.WallMaterial==TEXT("plaster") && R.RoofMaterial==TEXT("terracotta");
             const bool Longhouse=R.HouseBlueprint==TEXT("longhouse_slateblue") && R.WallMaterial==TEXT("timber") && R.RoofMaterial==TEXT("slateblue");
@@ -702,13 +936,35 @@ namespace HearthWorld
             if(Saved.bPending && (!Guid(Saved.PendingOperation) || (W.Schema<10 && R.Task!=EHearthTask::Choosing && R.Task!=EHearthTask::LifeChoosing && !(R.Task==EHearthTask::LifeActivity && !R.ConversationId.IsEmpty())))) return Reject(FString::Printf(TEXT("居民 %d 待处理模型请求"),I));
             if(R.Plot>=0 && (W.Owners[R.Plot]!=I || R.DeliveredWood>W.Costs[R.Plot])) return Reject(FString::Printf(TEXT("居民 %d 住宅地块引用"),I));
             const bool IdleChoice=R.Task==EHearthTask::Choosing || R.Task==EHearthTask::LifeChoosing;
-            if(!IdleChoice && (R.Plot<0 || R.ActiveTaskId.IsEmpty())) return Reject(FString::Printf(TEXT("居民 %d 活动任务引用"),I));
+            if(!IdleChoice && ((!Shared && R.Plot<0) || R.ActiveTaskId.IsEmpty())) return Reject(FString::Printf(TEXT("居民 %d 活动任务引用"),I));
             if(R.Task==EHearthTask::ToWood && R.Source<0) return Reject(FString::Printf(TEXT("居民 %d 木材来源"),I));
-            if((R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity) && R.LifeAction!=50
+            const bool ServiceDutyAction=Shared && R.LifeAction>=60 && R.LifeAction<=62;
+            if((R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity) && R.LifeAction!=50 && !ServiceDutyAction
                 && (R.LifeAction<0 || R.LifeAction>=3+W.People.Num() || R.LifeAction==3+I)) return Reject(FString::Printf(TEXT("居民 %d 生活行动"),I));
-            if((R.Task>=EHearthTask::Settled) && R.BuildProgress<1.f) return Reject(FString::Printf(TEXT("居民 %d 尚无住宅却执行后续任务"),I));
+            const bool OrganicConstructionTask=R.Task==EHearthTask::OrganicTravel || R.Task==EHearthTask::OrganicWork;
+            const FOrganicConstructionHomeState* OrganicHome=W.OrganicHomes.Find(R.StableId);
+            if(OrganicConstructionTask)
+            {
+                if(!OrganicHome) return Reject(FString::Printf(TEXT("居民 %d 有机住所账本引用"),I));
+                const bool MarketTask=OrganicHome->bHasMarketKitPending
+                    && OrganicHome->MarketKitPending.TaskId==R.ActiveTaskId;
+                if(MarketTask)
+                {
+                    const auto& Kit=OrganicHome->MarketKitPending;
+                    if((R.Task==EHearthTask::OrganicTravel && Kit.Status!=TEXT("traveling"))
+                        || (R.Task==EHearthTask::OrganicWork && (Kit.Status!=TEXT("working") || !R.Route.IsEmpty()
+                            || FVector::Dist2D(Saved.Position,Kit.Anchor)>45.f)))
+                        return Reject(FString::Printf(TEXT("居民 %d 生活物件施工阶段"),I));
+                    if(!OrganicHome->ActivePieceKey.IsEmpty() || R.ProductionSite!=-1 || R.ProductionOp!=-1 || R.CargoAmount!=0)
+                        return Reject(FString::Printf(TEXT("居民 %d 生活物件混入旧施工字段"),I));
+                }
+                else if(OrganicHome->ActivePieceKey.IsEmpty())
+                    return Reject(FString::Printf(TEXT("居民 %d 普通有机施工无活动构件"),I));
+            }
+            const bool SharedLifeTask=Shared && (R.Task==EHearthTask::Choosing || R.Task==EHearthTask::LifeChoosing || R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity);
+            if((R.Task>=EHearthTask::Settled && !OrganicConstructionTask && !SharedLifeTask) && R.BuildProgress<1.f) return Reject(FString::Printf(TEXT("居民 %d 尚无住宅却执行后续任务"),I));
             if(R.Plot<0 && (R.CarriedWood || R.DeliveredWood || R.BuildProgress>0)) return Reject(FString::Printf(TEXT("居民 %d 无地块住宅进度"),I));
-            if(R.BuildProgress>0 && R.DeliveredWood!=W.Costs[R.Plot]) return Reject(FString::Printf(TEXT("居民 %d 住宅材料"),I));
+            if(R.BuildProgress>0 && (R.Plot<0 || R.DeliveredWood!=W.Costs[R.Plot])) return Reject(FString::Printf(TEXT("居民 %d 住宅材料"),I));
             if(R.HistoryIndex>=0 && (!W.History.IsValidIndex(R.HistoryIndex) || W.History[R.HistoryIndex].Resident!=I || W.History[R.HistoryIndex].Run!=W.Run)) return Reject(FString::Printf(TEXT("居民 %d 历史引用"),I));
             const bool Production=R.Task>=EHearthTask::ProductionTravel && R.Task<=EHearthTask::ProductionDeposit;
             const auto* TileDelivery=W.TileOrders.FindByPredicate([&](const FHearthTileOrder& O){return O.Potter==I && O.Id==R.ActiveTaskId && O.Status==TEXT("delivering");});
@@ -737,6 +993,77 @@ namespace HearthWorld
             AccountedManufactured[0]+=R.PersonalPlanks;
             AccountedTiles+=R.PersonalTiles;
             Accounted[1]+=R.CarriedWood+R.DeliveredWood;
+        }
+        if(W.Schema>=12)
+        {
+            TSet<FString> DutyIds; int32 ActiveDutyByResident[3]={0,0,0};
+            for(const auto& D:W.ServiceDuties)
+            {
+                if(!Guid(D.Id) || !Guid(D.TaskId) || DutyIds.Contains(D.Id) || D.Kind.IsEmpty()
+                    || (D.Kind!=TEXT("gate_watch") && D.Kind!=TEXT("guard_patrol") && D.Kind!=TEXT("stable_check"))
+                    || (D.Status!=TEXT("active") && D.Status!=TEXT("completed") && D.Status!=TEXT("cancelled"))
+                    || D.Resident<10 || D.Resident>=W.People.Num() || D.Wage<2 || D.Wage>3 || D.Progress<0.f || D.Progress>1.f || D.DutySeconds<0.f || D.DutySeconds>D.ShiftSeconds || (D.ShiftSeconds!=600.f && D.ShiftSeconds!=1200.f) || D.MoveSpeed<=0.f || D.NextDutyAt<0.0
+                    || D.PatrolPoint<0 || D.PatrolPoint>2 || (D.Kind!=TEXT("guard_patrol") && D.PatrolPoint!=0) || FMath::Abs(D.Progress-D.DutySeconds/D.ShiftSeconds)>.01f)
+                    return Reject(TEXT("服务值勤记录字段"));
+                if(DutyIds.Contains(D.TaskId)) return Reject(TEXT("重复服务值勤任务"));
+                DutyIds.Add(D.Id); DutyIds.Add(D.TaskId);
+                if(D.Status==TEXT("active"))
+                {
+                    const FHearthResident& DutyResident=W.People[D.Resident].Person;
+                    const int32 ExpectedAction=D.Kind==TEXT("gate_watch")?60:D.Kind==TEXT("guard_patrol")?61:62;
+                    const int32 DutyResidentIndex=D.Resident;
+                    const int32 Slot=DutyResidentIndex-10;
+                    if(++ActiveDutyByResident[Slot]>1 || DutyResident.ActiveTaskId!=D.TaskId
+                        || (D.Kind==TEXT("gate_watch") && DutyResident.ServiceRoleKey!=TEXT("gatekeeper"))
+                        || (D.Kind==TEXT("guard_patrol") && DutyResident.ServiceRoleKey!=TEXT("royal_guard"))
+                        || (D.Kind==TEXT("stable_check") && DutyResident.ServiceRoleKey!=TEXT("carter"))
+                        || DutyResident.LifeAction!=ExpectedAction
+                        || (DutyResident.Task!=EHearthTask::LifeTravel && DutyResident.Task!=EHearthTask::LifeActivity)
+                        || (!DutyResident.ConversationId.IsEmpty() && (!DutyResident.Route.IsEmpty() || D.Kind==TEXT("stable_check")
+                            || DutyResident.Task!=EHearthTask::LifeActivity
+                            || !W.Conversations.ContainsByPredicate([&DutyResident,DutyResidentIndex](const FHearthConversation& C)
+                            { return !C.bClosed && C.Id==DutyResident.ConversationId && C.Second==DutyResidentIndex; }))))
+                        return Reject(TEXT("服务值勤任务与居民状态不一致"));
+                    if(!W.WagePayables.ContainsByPredicate([&](const FHearthWagePayable& P){return P.TaskId==D.TaskId && P.Worker==D.Resident && P.Amount==D.Wage && (D.bWagePaid?P.Status==TEXT("paid"):P.Status!=TEXT("cancelled") && P.Status!=TEXT("paid"));}))
+                        return Reject(TEXT("服务值勤缺少工资预留"));
+                }
+            }
+            TSet<FString> FreightIds; int32 ActiveFreight=0;
+            for(const auto& O:W.FreightOrders)
+            {
+                if(!Guid(O.Id) || FreightIds.Contains(O.Id) || !Guid(O.ProjectId) || O.ProjectId!=W.PublicProject.Id || O.Carter!=12
+                    || (O.Status!=TEXT("transporting") && O.Status!=TEXT("completed") && O.Status!=TEXT("cancelled"))
+                    || O.CargoType!=4 || O.CargoQuantity<1 || O.CargoQuantity>6 || O.Phase<0 || O.Phase>3
+                    || (O.Status==TEXT("transporting") && O.bLoaded!=(O.Phase>=2))
+                    || (O.Status!=TEXT("transporting") && O.bLoaded)
+                    || (O.bPausedForNeeds && (!O.bLoaded || O.Status!=TEXT("transporting")))
+                    || !O.bVehicleKnown || O.VehicleYaw<-360.f || O.VehicleYaw>360.f || O.WheelDistanceCm<0.f || O.StopRemaining<0.f || O.StopRemaining>5.f || O.CreatedAt<0.0 || O.NextRouteAttempt<0.0 || O.NextRouteAttempt>86400.0 || FVector::DistSquared2D(O.Source,O.Destination)<1.f
+                    || O.VehicleRoute.Num()!=O.VehicleRouteYaws.Num() || O.VehicleRoute.Num()>2048
+                    || (O.bCarterAttached && (O.Status!=TEXT("transporting") || O.bPausedForNeeds)))
+                    return Reject(TEXT("车夫货运订单字段"));
+                for(int32 RouteIndex=0;RouteIndex<O.VehicleRoute.Num();++RouteIndex)
+                    if(O.VehicleRoute[RouteIndex].ContainsNaN() || !FMath::IsFinite(O.VehicleRouteYaws[RouteIndex]) || O.VehicleRouteYaws[RouteIndex]<-360.f || O.VehicleRouteYaws[RouteIndex]>360.f)
+                        return Reject(TEXT("车夫货运路线点"));
+                FreightIds.Add(O.Id);
+                if(O.Status==TEXT("transporting"))
+                {
+                    ++ActiveFreight;
+                    if(ActiveFreight>1 || !W.People.IsValidIndex(O.Carter)
+                        || (!O.bPausedForNeeds && W.People[O.Carter].Person.ActiveTaskId!=O.Id)
+                        || (O.bPausedForNeeds ? (W.People[O.Carter].Person.LifeAction!=62 && W.People[O.Carter].Person.LifeAction!=50 && W.People[O.Carter].Person.LifeAction!=0) : W.People[O.Carter].Person.LifeAction!=62)
+                        || (W.People[O.Carter].Person.Task!=EHearthTask::LifeTravel && W.People[O.Carter].Person.Task!=EHearthTask::LifeActivity && W.People[O.Carter].Person.Task!=EHearthTask::LifeChoosing)
+                        || W.People[O.Carter].Person.CargoAmount!=0) return Reject(TEXT("车夫货运任务引用"));
+                    if(!W.WagePayables.ContainsByPredicate([&O](const FHearthWagePayable& P)
+                        { return P.TaskId==O.Id && P.Worker==O.Carter && P.Amount==3 && (O.bWagePaid?P.Status==TEXT("paid"):P.Status==TEXT("reserved") || P.Status==TEXT("owed") || P.Status==TEXT("unfunded")); }))
+                        return Reject(TEXT("车夫货运工资凭据"));
+                }
+                else if(O.Status==TEXT("completed") && !W.WagePayables.ContainsByPredicate([&O](const FHearthWagePayable& P)
+                    { return P.TaskId==O.Id && P.Worker==O.Carter && P.Amount==3 && P.Status==TEXT("paid"); })) return Reject(TEXT("车夫货运完工工资"));
+            }
+            TSet<FString> ServiceRoles; int32 SharedCount=0;
+            for(const auto& Saved:W.People) if(!Saved.Person.ServiceRoleKey.IsEmpty())
+            { if(ServiceRoles.Contains(Saved.Person.ServiceRoleKey)) return Reject(TEXT("重复服务居民职责")); ServiceRoles.Add(Saved.Person.ServiceRoleKey); ++SharedCount; }
+            if(SharedCount!=3 || !ServiceRoles.Contains(TEXT("gatekeeper")) || !ServiceRoles.Contains(TEXT("royal_guard")) || !ServiceRoles.Contains(TEXT("carter"))) return Reject(TEXT("服务居民 roster 不完整"));
         }
         Error=TEXT("世界存档校验失败：住宅地块所有权");
         for(int32 I=0;I<W.PlotCount;++I) if(W.Owners[I]>=0 && W.People[W.Owners[I]].Person.Plot!=I) return false;
@@ -827,20 +1154,31 @@ namespace HearthWorld
             }
         }
         const int64 StartingTreasury=W.PlotCount==HearthVillageLimits::Town3Population?HearthVillageLimits::Town3TreasuryCoins:HearthVillageLimits::LegacyTreasuryCoins;
-        int64 ExpectedTreasury=StartingTreasury; TArray<int64> ExpectedWallets; ExpectedWallets.Init(12,W.PlotCount);
+        int64 ExpectedTreasury=StartingTreasury; TArray<int64> ExpectedWallets;
+        if(W.Schema>=12) { ExpectedWallets.Init(0,ResidentLimit); for(int32 I=0;I<FMath::Min(10,ResidentLimit);++I) ExpectedWallets[I]=12; }
+        else ExpectedWallets.Init(12,ResidentLimit);
         Error=TEXT("世界存档校验失败：交易流水");
         for(const auto& T:W.Transactions)
         {
             const FString Key=T.Kind+TEXT("|")+T.TaskId;
             if(!Unique(T.Id) || !Guid(T.TaskId) || TransactionKeys.Contains(Key) || (T.From==T.To && !(W.Schema>=9 && T.Kind==TEXT("wage") && T.From>=0))
-                || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade") && T.Kind!=TEXT("public_purchase") && T.Kind!=TEXT("tile_order") && T.Kind!=TEXT("income_tax"))
+                || (T.Kind!=TEXT("wage") && T.Kind!=TEXT("food_purchase") && T.Kind!=TEXT("plank_trade") && T.Kind!=TEXT("public_purchase") && T.Kind!=TEXT("tile_order") && T.Kind!=TEXT("income_tax") && T.Kind!=TEXT("organic_material_purchase") && T.Kind!=TEXT("market_kit_purchase"))
                 || (T.Kind==TEXT("wage") && ((W.Schema<9 && T.From!=-1) || T.To<0 || T.Item!=TEXT("labor") || T.Quantity!=1))
                 || (T.Kind==TEXT("food_purchase") && (T.From<0 || T.To!=-1 || T.Item!=TEXT("food") || T.Quantity!=1 || T.Amount!=1))
                 || (T.Kind==TEXT("plank_trade") && (T.From<0 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))
                 || (T.Kind==TEXT("tile_order") && (W.Schema<10 || T.From<0 || T.To<0 || T.Item!=TEXT("tiles") || T.Quantity!=6 || T.Amount!=4))
                 || (T.Kind==TEXT("public_purchase") && (T.From!=-1 || T.To<0 || T.Item!=TEXT("plank") || T.Quantity!=1 || T.Amount!=2))
-                || (T.Kind==TEXT("income_tax") && (!HasTaxes || T.From<0 || T.To!=-1 || T.Item!=TEXT("income_tax") || T.Quantity!=1))) return false;
+                || (T.Kind==TEXT("income_tax") && (!HasTaxes || T.From<0 || T.To!=-1 || T.Item!=TEXT("income_tax") || T.Quantity!=1))
+                || (T.Kind==TEXT("organic_material_purchase") && (W.Schema<11 || T.From<0 || T.From>=ResidentLimit || T.To!=-1 || T.Item.IsEmpty() || T.Quantity<1 || T.Amount!=T.Quantity))
+                || (T.Kind==TEXT("market_kit_purchase") && (W.Schema<12 || T.From<0 || T.From>=ResidentLimit || T.To!=-1 || T.Item.IsEmpty() || T.Quantity<1 || T.Amount!=T.Quantity))) return false;
             TransactionKeys.Add(Key);
+            if(T.Kind==TEXT("market_kit_purchase"))
+            {
+                const auto* Home=W.OrganicHomes.Find(W.People[T.From].Person.StableId);
+                if(!Home || !Home->MarketKitInstalled.ContainsByPredicate([&](const FOrganicMarketKitRecord& K)
+                    {return K.TaskId==T.TaskId && K.ModuleId==T.Item && K.Cost.Total()==T.Amount;}))
+                    return Reject(TEXT("生活物件付款缺少对应安装记录"));
+            }
             if(T.From<0) ExpectedTreasury-=T.Amount; else ExpectedWallets[T.From]-=T.Amount;
             if(T.To<0) ExpectedTreasury+=T.Amount; else ExpectedWallets[T.To]+=T.Amount;
             if(ExpectedTreasury<0 || ExpectedWallets.ContainsByPredicate([](int64 Balance) { return Balance<0; })) return false;
@@ -862,7 +1200,7 @@ namespace HearthWorld
             TSet<FString> AssessedSources; int32 ExpectedRemainders[HearthVillageLimits::MaxPopulation]={}; int64 Collected=0;
             for(const auto& A:W.TaxAssessments)
             {
-                if(!Unique(A.Id) || !Guid(A.SourceTransactionId) || AssessedSources.Contains(A.SourceTransactionId) || A.Resident<0 || A.Resident>=W.PlotCount) return false;
+                if(!Unique(A.Id) || !Guid(A.SourceTransactionId) || AssessedSources.Contains(A.SourceTransactionId) || A.Resident<0 || A.Resident>=ResidentLimit) return false;
                 const auto* Source=W.Transactions.FindByPredicate([&](const FHearthTransaction& T) { return T.Id==A.SourceTransactionId; });
                 if(!Source || Source->To!=A.Resident || (Source->Kind!=TEXT("wage") && Source->Kind!=TEXT("plank_trade") && Source->Kind!=TEXT("public_purchase") && Source->Kind!=TEXT("tile_order")) || A.Gross!=Source->Amount) return false;
                 const int32 Before=ExpectedRemainders[A.Resident]; const int64 Accrued=static_cast<int64>(A.Gross)*W.TaxRatePercent+Before;
@@ -873,7 +1211,7 @@ namespace HearthWorld
                 ExpectedRemainders[A.Resident]=After; Collected+=Tax; AssessedSources.Add(A.SourceTransactionId);
             }
             if(W.Schema>=6) for(const auto& T:W.Transactions) if((T.Kind==TEXT("wage") || T.Kind==TEXT("plank_trade") || T.Kind==TEXT("public_purchase") || T.Kind==TEXT("tile_order")) && !AssessedSources.Contains(T.Id)) return false;
-            for(int32 I=0;I<W.PlotCount;++I) if(W.TaxRemainders[I]!=ExpectedRemainders[I]) return false;
+            for(int32 I=0;I<ResidentLimit;++I) if(W.TaxRemainders[I]!=ExpectedRemainders[I]) return false;
             CollectedTax=Collected;
         }
         CollectedTax-=PublicPurchaseSpent+PublicEscrow;
@@ -882,8 +1220,8 @@ namespace HearthWorld
         Error=TEXT("世界存档校验失败：工资凭据");
         for(const auto& P:W.WagePayables)
         {
-            if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=W.PlotCount
-                || P.Funder<-1 || P.Funder>=W.PlotCount || (P.Funder>=0 && (W.Schema<9 || P.bTaxFunded))
+            if(!Unique(P.Id) || !Guid(P.TaskId) || PayableByTask.Contains(P.TaskId) || P.Worker<0 || P.Worker>=ResidentLimit
+                || P.Funder<-1 || P.Funder>=ResidentLimit || (P.Funder>=0 && (W.Schema<9 || P.bTaxFunded))
                 || (P.Amount!=2 && P.Amount!=3) || (P.Status!=TEXT("reserved") && P.Status!=TEXT("unfunded") && P.Status!=TEXT("owed") && P.Status!=TEXT("paid") && !(P.bTaxFunded && P.Status==TEXT("cancelled")))) return false;
             if(P.bTaxFunded && (P.Status==TEXT("reserved") || P.Status==TEXT("paid"))) CollectedTax-=P.Amount;
             PayableByTask.Add(P.TaskId,&P);
@@ -921,7 +1259,7 @@ namespace HearthWorld
                 if(!Guid(Q.Id) || (Q.TemplateId!=TEXT("public_wall_6m") && Q.TemplateId!=TEXT("royal_keep_garden_v1") && Q.TemplateId!=TEXT("royal_keep_garden_v2")) || Q.Policy!=TEXT("local_king_fixed_income_tax_25")
                     || (Q.Status!=TEXT("unapproved") && Q.Status!=TEXT("building") && Q.Status!=TEXT("completed")) || Q.Completed<0 || Q.Completed>Q.Parts.Num()
                     || (Q.Status==TEXT("unapproved") && (!Q.ApprovalHistoryId.IsEmpty() || Q.King!=-1 || Q.Site!=-1))) return Reject(TEXT("公共工程基本字段"));
-                if(Q.Status!=TEXT("unapproved") && (!Guid(Q.ApprovalHistoryId) || Q.King<0 || Q.King>=W.PlotCount || !W.People[Q.King].Person.bKing || !W.Sites.IsValidIndex(Q.Site))) return Reject(TEXT("公共工程审批引用"));
+                if(Q.Status!=TEXT("unapproved") && (!Guid(Q.ApprovalHistoryId) || Q.King<0 || Q.King>=ResidentLimit || !W.People[Q.King].Person.bKing || !W.Sites.IsValidIndex(Q.Site))) return Reject(TEXT("公共工程审批引用"));
                 if(Q.Status!=TEXT("unapproved"))
                 {
                     const auto& PublicSite=W.Sites[Q.Site];
@@ -941,7 +1279,7 @@ namespace HearthWorld
                 TSet<FString> PublicIds; int32 Complete=0,Active=0; int64 PublicStock[3]={Q.Stock[0],Q.Stock[1],Q.Stock[2]}; int64 PublicUsed[3]={0,0,0}; int64 PublicInputs[3]={Q.Grants[0],Q.Grants[1],Q.Grants[2]};
                 for(const auto& Part:Q.Parts)
                 {
-                    if(!Guid(Part.TaskId,true) || Part.Id.IsEmpty() || PublicIds.Contains(Part.Id) || Part.Asset.IsEmpty() || Part.Stage<1 || Part.Stage>13 || Part.Worker<-1 || Part.Worker>=W.PlotCount
+                    if(!Guid(Part.TaskId,true) || Part.Id.IsEmpty() || PublicIds.Contains(Part.Id) || Part.Asset.IsEmpty() || Part.Stage<1 || Part.Stage>13 || Part.Worker<-1 || Part.Worker>=ResidentLimit
                         || (Part.Status!=TEXT("waiting") && Part.Status!=TEXT("transporting") && Part.Status!=TEXT("installing") && Part.Status!=TEXT("completed"))) return Reject(TEXT("公共工程构件状态"));
                     PublicIds.Add(Part.Id); const bool Done=Part.Status==TEXT("completed"); if(Done) ++Complete; else if(Part.Worker>=0) ++Active;
                     for(int32 I=0;I<3;++I) { if(Part.Required[I]<0 || Part.Reserved[I]<0 || Part.Delivered[I]<0 || Part.Reserved[I]>Part.Required[I] || Part.Delivered[I]>Part.Required[I] || Part.Reserved[I]+Part.Delivered[I]>Part.Required[I]) return Reject(TEXT("公共工程构件材料状态")); if(Done) PublicUsed[I]+=Part.Required[I]; else PublicUsed[I]+=Part.Reserved[I]+Part.Delivered[I]; }
@@ -977,17 +1315,31 @@ namespace HearthWorld
                 TSet<FString> OrderIds;
                 for(const auto& O:Q.Orders)
                 {
-                    if(!Guid(O.Id) || OrderIds.Contains(O.Id) || O.ProjectId!=Q.Id || O.Quantity!=1 || O.Price!=2 || O.Origin!=TEXT("resident_owned_sawmill_share_or_completed_trade") || O.Seller<0 || O.Seller>=W.PlotCount
+                    if(!Guid(O.Id) || OrderIds.Contains(O.Id) || O.ProjectId!=Q.Id || O.Quantity!=1 || O.Price!=2 || O.Origin!=TEXT("resident_owned_sawmill_share_or_completed_trade") || O.Seller<0 || O.Seller>=ResidentLimit
                         || (O.Status!=TEXT("transporting") && O.Status!=TEXT("completed") && O.Status!=TEXT("cancelled")) || O.ReservedQuantity!=(O.Status==TEXT("transporting")?1:0) || O.Escrow!=(O.Status==TEXT("transporting")?2:0)) return Reject(TEXT("公共采购订单字段"));
                     OrderIds.Add(O.Id); if(O.Status==TEXT("transporting")) { const auto* R=&W.People[O.Seller].Person; if(R->Task!=EHearthTask::SupplyTravel && R->Task!=EHearthTask::SupplyHandover) return Reject(TEXT("公共采购卖家任务")); if(R->ActiveTaskId!=O.Id) return Reject(TEXT("公共采购卖家订单引用")); }
                     const auto* Sale=W.Transactions.FindByPredicate([&](const FHearthTransaction& T){ return T.Kind==TEXT("public_purchase") && T.TaskId==O.Id; });
                     if((O.Status==TEXT("completed"))!=!!Sale || (Sale && (Sale->To!=O.Seller || Sale->Amount!=2))) return Reject(TEXT("公共采购交易引用"));
                     if(O.Status==TEXT("transporting")) { PublicUsed[1]+=O.ReservedQuantity; PublicInputs[1]+=O.ReservedQuantity; } else if(O.Status==TEXT("completed")) PublicInputs[1]+=O.Quantity;
                 }
+                for(const auto& O:W.FreightOrders) if(O.ProjectId==Q.Id && (O.Status==TEXT("transporting") || O.Status==TEXT("completed")))
+                {
+                    const int32 M=O.CargoType-2; if(M<1 || M>2) return Reject(TEXT("车夫货运材料类型"));
+                    // The source-backed grant is recorded at reservation time
+                    // in PublicProject.Grants.  A completed order is already
+                    // represented by Q.Stock; counting its cargo again here
+                    // would mint a second input during validation.
+                    if(O.Status==TEXT("transporting")) PublicUsed[M]+=O.CargoQuantity;
+                }
                 for(int32 I=0;I<3;++I) if(Q.Stock[I]<0 || PublicInputs[I]!=PublicStock[I]+PublicUsed[I]) return Reject(FString::Printf(TEXT("公共工程材料守恒 %d：输入 %lld，库存 %lld，使用 %lld"),I,PublicInputs[I],PublicStock[I],PublicUsed[I]));
                 int64 Held[3]={Q.Stock[0],Q.Stock[1],Q.Stock[2]};
                 for(const auto& Part:Q.Parts) if(Part.Status!=TEXT("completed")) for(int32 I=0;I<3;++I) Held[I]+=Part.Reserved[I]+Part.Delivered[I];
                 for(const auto& O:Q.Orders) if(O.Status==TEXT("transporting")) Held[1]+=O.ReservedQuantity;
+                for(const auto& O:W.FreightOrders) if(O.ProjectId==Q.Id && (O.Status==TEXT("transporting") || O.Status==TEXT("completed")))
+                {
+                    const int32 M=O.CargoType-2; if(M<1 || M>2) return Reject(TEXT("车夫货运材料类型"));
+                    if(O.Status==TEXT("transporting")) Held[M]+=O.CargoQuantity;
+                }
                 Accounted[2]+=Held[0]; AccountedManufactured[0]+=Held[1]; AccountedManufactured[1]+=Held[2];
             }
             else if(Q.Status!=TEXT("unapproved") || !Q.ApprovalHistoryId.IsEmpty() || Q.King!=-1 || Q.Site!=-1 || Q.Completed!=0
@@ -1020,7 +1372,7 @@ namespace HearthWorld
         for(const auto& O:W.TileOrders)
         {
             if(!Guid(O.Id) || TileOrderIds.Contains(O.Id) || O.Customer==O.Potter || O.ClayQuantity!=4 || O.TileQuantity!=6 || O.Price!=4
-                || O.Customer<0 || O.Customer>=W.PlotCount || O.Potter<0 || O.Potter>=W.PlotCount || !W.People[O.Potter].Person.Role.Contains(TEXT("陶工"))
+                || O.Customer<0 || O.Customer>=ResidentLimit || O.Potter<0 || O.Potter>=ResidentLimit || !W.People[O.Potter].Person.Role.Contains(TEXT("陶工"))
                 || (O.Status!=TEXT("active") && O.Status!=TEXT("delivering") && O.Status!=TEXT("completed") && O.Status!=TEXT("cancelled") && O.Status!=TEXT("rejected"))) return false;
             const bool Active=O.Status==TEXT("active"),Delivering=O.Status==TEXT("delivering"),Completed=O.Status==TEXT("completed");
             if((O.ReservedClay!=0 && !(Active && O.ReservedClay==4)) || O.Escrow!=((Active||Delivering)?4:0) || O.ReservedTiles!=(Delivering?6:0)) return false;
@@ -1047,7 +1399,7 @@ namespace HearthWorld
             const int64 AccountedTax=static_cast<int64>(W.TaxProjectCoins)+W.TaxReleasedCoins;
             if(W.TreasuryCoins!=ExpectedTreasury || (HasTaxes && (AccountedTax!=CollectedTax || W.TaxProjectCoins>W.TreasuryCoins)))
                 return Reject(FString::Printf(TEXT("资金守恒：国库 %d/%lld，项目税金 %d + 已释放 %d/%lld"),W.TreasuryCoins,ExpectedTreasury,W.TaxProjectCoins,W.TaxReleasedCoins,CollectedTax));
-            for(int32 I=0;I<W.PlotCount;++I) if(W.People[I].Person.Coins!=ExpectedWallets[I]) return Reject(FString::Printf(TEXT("居民资金守恒 %d：%d/%lld"),I,W.People[I].Person.Coins,ExpectedWallets[I]));
+            for(int32 I=0;I<ResidentLimit;++I) if(W.People[I].Person.Coins!=ExpectedWallets[I]) return Reject(FString::Printf(TEXT("居民资金守恒 %d：%d/%lld"),I,W.People[I].Person.Coins,ExpectedWallets[I]));
         }
         const int64 ExpectedStarterWood=W.PlotCount==3?36:(W.PlotCount==10?99:static_cast<int64>(W.PlotCount)*HearthVillageLimits::Town3StarterWoodPerResident);
         if(Accounted[0]!=static_cast<int64>(W.PlotCount)*HearthVillageLimits::StarterFoodPerResident || Accounted[1]!=ExpectedStarterWood || Accounted[2]!=0

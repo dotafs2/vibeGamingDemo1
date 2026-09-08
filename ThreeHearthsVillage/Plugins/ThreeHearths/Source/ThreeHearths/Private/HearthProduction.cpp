@@ -36,6 +36,16 @@ namespace HearthProduction
         return TEXT("");
     }
     const TCHAR* ResourceNames[]={TEXT("食物"),TEXT("原木"),TEXT("石材"),TEXT("木板"),TEXT("房梁"),TEXT("黏土"),TEXT("屋瓦")};
+    FOrganicConstructionStock OrganicPieceCost(const FHearthOrganicPiece& Piece)
+    {
+        FOrganicConstructionStock Cost;
+        if(Piece.ModuleId.Contains(TEXT("foundation"))) Cost.Stone=2;
+        else if(Piece.ModuleId.Contains(TEXT("roof"))) { Cost.Beams=1; Cost.Tiles=2; }
+        else if(Piece.ModuleId.Contains(TEXT("chimney")) || Piece.ModuleId.Contains(TEXT("step"))) Cost.Stone=2;
+        else if(Piece.ModuleId.Contains(TEXT("wall"))) { Cost.Planks=1; Cost.Beams=1; }
+        else Cost.Planks=1;
+        return Cost;
+    }
     bool IsCrop(EHearthSiteKind K) { return K>=EHearthSiteKind::Corn && K<=EHearthSiteKind::Pumpkin; }
     int32 Action(int32 Site,int32 Op) { return 100+Site*16+Op; }
     bool Decode(int32 Action,int32& Site,int32& Op)
@@ -193,12 +203,17 @@ void AHearthVillage::InitializeProduction()
     bReplacementPlotSearchDone=false;
     for(const auto& M:ProductionMeshes) if(IsValid(M.Get())) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites.Reset(); ProductionTotals.Reset(); FixedObstacles.Reset();
-    FoodStock=Residents.Num()*10; StoneStock=0; PlankStock=BeamStock=ClayStock=TileStock=0;
+    // Service arrivals do not create food. The v4 founding inventory remains
+    // the same ten-person grant even though the live population is thirteen.
+    FoodStock=(IsOrganicVillage()?10:Residents.Num())*10; StoneStock=0; PlankStock=BeamStock=ClayStock=TileStock=0;
     for(int32 I=0;I<3;++I) { Produced[I]=0; Spent[I]=0; }
     for(int32 I=0;I<2;++I) { Manufactured[I]=0; ManufacturedSpent[I]=0; }
     ProducedClay=SpentClay=ProducedTiles=SpentTiles=0;
     if(!bUseCropoutMap) { ProductionStatus=TEXT("生产与扩建技能在大岛地图开放"); return; }
-    for(int32 I=0;I<HousingPlotCount();++I) FixedObstacles.Add(FVector(PlotPositions[I].X,PlotPositions[I].Y,230));
+    // Version 4 homes publish their occupied cells to the organic ground/path
+    // layer.  Do not add the old 230cm square proxy as a second blocker.
+    if(!IsOrganicVillage()) for(int32 I=0;I<HousingPlotCount();++I)
+        FixedObstacles.Add(FVector(PlotPositions[I].X,PlotPositions[I].Y,230));
     FixedObstacles.Add(FVector(-1100,-1050,330));
     TArray<UStaticMeshComponent*> Existing; GetComponents(Existing);
     for(auto* M:Existing) if(M->GetStaticMesh())
@@ -208,11 +223,16 @@ void AHearthVillage::InitializeProduction()
         { const FVector P=M->GetComponentLocation(); FixedObstacles.Add(FVector(P.X,P.Y,N.StartsWith(TEXT("SM_Tree"))?150:100)); }
     }
     BuildLandGrid();
-    auto AddSite=[this](EHearthSiteKind Kind,FVector Position,float Radius,bool Expansion=false)
+    const auto GroundedPoint=[this](FVector Point)
+    {
+        if(IsOrganicVillage()) Point.Z=GroundHeightAt(Point)+5.2f;
+        return Point;
+    };
+    auto AddSite=[this,&GroundedPoint](EHearthSiteKind Kind,FVector Position,float Radius,bool Expansion=false)
     {
         if(!IsLand(Position) || !IsLand(Position+FVector(Radius,Radius,0)) || !IsLand(Position-FVector(Radius,Radius,0))
             || !IsLand(Position+FVector(-Radius,Radius,0)) || !IsLand(Position+FVector(Radius,-Radius,0))) return;
-        FHearthSite Site; Site.Kind=Kind; Site.Position=Position; Site.Radius=Radius; Site.bExpansion=Expansion;
+        FHearthSite Site; Site.Kind=Kind; Site.Position=GroundedPoint(Position); Site.Radius=Radius; Site.bExpansion=Expansion;
         Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         if(Kind==EHearthSiteKind::Tree) { Site.Stage=2; Site.Units=Site.Capacity=18; Site.GrowDuration=180; }
         if(Kind==EHearthSiteKind::Shrub) { Site.Stage=2; Site.Units=Site.Capacity=12; Site.GrowDuration=120; }
@@ -249,8 +269,8 @@ void AHearthVillage::InitializeProduction()
             }
             if(Supported)
             {
-                FHearthSite Site;Site.Kind=EHearthSiteKind::Empty;Site.Position=Landmark.Position;Site.Radius=850;
-                Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);Site.bExpansion=true;Site.Approach=Landmark.Approach;
+                FHearthSite Site;Site.Kind=EHearthSiteKind::Empty;Site.Position=GroundedPoint(Landmark.Position);Site.Radius=850;
+                Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);Site.bExpansion=true;Site.Approach=GroundedPoint(Landmark.Approach);
                 ProductionSites.Add(MoveTemp(Site));
             }
         }
@@ -271,7 +291,10 @@ void AHearthVillage::InitializeProduction()
         if(ExistingSite.Kind==EHearthSiteKind::Carpenter) TownInput.Workpoints.Add(ExistingSite.Position);
         if(ExistingSite.Kind==EHearthSiteKind::TileKiln) TownInput.Workpoints.Add(ExistingSite.Position);
     }
-    TownInput.RequestedHomes=18; TownInput.Seed=583;
+    // Organic v4 already has its authored homes in OrganicHomes (nine
+    // resident homes plus the king's keep). Empty TownPlan plots would be
+    // duplicate residences and compete with the organic ledger.
+    TownInput.RequestedHomes=IsOrganicVillage()?0:18; TownInput.Seed=583;
     if(TownLayoutVersion>=2) TownInput.CandidateSpacing=290.f;
     const FHearthTownLayoutPlan TownPlan=HearthTownLayout::Build(TownInput);
     int32 Plots=0;
@@ -282,17 +305,24 @@ void AHearthVillage::InitializeProduction()
         const FVector P=Home.Center;
         if(!IsLand(P) || !IsLand(P+FVector(PlotRadius,PlotRadius,0)) || !IsLand(P-FVector(PlotRadius,PlotRadius,0))
             || !IsLand(P+FVector(-PlotRadius,PlotRadius,0)) || !IsLand(P+FVector(PlotRadius,-PlotRadius,0))) continue;
-        FHearthSite Site; Site.Kind=EHearthSiteKind::Empty; Site.Position=P; Site.Approach=Home.Door;
+        FHearthSite Site; Site.Kind=EHearthSiteKind::Empty; Site.Position=GroundedPoint(P); Site.Approach=GroundedPoint(Home.Door);
         Site.Radius=PlotRadius; Site.bExpansion=true; Site.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
         ProductionSites.Add(MoveTemp(Site)); ++Plots;
     }
     int32 Reachable=0;
-    for(int32 I=0;I<ProductionSites.Num();++I) { if(ChooseSiteApproach(I)) ++Reachable; UpdateSiteVisual(I); }
+    for(int32 I=0;I<ProductionSites.Num();++I)
+    {
+        if(ChooseSiteApproach(I)) ++Reachable;
+        ProductionSites[I].Position=GroundedPoint(ProductionSites[I].Position);
+        ProductionSites[I].Approach=GroundedPoint(ProductionSites[I].Approach);
+        UpdateSiteVisual(I);
+    }
     ProductionStatus=FString::Printf(TEXT("连续街区住宅位 %d · 可达生产点 / 地块 %d / %d · 全员拥有全部技能"),Plots,Reachable,ProductionSites.Num());
 }
 
 bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
 {
+    if(Residents.IsValidIndex(Index) && IsSharedServiceResident(Index)) return false;
     if(HearthTavernRuntime::IsLegacyBuildAction(Action))
     {
         const int32 InnOwner=HearthTavernRuntime::LegacyBuildResident(Action);
@@ -311,6 +341,9 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
     }
     int32 Site,Op;
     if(!Residents.IsValidIndex(Index) || Residents[Index].BuildProgress<1 || !HearthProduction::Decode(Action,Site,Op) || !ProductionSites.IsValidIndex(Site)) return false;
+    // Organic version 4 homes are assembled by the organic construction ledger;
+    // the legacy Op5 prefab path would place a second closed cottage beside it.
+    if(IsOrganicVillage() && Op==5) return false;
     const auto& S=ProductionSites[Site];
     if(!S.bReachable || S.ReservedBy>=0 || IsRoyalSite(Site) || (!PublicProject.Id.IsEmpty() && PublicProject.Site==Site)) return false;
     int32 Food,Wood,Stone; HearthProduction::Cost(Op,Food,Wood,Stone);
@@ -463,6 +496,7 @@ TArray<int32> AHearthVillage::AvailableProductionActions(int32 Index) const
 {
     TArray<int32> Actions;
     if(!Residents.IsValidIndex(Index) || !IsValid(Residents[Index].Actor)) return Actions;
+    if(IsSharedServiceResident(Index)) return Actions;
     // Keep model input compact: offer two nearby alternatives for each operation.
     for(int32 Op=0;Op<=15;++Op)
     {
@@ -537,13 +571,42 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index) const
 int32 AHearthVillage::ChooseProductionLocally(int32 Index,const TArray<int32>& Options) const
 {
     int32 Best=-1; float BestScore=-FLT_MAX;
-    int32 PrivatePlanks=12,PrivateBeams=8,PrivateTiles=12;
+    int32 PrivateStone=10,PrivatePlanks=12,PrivateBeams=8,PrivateTiles=12;
+    FOrganicConstructionStock OrganicNeed;
     for(const auto& Person:Residents) if(Person.BuildProgress>=1 && !Person.bKing && !Person.bDesignSatisfied)
     {
         FHearthResidentBuildingInput Demand;Demand.Archetype=Person.BuildingArchetype;
         const int32 Rooms=FMath::Max(1,HearthResidentBuildingPlanner::MinimumInitialRooms(Demand));
         PrivatePlanks=FMath::Max(PrivatePlanks,Rooms*7);PrivateBeams=FMath::Max(PrivateBeams,Rooms*8);
         if(Person.RoofMaterial!=TEXT("timber")) PrivateTiles=FMath::Max(PrivateTiles,Rooms*12);
+    }
+    if(IsOrganicVillage())
+    {
+        int32 PendingOrganicHomes=0;
+        for(const auto& Pair:OrganicHomes)
+        {
+            const auto& Home=Pair.Value;
+            const bool bRecipePending=!Home.TargetRecipe.IsEmpty() && Home.TargetRecipe!=Home.CurrentRecipe;
+            const bool bPiecePending=!Home.ActivePieceKey.IsEmpty() && !Home.InstalledKeys.Contains(Home.ActivePieceKey);
+            if(bRecipePending || bPiecePending) ++PendingOrganicHomes;
+            if(!bRecipePending || !OrganicCatalog.IsValid()) continue;
+            const auto* Target=HearthOrganicCatalog::FindRecipe(*OrganicCatalog,Home.TargetRecipe);
+            if(!Target) continue;
+            for(const auto& Piece:Target->Pieces)
+            {
+                if(Home.InstalledKeys.Contains(Piece.OriginalKey)) continue;
+                const FOrganicConstructionStock Cost=HearthProduction::OrganicPieceCost(Piece);
+                OrganicNeed.Stone+=Cost.Stone; OrganicNeed.Planks+=Cost.Planks;
+                OrganicNeed.Beams+=Cost.Beams; OrganicNeed.Tiles+=Cost.Tiles;
+            }
+        }
+        // Keep the nudge bounded so food, social, and travel priorities still
+        // win regularly while incomplete assembled homes receive materials.
+        const int32 Boost=FMath::Min(PendingOrganicHomes,3);
+        PrivateStone=FMath::Max(PrivateStone,10+Boost*3);
+        PrivatePlanks=FMath::Max(PrivatePlanks,12+Boost*4);
+        PrivateBeams=FMath::Max(PrivateBeams,8+Boost*3);
+        PrivateTiles=FMath::Max(PrivateTiles,12+Boost*4);
     }
     for(int32 Action:Options)
     {
@@ -560,19 +623,36 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index,const TArray<int32>& O
         int32 PublicNeed[3]={0,0,0};
         if(PublicBuilding) for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed"))
             for(int32 M=0;M<3;++M) PublicNeed[M]+=Part.Required[M]-Part.Reserved[M]-Part.Delivered[M];
-        if(Op==11) Score=PublicBuilding && PublicProject.Stock[0]<PublicNeed[0]?235:(StoneStock<10?140:15);
-        if(Op==13) Score=PublicBuilding && PublicProject.Stock[1]<PublicNeed[1]?245:(PlankStock<PrivatePlanks?165:18);
-        if(Op==14) Score=PublicBuilding && PublicProject.Stock[2]<PublicNeed[2]?240:(BeamStock<PrivateBeams?155:16);
+        if(Op==11)
+        {
+            const int32 EffectivePublicStone=PublicProject.Stock[0]+(IsOrganicVillage()?StoneStock:0);
+            Score=PublicBuilding && EffectivePublicStone<PublicNeed[0]?235:(StoneStock<PrivateStone?140:15);
+            if(IsOrganicVillage() && OrganicNeed.Stone>StoneStock) Score=FMath::Max(Score,220.f);
+        }
+        if(Op==13)
+        {
+            const int32 EffectivePublicPlanks=PublicProject.Stock[1]+(IsOrganicVillage()?PlankStock:0);
+            Score=PublicBuilding && EffectivePublicPlanks<PublicNeed[1]?245:(PlankStock<PrivatePlanks?165:18);
+            if(IsOrganicVillage() && OrganicNeed.Planks>PlankStock) Score=FMath::Max(Score,220.f);
+        }
+        if(Op==14)
+        {
+            const int32 EffectivePublicBeams=PublicProject.Stock[2]+(IsOrganicVillage()?BeamStock:0);
+            Score=PublicBuilding && EffectivePublicBeams<PublicNeed[2]?240:(BeamStock<PrivateBeams?155:16);
+            if(IsOrganicVillage() && OrganicNeed.Beams>BeamStock) Score=FMath::Max(Score,260.f);
+        }
         if(Op==15)
         {
             const auto* Order=TileOrders.FindByPredicate([Index](const FHearthTileOrder& Candidate){return Candidate.Status==TEXT("active") && Candidate.Potter==Index;});
             Score=ProductionSites[Site].Kind==EHearthSiteKind::TileKiln?(Order?280:(TileStock<PrivateTiles?190:22)):(ClayStock<8?175:20);
+            if(IsOrganicVillage() && OrganicNeed.Tiles>TileStock) Score=FMath::Max(Score,230.f);
         }
         if(Op==8) Score=FoodStock<40?125:45;
         if(Op==0)
         {
             int32 Ready=0; for(const auto& S:ProductionSites) Ready+=S.Kind==EHearthSiteKind::Land;
-            const auto& Person=Residents[Index]; const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Person.StableId);});
+            const auto& Person=Residents[Index]; const bool OwnsStructure=StructurePlans.ContainsByPredicate([&](const FHearthStructurePlan& Plan){return Plan.PlanId.Contains(Person.StableId);})
+                || (IsOrganicVillage() && OrganicHomes.Contains(Person.StableId));
             const bool WorkshopRole=Person.Role.Contains(TEXT("木匠"))||Person.Role.Contains(TEXT("铁匠"))||Person.Role.Contains(TEXT("陶工"))||Person.Role.Contains(TEXT("织工"));
             const float NeedPressure=FMath::Max(Person.Hunger,Person.SocialNeed);
             Score=Ready==0&&!OwnsStructure?(WorkshopRole?205:(NeedPressure>=45.f?195:90)):(Ready<2?90:2);
@@ -812,7 +892,9 @@ void AHearthVillage::AdvanceProductionWorld(float Dt)
                         && FMath::Abs(Candidate.Y-Obstacle.Y)<Radius+Obstacle.Z+Clearance) { bClear=false; break; }
                 if(!bClear) continue;
                 FHearthSite Plot; Plot.Kind=EHearthSiteKind::Empty; Plot.Position=Candidate; Plot.Radius=Radius; Plot.bExpansion=true;
+                if(IsOrganicVillage()) Plot.Position.Z=GroundHeightAt(Plot.Position)+5.2f;
                 Plot.Approach=CandidateData.Approach;
+                if(IsOrganicVillage()) Plot.Approach.Z=GroundHeightAt(Plot.Approach)+5.2f;
                 const FString StableSource=SeedText+TEXT("|")+CandidateData.StableKey;
                 const FGuid StableGuid(
                     FCrc::StrCrc32(*StableSource), FCrc::StrCrc32(*(StableSource+TEXT("|1"))),

@@ -1,5 +1,13 @@
 # Current delivery contract and coordinator review
 
+## 2026-09-08 当前优先级更新
+
+以仓库根 [AGENTS.md](../../AGENTS.md) 为持续协作规则。用户要求提高 Kimi 实际参与程度：真实模拟暴露需求 → 有边界的 Luna 工程 / Astra 美术 → 回到 Kimi 居民观察与行为验收 → 再决定下一批工作。每批可运行工程后必须回到这一闭环，不能连续堆积离线功能，以资产或测试数量替代社会进展。保留低频值勤、事件触发、费用和未决账本约束，禁止刷调用数。
+
+本轮交付及已知缺口见 [中世纪社会本轮交付](Medieval_Night_Delivery_2026-09-08.md)。用户本次明确授权上传本轮全部项目改动；下文旧阶段的“不上传”限制不再适用于本次上传。早 9 点的运行与定时任务已经结束，本次规则修订和上传不重新启动它们。
+
+以下为历史阶段与验收记录，不能视为当前尚未完成事项的唯一清单。
+
 Updated 2026-09-06 after the user's request to diagnose repeated stopping and audit direction. Reviewed baseline: `24aebd4`. This contract narrows the next verifiable delivery inside the user's larger ten-NPC medieval society goal; it does not replace that larger goal or authorize new spending.
 
 ## Why the recent work stopped

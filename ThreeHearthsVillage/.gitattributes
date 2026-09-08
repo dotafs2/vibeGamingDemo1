@@ -15,3 +15,11 @@
 *.md text eol=lf
 *.ini text eol=lf
 *.ps1 text eol=crlf
+
+# Combined library exports exceed practical Git blob limits.
+Art/Exports/ThreeHearths_All_Git_Assets_*.fbx filter=lfs diff=lfs merge=lfs -text
+Art/Exports/ThreeHearths_All_Git_Assets_*.blend filter=lfs diff=lfs merge=lfs -text
+
+# Preserve the exact portable checkpoint bytes referenced by manifest SHA256.
+Content/ThreeHearths/Data/MedievalShowcase/world.json -text whitespace=cr-at-eol
+Content/ThreeHearths/Data/MedievalShowcase/history.json -text whitespace=cr-at-eol

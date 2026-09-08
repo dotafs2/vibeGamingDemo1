@@ -22,6 +22,51 @@ void AHearthVillage::InitializeResidentIdentity(int32 I,FHearthResident& R) cons
     R.Hunger=10.f+(I%4)*5; R.Mood=60.f+(I%3)*8; R.SocialNeed=I==1 || I==4 || I==7?65.f:25.f;
 }
 
+void AHearthVillage::InitializeServiceResident(int32 I,FHearthResident& R) const
+{
+    static const TCHAR* Names[]={TEXT("埃德温"),TEXT("罗兰"),TEXT("马丁")};
+    static const TCHAR* Roles[]={TEXT("门卫"),TEXT("护卫"),TEXT("车夫")};
+    static const TCHAR* RoleKeys[]={TEXT("gatekeeper"),TEXT("royal_guard"),TEXT("carter")};
+    const int32 Slot=FMath::Clamp(I-10,0,2);
+    if(R.StableId.IsEmpty()) R.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    R.Name=Names[Slot]; R.Role=Roles[Slot]; R.ServiceRoleKey=RoleKeys[Slot];
+    R.ResidenceId=TEXT("v4_public_life_rest_anchor"); R.Personality=Slot==0?TEXT("警觉门卫 · 熟悉每个来访者"):Slot==1?TEXT("守序护卫 · 先保护村民再休息"):TEXT("稳重车夫 · 记得每批货物的来路");
+    R.InnerStory=FString::Printf(TEXT("我是%s，职责是%s，住在村庄公共生活区；我的职责、工资和物资都必须通过真实账本记录。"),*R.Name,*R.Role);
+    R.Age=Slot==1?34:Slot==2?41:38; R.Hunger=15.f; R.Mood=68.f; R.SocialNeed=32.f; R.Energy=75.f;
+    R.Plot=-1; R.Coins=0; R.PersonalPlanks=0; R.PersonalTiles=0; R.CarriedWood=0; R.DeliveredWood=0; R.BuildProgress=0.f;
+    R.HouseBlueprint.Empty(); R.WallMaterial.Empty(); R.RoofMaterial.Empty(); R.BuildingArchetype.Empty(); R.DesignGoal.Empty();
+    R.Task=EHearthTask::LifeChoosing; R.ActiveTaskId.Empty(); R.LifeAction=-1; R.ProductionSite=-1; R.ProductionOp=-1;
+    R.CargoType=-1; R.CargoAmount=0; R.ProductionComponentId.Empty(); R.Route.Reset(); R.ConversationId.Empty();
+    R.Reason=TEXT("住在村庄公共生活区，等待适合本职的职责。"); R.LatestEvent=TEXT("作为服务居民来到村庄公共生活区。");
+}
+
+bool AHearthVillage::IsSharedServiceResident(int32 Index) const
+{
+    if(!Residents.IsValidIndex(Index)) return false;
+    const auto& R=Residents[Index];
+    return R.ServiceRoleKey==TEXT("gatekeeper") || R.ServiceRoleKey==TEXT("royal_guard") || R.ServiceRoleKey==TEXT("carter");
+}
+
+FVector AHearthVillage::SharedResidenceAnchor(int32 Index) const
+{
+    const int32 Slot=FMath::Clamp(Index-10,0,2);
+    // This is the existing v4 public life/depot area used by eating and tavern
+    // routes; shared residents do not claim a private plot or create a house.
+    const FVector Base=bUseCropoutMap?FVector(-1650.f,-1050.f,8.f):FVector(-250.f,-400.f,0.f);
+    FVector Candidate=Base+FVector((Slot-1)*85.f,Slot==1?35.f:-35.f,0.f);
+    if(bUseCropoutMap) Candidate.Z=GroundHeightAt(Candidate)+5.2f;
+    if(bUseCropoutMap && !IsClearPoint(Candidate))
+    {
+        for(int32 Ring=1;Ring<=3 && !IsClearPoint(Candidate);++Ring)
+        {
+            FVector Try=FVector(Candidate.X+Ring*90.f,Candidate.Y+((Ring&1)?90.f:-90.f),Candidate.Z);
+            Try.Z=GroundHeightAt(Try)+5.2f;
+            if(IsClearPoint(Try)) { Candidate=Try; break; }
+        }
+    }
+    return Candidate;
+}
+
 FString AHearthVillage::PlotLabel(int32 Plot) const
 {
     const TCHAR* Names[]={TEXT("林边地块"),TEXT("花园旁地块"),TEXT("紧凑地块"),TEXT("西街北宅"),TEXT("西街中宅"),TEXT("西街南宅"),TEXT("东街北宅"),TEXT("西街北巷"),TEXT("西街南巷"),TEXT("花园南侧")};
@@ -43,7 +88,35 @@ void AHearthVillage::AdvanceNeeds(float Dt)
 
 bool AHearthVillage::MigrateWorldPopulation(FHearthWorldImage& W,FString& Error) const
 {
-    if(W.People.Num()==Residents.Num()) return true;
+    if(W.People.Num()==Residents.Num())
+    {
+        if(IsOrganicVillage() && Residents.Num()==13)
+        {
+            if(W.PlotCount!=10) { Error=TEXT("有机村服务居民存档必须保留十个私宅地块"); return false; }
+            W.PopulationCount=13; W.Schema=FMath::Max(W.Schema,12);
+        }
+        return true;
+    }
+    if(IsOrganicVillage() && W.People.Num()==10 && Residents.Num()==13 && W.PlotCount==10)
+    {
+        TSet<FString> ExistingIds;
+        for(const auto& Saved:W.People) ExistingIds.Add(Saved.Person.StableId);
+        for(int32 I=10;I<13;++I)
+        {
+            const auto& Source=Residents[I];
+            if(Source.ServiceRoleKey.IsEmpty() || Source.ResidenceId.IsEmpty() || Source.StableId.IsEmpty() || ExistingIds.Contains(Source.StableId))
+            { Error=TEXT("有机村服务居民身份或重复迁移标记无效"); return false; }
+            // The old image has no service records. Rebuild a clean catalog
+            // record instead of copying a transient task, cargo, conversation,
+            // or relationship from the runtime staging residents.
+            FHearthSavedResident Saved; InitializeServiceResident(I,Saved.Person); Saved.Person.StableId=Source.StableId; Saved.Person.Actor=nullptr;
+            Saved.Position=SharedResidenceAnchor(I); Saved.Yaw=180.f;
+            Saved.DecisionDelay=FMath::Max(0.0,Source.NextLifeDecision-Elapsed); W.People.Add(MoveTemp(Saved)); ExistingIds.Add(Source.StableId);
+        }
+        W.PopulationCount=13; W.Schema=12; W.bComplete=false;
+        W.Event=TEXT("三位服务居民加入公共生活区；原有十位居民、私宅、库存和钱币保持不变。");
+        return HearthWorld::Decode(HearthWorld::Encode(W),W,Error);
+    }
     if(!bUseCropoutMap || W.People.Num()!=3 || Residents.Num()!=10 || W.PlotCount!=3)
     { Error=TEXT("不支持该人口存档迁移，原文件已保留"); return false; }
     // Seven new adults arrive with explicitly accounted food/wood supplies. Existing
@@ -66,7 +139,7 @@ bool AHearthVillage::MigrateWorldPopulation(FHearthWorldImage& W,FString& Error)
         W.PlotYaws[I]=PlotYaws[I]; W.PlotEntrances[I]=PlotEntrances[I];
     }
     W.Food+=70; for(int32 I=0;I<3;++I) W.Wood[I]+=21;
-    W.PlotCount=10; W.Schema=3; W.bComplete=false;
+    W.PlotCount=10; W.PopulationCount=10; W.Schema=3; W.bComplete=false;
     W.Event=TEXT("七位新居民抵达，带来70份食物和63份木材；原居民的家与工作都保留。");
     FHearthDecisionRecord Arrival; Arrival.Run=W.Run; Arrival.Timestamp=FDateTime::Now().ToString(); Arrival.Resident=3;
     Arrival.At=W.Elapsed; Arrival.Kind=TEXT("population_migration"); Arrival.Source=TEXT("world_rules"); Arrival.Status=TEXT("completed");

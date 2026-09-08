@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "destination": "/Game/ThreeHearths/Generated/OrganicVillageMasters",
+  "mesh_count": 114,
+  "nanite_enabled_before": 114,
+  "nanite_disabled": 114,
+  "nanite_enabled_after": 0,
+  "material_slots_checked": 297,
+  "missing_material_slots": 0,
+  "policy": "Nanite disabled for low-poly modular runtime layers; no source or engine/plugin assets changed"
+}

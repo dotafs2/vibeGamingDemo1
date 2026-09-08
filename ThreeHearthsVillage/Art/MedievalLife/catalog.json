@@ -1,0 +1,1488 @@
+{
+  "schema_version": 1,
+  "units": "meters",
+  "authoring_up": "+Z",
+  "front": "-Y",
+  "layers": [
+    "structure",
+    "finish",
+    "attachments",
+    "weathering"
+  ],
+  "materials": {
+    "oak": "936442",
+    "oak_light": "C59460",
+    "oak_dark": "503B2D",
+    "endgrain": "C9A172",
+    "iron": "495258",
+    "steel": "A2B7BD",
+    "stone": "8D9996",
+    "stone_light": "B8BEAD",
+    "stone_dark": "687775",
+    "blue": "416B86",
+    "blue_light": "648B9D",
+    "gold": "D6AC61",
+    "linen": "E8D6AE",
+    "leather": "604231",
+    "leather_light": "AB7550",
+    "bay": "976249",
+    "bay_light": "B8805C",
+    "bay_dark": "704B3D",
+    "grey": "B9BDB0",
+    "grey_light": "D5D8C9",
+    "grey_dark": "919B95",
+    "mane": "3C3530",
+    "hoof": "44403B",
+    "eye": "252A2D",
+    "skin": "CE9976",
+    "skin_light": "E6B792",
+    "hair": "665041",
+    "hay": "B8A768",
+    "hay_light": "D6BD7B",
+    "water": "728E91",
+    "roof": "627987",
+    "roof_light": "8A9BA0",
+    "moss": "899364",
+    "earth": "757B62",
+    "flame": "E7AB5A",
+    "red": "A76452"
+  },
+  "modules": [
+    {
+      "id": "cart_body",
+      "path": "Modules/cart_body.glb",
+      "anchors": {
+        "wheel_left": [
+          -1.04,
+          0,
+          0.63
+        ],
+        "wheel_right": [
+          1.04,
+          0,
+          0.63
+        ],
+        "cargo": [
+          0,
+          0.18,
+          0.88
+        ],
+        "driver": [
+          0,
+          -0.76,
+          1.7
+        ],
+        "horse": [
+          0,
+          -2.9,
+          0
+        ]
+      },
+      "notes": "Two-wheel farm cart; wheels pivot around local X. Front is -Y.",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "triangles": 7084,
+      "meshes": 3,
+      "uv_meshes": 3,
+      "bounds_m": {
+        "min": [
+          -1.0399998426437378,
+          -3.9000000953674316,
+          0.5149999856948853
+        ],
+        "max": [
+          1.0399998426437378,
+          1.1699999570846558,
+          1.6799999475479126
+        ],
+        "size": [
+          2.0799996852874756,
+          5.070000052452087,
+          1.1649999618530273
+        ]
+      }
+    },
+    {
+      "id": "cart_wheel",
+      "path": "Modules/cart_wheel.glb",
+      "anchors": {
+        "axle": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Axle origin, radius 0.638m. Rotate local X to roll.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 5532,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.1380000114440918,
+          -0.637999951839447,
+          -0.637999951839447
+        ],
+        "max": [
+          0.1380000114440918,
+          0.637999951839447,
+          0.637999951839447
+        ],
+        "size": [
+          0.2760000228881836,
+          1.275999903678894,
+          1.275999903678894
+        ]
+      }
+    },
+    {
+      "id": "cargo_logs",
+      "path": "Modules/cargo_logs.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Removable cargo visual; runtime inventory must authorize loading.",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "triangles": 3008,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.6043232083320618,
+          -0.8105000257492065,
+          0.012143561616539955
+        ],
+        "max": [
+          0.6044682860374451,
+          0.9300000667572021,
+          0.7178564071655273
+        ],
+        "size": [
+          1.2087914943695068,
+          1.7405000925064087,
+          0.7057128455489874
+        ]
+      }
+    },
+    {
+      "id": "cargo_sacks",
+      "path": "Modules/cargo_sacks.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Four tied linen sacks; no implied resource creation.",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "triangles": 2512,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.6776071786880493,
+          -0.6448274850845337,
+          0.03500000014901161
+        ],
+        "max": [
+          0.6460000276565552,
+          0.7007240653038025,
+          0.7649999856948853
+        ],
+        "size": [
+          1.3236072063446045,
+          1.3455515503883362,
+          0.7299999855458736
+        ]
+      }
+    },
+    {
+      "id": "horse_bay",
+      "path": "Modules/horse_bay.glb",
+      "anchors": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "triangles": 9946,
+      "meshes": 3,
+      "uv_meshes": 3,
+      "bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      }
+    },
+    {
+      "id": "horse_grey",
+      "path": "Modules/horse_grey.glb",
+      "anchors": {
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "withers": [
+          0,
+          -0.48,
+          1.83
+        ],
+        "hitch_left": [
+          -0.44,
+          -0.63,
+          1.38
+        ],
+        "hitch_right": [
+          0.44,
+          -0.63,
+          1.38
+        ]
+      },
+      "notes": "Authored standing horse. No skeleton or walk cycle yet; removable tack.",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "triangles": 9946,
+      "meshes": 3,
+      "uv_meshes": 3,
+      "bounds_m": {
+        "min": [
+          -0.46929270029067993,
+          -1.8600000143051147,
+          0.014999999664723873
+        ],
+        "max": [
+          0.46929270029067993,
+          1.3979486227035522,
+          2.700000047683716
+        ],
+        "size": [
+          0.9385854005813599,
+          3.257948637008667,
+          2.685000048018992
+        ]
+      }
+    },
+    {
+      "id": "guard_helmet",
+      "path": "Modules/guard_helmet.glb",
+      "anchors": {
+        "head": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Helmet attachment origin at forehead; adjust per skeletal head socket.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 852,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.3100000023841858,
+          -0.3100000023841858,
+          0.0
+        ],
+        "max": [
+          0.3100000023841858,
+          0.3100000023841858,
+          0.28999999165534973
+        ],
+        "size": [
+          0.6200000047683716,
+          0.6200000047683716,
+          0.28999999165534973
+        ]
+      }
+    },
+    {
+      "id": "guard_shield",
+      "path": "Modules/guard_shield.glb",
+      "anchors": {
+        "grip": [
+          0,
+          0.095,
+          0.44
+        ]
+      },
+      "notes": "Separate heater shield with royal crossroads device.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 968,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.311149537563324,
+          -0.08300000429153442,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.311149537563324,
+          0.11749999970197678,
+          0.7315000891685486
+        ],
+        "size": [
+          0.622299075126648,
+          0.2005000039935112,
+          0.8551572859287262
+        ]
+      }
+    },
+    {
+      "id": "guard_spear",
+      "path": "Modules/guard_spear.glb",
+      "anchors": {
+        "grip": [
+          0,
+          0,
+          1.1
+        ]
+      },
+      "notes": "2.6m spear, bottom origin; no attack logic is implied.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 372,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.07820826768875122,
+          -0.041846487671136856,
+          0.0
+        ],
+        "max": [
+          0.07820826768875122,
+          0.041846487671136856,
+          2.579827308654785
+        ],
+        "size": [
+          0.15641653537750244,
+          0.08369297534227371,
+          2.579827308654785
+        ]
+      }
+    },
+    {
+      "id": "royal_guard_body",
+      "path": "Modules/royal_guard_body.glb",
+      "anchors": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "triangles": 5036,
+      "meshes": 3,
+      "uv_meshes": 3,
+      "bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      }
+    },
+    {
+      "id": "carter_body",
+      "path": "Modules/carter_body.glb",
+      "anchors": {
+        "head": [
+          0,
+          -0.008,
+          1.89
+        ],
+        "left_hand": [
+          -0.38,
+          -0.17,
+          0.92
+        ],
+        "right_hand": [
+          0.38,
+          -0.17,
+          0.92
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Unrigged character art study; local runtime NPC duties are a separate implementation.",
+      "layers": [
+        "attachments",
+        "finish",
+        "structure"
+      ],
+      "triangles": 4564,
+      "meshes": 3,
+      "uv_meshes": 3,
+      "bounds_m": {
+        "min": [
+          -0.47837600111961365,
+          -0.24699999392032623,
+          0.0020000040531158447
+        ],
+        "max": [
+          0.47837600111961365,
+          0.24699999392032623,
+          1.9499999284744263
+        ],
+        "size": [
+          0.9567520022392273,
+          0.49399998784065247,
+          1.9479999244213104
+        ]
+      }
+    },
+    {
+      "id": "gate_pier",
+      "path": "Modules/gate_pier.glb",
+      "anchors": {
+        "hinge": [
+          0.57,
+          0,
+          0.3
+        ],
+        "banner": [
+          0,
+          -0.62,
+          2.65
+        ]
+      },
+      "notes": "Masonry gate pier, 1.3m footprint; opening width set by assembly.",
+      "layers": [
+        "structure",
+        "weathering"
+      ],
+      "triangles": 4860,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.6499999761581421,
+          -0.625,
+          0.0
+        ],
+        "max": [
+          0.6549999713897705,
+          0.625,
+          3.380000114440918
+        ],
+        "size": [
+          1.3049999475479126,
+          1.25,
+          3.380000114440918
+        ]
+      }
+    },
+    {
+      "id": "gate_leaf",
+      "path": "Modules/gate_leaf.glb",
+      "anchors": {
+        "hinge": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Single hinged leaf, local Z rotation. Reverse X for opposite leaf.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 3232,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.09000000357627869,
+          -0.10900000482797623,
+          0.08999991416931152
+        ],
+        "max": [
+          1.340000033378601,
+          0.14500004053115845,
+          2.2300000190734863
+        ],
+        "size": [
+          1.4300000369548798,
+          0.2540000453591347,
+          2.140000104904175
+        ]
+      }
+    },
+    {
+      "id": "royal_banner",
+      "path": "Modules/royal_banner.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Royal blue hanging pennant; static cloth study, material double-sided on import.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 435,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.3699999749660492,
+          -0.10000000149011612,
+          0.0
+        ],
+        "max": [
+          0.3699999749660492,
+          0.03500000387430191,
+          2.0999999046325684
+        ],
+        "size": [
+          0.7399999499320984,
+          0.13500000536441803,
+          2.0999999046325684
+        ]
+      }
+    },
+    {
+      "id": "watch_bench",
+      "path": "Modules/watch_bench.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Shared rest bench; supports duty rest transitions.",
+      "layers": [
+        "structure"
+      ],
+      "triangles": 1080,
+      "meshes": 1,
+      "uv_meshes": 1,
+      "bounds_m": {
+        "min": [
+          -0.7250000238418579,
+          -0.320000022649765,
+          0.029999971389770508
+        ],
+        "max": [
+          0.7250000238418579,
+          0.33500000834465027,
+          0.9150000214576721
+        ],
+        "size": [
+          1.4500000476837158,
+          0.6550000309944153,
+          0.8850000500679016
+        ]
+      }
+    },
+    {
+      "id": "watch_shelter",
+      "path": "Modules/watch_shelter.glb",
+      "anchors": {
+        "bench": [
+          0,
+          0.2,
+          0
+        ]
+      },
+      "notes": "Open tiled shelter, shared snap scale with village timber kit.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 8316,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -1.369999885559082,
+          -0.9502261877059937,
+          0.0
+        ],
+        "max": [
+          1.369999885559082,
+          0.9502261877059937,
+          2.9625000953674316
+        ],
+        "size": [
+          2.739999771118164,
+          1.9004523754119873,
+          2.9625000953674316
+        ]
+      }
+    },
+    {
+      "id": "water_trough",
+      "path": "Modules/water_trough.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Hollow trough with replaceable water surface.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 864,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.8149999976158142,
+          -0.45499998331069946,
+          0.0
+        ],
+        "max": [
+          0.8149999976158142,
+          0.45499998331069946,
+          0.7849999666213989
+        ],
+        "size": [
+          1.6299999952316284,
+          0.9099999666213989,
+          0.7849999666213989
+        ]
+      }
+    },
+    {
+      "id": "hay_rack",
+      "path": "Modules/hay_rack.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Hay is removable; future feeding must debit stored hay.",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "triangles": 5408,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.7199999690055847,
+          -0.3500000238418579,
+          0.0
+        ],
+        "max": [
+          0.7199999690055847,
+          0.3500000238418579,
+          1.0725001096725464
+        ],
+        "size": [
+          1.4399999380111694,
+          0.7000000476837158,
+          1.0725001096725464
+        ]
+      }
+    },
+    {
+      "id": "stable_rail",
+      "path": "Modules/stable_rail.glb",
+      "anchors": {
+        "left": [
+          -1,
+          0,
+          0
+        ],
+        "right": [
+          1,
+          0,
+          0
+        ]
+      },
+      "notes": "2m repeatable paddock and stable rail.",
+      "layers": [
+        "structure"
+      ],
+      "triangles": 432,
+      "meshes": 1,
+      "uv_meshes": 1,
+      "bounds_m": {
+        "min": [
+          -1.065000057220459,
+          -0.0650000050663948,
+          0.0
+        ],
+        "max": [
+          1.065000057220459,
+          0.0650000050663948,
+          1.2799999713897705
+        ],
+        "size": [
+          2.130000114440918,
+          0.1300000101327896,
+          1.2799999713897705
+        ]
+      }
+    },
+    {
+      "id": "road_signpost",
+      "path": "Modules/road_signpost.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Pictographic road sign, no baked lettering.",
+      "layers": [
+        "finish",
+        "structure"
+      ],
+      "triangles": 916,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.45499998331069946,
+          -0.08350000530481339,
+          0.0
+        ],
+        "max": [
+          0.7494983077049255,
+          0.07000000774860382,
+          2.450000047683716
+        ],
+        "size": [
+          1.204498291015625,
+          0.1535000130534172,
+          2.450000047683716
+        ]
+      }
+    },
+    {
+      "id": "watch_brazier",
+      "path": "Modules/watch_brazier.glb",
+      "anchors": {
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "Removable stylized flame mesh; no runtime fire light or fuel logic yet.",
+      "layers": [
+        "attachments",
+        "structure"
+      ],
+      "triangles": 2566,
+      "meshes": 2,
+      "uv_meshes": 2,
+      "bounds_m": {
+        "min": [
+          -0.32317304611206055,
+          -0.32317304611206055,
+          0.0023933639749884605
+        ],
+        "max": [
+          0.32317304611206055,
+          0.3231731057167053,
+          1.1399999856948853
+        ],
+        "size": [
+          0.6463460922241211,
+          0.6463461518287659,
+          1.1376066217198968
+        ]
+      }
+    }
+  ],
+  "assemblies": [
+    {
+      "id": "loaded_horse_cart",
+      "label": "Horse, cart and removable log load",
+      "notes": "Authored stationary art master; not a runtime transport screenshot.",
+      "path": "Assemblies/loaded_horse_cart.glb",
+      "pieces": [
+        {
+          "key": "cargo_logs.001",
+          "parent_key": null,
+          "module": "cargo_logs",
+          "position_m": [
+            0.0,
+            0.12999999523162842,
+            0.8799999952316284
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "cart_body.001",
+          "parent_key": null,
+          "module": "cart_body",
+          "position_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "carter_body.001",
+          "parent_key": null,
+          "module": "carter_body",
+          "position_m": [
+            1.6799999475479126,
+            -1.399999976158142,
+            0.0
+          ],
+          "yaw_degrees": -25.00000012650595,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "horse_bay.001",
+          "parent_key": null,
+          "module": "horse_bay",
+          "position_m": [
+            0.0,
+            -2.9000000953674316,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "wheel_left",
+          "parent_key": null,
+          "module": "cart_wheel",
+          "position_m": [
+            -1.0399999618530273,
+            0.0,
+            0.6380000114440918
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "wheel_right",
+          "parent_key": null,
+          "module": "cart_wheel",
+          "position_m": [
+            1.0399999618530273,
+            0.0,
+            0.6380000114440918
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 35666,
+      "meshes": 15,
+      "uv_meshes": 15,
+      "bounds_m": {
+        "min": [
+          -1.1779999732971191,
+          -4.760000228881836,
+          5.960464477539063e-08
+        ],
+        "max": [
+          2.1059060096740723,
+          1.1699999570846558,
+          2.700000047683716
+        ],
+        "size": [
+          3.2839059829711914,
+          5.930000185966492,
+          2.699999988079071
+        ]
+      }
+    },
+    {
+      "id": "royal_gate_watch",
+      "label": "Royal gate and watch post",
+      "notes": "Two working hinge anchors; guards shown as unrigged art studies.",
+      "path": "Assemblies/royal_gate_watch.glb",
+      "pieces": [
+        {
+          "key": "gate_leaf.001",
+          "parent_key": null,
+          "module": "gate_leaf",
+          "position_m": [
+            -1.4299999475479126,
+            0.0,
+            0.05999999865889549
+          ],
+          "yaw_degrees": -33.99999866940647,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_leaf.002",
+          "parent_key": null,
+          "module": "gate_leaf",
+          "position_m": [
+            1.4299999475479126,
+            0.0,
+            0.05999999865889549
+          ],
+          "yaw_degrees": 28.99999966863366,
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_pier.001",
+          "parent_key": null,
+          "module": "gate_pier",
+          "position_m": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "gate_pier.002",
+          "parent_key": null,
+          "module": "gate_pier",
+          "position_m": [
+            2.0,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_0",
+          "parent_key": null,
+          "module": "royal_guard_body",
+          "position_m": [
+            -2.859999895095825,
+            -0.6800000071525574,
+            0.0
+          ],
+          "yaw_degrees": 7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_helmet.001",
+          "parent_key": "guard_0",
+          "module": "guard_helmet",
+          "position_m": [
+            0.0,
+            -0.00800000037997961,
+            1.8899999856948853
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_shield.001",
+          "parent_key": "guard_0",
+          "module": "guard_shield",
+          "position_m": [
+            -0.38999998569488525,
+            -0.25999999046325684,
+            0.4000000059604645
+          ],
+          "yaw_degrees": -7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_spear.001",
+          "parent_key": "guard_0",
+          "module": "guard_spear",
+          "position_m": [
+            0.4300000071525574,
+            -0.18000000715255737,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_1",
+          "parent_key": null,
+          "module": "royal_guard_body",
+          "position_m": [
+            1.0299999713897705,
+            -1.0399999618530273,
+            0.0
+          ],
+          "yaw_degrees": -15.999999876058132,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_helmet.002",
+          "parent_key": "guard_1",
+          "module": "guard_helmet",
+          "position_m": [
+            0.0,
+            -0.00800000037997961,
+            1.8899999856948853
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_shield.002",
+          "parent_key": "guard_1",
+          "module": "guard_shield",
+          "position_m": [
+            -0.38999998569488525,
+            -0.25999999046325684,
+            0.4000000059604645
+          ],
+          "yaw_degrees": -7.999999938029066,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "guard_spear.002",
+          "parent_key": "guard_1",
+          "module": "guard_spear",
+          "position_m": [
+            0.4300000071525574,
+            -0.18000000715255737,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "road_signpost.001",
+          "parent_key": null,
+          "module": "road_signpost",
+          "position_m": [
+            5.300000190734863,
+            -0.3499999940395355,
+            0.0
+          ],
+          "yaw_degrees": -15.000000417413029,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "royal_banner.001",
+          "parent_key": null,
+          "module": "royal_banner",
+          "position_m": [
+            -2.0,
+            -0.6000000238418579,
+            1.3200000524520874
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "royal_banner.002",
+          "parent_key": null,
+          "module": "royal_banner",
+          "position_m": [
+            2.0,
+            -0.6000000238418579,
+            1.3200000524520874
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_bench.001",
+          "parent_key": null,
+          "module": "watch_bench",
+          "position_m": [
+            3.9200000762939453,
+            0.44999998807907104,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_brazier.001",
+          "parent_key": null,
+          "module": "watch_brazier",
+          "position_m": [
+            -3.799999952316284,
+            -0.6800000071525574,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "watch_shelter.001",
+          "parent_key": null,
+          "module": "watch_shelter",
+          "position_m": [
+            3.9200000762939453,
+            0.3499999940395355,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 44388,
+      "meshes": 37,
+      "uv_meshes": 37,
+      "bounds_m": {
+        "min": [
+          -4.123172760009766,
+          -1.3785195350646973,
+          0.0
+        ],
+        "max": [
+          6.032759666442871,
+          1.3002262115478516,
+          3.4200000762939453
+        ],
+        "size": [
+          10.155932426452637,
+          2.678745746612549,
+          3.4200000762939453
+        ]
+      }
+    },
+    {
+      "id": "paddock_corner",
+      "label": "Paddock, feeding and water",
+      "notes": "Modular rail corner; horse study remains unrigged.",
+      "path": "Assemblies/paddock_corner.glb",
+      "pieces": [
+        {
+          "key": "cargo_sacks.001",
+          "parent_key": null,
+          "module": "cargo_sacks",
+          "position_m": [
+            -2.549999952316284,
+            0.949999988079071,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "hay_rack.001",
+          "parent_key": null,
+          "module": "hay_rack",
+          "position_m": [
+            -0.6499999761581421,
+            1.059999942779541,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "horse_grey.001",
+          "parent_key": null,
+          "module": "horse_grey",
+          "position_m": [
+            -0.4000000059604645,
+            0.0,
+            0.0
+          ],
+          "yaw_degrees": -30.000000834826057,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.001",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            -1.0,
+            1.649999976158142,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.002",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            1.0,
+            1.649999976158142,
+            0.0
+          ],
+          "yaw_degrees": 0.0,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "stable_rail.003",
+          "parent_key": null,
+          "module": "stable_rail",
+          "position_m": [
+            -2.0,
+            0.6499999761581421,
+            0.0
+          ],
+          "yaw_degrees": 90.00000250447816,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "key": "water_trough.001",
+          "parent_key": null,
+          "module": "water_trough",
+          "position_m": [
+            1.100000023841858,
+            -0.6499999761581421,
+            0.0
+          ],
+          "yaw_degrees": 90.00000250447816,
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "triangles": 20026,
+      "meshes": 12,
+      "uv_meshes": 12,
+      "bounds_m": {
+        "min": [
+          -3.227607250213623,
+          -1.6591503620147705,
+          0.0
+        ],
+        "max": [
+          2.065000057220459,
+          1.715000033378601,
+          2.700000047683716
+        ],
+        "size": [
+          5.292607307434082,
+          3.3741503953933716,
+          2.700000047683716
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Authored art prototypes; runtime integration reported separately.",
+    "Characters and horses are unrigged, with no armature or animation yet.",
+    "Portable PBR colours and planar UVs; no baked texture maps or authored LODs."
+  ]
+}

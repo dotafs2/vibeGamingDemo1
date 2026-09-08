@@ -1,0 +1,1264 @@
+{
+  "status": "passed",
+  "catalog": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\catalog.json",
+  "module_count": 28,
+  "assembly_count": 5,
+  "assets": [
+    {
+      "id": "wall_plain_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\wall_plain_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 7,
+        "mesh_objects": 2,
+        "triangles": 648,
+        "materials": 2,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.12150011211633682,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.10999999940395355,
+            2.4000000953674316
+          ],
+          "size": [
+            2.0,
+            0.23150011152029037,
+            2.4000000953674316
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "wall_window_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\wall_window_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 7,
+        "mesh_objects": 2,
+        "triangles": 3904,
+        "materials": 8,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.2150000035762787,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.10999999940395355,
+            2.4000000953674316
+          ],
+          "size": [
+            2.0,
+            0.32500000298023224,
+            2.4000000953674316
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 8,
+          "pbr_material_count": 8,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "wall_door_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\wall_door_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 7,
+        "mesh_objects": 2,
+        "triangles": 3348,
+        "materials": 6,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.20000000298023224,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.10999999940395355,
+            2.4000000953674316
+          ],
+          "size": [
+            2.0,
+            0.3100000023841858,
+            2.4000000953674316
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 5,
+          "pbr_material_count": 5,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "wall_passage_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\wall_passage_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 7,
+        "mesh_objects": 2,
+        "triangles": 1080,
+        "materials": 3,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.20000000298023224,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.10999999940395355,
+            2.4000000953674316
+          ],
+          "size": [
+            2.0,
+            0.3100000023841858,
+            2.4000000953674316
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "wall_knee_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\wall_knee_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 6,
+        "mesh_objects": 2,
+        "triangles": 432,
+        "materials": 2,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.10499999672174454,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.10499999672174454,
+            0.6000000238418579
+          ],
+          "size": [
+            2.0,
+            0.20999999344348907,
+            0.6000000238418579
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "foundation_cell_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\foundation_cell_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 4,
+        "mesh_objects": 2,
+        "triangles": 216,
+        "materials": 2,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.0199999809265137,
+            -1.0199999809265137,
+            0.0
+          ],
+          "max": [
+            1.0199999809265137,
+            1.0199999809265137,
+            0.3999999761581421
+          ],
+          "size": [
+            2.0399999618530273,
+            2.0399999618530273,
+            0.3999999761581421
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "stone_skirt_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\stone_skirt_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 864,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -1.0049999952316284,
+            -0.18000000715255737,
+            0.009999997913837433
+          ],
+          "max": [
+            1.0199999809265137,
+            0.07000000029802322,
+            0.3799999952316284
+          ],
+          "size": [
+            2.024999976158142,
+            0.2500000074505806,
+            0.369999997317791
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "floor_cell_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\floor_cell_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1296,
+        "materials": 2,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.9959999918937683,
+            -1.0,
+            -0.13499999046325684
+          ],
+          "max": [
+            0.9959999918937683,
+            1.0,
+            0.05000000074505806
+          ],
+          "size": [
+            1.9919999837875366,
+            2.0,
+            0.1849999912083149
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "roof_gable_4x2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\roof_gable_4x2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 6,
+        "mesh_objects": 2,
+        "triangles": 17640,
+        "materials": 6,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -2.2970147132873535,
+            -1.0,
+            -0.2544853091239929
+          ],
+          "max": [
+            2.2970147132873535,
+            1.0166666507720947,
+            1.7699999809265137
+          ],
+          "size": [
+            4.594029426574707,
+            2.0166666507720947,
+            2.0244852900505066
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 6,
+          "pbr_material_count": 6,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "gable_end_4m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\gable_end_4m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 4,
+        "mesh_objects": 2,
+        "triangles": 1192,
+        "materials": 4,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -2.305265426635742,
+            -0.1900000274181366,
+            -0.25088247656822205
+          ],
+          "max": [
+            2.305265426635742,
+            0.07999999821186066,
+            1.6908825635910034
+          ],
+          "size": [
+            4.610530853271484,
+            0.27000002562999725,
+            1.9417650401592255
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 4,
+          "pbr_material_count": 4,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "roof_gable_2x2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\roof_gable_2x2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 6,
+        "mesh_objects": 2,
+        "triangles": 11520,
+        "materials": 6,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.299065113067627,
+            -1.0,
+            -0.27231690287590027
+          ],
+          "max": [
+            1.299065113067627,
+            1.0166666507720947,
+            1.0700000524520874
+          ],
+          "size": [
+            2.598130226135254,
+            2.0166666507720947,
+            1.3423169553279877
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 6,
+          "pbr_material_count": 6,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "gable_end_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\gable_end_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 4,
+        "mesh_objects": 2,
+        "triangles": 512,
+        "materials": 3,
+        "uv_mesh_objects": 2,
+        "bounds_m": {
+          "min": [
+            -1.308622121810913,
+            -0.19000007212162018,
+            -0.24763073027133942
+          ],
+          "max": [
+            1.308622121810913,
+            0.07999999821186066,
+            0.9876306653022766
+          ],
+          "size": [
+            2.617244243621826,
+            0.27000007033348083,
+            1.235261395573616
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "overlay_lime_repair",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\overlay_lime_repair.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 756,
+        "materials": 2,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.6699999570846558,
+            -0.10899999737739563,
+            0.07999999821186066
+          ],
+          "max": [
+            0.7000000476837158,
+            -0.0820000022649765,
+            0.4300000071525574
+          ],
+          "size": [
+            1.3700000047683716,
+            0.02699999511241913,
+            0.3500000089406967
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "overlay_ivy",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\overlay_ivy.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1100,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.923100471496582,
+            -0.2742305099964142,
+            -0.05176415666937828
+          ],
+          "max": [
+            -0.19689956307411194,
+            -0.17766034603118896,
+            1.471764087677002
+          ],
+          "size": [
+            0.7262009084224701,
+            0.09657016396522522,
+            1.5235282443463802
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_flowerbox",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_flowerbox.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1684,
+        "materials": 6,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.5199999809265137,
+            -0.4975000023841858,
+            0.6599999666213989
+          ],
+          "max": [
+            0.5199999809265137,
+            -0.10999998450279236,
+            1.1320630311965942
+          ],
+          "size": [
+            1.0399999618530273,
+            0.38750001788139343,
+            0.4720630645751953
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 6,
+          "pbr_material_count": 6,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_steps_040",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_steps_040.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 324,
+        "materials": 1,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.6399999856948853,
+            -1.1399999856948853,
+            0.0
+          ],
+          "max": [
+            0.6399999856948853,
+            0.0,
+            0.47999998927116394
+          ],
+          "size": [
+            1.2799999713897705,
+            1.1399999856948853,
+            0.47999998927116394
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 1,
+          "pbr_material_count": 1,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_steps_080",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_steps_080.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 540,
+        "materials": 1,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.6600000262260437,
+            -1.7000000476837158,
+            0.0
+          ],
+          "max": [
+            0.6600000262260437,
+            0.0,
+            0.800000011920929
+          ],
+          "size": [
+            1.3200000524520874,
+            1.7000000476837158,
+            0.800000011920929
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 1,
+          "pbr_material_count": 1,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_chimney",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_chimney.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 3564,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.4000000059604645,
+            -0.4000000059604645,
+            0.012499995529651642
+          ],
+          "max": [
+            0.4000000059604645,
+            0.4000000059604645,
+            1.7750000953674316
+          ],
+          "size": [
+            0.800000011920929,
+            0.800000011920929,
+            1.76250009983778
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_work_canopy_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_work_canopy_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1944,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -1.0959999561309814,
+            -1.0346859693527222,
+            0.0
+          ],
+          "max": [
+            1.0959999561309814,
+            1.0850000381469727,
+            2.7750000953674316
+          ],
+          "size": [
+            2.191999912261963,
+            2.119686007499695,
+            2.7750000953674316
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_balcony_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_balcony_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 2484,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -1.0499999523162842,
+            -0.5849999785423279,
+            -0.7176104784011841
+          ],
+          "max": [
+            1.0499999523162842,
+            0.5600000023841858,
+            1.0450000762939453
+          ],
+          "size": [
+            2.0999999046325684,
+            1.1449999809265137,
+            1.7626105546951294
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_market_awning",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_market_awning.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 5832,
+        "materials": 5,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -1.0750000476837158,
+            -0.9774999618530273,
+            0.0
+          ],
+          "max": [
+            1.0750000476837158,
+            1.0322394371032715,
+            2.402472734451294
+          ],
+          "size": [
+            2.1500000953674316,
+            2.009739398956299,
+            2.402472734451294
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 5,
+          "pbr_material_count": 5,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "prop_workbench",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\prop_workbench.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1516,
+        "materials": 5,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.8500000238418579,
+            -0.6100000143051147,
+            0.015000015497207642
+          ],
+          "max": [
+            0.8500000238418579,
+            0.39500001072883606,
+            1.027500033378601
+          ],
+          "size": [
+            1.7000000476837158,
+            1.0050000250339508,
+            1.0125000178813934
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 5,
+          "pbr_material_count": 5,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "prop_log_stack",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\prop_log_stack.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 12420,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.5289138555526733,
+            -0.612358033657074,
+            0.026852073147892952
+          ],
+          "max": [
+            0.5289138555526733,
+            0.612358033657074,
+            0.7531479597091675
+          ],
+          "size": [
+            1.0578277111053467,
+            1.224716067314148,
+            0.7262958865612745
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "prop_barrel",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\prop_barrel.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 788,
+        "materials": 4,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.33500000834465027,
+            -0.33500000834465027,
+            0.0
+          ],
+          "max": [
+            0.33500000834465027,
+            0.33500000834465027,
+            0.7264999747276306
+          ],
+          "size": [
+            0.6700000166893005,
+            0.6700000166893005,
+            0.7264999747276306
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 4,
+          "pbr_material_count": 4,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "prop_bench",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\prop_bench.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 972,
+        "materials": 2,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.875,
+            -0.3449999988079071,
+            0.0
+          ],
+          "max": [
+            0.875,
+            0.3449999988079071,
+            0.5799999833106995
+          ],
+          "size": [
+            1.75,
+            0.6899999976158142,
+            0.5799999833106995
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 2,
+          "pbr_material_count": 2,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_garden_fence_2m",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_garden_fence_2m.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 4,
+        "mesh_objects": 1,
+        "triangles": 1404,
+        "materials": 3,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -1.0,
+            -0.06499999761581421,
+            0.0
+          ],
+          "max": [
+            1.0,
+            0.06499999761581421,
+            0.9399999976158142
+          ],
+          "size": [
+            2.0,
+            0.12999999523162842,
+            0.9399999976158142
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 3,
+          "pbr_material_count": 3,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "prop_produce_crate",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\prop_produce_crate.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 2004,
+        "materials": 4,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.32500001788139343,
+            -0.24250000715255737,
+            0.0
+          ],
+          "max": [
+            0.32500001788139343,
+            0.24250000715255737,
+            0.3056372404098511
+          ],
+          "size": [
+            0.6500000357627869,
+            0.48500001430511475,
+            0.3056372404098511
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 4,
+          "pbr_material_count": 4,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "attachment_shop_sign",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Modules\\attachment_shop_sign.glb",
+      "kind": "module",
+      "stats": {
+        "objects": 3,
+        "mesh_objects": 1,
+        "triangles": 1536,
+        "materials": 4,
+        "uv_mesh_objects": 1,
+        "bounds_m": {
+          "min": [
+            -0.1089998111128807,
+            -0.949999988079071,
+            -0.7250000238418579
+          ],
+          "max": [
+            0.1089998111128807,
+            0.010141324251890182,
+            0.39921727776527405
+          ],
+          "size": [
+            0.2179996222257614,
+            0.9601413123309612,
+            1.124217301607132
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 4,
+          "pbr_material_count": 4,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 0,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "carpenter_court",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Assemblies\\carpenter_court.glb",
+      "kind": "assembly",
+      "stats": {
+        "objects": 335,
+        "mesh_objects": 116,
+        "triangles": 186268,
+        "materials": 275,
+        "uv_mesh_objects": 116,
+        "bounds_m": {
+          "min": [
+            -3.328913688659668,
+            -3.2699999809265137,
+            0.0
+          ],
+          "max": [
+            4.835000038146973,
+            4.497499942779541,
+            5.525000095367432
+          ],
+          "size": [
+            8.16391372680664,
+            7.767499923706055,
+            5.525000095367432
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 22,
+          "pbr_material_count": 22,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 78,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "merchant_steps",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Assemblies\\merchant_steps.glb",
+      "kind": "assembly",
+      "stats": {
+        "objects": 397,
+        "mesh_objects": 138,
+        "triangles": 189296,
+        "materials": 371,
+        "uv_mesh_objects": 138,
+        "bounds_m": {
+          "min": [
+            -0.49750012159347534,
+            -3.819999933242798,
+            0.0
+          ],
+          "max": [
+            7.050000190734863,
+            4.215000152587891,
+            7.375
+          ],
+          "size": [
+            7.547500312328339,
+            8.035000085830688,
+            7.375
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 24,
+          "pbr_material_count": 24,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 99,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "family_cluster",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Assemblies\\family_cluster.glb",
+      "kind": "assembly",
+      "stats": {
+        "objects": 379,
+        "mesh_objects": 130,
+        "triangles": 213320,
+        "materials": 341,
+        "uv_mesh_objects": 130,
+        "bounds_m": {
+          "min": [
+            -3.0350000858306885,
+            -3.065000057220459,
+            0.0
+          ],
+          "max": [
+            6.497499942779541,
+            4.497499942779541,
+            6.269999980926514
+          ],
+          "size": [
+            9.53250002861023,
+            7.5625,
+            6.269999980926514
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 22,
+          "pbr_material_count": 22,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 86,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "family_starter",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Assemblies\\family_starter.glb",
+      "kind": "assembly",
+      "stats": {
+        "objects": 150,
+        "mesh_objects": 51,
+        "triangles": 91752,
+        "materials": 148,
+        "uv_mesh_objects": 51,
+        "bounds_m": {
+          "min": [
+            -0.49750012159347534,
+            -1.2799999713897705,
+            0.0
+          ],
+          "max": [
+            4.497499942779541,
+            4.497499942779541,
+            5.074999809265137
+          ],
+          "size": [
+            4.995000064373016,
+            5.7774999141693115,
+            5.074999809265137
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 21,
+          "pbr_material_count": 21,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 35,
+        "instance_key_unique": true
+      }
+    },
+    {
+      "id": "family_side_wing",
+      "path": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Art\\OrganicVillageMasters\\Assemblies\\family_side_wing.glb",
+      "kind": "assembly",
+      "stats": {
+        "objects": 221,
+        "mesh_objects": 76,
+        "triangles": 132972,
+        "materials": 206,
+        "uv_mesh_objects": 76,
+        "bounds_m": {
+          "min": [
+            -2.308622121810913,
+            -2.2149999141693115,
+            0.0
+          ],
+          "max": [
+            4.497499942779541,
+            4.497499942779541,
+            5.074999809265137
+          ],
+          "size": [
+            6.806122064590454,
+            6.7124998569488525,
+            5.074999809265137
+          ]
+        },
+        "image_count": 0,
+        "pbr": {
+          "material_count": 21,
+          "pbr_material_count": 21,
+          "missing_principled": [],
+          "nonfinite_pbr": []
+        },
+        "instance_key_count": 50,
+        "instance_key_unique": true
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

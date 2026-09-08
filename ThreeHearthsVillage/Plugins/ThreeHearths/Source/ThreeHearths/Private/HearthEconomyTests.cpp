@@ -74,13 +74,13 @@ bool FHearthEconomyPersistenceTest::RunTest(const FString&)
     TestTrue(TEXT("Accepted offer survives reload before delivery"),V->ApplyWorldState(V->ExportWorldState(),Error));
     TestTrue(TEXT("Seller closes negotiation and starts delivery"),V->ResolveSocialTurn(0,5,TEXT("好，我现在送过来。"),TEXT("test")));
     bool SawTravel=V->Residents[0].Task==EHearthTask::TradeTravel; const int32 TransactionsBeforeDelivery=V->Transactions.Num();
-    TestTrue(TEXT("In-transit seller and carried plank survive reload"),V->ApplyWorldState(V->ExportWorldState(),Error));
+    if(!TestTrue(TEXT("In-transit seller and carried plank survive reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) AddError(Error);
     TestEqual(TEXT("Reload resumes seller delivery travel"),V->Residents[0].Task,EHearthTask::TradeTravel);
     TestEqual(TEXT("Reload keeps exactly one reserved trade plank"),V->TradeOffers[0].ReservedQuantity,1);
     for(int32 Step=0;Step<1000 && V->TradeOffers[0].Status!=TEXT("delivering");++Step)
     { V->AdvanceSimulation(.05f); SawTravel|=V->Residents[0].Task==EHearthTask::TradeTravel; }
     if(!TestEqual(TEXT("Seller reaches the handover phase"),V->TradeOffers[0].Status,FString(TEXT("delivering")))) return false;
-    TestTrue(TEXT("Handover-in-progress survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error));
+    if(!TestTrue(TEXT("Handover-in-progress survives reload"),V->ApplyWorldState(V->ExportWorldState(),Error))) AddError(Error);
     TestEqual(TEXT("Handover reload has not paid early"),V->Transactions.Num(),TransactionsBeforeDelivery);
     for(int32 Step=0;Step<1000 && V->TradeOffers[0].Status!=TEXT("completed");++Step) V->AdvanceSimulation(.05f);
     TestTrue(TEXT("Seller physically enters delivery travel"),SawTravel);
@@ -161,7 +161,7 @@ bool FHearthLegacyUnfundedWageTest::RunTest(const FString&)
     Old.Transactions.Add(LegacySpend); Old.People[1].Person.Coins+=ActiveWage;
     FHearthWagePayable LegacyPaid; LegacyPaid.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); LegacyPaid.TaskId=LegacySpend.TaskId;
     LegacyPaid.Worker=1; LegacyPaid.Amount=ActiveWage; LegacyPaid.Status=TEXT("paid"); Old.WagePayables.Add(LegacyPaid);
-    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":10"),TEXT("\"schema\":3"));
+    FString Legacy=HearthWorld::Encode(Old); Legacy.ReplaceInline(TEXT("\"schema\":11"),TEXT("\"schema\":3"));
     if(!TestTrue(TEXT("Valid schema-3 world migrates"),V->ApplyWorldState(Legacy,Error))) { AddError(Error); return false; }
     auto* Payable=V->WagePayables.FindByPredicate([&](const FHearthWagePayable& P){ return P.TaskId==ActiveTask; });
     if(!TestNotNull(TEXT("Migration creates a payable for unfinished work"),Payable)) return false;

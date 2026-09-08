@@ -1,0 +1,338 @@
+{
+  "status": "source_rigs_and_authored_actions_created",
+  "bones": {
+    "root": {
+      "parent": null
+    },
+    "pelvis": {
+      "parent": "root"
+    },
+    "spine": {
+      "parent": "pelvis"
+    },
+    "neck": {
+      "parent": "spine"
+    },
+    "head": {
+      "parent": "neck"
+    },
+    "thigh_l": {
+      "parent": "pelvis"
+    },
+    "shin_l": {
+      "parent": "thigh_l"
+    },
+    "foot_l": {
+      "parent": "shin_l"
+    },
+    "upper_arm_l": {
+      "parent": "spine"
+    },
+    "forearm_l": {
+      "parent": "upper_arm_l"
+    },
+    "hand_l": {
+      "parent": "forearm_l"
+    },
+    "thigh_r": {
+      "parent": "pelvis"
+    },
+    "shin_r": {
+      "parent": "thigh_r"
+    },
+    "foot_r": {
+      "parent": "shin_r"
+    },
+    "upper_arm_r": {
+      "parent": "spine"
+    },
+    "forearm_r": {
+      "parent": "upper_arm_r"
+    },
+    "hand_r": {
+      "parent": "forearm_r"
+    }
+  },
+  "people": [
+    {
+      "id": "gatekeeper",
+      "layers": [
+        {
+          "layer": "attachments",
+          "mesh": "gatekeeper__attachments",
+          "vertices": 8,
+          "groups": {
+            "torso_blend": 8
+          }
+        },
+        {
+          "layer": "finish",
+          "mesh": "gatekeeper__finish",
+          "vertices": 538,
+          "groups": {
+            "foot_l": 52,
+            "foot_r": 52,
+            "torso_blend": 88,
+            "hand_l": 52,
+            "upper_arm_l": 52,
+            "hand_r": 52,
+            "upper_arm_r": 52,
+            "head": 138
+          }
+        },
+        {
+          "layer": "structure",
+          "mesh": "gatekeeper__structure",
+          "vertices": 428,
+          "groups": {
+            "thigh_l": 20,
+            "shin_l": 20,
+            "thigh_r": 20,
+            "shin_r": 20,
+            "torso_blend": 60,
+            "upper_arm_l": 20,
+            "forearm_l": 20,
+            "upper_arm_r": 20,
+            "forearm_r": 20,
+            "neck": 20,
+            "head": 188
+          }
+        },
+        {
+          "layer": "helmet_finish",
+          "mesh": "gatekeeper__helmet_finish",
+          "vertices": 16,
+          "groups": {
+            "head": 16
+          }
+        },
+        {
+          "layer": "helmet_structure",
+          "mesh": "gatekeeper__helmet_structure",
+          "vertices": 128,
+          "groups": {
+            "head": 128
+          }
+        },
+        {
+          "layer": "spear_finish",
+          "mesh": "gatekeeper__spear_finish",
+          "vertices": 46,
+          "groups": {
+            "hand_r": 46
+          }
+        },
+        {
+          "layer": "spear_structure",
+          "mesh": "gatekeeper__spear_structure",
+          "vertices": 20,
+          "groups": {
+            "hand_r": 20
+          }
+        }
+      ],
+      "clips": {
+        "Idle": {
+          "fbx": "gatekeeper_idle.fbx",
+          "glb": "gatekeeper_idle.glb",
+          "frames": 61,
+          "seconds": 2.0,
+          "max_reach_error_m": 0.0
+        },
+        "Walk": {
+          "fbx": "gatekeeper_walk.fbx",
+          "glb": "gatekeeper_walk.glb",
+          "frames": 31,
+          "seconds": 1.0,
+          "max_reach_error_m": 0.0
+        }
+      }
+    },
+    {
+      "id": "royal_guard",
+      "layers": [
+        {
+          "layer": "attachments",
+          "mesh": "royal_guard__attachments",
+          "vertices": 8,
+          "groups": {
+            "torso_blend": 8
+          }
+        },
+        {
+          "layer": "finish",
+          "mesh": "royal_guard__finish",
+          "vertices": 538,
+          "groups": {
+            "foot_l": 52,
+            "foot_r": 52,
+            "torso_blend": 88,
+            "hand_l": 52,
+            "upper_arm_l": 52,
+            "hand_r": 52,
+            "upper_arm_r": 52,
+            "head": 138
+          }
+        },
+        {
+          "layer": "structure",
+          "mesh": "royal_guard__structure",
+          "vertices": 428,
+          "groups": {
+            "thigh_l": 20,
+            "shin_l": 20,
+            "thigh_r": 20,
+            "shin_r": 20,
+            "torso_blend": 60,
+            "upper_arm_l": 20,
+            "forearm_l": 20,
+            "upper_arm_r": 20,
+            "forearm_r": 20,
+            "neck": 20,
+            "head": 188
+          }
+        },
+        {
+          "layer": "helmet_finish",
+          "mesh": "royal_guard__helmet_finish",
+          "vertices": 16,
+          "groups": {
+            "head": 16
+          }
+        },
+        {
+          "layer": "helmet_structure",
+          "mesh": "royal_guard__helmet_structure",
+          "vertices": 128,
+          "groups": {
+            "head": 128
+          }
+        },
+        {
+          "layer": "spear_finish",
+          "mesh": "royal_guard__spear_finish",
+          "vertices": 46,
+          "groups": {
+            "hand_r": 46
+          }
+        },
+        {
+          "layer": "spear_structure",
+          "mesh": "royal_guard__spear_structure",
+          "vertices": 20,
+          "groups": {
+            "hand_r": 20
+          }
+        },
+        {
+          "layer": "shield_finish",
+          "mesh": "royal_guard__shield_finish",
+          "vertices": 56,
+          "groups": {
+            "hand_l": 56
+          }
+        },
+        {
+          "layer": "shield_structure",
+          "mesh": "royal_guard__shield_structure",
+          "vertices": 18,
+          "groups": {
+            "hand_l": 18
+          }
+        }
+      ],
+      "clips": {
+        "Idle": {
+          "fbx": "royal_guard_idle.fbx",
+          "glb": "royal_guard_idle.glb",
+          "frames": 61,
+          "seconds": 2.0,
+          "max_reach_error_m": 0.0
+        },
+        "Walk": {
+          "fbx": "royal_guard_walk.fbx",
+          "glb": "royal_guard_walk.glb",
+          "frames": 31,
+          "seconds": 1.0,
+          "max_reach_error_m": 0.0
+        }
+      }
+    },
+    {
+      "id": "carter",
+      "layers": [
+        {
+          "layer": "attachments",
+          "mesh": "carter__attachments",
+          "vertices": 8,
+          "groups": {
+            "torso_blend": 8
+          }
+        },
+        {
+          "layer": "finish",
+          "mesh": "carter__finish",
+          "vertices": 434,
+          "groups": {
+            "foot_l": 52,
+            "foot_r": 52,
+            "torso_blend": 88,
+            "hand_l": 52,
+            "hand_r": 52,
+            "head": 138
+          }
+        },
+        {
+          "layer": "structure",
+          "mesh": "carter__structure",
+          "vertices": 428,
+          "groups": {
+            "thigh_l": 20,
+            "shin_l": 20,
+            "thigh_r": 20,
+            "shin_r": 20,
+            "torso_blend": 60,
+            "upper_arm_l": 20,
+            "forearm_l": 20,
+            "upper_arm_r": 20,
+            "forearm_r": 20,
+            "neck": 20,
+            "head": 188
+          }
+        },
+        {
+          "layer": "wardrobe",
+          "mesh": "carter__wardrobe",
+          "vertices": 90,
+          "groups": {
+            "head": 90
+          }
+        }
+      ],
+      "clips": {
+        "Idle": {
+          "fbx": "carter_idle.fbx",
+          "glb": "carter_idle.glb",
+          "frames": 61,
+          "seconds": 2.0,
+          "max_reach_error_m": 0.0
+        },
+        "Walk": {
+          "fbx": "carter_walk.fbx",
+          "glb": "carter_walk.glb",
+          "frames": 31,
+          "seconds": 1.0,
+          "max_reach_error_m": 0.0
+        }
+      }
+    }
+  ],
+  "walk_speed_mps": 0.9,
+  "walk_cycle_seconds": 1,
+  "fps": 30,
+  "root_motion": false,
+  "limitations": [
+    "No seated driving, combat, facial speech or IK terrain adjustment yet.",
+    "Source previews do not prove live NPC integration."
+  ]
+}

@@ -188,6 +188,10 @@ void AHearthVillage::AdvancePublicWorks(float Dt)
     // grant scope matches the same three-part budget window.
     for (int32 M : {0, 2})
     {
+        // In the organic village the carter is the sole physical beam route;
+        // keep beams in the real depot until a freight load reaches the
+        // public construction stock instead of teleporting them here.
+        if(IsOrganicVillage() && M==2) continue;
         int32 Need = 0, Held=PublicProject.Stock[M];
         for (const auto& Part : PublicProject.Parts) if (Part.Status != TEXT("completed") && (!bTown3 || BudgetParts.Contains(&Part)))
         { Need+=Part.Required[M]; Held+=Part.Reserved[M]+Part.Delivered[M]; }

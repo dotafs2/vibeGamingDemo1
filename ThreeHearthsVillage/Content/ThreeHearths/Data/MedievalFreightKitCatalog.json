@@ -1,0 +1,676 @@
+{
+  "schema_version": 1,
+  "source_manifest": "Art/MedievalLife/FreightKit/manifest.json",
+  "source_manifest_sha256": "6d5c87959b97641f4b0554c499b4627ac3a543b1e8683b42a916682537f2dfad",
+  "destination_root": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit",
+  "source_to_unreal_matrix": [
+    [
+      100.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -100.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_to_unreal_units": "metres_to_centimetres; reflected Y",
+  "yaw_conversion": "yaw_ue = -yaw_blender",
+  "assets": [
+    {
+      "id": "cargo_planks/finish",
+      "module_id": "cargo_planks",
+      "layer": "finish",
+      "object_name": "cargo_planks__finish",
+      "source": "Art/MedievalLife/FreightKit/cargo_planks.fbx",
+      "source_sha256": "3fab685b4315acd20c8f7a7dfd78d5b0cfa44e06e432236c4081ba11fd8dd80b",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cargo_planks.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks/cargo_planks__finish.cargo_planks__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          3.850003272294998
+        ],
+        "min_cm": [
+          -9.750008583068848,
+          -104.29999542236328,
+          0.5000000596046448
+        ],
+        "max_cm": [
+          9.750008583068848,
+          104.29999542236328,
+          7.200006484985352
+        ],
+        "extent_cm": [
+          9.750008583068848,
+          104.29999542236328,
+          3.3500032126903534
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks/Medieval___oak.Medieval___oak"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 1052,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.07900000002700835
+    },
+    {
+      "id": "cargo_planks/structure",
+      "module_id": "cargo_planks",
+      "layer": "structure",
+      "object_name": "cargo_planks__structure",
+      "source": "Art/MedievalLife/FreightKit/cargo_planks.fbx",
+      "source_sha256": "3fab685b4315acd20c8f7a7dfd78d5b0cfa44e06e432236c4081ba11fd8dd80b",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cargo_planks.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks/cargo_planks__structure.cargo_planks__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          3.5
+        ],
+        "min_cm": [
+          -10.250008583068848,
+          -104.0,
+          0.0
+        ],
+        "max_cm": [
+          10.250008583068848,
+          104.0,
+          7.0
+        ],
+        "extent_cm": [
+          10.250008583068848,
+          104.0,
+          3.5
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_planks/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 268,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.07900000002700835
+    },
+    {
+      "id": "cargo_beams/finish",
+      "module_id": "cargo_beams",
+      "layer": "finish",
+      "object_name": "cargo_beams__finish",
+      "source": "Art/MedievalLife/FreightKit/cargo_beams.fbx",
+      "source_sha256": "0f6156d5c3e210cd0be8e0dedc4875a151ed70a2ec9c8d3e4c1bc154c95ed492",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cargo_beams.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/cargo_beams__finish.cargo_beams__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.3749990463256836,
+          0.15000152587890625,
+          9.500000178813934
+        ],
+        "min_cm": [
+          -10.2000093460083,
+          -110.29999542236328,
+          0.5499995946884155
+        ],
+        "max_cm": [
+          10.950007438659668,
+          110.5999984741211,
+          18.450000762939453
+        ],
+        "extent_cm": [
+          10.575008392333984,
+          110.44999694824219,
+          8.950000584125519
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/Medieval___endgrain.Medieval___endgrain",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 3,
+      "uv_channels": 1,
+      "vertex_count": 1642,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.09399999992456287
+    },
+    {
+      "id": "cargo_beams/structure",
+      "module_id": "cargo_beams",
+      "layer": "structure",
+      "object_name": "cargo_beams__structure",
+      "source": "Art/MedievalLife/FreightKit/cargo_beams.fbx",
+      "source_sha256": "0f6156d5c3e210cd0be8e0dedc4875a151ed70a2ec9c8d3e4c1bc154c95ed492",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cargo_beams.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/cargo_beams__structure.cargo_beams__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          9.5
+        ],
+        "min_cm": [
+          -10.750009536743164,
+          -110.0,
+          0.0
+        ],
+        "max_cm": [
+          10.750009536743164,
+          110.0,
+          19.0
+        ],
+        "extent_cm": [
+          10.750009536743164,
+          110.0,
+          9.5
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cargo_beams/Medieval___oak.Medieval___oak"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 264,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.09399999992456287
+    },
+    {
+      "id": "cart_traces/attachments",
+      "module_id": "cart_traces",
+      "layer": "attachments",
+      "object_name": "cart_traces__attachments",
+      "source": "Art/MedievalLife/FreightKit/cart_traces.fbx",
+      "source_sha256": "dbb6db5910236f9bde4069a506db7c40d16c517e745764a1d9f481764d6d3f50",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cart_traces.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces/cart_traces__attachments.cart_traces__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          3.24249267578125e-05,
+          373.15000915527344,
+          94.90873718261719
+        ],
+        "min_cm": [
+          -55.499969482421875,
+          365.9000244140625,
+          77.71746826171875
+        ],
+        "max_cm": [
+          55.50003433227539,
+          380.3999938964844,
+          112.10000610351562
+        ],
+        "extent_cm": [
+          55.50000190734863,
+          7.2499847412109375,
+          17.191268920898438
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces/Medieval___iron.Medieval___iron"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 2090,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.10899999993853271
+    },
+    {
+      "id": "cart_traces/structure",
+      "module_id": "cart_traces",
+      "layer": "structure",
+      "object_name": "cart_traces__structure",
+      "source": "Art/MedievalLife/FreightKit/cart_traces.fbx",
+      "source_sha256": "dbb6db5910236f9bde4069a506db7c40d16c517e745764a1d9f481764d6d3f50",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/cart_traces.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces/cart_traces__structure.cart_traces__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          3.24249267578125e-05,
+          365.7635040283203,
+          109.04106140136719
+        ],
+        "min_cm": [
+          -54.15857696533203,
+          352.2495422363281,
+          80.0
+        ],
+        "max_cm": [
+          54.15864181518555,
+          379.2774658203125,
+          138.08212280273438
+        ],
+        "extent_cm": [
+          54.15860939025879,
+          13.513961791992188,
+          29.041061401367188
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/cart_traces/Medieval___leather.Medieval___leather"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 1182,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.10899999993853271
+    },
+    {
+      "id": "freight_depot_rack/attachments",
+      "module_id": "freight_depot_rack",
+      "layer": "attachments",
+      "object_name": "freight_depot_rack__attachments",
+      "source": "Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "source_sha256": "7574863cb60ee8a7d5709a3c6c09d6b95f4765d7fd92514e8c0edb96918a2cd2",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/freight_depot_rack__attachments.freight_depot_rack__attachments",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          92.5
+        ],
+        "min_cm": [
+          -121.97319793701172,
+          -52.300010681152344,
+          33.02680969238281
+        ],
+        "max_cm": [
+          121.97319793701172,
+          52.300010681152344,
+          151.9731903076172
+        ],
+        "extent_cm": [
+          121.97319793701172,
+          52.300010681152344,
+          59.47319030761719
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___iron.Medieval___iron"
+      ],
+      "material_slot_count": 1,
+      "uv_channels": 1,
+      "vertex_count": 4788,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.34299999999348074
+    },
+    {
+      "id": "freight_depot_rack/finish",
+      "module_id": "freight_depot_rack",
+      "layer": "finish",
+      "object_name": "freight_depot_rack__finish",
+      "source": "Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "source_sha256": "7574863cb60ee8a7d5709a3c6c09d6b95f4765d7fd92514e8c0edb96918a2cd2",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/freight_depot_rack__finish.freight_depot_rack__finish",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          1.4874954223632812,
+          86.0
+        ],
+        "min_cm": [
+          -129.6400146484375,
+          -53.325008392333984,
+          22.0
+        ],
+        "max_cm": [
+          129.6400146484375,
+          56.29999923706055,
+          150.0
+        ],
+        "extent_cm": [
+          129.6400146484375,
+          54.812503814697266,
+          64.0
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___iron.Medieval___iron",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___blue.Medieval___blue"
+      ],
+      "material_slot_count": 2,
+      "uv_channels": 1,
+      "vertex_count": 1868,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.34299999999348074
+    },
+    {
+      "id": "freight_depot_rack/structure",
+      "module_id": "freight_depot_rack",
+      "layer": "structure",
+      "object_name": "freight_depot_rack__structure",
+      "source": "Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "source_sha256": "7574863cb60ee8a7d5709a3c6c09d6b95f4765d7fd92514e8c0edb96918a2cd2",
+      "source_import_data": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Art/MedievalLife/FreightKit/freight_depot_rack.fbx",
+      "mesh": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/freight_depot_rack__structure.freight_depot_rack__structure",
+      "ue_asset_folder": "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack",
+      "front_axis": "-Y",
+      "up_axis": "+Z",
+      "bounds_authoring_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      },
+      "bounds_ue_cm": {
+        "origin_cm": [
+          0.0,
+          0.0,
+          80.22418975830078
+        ],
+        "min_cm": [
+          -142.00001525878906,
+          -64.00000762939453,
+          0.0
+        ],
+        "max_cm": [
+          142.00001525878906,
+          64.00000762939453,
+          160.44837951660156
+        ],
+        "extent_cm": [
+          142.00001525878906,
+          64.00000762939453,
+          80.22418975830078
+        ]
+      },
+      "material_paths": [
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___stone_dark.Medieval___stone_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___oak_dark.Medieval___oak_dark",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___oak.Medieval___oak",
+        "/Game/ThreeHearths/Generated/MedievalLife/FreightKit/freight_depot_rack/Medieval___oak_light.Medieval___oak_light"
+      ],
+      "material_slot_count": 4,
+      "uv_channels": 1,
+      "vertex_count": 4870,
+      "nanite": false,
+      "reused": false,
+      "import_seconds": 0.34299999999348074
+    }
+  ],
+  "modules": [
+    {
+      "id": "cargo_planks",
+      "fbx": "cargo_planks.fbx",
+      "sha256": "3fab685b4315acd20c8f7a7dfd78d5b0cfa44e06e432236c4081ba11fd8dd80b",
+      "glb": "cargo_planks.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "cargo_planks__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cargo_planks__structure"
+        }
+      ],
+      "triangles": 540,
+      "notes": "Exactly one sawn plank per instance. Bottom origin; stack without scaling.",
+      "bounds_m": {
+        "min": [
+          -0.10249999910593033,
+          -1.0429999828338623,
+          0.0
+        ],
+        "max": [
+          0.10249999910593033,
+          1.0429999828338623,
+          0.07200006395578384
+        ]
+      }
+    },
+    {
+      "id": "cargo_beams",
+      "fbx": "cargo_beams.fbx",
+      "sha256": "0f6156d5c3e210cd0be8e0dedc4875a151ed70a2ec9c8d3e4c1bc154c95ed492",
+      "glb": "cargo_beams.glb",
+      "layers": [
+        {
+          "layer": "finish",
+          "object_name": "cargo_beams__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cargo_beams__structure"
+        }
+      ],
+      "triangles": 756,
+      "notes": "Exactly one squared beam per instance. Bottom origin; stack without scaling.",
+      "bounds_m": {
+        "min": [
+          -0.10750000178813934,
+          -1.1059999465942383,
+          0.0
+        ],
+        "max": [
+          0.10950000584125519,
+          1.1029999256134033,
+          0.1899999976158142
+        ]
+      }
+    },
+    {
+      "id": "cart_traces",
+      "fbx": "cart_traces.fbx",
+      "sha256": "dbb6db5910236f9bde4069a506db7c40d16c517e745764a1d9f481764d6d3f50",
+      "glb": "cart_traces.glb",
+      "layers": [
+        {
+          "layer": "attachments",
+          "object_name": "cart_traces__attachments"
+        },
+        {
+          "layer": "structure",
+          "object_name": "cart_traces__structure"
+        }
+      ],
+      "triangles": 1240,
+      "notes": "Cart axle ground origin; links shafts to horse located at (0,-2.90,0).",
+      "bounds_m": {
+        "min": [
+          -0.5550000071525574,
+          -3.803999900817871,
+          0.7771746516227722
+        ],
+        "max": [
+          0.5550000071525574,
+          -3.5224955081939697,
+          1.3808212280273438
+        ]
+      }
+    },
+    {
+      "id": "freight_depot_rack",
+      "fbx": "freight_depot_rack.fbx",
+      "sha256": "7574863cb60ee8a7d5709a3c6c09d6b95f4765d7fd92514e8c0edb96918a2cd2",
+      "glb": "freight_depot_rack.glb",
+      "layers": [
+        {
+          "layer": "attachments",
+          "object_name": "freight_depot_rack__attachments"
+        },
+        {
+          "layer": "finish",
+          "object_name": "freight_depot_rack__finish"
+        },
+        {
+          "layer": "structure",
+          "object_name": "freight_depot_rack__structure"
+        }
+      ],
+      "triangles": 4460,
+      "notes": "Empty modular loading rack. Stored cargo is a separate inventory-driven layer.",
+      "bounds_m": {
+        "min": [
+          -1.4200000762939453,
+          -0.6399999856948853,
+          0.0
+        ],
+        "max": [
+          1.4200000762939453,
+          0.6399999856948853,
+          1.604483723640442
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "FreightKit contains static cargo/depot art only; no runtime cart behavior is implied."
+  ]
+}

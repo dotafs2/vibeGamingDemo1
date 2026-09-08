@@ -131,12 +131,23 @@ def usage_cost(response, maximum, policy=NIGHT_POLICY):
     return charge,prompt,output,cached
 
 class Ledger:
-    def __init__(self, path, policy=NIGHT_POLICY, clock=time.time):
+    def __init__(self, path, policy=NIGHT_POLICY, clock=time.time, runtime_deadline_utc=0):
         self.path=Path(path)
         self.guard=self.path.with_suffix('.guard.json')
         self.policy=policy
         self.clock=clock
+        # A runtime lock is deliberately outside Policy/asdict(policy): adding
+        # it to the policy would invalidate the existing guard fingerprint and
+        # make the authorized ledger unreadable.
+        if type(runtime_deadline_utc) is not int or runtime_deadline_utc<0:
+            raise InvalidRequest('Invalid runtime deadline')
+        self.runtime_deadline_utc=runtime_deadline_utc
         self.policy_hash=fingerprint(asdict(policy))
+
+    def deadline_reached(self):
+        deadlines=[value for value in (self.runtime_deadline_utc,self.policy.deadline_utc) if value]
+        deadline=min(deadlines,default=0)
+        return bool(deadline and self.clock()>=deadline)
 
     def initialize(self):
         """Explicit first-use only; neither server startup nor reset calls this."""
@@ -213,7 +224,7 @@ class Ledger:
                 if fingerprint(response)!=old['response_sha']: raise LedgerCorrupt('Cached receipt corrupted')
                 return {'send':False,'response':response}
             if meta['halted']: raise BudgetDenied('Paid requests halted: '+meta['halted'])
-            if self.policy.deadline_utc and self.clock()>=self.policy.deadline_utc:
+            if self.deadline_reached():
                 raise BudgetDenied('Authorized usage window has ended')
             active=db.execute("SELECT COUNT(*) FROM requests WHERE state IN ('reserved','uncertain')").fetchone()[0]
             if active>=self.policy.concurrency: raise BudgetDenied('Ten in-flight or unresolved requests already exist')
@@ -267,4 +278,4 @@ class Ledger:
                 'settled_cny':settled/NANO,'prior_unverified_cny':self.policy.prior_unverified_nano/NANO,
                 'reserved_cny':reserved/NANO,'liability_cny':meta['liability']/NANO,
                 'remaining_allocatable_cny':(self.policy.allocatable_nano-meta['liability'])/NANO,
-                'counts':counts,'halted':meta['halted'],'deadline_utc':self.policy.deadline_utc}
+                'counts':counts,'halted':meta['halted'],'deadline_utc':min((value for value in (self.runtime_deadline_utc,self.policy.deadline_utc) if value),default=0)}

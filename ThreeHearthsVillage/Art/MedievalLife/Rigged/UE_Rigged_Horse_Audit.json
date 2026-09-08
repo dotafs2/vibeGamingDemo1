@@ -1,0 +1,826 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "destination_root": "/Game/ThreeHearths/Generated/MedievalLife/Rigged",
+  "source_to_unreal_matrix": [
+    [
+      100.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -100.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_to_unreal_matrix_basis": "expected authored X,+Z / Y,-Z, metres_to_centimetres; audit enforces source bounds",
+  "horses": [
+    {
+      "id": "horse_bay",
+      "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+      "authored_bone_count": 18,
+      "skeleton_bone_names": [
+        "FL_foot",
+        "FL_lower",
+        "FL_upper",
+        "FR_foot",
+        "FR_lower",
+        "FR_upper",
+        "HL_foot",
+        "HL_lower",
+        "HL_upper",
+        "HR_foot",
+        "HR_lower",
+        "HR_upper",
+        "Horse_bay_Rig",
+        "body",
+        "head",
+        "neck",
+        "root",
+        "tail_base",
+        "tail_tip"
+      ],
+      "extra_object_root_bones": [
+        "Horse_bay_Rig"
+      ],
+      "bone_parents": {
+        "FL_foot": {
+          "expected": "FL_lower",
+          "actual": "FL_lower"
+        },
+        "FL_lower": {
+          "expected": "FL_upper",
+          "actual": "FL_upper"
+        },
+        "FL_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "FR_foot": {
+          "expected": "FR_lower",
+          "actual": "FR_lower"
+        },
+        "FR_lower": {
+          "expected": "FR_upper",
+          "actual": "FR_upper"
+        },
+        "FR_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "HL_foot": {
+          "expected": "HL_lower",
+          "actual": "HL_lower"
+        },
+        "HL_lower": {
+          "expected": "HL_upper",
+          "actual": "HL_upper"
+        },
+        "HL_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "HR_foot": {
+          "expected": "HR_lower",
+          "actual": "HR_lower"
+        },
+        "HR_lower": {
+          "expected": "HR_upper",
+          "actual": "HR_upper"
+        },
+        "HR_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "body": {
+          "expected": "root",
+          "actual": "root"
+        },
+        "head": {
+          "expected": "neck",
+          "actual": "neck"
+        },
+        "neck": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "root": {
+          "expected": null,
+          "actual": "Horse_bay_Rig"
+        },
+        "tail_base": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "tail_tip": {
+          "expected": "tail_base",
+          "actual": "tail_base"
+        }
+      },
+      "meshes": [
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments.horse_bay_skinned__attachments",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___gold.Medieval___gold"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -44.66997528076172,
+              -80.0000228881836,
+              117.70000457763672
+            ],
+            "max_cm": [
+              44.66995620727539,
+              176.75,
+              237.31451416015625
+            ],
+            "extent_cm": [
+              44.669965744018555,
+              128.3750114440918,
+              59.807254791259766
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_bay_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__finish.horse_bay_skinned__finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___bay_dark.Medieval___bay_dark",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___eye.Medieval___eye",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___hoof.Medieval___hoof",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___mane.Medieval___mane"
+          ],
+          "material_slot_count": 4,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -40.34844207763672,
+              -139.79486083984375,
+              1.4999940395355225
+            ],
+            "max_cm": [
+              40.34843063354492,
+              186.0,
+              264.02703857421875
+            ],
+            "extent_cm": [
+              40.34843635559082,
+              162.89743041992188,
+              131.2635222673416
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_bay_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__structure.horse_bay_skinned__structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___bay.Medieval___bay",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___bay_light.Medieval___bay_light",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Medieval___mane.Medieval___mane"
+          ],
+          "material_slot_count": 3,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -46.92927932739258,
+              -125.0,
+              10.744510650634766
+            ],
+            "max_cm": [
+              46.92926788330078,
+              178.5399932861328,
+              270.0
+            ],
+            "extent_cm": [
+              46.92927360534668,
+              151.7699966430664,
+              129.62774467468262
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_bay_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        }
+      ],
+      "union_bounds_ue_cm": {
+        "min_cm": [
+          -46.92927932739258,
+          -139.79486083984375,
+          1.4999940395355225
+        ],
+        "max_cm": [
+          46.92926788330078,
+          186.0,
+          270.0
+        ],
+        "size_cm": [
+          93.85854721069336,
+          325.79486083984375,
+          268.5000059604645
+        ]
+      },
+      "source_bounds_cm": [
+        93.85854601860046,
+        325.7948637008667,
+        268.5000088997185
+      ],
+      "animations": {
+        "Idle": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Scene.Scene",
+          "class": "AnimSequence",
+          "clip": "Idle",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+          "length_s": 2.0,
+          "frames": 60,
+          "keys": 61,
+          "computed_fps": 30.0,
+          "track_names": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "horse_bay_rig",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "root",
+            "tail_base",
+            "tail_tip"
+          ],
+          "changed_tracks": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "tail_base",
+            "tail_tip"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 2.0,
+            "frames": 60,
+            "keys": 61,
+            "fps": 30
+          }
+        },
+        "Walk": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/Walk/Scene.Scene",
+          "class": "AnimSequence",
+          "clip": "Walk",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_bay/horse_bay_skinned__attachments_Skeleton.horse_bay_skinned__attachments_Skeleton",
+          "length_s": 1.2000000476837158,
+          "frames": 36,
+          "keys": 37,
+          "computed_fps": 29.99999880790715,
+          "track_names": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "horse_bay_rig",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "root",
+            "tail_base",
+            "tail_tip"
+          ],
+          "changed_tracks": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "tail_base",
+            "tail_tip"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 1.2,
+            "frames": 36,
+            "keys": 37,
+            "fps": 30
+          }
+        }
+      },
+      "source_hash_matches": true,
+      "source_sha256": {
+        "idle": "1549e1ad26fca52f7f667689ec8ad788e0151e459cd94b742fdeb04bee0106f8",
+        "walk": "870a11b9cd97ab6b29482a4049c21bb649ec5380b840b24b180f733d8e6ff787"
+      }
+    },
+    {
+      "id": "horse_grey",
+      "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+      "authored_bone_count": 18,
+      "skeleton_bone_names": [
+        "FL_foot",
+        "FL_lower",
+        "FL_upper",
+        "FR_foot",
+        "FR_lower",
+        "FR_upper",
+        "HL_foot",
+        "HL_lower",
+        "HL_upper",
+        "HR_foot",
+        "HR_lower",
+        "HR_upper",
+        "Horse_grey_Rig",
+        "body",
+        "head",
+        "neck",
+        "root",
+        "tail_base",
+        "tail_tip"
+      ],
+      "extra_object_root_bones": [
+        "Horse_grey_Rig"
+      ],
+      "bone_parents": {
+        "FL_foot": {
+          "expected": "FL_lower",
+          "actual": "FL_lower"
+        },
+        "FL_lower": {
+          "expected": "FL_upper",
+          "actual": "FL_upper"
+        },
+        "FL_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "FR_foot": {
+          "expected": "FR_lower",
+          "actual": "FR_lower"
+        },
+        "FR_lower": {
+          "expected": "FR_upper",
+          "actual": "FR_upper"
+        },
+        "FR_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "HL_foot": {
+          "expected": "HL_lower",
+          "actual": "HL_lower"
+        },
+        "HL_lower": {
+          "expected": "HL_upper",
+          "actual": "HL_upper"
+        },
+        "HL_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "HR_foot": {
+          "expected": "HR_lower",
+          "actual": "HR_lower"
+        },
+        "HR_lower": {
+          "expected": "HR_upper",
+          "actual": "HR_upper"
+        },
+        "HR_upper": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "body": {
+          "expected": "root",
+          "actual": "root"
+        },
+        "head": {
+          "expected": "neck",
+          "actual": "neck"
+        },
+        "neck": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "root": {
+          "expected": null,
+          "actual": "Horse_grey_Rig"
+        },
+        "tail_base": {
+          "expected": "body",
+          "actual": "body"
+        },
+        "tail_tip": {
+          "expected": "tail_base",
+          "actual": "tail_base"
+        }
+      },
+      "meshes": [
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments.horse_grey_skinned__attachments",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___leather.Medieval___leather",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___gold.Medieval___gold"
+          ],
+          "material_slot_count": 2,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -44.66997528076172,
+              -80.0000228881836,
+              117.70000457763672
+            ],
+            "max_cm": [
+              44.66995620727539,
+              176.75,
+              237.31451416015625
+            ],
+            "extent_cm": [
+              44.669965744018555,
+              128.3750114440918,
+              59.807254791259766
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_grey_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__finish.horse_grey_skinned__finish",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___grey_dark.Medieval___grey_dark",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___eye.Medieval___eye",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___hoof.Medieval___hoof",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___mane.Medieval___mane"
+          ],
+          "material_slot_count": 4,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -40.34844207763672,
+              -139.79486083984375,
+              1.4999940395355225
+            ],
+            "max_cm": [
+              40.34843063354492,
+              186.0,
+              264.02703857421875
+            ],
+            "extent_cm": [
+              40.34843635559082,
+              162.89743041992188,
+              131.2635222673416
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_grey_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        },
+        {
+          "mesh": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__structure.horse_grey_skinned__structure",
+          "class": "SkeletalMesh",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+          "material_paths": [
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___grey.Medieval___grey",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___grey_light.Medieval___grey_light",
+            "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Medieval___mane.Medieval___mane"
+          ],
+          "material_slot_count": 3,
+          "bounds_ue_cm": {
+            "min_cm": [
+              -46.92927932739258,
+              -125.0,
+              10.744510650634766
+            ],
+            "max_cm": [
+              46.92926788330078,
+              178.5399932861328,
+              270.0
+            ],
+            "extent_cm": [
+              46.92927360534668,
+              151.7699966430664,
+              129.62774467468262
+            ]
+          },
+          "reference_bone_names": [
+            "Horse_grey_Rig",
+            "root",
+            "body",
+            "neck",
+            "head",
+            "tail_base",
+            "tail_tip",
+            "FL_upper",
+            "FL_lower",
+            "FL_foot",
+            "HL_upper",
+            "HL_lower",
+            "HL_foot",
+            "FR_upper",
+            "FR_lower",
+            "FR_foot",
+            "HR_upper",
+            "HR_lower",
+            "HR_foot"
+          ]
+        }
+      ],
+      "union_bounds_ue_cm": {
+        "min_cm": [
+          -46.92927932739258,
+          -139.79486083984375,
+          1.4999940395355225
+        ],
+        "max_cm": [
+          46.92926788330078,
+          186.0,
+          270.0
+        ],
+        "size_cm": [
+          93.85854721069336,
+          325.79486083984375,
+          268.5000059604645
+        ]
+      },
+      "source_bounds_cm": [
+        93.85854601860046,
+        325.7948637008667,
+        268.5000088997185
+      ],
+      "animations": {
+        "Idle": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Scene.Scene",
+          "class": "AnimSequence",
+          "clip": "Idle",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+          "length_s": 2.0,
+          "frames": 60,
+          "keys": 61,
+          "computed_fps": 30.0,
+          "track_names": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "horse_grey_rig",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "root",
+            "tail_base",
+            "tail_tip"
+          ],
+          "changed_tracks": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "tail_base",
+            "tail_tip"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 2.0,
+            "frames": 60,
+            "keys": 61,
+            "fps": 30
+          }
+        },
+        "Walk": {
+          "asset": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/Walk/Scene.Scene",
+          "class": "AnimSequence",
+          "clip": "Walk",
+          "skeleton": "/Game/ThreeHearths/Generated/MedievalLife/Rigged/horse_grey/horse_grey_skinned__attachments_Skeleton.horse_grey_skinned__attachments_Skeleton",
+          "length_s": 1.2000000476837158,
+          "frames": 36,
+          "keys": 37,
+          "computed_fps": 29.99999880790715,
+          "track_names": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "horse_grey_rig",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "root",
+            "tail_base",
+            "tail_tip"
+          ],
+          "changed_tracks": [
+            "body",
+            "fl_foot",
+            "fl_lower",
+            "fl_upper",
+            "fr_foot",
+            "fr_lower",
+            "fr_upper",
+            "head",
+            "hl_foot",
+            "hl_lower",
+            "hl_upper",
+            "hr_foot",
+            "hr_lower",
+            "hr_upper",
+            "neck",
+            "tail_base",
+            "tail_tip"
+          ],
+          "root_motion": false,
+          "expected": {
+            "length_s": 1.2,
+            "frames": 36,
+            "keys": 37,
+            "fps": 30
+          }
+        }
+      },
+      "source_hash_matches": true,
+      "source_sha256": {
+        "idle": "6572a65c1cf76b0a94b5e38dc859e131771fc54fad090551540e72427c883d8e",
+        "walk": "ff68beb1a7443fb8426c4ea3b783d4f9dbe4e4ddbec3f99345535cb0395557cf"
+      }
+    }
+  ],
+  "static_meshes_rejected": true,
+  "cold_load": true
+}

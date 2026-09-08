@@ -1,0 +1,5 @@
+{
+  "rejected": "GuardLiveReview/world.json",
+  "reason": "First market review installed the bench on the road. Preserve that rejected review; replay its pre-market checkpoint into this new isolated review with complete road/building footprint validation. No paid calls were repeated.",
+  "source": "GuardLiveReview/before-market-world.json"
+}

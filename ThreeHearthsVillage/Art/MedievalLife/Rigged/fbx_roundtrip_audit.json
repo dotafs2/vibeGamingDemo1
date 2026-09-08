@@ -1,0 +1,134 @@
+{
+  "status": "passed_cold_fbx_skins_actions_and_scale",
+  "files": [
+    {
+      "file": "horse_bay_idle.fbx",
+      "bones": 18,
+      "fps": 30,
+      "frames": 61,
+      "size_m": [
+        0.9385854601860046,
+        3.257948637008667,
+        2.6850000889971852
+      ],
+      "max_sample_motion_m": 0.05001141644365769,
+      "meshes": [
+        {
+          "mesh": "horse_bay_skinned__attachments",
+          "vertices": 960,
+          "materials": 2,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_bay_skinned__finish",
+          "vertices": 2340,
+          "materials": 4,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_bay_skinned__structure",
+          "vertices": 1789,
+          "materials": 3,
+          "uv_channels": 1
+        }
+      ]
+    },
+    {
+      "file": "horse_bay_walk.fbx",
+      "bones": 18,
+      "fps": 30,
+      "frames": 37,
+      "size_m": [
+        0.9385854601860046,
+        3.257948637008667,
+        2.6850000889971852
+      ],
+      "max_sample_motion_m": 0.3548674344444895,
+      "meshes": [
+        {
+          "mesh": "horse_bay_skinned__attachments",
+          "vertices": 960,
+          "materials": 2,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_bay_skinned__finish",
+          "vertices": 2340,
+          "materials": 4,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_bay_skinned__structure",
+          "vertices": 1789,
+          "materials": 3,
+          "uv_channels": 1
+        }
+      ]
+    },
+    {
+      "file": "horse_grey_idle.fbx",
+      "bones": 18,
+      "fps": 30,
+      "frames": 61,
+      "size_m": [
+        0.9385854601860046,
+        3.257948637008667,
+        2.6850000889971852
+      ],
+      "max_sample_motion_m": 0.05001141644365769,
+      "meshes": [
+        {
+          "mesh": "horse_grey_skinned__attachments",
+          "vertices": 960,
+          "materials": 2,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_grey_skinned__finish",
+          "vertices": 2340,
+          "materials": 4,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_grey_skinned__structure",
+          "vertices": 1789,
+          "materials": 3,
+          "uv_channels": 1
+        }
+      ]
+    },
+    {
+      "file": "horse_grey_walk.fbx",
+      "bones": 18,
+      "fps": 30,
+      "frames": 37,
+      "size_m": [
+        0.9385854601860046,
+        3.257948637008667,
+        2.6850000889971852
+      ],
+      "max_sample_motion_m": 0.3548674344444895,
+      "meshes": [
+        {
+          "mesh": "horse_grey_skinned__attachments",
+          "vertices": 960,
+          "materials": 2,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_grey_skinned__finish",
+          "vertices": 2340,
+          "materials": 4,
+          "uv_channels": 1
+        },
+        {
+          "mesh": "horse_grey_skinned__structure",
+          "vertices": 1789,
+          "materials": 3,
+          "uv_channels": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Blender cold FBX reimport, not Unreal runtime evidence"
+}

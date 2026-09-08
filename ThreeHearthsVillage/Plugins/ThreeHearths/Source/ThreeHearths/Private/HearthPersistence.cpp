@@ -11,7 +11,8 @@ void AHearthVillage::InitializeWorldPersistence()
 {
     if(FParse::Param(FCommandLine::Get(),TEXT("HearthNoWorldPersistence")))
     { WorldSaveStatus=TEXT("隔离测试：不保存世界"); return; }
-    WorldPath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/World/current-world.json");
+    WorldPath=FPaths::ProjectSavedDir()/(FParse::Param(FCommandLine::Get(),TEXT("HearthOrganicVillage"))
+        ? TEXT("ThreeHearths/World/organic-world.json") : TEXT("ThreeHearths/World/current-world.json"));
     FParse::Value(FCommandLine::Get(),TEXT("HearthWorld="),WorldPath);
     WorldPath=FPaths::ConvertRelativePathToFull(WorldPath);
     bWorldPersistenceEnabled=true;
@@ -31,10 +32,12 @@ void AHearthVillage::InitializeWorldPersistence()
 FString AHearthVillage::ExportWorldState() const
 {
     FHearthWorldImage W; W.Id=WorldId; W.Run=CurrentRun; W.Revision=WorldRevision;
+    W.Schema=IsOrganicVillage()?12:11; W.PopulationCount=Residents.Num();
     W.PlotCount=HousingPlotCount();
     W.Event=VillageEvent; W.Elapsed=Elapsed; W.Speed=SimulationSpeed; W.Remainder=SimulationRemainder;
     W.bOrganicTownLayout=bOrganicTownLayout; W.bIsland=bUseCropoutMap; W.bPaused=bSimulationPaused; W.bAutonomy=bAutonomousLifeEnabled; W.bComplete=bReportedComplete;
     W.TownLayoutVersion=TownLayoutVersion;
+    W.OrganicHomes=OrganicHomes; W.OrganicWorldSeed=OrganicWorldSeed;
     for(int32 I=0;I<HousingPlotCount();++I) W.PlotYaws[I]=PlotYaws[I];
     W.Selected=SelectedResident; W.LastLife=LastLifeResident; W.Food=FoodStock; W.Stone=StoneStock; W.Planks=PlankStock; W.Beams=BeamStock; W.Clay=ClayStock; W.Tiles=TileStock; W.TreasuryCoins=TreasuryCoins;
     W.TaxProjectCoins=TaxProjectCoins; W.TaxReleasedCoins=TaxReleasedCoins; W.TaxRatePercent=TaxRatePercent; for(int32 I=0;I<HearthVillageLimits::MaxPopulation;++I) W.TaxRemainders[I]=TaxRemainders[I];
@@ -54,7 +57,7 @@ FString AHearthVillage::ExportWorldState() const
         W.People.Add(MoveTemp(S));
     }
     W.Sites=ProductionSites; W.Totals=ProductionTotals; W.History=DecisionHistory;
-    W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.TradeOffers=TradeOffers; W.TileOrders=TileOrders;
+    W.Conversations=Conversations; W.Commitments=Commitments; W.Transactions=Transactions; W.TaxAssessments=TaxAssessments; W.WagePayables=WagePayables; W.ServiceDuties=ServiceDuties; W.FreightOrders=FreightOrders; W.TradeOffers=TradeOffers; W.TileOrders=TileOrders;
     W.PublicProject=PublicProject;
     W.StructurePlans=StructurePlans;
     W.WorldRequests=WorldRequests;
@@ -94,6 +97,9 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     const bool Migrating=W.People.Num()!=Residents.Num();
     if(W.bIsland!=bUseCropoutMap) { Error=TEXT("存档的地图与当前场景不匹配"); return false; }
     if(!MigrateWorldPopulation(W,Error)) return false;
+    for(const auto& Pair:W.OrganicHomes)
+        if(!W.People.ContainsByPredicate([&](const FHearthSavedResident& Saved){ return Saved.Person.StableId==Pair.Key; }))
+        { Error=TEXT("有机住宅引用了不存在的居民"); return false; }
     for(int32 I=0;I<HousingPlotCount();++I) if(!W.Plots[I].Equals(PlotPositions[I],.01) || W.Costs[I]!=PlotCosts[I])
     { Error=TEXT("地图布局已变化，须先迁移存档"); return false; }
     for(int32 I=0;I<3;++I) if(!W.Stocks[I].Equals(WoodPositions[I],.01)) { Error=TEXT("材料站布局与存档不匹配"); return false; }
@@ -101,6 +107,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     // Everything above is read-only. Apply the validated image together on the game thread.
     StopDecisionRequests(); LoadApiConfig();
     bOrganicTownLayout=W.bOrganicTownLayout; TownLayoutVersion=W.TownLayoutVersion;
+    OrganicHomes=MoveTemp(W.OrganicHomes); OrganicWorldSeed=W.OrganicWorldSeed;
     if(WorldId!=W.Id && !WorldId.IsEmpty()) HearthTavernRuntime::UnbindPersistentState(WorldId);
     WorldId=W.Id; CurrentRun=W.Run; WorldRevision=W.Revision; VillageEvent=W.Event; Elapsed=W.Elapsed;
     if(!TavernRuntimeState.IsValid()) TavernRuntimeState=MakeShared<FHearthTavernRuntimeState>();
@@ -113,7 +120,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     bReportedComplete=W.bComplete; LastLifeResident=W.LastLife;
     FoodStock=W.Food; StoneStock=W.Stone; PlankStock=W.Planks; BeamStock=W.Beams; ClayStock=W.Clay; TileStock=W.Tiles; DecisionHistory=MoveTemp(W.History); ++HistoryRevision;
     Conversations=MoveTemp(W.Conversations); Commitments=MoveTemp(W.Commitments); Transactions=MoveTemp(W.Transactions); TaxAssessments=MoveTemp(W.TaxAssessments);
-    WagePayables=MoveTemp(W.WagePayables); TradeOffers=MoveTemp(W.TradeOffers); TileOrders=MoveTemp(W.TileOrders); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
+    WagePayables=MoveTemp(W.WagePayables); ServiceDuties=MoveTemp(W.ServiceDuties); FreightOrders=MoveTemp(W.FreightOrders); TradeOffers=MoveTemp(W.TradeOffers); TileOrders=MoveTemp(W.TileOrders); TreasuryCoins=W.TreasuryCoins; ++SocialRevision; bSocialOpen=false;
     PublicProject=MoveTemp(W.PublicProject);
     StructurePlans=MoveTemp(W.StructurePlans);
     WorldRequests=MoveTemp(W.WorldRequests);
@@ -134,11 +141,16 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     {
         auto* Actor=Residents[I].Actor.Get(); const auto& S=W.People[I]; Residents[I]=S.Person; auto& R=Residents[I];
         R.Actor=Actor; Actor->ResidentIndex=I; Actor->SetActorLocation(S.Position); Actor->SetActorRotation(FRotator(0,S.Yaw,0));
-        if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
-        if(R.HouseBlueprint.IsEmpty()) AssignHouseStyle(I,R);
-        EnsureResidentStory(I);
+        if(!IsSharedServiceResident(I))
+        {
+            if(R.Role.IsEmpty()) { FHearthResident Identity; InitializeResidentIdentity(I,Identity); R.Role=Identity.Role; R.Age=Identity.Age; }
+            if(R.HouseBlueprint.IsEmpty()) AssignHouseStyle(I,R);
+            EnsureResidentStory(I);
+        }
         if((R.Task==EHearthTask::ProductionTravel || R.Task==EHearthTask::ProductionWork) && R.HeldToolId.IsEmpty()) TryBorrowTool(I,R.ProductionOp);
         R.NextLifeDecision=Elapsed+S.DecisionDelay;
+        if(IsSharedServiceResident(I))
+            if(auto* Duty=ServiceDuties.FindByPredicate([&R](const FHearthServiceDutyRecord& D){return D.Status==TEXT("active") && D.TaskId==R.ActiveTaskId;})) { Duty->MoveSpeed=90.f; R.MoveSpeed=Duty->MoveSpeed; }
         if(R.Plot>=0) SetHouseStage(R.Plot,FMath::Min(3,FMath::FloorToInt(R.BuildProgress*3.f)));
         if(S.bPending)
         {
@@ -148,7 +160,7 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
             R.NextLifeDecision=Elapsed+LifeDecisionInterval;
             if(DecisionHistory.IsValidIndex(R.HistoryIndex))
             { auto& H=DecisionHistory[R.HistoryIndex]; H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
-            for(auto& H:DecisionHistory) if(H.Run==CurrentRun && H.Resident==I && H.Kind==TEXT("social_turn") && H.Status==TEXT("thinking"))
+            for(auto& H:DecisionHistory) if(H.Run==CurrentRun && H.Resident==I && (H.Kind==TEXT("social_turn") || H.Kind==TEXT("guard_daydream")) && H.Status==TEXT("thinking"))
             { H.Status=TEXT("interrupted"); H.Result=R.DecisionNote; }
         }
         PendingDecisions[I]=FHearthPendingDecision();
@@ -193,8 +205,9 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     EnsureCraftSite(EHearthSiteKind::ClayPit,FVector(-2600,3100,8),160.f,36);
     EnsureCraftSite(EHearthSiteKind::TileKiln,FVector(-2800,-1050,8),210.f,0);
     for(auto& S:ProductionSites) { S.VisualStage=-99; S.Meshes.Reset(); S.Soil.Reset(); }
-    if(Migrating) for(auto& R:Residents) if(!IsClearPoint(R.Actor->GetActorLocation()))
+    if(Migrating) for(int32 ResidentIndex=0;ResidentIndex<Residents.Num();++ResidentIndex) if(!IsSharedServiceResident(ResidentIndex) && !IsClearPoint(Residents[ResidentIndex].Actor->GetActorLocation()))
     {
+        auto& R=Residents[ResidentIndex];
         const FVector Before=R.Actor->GetActorLocation(); FVector Best=Before; double Distance=DBL_MAX;
         for(const auto& Cell:LandGrid)
         {
@@ -211,7 +224,8 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(int32 I=0;I<Residents.Num();++I)
         if(Residents[I].Task==EHearthTask::ToWood) SeekWood(I);
     HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
-    RefreshProductionVisuals();RefreshPublicVisuals();RefreshBotanicalLandscape(); SelectResident(W.Selected); bHistoryOpen=false;
+    RefreshOrganicHomes();
+    RefreshProductionVisuals();RefreshPublicVisuals();RefreshBotanicalLandscape(); if(IsOrganicVillage()) BuildMedievalPublicVisuals(); SelectResident(W.Selected); bHistoryOpen=false;
     if(Interrupted) { bApiDisabledThisRun=true; ApiStatus=TEXT("已恢复世界；未确认请求不重试，本轮使用本地规则"); }
     SaveHistory(); WorldSaveTimer=0; return true;
 }
@@ -227,7 +241,7 @@ bool AHearthVillage::LoadWorld()
     }
     // Keep the invalid file verbatim before restoring the previous complete checkpoint.
     if(Backup && !HearthWorld::Archive(WorldPath,Error)) { WorldSaveStatus=Error; return false; }
-    if(!ApplyWorldState(Payload,Error)) { WorldSaveStatus=Error; return false; }
+    if(!ApplyWorldState(Payload,Error)) { WorldSaveStatus=Error; UE_LOG(LogTemp,Warning,TEXT("WORLD_LOAD_REJECTED path=%s reason=%s"),*WorldPath,*Error); return false; }
     bWorldWriteBlocked=false;
     if(Backup && !SaveWorld()) return false;
     WorldSaveStatus=Backup?TEXT("已保留损坏文件并恢复上一版完整世界"):TEXT("已恢复世界、材料、任务与历史");
@@ -245,7 +259,7 @@ void AHearthVillage::RestartVillage()
     bWorldWriteBlocked=false;
     // A deliberate new world starts the current neighborhood generator after
     // archiving the old save; loading an existing world never relocates it.
-    if(bUseCropoutMap) { bOrganicTownLayout=true; TownLayoutVersion=TownLayoutVersion>=3?3:2; LandGrid.Reset(); BuildEnvironment(); }
+    if(bUseCropoutMap) { bOrganicTownLayout=true; TownLayoutVersion=TownLayoutVersion>=4?4:TownLayoutVersion>=3?3:2; LandGrid.Reset(); BuildEnvironment(); }
     ResetVillageState();
     if(bWorldPersistenceEnabled) SaveWorld();
 }

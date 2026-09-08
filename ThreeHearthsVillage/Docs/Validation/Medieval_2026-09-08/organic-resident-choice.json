@@ -1,0 +1,74 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-T89GBDJ",
+			"instance": "E0DC32164D992D062C26FDBA70D3B8CC",
+			"instanceName": "DESKTOP-T89GBDJ-95456",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9278] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 5080",
+			"cPUModel": "Intel(R) Core(TM) i7-14700K",
+			"rAMInGB": 128,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.07-15.39.33",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.024247404187917709,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NeedsAndConstraints",
+			"fullTestPath": "ThreeHearths.Design.ResidentChoice.NeedsAndConstraints",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E0DC32164D992D062C26FDBA70D3B8CC"
+			],
+			"duration": 0.0080239996314048767,
+			"dateTime": "2026.09.07-15.39.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Stability",
+			"fullTestPath": "ThreeHearths.Design.ResidentChoice.Stability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E0DC32164D992D062C26FDBA70D3B8CC"
+			],
+			"duration": 0.0082897022366523743,
+			"dateTime": "2026.09.07-15.39.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StructuredValidation",
+			"fullTestPath": "ThreeHearths.Design.ResidentChoice.StructuredValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E0DC32164D992D062C26FDBA70D3B8CC"
+			],
+			"duration": 0.0079337023198604584,
+			"dateTime": "2026.09.07-15.39.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

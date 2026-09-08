@@ -1,0 +1,2598 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "audit": "FBX cold reimport",
+  "input": "LibraryOverview/MedievalLife_All30.fbx",
+  "module_count": 30,
+  "mesh_layer_count": 66,
+  "modules": [
+    {
+      "id": "MedievalLife/cart_body",
+      "layer_count": 3,
+      "bounds_axis_error_m": 1.1920928955078125e-07,
+      "bounds_m": {
+        "min": [
+          -6.871500015258789,
+          -9.601200103759766,
+          0.5149999856948853
+        ],
+        "max": [
+          -4.791500091552734,
+          -4.531199932098389,
+          1.6799999475479126
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -6.8714998960494995,
+          -9.601200103759766,
+          0.5149999856948853
+        ],
+        "max": [
+          -4.791500210762024,
+          -4.531200051307678,
+          1.6799999475479126
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/cart_wheel",
+      "layer_count": 2,
+      "bounds_axis_error_m": 5.364418029785156e-07,
+      "bounds_m": {
+        "min": [
+          -2.882999897003174,
+          -7.70419979095459,
+          -0.637999951839447
+        ],
+        "max": [
+          -2.6069998741149902,
+          -6.428199768066406,
+          0.637999951839447
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -2.883000135421753,
+          -7.704200208187103,
+          -0.637999951839447
+        ],
+        "max": [
+          -2.6070001125335693,
+          -6.428200304508209,
+          0.637999951839447
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/cargo_logs",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.384185791015625e-07,
+      "bounds_m": {
+        "min": [
+          -0.9128960371017456,
+          -7.936450481414795,
+          0.012143561616539955
+        ],
+        "max": [
+          0.2958955764770508,
+          -6.195950031280518,
+          0.7178564071655273
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -0.9128959774971008,
+          -7.936450362205505,
+          0.012143561616539955
+        ],
+        "max": [
+          0.295895516872406,
+          -6.195950269699097,
+          0.7178564071655273
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/cargo_sacks",
+      "layer_count": 2,
+      "bounds_axis_error_m": 1.1920928955078125e-07,
+      "bounds_m": {
+        "min": [
+          1.724696159362793,
+          -7.738976001739502,
+          0.03500000014901161
+        ],
+        "max": [
+          3.0483036041259766,
+          -6.3934245109558105,
+          0.7649999856948853
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          1.7246962785720825,
+          -7.7389761209487915,
+          0.03500000014901161
+        ],
+        "max": [
+          3.048303484916687,
+          -6.393424570560455,
+          0.7649999856948853
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/horse_bay",
+      "layer_count": 3,
+      "bounds_axis_error_m": 5.364418029785156e-07,
+      "bounds_m": {
+        "min": [
+          5.312206745147705,
+          -8.695174217224121,
+          0.014999999664723873
+        ],
+        "max": [
+          6.250792026519775,
+          -5.437225818634033,
+          2.700000047683716
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          5.3122071623802185,
+          -8.69517457485199,
+          0.014999999664723873
+        ],
+        "max": [
+          6.250792562961578,
+          -5.437225937843323,
+          2.700000047683716
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/horse_grey",
+      "layer_count": 3,
+      "bounds_axis_error_m": 1.7881393432617188e-07,
+      "bounds_m": {
+        "min": [
+          -6.300792694091797,
+          -3.7812001705169678,
+          0.014999999664723873
+        ],
+        "max": [
+          -5.362207412719727,
+          -0.523251473903656,
+          2.700000047683716
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -6.300792753696442,
+          -3.7812002897262573,
+          0.014999999664723873
+        ],
+        "max": [
+          -5.362207353115082,
+          -0.5232516527175903,
+          2.700000047683716
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/guard_helmet",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.980232238769531e-07,
+      "bounds_m": {
+        "min": [
+          -3.054999828338623,
+          -2.462225914001465,
+          0.0
+        ],
+        "max": [
+          -2.434999942779541,
+          -1.8422259092330933,
+          0.28999999165534973
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -3.055000126361847,
+          -2.4622259736061096,
+          0.0
+        ],
+        "max": [
+          -2.4350001215934753,
+          -1.842225968837738,
+          0.28999999165534973
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/guard_shield",
+      "layer_count": 2,
+      "bounds_axis_error_m": 6.705522537231445e-08,
+      "bounds_m": {
+        "min": [
+          -0.6196497678756714,
+          -2.2524759769439697,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.0026493144687265158,
+          -2.051975965499878,
+          0.7315000891685486
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -0.6196497678756714,
+          -2.2524760365486145,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.0026493072509765625,
+          -2.0519760325551033,
+          0.7315000891685486
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/guard_spear",
+      "layer_count": 2,
+      "bounds_axis_error_m": 5.960464477539063e-08,
+      "bounds_m": {
+        "min": [
+          2.3082916736602783,
+          -2.1940724849700928,
+          0.0
+        ],
+        "max": [
+          2.464708089828491,
+          -2.110379457473755,
+          2.579827308654785
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          2.3082916140556335,
+          -2.1940724588930607,
+          0.0
+        ],
+        "max": [
+          2.464708149433136,
+          -2.110379483550787,
+          2.579827308654785
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/royal_guard_body",
+      "layer_count": 3,
+      "bounds_axis_error_m": 5.662441253662109e-07,
+      "bounds_m": {
+        "min": [
+          5.303123474121094,
+          -2.399225950241089,
+          0.0020000040531158447
+        ],
+        "max": [
+          6.259875297546387,
+          -1.9052259922027588,
+          1.9499999284744263
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          5.303123861551285,
+          -2.39922596514225,
+          0.0020000040531158447
+        ],
+        "max": [
+          6.259875863790512,
+          -1.9052259773015976,
+          1.9499999284744263
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/carter_body",
+      "layer_count": 3,
+      "bounds_axis_error_m": 1.043081283569336e-07,
+      "bounds_m": {
+        "min": [
+          -6.309875965118408,
+          0.6047481298446655,
+          0.0020000040531158447
+        ],
+        "max": [
+          -5.353124141693115,
+          1.0987482070922852,
+          1.9499999284744263
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -6.309876054525375,
+          0.6047482341527939,
+          0.0020000040531158447
+        ],
+        "max": [
+          -5.353124052286148,
+          1.0987482219934464,
+          1.9499999284744263
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/gate_pier",
+      "layer_count": 2,
+      "bounds_axis_error_m": 1.1920928955078125e-07,
+      "bounds_m": {
+        "min": [
+          -3.3975002765655518,
+          0.22674810886383057,
+          0.0
+        ],
+        "max": [
+          -2.0925002098083496,
+          1.4767482280731201,
+          3.380000114440918
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -3.397500157356262,
+          0.22674822807312012,
+          0.0
+        ],
+        "max": [
+          -2.0925002098083496,
+          1.4767482280731201,
+          3.380000114440918
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/gate_leaf",
+      "layer_count": 2,
+      "bounds_axis_error_m": 1.1920928955078125e-07,
+      "bounds_m": {
+        "min": [
+          -1.0235002040863037,
+          0.7247481942176819,
+          0.08999991416931152
+        ],
+        "max": [
+          0.40649986267089844,
+          0.9787483811378479,
+          2.2300000190734863
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -1.023500233888626,
+          0.7247482165694237,
+          0.08999991416931152
+        ],
+        "max": [
+          0.40649980306625366,
+          0.9787482619285583,
+          2.2300000190734863
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/royal_banner",
+      "layer_count": 2,
+      "bounds_axis_error_m": 8.940696716308594e-08,
+      "bounds_m": {
+        "min": [
+          2.0164999961853027,
+          0.7842482328414917,
+          0.0
+        ],
+        "max": [
+          2.756499767303467,
+          0.9192482829093933,
+          2.0999999046325684
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          2.0164999067783356,
+          0.7842482551932335,
+          0.0
+        ],
+        "max": [
+          2.756499856710434,
+          0.9192482605576515,
+          2.0999999046325684
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/watch_bench",
+      "layer_count": 1,
+      "bounds_axis_error_m": 5.960464477539062e-07,
+      "bounds_m": {
+        "min": [
+          5.056499481201172,
+          0.5242480635643005,
+          0.029999971389770508
+        ],
+        "max": [
+          6.506499290466309,
+          1.1792482137680054,
+          0.9150000214576721
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          5.0564998388290405,
+          0.5242482125759125,
+          0.029999971389770508
+        ],
+        "max": [
+          6.506499886512756,
+          1.1792482435703278,
+          0.9150000214576721
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/watch_shelter",
+      "layer_count": 2,
+      "bounds_axis_error_m": 3.5762786865234375e-07,
+      "bounds_m": {
+        "min": [
+          -7.201499938964844,
+          2.226747751235962,
+          0.0
+        ],
+        "max": [
+          -4.46150016784668,
+          4.127200126647949,
+          2.9625000953674316
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -7.201499938964844,
+          2.2267481088638306,
+          0.0
+        ],
+        "max": [
+          -4.46150016784668,
+          4.127200484275818,
+          2.9625000953674316
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/water_trough",
+      "layer_count": 2,
+      "bounds_axis_error_m": 4.172325134277344e-07,
+      "bounds_m": {
+        "min": [
+          -3.559999942779541,
+          2.7219738960266113,
+          0.0
+        ],
+        "max": [
+          -1.929999828338623,
+          3.631974220275879,
+          0.7849999666213989
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -3.5600001215934753,
+          2.7219743132591248,
+          0.0
+        ],
+        "max": [
+          -1.930000126361847,
+          3.6319742798805237,
+          0.7849999666213989
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/hay_rack",
+      "layer_count": 2,
+      "bounds_axis_error_m": 3.5762786865234375e-07,
+      "bounds_m": {
+        "min": [
+          -1.0285001993179321,
+          2.8269739151000977,
+          0.0
+        ],
+        "max": [
+          0.4114997684955597,
+          3.5269742012023926,
+          1.0725001096725464
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -1.0285001993179321,
+          2.8269742727279663,
+          0.0
+        ],
+        "max": [
+          0.4114997386932373,
+          3.526974320411682,
+          1.0725001096725464
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/stable_rail",
+      "layer_count": 1,
+      "bounds_axis_error_m": 2.905726432800293e-07,
+      "bounds_m": {
+        "min": [
+          1.3214998245239258,
+          3.111974000930786,
+          0.0
+        ],
+        "max": [
+          3.4514999389648438,
+          3.241974115371704,
+          1.2799999713897705
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          1.3214998245239258,
+          3.1119742915034294,
+          0.0
+        ],
+        "max": [
+          3.4514999389648438,
+          3.241974301636219,
+          1.2799999713897705
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/road_signpost",
+      "layer_count": 2,
+      "bounds_axis_error_m": 4.172325134277344e-07,
+      "bounds_m": {
+        "min": [
+          5.179250240325928,
+          3.100224494934082,
+          0.0
+        ],
+        "max": [
+          6.383748531341553,
+          3.2537245750427246,
+          2.450000047683716
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          5.179250657558441,
+          3.1002243980765343,
+          0.0
+        ],
+        "max": [
+          6.383748948574066,
+          3.2537244111299515,
+          2.450000047683716
+        ]
+      }
+    },
+    {
+      "id": "MedievalLife/watch_brazier",
+      "layer_count": 2,
+      "bounds_axis_error_m": 5.960464477539063e-08,
+      "bounds_m": {
+        "min": [
+          -6.154673099517822,
+          5.658527374267578,
+          0.0023933639749884605
+        ],
+        "max": [
+          -5.508327007293701,
+          6.304873466491699,
+          1.1399999856948853
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -6.154673099517822,
+          5.658527374267578,
+          0.0023933639749884605
+        ],
+        "max": [
+          -5.508327007293701,
+          6.304873526096344,
+          1.1399999856948853
+        ]
+      }
+    },
+    {
+      "id": "FreightKit/cargo_planks",
+      "layer_count": 2,
+      "bounds_axis_error_m": 4.3958425521850586e-07,
+      "bounds_m": {
+        "min": [
+          -2.8475000858306885,
+          4.938700199127197,
+          0.0
+        ],
+        "max": [
+          -2.6424996852874756,
+          7.02470064163208,
+          0.07200006395578384
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -2.8475001230835915,
+          4.938700437545776,
+          0.0
+        ],
+        "max": [
+          -2.642500124871731,
+          7.024700403213501,
+          0.07200006395578384
+        ]
+      }
+    },
+    {
+      "id": "FreightKit/cargo_beams",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.384185791015625e-07,
+      "bounds_m": {
+        "min": [
+          -0.41700032353401184,
+          4.877200603485107,
+          0.0
+        ],
+        "max": [
+          -0.2000001221895218,
+          7.086200714111328,
+          0.1899999976158142
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -0.4170002192258835,
+          4.877200603485107,
+          0.0
+        ],
+        "max": [
+          -0.20000021159648895,
+          7.086200475692749,
+          0.1899999976158142
+        ]
+      }
+    },
+    {
+      "id": "FreightKit/cart_traces",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.980232238769531e-07,
+      "bounds_m": {
+        "min": [
+          1.8315001726150513,
+          5.840948104858398,
+          0.7771746516227722
+        ],
+        "max": [
+          2.941500186920166,
+          6.122452735900879,
+          1.3808212280273438
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          1.8314998745918274,
+          5.840948104858398,
+          0.7771746516227722
+        ],
+        "max": [
+          2.941499888896942,
+          6.1224524974823,
+          1.3808212280273438
+        ]
+      }
+    },
+    {
+      "id": "FreightKit/freight_depot_rack",
+      "layer_count": 3,
+      "bounds_axis_error_m": 4.76837158203125e-07,
+      "bounds_m": {
+        "min": [
+          4.361499309539795,
+          5.341700077056885,
+          0.0
+        ],
+        "max": [
+          7.2014994621276855,
+          6.621700763702393,
+          1.604483723640442
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          4.361499786376953,
+          5.341700434684753,
+          0.0
+        ],
+        "max": [
+          7.201499938964844,
+          6.621700406074524,
+          1.604483723640442
+        ]
+      }
+    },
+    {
+      "id": "MarketLifeKit/bench_low",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.086162567138672e-07,
+      "bounds_m": {
+        "min": [
+          -6.692999839782715,
+          8.424457550048828,
+          0.014744235202670097
+        ],
+        "max": [
+          -4.96999979019165,
+          9.012943267822266,
+          0.5189999938011169
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -6.69299989938736,
+          8.424457460641861,
+          0.014744235202670097
+        ],
+        "max": [
+          -4.96999990940094,
+          9.012943476438522,
+          0.5189999938011169
+        ]
+      }
+    },
+    {
+      "id": "MarketLifeKit/work_table",
+      "layer_count": 2,
+      "bounds_axis_error_m": 2.980232238769531e-07,
+      "bounds_m": {
+        "min": [
+          -3.7114996910095215,
+          8.276200294494629,
+          0.022058218717575073
+        ],
+        "max": [
+          -1.778499722480774,
+          9.161200523376465,
+          0.9440000057220459
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -3.7114999890327454,
+          8.276200413703918,
+          0.022058218717575073
+        ],
+        "max": [
+          -1.7785000205039978,
+          9.161200404167175,
+          0.9440000057220459
+        ]
+      }
+    },
+    {
+      "id": "MarketLifeKit/tool_rack",
+      "layer_count": 3,
+      "bounds_axis_error_m": 1.7881393432617188e-07,
+      "bounds_m": {
+        "min": [
+          -0.9835002422332764,
+          8.417981147766113,
+          0.004999989178031683
+        ],
+        "max": [
+          0.36649981141090393,
+          9.01941967010498,
+          1.6512261629104614
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          -0.9835002422332764,
+          8.417981326580048,
+          0.004999989178031683
+        ],
+        "max": [
+          0.36649978160858154,
+          9.019419550895691,
+          1.6512261629104614
+        ]
+      }
+    },
+    {
+      "id": "MarketLifeKit/linen_canopy",
+      "layer_count": 3,
+      "bounds_axis_error_m": 1.7881393432617188e-07,
+      "bounds_m": {
+        "min": [
+          1.1614997386932373,
+          7.836199760437012,
+          0.0
+        ],
+        "max": [
+          3.6115000247955322,
+          9.601200103759766,
+          2.62147855758667
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          1.1614998579025269,
+          7.836199939250946,
+          0.0
+        ],
+        "max": [
+          3.6114999055862427,
+          9.601199924945831,
+          2.62147855758667
+        ]
+      }
+    },
+    {
+      "id": "MarketLifeKit/clay_jar",
+      "layer_count": 2,
+      "bounds_axis_error_m": 6.258487701416016e-07,
+      "bounds_m": {
+        "min": [
+          5.471990585327148,
+          8.49370002746582,
+          0.0
+        ],
+        "max": [
+          6.091008186340332,
+          8.943700790405273,
+          0.422878623008728
+        ]
+      },
+      "expected_bounds_m": {
+        "min": [
+          5.471991211175919,
+          8.493700414896011,
+          0.0
+        ],
+        "max": [
+          6.091008514165878,
+          8.943700402975082,
+          0.422878623008728
+        ]
+      }
+    }
+  ],
+  "layers": [
+    {
+      "object": "LIB__MarketLifeKit__bench_low__finish",
+      "module": "marketlifekit/bench_low",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__bench_low",
+      "parent_chain": [
+        "LIB__MarketLifeKit__bench_low__finish",
+        "bench_low",
+        "LIB__bench_low"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.692999839782715,
+          8.495200157165527,
+          0.09750000387430191
+        ],
+        "max": [
+          -5.1570000648498535,
+          8.942200660705566,
+          0.5189999938011169
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__bench_low__structure",
+      "module": "marketlifekit/bench_low",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__bench_low",
+      "parent_chain": [
+        "LIB__MarketLifeKit__bench_low__structure",
+        "bench_low",
+        "LIB__bench_low"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.690000057220459,
+          8.424457550048828,
+          0.014744235202670097
+        ],
+        "max": [
+          -4.96999979019165,
+          9.012943267822266,
+          0.5049999952316284
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cargo_beams__finish",
+      "module": "freightkit/cargo_beams",
+      "layer": "finish",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_beams",
+      "parent_chain": [
+        "LIB__FreightKit__cargo_beams__finish",
+        "cargo_beams",
+        "LIB__cargo_beams"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.41150030493736267,
+          4.877200603485107,
+          0.005499996244907379
+        ],
+        "max": [
+          -0.2000001221895218,
+          7.086200714111328,
+          0.18450000882148743
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cargo_beams__structure",
+      "module": "freightkit/cargo_beams",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_beams",
+      "parent_chain": [
+        "LIB__FreightKit__cargo_beams__structure",
+        "cargo_beams",
+        "LIB__cargo_beams"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.41700032353401184,
+          4.883200645446777,
+          0.0
+        ],
+        "max": [
+          -0.20200012624263763,
+          7.083200454711914,
+          0.1899999976158142
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cargo_logs__attachments",
+      "module": "medievallife/cargo_logs",
+      "layer": "attachments",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_logs",
+      "parent_chain": [
+        "LIB__MedievalLife__cargo_logs__attachments",
+        "cargo_logs",
+        "LIB__cargo_logs"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.9128960371017456,
+          -7.936450481414795,
+          0.03964895009994507
+        ],
+        "max": [
+          0.2958955764770508,
+          -6.5824503898620605,
+          0.6965000629425049
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cargo_logs__structure",
+      "module": "medievallife/cargo_logs",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_logs",
+      "parent_chain": [
+        "LIB__MedievalLife__cargo_logs__structure",
+        "cargo_logs",
+        "LIB__cargo_logs"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.8683609962463379,
+          -7.8959503173828125,
+          0.012143561616539955
+        ],
+        "max": [
+          0.24352772533893585,
+          -6.195950031280518,
+          0.7178564071655273
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cargo_planks__finish",
+      "module": "freightkit/cargo_planks",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_planks",
+      "parent_chain": [
+        "LIB__FreightKit__cargo_planks__finish",
+        "cargo_planks",
+        "LIB__cargo_planks"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -2.8424999713897705,
+          4.938700199127197,
+          0.005000000819563866
+        ],
+        "max": [
+          -2.6474997997283936,
+          7.02470064163208,
+          0.07200006395578384
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cargo_planks__structure",
+      "module": "freightkit/cargo_planks",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_planks",
+      "parent_chain": [
+        "LIB__FreightKit__cargo_planks__structure",
+        "cargo_planks",
+        "LIB__cargo_planks"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -2.8475000858306885,
+          4.941700458526611,
+          0.0
+        ],
+        "max": [
+          -2.6424996852874756,
+          7.021700382232666,
+          0.07000000029802322
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cargo_sacks__attachments",
+      "module": "medievallife/cargo_sacks",
+      "layer": "attachments",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_sacks",
+      "parent_chain": [
+        "LIB__MedievalLife__cargo_sacks__attachments",
+        "cargo_sacks",
+        "LIB__cargo_sacks"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.8646266460418701,
+          -7.708045482635498,
+          0.17999999225139618
+        ],
+        "max": [
+          2.8433034420013428,
+          -6.623148441314697,
+          0.6967000365257263
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cargo_sacks__structure",
+      "module": "medievallife/cargo_sacks",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cargo_sacks",
+      "parent_chain": [
+        "LIB__MedievalLife__cargo_sacks__structure",
+        "cargo_sacks",
+        "LIB__cargo_sacks"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.724696159362793,
+          -7.738976001739502,
+          0.03500000014901161
+        ],
+        "max": [
+          3.0483036041259766,
+          -6.3934245109558105,
+          0.7649999856948853
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cart_body__attachments",
+      "module": "medievallife/cart_body",
+      "layer": "attachments",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_body",
+      "parent_chain": [
+        "LIB__MedievalLife__cart_body__attachments",
+        "cart_body",
+        "LIB__cart_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.78439998626709,
+          -6.784518718719482,
+          0.8766812086105347
+        ],
+        "max": [
+          -4.878600120544434,
+          -4.6178812980651855,
+          1.48331880569458
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cart_body__finish",
+      "module": "medievallife/cart_body",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_body",
+      "parent_chain": [
+        "LIB__MedievalLife__cart_body__finish",
+        "cart_body",
+        "LIB__cart_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.764400005340576,
+          -9.601200103759766,
+          0.750545084476471
+        ],
+        "max": [
+          -4.898599624633789,
+          -4.597700119018555,
+          1.559999942779541
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cart_body__structure",
+      "module": "medievallife/cart_body",
+      "layer": "structure",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_body",
+      "parent_chain": [
+        "LIB__MedievalLife__cart_body__structure",
+        "cart_body",
+        "LIB__cart_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.871500015258789,
+          -9.582856178283691,
+          0.5149999856948853
+        ],
+        "max": [
+          -4.791500091552734,
+          -4.531199932098389,
+          1.6799999475479126
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cart_traces__attachments",
+      "module": "freightkit/cart_traces",
+      "layer": "attachments",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_traces",
+      "parent_chain": [
+        "LIB__FreightKit__cart_traces__attachments",
+        "cart_traces",
+        "LIB__cart_traces"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.8315001726150513,
+          5.840948104858398,
+          0.7771746516227722
+        ],
+        "max": [
+          2.941500186920166,
+          5.985948085784912,
+          1.121000051498413
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__cart_traces__structure",
+      "module": "freightkit/cart_traces",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_traces",
+      "parent_chain": [
+        "LIB__FreightKit__cart_traces__structure",
+        "cart_traces",
+        "LIB__cart_traces"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.8449140787124634,
+          5.852173328399658,
+          0.800000011920929
+        ],
+        "max": [
+          2.928086280822754,
+          6.122452735900879,
+          1.3808212280273438
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cart_wheel__finish",
+      "module": "medievallife/cart_wheel",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_wheel",
+      "parent_chain": [
+        "LIB__MedievalLife__cart_wheel__finish",
+        "cart_wheel",
+        "LIB__cart_wheel"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -2.882999897003174,
+          -7.70419979095459,
+          -0.637999951839447
+        ],
+        "max": [
+          -2.6069998741149902,
+          -6.428199768066406,
+          0.637999951839447
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__cart_wheel__structure",
+      "module": "medievallife/cart_wheel",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__cart_wheel",
+      "parent_chain": [
+        "LIB__MedievalLife__cart_wheel__structure",
+        "cart_wheel",
+        "LIB__cart_wheel"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -2.875,
+          -7.673199653625488,
+          -0.606999933719635
+        ],
+        "max": [
+          -2.614999771118164,
+          -6.459199905395508,
+          0.606999933719635
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__carter_body__attachments",
+      "module": "medievallife/carter_body",
+      "layer": "attachments",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__carter_body",
+      "parent_chain": [
+        "LIB__MedievalLife__carter_body__attachments",
+        "carter_body",
+        "LIB__carter_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.101500034332275,
+          0.6867481470108032,
+          0.8950000405311584
+        ],
+        "max": [
+          -5.96150016784668,
+          0.7767481803894043,
+          1.065000057220459
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__carter_body__finish",
+      "module": "medievallife/carter_body",
+      "layer": "finish",
+      "material_slots": 6,
+      "uv_layers": 1,
+      "parent_root": "LIB__carter_body",
+      "parent_chain": [
+        "LIB__MedievalLife__carter_body__finish",
+        "carter_body",
+        "LIB__carter_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.287473201751709,
+          0.6047481298446655,
+          0.0020000040531158447
+        ],
+        "max": [
+          -5.3755269050598145,
+          1.0987482070922852,
+          1.9499999284744263
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__carter_body__structure",
+      "module": "medievallife/carter_body",
+      "layer": "structure",
+      "material_slots": 6,
+      "uv_layers": 1,
+      "parent_root": "LIB__carter_body",
+      "parent_chain": [
+        "LIB__MedievalLife__carter_body__structure",
+        "carter_body",
+        "LIB__carter_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.309875965118408,
+          0.6411471366882324,
+          0.11483442038297653
+        ],
+        "max": [
+          -5.353124141693115,
+          1.0317481756210327,
+          1.937000036239624
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__clay_jar__finish",
+      "module": "marketlifekit/clay_jar",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__clay_jar",
+      "parent_chain": [
+        "LIB__MarketLifeKit__clay_jar__finish",
+        "clay_jar",
+        "LIB__clay_jar"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.653499603271484,
+          8.590700149536133,
+          0.3930000066757202
+        ],
+        "max": [
+          5.909499168395996,
+          8.846700668334961,
+          0.4169999957084656
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__clay_jar__structure",
+      "module": "marketlifekit/clay_jar",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__clay_jar",
+      "parent_chain": [
+        "LIB__MarketLifeKit__clay_jar__structure",
+        "clay_jar",
+        "LIB__clay_jar"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.471990585327148,
+          8.49370002746582,
+          0.0
+        ],
+        "max": [
+          6.091008186340332,
+          8.943700790405273,
+          0.422878623008728
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__freight_depot_rack__attachments",
+      "module": "freightkit/freight_depot_rack",
+      "layer": "attachments",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__freight_depot_rack",
+      "parent_chain": [
+        "LIB__FreightKit__freight_depot_rack__attachments",
+        "freight_depot_rack",
+        "LIB__freight_depot_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          4.561767578125,
+          5.458700180053711,
+          0.33026808500289917
+        ],
+        "max": [
+          7.0012311935424805,
+          6.504700660705566,
+          1.519731879234314
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__freight_depot_rack__finish",
+      "module": "freightkit/freight_depot_rack",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__freight_depot_rack",
+      "parent_chain": [
+        "LIB__FreightKit__freight_depot_rack__finish",
+        "freight_depot_rack",
+        "LIB__freight_depot_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          4.4850993156433105,
+          5.418700218200684,
+          0.2199999988079071
+        ],
+        "max": [
+          7.07789945602417,
+          6.514950275421143,
+          1.5
+        ]
+      }
+    },
+    {
+      "object": "LIB__FreightKit__freight_depot_rack__structure",
+      "module": "freightkit/freight_depot_rack",
+      "layer": "structure",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__freight_depot_rack",
+      "parent_chain": [
+        "LIB__FreightKit__freight_depot_rack__structure",
+        "freight_depot_rack",
+        "LIB__freight_depot_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          4.361499309539795,
+          5.341700077056885,
+          0.0
+        ],
+        "max": [
+          7.2014994621276855,
+          6.621700763702393,
+          1.604483723640442
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__gate_leaf__finish",
+      "module": "medievallife/gate_leaf",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__gate_leaf",
+      "parent_chain": [
+        "LIB__MedievalLife__gate_leaf__finish",
+        "gate_leaf",
+        "LIB__gate_leaf"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -1.0235002040863037,
+          0.7247481942176819,
+          0.36000001430511475
+        ],
+        "max": [
+          0.2664998769760132,
+          0.9237483143806458,
+          1.840000033378601
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__gate_leaf__structure",
+      "module": "medievallife/gate_leaf",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__gate_leaf",
+      "parent_chain": [
+        "LIB__MedievalLife__gate_leaf__structure",
+        "gate_leaf",
+        "LIB__gate_leaf"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.9235001802444458,
+          0.7812482118606567,
+          0.08999991416931152
+        ],
+        "max": [
+          0.40649986267089844,
+          0.9787483811378479,
+          2.2300000190734863
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__gate_pier__structure",
+      "module": "medievallife/gate_pier",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__gate_pier",
+      "parent_chain": [
+        "LIB__MedievalLife__gate_pier__structure",
+        "gate_pier",
+        "LIB__gate_pier"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.3975002765655518,
+          0.22674810886383057,
+          0.0
+        ],
+        "max": [
+          -2.0975000858306885,
+          1.4767482280731201,
+          3.380000114440918
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__gate_pier__weathering",
+      "module": "medievallife/gate_pier",
+      "layer": "weathering",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__gate_pier",
+      "parent_chain": [
+        "LIB__MedievalLife__gate_pier__weathering",
+        "gate_pier",
+        "LIB__gate_pier"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.2825002670288086,
+          0.28174811601638794,
+          0.05249999836087227
+        ],
+        "max": [
+          -2.0925002098083496,
+          1.4417482614517212,
+          0.07750000059604645
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_helmet__finish",
+      "module": "medievallife/guard_helmet",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_helmet",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_helmet__finish",
+        "guard_helmet",
+        "LIB__guard_helmet"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -2.7654998302459717,
+          -2.348708152770996,
+          0.09708014130592346
+        ],
+        "max": [
+          -2.7244999408721924,
+          -1.9557437896728516,
+          0.2679198682308197
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_helmet__structure",
+      "module": "medievallife/guard_helmet",
+      "layer": "structure",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_helmet",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_helmet__structure",
+        "guard_helmet",
+        "LIB__guard_helmet"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.054999828338623,
+          -2.462225914001465,
+          0.0
+        ],
+        "max": [
+          -2.434999942779541,
+          -1.8422259092330933,
+          0.28999999165534973
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_shield__finish",
+      "module": "medievallife/guard_shield",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_shield",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_shield__finish",
+        "guard_shield",
+        "LIB__guard_shield"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.6196497678756714,
+          -2.2524759769439697,
+          -0.12365719676017761
+        ],
+        "max": [
+          0.0026493144687265158,
+          -2.2139759063720703,
+          0.7315000891685486
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_shield__structure",
+      "module": "medievallife/guard_shield",
+      "layer": "structure",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_shield",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_shield__structure",
+        "guard_shield",
+        "LIB__guard_shield"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.6079900860786438,
+          -2.2174761295318604,
+          -0.11454962193965912
+        ],
+        "max": [
+          -0.00901039969176054,
+          -2.051975965499878,
+          0.7200000286102295
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_spear__finish",
+      "module": "medievallife/guard_spear",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_spear",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_spear__finish",
+        "guard_spear",
+        "LIB__guard_spear"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          2.3082916736602783,
+          -2.1940724849700928,
+          0.0
+        ],
+        "max": [
+          2.464708089828491,
+          -2.110379457473755,
+          2.579827308654785
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__guard_spear__structure",
+      "module": "medievallife/guard_spear",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__guard_spear",
+      "parent_chain": [
+        "LIB__MedievalLife__guard_spear__structure",
+        "guard_spear",
+        "LIB__guard_spear"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          2.3554999828338623,
+          -2.181708812713623,
+          0.0
+        ],
+        "max": [
+          2.4174997806549072,
+          -2.1227431297302246,
+          2.1700000762939453
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__hay_rack__attachments",
+      "module": "medievallife/hay_rack",
+      "layer": "attachments",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__hay_rack",
+      "parent_chain": [
+        "LIB__MedievalLife__hay_rack__attachments",
+        "hay_rack",
+        "LIB__hay_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.9479273557662964,
+          2.925807476043701,
+          0.6328275799751282
+        ],
+        "max": [
+          0.27092692255973816,
+          3.4681406021118164,
+          1.0421725511550903
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__hay_rack__structure",
+      "module": "medievallife/hay_rack",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__hay_rack",
+      "parent_chain": [
+        "LIB__MedievalLife__hay_rack__structure",
+        "hay_rack",
+        "LIB__hay_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -1.0285001993179321,
+          2.8269739151000977,
+          0.0
+        ],
+        "max": [
+          0.4114997684955597,
+          3.5269742012023926,
+          1.0725001096725464
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_bay__attachments",
+      "module": "medievallife/horse_bay",
+      "layer": "attachments",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_bay",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_bay__attachments",
+        "horse_bay",
+        "LIB__horse_bay"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.334799766540527,
+          -8.60267448425293,
+          1.1770000457763672
+        ],
+        "max": [
+          6.228199005126953,
+          -6.035174369812012,
+          2.37314510345459
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_bay__finish",
+      "module": "medievallife/horse_bay",
+      "layer": "finish",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_bay",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_bay__finish",
+        "horse_bay",
+        "LIB__horse_bay"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.378015041351318,
+          -8.695174217224121,
+          0.014999999664723873
+        ],
+        "max": [
+          6.184983730316162,
+          -5.437225818634033,
+          2.640270471572876
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_bay__structure",
+      "module": "medievallife/horse_bay",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_bay",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_bay__structure",
+        "horse_bay",
+        "LIB__horse_bay"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.312206745147705,
+          -8.620574951171875,
+          0.10744509845972061
+        ],
+        "max": [
+          6.250792026519775,
+          -5.585174560546875,
+          2.700000047683716
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_grey__attachments",
+      "module": "medievallife/horse_grey",
+      "layer": "attachments",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_grey",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_grey__attachments",
+        "horse_grey",
+        "LIB__horse_grey"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.278199672698975,
+          -3.6887001991271973,
+          1.1770000457763672
+        ],
+        "max": [
+          -5.384800434112549,
+          -1.1211999654769897,
+          2.37314510345459
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_grey__finish",
+      "module": "medievallife/horse_grey",
+      "layer": "finish",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_grey",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_grey__finish",
+        "horse_grey",
+        "LIB__horse_grey"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.234984397888184,
+          -3.7812001705169678,
+          0.014999999664723873
+        ],
+        "max": [
+          -5.42801570892334,
+          -0.523251473903656,
+          2.640270471572876
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__horse_grey__structure",
+      "module": "medievallife/horse_grey",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__horse_grey",
+      "parent_chain": [
+        "LIB__MedievalLife__horse_grey__structure",
+        "horse_grey",
+        "LIB__horse_grey"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.300792694091797,
+          -3.7066001892089844,
+          0.10744509845972061
+        ],
+        "max": [
+          -5.362207412719727,
+          -0.6712000966072083,
+          2.700000047683716
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__linen_canopy__cover",
+      "module": "marketlifekit/linen_canopy",
+      "layer": "cover",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__linen_canopy",
+      "parent_chain": [
+        "LIB__MarketLifeKit__linen_canopy__cover",
+        "linen_canopy",
+        "LIB__linen_canopy"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.1764997243881226,
+          7.836199760437012,
+          1.9900000095367432
+        ],
+        "max": [
+          3.5980000495910645,
+          9.601200103759766,
+          2.610046625137329
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__linen_canopy__finish",
+      "module": "marketlifekit/linen_canopy",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__linen_canopy",
+      "parent_chain": [
+        "LIB__MarketLifeKit__linen_canopy__finish",
+        "linen_canopy",
+        "LIB__linen_canopy"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.2004997730255127,
+          8.007200241088867,
+          2.1646339893341064
+        ],
+        "max": [
+          3.572499990463257,
+          9.492199897766113,
+          2.5894827842712402
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__linen_canopy__structure",
+      "module": "marketlifekit/linen_canopy",
+      "layer": "structure",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__linen_canopy",
+      "parent_chain": [
+        "LIB__MarketLifeKit__linen_canopy__structure",
+        "linen_canopy",
+        "LIB__linen_canopy"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.1614997386932373,
+          7.9399333000183105,
+          0.0
+        ],
+        "max": [
+          3.6115000247955322,
+          9.582467079162598,
+          2.62147855758667
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__road_signpost__finish",
+      "module": "medievallife/road_signpost",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__road_signpost",
+      "parent_chain": [
+        "LIB__MedievalLife__road_signpost__finish",
+        "road_signpost",
+        "LIB__road_signpost"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.3892502784729,
+          3.100224494934082,
+          1.8299999237060547
+        ],
+        "max": [
+          5.579250335693359,
+          3.1337244510650635,
+          2.259999990463257
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__road_signpost__structure",
+      "module": "medievallife/road_signpost",
+      "layer": "structure",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__road_signpost",
+      "parent_chain": [
+        "LIB__MedievalLife__road_signpost__structure",
+        "road_signpost",
+        "LIB__road_signpost"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.179250240325928,
+          3.11372447013855,
+          0.0
+        ],
+        "max": [
+          6.383748531341553,
+          3.2537245750427246,
+          2.450000047683716
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__royal_banner__finish",
+      "module": "medievallife/royal_banner",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__royal_banner",
+      "parent_chain": [
+        "LIB__MedievalLife__royal_banner__finish",
+        "royal_banner",
+        "LIB__royal_banner"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          2.186499834060669,
+          0.8082482218742371,
+          1.1050000190734863
+        ],
+        "max": [
+          2.5864999294281006,
+          0.8322482705116272,
+          1.6549999713897705
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__royal_banner__structure",
+      "module": "medievallife/royal_banner",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__royal_banner",
+      "parent_chain": [
+        "LIB__MedievalLife__royal_banner__structure",
+        "royal_banner",
+        "LIB__royal_banner"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          2.0164999961853027,
+          0.7842482328414917,
+          0.0
+        ],
+        "max": [
+          2.756499767303467,
+          0.9192482829093933,
+          2.0999999046325684
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__royal_guard_body__attachments",
+      "module": "medievallife/royal_guard_body",
+      "layer": "attachments",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__royal_guard_body",
+      "parent_chain": [
+        "LIB__MedievalLife__royal_guard_body__attachments",
+        "royal_guard_body",
+        "LIB__royal_guard_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.511499404907227,
+          -2.317225933074951,
+          0.8950000405311584
+        ],
+        "max": [
+          5.651499271392822,
+          -2.2272260189056396,
+          1.065000057220459
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__royal_guard_body__finish",
+      "module": "medievallife/royal_guard_body",
+      "layer": "finish",
+      "material_slots": 6,
+      "uv_layers": 1,
+      "parent_root": "LIB__royal_guard_body",
+      "parent_chain": [
+        "LIB__MedievalLife__royal_guard_body__finish",
+        "royal_guard_body",
+        "LIB__royal_guard_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.325526237487793,
+          -2.399225950241089,
+          0.0020000040531158447
+        ],
+        "max": [
+          6.2374725341796875,
+          -1.9052259922027588,
+          1.9499999284744263
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__royal_guard_body__structure",
+      "module": "medievallife/royal_guard_body",
+      "layer": "structure",
+      "material_slots": 6,
+      "uv_layers": 1,
+      "parent_root": "LIB__royal_guard_body",
+      "parent_chain": [
+        "LIB__MedievalLife__royal_guard_body__structure",
+        "royal_guard_body",
+        "LIB__royal_guard_body"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.303123474121094,
+          -2.3628270626068115,
+          0.11483442038297653
+        ],
+        "max": [
+          6.259875297546387,
+          -1.9722259044647217,
+          1.937000036239624
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__stable_rail__structure",
+      "module": "medievallife/stable_rail",
+      "layer": "structure",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__stable_rail",
+      "parent_chain": [
+        "LIB__MedievalLife__stable_rail__structure",
+        "stable_rail",
+        "LIB__stable_rail"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          1.3214998245239258,
+          3.111974000930786,
+          0.0
+        ],
+        "max": [
+          3.4514999389648438,
+          3.241974115371704,
+          1.2799999713897705
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__tool_rack__equipment",
+      "module": "marketlifekit/tool_rack",
+      "layer": "equipment",
+      "material_slots": 4,
+      "uv_layers": 1,
+      "parent_root": "LIB__tool_rack",
+      "parent_chain": [
+        "LIB__MarketLifeKit__tool_rack__equipment",
+        "tool_rack",
+        "LIB__tool_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.8835002183914185,
+          8.59498119354248,
+          0.8500000238418579
+        ],
+        "max": [
+          0.15129978954792023,
+          8.710481643676758,
+          1.4279999732971191
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__tool_rack__finish",
+      "module": "marketlifekit/tool_rack",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__tool_rack",
+      "parent_chain": [
+        "LIB__MarketLifeKit__tool_rack__finish",
+        "tool_rack",
+        "LIB__tool_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.9139642119407654,
+          8.611360549926758,
+          0.6845359802246094
+        ],
+        "max": [
+          0.29696375131607056,
+          8.726981163024902,
+          1.5656208992004395
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__tool_rack__structure",
+      "module": "marketlifekit/tool_rack",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__tool_rack",
+      "parent_chain": [
+        "LIB__MarketLifeKit__tool_rack__structure",
+        "tool_rack",
+        "LIB__tool_rack"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -0.9835002422332764,
+          8.417981147766113,
+          0.004999989178031683
+        ],
+        "max": [
+          0.36649981141090393,
+          9.01941967010498,
+          1.6512261629104614
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__watch_bench__structure",
+      "module": "medievallife/watch_bench",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__watch_bench",
+      "parent_chain": [
+        "LIB__MedievalLife__watch_bench__structure",
+        "watch_bench",
+        "LIB__watch_bench"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          5.056499481201172,
+          0.5242480635643005,
+          0.029999971389770508
+        ],
+        "max": [
+          6.506499290466309,
+          1.1792482137680054,
+          0.9150000214576721
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__watch_brazier__attachments",
+      "module": "medievallife/watch_brazier",
+      "layer": "attachments",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__watch_brazier",
+      "parent_chain": [
+        "LIB__MedievalLife__watch_brazier__attachments",
+        "watch_brazier",
+        "LIB__watch_brazier"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.021711349487305,
+          5.8007988929748535,
+          0.5499999523162842
+        ],
+        "max": [
+          -5.641288757324219,
+          6.162601947784424,
+          1.1399999856948853
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__watch_brazier__structure",
+      "module": "medievallife/watch_brazier",
+      "layer": "structure",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__watch_brazier",
+      "parent_chain": [
+        "LIB__MedievalLife__watch_brazier__structure",
+        "watch_brazier",
+        "LIB__watch_brazier"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -6.154673099517822,
+          5.658527374267578,
+          0.0023933639749884605
+        ],
+        "max": [
+          -5.508327007293701,
+          6.304873466491699,
+          0.8242287039756775
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__watch_shelter__finish",
+      "module": "medievallife/watch_shelter",
+      "layer": "finish",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__watch_shelter",
+      "parent_chain": [
+        "LIB__MedievalLife__watch_shelter__finish",
+        "watch_shelter",
+        "LIB__watch_shelter"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -7.191500186920166,
+          2.226747751235962,
+          2.158825397491455
+        ],
+        "max": [
+          -4.472499847412109,
+          4.127200126647949,
+          2.874974250793457
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__watch_shelter__structure",
+      "module": "medievallife/watch_shelter",
+      "layer": "structure",
+      "material_slots": 2,
+      "uv_layers": 1,
+      "parent_root": "LIB__watch_shelter",
+      "parent_chain": [
+        "LIB__MedievalLife__watch_shelter__structure",
+        "watch_shelter",
+        "LIB__watch_shelter"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -7.201499938964844,
+          2.256498098373413,
+          0.0
+        ],
+        "max": [
+          -4.46150016784668,
+          4.097450256347656,
+          2.9625000953674316
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__water_trough__finish",
+      "module": "medievallife/water_trough",
+      "layer": "finish",
+      "material_slots": 1,
+      "uv_layers": 1,
+      "parent_root": "LIB__water_trough",
+      "parent_chain": [
+        "LIB__MedievalLife__water_trough__finish",
+        "water_trough",
+        "LIB__water_trough"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.4149999618530273,
+          2.866974115371704,
+          0.6119999885559082
+        ],
+        "max": [
+          -2.0749998092651367,
+          3.486974000930786,
+          0.628000020980835
+        ]
+      }
+    },
+    {
+      "object": "LIB__MedievalLife__water_trough__structure",
+      "module": "medievallife/water_trough",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__water_trough",
+      "parent_chain": [
+        "LIB__MedievalLife__water_trough__structure",
+        "water_trough",
+        "LIB__water_trough"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.559999942779541,
+          2.7219738960266113,
+          0.0
+        ],
+        "max": [
+          -1.929999828338623,
+          3.631974220275879,
+          0.7849999666213989
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__work_table__finish",
+      "module": "marketlifekit/work_table",
+      "layer": "finish",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__work_table",
+      "parent_chain": [
+        "LIB__MarketLifeKit__work_table__finish",
+        "work_table",
+        "LIB__work_table"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.572199821472168,
+          8.28070068359375,
+          0.11499999463558197
+        ],
+        "max": [
+          -1.778499722480774,
+          9.156700134277344,
+          0.9440000057220459
+        ]
+      }
+    },
+    {
+      "object": "LIB__MarketLifeKit__work_table__structure",
+      "module": "marketlifekit/work_table",
+      "layer": "structure",
+      "material_slots": 3,
+      "uv_layers": 1,
+      "parent_root": "LIB__work_table",
+      "parent_chain": [
+        "LIB__MarketLifeKit__work_table__structure",
+        "work_table",
+        "LIB__work_table"
+      ],
+      "local_origin_verified": true,
+      "bounds_m": {
+        "min": [
+          -3.7114996910095215,
+          8.276200294494629,
+          0.022058218717575073
+        ],
+        "max": [
+          -1.7814997434616089,
+          9.161200523376465,
+          0.9300000071525574
+        ]
+      }
+    }
+  ]
+}
