@@ -1,8 +1,54 @@
 #include "HearthVillage.h"
 
+// Shared only by the three construction-supply translation units. No gameplay
+// interface or persisted fields are needed: commitments already have task IDs.
+namespace HearthCastleSupply
+{
+    FIntVector CurrentBatchDeficit(const FHearthPublicProject& Project,const TArray<FHearthResident>& Residents)
+    {
+        FIntVector Need(-Project.Stock[0],-Project.Stock[1],-Project.Stock[2]);
+        int32 Stage=MAX_int32,Count=0;
+        for(const auto& Part:Project.Parts)
+            if(Part.Status!=TEXT("completed")) Stage=FMath::Min(Stage,Part.Stage);
+        for(const auto& Part:Project.Parts)
+        {
+            if(Part.Status==TEXT("completed") || Part.Stage!=Stage) continue;
+            for(int32 M=0;M<3;++M) Need[M]+=Part.Required[M]-Part.Reserved[M]-Part.Delivered[M];
+            if(Residents.IsValidIndex(Part.Worker))
+            {
+                const auto& R=Residents[Part.Worker];
+                if(R.ActiveTaskId==Part.TaskId && (R.Task==EHearthTask::PublicTravel || R.Task==EHearthTask::PublicWork)
+                    && R.CargoType>=2 && R.CargoType<=4) Need[R.CargoType-2]-=R.CargoAmount;
+            }
+            if(++Count==3) break;
+        }
+        for(const auto& Order:Project.Orders)
+            if(Order.ProjectId==Project.Id && Order.Status==TEXT("transporting")) Need.Y-=Order.ReservedQuantity;
+        for(int32 M=0;M<3;++M) Need[M]=FMath::Max(0,Need[M]);
+        return Need;
+    }
+
+    int32 OwnedOrProcessingPlanks(const TArray<FHearthResident>& Residents)
+    {
+        int32 Available=0;
+        for(const auto& R:Residents)
+        {
+            Available+=R.PersonalPlanks;
+            // One private share is earned on finishing milling. Delivery cargo
+            // is communal; its private share is already in PersonalPlanks.
+            if(R.ProductionOp==13 && (R.Task==EHearthTask::ProductionTravel || R.Task==EHearthTask::ProductionWork)) ++Available;
+        }
+        return Available;
+    }
+}
+
 namespace
 {
-    const FVector SupplyDepot(-1650.f, -1050.f, 8.f);
+    FVector SupplyDepotFor(const AHearthVillage& Village)
+    {
+        // Use the same warehouse as milling and public construction in each map.
+        return Village.bUseCropoutMap ? FVector(-1650.f,-1050.f,8.f) : FVector(-250.f,-400.f,8.f);
+    }
 
     int32 UnfilledPlanks(const FHearthPublicProject& Project,const TArray<FHearthResident>& Residents,const FString& ExcludedOrder=FString())
     {
@@ -36,13 +82,16 @@ namespace
 
 bool AHearthVillage::StartSupplyOrder(int32 Seller)
 {
+    const bool bCastle=PublicProject.TemplateId==TEXT("royal_keep_garden_v2");
+    const int32 Missing=bCastle?HearthCastleSupply::CurrentBatchDeficit(PublicProject,Residents).Y:UnfilledPlanks(PublicProject,Residents);
     if (!Residents.IsValidIndex(Seller) || !CanAssignActivity(Seller)
         || (PublicProject.Status != TEXT("approved") && PublicProject.Status != TEXT("building"))
-        || PublicProject.Completed >= PublicProject.Parts.Num() || UnfilledPlanks(PublicProject,Residents) <= 0
-        || Residents[Seller].PersonalPlanks < 1 || TreasuryCoins < 2 || TaxProjectCoins < 2
+        || PublicProject.Completed >= PublicProject.Parts.Num() || Missing <= 0
+        || Residents[Seller].PersonalPlanks < 1 || TreasuryCoins < 2 || TaxProjectCoins < (bCastle?4:2)
         || PublicProject.Orders.Num() >= 100000) return false;
 
     TArray<FVector> Route;
+    const FVector SupplyDepot=SupplyDepotFor(*this);
     if (bUseCropoutMap)
     {
         if (!FindActivityRoute(Seller, SupplyDepot, Route)) return false;
@@ -83,6 +132,8 @@ bool AHearthVillage::StartSupplyOrder(int32 Seller)
 
 bool AHearthVillage::SettleSupplyOrder(FHearthSupplyOrder& Order)
 {
+    // The batch cap applies to new orders. Honor previously escrowed deliveries
+    // against the original project demand, including orders from older saves.
     if (Order.Status == TEXT("completed")) return true;
     if (Order.Status == TEXT("cancelled")) return false;
     FGuid OrderGuid;

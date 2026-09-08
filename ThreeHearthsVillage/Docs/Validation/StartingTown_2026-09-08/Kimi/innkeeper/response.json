@@ -1,0 +1,25 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\n  \"action\": \"walk_to_work\",\n  \"visible\": \"白色两层木筋墙建筑，蓝色百叶窗，二楼有木栏杆阳台，入口敞开，门前有绿色地面与两侧花箱。\",\n  \"uncertain\": \"建筑内部是否已有客人、客房当前占用情况、木料库存具体数量。\",\n  \"goal\": \"抵达旅店工作位置，准备接待可能前来的旅人。\",\n  \"need\": \"旅店需要更多木料扩充客房，但目前应先回到岗位维持基本运营。\"\n}",
+        "reasoning_content": "",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788865325,
+  "id": "chatcmpl-6a9feb2d1db9b62fa07a86b3",
+  "model": "kimi-k2.6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 111,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1
+    },
+    "prompt_tokens": 792,
+    "total_tokens": 903
+  }
+}

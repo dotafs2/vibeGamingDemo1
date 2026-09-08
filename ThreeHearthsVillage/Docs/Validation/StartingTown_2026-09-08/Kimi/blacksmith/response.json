@@ -1,0 +1,25 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"action\":\"walk_to_work\",\"visible\":\"我在镇上的街道，眼前是一栋两层白色木筋墙建筑，门口两侧有花坛，门口敞开。这是我熟悉的铁匠铺外观。\",\"uncertain\":\"屋内是否已有待修的剑或客人，我尚未看清。\",\"goal\":\"到工作台前开始用普通铁料修缮镇上常用的剑。\",\"need\":\"需要到达我的工作位置，才能继续我的修缮工作。\"}",
+        "reasoning_content": "",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788865325,
+  "id": "chatcmpl-6a9feb2d2031d5d0a358f42e",
+  "model": "kimi-k2.6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 90,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1
+    },
+    "prompt_tokens": 789,
+    "total_tokens": 879
+  }
+}

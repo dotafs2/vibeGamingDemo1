@@ -1,4 +1,5 @@
 #include "HearthOrganicTerrain.h"
+#include "HearthRoyalHill.h"
 
 namespace HearthOrganicTerrain
 {
@@ -7,6 +8,11 @@ namespace HearthOrganicTerrain
         constexpr float Pi = 3.14159265358979323846f;
         constexpr float MinElevation = 0.f;
         constexpr float MaxElevation = 600.f;
+
+        float ElevationLimit(const FSettings& Settings)
+        {
+            return Settings.bRoyalHill ? FMath::Max(MaxElevation,HearthRoyalHill::PlateauElevation) : MaxElevation;
+        }
 
         FBounds EffectiveBounds(const FSettings& Settings)
         {
@@ -34,7 +40,7 @@ namespace HearthOrganicTerrain
             return T * T * (3.f - 2.f * T);
         }
 
-        float RawHeight(const FVector2D& P, int32 Seed)
+        float RawHeight(const FVector2D& P, int32 Seed, bool bRoyalHill)
         {
             const float PhaseA = SeedPhase(Seed, 3) * 2.f * Pi;
             const float PhaseB = SeedPhase(Seed, 11) * 2.f * Pi;
@@ -51,7 +57,11 @@ namespace HearthOrganicTerrain
             const float Terrace = 9.f * FMath::Sin(FMath::Sqrt(RoyalDistanceSquared) / 520.f + PhaseB);
             const float ApproachRamp = 64.f * SmoothStep(1000.f, 7600.f, P.Y)
                 * FMath::Exp(-FMath::Square((P.X - 6500.f) / 9000.f));
-            return FMath::Clamp(145.f + Broad + RoyalRise + Terrace + ApproachRamp, MinElevation, MaxElevation);
+            const float Legacy=FMath::Clamp(145.f + Broad + RoyalRise + Terrace + ApproachRamp, MinElevation, MaxElevation);
+            if (!bRoyalHill) return Legacy;
+            const float Radius=FVector2D::Distance(P,HearthRoyalHill::Center());
+            const float Blend=1.f-SmoothStep(HearthRoyalHill::PlateauRadius,HearthRoyalHill::FootRadius,Radius);
+            return FMath::Lerp(Legacy,HearthRoyalHill::PlateauElevation,Blend);
         }
 
         FVector2D ToLocal(const FVector2D& P, const FVector2D& Center, float YawDegrees)
@@ -81,6 +91,7 @@ namespace HearthOrganicTerrain
             if (Road.Nodes.Num() < 2) return false;
             bool bFound = false;
             OutDistance = FLT_MAX;
+            float BestSquared = FLT_MAX;
             for (int32 I = 1; I < Road.Nodes.Num(); ++I)
             {
                 const FRoadNode& A = Road.Nodes[I - 1];
@@ -90,36 +101,51 @@ namespace HearthOrganicTerrain
                 if (LengthSquared <= KINDA_SMALL_NUMBER) continue;
                 const float Alpha = FMath::Clamp(FVector2D::DotProduct(P - A.Position, D) / LengthSquared, 0.f, 1.f);
                 const FVector2D Candidate = A.Position + D * Alpha;
-                const float Distance = FVector2D::Distance(P, Candidate);
-                if (Distance < OutDistance)
+                const float DistanceSquared = FVector2D::DistSquared(P, Candidate);
+                if (DistanceSquared < BestSquared)
                 {
-                    bFound = true; OutDistance = Distance; OutPoint = Candidate;
+                    bFound = true; BestSquared = DistanceSquared; OutPoint = Candidate;
                     OutElevation = FMath::Lerp(A.Elevation, B.Elevation, Alpha);
                 }
             }
+            if (bFound) OutDistance=FMath::Sqrt(BestSquared);
             return bFound;
         }
 
         float NaturalAndFeatures(const FVector2D& P, const FSettings& Settings)
         {
-            float Height = RawHeight(P, Settings.Seed);
+            const float Limit=ElevationLimit(Settings);
+            float Height = RawHeight(P, Settings.Seed, Settings.bRoyalHill);
             // Roads are graded first. Pads are the final authority so a civic
             // road crossing a foundation cannot reintroduce a slope.
             for (const FRoadCenterline& Road : Settings.Roads)
             {
+                if (Settings.bRoyalHill && Road.bRoyalHillRoad) continue;
                 FVector2D Closest; float RoadHeight = 0.f, Distance = 0.f;
                 if (!ClosestRoadPoint(P, Road, Closest, RoadHeight, Distance)) continue;
                 const float Width = FMath::Max(0.f, Road.Width);
                 const float Transition = FMath::Max(1.f, Road.Transition);
                 const float Blend = 1.f - SmoothStep(Width, Width + Transition, Distance);
-                Height = FMath::Lerp(Height, FMath::Clamp(RoadHeight, MinElevation, MaxElevation), Blend);
+                Height = FMath::Lerp(Height, FMath::Clamp(RoadHeight, MinElevation, Limit), Blend);
             }
             for (const FFlattenZone& Zone : Settings.FlattenZones)
             {
                 const float Blend = FlattenBlend(P, Zone);
-                Height = FMath::Lerp(Height, FMath::Clamp(Zone.Elevation, MinElevation, MaxElevation), Blend);
+                Height = FMath::Lerp(Height, FMath::Clamp(Zone.Elevation, MinElevation, Limit), Blend);
             }
-            return FMath::Clamp(Height, MinElevation, MaxElevation);
+            // Complete royal road is the final profile authority, irrespective
+            // of append order. Never grade its individual segments separately:
+            // overlapping segment end caps would introduce steps at every bend.
+            if (Settings.bRoyalHill) for (const FRoadCenterline& Road : Settings.Roads)
+            {
+                if (!Road.bRoyalHillRoad) continue;
+                FVector2D Closest; float RoadHeight=0, Distance=0;
+                if (!ClosestRoadPoint(P,Road,Closest,RoadHeight,Distance)) continue;
+                const float FlatHalf=FMath::Max(0.f,Road.Width*.5f)+FMath::Max(0.f,Road.ShoulderWidth);
+                const float Blend=1.f-SmoothStep(FlatHalf,FlatHalf+FMath::Max(1.f,Road.Transition),Distance);
+                Height=FMath::Lerp(Height,FMath::Clamp(RoadHeight,MinElevation,Limit),Blend);
+            }
+            return FMath::Clamp(Height, MinElevation, Limit);
         }
     }
 
@@ -180,14 +206,26 @@ namespace HearthOrganicTerrain
             {
                 const float U = static_cast<float>(X) / Settings.GridQuadsX;
                 const FVector2D XY(FMath::Lerp(Bounds.Min.X, Bounds.Max.X, U), FMath::Lerp(Bounds.Min.Y, Bounds.Max.Y, V));
-                const FHeightSample Sample = NormalOrSlopeAt(XY, Settings);
-                OutGrid.Vertices.Add(FVector(XY.X, XY.Y, Sample.Height));
-                OutGrid.Normals.Add(Sample.Normal);
+                // One height evaluation per vertex; derive mesh normals from
+                // this same heightfield below, not four further feature scans.
+                const float Height=HeightAt(XY,Settings);
+                OutGrid.Vertices.Add(FVector(XY.X, XY.Y, Height));
                 OutGrid.UV0.Add(FVector2D(U, V));
-                const float HeightT = FMath::Clamp(Sample.Height / MaxElevation, 0.f, 1.f);
-                const float SlopeT = FMath::Clamp(Sample.SlopeDegrees / 20.f, 0.f, 1.f);
-                OutGrid.VertexColors.Add(FLinearColor(FMath::Lerp(.18f, .42f, HeightT), FMath::Lerp(.31f, .48f, HeightT), FMath::Lerp(.12f, .18f, SlopeT), 1.f));
             }
+        }
+        for (int32 Y=0; Y<OutGrid.VertexRows; ++Y) for (int32 X=0; X<OutGrid.VertexColumns; ++X)
+        {
+            const auto At=[&](int32 Column,int32 Row)->const FVector&{return OutGrid.Vertices[Row*OutGrid.VertexColumns+Column];};
+            const FVector& L=At(FMath::Max(0,X-1),Y);
+            const FVector& R=At(FMath::Min(OutGrid.VertexColumns-1,X+1),Y);
+            const FVector& B=At(X,FMath::Max(0,Y-1));
+            const FVector& T=At(X,FMath::Min(OutGrid.VertexRows-1,Y+1));
+            const double DX=(R.Z-L.Z)/(R.X-L.X), DY=(T.Z-B.Z)/(T.Y-B.Y);
+            OutGrid.Normals.Add(FVector(-DX,-DY,1).GetSafeNormal());
+            const float Slope=FMath::RadiansToDegrees(FMath::Atan(FMath::Sqrt(DX*DX+DY*DY)));
+            const float HeightT=FMath::Clamp(float(At(X,Y).Z)/ElevationLimit(Settings),0.f,1.f);
+            const float SlopeT=FMath::Clamp(Slope/20.f,0.f,1.f);
+            OutGrid.VertexColors.Add(FLinearColor(FMath::Lerp(.18f,.42f,HeightT),FMath::Lerp(.31f,.48f,HeightT),FMath::Lerp(.12f,.18f,SlopeT),1.f));
         }
         OutGrid.Indices.Reserve(Settings.GridQuadsX * Settings.GridQuadsY * 6);
         for (int32 Y = 0; Y < Settings.GridQuadsY; ++Y) for (int32 X = 0; X < Settings.GridQuadsX; ++X)

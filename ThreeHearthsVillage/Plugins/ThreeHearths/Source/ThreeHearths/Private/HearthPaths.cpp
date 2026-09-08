@@ -1,5 +1,8 @@
 #include "HearthVillage.h"
 #include "HearthMovement.h"
+#include "HearthHillNavigation.h"
+#include "HearthOrganicTerrain.h"
+#include "HearthRoyalHill.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 
@@ -26,7 +29,9 @@ bool AHearthVillage::IsLand(const FVector& P) const
     FCollisionQueryParams Query; Query.bTraceComplex=true; Query.AddIgnoredActor(this);
     for(const auto& R:Residents) if(IsValid(R.Actor)) Query.AddIgnoredActor(R.Actor);
     FHitResult Hit;
-    if(!GetWorld()->LineTraceSingleByChannel(Hit,P+FVector(0,0,900),P-FVector(0,0,900),ECC_Visibility,Query)
+    FVector Probe=P;
+    if(IsOrganicVillage()) Probe.Z=GroundHeightAt(P);
+    if(!GetWorld()->LineTraceSingleByChannel(Hit,Probe+FVector(0,0,900),Probe-FVector(0,0,900),ECC_Visibility,Query)
         || !Hit.GetActor() || !Hit.GetActor()->ActorHasTag(TEXT("ThreeHearthsBaseTerrain"))) return false;
     if(IsOrganicVillage())
     {
@@ -34,7 +39,8 @@ bool AHearthVillage::IsLand(const FVector& P) const
         // check would reject every valid hillside; normal Z keeps only
         // walkable, reasonably sloped ground while GroundHeightAt supplies
         // the actor's actual foot height to movement.
-        return FMath::IsFinite(Hit.ImpactPoint.Z) && Hit.ImpactNormal.Z>=0.55f;
+        const bool bHill=OrganicTerrainSettings.IsValid() && OrganicTerrainSettings->bRoyalHill && HearthHillNavigation::InHill(P);
+        return FMath::IsFinite(Hit.ImpactPoint.Z) && Hit.ImpactNormal.Z>=(bHill?.86f:.55f);
     }
     return FMath::Abs(Hit.ImpactPoint.Z-2.8f)<2.f;
 }
@@ -65,13 +71,21 @@ bool AHearthVillage::IsSiteWalkObstacle(const FHearthSite& Site) const
 
 bool AHearthVillage::IsClearPoint(const FVector& P) const
 {
-    if(!LandGrid.Contains(HearthPaths::Cell(P))) return false;
+    const bool bHill=IsOrganicVillage() && OrganicTerrainSettings.IsValid() && OrganicTerrainSettings->bRoyalHill && HearthHillNavigation::InHill(P);
+    if(bHill)
+    {
+        FVector Ground=P;Ground.Z=GroundHeightAt(P);
+        if(!HearthHillNavigation::Accessible(Ground) || !IsLand(Ground)) return false;
+    }
+    else if(!LandGrid.Contains(HearthPaths::Cell(P))) return false;
     if(IsOrganicVillage() && OrganicBlocksPoint(P)) return false;
     for(const auto& Obstacle:FixedObstacles)
         if(FMath::Abs(P.X-Obstacle.X)<Obstacle.Z && FMath::Abs(P.Y-Obstacle.Y)<Obstacle.Z) return false;
     // Ownership reserves building rights, not a physical wall across vacant ground.
     for(const auto& Site:ProductionSites)
         if(IsSiteWalkObstacle(Site)
+            && !(bHill && ProductionSites.IsValidIndex(PublicProject.Site) && &Site==&ProductionSites[PublicProject.Site]
+                && PublicProject.TemplateId==TEXT("royal_keep_garden_v2") && HearthHillNavigation::OnAscent(P))
             && FMath::Abs(P.X-Site.Position.X)<Site.Radius+25 && FMath::Abs(P.Y-Site.Position.Y)<Site.Radius+25) return false;
     for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents)
     {
@@ -84,6 +98,20 @@ bool AHearthVillage::IsClearPoint(const FVector& P) const
 
 bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
 {
+    const bool bHill=IsOrganicVillage() && OrganicTerrainSettings.IsValid() && OrganicTerrainSettings->bRoyalHill && HearthHillNavigation::TouchesHill(A,B);
+    if(bHill)
+    {
+        const int32 Steps=FMath::Max(1,FMath::CeilToInt(FVector::Dist2D(A,B)/40.0));
+        if(Steps>2048) return false;
+        FVector Previous=A;Previous.Z=GroundHeightAt(A);
+        for(int32 I=0;I<=Steps;++I)
+        {
+            FVector P=FMath::Lerp(A,B,double(I)/Steps);P.Z=GroundHeightAt(P);
+            if(!FMath::IsFinite(P.Z) || !HearthHillNavigation::Accessible(P) || !IsLand(P)
+                || (I>0 && FMath::Abs(P.Z-Previous.Z)>FVector::Dist2D(P,Previous)*.6+3)) return false;
+            Previous=P;
+        }
+    }
     // Sparse probes can miss a corner that a later 12 cm movement step hits,
     // producing an endless replan to the same invalid shortcut. Use exact boxes
     // and every crossed grid cell for both planning and execution.
@@ -97,6 +125,8 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
     for(const auto& O:FixedObstacles) if(HearthMovement::SegmentHitsBox(A,B,O,O.Z) && !MayLeaveContainingBox(A,B,O,O.Z)) return false;
     for(const auto& S:ProductionSites)
         if(IsSiteWalkObstacle(S)
+            && !(bHill && ProductionSites.IsValidIndex(PublicProject.Site) && &S==&ProductionSites[PublicProject.Site]
+                && PublicProject.TemplateId==TEXT("royal_keep_garden_v2") && HearthHillNavigation::AscentSegment(A,B))
             && HearthMovement::SegmentHitsBox(A,B,S.Position,S.Radius+25) && !MayLeaveContainingBox(A,B,S.Position,S.Radius+25)) return false;
     for(const auto& S:ProductionSites) for(const auto& C:S.CottageComponents)
     {
@@ -104,23 +134,31 @@ bool AHearthVillage::IsClearSegment(const FVector& A,const FVector& B) const
         const FVector Center=S.Position+C.Offset;
         if(HearthMovement::SegmentHitsBox(A,B,Center,Radius) && !MayLeaveContainingBox(A,B,Center,Radius)) return false;
     }
-    return HearthMovement::GridSegmentClear(A,B,HearthPaths::Step,[this](FIntPoint Cell) { return LandGrid.Contains(Cell); });
+    // A 300cm raster cannot faithfully cover a curved 600cm road. Hill
+    // segments were certified on actual ground above; retain the old grid
+    // requirement everywhere else, including the flat village.
+    return HearthMovement::GridSegmentClear(A,B,HearthPaths::Step,[this,bHill](FIntPoint Cell)
+    { return LandGrid.Contains(Cell) || (bHill && HearthHillNavigation::InHill(HearthPaths::Point(Cell),220.f)); });
 }
 
 bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,TArray<FVector>& Out) const
 {
+    const auto Ordinary=[this](const FVector& Start,const FVector& End,TArray<FVector>& Out)
+    {
+    const auto WorldPoint=[this](const FIntPoint& Cell)
+    { FVector P=HearthPaths::Point(Cell);if(IsOrganicVillage()) P.Z=GroundHeightAt(P)+5.2f;return P; };
     Out.Reset();
     // A field can finish growing around its worker, or construction can add
     // a cell beside a passer-by. Permit an outward connector from that starting
     // overlap; the destination and every attached grid node must remain clear.
     if((!IsClearPoint(Start) && !(IsOrganicVillage() && LandGrid.Contains(HearthPaths::Cell(Start)))) || !IsClearPoint(End)) return false;
     if(Start.Equals(End,.01)) return true;
-    auto Attach=[this](const FVector& P,FIntPoint& Found)
+    auto Attach=[this,&WorldPoint](const FVector& P,FIntPoint& Found)
     {
         float Best=FLT_MAX; bool Valid=false; const auto C=HearthPaths::Cell(P);
         for(int32 X=-2;X<=2;++X) for(int32 Y=-2;Y<=2;++Y)
         {
-            const FIntPoint Candidate=C+FIntPoint(X,Y); const FVector Position=HearthPaths::Point(Candidate);
+            const FIntPoint Candidate=C+FIntPoint(X,Y); const FVector Position=WorldPoint(Candidate);
             const float Distance=FVector::DistSquared2D(Position,P);
             if(IsClearPoint(Position) && Distance<Best && IsClearSegment(P,Position)) { Best=Distance; Found=Candidate; Valid=true; }
         }
@@ -143,8 +181,8 @@ bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,
         Closed.Add(Current);
         for(const auto& D:Directions)
         {
-            const auto Next=Current+D; if(Closed.Contains(Next) || !LandGrid.Contains(Next)) continue;
-            if(!IsClearSegment(HearthPaths::Point(Current),HearthPaths::Point(Next))) continue;
+            const auto Next=Current+D; if(Closed.Contains(Next) || !IsClearPoint(WorldPoint(Next))) continue;
+            if(!IsClearSegment(WorldPoint(Current),WorldPoint(Next))) continue;
             const float NewCost=Cost[Current]+1;
             if(!Cost.Contains(Next) || NewCost<Cost[Next])
             { Cost.Add(Next,NewCost); Parent.Add(Next,Current); Open.AddUnique(Next); }
@@ -153,7 +191,7 @@ bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,
     if(!Found) return false;
     TArray<FVector> Reverse; FIntPoint C=To;
     for(int32 Guard=0;Guard<2025;++Guard)
-    { Reverse.Add(HearthPaths::Point(C)); if(C==From) break; const auto* P=Parent.Find(C); if(!P) return false; C=*P; }
+    { Reverse.Add(WorldPoint(C)); if(C==From) break; const auto* P=Parent.Find(C); if(!P) return false; C=*P; }
     for(int32 I=Reverse.Num()-1;I>=0;--I) Out.Add(Reverse[I]);
     Out.Add(End);
     // Validate the final route against the actual terrain too, including exact endpoint connectors.
@@ -165,11 +203,38 @@ bool AHearthVillage::FindProductionPath(const FVector& Start,const FVector& End,
         Previous=Point;
     }
     return true;
+    };
+    if(!IsOrganicVillage() || !OrganicTerrainSettings.IsValid() || !OrganicTerrainSettings->bRoyalHill)
+        return Ordinary(Start,End,Out);
+    FVector From=Start,Goal=End;From.Z=GroundHeightAt(From)+5.2f;Goal.Z=GroundHeightAt(Goal)+5.2f;
+    TArray<FVector> Guide;
+    if(!HearthHillNavigation::MakeGuide(From,Goal,Guide)) return Ordinary(From,Goal,Out);
+    Out.Reset();if(Guide.IsEmpty() || !IsClearPoint(Goal)) return false;
+    TArray<FVector> Result,Connector;
+    if(!Ordinary(From,Guide[0],Connector)) return false;
+    Result=MoveTemp(Connector);FVector Previous=Result.IsEmpty()?From:Result.Last();
+    for(FVector Point:Guide)
+    {
+        Point.Z=GroundHeightAt(Point)+5.2f;
+        if(!IsClearPoint(Point) || !IsClearSegment(Previous,Point)) return false;
+        if(!Previous.Equals(Point,.01)) Result.Add(Point);
+        Previous=Point;
+    }
+    if(!Ordinary(Previous,Goal,Connector)) return false;
+    Result.Append(Connector);Out=MoveTemp(Result);return true;
 }
 
 bool AHearthVillage::ChooseSiteApproach(int32 Index)
 {
     auto& Site=ProductionSites[Index]; float Best=FLT_MAX; bool Found=false;
+    if(IsOrganicVillage() && OrganicTerrainSettings.IsValid() && OrganicTerrainSettings->bRoyalHill
+        && Index==PublicProject.Site && PublicProject.TemplateId==TEXT("royal_keep_garden_v2"))
+    {
+        Site.Approach=HearthRoyalHill::DeliveryApproach();Site.Approach.Z=GroundHeightAt(Site.Approach)+5.2f;
+        TArray<FVector> Route;
+        Site.bReachable=FindProductionPath(FVector(-1650,-1050,GroundHeightAt(FVector(-1650,-1050,0))+5.2f),Site.Approach,Route);
+        return Site.bReachable;
+    }
     const FVector Depot(-1650,-1050,8);
     TArray<FVector> PreferredRoute;
     const float ExistingEntryDistance=FVector::Dist2D(Site.Approach,Site.Position);

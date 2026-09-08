@@ -47,6 +47,12 @@ bool FOrganicWorldPersistenceTest::RunTest(const FString&)
     Current.Schema=11;
     Current.PopulationCount=10;
     Current.People.SetNum(10);
+    const int32 RoyalSite=Current.Sites.IndexOfByPredicate([](const auto& Site)
+        { return FVector::Dist2D(Site.Position,FVector(6500,6500,0))<1.f; });
+    if(!TestTrue(TEXT("Central castle land exists above trace origin"),RoyalSite!=INDEX_NONE)) return false;
+    Current.Sites[RoyalSite].Position.Z=355.f; // Previous low terrain checkpoint.
+    for(int32 I=0;I<Current.PlotCount;++I) Current.Plots[I].Z-=75.f;
+    for(int32 I=0;I<3;++I) Current.Stocks[I].Z-=75.f;
     const FString Payload=HearthWorld::Encode(Current); FHearthWorldImage Image;
     if(!TestTrue(TEXT("Schema 11 organic image decodes"),HearthWorld::Decode(Payload,Image,Error))) { AddError(Error); return false; }
     TestEqual(TEXT("Organic schema is 11"),Image.Schema,11); TestEqual(TEXT("Legacy fixture retains ten people"),Image.People.Num(),10); TestEqual(TEXT("Organic seed survives"),Image.OrganicWorldSeed,7919); TestTrue(TEXT("Resident home survives"),Image.OrganicHomes.Contains(ResidentId));
@@ -54,6 +60,18 @@ bool FOrganicWorldPersistenceTest::RunTest(const FString&)
     if(!TestTrue(TEXT("Cold apply restores organic home"),Village->ApplyWorldState(Payload,Error))) { AddError(Error); return false; }
     const auto* Restored=Village->OrganicHomes.Find(ResidentId); TestNotNull(TEXT("Restored resident home exists"),Restored);
     if(Restored) { TestEqual(TEXT("Cold restore keeps target recipe"),Restored->TargetRecipe,FString(TEXT("family_growth"))); TestEqual(TEXT("Cold restore keeps active progress"),Restored->WorkProgress,.42f); }
+    TestTrue(TEXT("Legacy castle elevation reprojects to real central plateau"),Village->ProductionSites[RoyalSite].Position.Z>3400.f);
+    TestEqual(TEXT("Terrain revision does not create tax money"),Village->TaxProjectCoins,Current.TaxProjectCoins);
+    TestEqual(TEXT("Terrain revision does not create treasury money"),Village->TreasuryCoins,Current.TreasuryCoins);
+    FHearthWorldImage Migrated;
+    if(!TestTrue(TEXT("Migrated world remains serializable"),HearthWorld::Decode(Village->ExportWorldState(),Migrated,Error))) return false;
+    for(int32 I=0;I<Current.PlotCount;++I)
+    {
+        TestEqual(TEXT("Vertical migration retains plot identity"),Migrated.PlotIds[I],Current.PlotIds[I]);
+        TestTrue(TEXT("Vertical migration retains horizontal ownership"),FVector::Dist2D(Migrated.Plots[I],Current.Plots[I])<.01);
+    }
+    if(!TestTrue(TEXT("Migrated image can load a second time"),Village->ApplyWorldState(HearthWorld::Encode(Migrated),Error))) return false;
+    TestTrue(TEXT("Reload does not raise castle a second time"),Village->ProductionSites[RoyalSite].Position.Equals(Migrated.Sites[RoyalSite].Position,.01));
     FString Negative=Payload; Negative.ReplaceInline(TEXT("\"stone\":3"),TEXT("\"stone\":-1")); FHearthWorldImage Rejected; TestFalse(TEXT("Negative organic stock is rejected"),HearthWorld::Decode(Negative,Rejected,Error));
     return true;
 }

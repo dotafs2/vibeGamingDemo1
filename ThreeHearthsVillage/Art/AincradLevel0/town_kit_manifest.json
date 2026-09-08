@@ -1,0 +1,475 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "status": "exported",
+  "source_axis": "Blender meters, +Z up, +Y facade; UE import=(x,-y,z)*100; native facade -Y",
+  "assets": [
+    {
+      "id": "wall_plain_2m",
+      "glb": "Modules/wall_plain_2m.glb",
+      "vertices": 24,
+      "triangles": 36,
+      "bounds_min_m": [
+        -1.0,
+        -0.14499999582767487,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.1550000011920929,
+        3.200000047683716
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "wall_window_2m",
+      "glb": "Modules/wall_window_2m.glb",
+      "vertices": 160,
+      "triangles": 240,
+      "bounds_min_m": [
+        -1.0,
+        -0.14499999582767487,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.5099999904632568,
+        3.200000047683716
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "wall_entry_2m",
+      "glb": "Modules/wall_entry_2m.glb",
+      "vertices": 64,
+      "triangles": 96,
+      "bounds_min_m": [
+        -1.0,
+        -0.14499999582767487,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.1850000023841858,
+        3.200000047683716
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "floor_2m",
+      "glb": "Modules/floor_2m.glb",
+      "vertices": 8,
+      "triangles": 12,
+      "bounds_min_m": [
+        -1.0,
+        -1.0,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "stone_base_2m",
+      "glb": "Modules/stone_base_2m.glb",
+      "vertices": 8,
+      "triangles": 12,
+      "bounds_min_m": [
+        -1.0,
+        -0.1599999964237213,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.1599999964237213,
+        0.30000001192092896
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "post_3m2",
+      "glb": "Modules/post_3m2.glb",
+      "vertices": 8,
+      "triangles": 12,
+      "bounds_min_m": [
+        -0.09000000357627869,
+        -0.125,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.09000000357627869,
+        0.125,
+        3.200000047683716
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "eave_2m",
+      "glb": "Modules/eave_2m.glb",
+      "vertices": 8,
+      "triangles": 12,
+      "bounds_min_m": [
+        -1.0,
+        -0.09000000357627869,
+        -0.09000000357627869
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.09000000357627869,
+        0.09000000357627869
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "tile_shared_uv",
+      "glb": "Modules/tile_shared_uv.glb",
+      "vertices": 8,
+      "triangles": 12,
+      "bounds_min_m": [
+        -0.2199999988079071,
+        -0.33000001311302185,
+        -0.02250000089406967
+      ],
+      "bounds_max_m": [
+        0.2199999988079071,
+        0.33000001311302185,
+        0.02250000089406967
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "work_table",
+      "glb": "Modules/work_table.glb",
+      "vertices": 40,
+      "triangles": 60,
+      "bounds_min_m": [
+        -0.8999999761581421,
+        -0.42500001192092896,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.8999999761581421,
+        0.42500001192092896,
+        0.8799999952316284
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "storage_shelf",
+      "glb": "Modules/storage_shelf.glb",
+      "vertices": 64,
+      "triangles": 96,
+      "bounds_min_m": [
+        -0.75,
+        -0.30000001192092896,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.75,
+        0.30000001192092896,
+        2.0450000762939453
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "guest_bench",
+      "glb": "Modules/guest_bench.glb",
+      "vertices": 24,
+      "triangles": 36,
+      "bounds_min_m": [
+        -0.8500000238418579,
+        -0.1899999976158142,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.8500000238418579,
+        0.1899999976158142,
+        0.5049999952316284
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "lantern_hanging",
+      "glb": "Modules/lantern_hanging.glb",
+      "vertices": 88,
+      "triangles": 144,
+      "bounds_min_m": [
+        -0.17,
+        -0.17,
+        -0.2
+      ],
+      "bounds_max_m": [
+        0.17,
+        0.17,
+        0.5199999809265137
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Inn",
+      "glb": "Assemblies/SM_Inn.glb",
+      "vertices": 14630,
+      "triangles": 21954,
+      "bounds_min_m": [
+        -6.529999732971191,
+        -8.585000038146973,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        6.529999732971191,
+        9.40000057220459,
+        11.06619930267334
+      ],
+      "parts": 171,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Inn_Details",
+      "glb": "Assemblies/SM_Inn_Details.glb",
+      "vertices": 8350,
+      "triangles": 12510,
+      "bounds_min_m": [
+        -6.529999732971191,
+        -8.585000038146973,
+        0.0
+      ],
+      "bounds_max_m": [
+        6.529999732971191,
+        9.40000057220459,
+        11.06619930267334
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Smithy",
+      "glb": "Assemblies/SM_Smithy.glb",
+      "vertices": 11102,
+      "triangles": 16662,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.34999942779541,
+        10.339656829833984
+      ],
+      "parts": 132,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Smithy_Details",
+      "glb": "Assemblies/SM_Smithy_Details.glb",
+      "vertices": 6054,
+      "triangles": 9066,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.34999942779541,
+        10.339656829833984
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Carpentry",
+      "glb": "Assemblies/SM_Carpentry.glb",
+      "vertices": 11126,
+      "triangles": 16698,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.34999942779541,
+        10.339656829833984
+      ],
+      "parts": 132,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Carpentry_Details",
+      "glb": "Assemblies/SM_Carpentry_Details.glb",
+      "vertices": 6078,
+      "triangles": 9102,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.34999942779541,
+        10.339656829833984
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_TownHouse",
+      "glb": "Assemblies/SM_TownHouse.glb",
+      "vertices": 8014,
+      "triangles": 12006,
+      "bounds_min_m": [
+        -4.529999732971191,
+        -5.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        4.529999732971191,
+        6.349999904632568,
+        10.140000343322754
+      ],
+      "parts": 86,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_TownHouse_Details",
+      "glb": "Assemblies/SM_TownHouse_Details.glb",
+      "vertices": 4166,
+      "triangles": 6234,
+      "bounds_min_m": [
+        -4.529999732971191,
+        -5.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        4.529999732971191,
+        6.349999904632568,
+        10.140000343322754
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_TownHouse3",
+      "glb": "Assemblies/SM_TownHouse3.glb",
+      "vertices": 9742,
+      "triangles": 14598,
+      "bounds_min_m": [
+        -4.529999732971191,
+        -5.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        4.529999732971191,
+        6.349999904632568,
+        13.34000015258789
+      ],
+      "parts": 130,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_TownHouse3_Details",
+      "glb": "Assemblies/SM_TownHouse3_Details.glb",
+      "vertices": 4166,
+      "triangles": 6234,
+      "bounds_min_m": [
+        -4.529999732971191,
+        -5.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        4.529999732971191,
+        6.349999904632568,
+        13.34000015258789
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_StreetTree",
+      "glb": "Modules/SM_StreetTree.glb",
+      "vertices": 1336,
+      "triangles": 750,
+      "bounds_min_m": [
+        -2.3104522456240044,
+        -2.2992440869568487,
+        0.0
+      ],
+      "bounds_max_m": [
+        2.3933151167616193,
+        2.237423003530246,
+        5.65
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_CourtyardTree",
+      "glb": "Modules/SM_CourtyardTree.glb",
+      "vertices": 1336,
+      "triangles": 750,
+      "bounds_min_m": [
+        -1.6635256168492831,
+        -1.6554557426089311,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.7231868840683657,
+        1.610944562541777,
+        4.068
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Shrub",
+      "glb": "Modules/SM_Shrub.glb",
+      "vertices": 900,
+      "triangles": 450,
+      "bounds_min_m": [
+        -0.9985478108553092,
+        -0.40120202798112115,
+        0.04999999999999999
+      ],
+      "bounds_max_m": [
+        1.0170514607992978,
+        0.48245596476555186,
+        0.8500000000000001
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_FlowerBed",
+      "glb": "Modules/SM_FlowerBed.glb",
+      "vertices": 2460,
+      "triangles": 1350,
+      "bounds_min_m": [
+        -1.0,
+        -0.4000000059604645,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.0,
+        0.4000000059604645,
+        0.5850000000000001
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    }
+  ]
+}

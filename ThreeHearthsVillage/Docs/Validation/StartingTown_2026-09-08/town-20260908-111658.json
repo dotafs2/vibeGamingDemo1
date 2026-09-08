@@ -1,0 +1,11 @@
+{
+  "run": "town-20260908-111658",
+  "seconds": 60,
+  "api": false,
+  "manual_route_verification": true,
+  "ue_pid": 528228,
+  "gateway_pid": null,
+  "started_utc_epoch": 1788866218.0899878,
+  "ue_exit": 0,
+  "finished_utc_epoch": 1788866287.9445796
+}

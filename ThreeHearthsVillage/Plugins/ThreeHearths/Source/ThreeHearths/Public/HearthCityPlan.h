@@ -35,5 +35,6 @@ namespace HearthCityPlan
 {
     THREEHEARTHS_API FHearthCityPlan Build();
     THREEHEARTHS_API FHearthCityPlan BuildVersion3();
+    THREEHEARTHS_API FHearthCityPlan BuildVersion4();
     THREEHEARTHS_API FHearthCityPlan BuildForVersion(int32 LayoutVersion);
 }

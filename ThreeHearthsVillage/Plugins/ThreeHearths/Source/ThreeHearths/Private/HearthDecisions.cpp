@@ -1,5 +1,6 @@
 #include "HearthVillage.h"
 #include "HearthResidentStory.h"
+#include "HearthSettlementPlan.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
@@ -315,8 +316,9 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
         }
         else if(bVisual)
         {
-            Thinking.CoalesceKey=TEXT("visual|")+VisualSignature(Index);
-            Thinking.EventId=CurrentRun+TEXT("|visual|")+Residents[Index].StableId+TEXT("|")+VisualSignature(Index);
+            const FString InspectionPart=Residents[Index].VisualInspectionId.IsEmpty()?FString():TEXT("|inspection|")+Residents[Index].VisualInspectionId;
+            Thinking.CoalesceKey=TEXT("visual|")+VisualSignature(Index)+InspectionPart;
+            Thinking.EventId=CurrentRun+TEXT("|visual|")+Residents[Index].StableId+TEXT("|")+VisualSignature(Index)+InspectionPart;
         }
         else if(bLife)
         {
@@ -345,6 +347,17 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     Context->SetStringField(TEXT("persistent_character_id"),Residents[Index].StableId);
     Context->SetStringField(TEXT("persistent_story"),Residents[Index].InnerStory);
     Context->SetStringField(TEXT("personal_goal"),Residents[Index].DesignGoal);
+    FString ObservationScope;
+    const bool bPersonalFov=Context->TryGetStringField(TEXT("observation_scope"),ObservationScope)
+        && ObservationScope==TEXT("resident_first_person");
+    if(!bPersonalFov) if(const auto* Plan=GetSettlementPlan())
+    {
+        FString Guidance=TEXT("城镇用途规划（非已建事实，保留既有产权和通路）：");
+        for(const auto& District:Plan->Districts)
+            Guidance+=District.Label+TEXT("：")+District.Purpose+TEXT("；");
+        Context->SetStringField(TEXT("settlement_guidance"),Guidance);
+        Context->SetStringField(TEXT("castle_actual_progress"),PublicWorksSummary());
+    }
     System->SetStringField(TEXT("content"),HearthResidentStory::Prompt(Residents[Index].InnerStory)+TEXT("\n\n")+Prompt);
     auto User=MakeShared<FJsonObject>(); User->SetStringField(TEXT("role"),TEXT("user")); User->SetStringField(TEXT("content"),HearthDecision::Json(Context));
     if(bVisual)
@@ -363,7 +376,7 @@ void AHearthVillage::SendDecisionRequest(int32 Index,const TSharedRef<FJsonObjec
     Pending.OperationId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
     Pending.ThinkingRequestId=ThinkingRequestId;
     Pending.bActive=true; Pending.bLife=bLife; Pending.bSocial=bSocial; Pending.bVisual=bVisual; Pending.bDaydream=bDaydream;
-    if(bVisual) Pending.VisualSignature=VisualSignature(Index);
+    if(bVisual) { Pending.VisualSignature=VisualSignature(Index); Pending.VisualInspectionId=Residents[Index].VisualInspectionId; }
     Pending.StartedAt=FPlatformTime::Seconds(); Pending.StartedAtSimulation=Elapsed;
     Pending.ConversationId=bSocial?Residents[Index].ConversationId:FString();
     Pending.Serial=++DecisionSerial;

@@ -3,6 +3,12 @@
 
 namespace HearthFreightNavigation
 {
+    TConstArrayView<FFootprintBox> Footprint()
+    {
+        static const FFootprintBox Boxes[]={{5,0,125,115},{305,0,175,50},{330,115,50,40}};
+        return MakeArrayView(Boxes);
+    }
+
     namespace
     {
         constexpr float CellSize = 150.f;
@@ -12,6 +18,48 @@ namespace HearthFreightNavigation
         constexpr float GoalTolerance = 150.f;
         constexpr float YawBinDegrees = 22.5f;
         constexpr float TurnPenalty = 25.f;
+
+        // Clip a vehicle rectangle against an obstacle in the obstacle's
+        // local frame. Area, unlike a boolean hit or minimum SAT depth,
+        // measures progress when backing out of a shallow corner overlap.
+        double OverlapArea(const FVector& Center, float Yaw, double HX, double HY,
+            const FRecoveryObstacle& Obstacle)
+        {
+            const FRotator Frame(0,Obstacle.Yaw,0), Vehicle(0,Yaw,0);
+            const FVector D=Frame.UnrotateVector(Center-Obstacle.Center);
+            const FVector F=Frame.UnrotateVector(Vehicle.Vector());
+            const FVector S(-F.Y,F.X,0);
+            if(FMath::Abs(D.X)>HX*FMath::Abs(F.X)+HY*FMath::Abs(S.X)+Obstacle.HalfSize.X
+                || FMath::Abs(D.Y)>HX*FMath::Abs(F.Y)+HY*FMath::Abs(S.Y)+Obstacle.HalfSize.Y) return 0;
+            TArray<FVector2D,TInlineAllocator<12>> Polygon;
+            for(const FVector2D Corner:{FVector2D(-HX,-HY),FVector2D(HX,-HY),FVector2D(HX,HY),FVector2D(-HX,HY)})
+            {
+                const FVector P=D+F*Corner.X+S*Corner.Y;
+                Polygon.Add(FVector2D(P.X,P.Y));
+            }
+            for(int32 Axis=0;Axis<2;++Axis) for(double Sign:{-1.0,1.0})
+            {
+                if(Polygon.IsEmpty()) return 0;
+                TArray<FVector2D,TInlineAllocator<12>> Clipped;
+                FVector2D A=Polygon.Last();
+                double DA=Sign*A[Axis]-Obstacle.HalfSize[Axis];
+                for(const FVector2D& B:Polygon)
+                {
+                    const double DB=Sign*B[Axis]-Obstacle.HalfSize[Axis];
+                    if((DA<=0)!=(DB<=0)) Clipped.Add(FMath::Lerp(A,B,DA/(DA-DB)));
+                    if(DB<=0) Clipped.Add(B);
+                    A=B;DA=DB;
+                }
+                Polygon=MoveTemp(Clipped);
+            }
+            double Area=0;
+            for(int32 I=0;I<Polygon.Num();++I)
+            {
+                const FVector2D& A=Polygon[I];const FVector2D& B=Polygon[(I+1)%Polygon.Num()];
+                Area+=A.X*B.Y-A.Y*B.X;
+            }
+            return FMath::Abs(Area)*.5;
+        }
 
         struct FNode
         {
@@ -130,6 +178,65 @@ namespace HearthFreightNavigation
             }
             return !Out.IsEmpty();
         }
+    }
+
+    bool CanReverseStep(const FPose& From, const FPose& To, TConstArrayView<FRecoveryObstacle> Obstacles)
+    {
+        if(From.Position.ContainsNaN() || To.Position.ContainsNaN() || !FMath::IsFinite(From.Yaw)
+            || !FMath::IsFinite(To.Yaw) || FMath::Abs(FMath::FindDeltaAngleDegrees(From.Yaw,To.Yaw))>.001f) return false;
+        const FVector Delta=To.Position-From.Position, F=FRotator(0,From.Yaw,0).Vector(), S(-F.Y,F.X,0);
+        const double Distance=-FVector::DotProduct(Delta,F);
+        if(Distance<=.00001 || Distance>10.001 || FMath::Abs(FVector::DotProduct(Delta,S))>.001) return false;
+        double BeforeTotal=0,AfterTotal=0;
+        for(const FRecoveryObstacle& Obstacle:Obstacles)
+        {
+            if(Obstacle.Center.ContainsNaN() || Obstacle.HalfSize.ContainsNaN() || !FMath::IsFinite(Obstacle.Yaw)
+                || !FMath::IsFinite(Obstacle.ExtraMargin) || Obstacle.HalfSize.X<=0 || Obstacle.HalfSize.Y<=0 || Obstacle.ExtraMargin<0) return false;
+            for(const FFootprintBox& Box:Footprint())
+            {
+                const FVector Center=From.Position+F*Box.X+S*Box.Y;
+                const double HX=Box.HalfX+40.0+Obstacle.ExtraMargin,HY=Box.HalfY+40.0+Obstacle.ExtraMargin;
+                const double Before=OverlapArea(Center,From.Yaw,HX,HY,Obstacle);
+                const double After=OverlapArea(Center+Delta,From.Yaw,HX,HY,Obstacle);
+                // For fixed-heading translation along -X this enlarged box
+                // is the EXACT union over the whole segment, not endpoint
+                // sampling. Its intersection must be contained in the old
+                // intersection. This forbids crossing even a thin rear wall
+                // and forbids pushing deeper through an initial wall.
+                const double Swept=OverlapArea(Center+Delta*.5,From.Yaw,HX+Distance*.5,HY,Obstacle);
+                constexpr double AreaRoundoff=1.e-6;
+                if(Swept>Before+AreaRoundoff || After>Before+AreaRoundoff) return false;
+                BeforeTotal+=Before;AfterTotal+=After;
+            }
+        }
+        return BeforeTotal<=1.e-6 || AfterTotal<BeforeTotal-1.e-6;
+    }
+
+    bool PlanRecovery(FPose Start,
+        TFunctionRef<bool(const FPose&,const FPose&)> CanReverse,
+        TFunctionRef<bool(const FPose&,TArray<FPose>&)> ConnectForward,
+        TArray<FPose>& Out,float MaxDistance)
+    {
+        Out.Reset();
+        if(Start.Position.ContainsNaN() || !FMath::IsFinite(Start.Yaw) || !FMath::IsFinite(MaxDistance)) return false;
+        const int32 Steps=FMath::FloorToInt(FMath::Clamp(MaxDistance,0.f,900.f)/10.f);
+        const FVector Back=-FRotator(0,Start.Yaw,0).Vector();
+        TArray<FPose> Retreat;Retreat.Reserve(Steps+1);Retreat.Add(Start);
+        for(int32 Step=1;Step<=Steps;++Step)
+        {
+            const FPose Next{Start.Position+Back*(Step*10.f),Start.Yaw};
+            if(!CanReverse(Retreat.Last(),Next)) return false;
+            Retreat.Add(Next);
+            if(Step%15!=0) continue;
+            TArray<FPose> Forward;
+            if(!ConnectForward(Next,Forward) || Forward.IsEmpty()
+                || !Forward[0].Position.Equals(Next.Position,.01f)
+                || FMath::Abs(FMath::FindDeltaAngleDegrees(Next.Yaw,Forward[0].Yaw))>.001f) continue;
+            Out=MoveTemp(Retreat);
+            for(int32 I=1;I<Forward.Num();++I) Out.Add(Forward[I]);
+            return true;
+        }
+        return false;
     }
 
     bool Plan(FPose Start, FVector Goal,

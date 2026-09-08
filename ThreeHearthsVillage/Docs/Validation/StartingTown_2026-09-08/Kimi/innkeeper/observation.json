@@ -1,0 +1,33 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "observation_id": "obs_000002",
+  "target_id": "sao_inn_01",
+  "scene_revision": "1",
+  "image_file": "../../../../vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/Observations/F4390752-4A07-7DE7-FACD-32BAC6F72C54/A757B4D7-497C-99F3-3482-52A77F688D69/obs_000002.png",
+  "image_sha1": "396623B9E8E632A85C5A4E3FE9872A87A5F40121",
+  "position_cm": [
+    -448.36907958984375,
+    467055.4375,
+    92
+  ],
+  "eye_cm": [
+    -448.36907958984375,
+    467055.4375,
+    160
+  ],
+  "facing": [
+    -0.9928662119350189,
+    -0.11923374185945272,
+    0
+  ],
+  "camera_rotation": [
+    -0.9747720862712971,
+    -0.11706081031779413,
+    0.19004248607625684
+  ],
+  "horizontal_fov": 85,
+  "sequence": 2,
+  "utc": 1788865323,
+  "manual_bootstrap": false
+}

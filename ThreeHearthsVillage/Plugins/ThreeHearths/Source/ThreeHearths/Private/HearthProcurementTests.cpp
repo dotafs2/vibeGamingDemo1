@@ -52,6 +52,39 @@ bool FHearthSupplyOrderTest::RunTest(const FString&)
     TestEqual(TEXT("Sale does not refund spent escrow into treasury"),V->TreasuryCoins,TreasuryBeforeSale+1);
     TestTrue(TEXT("Settling a completed order again is harmless"),V->SettleSupplyOrder(Order));
     TestEqual(TEXT("Duplicate settlement does not add stock"),V->PublicProject.Stock[1],1);
+
+    // A later stage and the fourth waiting floor must not generate purchases
+    // while the current three-part batch is already supplied.
+    V->PublicProject=FHearthPublicProject(); V->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    V->PublicProject.TemplateId=TEXT("royal_keep_garden_v2"); V->PublicProject.Status=TEXT("building");
+    FHearthPublicPart Floor; Floor.Stage=2; Floor.Required[1]=2;
+    FHearthPublicPart Future; Future.Stage=3; Future.Required[1]=100;
+    V->PublicProject.Parts={Floor,Floor,Floor,Floor,Future}; V->PublicProject.Stock[1]=6;
+    V->TreasuryCoins=40; V->TaxProjectCoins=40; R.PersonalPlanks=2;
+    TestFalse(TEXT("Castle procurement stops at three supplied current-stage parts"),V->StartSupplyOrder(0));
+    V->PublicProject.Stock[1]=5;
+    if(!TestTrue(TEXT("One missing batch plank reserves one owned unit"),V->StartSupplyOrder(0))) return false;
+    auto& Other=V->Residents[1]; Other.Task=EHearthTask::LifeChoosing; Other.PersonalPlanks=1; Other.Route.Reset();
+    TestFalse(TEXT("In-flight private delivery fills the batch without a duplicate purchase"),V->StartSupplyOrder(1));
+    TestTrue(TEXT("Cancelled batch delivery refunds its ownership and escrow"),V->CancelSupplyOrder(0));
+    V->TreasuryCoins=2; V->TaxProjectCoins=2;
+    TestFalse(TEXT("Procurement preserves the last installation wage"),V->StartSupplyOrder(0));
+    TestEqual(TEXT("Rejected purchase leaves the privately owned goods intact"),R.PersonalPlanks,2);
+    V->TreasuryCoins=4; V->TaxProjectCoins=4;
+    if(!TestTrue(TEXT("Purchase can proceed with its price and installation wage covered"),V->StartSupplyOrder(0))) return false;
+    TestEqual(TEXT("Two installation coins remain protected"),V->TaxProjectCoins,2);
+    V->PublicProject.Stock[1]=6; // Another already committed delivery filled the current batch.
+    TestTrue(TEXT("Existing escrow still settles against future project demand"),V->SettleSupplyOrder(V->PublicProject.Orders.Last()));
+
+    V->PublicProject.Orders.Reset(); V->PublicProject.Stock[1]=0;
+    auto& Parts=V->PublicProject.Parts;
+    Parts[0].Reserved[1]=1; Parts[0].Worker=1; Parts[0].TaskId=TEXT("batch-haul");
+    Parts[1].Reserved[1]=2; Parts[2].Delivered[1]=2;
+    Other.Task=EHearthTask::PublicTravel; Other.ActiveTaskId=Parts[0].TaskId; Other.CargoType=3; Other.CargoAmount=1;
+    V->TreasuryCoins=40; V->TaxProjectCoins=40;
+    TestFalse(TEXT("Reserved, delivered and current-part carried planks cover the batch exactly once"),V->StartSupplyOrder(0));
+    Parts[0].Worker=-1; // Cargo assigned elsewhere cannot cover this part's missing unit.
+    if(TestTrue(TEXT("An unrelated public haul cannot hide a batch shortage"),V->StartSupplyOrder(0))) V->CancelSupplyOrder(0);
     return true;
 }
 #endif

@@ -1,6 +1,7 @@
 #include "HearthVillage.h"
 #include "HearthMovement.h"
 #include "HearthCityPlan.h"
+#include "HearthSettlementPlan.h"
 
 FVector AHearthVillage::HomeApproach(int32 Plot) const
 {
@@ -125,5 +126,13 @@ FHearthResidentSitingResult AHearthVillage::EvaluateResidentSite(int32 Index,con
         const auto* Bond=R.Bonds.Find(Other.StableId);
         if(Bond && Bond->Meetings>0 && Bond->Affinity>10 && Other.Plot>=0) Input.Friends.Add(PlotPositions[Other.Plot]);
     }
-    return HearthResidentSiting::Evaluate(Input,Position);
+    auto Result=HearthResidentSiting::Evaluate(Input,Position);
+    if(IsOrganicVillage())
+    {
+        const float DistrictPenalty=HearthSettlementPlan::SitingPenalty(R.Role,Position);
+        Result.Penalty+=DistrictPenalty;
+        Result.Reason=Result.Reason.Left(130)+FString::Printf(TEXT("；分区软偏好+%.1f（不替代产权与路通校验）"),DistrictPenalty);
+        Result.Reason.LeftInline(180);
+    }
+    return Result;
 }

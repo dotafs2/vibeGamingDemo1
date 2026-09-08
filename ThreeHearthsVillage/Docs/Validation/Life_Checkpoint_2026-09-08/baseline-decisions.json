@@ -1,0 +1,51 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "run": "town-20260908-122330",
+  "model": "kimi-k2.6",
+  "new_settled_calls": 3,
+  "new_cost_cny": 0.0277915,
+  "decisions": [
+    {
+      "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "name": "艾琳",
+      "model_response": {
+        "action": "walk_to_work",
+        "visible": "我正站在一处门廊或室内，前方敞开的门框外可见白色三层木筋墙建筑，蓝色百叶窗，绿色地面，远处天空明亮。",
+        "uncertain": "我当前是否已在自家旅店内，还是在外部邻近建筑中；门外建筑是否为sao_inn_01。",
+        "goal": "返回旅店工作位置准备接待旅人。",
+        "need": "确认自身位置并抵达岗位。"
+      },
+      "world_action": "arrived",
+      "phase": "idle",
+      "source": "real Kimi before life extension, not a completed commission"
+    },
+    {
+      "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "name": "拓真",
+      "model_response": {
+        "action": "walk_to_work",
+        "visible": "我正站在敞开的门口内侧，门框左侧有一扇打开的深色木门，门外可见街道与对面的白色木筋墙建筑。两侧墙壁上有蓝色百叶窗。我已接近工作位置。",
+        "uncertain": "屋内工作台前是否有待修的剑或客人，尚未看清。",
+        "goal": "到工作台前开始用普通铁料修缮镇上常用的剑。",
+        "need": "需要进入屋内到达我的工作位置。"
+      },
+      "world_action": "arrived",
+      "phase": "idle",
+      "source": "real Kimi before life extension, not a completed commission"
+    },
+    {
+      "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "name": "柏木",
+      "model_response": {
+        "action": "observe",
+        "visible": "我正站在门内，面向敞开的深色木门，门外是绿色地面与白色道路，远处可见几栋建筑，包括右侧一栋带深色屋顶和蓝百叶窗的两层房屋，左侧远处有橙红色屋顶的建筑群。门两侧墙壁为浅色，左右各有一扇关闭的蓝灰色百叶窗。室内上部有大片暗区，看不清天花板或上层结构。",
+        "uncertain": "室内是否有工具、木材或工作台完全看不清；门外远处建筑是否有人活动未知；当前是否在自己的木工房内无法确认。",
+        "goal": "把住处修得结实，让人敢于留下。",
+        "need": "需要慢慢积攒木材。"
+      },
+      "world_action": "observe",
+      "phase": "idle",
+      "source": "real Kimi before life extension, not a completed commission"
+    }
+  ]
+}

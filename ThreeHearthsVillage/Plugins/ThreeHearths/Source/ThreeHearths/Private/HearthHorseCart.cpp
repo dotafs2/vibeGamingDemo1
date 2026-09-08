@@ -141,8 +141,28 @@ bool AHearthHorseCart::Configure(AHearthVillage* Village)
 void AHearthHorseCart::ApplyState(const FHearthFreightVisualState& State)
 {
     SetActorHiddenInGame(!bReady || !State.bEnabled);
-    auto* Village=VillageOwner.Get();if(!bReady || !State.bEnabled || !Village) return;
+    auto* Village=VillageOwner.Get();if(!bReady || !State.bEnabled || !Village) { bHasMotionSample=false;return; }
     if(State.CartPosition.ContainsNaN() || !FMath::IsFinite(State.CartYaw) || !FMath::IsFinite(State.WheelDistanceCm)) { SetActorHiddenInGame(true);return; }
+    // The persistent odometer is total distance and must never decrease when
+    // backing up. Cosmetic rotation follows the sign of real displacement,
+    // so a reverse manoeuvre cannot make wheels and hooves run forwards.
+    if(!bHasMotionSample || State.WheelDistanceCm<PreviousOdometerCm-.01)
+    {
+        VisualTravelCm=State.WheelDistanceCm;
+        bHasMotionSample=true;
+    }
+    else
+    {
+        const FVector Delta=State.CartPosition-PreviousCartPosition;
+        const double Distance=State.WheelDistanceCm-PreviousOdometerCm;
+        const float MidYaw=PreviousCartYaw+FMath::FindDeltaAngleDegrees(PreviousCartYaw,State.CartYaw)*.5f;
+        const double Along=FVector::DotProduct(Delta,FRotator(0,MidYaw,0).Vector());
+        if(Distance>0.0 && FMath::Abs(Along)>.0001)
+            VisualTravelCm+=(Along<0.0?-1.0:1.0)*Distance;
+    }
+    PreviousCartPosition=State.CartPosition;
+    PreviousCartYaw=State.CartYaw;
+    PreviousOdometerCm=State.WheelDistanceCm;
     const FRotator Flat(0,State.CartYaw,0);const FVector Forward=Flat.Vector(),Right=Flat.RotateVector(FVector::RightVector);
     FVector Position=State.CartPosition;Position.Z=Village->GroundHeightAt(Position)+.8f;
     const float Ahead=Village->GroundHeightAt(Position+Forward*100.f),Behind=Village->GroundHeightAt(Position-Forward*100.f);
@@ -154,7 +174,7 @@ void AHearthHorseCart::ApplyState(const FHearthFreightVisualState& State)
     for(int32 I=0;I<WheelLayers.Num();++I)
     {
         FTransform Pose=WheelBases[I];
-        const double Angle=FMath::Fmod(State.WheelDistanceCm/63.8,2.0*PI);
+        const double Angle=FMath::Fmod(VisualTravelCm/63.8,2.0*PI);
         Pose.SetRotation(WheelBases[I].GetRotation()*FQuat(FVector::ForwardVector,-Angle));
         WheelLayers[I]->SetRelativeTransform(Pose);
     }
@@ -164,8 +184,10 @@ void AHearthHorseCart::ApplyState(const FHearthFreightVisualState& State)
     if(bWasWalking!=State.bMoving) { Horse->SetAnimation(State.bMoving?Walk:Idle);bWasWalking=State.bMoving; }
     // Walk phase follows actual travelled distance, so speed-up, pause,
     // blocked routes and rendering stalls cannot advance the legs alone.
-    const double ClipTime=State.bMoving?FMath::Fmod(State.WheelDistanceCm/60.0,static_cast<double>(Walk->GetPlayLength())):FMath::Fmod(State.ElapsedSeconds,static_cast<double>(Idle->GetPlayLength()));
-    Horse->SetPosition(static_cast<float>(FMath::Max(0.0,ClipTime)),false);
+    const double ClipLength=State.bMoving?Walk->GetPlayLength():Idle->GetPlayLength();
+    const double RawTime=State.bMoving?VisualTravelCm/60.0:State.ElapsedSeconds;
+    const double ClipTime=FMath::Fmod(FMath::Fmod(RawTime,ClipLength)+ClipLength,ClipLength);
+    Horse->SetPosition(static_cast<float>(ClipTime),false);
     Horse->TickAnimation(0.f,false);Horse->RefreshBoneTransforms();
     auto ShowCargo=[&](const TArray<TObjectPtr<UStaticMeshComponent>>& Parts,int32 Kind)
     {

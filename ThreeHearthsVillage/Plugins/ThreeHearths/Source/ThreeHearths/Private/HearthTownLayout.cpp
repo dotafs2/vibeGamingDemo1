@@ -88,7 +88,7 @@ namespace
 
 TArray<FHearthTownRoadSegment> HearthTownLayout::VillageRoads(bool Organic,int32 LayoutVersion)
 {
-    if(Organic && LayoutVersion>=3) return HearthCityPlan::BuildVersion3().Roads;
+    if(Organic && LayoutVersion>=3) return HearthCityPlan::BuildForVersion(LayoutVersion).Roads;
     if(Organic && LayoutVersion>=2) return HearthCityPlan::Build().Roads;
     if(!Organic) return {{FVector(-2130,-5100,8),FVector(-2130,5100,8),340}, {FVector(-2800,-1050,8),FVector(-2130,-1050,8),300}};
     const FVector Nodes[]={FVector(-2130,-5100,8),FVector(-2350,-2600,8),FVector(-2050,-1100,8),FVector(-2390,550,8),FVector(-1900,2250,8),FVector(-2130,5100,8)};

@@ -57,6 +57,48 @@ bool FHearthOrganicProductionPolicyTest::RunTest(const FString&)
     TestEqual(TEXT("organic pending shortage prioritizes beam production over already abundant planks"),
         Village->ChooseProductionLocally(ResidentIndex,Options),114);
 
+    // Reproduce the stalled floor's ownership and cash boundary, while keeping
+    // a real organic home beam shortage competing with the public request.
+    Village->PublicProject=FHearthPublicProject();
+    Village->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    Village->PublicProject.TemplateId=TEXT("royal_keep_garden_v2"); Village->PublicProject.Status=TEXT("building");
+    FHearthPublicPart Floor; Floor.Stage=2; Floor.Required[1]=5;
+    FHearthPublicPart Upper; Upper.Stage=3; Upper.Required[2]=10000;
+    Village->PublicProject.Parts={Floor,Floor,Floor,Upper}; Village->PublicProject.Stock[1]=1;
+    Village->PlankStock=115; Village->BeamStock=671;
+    for(int32 I=0;I<Village->Residents.Num();++I)
+    {
+        Village->ReturnTool(I); Village->Residents[I].PersonalPlanks=0; Village->Residents[I].ProductionOp=-1;
+    }
+    TestEqual(TEXT("Current floor private plank shortage wins over all future castle beams"),
+        Village->ChooseProductionLocally(ResidentIndex,Options),113);
+    Village->BeamStock=0;
+    TestEqual(TEXT("Current castle floor supply also wins over organic home beam backlog"),
+        Village->ChooseProductionLocally(ResidentIndex,Options),113);
+    Resident.PersonalPlanks=14;
+    TestEqual(TEXT("Enough owned planks removes the castle milling priority"),Village->ChooseProductionLocally(ResidentIndex,Options),114);
+    Resident.PersonalPlanks=0;
+    Village->PublicProject.Parts={Floor,Upper}; Village->PublicProject.Stock[1]=4;
+    Resident.ProductionOp=13; Resident.Task=EHearthTask::ProductionWork;
+    TestEqual(TEXT("One unfinished sawmill job already covers one private share"),Village->ChooseProductionLocally(ResidentIndex,Options),114);
+    Resident.Task=EHearthTask::ProductionDeliver; Resident.PersonalPlanks=1;
+    Village->PublicProject.Stock[1]=3;
+    TestEqual(TEXT("Delivery cargo cannot count the already earned private share twice"),Village->ChooseProductionLocally(ResidentIndex,Options),113);
+    Resident.Task=EHearthTask::LifeChoosing; Resident.ProductionOp=-1; Resident.PersonalPlanks=0; Resident.BuildProgress=1.f;
+    Village->PublicProject.Stock[1]=1; Village->PublicProject.Parts={Floor,Floor,Floor,Upper};
+    Village->WoodStock[0]=40; Village->TreasuryCoins=29; Village->TaxProjectCoins=29;
+    TestEqual(TEXT("The reproduced treasury has no ordinary wage capital"),Village->GeneralFunds(),0);
+    TestTrue(TEXT("Protected funds can reserve actual current-floor milling labor"),Village->IsProductionAllowed(ResidentIndex,113));
+    Village->TreasuryCoins=21; Village->TaxProjectCoins=21;
+    TestTrue(TEXT("Unstarted future milling jobs do not block one funded job"),Village->IsProductionAllowed(ResidentIndex,113));
+    Village->TreasuryCoins=6; Village->TaxProjectCoins=6;
+    TestFalse(TEXT("Milling must retain its purchase price and installation wage"),Village->IsProductionAllowed(ResidentIndex,113));
+    Village->TreasuryCoins=7; Village->TaxProjectCoins=7;
+    TestTrue(TEXT("Exactly one milling wage, purchase and installation is enough"),Village->IsProductionAllowed(ResidentIndex,113));
+    Village->TreasuryCoins=29; Village->TaxProjectCoins=29;
+    Village->PublicProject.Parts[0].Required[1]=0;
+    TestFalse(TEXT("Later floors alone cannot claim protected milling wages ahead of the next part"),Village->IsProductionAllowed(ResidentIndex,113));
+
     return true;
 }
 

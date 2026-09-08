@@ -1,5 +1,6 @@
 #include "HearthVillage.h"
 #include "HearthFreightVisual.h"
+#include "HearthSettlementPlan.h"
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/Engine.h"
@@ -29,6 +30,7 @@
 TSharedRef<SWidget> MakeHearthHistoryWidget(AHearthVillage* Village);
 TSharedRef<SWidget> MakeHearthSocialWidget(AHearthVillage* Village);
 TSharedRef<SWidget> MakeHearthSpeechWidget(AHearthVillage* Village);
+TSharedRef<SWidget> MakeHearthPlanningWidget(AHearthVillage* Village);
 
 namespace HearthUI
 {
@@ -135,6 +137,10 @@ public:
         auto Controls=SNew(SHorizontalBox);
         Controls->AddSlot().AutoWidth().Padding(0,0,8,0)[ControlButton([] { return FText::FromString(TEXT("全景")); },
             [this] { if(auto* V=Village.Get()) if(auto* PC=Cast<AHearthPlayerController>(V->GetWorld()->GetFirstPlayerController())) PC->ShowIsland(); })];
+        if(Village.IsValid() && Village->IsOrganicVillage()) Controls->AddSlot().AutoWidth().Padding(0,0,8,0)[
+            ControlButton([] { return FText::FromString(TEXT("城镇规划")); },[this] {
+                if(auto* V=Village.Get()) { V->ToggleTownPlanning(); if(auto* PC=Cast<AHearthPlayerController>(V->GetWorld()->GetFirstPlayerController())) PC->ShowIsland(); }
+            })];
         Controls->AddSlot().AutoWidth().Padding(0,0,8,0)[ControlButton([] { return FText::FromString(TEXT("看村民")); },
             [this] { if(auto* V=Village.Get()) if(auto* PC=Cast<AHearthPlayerController>(V->GetWorld()->GetFirstPlayerController())) PC->FocusResident(); })];
         Controls->AddSlot().AutoWidth().Padding(0,0,8,0)[ControlButton(
@@ -186,7 +192,7 @@ public:
                     +SVerticalBox::Slot().AutoHeight()[SNew(STextBlock).Text_Lambda([this] {
                         auto* V=Village.Get(); return FText::FromString(V?V->VillageEvent:TEXT(""));
                     }).Font(HearthUI::Font(13,true)).ColorAndOpacity(HearthUI::Ink).AutoWrapText(true)]
-                    +SVerticalBox::Slot().AutoHeight().Padding(0,5,0,0)[SNew(STextBlock).Text(FText::FromString(TEXT("WASD / 方向键 平移 · 滚轮 缩放 · F 看村民 · Home 全景 · 空格 暂停 · R 重来"))).Font(HearthUI::Font(10)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)]
+                    +SVerticalBox::Slot().AutoHeight().Padding(0,5,0,0)[SNew(STextBlock).Text(FText::FromString(TEXT("WASD / 方向键 平移 · 滚轮 缩放 · F 看村民 · Home 全景 · P 城镇规划 · 空格 暂停 · R 重来"))).Font(HearthUI::Font(10)).ColorAndOpacity(HearthUI::Muted).AutoWrapText(true)]
                 ]]
             ]
         ];
@@ -261,7 +267,7 @@ void AHearthPlayerController::BeginPlay()
     Camera->GetCameraComponent()->SetConstraintAspectRatio(false);
     SetViewTarget(Camera);
     UpdateCamera();
-    if(Village.IsValid() && Village->IsOrganicVillage()) ShowIsland();
+    if(Village.IsValid() && Village->IsOrganicVillage()) { Village->RefreshTownPlanning(); ShowIsland(); }
     FInputModeGameAndUI Mode; Mode.SetHideCursorDuringCapture(false); Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
     SetInputMode(Mode);
     if(Village.IsValid() && GEngine && GEngine->GameViewport)
@@ -273,7 +279,13 @@ void AHearthPlayerController::BeginPlay()
             const float Inherited=GetDefault<UUserInterfaceSettings>()->GetDPIScaleBasedOnSize(FIntPoint(FMath::RoundToInt(Size.X),FMath::RoundToInt(Size.Y)));
             const float Desired=FMath::Clamp(static_cast<float>(Size.Y)/850.f,0.85f,1.15f);
             return Desired/FMath::Max(Inherited,0.1f);
-        })[SNew(SHearthOverlay).Village(Village.Get())];
+        })[SNew(SOverlay)
+            +SOverlay::Slot()[SNew(SHearthOverlay).Village(Village.Get()).Visibility_Lambda([this] {
+                return Village.IsValid() && Village->IsOrganicVillage() && Village->bTownPlanningVisible
+                    ? EVisibility::Collapsed : EVisibility::SelfHitTestInvisible;
+            })]
+            +SOverlay::Slot()[MakeHearthPlanningWidget(Village.Get())]
+        ];
         GEngine->GameViewport->AddViewportWidgetContent(VillageUI.ToSharedRef(),10);
     }
     int32 AcceptanceFocus=-1;
@@ -319,6 +331,11 @@ void AHearthPlayerController::PlayerTick(float DeltaTime)
 {
     Super::PlayerTick(DeltaTime);
     if(!Village.IsValid()) return;
+    if(Village->IsOrganicVillage() && Village->bTownPlanningVisible && GEngine && GEngine->GameViewport)
+    {
+        FVector2D Size; GEngine->GameViewport->GetViewportSize(Size);
+        if(Size.X>0 && Size.Y>0 && !Size.Equals(LastPlanningViewport)) { LastPlanningViewport=Size; ShowIsland(); }
+    }
     // Typing a speed must not also trigger resident selection or restart shortcuts.
     const auto Focused=FSlateApplication::Get().GetKeyboardFocusedWidget();
     if(Focused.IsValid() && Focused->GetType()==FName(TEXT("SEditableText"))) return;
@@ -336,6 +353,7 @@ void AHearthPlayerController::PlayerTick(float DeltaTime)
     }
     if(WasInputKeyJustPressed(EKeys::F)) FocusResident();
     if(WasInputKeyJustPressed(EKeys::Home)) ShowIsland();
+    if(WasInputKeyJustPressed(EKeys::P)) Village->ToggleTownPlanning();
     if(WasInputKeyJustPressed(EKeys::MouseScrollUp)) ZoomCamera(0.85f);
     if(WasInputKeyJustPressed(EKeys::MouseScrollDown)) ZoomCamera(1.f/0.85f);
     const float Forward=(IsInputKeyDown(EKeys::W)||IsInputKeyDown(EKeys::Up)?1.f:0.f)-(IsInputKeyDown(EKeys::S)||IsInputKeyDown(EKeys::Down)?1.f:0.f);
@@ -363,10 +381,26 @@ void AHearthPlayerController::ShowIsland()
     {
         FBox Homes(ForceInit);
         for(int32 Plot=0;Plot<Village->HousingPlotCount();++Plot) Homes+=Village->PlotPositions[Plot];
+        if(const auto* Plan=Village->GetSettlementPlan()) Homes+=Plan->Bounds;
         if(Homes.IsValid)
         {
             CameraCenter=Homes.GetCenter();
-            CameraZoom=FMath::Clamp((FMath::Max(Homes.GetSize().X,Homes.GetSize().Y)+2400.f)/16500.f,.65f,1.4f);
+            const FVector Offset=Village->bTownPlanningVisible?FVector(-12000,0,18500):CameraOffset;
+            const auto Rotation=(-Offset).Rotation().Quaternion();
+            FVector2D Viewport(1440,900);
+            if(GEngine && GEngine->GameViewport) GEngine->GameViewport->GetViewportSize(Viewport);
+            const double Aspect=Viewport.X/FMath::Max(Viewport.Y,1.0);
+            const double TanHorizontal=FMath::Tan(FMath::DegreesToRadians(CameraBaseFov*.5));
+            double Distance=0;
+            for(int32 X:{0,1}) for(int32 Y:{0,1}) for(int32 Z:{0,1})
+            {
+                const FVector Point(X?Homes.Max.X:Homes.Min.X,Y?Homes.Max.Y:Homes.Min.Y,Z?Homes.Max.Z:Homes.Min.Z);
+                const FVector P=Point-CameraCenter;
+                const double Depth=FVector::DotProduct(P,Rotation.GetForwardVector());
+                Distance=FMath::Max(Distance,FMath::Abs(FVector::DotProduct(P,Rotation.GetRightVector()))/(TanHorizontal*.9)-Depth);
+                Distance=FMath::Max(Distance,FMath::Abs(FVector::DotProduct(P,Rotation.GetUpVector()))/(TanHorizontal/Aspect*.72)-Depth);
+            }
+            CameraZoom=FMath::Clamp(float((Distance+300)/Offset.Size()),.65f,2.2f);
         }
     }
     UpdateCamera();
@@ -384,27 +418,31 @@ void AHearthPlayerController::FocusResident()
 void AHearthPlayerController::ZoomCamera(float Factor)
 {
     if(!FMath::IsFinite(Factor) || Factor<=0) return;
-    CameraZoom=FMath::Clamp(CameraZoom*Factor,bIslandCamera?0.12f:0.45f,bIslandCamera?1.6f:2.f);
+    CameraZoom=FMath::Clamp(CameraZoom*Factor,bIslandCamera?0.12f:0.45f,bIslandCamera?2.2f:2.f);
     UpdateCamera();
 }
 void AHearthPlayerController::PanCamera(float Right,float Forward)
 {
     if(!FMath::IsFinite(Right) || !FMath::IsFinite(Forward)) return;
-    const FRotator Rotation=(-CameraOffset).Rotation();
+    const bool Planning=Village.IsValid() && Village->IsOrganicVillage() && Village->bTownPlanningVisible;
+    const FRotator Rotation=(-(Planning?FVector(-12000,0,18500):CameraOffset)).Rotation();
     FVector Direction=Rotation.Vector(); Direction.Z=0; Direction.Normalize();
     CameraCenter+=Rotation.Quaternion().GetRightVector()*Right+Direction*Forward;
-    const float Limit=bIslandCamera?7500.f:2500.f;
-    CameraCenter.X=FMath::Clamp(CameraCenter.X,-Limit,Limit);
-    CameraCenter.Y=FMath::Clamp(CameraCenter.Y,-Limit,Limit);
+    const float Minimum=Village.IsValid() && Village->IsOrganicVillage()?-8500.f:(bIslandCamera?-7500.f:-2500.f);
+    const float Maximum=Village.IsValid() && Village->IsOrganicVillage()?21500.f:(bIslandCamera?7500.f:2500.f);
+    CameraCenter.X=FMath::Clamp(CameraCenter.X,Minimum,Maximum);
+    CameraCenter.Y=FMath::Clamp(CameraCenter.Y,Minimum,Maximum);
     UpdateCamera();
 }
 void AHearthPlayerController::UpdateCamera()
 {
     if(auto* Camera=Cast<ACameraActor>(GetViewTarget()))
     {
-        const FVector ScreenRight=(-CameraOffset).Rotation().Quaternion().GetRightVector();
-        const float PanelOffset=FParse::Param(FCommandLine::Get(),TEXT("HearthCleanReview"))?0.f:(bIslandCamera?2400.f:620.f)*CameraZoom;
-        Camera->SetActorLocation(CameraCenter+CameraOffset*CameraZoom-ScreenRight*PanelOffset);
+        const bool Planning=Village.IsValid() && Village->IsOrganicVillage() && Village->bTownPlanningVisible;
+        const FVector Offset=Planning?FVector(-12000,0,18500):CameraOffset;
+        const FVector ScreenRight=(-Offset).Rotation().Quaternion().GetRightVector();
+        const float PanelOffset=Planning || FParse::Param(FCommandLine::Get(),TEXT("HearthCleanReview"))?0.f:(bIslandCamera?2400.f:620.f)*CameraZoom;
+        Camera->SetActorLocationAndRotation(CameraCenter+Offset*CameraZoom-ScreenRight*PanelOffset,(-Offset).Rotation());
         FVector2D Size(1440,900);
         if(GEngine && GEngine->GameViewport) GEngine->GameViewport->GetViewportSize(Size);
         const float Aspect=static_cast<float>(Size.X/FMath::Max(Size.Y,1.0));

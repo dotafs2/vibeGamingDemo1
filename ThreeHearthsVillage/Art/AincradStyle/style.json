@@ -1,0 +1,28 @@
+{
+  "id": "hearth_aincrad_daylight_v1",
+  "surface_revision": 2,
+  "ambient_fill": {"architecture": 0.14, "terrain_and_roads": 0.02},
+  "intent": "日式动画背景感的中世纪城镇；暖墙、陶瓦、灰蓝点缀、清晰木石、成片林地。",
+  "provenance": "Original art direction for ThreeHearths; SAO floor-one composition reference, no copied game assets.",
+  "materials": [
+    {"id":"Grass","kind":0,"color":[0.13,0.24,0.075],"roughness":0.94},
+    {"id":"Paving","kind":1,"color":[0.32,0.29,0.23],"roughness":0.88},
+    {"id":"PlasterWarm","kind":2,"color":[0.62,0.53,0.39],"roughness":0.88},
+    {"id":"PlasterOchre","kind":2,"color":[0.52,0.39,0.24],"roughness":0.89},
+    {"id":"PlasterSage","kind":2,"color":[0.43,0.48,0.34],"roughness":0.90},
+    {"id":"Stone","kind":3,"color":[0.36,0.37,0.34],"roughness":0.86},
+    {"id":"Terracotta","kind":4,"color":[0.36,0.125,0.07],"roughness":0.80},
+    {"id":"Slate","kind":4,"color":[0.15,0.22,0.26],"roughness":0.82},
+    {"id":"Timber","kind":5,"color":[0.22,0.105,0.045],"roughness":0.86},
+    {"id":"TimberDark","kind":5,"color":[0.09,0.043,0.025],"roughness":0.87},
+    {"id":"Leaf","kind":6,"color":[0.10,0.24,0.065],"roughness":0.92}
+  ],
+  "rules": {
+    "units": "UE centimetres, source modelling metres; keep existing pivots, shared UVs and material slots",
+    "construction": "New geometry requires real proposal, ownership, materials, labour and persisted installation",
+    "asset_iteration": "Reuse the shared material library and modular dimensions; identify material slots semantically",
+    "perception": "NPC images are actual individual eye-position perspective captures; town maps are coordinator information",
+    "style_is_not_fact": "The charter constrains future appearance; no planned feature is asserted to exist",
+    "landscape": "Natural vegetation is an initial terrain art revision, not royal-funded planting or new harvest stock"
+  }
+}

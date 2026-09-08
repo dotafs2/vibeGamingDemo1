@@ -54,6 +54,10 @@ namespace HearthOrganicTerrain
         TArray<FRoadNode> Nodes;
         float Width = 160.f;
         float Transition = DefaultTransition;
+        // Royal profiles use FULL carriageway width plus flat shoulders and
+        // are applied after legacy roads/pads. Legacy width semantics stay put.
+        bool bRoyalHillRoad = false;
+        float ShoulderWidth = 0.f;
     };
 
     struct FSettings
@@ -64,6 +68,8 @@ namespace HearthOrganicTerrain
         int32 GridQuadsY = 100;
         TArray<FFlattenZone> FlattenZones;
         TArray<FRoadCenterline> Roads;
+        // Opt-in only; existing callers and legacy terrain retain their shape.
+        bool bRoyalHill = false;
     };
 
     struct FHeightSample

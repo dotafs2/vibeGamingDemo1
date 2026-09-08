@@ -1,4 +1,6 @@
 #include "HearthCityPlan.h"
+#include "HearthRoyalHill.h"
+#include "HearthOrganicTerrain.h"
 
 namespace
 {
@@ -163,7 +165,125 @@ FHearthCityPlan HearthCityPlan::BuildVersion3()
     return Plan;
 }
 
+namespace HearthCityPlanRoyalHillDetail
+{
+    constexpr float RingWidth=480.f; // ordinary road, below reserved royal 600
+
+    FVector NaturalPoint(const FVector& Point)
+    {
+        return FVector(Point.X,Point.Y,HearthOrganicTerrain::HeightAt(FVector2D(Point.X,Point.Y)));
+    }
+
+    void ConnectBySamples(FHearthCityPlan& Plan, const FVector& A, const FVector& B, float Width)
+    {
+        const int32 Steps=FMath::Max(1,FMath::CeilToInt(FVector::Dist2D(A,B)/250.0));
+        FVector Previous=A;
+        for (int32 I=1; I<=Steps; ++I)
+        {
+            const FVector Next=I==Steps?B:NaturalPoint(FMath::Lerp(A,B,double(I)/Steps));
+            AddRoad(Plan,Previous,Next,Width);
+            Previous=Next;
+        }
+    }
+
+    TArray<FVector2D> OuterCivicWaypoints()
+    {
+        // Authored around the royal hill rather than generated from one radius.
+        // The first point stays at the old south toe so the royal load/ascent
+        // connection keeps its exact legacy XY contract. The other points make
+        // a bounded, gently changing civic edge for fields, forest work and
+        // the east meadow approach without entering the protected hill.
+        const FVector2D C=HearthRoyalHill::Center();
+        return {
+            C+FVector2D(0,-10500), C+FVector2D(3200,-10400), C+FVector2D(6500,-9500),
+            C+FVector2D(9100,-7000), C+FVector2D(10800,-3600), C+FVector2D(11200,0),
+            C+FVector2D(10600,3500), C+FVector2D(9000,6500), C+FVector2D(6500,9000),
+            C+FVector2D(3000,10800), C+FVector2D(-500,11000), C+FVector2D(-3800,10500),
+            C+FVector2D(-7000,9000), C+FVector2D(-9800,5800), C+FVector2D(-11100,2100),
+            C+FVector2D(-10800,-1800), C+FVector2D(-9400,-5100), C+FVector2D(-6900,-7600),
+            C+FVector2D(-3400,-10000)
+        };
+    }
+
+    void AddOuterCivicRoad(FHearthCityPlan& Plan)
+    {
+        const TArray<FVector2D> Waypoints=OuterCivicWaypoints();
+        for (int32 I=0; I<Waypoints.Num(); ++I)
+        {
+            const FVector A(Waypoints[I].X,Waypoints[I].Y,0);
+            const FVector B(Waypoints[(I+1)%Waypoints.Num()].X,Waypoints[(I+1)%Waypoints.Num()].Y,0);
+            ConnectBySamples(Plan,NaturalPoint(A),NaturalPoint(B),RingWidth);
+        }
+    }
+}
+
+FHearthCityPlan HearthCityPlan::BuildVersion4()
+{
+    using namespace HearthCityPlanRoyalHillDetail;
+    FHearthCityPlan Plan=BuildVersion3();
+    Plan.LayoutVersion=4;
+    // First-floor inspiration is topology only: a starting hub, southern
+    // fields, a western forest/work edge, an eastern meadow/waterside edge and
+    // a northern unknown reserve. The reserve is planning space, not a promise
+    // of a dungeon, a new town or generated inhabitants.
+    // Keep every old residential/service street at its original low grade.
+    // Replace only the previous direct castle approach with the winding road.
+    Plan.Roads.RemoveAll([](const FHearthTownRoadSegment& Road)
+    {
+        return FVector::Dist2D(Road.A,FVector(3000,450,0))<1
+            && FVector::Dist2D(Road.B,FVector(6500,1500,0))<1;
+    });
+
+    const FVector2D C=HearthRoyalHill::Center();
+    const TArray<FVector2D> OuterWaypoints=OuterCivicWaypoints();
+    TArray<FVector> Ring;
+    Ring.Reserve(OuterWaypoints.Num());
+    for (const FVector2D& Waypoint : OuterWaypoints)
+        Ring.Add(NaturalPoint(FVector(Waypoint.X,Waypoint.Y,0)));
+    AddOuterCivicRoad(Plan);
+    const auto ConnectToRing=[&](const FVector& P)
+    {
+        int32 Closest=0;
+        for (int32 I=1; I<Ring.Num(); ++I)
+            if (FVector::DistSquared2D(P,Ring[I])<FVector::DistSquared2D(P,Ring[Closest])) Closest=I;
+        ConnectBySamples(Plan,NaturalPoint(P),Ring[Closest],320.f);
+    };
+    // Attach the old western lane and southern spine outside the hillside.
+    ConnectToRing(Point(-850,900));
+    ConnectToRing(Point(9000,-3600));
+    ConnectBySamples(Plan,NaturalPoint(Point(-5200,-1900)),NaturalPoint(Point(-5200,-2300)),220.f);
+    // Exact service-spine junction into the existing western loop.
+    ConnectBySamples(Plan,NaturalPoint(Point(-1650,-1050)),NaturalPoint(Point(-700,-2050)),220.f);
+    // A short southern field lane makes the hub-to-fields relationship legible
+    // while stopping at the advisory field edge, not a new farm building.
+    ConnectBySamples(Plan,NaturalPoint(Point(-700,-2050)),NaturalPoint(Point(-850,-2300)),180.f);
+    ConnectBySamples(Plan,NaturalPoint(Point(-850,-2300)),NaturalPoint(Point(-1600,-2350)),180.f);
+    // The east loop opens toward the meadow/waterside planning edge without
+    // inventing a water asset or promising a built eastern settlement.
+    ConnectBySamples(Plan,NaturalPoint(Point(7350,250)),NaturalPoint(Point(9000,650)),180.f);
+    // Future west/north/east district approaches remain natural at the foot.
+    for (const FVector& P : {Point(-4700,8800),Point(6500,17600),Point(17800,6500)}) ConnectToRing(P);
+
+    const TArray<FVector> Ascent=HearthRoyalHill::AscentRoute();
+    ConnectBySamples(Plan,NaturalPoint(Point(3000,450)),Ascent[0],400.f);
+    // The southern toe replaces the former straight elevated-gate shortcut.
+    ConnectBySamples(Plan,Ring[0],Ascent[0],400.f);
+    for (int32 I=1; I<Ascent.Num(); ++I) AddRoad(Plan,Ascent[I-1],Ascent[I],HearthRoyalHill::RoadWidth);
+    for (auto& Landmark : Plan.Landmarks) if (Landmark.Id==TEXT("main_keep"))
+    {
+        Landmark.Position=FVector(C.X,C.Y,HearthRoyalHill::PlateauElevation);
+        Landmark.Approach=HearthRoyalHill::DeliveryApproach();
+    }
+    for (auto& District : Plan.Districts)
+    {
+        if (District.Id==TEXT("castle_core")) District.Center=FVector(C.X,C.Y,HearthRoyalHill::PlateauElevation);
+        if (District.Id==TEXT("castle_gate_reserve")) District.Center=HearthRoyalHill::DeliveryApproach();
+    }
+    return Plan;
+}
+
 FHearthCityPlan HearthCityPlan::BuildForVersion(int32 LayoutVersion)
 {
+    if (LayoutVersion>=4) return BuildVersion4();
     return LayoutVersion >= 3 ? BuildVersion3() : Build();
 }

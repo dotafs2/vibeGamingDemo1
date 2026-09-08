@@ -19,6 +19,34 @@ namespace HearthFreightNavigation
         float Yaw = 0.f;
     };
 
+    struct FFootprintBox { float X, Y, HalfX, HalfY; };
+    THREEHEARTHS_API TConstArrayView<FFootprintBox> Footprint();
+
+    /** Static occupied rectangle, including logical floor/site proxies. */
+    struct FRecoveryObstacle
+    {
+        FVector Center = FVector::ZeroVector;
+        FVector2D HalfSize = FVector2D::ZeroVector;
+        float Yaw = 0.f;
+        float ExtraMargin = 0.f;
+    };
+
+    /** Fixed-heading reverse only. Checks the entire swept compound footprint:
+     * no newly occupied space inside any obstacle, and strictly less total
+     * overlap if the start overlaps. Terrain/people remain the caller's veto.
+     */
+    THREEHEARTHS_API bool CanReverseStep(const FPose& From, const FPose& To,
+        TConstArrayView<FRecoveryObstacle> Obstacles);
+
+    /** <=900 cm retreat, <=10 cm samples, at most six forward connection
+     * attempts. Out includes Start, the reverse prefix and the forward tail.
+     * Failure leaves Out empty; Plan's forward-only contract is unchanged.
+     */
+    THREEHEARTHS_API bool PlanRecovery(FPose Start,
+        TFunctionRef<bool(const FPose&, const FPose&)> CanReverse,
+        TFunctionRef<bool(const FPose&, TArray<FPose>&)> ConnectForward,
+        TArray<FPose>& Out, float MaxDistance = 900.f);
+
     /**
      * Plan a continuous forward-only route.  The first output pose is Start;
      * the final pose is within 150 cm of Goal.  Yaw is in UE degrees.

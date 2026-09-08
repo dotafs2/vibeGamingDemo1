@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "map_target": "SAO Aincrad1 firstfloor Level0",
+  "selection_policy": "Existing native UStaticMesh object paths only; package existence checked from Content/. Dimensions are reported only where source/import evidence provides them.",
+  "assets": [
+    {
+      "id": "organic_wall_plain_structure",
+      "role": "wall",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/wall_plain_2m__structure/wall_plain_2m__structure.wall_plain_2m__structure",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [200.0, 23.150011, 240.000008],
+      "material_slots": 1,
+      "material_slot_mapping": ["warm_lime | wood"],
+      "assembly_unit": "single_component",
+      "runtime_note": "2m module; front -Y, up +Z; wall edges/top are intended for modular stacking."
+    },
+    {
+      "id": "organic_wall_door_structure",
+      "role": "building_wall_with_door",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/wall_door_2m__structure/wall_door_2m__structure.wall_door_2m__structure",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [200.0, 31.000000, 240.000008],
+      "material_slots": 3,
+      "material_slot_mapping": ["shared | iron", "warm_lime | wood", "warm_lime | wood_light"],
+      "assembly_unit": "single_component",
+      "runtime_note": "Use as a doorway bay; opening is modeled geometry, not a decal."
+    },
+    {
+      "id": "organic_roof_gable_4x2_structure",
+      "role": "roof_structure",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/roof_gable_4x2m__structure/roof_gable_4x2m__structure.roof_gable_4x2m__structure",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [229.0, 100.0, 92.353751],
+      "material_slots": 2,
+      "material_slot_mapping": ["warm_lime | wood_dark", "warm_lime | wood_light"],
+      "assembly_unit": "single_component",
+      "runtime_note": "Roof bay with front/rear/ridge connectors; pair with the finish mesh for visible roof covering."
+    },
+    {
+      "id": "organic_roof_gable_4x2_finish",
+      "role": "roof_covering",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/roof_gable_4x2m__finish/roof_gable_4x2m__finish.roof_gable_4x2m__finish",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [229.701477, 100.833332, 97.417752],
+      "material_slots": 4,
+      "material_slot_mapping": ["warm_lime | roof_0", "warm_lime | roof_1", "warm_lime | roof_2", "warm_lime | roof_3"],
+      "assembly_unit": "single_component",
+      "runtime_note": "Keep paired with the same local datum as roof_gable_4x2m__structure."
+    },
+    {
+      "id": "organic_gable_end_4m_structure",
+      "role": "building_gable",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/gable_end_4m__structure/gable_end_4m__structure.gable_end_4m__structure",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [230.526550, 9.500001, 97.088252],
+      "material_slots": 2,
+      "material_slot_mapping": ["warm_lime | wood", "warm_lime | wood_light"],
+      "assembly_unit": "single_component",
+      "runtime_note": "Use at the ends of the 4m roof span; preserve authored origin."
+    },
+    {
+      "id": "organic_foundation_cell_structure",
+      "role": "stone_foundation",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/foundation_cell_2m__structure/foundation_cell_2m__structure.foundation_cell_2m__structure",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [200.0, 200.0, 12.0],
+      "material_slots": 1,
+      "material_slot_mapping": ["shared | stone_dark"],
+      "assembly_unit": "single_component",
+      "runtime_note": "2m square foundation cell; suitable for repeated house footprints."
+    },
+    {
+      "id": "organic_stone_skirt_finish",
+      "role": "stone_base_trim",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/OrganicVillageMasters/warm_lime/stone_skirt_2m__finish/stone_skirt_2m__finish.stone_skirt_2m__finish",
+      "source_evidence": "Art/OrganicVillageMasters/UE_Import_Report.json; Art/OrganicVillageMasters/RuntimeLayers/export_manifest.json",
+      "package_verified": true,
+      "dimensions_cm": [202.5, 25.0, 18.5],
+      "material_slots": 3,
+      "material_slot_mapping": ["shared | stone", "shared | stone_dark", "shared | stone_light"],
+      "assembly_unit": "single_component",
+      "runtime_note": "Facade attachment; does not provide a complete wall or foundation by itself."
+    },
+    {
+      "id": "medievallife_gate_pier_structure",
+      "role": "stone_column",
+      "mesh_package_path": "/Game/ThreeHearths/Generated/MedievalLife/gate_pier/gate_pier__structure.gate_pier__structure",
+      "source_evidence": "Art/MedievalLife/UE_Import_Report.json; Art/MedievalLife/catalog.json",
+      "package_verified": true,
+      "dimensions_cm": [130.5, 125.0, 338.0],
+      "material_slots": 3,
+      "material_slot_mapping": "Semantic slot names not recorded in the import report; preserve imported slot order/materials.",
+      "assembly_unit": "single_component",
+      "runtime_note": "Masonry gate pier; source catalog gives a 1.3m footprint and hinge/banner anchors."
+    },
+    {
+      "id": "aincrad_tree_01",
+      "role": "tree",
+      "mesh_package_path": "/Game/Environment/Meshes/Crops/SM_Tree_01",
+      "source_evidence": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthAincradEcology.cpp AssetPath(); Content/Environment/Meshes/Crops/SM_Tree_01.uasset",
+      "package_verified": true,
+      "dimensions_cm": null,
+      "material_slots": null,
+      "material_slot_mapping": "Preserve original materials; source does not provide slot names/counts.",
+      "assembly_unit": "single_component_instanced",
+      "runtime_note": "Ecology code loads this path into an instanced static mesh component; no authored dimensions were found in the inspected manifests."
+    },
+    {
+      "id": "aincrad_tree_02",
+      "role": "tree",
+      "mesh_package_path": "/Game/Environment/Meshes/Crops/SM_Tree_02",
+      "source_evidence": "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthAincradEcology.cpp AssetPath(); Content/Environment/Meshes/Crops/SM_Tree_02.uasset",
+      "package_verified": true,
+      "dimensions_cm": null,
+      "material_slots": null,
+      "material_slot_mapping": "Preserve original materials; source does not provide slot names/counts.",
+      "assembly_unit": "single_component_instanced",
+      "runtime_note": "Ecology code loads this path into an instanced static mesh component; no authored dimensions were found in the inspected manifests."
+    }
+  ],
+  "full_house_mesh_finding": {
+    "native_full_house_mesh_found": false,
+    "evidence": "OrganicVillageMasters/validation.json contains five verified assembly GLBs, while UE_Import_Report.json contains module/layer imports; no native assembly UStaticMesh package was present under Content/ThreeHearths/Generated/OrganicVillageMasters.",
+    "reuse_helper": {
+      "source": "Art/OrganicVillageMasters/tools/compose_recipe.py",
+      "recipe_validation_signature": "validate_recipe(recipe_path, recipe, catalog, disabled, finish_palette)",
+      "piece_import_signature": "import_piece(spec, parent_root, composed, palette_table, disabled, counters)",
+      "output_signature": "write_outputs(output, root, scene)",
+      "cli": "blender --background --python compose_recipe.py -- --recipe <recipe.json> --output <new.glb> [--finish-palette <palette>] [--disable-layer weathering|attachments]",
+      "behavior": "Imports catalog module GLBs, applies recipe transforms and palettes, preserves anchors, and writes a new composed GLB/Blend. It does not write Modules/ or Assemblies/.",
+      "parent_runtime_guidance": "For native Level0 preview, assemble these UStaticMesh components directly or use the helper only as an offline source composition step; do not reference an assembly GLB as a native UStaticMesh path."
+    }
+  },
+  "runtime_footprint_pitfalls": [
+    "Organic modules are separate components with authored +Z up and -Y front; preserve their pivots and connector datum.",
+    "A roof structure and roof finish are separate meshes; spawning both is intentional, while spawning multiple finish layers can duplicate surfaces.",
+    "Tree paths are used by HearthAincradEcology through UInstancedStaticMeshComponent batches; retain instancing for dense vegetation.",
+    "No dimensions were invented for the two tree assets, and no material slot counts were invented where catalogs did not record them."
+  ],
+  "inspection_scope": [
+    "AGENTS.md",
+    "Art/OrganicVillageMasters manifests, reports, recipes and tools",
+    "Art/MedievalLife catalog and import report",
+    "Plugins/ThreeHearths/Tools catalog-related scripts",
+    "Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthAincradEcology.cpp"
+  ]
+}

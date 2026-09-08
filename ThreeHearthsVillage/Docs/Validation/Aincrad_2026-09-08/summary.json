@@ -1,0 +1,211 @@
+{
+  "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+  "resident_count": 13,
+  "identities_stories_and_existing_plots_preserved": true,
+  "castle_id": "65C0A151-4642-E721-8121-DAB8342787A8",
+  "castle_completed": 27,
+  "castle_total": 1276,
+  "budget": {
+    "batches": [
+      {
+        "run": "style-baseline",
+        "new_calls": 4,
+        "new_cny": 0.0979475
+      },
+      {
+        "run": "aincrad-kimi01",
+        "new_calls": 4,
+        "new_cny": 0.0536786
+      },
+      {
+        "run": "aincrad-inspect01",
+        "new_calls": 8,
+        "new_cny": 0.1047816
+      },
+      {
+        "run": "aincrad-final",
+        "new_calls": 6,
+        "new_cny": 0.0888562
+      },
+      {
+        "run": "aincrad-material-final",
+        "new_calls": 4,
+        "new_cny": 0.0546744
+      },
+      {
+        "run": "aincrad-memory-final",
+        "new_calls": 4,
+        "new_cny": 0.0587327
+      }
+    ],
+    "new_calls": 30,
+    "new_cny": 0.458671,
+    "local_total_cny": 1.5639156,
+    "local_total_calls": 91,
+    "reserved_cny": 0.0,
+    "remote_liability_held_separately_cny": 17.3692551,
+    "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba"
+  },
+  "final_paid_outcomes": [
+    {
+      "resident": 1,
+      "name": "米拉",
+      "choice": "5",
+      "reason": "看见：我的房屋正面可见，灰泥墙配木构架、蓝灰板岩屋顶、绿色百叶窗与栅栏，符合季节分明的色块偏好；但门前草地空旷无果树阴影，也无妨劳作的花或明显标识让访客易找。打算：请求在门前两侧各植一棵果树并辟一小块种花的边界，既遮阴又便于辨认我家入口。",
+      "status": "failed",
+      "image": "npc-1-0.png"
+    },
+    {
+      "resident": 4,
+      "name": "伊芙",
+      "choice": "0",
+      "reason": "看见：两层木构临街立面，底层有向外敞开的柜台与门板，正是我想要的铺面形态；石砌台阶抬高基座，二层带阳台可挂招牌。未知：后方货仓与室内货架尚未可见。打算：外观已符合商人临街门面之需，暂停扩建，待内部整理与招牌就位后再看。",
+      "status": "completed",
+      "image": "npc-4-1.png"
+    },
+    {
+      "resident": 8,
+      "name": "托马斯",
+      "choice": "0",
+      "reason": "看见：陶土色屋顶、木构框架、灰泥墙面、绿漆百叶窗与低矮木栅栏，整体有自然层次；打算：这外观已能招待邻居，满意现有院落，暂缓扩建。",
+      "status": "failed",
+      "image": "npc-8-2.png"
+    },
+    {
+      "resident": 5,
+      "name": "罗莎",
+      "choice": "6",
+      "reason": "看见：月光下两座尖顶小屋的剪影，深色木架与浅色墙面，石阶基座，但正面处于强逆光阴影中，细节无法辨识。未知：是否为我记忆中的目标房屋，墙面质地、屋顶材料、门窗状态均不可读。打算：待日光充足时再行评估外观，目前不贸然判断。",
+      "status": "completed",
+      "image": "npc-5-3.png"
+    }
+  ],
+  "native_tests": {
+    "unique_tests": 116,
+    "all_latest_results_pass": true,
+    "batches": [
+      {
+        "run": "aincrad-full-tests",
+        "succeeded": 107,
+        "succeededWithWarnings": 7,
+        "failed": 2,
+        "notRun": 0,
+        "inProcess": 0
+      },
+      {
+        "run": "aincrad-repaired02",
+        "succeeded": 1,
+        "succeededWithWarnings": 0,
+        "failed": 1,
+        "notRun": 0,
+        "inProcess": 0
+      },
+      {
+        "run": "aincrad-guard-final",
+        "succeeded": 1,
+        "succeededWithWarnings": 0,
+        "failed": 0,
+        "notRun": 0,
+        "inProcess": 0
+      },
+      {
+        "run": "aincrad-design-final",
+        "succeeded": 8,
+        "succeededWithWarnings": 0,
+        "failed": 0,
+        "notRun": 0,
+        "inProcess": 0
+      }
+    ]
+  },
+  "cold_restart": {
+    "api_disabled": true,
+    "no_paid_decisions": true,
+    "same_world": true,
+    "elapsed_before": 20606.494140625,
+    "elapsed_after": 20670.681640625
+  },
+  "images": [
+    {
+      "file": "town.png",
+      "sha256": "e58f3820429220b9af9731d0e62fccb71889aec08ce451b52c5c57ddc820a1d3",
+      "source_run": "aincrad-material-final",
+      "metadata": {
+        "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+        "provenance": "coordinator art validation; not NPC FOV; actual built scene only",
+        "eye": "X=-11500.000 Y=-13000.000 Z=21000.000",
+        "aim": "X=3500.000 Y=5500.000 Z=1300.000",
+        "elapsed": 20269.814453125,
+        "orthographic": false
+      }
+    },
+    {
+      "file": "old-town.png",
+      "sha256": "1c3b6ca32a92c10c40d7b223bc363e254e5ae07b72a327989b56b01df040c9de",
+      "source_run": "aincrad-material-final",
+      "metadata": {
+        "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+        "provenance": "coordinator art validation; not NPC FOV; actual built scene only",
+        "eye": "X=-6500.000 Y=-7800.000 Z=5800.000",
+        "aim": "X=-1800.000 Y=-700.000 Z=200.000",
+        "elapsed": 20269.814453125,
+        "orthographic": false
+      }
+    },
+    {
+      "file": "home-0.png",
+      "sha256": "c5bc2c97bf9cb84d4930fcfdcac0768084358bbcab07c6aa1a500374d5fa4824",
+      "source_run": "aincrad-material-final",
+      "metadata": {
+        "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+        "provenance": "coordinator art validation; not NPC FOV; actual built scene only",
+        "eye": "X=524.039 Y=450.972 Z=352.783",
+        "aim": "X=-1639.279 Y=443.500 Z=409.270",
+        "elapsed": 20269.814453125,
+        "orthographic": false
+      }
+    },
+    {
+      "file": "home-4.png",
+      "sha256": "80c951003c5edc0c43c0ff4ca8939d4826dce1433112c0669afa26155f8a772d",
+      "source_run": "aincrad-material-final",
+      "metadata": {
+        "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+        "provenance": "coordinator art validation; not NPC FOV; actual built scene only",
+        "eye": "X=1169.357 Y=882.009 Z=352.889",
+        "aim": "X=2763.368 Y=-580.566 Z=404.199",
+        "elapsed": 20269.814453125,
+        "orthographic": false
+      }
+    },
+    {
+      "file": "home-6.png",
+      "sha256": "41c1877d0ea5815a377165d6f762822d73fa1b1811de7bb2c04ff8d790fee068",
+      "source_run": "aincrad-material-final",
+      "metadata": {
+        "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+        "provenance": "coordinator art validation; not NPC FOV; actual built scene only",
+        "eye": "X=-6280.067 Y=-3711.004 Z=367.239",
+        "aim": "X=-4379.080 Y=-4743.598 Z=403.839",
+        "elapsed": 20269.814453125,
+        "orthographic": false
+      }
+    },
+    {
+      "file": "planning-map.png",
+      "sha256": "d785bcb79890886cca18129f5f74c235b4ea1741fd946f60e4da189676efc717",
+      "source_run": "aincrad-material-final",
+      "provenance": "Actual UE planning overlay. Wireframe is unbuilt intention, not completed castle."
+    }
+  ],
+  "material_revision": 2,
+  "inspection_policy_revision": 3,
+  "limitations": [
+    "13 existing residents and sparse existing homes; not a finished SAO city.",
+    "Castle remains under actual material/wage construction.",
+    "Natural decoration uses 8 existing vegetation asset types, not 601 new models or harvest nodes.",
+    "Single-view visual decisions remain fallible; they cannot directly create world facts.",
+    "Generic host implementation and post-construction usage verification are not fully automated.",
+    "Backlit trees, roof proportions, artificial hill silhouette and finite terrain edge need further art work."
+  ]
+}

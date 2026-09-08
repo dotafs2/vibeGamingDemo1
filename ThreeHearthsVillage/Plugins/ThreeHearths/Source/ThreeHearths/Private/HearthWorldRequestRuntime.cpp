@@ -3,6 +3,7 @@
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Misc/Paths.h"
+#include "Misc/FileHelper.h"
 #include "HAL/FileManager.h"
 
 namespace HearthRequestRuntime
@@ -19,12 +20,32 @@ namespace HearthRequestRuntime
         return Out;
     }
 
-    bool HasStoredObservation(const FHearthResident& Resident)
+    FString StoredObservationId(const FHearthResident& Resident,int32 Index,const FString& WorldId,const TArray<FHearthDecisionRecord>& History)
     {
-        if(Resident.StableId.IsEmpty() || Resident.LastVisualSignature.IsEmpty()) return false;
-        const FString Filename=FPaths::MakeValidFileName(Resident.StableId+TEXT("_")+Resident.LastVisualSignature+TEXT(".png"));
-        const FString Path=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/DesignReviews")/Filename;
-        return IFileManager::Get().FileExists(*Path) && IFileManager::Get().FileExists(*(Path+TEXT(".json")));
+        if(Resident.StableId.IsEmpty() || Resident.LastVisualSignature.IsEmpty()) return {};
+        // Bind the host request to the exact image actually sent, not the most
+        // recent coordinator export or a mutable filename for the same house.
+        for(int32 I=History.Num()-1;I>=FMath::Max(0,History.Num()-1000);--I)
+        {
+            const auto& H=History[I];if(H.Resident!=Index || H.Kind!=TEXT("design_review")) continue;
+            TSharedPtr<FJsonObject> C; if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(H.Context),C) || !C.IsValid()) continue;
+            FString Scope,Revision,File,Id;
+            if(!C->TryGetStringField(TEXT("observation_scope"),Scope) || Scope!=TEXT("resident_first_person")
+                || !C->TryGetStringField(TEXT("design_revision"),Revision) || Revision!=Resident.LastVisualSignature
+                || !C->TryGetStringField(TEXT("image_file"),File) || File!=FPaths::GetCleanFilename(File)
+                || File!=FPaths::MakeValidFileName(File) || !File.StartsWith(Resident.StableId+TEXT("_")) || !File.EndsWith(TEXT(".png"))
+                || !C->TryGetStringField(TEXT("observation_id"),Id) || Id!=FPaths::GetBaseFilename(File)) continue;
+            const FString Path=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/DesignReviews")/File;
+            if(!IFileManager::Get().FileExists(*Path) || IFileManager::Get().FileSize(*(Path+TEXT(".json")))>8192) continue;
+            FString Json;TSharedPtr<FJsonObject> Meta;
+            if(!FFileHelper::LoadFileToString(Json,*(Path+TEXT(".json"))) || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),Meta) || !Meta.IsValid()) continue;
+            FString SavedId,SavedResident,SavedWorld,Provenance;
+            if(Meta->TryGetStringField(TEXT("observation_id"),SavedId) && SavedId==Id
+                && Meta->TryGetStringField(TEXT("resident_id"),SavedResident) && SavedResident==Resident.StableId
+                && Meta->TryGetStringField(TEXT("world_id"),SavedWorld) && SavedWorld==WorldId
+                && Meta->TryGetStringField(TEXT("provenance"),Provenance) && Provenance==TEXT("resident_first_person_v1")) return Id;
+        }
+        return {};
     }
 }
 
@@ -52,9 +73,8 @@ bool AHearthVillage::SubmitResidentAssetRequest(int32 Index,const FString& Need)
     {
         Context.TargetId=TargetId; Context.TargetPositionCm=Center; Context.bHasTargetPosition=true;
     }
-    if(!Resident.LastVisualSignature.IsEmpty() && Resident.LastVisualSignature==VisualSignature(Index)
-        && HearthRequestRuntime::HasStoredObservation(Resident))
-        Context.ObservationId=Resident.LastVisualSignature;
+    if(!Resident.LastVisualSignature.IsEmpty() && Resident.LastVisualSignature==VisualSignature(Index))
+        Context.ObservationId=HearthRequestRuntime::StoredObservationId(Resident,Index,WorldId,DecisionHistory);
     FString Error;
     if(!HearthWorldRequests::SubmitAsset(WorldRequests,Resident.StableId,Context,Error)) return false;
     auto& MutableResident=Residents[Index]; MutableResident.DesignRequest=Context.Purpose;

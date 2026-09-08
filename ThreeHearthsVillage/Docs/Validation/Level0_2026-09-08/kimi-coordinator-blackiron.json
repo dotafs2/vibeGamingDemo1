@@ -1,0 +1,84 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "role": "coordinator; not NPC FOV or NPC decision",
+  "image": "kimi-coordinator-input-blackiron.png",
+  "image_sha256": "a297a21eaefab5df06b8fbd3c27f364b51f926033c62ca9ecd086b5bbaf3d247",
+  "request_id": "level0-director-d7271e9b-b1a5-4b44-bce9-3cab3f1c0a2a",
+  "prompt": "你是 SAO 第一层地图美术审阅者，不是 NPC。这是同一个新世界起始之城的最新 UE 鸟瞰体量样板。上一轮的建议是给黑铁宫增加深色金属区分，本轮已实现。请只根据这张新图确认大穹顶宫殿是否与暖色民居有清楚的深浅区分，是否仍是明显占位体量。整层其余部分不在此图内，不能推断。\n返回 JSON：visible（最多2项）、uncertain（最多2项）、material_readable（布尔）、next（一个下一步）。中文不超过160字。不把协调者图片当成居民视野，不宣称看到了内部或未实现功能。",
+  "response": {
+    "_hearth_budget": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 93
+      },
+      "deadline_utc": 1788861688,
+      "halted": "",
+      "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba",
+      "liability_cny": 1.5767966,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.0,
+      "remaining_allocatable_cny": 93.4232034,
+      "reserved_cny": 0.0,
+      "settled_cny": 1.5767966
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "{\"visible\":[\"大穹顶宫殿与暖色民居深浅区分清楚，深色金属体量突出\",\"宫殿仍为明显占位体量，中心广场位置明确\"],\"uncertain\":[],\"material_readable\":true,\"next\":\"确认黑铁宫深色金属质感在更近人视距离的可读性\"}",
+          "reasoning_content": "",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1788861590,
+    "id": "chatcmpl-6a9fdc963e70fa0178eb5fa8",
+    "model": "kimi-k2.6",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 60,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1
+      },
+      "prompt_tokens": 509,
+      "total_tokens": 569
+    }
+  },
+  "budget_before": {
+    "allocation_cap_cny": 95.0,
+    "authorized_cny": 100.0,
+    "counts": {
+      "settled": 92
+    },
+    "deadline_utc": 0,
+    "halted": "",
+    "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba",
+    "liability_cny": 1.5718681,
+    "model": "kimi-k2.6",
+    "prior_unverified_cny": 0.0,
+    "remaining_allocatable_cny": 93.4281319,
+    "reserved_cny": 0.0,
+    "settled_cny": 1.5718681
+  },
+  "budget_after": {
+    "allocation_cap_cny": 95.0,
+    "authorized_cny": 100.0,
+    "counts": {
+      "settled": 93
+    },
+    "deadline_utc": 0,
+    "halted": "",
+    "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba",
+    "liability_cny": 1.5767966,
+    "model": "kimi-k2.6",
+    "prior_unverified_cny": 0.0,
+    "remaining_allocatable_cny": 93.4232034,
+    "reserved_cny": 0.0,
+    "settled_cny": 1.5767966
+  },
+  "new_cost_cny": 0.0049285,
+  "new_calls": 1,
+  "world_mutation": false
+}

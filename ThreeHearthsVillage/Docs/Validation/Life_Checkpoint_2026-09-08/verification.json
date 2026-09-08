@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-08",
+  "status": "engineering checkpoint; real Kimi commission pending",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "residents": 13,
+  "active_residents": [
+    "艾琳",
+    "拓真",
+    "柏木"
+  ],
+  "life_version": 1,
+  "live_contract_count": 0,
+  "build": {
+    "target": "UnrealEditor Win64 Development UE5.8",
+    "exit": 0
+  },
+  "tests": {
+    "succeeded": 18,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "test_scope": "ThreeHearths.Aincrad; before walking-only refactor; refactor validated by native walk run",
+  "paid_baseline": {
+    "run": "town-20260908-122330",
+    "configured_seconds": 60,
+    "process_seconds": 74.991,
+    "new_settled_calls": 3,
+    "new_cost_cny": 0.0277915,
+    "local_ledger_settled_count": 102,
+    "local_ledger_settled_cny": 1.6521896,
+    "cross_machine_unverified_liability_cny": 17.3692551,
+    "decisions_file": "baseline-decisions.json"
+  },
+  "unpaid_runs": [
+    {
+      "run": "town-20260908-125258",
+      "configured_seconds": 45,
+      "exit": 0,
+      "calls": 0,
+      "wall_blocked": true,
+      "door_passable": false,
+      "reason": "raw capsule sweep bypassed player movement step/ground handling"
+    },
+    {
+      "run": "town-20260908-130153",
+      "configured_seconds": 35,
+      "exit": 0,
+      "calls": 0,
+      "walking_check": {
+        "source": "local player walking movement including step and ground handling; not NPC decisions or VR validation",
+        "door_end_cm": "X=1150.000 Y=465000.000 Z=90.000",
+        "wall_blocked": true,
+        "door_passable": true,
+        "eye_height_cm": 160,
+        "passed": true
+      }
+    }
+  ],
+  "checkpoint_export": {
+    "file": "world-checkpoint.json",
+    "removed_runtime_fields": [
+      "last_budget_receipt",
+      "last_observation_file",
+      "last_observation_metadata",
+      "last_request_evidence",
+      "pending_budget_ledger_id"
+    ],
+    "source_sha256": "21ae91e2fdb289b4e743f00c2b455670549ffe4a50b26c68bde9e5c7801c388e",
+    "same_world": true,
+    "budget_included": false
+  },
+  "limits": [
+    "No completed real Kimi life commission after implementation",
+    "No real UE restart during processing",
+    "No model replacement continuation verification",
+    "No requested capability development-install-use completion",
+    "No VR validation",
+    "Lethe menu initialization timeout remains in engine startup logs"
+  ]
+}

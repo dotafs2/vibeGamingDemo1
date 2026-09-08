@@ -91,7 +91,10 @@ bool FHearthFreightRuntimeTest::RunTest(const FString&)
     if(!TestTrue(TEXT("food break cold restore"),V->ApplyWorldState(Paused,Error))) { AddError(Error);return false; }
     for(int32 I=0;I<25;++I) V->AdvanceSimulation(.2f);
     TestTrue(TEXT("loaded cart stays parked while driver seeks food"),V->FreightOrders.Last().VehiclePosition.Equals(PausedPosition,.01f));
-    for(int32 I=0;I<3000 && V->FreightOrders.Last().Status==TEXT("transporting");++I) V->AdvanceSimulation(.2f);
+    // The central hill adds about 430m of real climbing road. At 60cm/s the
+    // previous 600-second horizon ends before arrival; include the complete
+    // trip and a real meal/rest stop without changing speed or needs.
+    for(int32 I=0;I<10000 && V->FreightOrders.Last().Status==TEXT("transporting");++I) V->AdvanceSimulation(.2f);
     if(!TestEqual(TEXT("real transport completes"),V->FreightOrders.Last().Status,FString(TEXT("completed"))))
     {
         AddInfo(FString::Printf(TEXT("phase=%d loaded=%d paused=%d attached=%d route=%d pos=%s target=%s hunger=%.1f energy=%.1f task=%d decision=%s"),

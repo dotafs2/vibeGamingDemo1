@@ -1,0 +1,82 @@
+{
+  "date": "2026-09-08",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "native_map": "/Game/ThreeHearths/Maps/L_AincradLevel0",
+  "native_run": "Saved/ThreeHearths/AincradLevel0/Runs/20260908-095816.log",
+  "save_elapsed_before": 85.0615354962647,
+  "save_elapsed_after": 125.18274809420109,
+  "residents_unchanged_after_restart": true,
+  "resident_count": 13,
+  "old_world_and_archive_unchanged_sha256": {
+    "world.json": "a9e60499c6a563affe267e36aee2cf1c45b8bf06a44a993b39090ba9a7abbd28",
+    "history.json": "aaf51d9ebde27e72a5fa6cbc1e53dad1ec50c7dffd90e568ec083bea6d7b82ea"
+  },
+  "tests": [
+    {
+      "name": "ThreeHearths.AincradFloorPlan.AllNodesInside",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.CardinalTopology",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.NorthernLabyrinthReachability",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.StableIdsAndTerrainPolicy",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.ColdLoadIdentity",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.CorruptFileRefusesReset",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.WrongSettingRejected",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.MedievalPersistence.RoundTripAndAtomicValidation",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.MedievalSociety.RosterGuardsAndExactlyOnceFreight",
+      "state": "Success"
+    }
+  ],
+  "runtime_counts": {
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "provenance": "native UE geographic blockout; coordinator camera, not NPC FOV",
+    "eye_cm": "X=61000.000 Y=523000.000 Z=62000.000",
+    "aim_cm": "X=0.000 Y=473500.000 Z=0.000",
+    "horizontal_fov": 65,
+    "houses": 348,
+    "trees": 3977
+  },
+  "coordinator_calls": 2,
+  "coordinator_cost_cny": 0.012881,
+  "native_image_sha256": {
+    "floor.png": "2903ebda4cb4589f2d393d7c94276faebab43593426b4a1ade5e03e043f87428",
+    "floor.png.json": "7469c8d6d4fcfb07f0c1b2f27ae083024a5139cd187a3d02ac3f727b9e8e5868",
+    "beginnings.png": "b6398a246a0d9151b737f44ec231684122d5af19ddf8d52f92c9f74db1852aa3",
+    "beginnings.png.json": "9f6cf476d6b084f0f8ced728db44a72d96f5f8f37f445fc570aab4da489fd4b6",
+    "plaza.png": "45bce9758f161f55bf2659eebaec82602da4a07b57214c02194290c65a338876",
+    "plaza.png.json": "d2cfe2f47ead417ff9e899d7e0d5797d01757be84772831a2a7f1a6a1b6bbe41",
+    "horunka.png": "01e4950cb0857623e337efda4111185591433bf29c5741d283a63bfe4e759ee4",
+    "horunka.png.json": "9e4cb58c4402b17e7ebc0654b2a8afd9856004aeebd828e17a91cde78a84004f",
+    "tolbana.png": "e6f07a525205e68d2c737d548defd4fee6aaf7c5f83929754c5bd07241ed546e",
+    "tolbana.png.json": "22a13beb4151d2e7e509bdad6592486e0e1ee2084e21974d568d0083973b0ef7"
+  },
+  "limitations": [
+    "Geographic and architectural blockout, not final art.",
+    "Residents are persistent records, not spawned autonomous agents.",
+    "Home references are reserved IDs, not assigned scene properties.",
+    "Coordinator screenshots are not NPC FOV.",
+    "Combat, shops AI, quests, sword skills and teleport are pending."
+  ]
+}

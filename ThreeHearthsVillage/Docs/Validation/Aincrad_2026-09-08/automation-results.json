@@ -1,0 +1,851 @@
+{
+  "note": "Full suite followed by targeted fixes; not one all-green full run.",
+  "batches": [
+    {
+      "run": "aincrad-full-tests",
+      "succeeded": 107,
+      "succeededWithWarnings": 7,
+      "failed": 2,
+      "notRun": 0,
+      "inProcess": 0
+    },
+    {
+      "run": "aincrad-repaired02",
+      "succeeded": 1,
+      "succeededWithWarnings": 0,
+      "failed": 1,
+      "notRun": 0,
+      "inProcess": 0
+    },
+    {
+      "run": "aincrad-guard-final",
+      "succeeded": 1,
+      "succeededWithWarnings": 0,
+      "failed": 0,
+      "notRun": 0,
+      "inProcess": 0
+    },
+    {
+      "run": "aincrad-design-final",
+      "succeeded": 8,
+      "succeededWithWarnings": 0,
+      "failed": 0,
+      "notRun": 0,
+      "inProcess": 0
+    }
+  ],
+  "latest_results": [
+    {
+      "test": "ThreeHearths.AincradEcology.DeterministicBoundedWoodland",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.AincradEcology.SavedClearingsAndFullAscent",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Appearance.NativeModularStarter",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.BotanicalCatalog.NativeLowPolyPlants",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.CityPlan.ConnectedCivicAndResidentialStreets",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.CityPlan.DeterministicSkeleton",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.CityPlan.KeepsMainOccupancyClear",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.CityPlan.Town3VersionedNonOrthogonalBlocks",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Construction.OrganicAtomicLedger",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.CompletedHistoryArchivesWithoutBreakingReferences",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.CooldownUsesSimulationClock",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.GuardReflectionPreservesDuty",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.OneSlotPerResident",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.PersistentBudgetRouting",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.RequestTimeoutUsesSimulationClock",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Decisions.ValidateModelOutput",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.ResidentChoice.NeedsAndConstraints",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.ResidentChoice.Stability",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.ResidentChoice.StructuredValidation",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.CourtyardGrowth",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.FeedbackAndPersistence",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.OrganicStreets",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.PersonalEyeGeometry",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Design.PersonalObservationKnowledge",
+      "state": "Success",
+      "run": "aincrad-design-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.LegacyUnfundedWorkMigration",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.PrivateHouseWageEscrow",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 3,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.ProtectedProjectFundsAndAtomicIncome",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.PublicConstructionRecipe",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.PublicProcurement",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.Town3CastleCanonicalRecipe",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Economy.WalletsTradesAndWages",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.BoundedFailure",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.CallbackAndCurvature",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.ForwardUTurn",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.ObstacleDetour",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.RecoveryBounds",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.RecoveryGeometry",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.FreightNavigation.StraightForward",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.ImportPreview.WorldIsolation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 1,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Layout.ContinuousStreetPlan",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Layout.RuntimeContinuousStreetSites",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Layout.Town3ThirtyFrontageHomes",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Life.GroundedResidentAgenda",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Life.ResidentStory",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Medieval.FreightRecovery",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Medieval.FreightRuntime",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 1,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Medieval.FreightVisualDirection",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Medieval.GateVisitRuntime",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Medieval.ServiceDutyRuntime",
+      "state": "Success",
+      "run": "aincrad-guard-final",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.MedievalPersistence.RoundTripAndAtomicValidation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.MedievalSociety.RosterGuardsAndExactlyOnceFreight",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Movement.ResidentTraffic",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Movement.SweptSeparation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.BoundedQueueColdRestoreAndDeadlines",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.DaydreamColdRestoreAndInvalidClock",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.DaydreamIndependentRealClock",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.DiscardPendingPreservesInFlightAndState",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.EventCoalescingAndUrgentCap",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.RolePacingAndLocalGuards",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.RuntimeDaydreamJsonMigration",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.NpcThinking.RuntimeRoleAndCorruptSidecar",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Organic.MarketLifeKit.RuntimeAndColdRecovery",
+      "state": "Success",
+      "run": "aincrad-repaired02",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Organic.RuntimeInitializationAndColdRecovery",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicCatalog.Matrix",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicCatalog.RealContent",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicCatalog.Transform",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicCatalog.Validation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicTerrain.ContinuityAndBounds",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicTerrain.Determinism",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicTerrain.FlattenRoadAndSlope",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.OrganicTerrain.GridTopology",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Paths.Town3BoundedGroundCoverage",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.CorruptionAndExclusiveWorld",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 1,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.MedievalPopulationSchema12",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.OrganicConstructionColdRecovery",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.PublicProjectSchema9RoundTrip",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 10,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.ResumeMaterialsAndTasks",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.StructurePlanSchema9",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Persistence.Town3ThirtyResidentsRoundTrip",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.ClayFuelAndTileKiln",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.LogsToConstructionTimber",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.ModularCottageLifecycle",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 1,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.OrganicReplacementCandidates",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.OrganicShortagePolicy",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.PrivateOrderedTilesBuildRoof",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Production.ResidentPlanRuntimeExecution",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Residents.ExclusiveToolOwnership",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Residents.SitingGoals",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Residents.SitingPreferences",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Residents.SitingRobustness",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Residents.ToolTaskBinding",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalHill.ActualGridCarriagewayGrades",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalHill.AscentContractAndSafeDelivery",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalHill.PlateauAndLegacyCompatibility",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalHill.Version4FootRingAndLegacyRoads",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalWorksPlan.ManifestInvariants",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalWorksPlan.RejectsBrokenGeometryAndBudgets",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.RoyalWorksPlan.Town3CastleIsModularAndStaged",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.SettlementPlan.CheckpointDistricts",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.SettlementPlan.RealCastleEnvelope",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.SettlementPlan.SiteTranslationAndTemplates",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.SettlementPlan.SoftRolePreferences",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Society.PopulationMigrationAndMeals",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Society.TileOrderNegotiation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Society.TwoWayPromisesAndPersistence",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Structure.PlannedConstructionAdapter",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructureCatalog.NativeStage4Assets",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructurePlan.ArchetypeAffordability",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructurePlan.ArchetypeExpansion",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructurePlan.BuildingArchetypes",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructurePlan.ResidentBuildingPlanner",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.StructurePlan.StableExtensionsAndValidation",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Tavern.RequestBuildSeatsAndUse",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.Town.ConnectedStarterNeighborhood",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 10,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.WorldHost.RuntimePersistence",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "test": "ThreeHearths.WorldRequests.TriageBoard",
+      "state": "Success",
+      "run": "aincrad-full-tests",
+      "warnings": 0,
+      "errors": 0
+    }
+  ]
+}

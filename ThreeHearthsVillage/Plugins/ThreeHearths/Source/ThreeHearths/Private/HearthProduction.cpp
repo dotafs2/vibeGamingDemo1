@@ -15,8 +15,39 @@
 #include "Serialization/JsonSerializer.h"
 #include "Misc/Crc.h"
 
+namespace HearthCastleSupply
+{
+    FIntVector CurrentBatchDeficit(const FHearthPublicProject& Project,const TArray<FHearthResident>& Residents);
+    int32 OwnedOrProcessingPlanks(const TArray<FHearthResident>& Residents);
+}
+
 namespace HearthProduction
 {
+    int32 CastleSawmillBudget(const FHearthPublicProject& Project,const TArray<FHearthResident>& Residents,int32 Wage)
+    {
+        if(Project.Id.IsEmpty() || Project.TemplateId!=TEXT("royal_keep_garden_v2") || Project.Status!=TEXT("building")) return 0;
+        int32 Stage=MAX_int32;
+        for(const auto& Part:Project.Parts)
+            if(Part.Status!=TEXT("completed")) Stage=FMath::Min(Stage,Part.Stage);
+        int32 Incoming=Project.Stock[1];
+        for(const auto& Order:Project.Orders)
+            if(Order.ProjectId==Project.Id && Order.Status==TEXT("transporting")) Incoming+=Order.ReservedQuantity;
+        int32 Count=0;
+        for(const auto& Part:Project.Parts)
+        {
+            if(Part.Status==TEXT("completed") || Part.Stage!=Stage) continue;
+            if(++Count>3) break;
+            if(Part.Worker>=0) continue; // Its materials and wage are already reserved.
+            const int32 Missing=FMath::Max(0,Part.Required[1]-Incoming);
+            const int32 ToMill=FMath::Max(0,Missing-HearthCastleSupply::OwnedOrProcessingPlanks(Residents));
+            // Authorize one real milling job and its private-share purchase,
+            // retaining an installation wage. Future unstarted jobs need no
+            // escrow yet; each repeats this check after actual tax settlement.
+            return ToMill>0?2+2+Wage:0;
+        }
+        return 0;
+    }
+
     const FString Crops=TEXT("/Game/Environment/Meshes/Crops/");
     const FString Buildings=TEXT("/Game/Environment/Meshes/Building/");
     const TCHAR* KindNames[]={TEXT("未开发空地"),TEXT("已开垦土地"),TEXT("玉米田"),TEXT("小麦田"),TEXT("生菜田"),TEXT("南瓜田"),TEXT("住宅"),TEXT("树木"),TEXT("浆果灌木"),TEXT("石矿"),TEXT("木工台"),TEXT("黏土坑"),TEXT("瓦窑")};
@@ -434,7 +465,11 @@ bool AHearthVillage::IsProductionAllowed(int32 Index,int32 Action) const
         || Residents[Index].Role.Contains(TEXT("陶工")) || Residents[Index].Role.Contains(TEXT("织工"));
     const bool bHousingInputLabor=Op==14 && S.Kind==EHearthSiteKind::Carpenter && bWorkshopResident
         && (!bOwnsStructure || Residents[Index].PersonalTiles>=12);
-    if(GeneralFunds()<WageForOperation(Op) && (!(bPotterInputLabor || bHousingInputLabor) || Residents[Index].Coins<WageForOperation(Op))) return false;
+    const int32 CastleBudget=Op==13 && S.Kind==EHearthSiteKind::Carpenter
+        ?HearthProduction::CastleSawmillBudget(PublicProject,Residents,WageForOperation(Op)):0;
+    const bool bCastleInputLabor=CastleBudget>0 && TaxProjectCoins>=CastleBudget;
+    if(GeneralFunds()<WageForOperation(Op) && !bCastleInputLabor
+        && (!(bPotterInputLabor || bHousingInputLabor) || Residents[Index].Coins<WageForOperation(Op))) return false;
     if(Op>=1 && Op<=7)
     {
         if(S.Kind!=EHearthSiteKind::Land || !S.BuildPlanId.IsEmpty()) return false;
@@ -608,6 +643,9 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index,const TArray<int32>& O
         PrivateBeams=FMath::Max(PrivateBeams,8+Boost*3);
         PrivateTiles=FMath::Max(PrivateTiles,12+Boost*4);
     }
+    const bool bCastle=PublicProject.TemplateId==TEXT("royal_keep_garden_v2") && PublicProject.Status==TEXT("building");
+    const FIntVector CastleNeed=bCastle?HearthCastleSupply::CurrentBatchDeficit(PublicProject,Residents):FIntVector::ZeroValue;
+    const int32 PrivateSupply=HearthCastleSupply::OwnedOrProcessingPlanks(Residents);
     for(int32 Action:Options)
     {
         if(HearthTavernRuntime::IsLegacyBuildAction(Action))
@@ -621,24 +659,28 @@ int32 AHearthVillage::ChooseProductionLocally(int32 Index,const TArray<int32>& O
         if(Op==10) Score=AvailableWood()<60?150:20;
         const bool PublicBuilding=!PublicProject.Id.IsEmpty() && PublicProject.Status==TEXT("building");
         int32 PublicNeed[3]={0,0,0};
-        if(PublicBuilding) for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed"))
+        if(PublicBuilding && !bCastle) for(const auto& Part:PublicProject.Parts) if(Part.Status!=TEXT("completed"))
             for(int32 M=0;M<3;++M) PublicNeed[M]+=Part.Required[M]-Part.Reserved[M]-Part.Delivered[M];
         if(Op==11)
         {
             const int32 EffectivePublicStone=PublicProject.Stock[0]+(IsOrganicVillage()?StoneStock:0);
             Score=PublicBuilding && EffectivePublicStone<PublicNeed[0]?235:(StoneStock<PrivateStone?140:15);
+            if(bCastle && CastleNeed.X>(IsOrganicVillage()?StoneStock:0)) Score=235;
             if(IsOrganicVillage() && OrganicNeed.Stone>StoneStock) Score=FMath::Max(Score,220.f);
         }
         if(Op==13)
         {
             const int32 EffectivePublicPlanks=PublicProject.Stock[1]+(IsOrganicVillage()?PlankStock:0);
             Score=PublicBuilding && EffectivePublicPlanks<PublicNeed[1]?245:(PlankStock<PrivatePlanks?165:18);
+            // Shared planks cannot be sold as a resident's private sawmill share.
+            if(bCastle && CastleNeed.Y>PrivateSupply) Score=275;
             if(IsOrganicVillage() && OrganicNeed.Planks>PlankStock) Score=FMath::Max(Score,220.f);
         }
         if(Op==14)
         {
             const int32 EffectivePublicBeams=PublicProject.Stock[2]+(IsOrganicVillage()?BeamStock:0);
             Score=PublicBuilding && EffectivePublicBeams<PublicNeed[2]?240:(BeamStock<PrivateBeams?155:16);
+            if(bCastle && CastleNeed.Z>(IsOrganicVillage()?BeamStock:0)) Score=240;
             if(IsOrganicVillage() && OrganicNeed.Beams>BeamStock) Score=FMath::Max(Score,260.f);
         }
         if(Op==15)
@@ -744,7 +786,12 @@ bool AHearthVillage::StartProduction(int32 Index,int32 Action,const FString& Rea
     const bool bHousingInputLabor=Op==14 && S.Kind==EHearthSiteKind::Carpenter && bWorkshopResident
         && (!bOwnsStructure || R.PersonalTiles>=12);
     const int32 WageFunder=Op==5?(bNeedsNewPlan?Index:S.Owner):(Op==0 || bPotterInputLabor || bHousingInputLabor?Index:-1);
-    if(!ReserveWage(Index,R.ActiveTaskId,WageForOperation(Op),false,WageFunder))
+    const int32 CastleBudget=Op==13 && S.Kind==EHearthSiteKind::Carpenter
+        ?HearthProduction::CastleSawmillBudget(PublicProject,Residents,WageForOperation(Op)):0;
+    const bool bCastleInputLabor=GeneralFunds()<WageForOperation(Op) && CastleBudget>0 && TaxProjectCoins>=CastleBudget;
+    // Existing tax-funded wage escrow is saved, taxed and settled by the same
+    // ledger as construction wages. Outputs still require work and delivery.
+    if(!ReserveWage(Index,R.ActiveTaskId,WageForOperation(Op),bCastleInputLabor,WageFunder))
     {
         ReturnTool(Index); R.ActiveTaskId.Empty(); R.LatestEvent=(Op==0||Op==5)?TEXT("房主的钱包无法预留地块或构件工资，这项工作暂不开始。"):TEXT("村库无法预留工资，这项工作暂不开始。"); return false;
     }

@@ -1,0 +1,9 @@
+{
+	"world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+	"provenance": "native UE geographic blockout; coordinator camera, not NPC FOV",
+	"eye_cm": "X=-217000.000 Y=269000.000 Z=15037.535",
+	"aim_cm": "X=-205000.000 Y=255000.000 Z=554.623",
+	"horizontal_fov": 65,
+	"houses": 348,
+	"trees": 3977
+}

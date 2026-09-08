@@ -31,5 +31,9 @@ private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> PlankLayers;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BeamLayers;
     TArray<FTransform> WheelBases;
+    FVector PreviousCartPosition=FVector::ZeroVector;
+    double PreviousOdometerCm=0.0, VisualTravelCm=0.0;
+    float PreviousCartYaw=0.f;
+    bool bHasMotionSample=false;
     bool bReady=false, bWasWalking=false, bReviewCaptured=false, bCargoAuditCaptured=false;
 };

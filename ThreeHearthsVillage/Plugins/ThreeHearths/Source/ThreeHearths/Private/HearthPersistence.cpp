@@ -100,9 +100,13 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(const auto& Pair:W.OrganicHomes)
         if(!W.People.ContainsByPredicate([&](const FHearthSavedResident& Saved){ return Saved.Person.StableId==Pair.Key; }))
         { Error=TEXT("有机住宅引用了不存在的居民"); return false; }
-    for(int32 I=0;I<HousingPlotCount();++I) if(!W.Plots[I].Equals(PlotPositions[I],.01) || W.Costs[I]!=PlotCosts[I])
+    // The central hill is a vertical terrain migration. XY ownership and
+    // plot costs still must match exactly; saved elevations are reprojected.
+    const auto SameAnchor=[this](const FVector& A,const FVector& B)
+    { return IsOrganicVillage()?FVector::Dist2D(A,B)<.01:A.Equals(B,.01); };
+    for(int32 I=0;I<HousingPlotCount();++I) if(!SameAnchor(W.Plots[I],PlotPositions[I]) || W.Costs[I]!=PlotCosts[I])
     { Error=TEXT("地图布局已变化，须先迁移存档"); return false; }
-    for(int32 I=0;I<3;++I) if(!W.Stocks[I].Equals(WoodPositions[I],.01)) { Error=TEXT("材料站布局与存档不匹配"); return false; }
+    for(int32 I=0;I<3;++I) if(!SameAnchor(W.Stocks[I],WoodPositions[I])) { Error=TEXT("材料站布局与存档不匹配"); return false; }
     for(const auto& R:Residents) if(!IsValid(R.Actor)) { Error=TEXT("居民表现对象未准备好"); return false; }
     // Everything above is read-only. Apply the validated image together on the game thread.
     StopDecisionRequests(); LoadApiConfig();
@@ -135,7 +139,9 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     for(int32 I=0;I<2;++I) { Manufactured[I]=W.Manufactured[I]; ManufacturedSpent[I]=W.ManufacturedSpent[I]; }
     ProducedClay=W.ProducedClay; SpentClay=W.SpentClay; ProducedTiles=W.ProducedTiles; SpentTiles=W.SpentTiles;
     for(int32 I=0;I<HousingPlotCount();++I)
-    { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; PlotYaws[I]=W.PlotYaws[I]; PlotEntrances[I]=W.PlotEntrances[I]; if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
+    { PlotOwners[I]=W.Owners[I]; PlotIds[I]=W.PlotIds[I]; PlotYaws[I]=W.PlotYaws[I]; PlotEntrances[I]=W.PlotEntrances[I];
+      if(IsOrganicVillage()) PlotEntrances[I].Z=GroundHeightAt(PlotEntrances[I]);
+      if(HouseMeshes.IsValidIndex(I)) HouseMeshes[I]->SetVisibility(false); }
     PendingDecisions.SetNum(Residents.Num()); bool Interrupted=false;
     for(int32 I=0;I<Residents.Num();++I)
     {
@@ -191,6 +197,24 @@ bool AHearthVillage::ApplyWorldState(const FString& Text,FString& Error)
     NextTradeAt=Elapsed+8.f;
     for(auto& M:ProductionMeshes) if(IsValid(M)) M->DestroyComponent();
     ProductionMeshes.Reset(); ProductionSites=MoveTemp(W.Sites); ProductionTotals=MoveTemp(W.Totals);
+    if(IsOrganicVillage())
+    {
+        float RoyalBefore=0, RoyalAfter=0;
+        if(ProductionSites.IsValidIndex(PublicProject.Site)) RoyalBefore=ProductionSites[PublicProject.Site].Position.Z;
+        for(auto& Site:ProductionSites)
+        {
+            Site.Position.Z=GroundHeightAt(Site.Position);
+            Site.Approach.Z=GroundHeightAt(Site.Approach)+5.2f;
+        }
+        for(auto& Resident:Residents) if(IsValid(Resident.Actor))
+        {
+            FVector Position=Resident.Actor->GetActorLocation();
+            Position.Z=GroundHeightAt(Position)+5.2f; Resident.Actor->SetActorLocation(Position);
+        }
+        if(ProductionSites.IsValidIndex(PublicProject.Site)) RoyalAfter=ProductionSites[PublicProject.Site].Position.Z;
+        UE_LOG(LogTemp,Display,TEXT("ROYAL_HILL_REPROJECT world=%s previous_z=%.3f current_z=%.3f completed=%d"),
+            *WorldId,RoyalBefore,RoyalAfter,PublicProject.Completed);
+    }
     if(!ProductionSites.ContainsByPredicate([](const FHearthSite& S) { return S.Kind==EHearthSiteKind::Carpenter; }))
     {
         FHearthSite S; S.StableId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); S.Kind=EHearthSiteKind::Carpenter;

@@ -1,0 +1,300 @@
+{
+	"world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+	"source_policy": "SAO 1st-floor geography; approximate implementation coordinates only. Sources: https://w.atwiki.jp/saop/pages/430.html and https://swordartonline.fandom.com/wiki/1st_Floor_(Aincrad). No canonical survey is implied. Level0 is the project codename for Aincrad floor 1, a 10 km diameter circular floor with a southern first-city semicircle and northern city wall. Superseded medieval sovereignty, levy, and central hill nodes are excluded.",
+	"coordinate_frame": "east/north/up cm; UE=(east,-north,up)",
+	"floor_radius_cm": 500000,
+	"regions": [
+		{
+			"id": "beginnings_plaza",
+			"label": "起始之城广场",
+			"east_cm": 0,
+			"north_cm": -477000,
+			"kind": "southern_city"
+		},
+		{
+			"id": "black_iron_palace",
+			"label": "黑铁宫",
+			"east_cm": 0,
+			"north_cm": -490000,
+			"kind": "southern_city_landmark"
+		},
+		{
+			"id": "beginnings_northgate",
+			"label": "起始之城北门",
+			"east_cm": 0,
+			"north_cm": -447000,
+			"kind": "city_gate"
+		},
+		{
+			"id": "western_gate",
+			"label": "西门",
+			"east_cm": -43300,
+			"north_cm": -472000,
+			"kind": "city_gate"
+		},
+		{
+			"id": "meadow",
+			"label": "草原",
+			"east_cm": 0,
+			"north_cm": -340000,
+			"kind": "meadow"
+		},
+		{
+			"id": "horunka",
+			"label": "霍伦卡",
+			"east_cm": -205000,
+			"north_cm": -255000,
+			"kind": "settlement"
+		},
+		{
+			"id": "nepenthes_forest",
+			"label": "食人花森林",
+			"east_cm": -190000,
+			"north_cm": -170000,
+			"kind": "forest"
+		},
+		{
+			"id": "lake_region",
+			"label": "东侧湖区",
+			"east_cm": 150000,
+			"north_cm": -160000,
+			"kind": "lake_region"
+		},
+		{
+			"id": "ruins",
+			"label": "遗迹",
+			"east_cm": 0,
+			"north_cm": 75000,
+			"kind": "ruins"
+		},
+		{
+			"id": "labyrinth_forest",
+			"label": "迷宫森林",
+			"east_cm": -185000,
+			"north_cm": 230000,
+			"kind": "forest"
+		},
+		{
+			"id": "tolbana",
+			"label": "托尔巴纳",
+			"east_cm": 0,
+			"north_cm": 290000,
+			"kind": "settlement"
+		},
+		{
+			"id": "labyrinth",
+			"label": "迷宫",
+			"east_cm": 0,
+			"north_cm": 420000,
+			"kind": "labyrinth"
+		}
+	],
+	"routes": [
+		{
+			"from": "beginnings_plaza",
+			"to": "beginnings_northgate",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -477000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": -447000
+				}
+			]
+		},
+		{
+			"from": "beginnings_plaza",
+			"to": "western_gate",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -477000
+				},
+				{
+					"east_cm": -43300,
+					"north_cm": -472000
+				}
+			]
+		},
+		{
+			"from": "beginnings_plaza",
+			"to": "black_iron_palace",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -477000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": -490000
+				}
+			]
+		},
+		{
+			"from": "western_gate",
+			"to": "horunka",
+			"points": [
+				{
+					"east_cm": -43300,
+					"north_cm": -472000
+				},
+				{
+					"east_cm": -120000,
+					"north_cm": -340000
+				},
+				{
+					"east_cm": -205000,
+					"north_cm": -255000
+				}
+			]
+		},
+		{
+			"from": "beginnings_northgate",
+			"to": "meadow",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -447000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": -340000
+				}
+			]
+		},
+		{
+			"from": "meadow",
+			"to": "horunka",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -340000
+				},
+				{
+					"east_cm": -105000,
+					"north_cm": -300000
+				},
+				{
+					"east_cm": -205000,
+					"north_cm": -255000
+				}
+			]
+		},
+		{
+			"from": "horunka",
+			"to": "nepenthes_forest",
+			"points": [
+				{
+					"east_cm": -205000,
+					"north_cm": -255000
+				},
+				{
+					"east_cm": -190000,
+					"north_cm": -170000
+				}
+			]
+		},
+		{
+			"from": "meadow",
+			"to": "lake_region",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": -340000
+				},
+				{
+					"east_cm": 120000,
+					"north_cm": -270000
+				},
+				{
+					"east_cm": 150000,
+					"north_cm": -160000
+				}
+			]
+		},
+		{
+			"from": "lake_region",
+			"to": "ruins",
+			"points": [
+				{
+					"east_cm": 150000,
+					"north_cm": -160000
+				},
+				{
+					"east_cm": 120000,
+					"north_cm": -25000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": 75000
+				}
+			]
+		},
+		{
+			"from": "nepenthes_forest",
+			"to": "ruins",
+			"points": [
+				{
+					"east_cm": -190000,
+					"north_cm": -170000
+				},
+				{
+					"east_cm": -90000,
+					"north_cm": -45000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": 75000
+				}
+			]
+		},
+		{
+			"from": "ruins",
+			"to": "labyrinth_forest",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": 75000
+				},
+				{
+					"east_cm": -95000,
+					"north_cm": 150000
+				},
+				{
+					"east_cm": -185000,
+					"north_cm": 230000
+				}
+			]
+		},
+		{
+			"from": "ruins",
+			"to": "tolbana",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": 75000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": 290000
+				}
+			]
+		},
+		{
+			"from": "tolbana",
+			"to": "labyrinth",
+			"points": [
+				{
+					"east_cm": 0,
+					"north_cm": 290000
+				},
+				{
+					"east_cm": 0,
+					"north_cm": 420000
+				}
+			]
+		}
+	]
+}

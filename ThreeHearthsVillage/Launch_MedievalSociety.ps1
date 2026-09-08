@@ -1,5 +1,5 @@
 param(
-    [string]$EngineExe = 'D:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe',
+    [string]$EngineExe = '',
     [ValidateRange(0,3600)][int]$ReviewDurationSeconds = 0,
     [switch]$RenderOffscreen
 )
@@ -7,6 +7,11 @@ $ErrorActionPreference = 'Stop'
 $medievalProject = Join-Path $PSScriptRoot 'CropoutSampleProject.uproject'
 $seedDirectory = Join-Path $PSScriptRoot 'Content\ThreeHearths\Data\MedievalShowcase'
 $saveDirectory = Join-Path $PSScriptRoot 'Saved\ThreeHearths\MedievalShowcase'
+if ([string]::IsNullOrWhiteSpace($EngineExe)) {
+    $EngineExe = @('C:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe', 'D:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe') |
+        Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if (-not $EngineExe) { throw 'UE 5.8 was not found on C: or D:. Pass -EngineExe with the installed editor path.' }
+}
 if (-not (Test-Path -LiteralPath $EngineExe)) { throw "Unreal Editor not found: $EngineExe" }
 if ($ReviewDurationSeconds -gt 0 -and $ReviewDurationSeconds -lt 30) { throw 'A timed review must last at least 30 seconds.' }
 New-Item -ItemType Directory -Path $saveDirectory -Force | Out-Null

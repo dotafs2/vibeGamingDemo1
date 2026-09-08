@@ -141,6 +141,116 @@ bool FHearthPublicWallTest::RunTest(const FString&)
     TestTrue(TEXT("Town3 leaves later-stage stone in the real depot"), Village->StoneStock >= 70);
     TestEqual(TEXT("Town3 protects only the current three-part wage window"), Village->TaxProjectCoins, 6);
     TestEqual(TEXT("Town3 releases excess tax to ordinary working capital"), Village->TaxReleasedCoins, 94);
+
+    // A bounded execution fixture reproduces the real next floor: five planks,
+    // one already purchased, abundant communal timber, and 29 protected coins.
+    // Advance the actual worker state machines; do not grant output or set a
+    // part to completed to make the supply chain pass.
+    Village->PublicProject=FHearthPublicProject();
+    Village->PublicProject.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    Village->PublicProject.TemplateId=TEXT("royal_keep_garden_v2"); Village->PublicProject.Status=TEXT("building");
+    Village->PublicProject.Site=0; Village->PublicProject.Stock[1]=1; Village->PublicProject.Stock[2]=18;
+    FHearthPublicPart SupplyFloor,SupplyUpper;
+    SupplyFloor.Stage=2; SupplyFloor.Required[1]=5; SupplyFloor.Id=TEXT("floor-a");
+    SupplyUpper.Stage=3; SupplyUpper.Required[2]=1000; SupplyUpper.Id=TEXT("later-walls");
+    Village->PublicProject.Parts={SupplyFloor,SupplyFloor,SupplyFloor,SupplyUpper};
+    Village->PublicProject.Parts[1].Id=TEXT("floor-b"); Village->PublicProject.Parts[2].Id=TEXT("floor-c");
+    const FString SupplyProjectId=Village->PublicProject.Id;
+    Village->TreasuryCoins=29; Village->TaxProjectCoins=29; Village->TaxReleasedCoins=0;
+    Village->PlankStock=115; Village->BeamStock=671; Village->StoneStock=14;
+    Village->WoodStock[0]=40; Village->WoodStock[1]=Village->WoodStock[2]=0;
+    Village->WagePayables.Reset(); Village->Transactions.Reset(); Village->TaxAssessments.Reset();
+    Village->TaxRatePercent=25; for(int32& Remainder:Village->TaxRemainders) Remainder=0;
+    Village->FixedObstacles.Reset(); Village->ProductionSites.Reset();
+    const FVector TestDepot(-250,-400,8);
+    FHearthSite SupplySite; SupplySite.Position=FVector(600,500,8); SupplySite.Approach=FVector(0,0,8); SupplySite.bReachable=true;
+    FHearthSite Sawmill; Sawmill.Kind=EHearthSiteKind::Carpenter; Sawmill.Position=FVector(650,-400,8);
+    Sawmill.Approach=FVector(150,-400,8); Sawmill.Radius=190; Sawmill.bReachable=true;
+    Village->ProductionSites={SupplySite,Sawmill};
+    for(int32 I=0;I<Village->Residents.Num();++I)
+    {
+        auto& Person=Village->Residents[I]; Village->ReturnTool(I);
+        Person.Task=EHearthTask::LifeActivity; Person.Timer=3600.f; Person.Route.Reset(); Person.ActiveTaskId.Empty();
+        Person.PersonalPlanks=0; Person.ProductionOp=-1; Person.ProductionSite=-1;
+        Person.CargoType=-1; Person.CargoAmount=0; Person.Hunger=0; Person.Energy=100;
+        Person.Actor->SetActorLocation(FVector(-2500,2500+I*200,8));
+    }
+    auto& Supplier=Village->Residents[0]; Supplier.Task=EHearthTask::LifeChoosing; Supplier.BuildProgress=1.f;
+    Supplier.MoveSpeed=200.f; Supplier.Actor->SetActorLocation(TestDepot); Supplier.Timer=0.f;
+    const int32 InitialManufactured=Village->Manufactured[0],InitialPlanksSpent=Village->ManufacturedSpent[0];
+    const int32 InitialLogsSpent=Village->Spent[1],InitialMillingTotal=Village->ProductionTotals.FindRef(TEXT("mill_planks"));
+    const auto MoneyInCirculation=[Village]()
+    {
+        int32 Total=Village->TreasuryCoins;
+        for(const auto& Person:Village->Residents) Total+=Person.Coins;
+        for(const auto& Payable:Village->WagePayables) if(Payable.Status==TEXT("reserved")) Total+=Payable.Amount;
+        for(const auto& Order:Village->PublicProject.Orders) Total+=Order.Escrow;
+        return Total;
+    };
+    const int32 InitialMoney=MoneyInCirculation();
+    Village->PublicScheduleTimer=0.f;
+    Village->ProductionSites[1].bReachable=false;
+    Village->AdvancePublicWorks(.1f);
+    TestEqual(TEXT("Unreachable sawmill cannot reserve wages"),Village->WagePayables.Num(),0);
+    TestEqual(TEXT("Unreachable sawmill cannot spend source logs"),Village->AvailableWood(),40);
+    TestEqual(TEXT("Procurement never reclassifies communal timber as private property"),Village->PlankStock,115);
+    Village->ProductionSites[1].bReachable=true;
+    Village->AdvancePublicWorks(.1f);
+    if(!TestEqual(TEXT("Stalled floor schedules physical milling before any future beam job"),Supplier.Task,EHearthTask::ProductionTravel)) return false;
+    TestEqual(TEXT("The first milling job reserves exactly three protected coins"),Village->TaxProjectCoins,26);
+    if(!TestEqual(TEXT("Only one production wage is reserved"),Village->WagePayables.Num(),1)) return false;
+    TestTrue(TEXT("Input labor uses the existing persisted tax wage ledger"),Village->WagePayables[0].bTaxFunded);
+    TestEqual(TEXT("Milling has not yet earned a private share"),Supplier.PersonalPlanks,0);
+    TestEqual(TEXT("Start reserves two real logs"),Village->AvailableWood(),38);
+    TestEqual(TEXT("No material output before work"),Village->Manufactured[0],InitialManufactured);
+    const FString FirstMillingTask=Supplier.ActiveTaskId;
+    Village->AdvancePublicWorks(.1f);
+    TestEqual(TEXT("Repeated scheduling cannot reserve a second milling wage"),Village->WagePayables.Num(),1);
+    TestEqual(TEXT("Repeated scheduling cannot deduct logs again"),Village->AvailableWood(),38);
+
+    bool bSawTransit=false,bSawWork=false,bSawDeposit=false,bSawSupply=false,bSawInstallation=false;
+    bool bMovedDuringTransit=false;
+    for(int32 Tick=0;Tick<6000 && Village->PublicProject.Completed==0;++Tick)
+    {
+        Village->AdvancePublicWorks(.1f);
+        Supplier.Timer=FMath::Max(0.f,Supplier.Timer-.1f);
+        const FVector Before=Supplier.Actor->GetActorLocation();
+        const auto Task=Supplier.Task;
+        if(Task==EHearthTask::ProductionTravel || Task==EHearthTask::ProductionWork
+            || Task==EHearthTask::ProductionDeliver || Task==EHearthTask::ProductionDeposit)
+        {
+            bSawTransit|=Task==EHearthTask::ProductionDeliver;
+            bSawWork|=Task==EHearthTask::ProductionWork;
+            bSawDeposit|=Task==EHearthTask::ProductionDeposit;
+            Village->AdvanceProduction(0,.1f);
+        }
+        else if(Task==EHearthTask::SupplyTravel || Task==EHearthTask::SupplyHandover)
+        { bSawSupply=true; Village->AdvanceSupplyWorker(0,.1f); }
+        else if(Task==EHearthTask::PublicTravel || Task==EHearthTask::PublicWork)
+        { bSawInstallation|=Task==EHearthTask::PublicWork; Village->AdvancePublicWorker(0,.1f); }
+        bMovedDuringTransit|=!Before.Equals(Supplier.Actor->GetActorLocation(),.01);
+    }
+    TestEqual(TEXT("The same project finishes exactly one previously waiting floor"),Village->PublicProject.Completed,1);
+    TestEqual(TEXT("Supply recovery retains project identity"),Village->PublicProject.Id,SupplyProjectId);
+    TestTrue(TEXT("Recovery includes actual work, public cargo, deposit, purchase and installation"),
+        bSawTransit && bSawWork && bSawDeposit && bSawSupply && bSawInstallation && bMovedDuringTransit);
+    TestEqual(TEXT("Future-stage walls remain waiting"),Village->PublicProject.Parts.Last().Status,FString(TEXT("waiting")));
+    TestEqual(TEXT("Four milling jobs consume eight source logs"),Village->AvailableWood(),32);
+    TestEqual(TEXT("Source log expense is recorded once"),Village->Spent[1]-InitialLogsSpent,8);
+    TestEqual(TEXT("Four real sawmill jobs manufacture sixteen total planks"),Village->Manufactured[0]-InitialManufactured,16);
+    TestEqual(TEXT("Twelve communal planks remain communal"),Village->PlankStock,127);
+    TestEqual(TEXT("One purchased plank plus four private shares are installed"),Village->ManufacturedSpent[0]-InitialPlanksSpent,5);
+    TestEqual(TEXT("Private shares have all been sold exactly once"),Supplier.PersonalPlanks,0);
+    TestEqual(TEXT("Only four plank purchases were opened"),Village->PublicProject.Orders.Num(),4);
+    TestEqual(TEXT("Only four completed milling operations are counted"),Village->ProductionTotals.FindRef(TEXT("mill_planks"))-InitialMillingTotal,4);
+    TestEqual(TEXT("Future beam demand does not consume communal beams"),Village->BeamStock,671);
+    TestEqual(TEXT("Wages, sales and tax transfers conserve total money"),MoneyInCirculation(),InitialMoney);
+    const int32 MoneyAfter=MoneyInCirculation(),TransactionsAfter=Village->Transactions.Num();
+    TestFalse(TEXT("Already paid milling wage cannot settle a second time"),Village->SettleWage(0,FirstMillingTask));
+    if(!Village->PublicProject.Orders.IsEmpty())
+        TestTrue(TEXT("Completed private sale remains idempotent"),Village->SettleSupplyOrder(Village->PublicProject.Orders[0]));
+    TestEqual(TEXT("Settlement retries cannot add transaction rows"),Village->Transactions.Num(),TransactionsAfter);
+    TestEqual(TEXT("Settlement retries cannot create money"),MoneyInCirculation(),MoneyAfter);
     return true;
 }
 

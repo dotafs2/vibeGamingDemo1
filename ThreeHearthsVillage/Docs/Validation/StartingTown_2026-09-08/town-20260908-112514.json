@@ -1,0 +1,45 @@
+{
+  "run": "town-20260908-112514",
+  "seconds": 30,
+  "api": true,
+  "manual_route_verification": false,
+  "ue_pid": 529088,
+  "gateway_pid": 528016,
+  "started_utc_epoch": 1788866714.4445305,
+  "budget_before": {
+    "allocation_cap_cny": 95.0,
+    "authorized_cny": 100.0,
+    "counts": {
+      "settled": 96
+    },
+    "deadline_utc": 0,
+    "halted": "",
+    "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba",
+    "liability_cny": 1.5998201,
+    "model": "kimi-k2.6",
+    "prior_unverified_cny": 0.0,
+    "remaining_allocatable_cny": 93.4001799,
+    "reserved_cny": 0.0,
+    "settled_cny": 1.5998201
+  },
+  "ue_exit": 0,
+  "budget_after": {
+    "allocation_cap_cny": 95.0,
+    "authorized_cny": 100.0,
+    "counts": {
+      "settled": 96
+    },
+    "deadline_utc": 0,
+    "halted": "",
+    "ledger_id": "bde6d9e9-65c9-4183-b35c-abfc166084ba",
+    "liability_cny": 1.5998201,
+    "model": "kimi-k2.6",
+    "prior_unverified_cny": 0.0,
+    "remaining_allocatable_cny": 93.4001799,
+    "reserved_cny": 0.0,
+    "settled_cny": 1.5998201
+  },
+  "new_cost_cny": 0.0,
+  "new_settled_calls": 0,
+  "finished_utc_epoch": 1788866756.2187047
+}

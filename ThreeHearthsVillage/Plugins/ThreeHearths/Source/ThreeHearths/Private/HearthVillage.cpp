@@ -3,6 +3,8 @@
 #include "HearthMovement.h"
 #include "HearthTownLayout.h"
 #include "HearthTavernRuntime.h"
+#include "HearthAincradEcology.h"
+#include "HearthAincradStyle.h"
 #include "Animation/AnimSequence.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
@@ -264,6 +266,7 @@ UStaticMeshComponent* AHearthVillage::AddMesh(const FString& Path, const FVector
         Mesh->SetMaterial(0,Material);
     }
     Mesh->RegisterComponent();
+    if(IsOrganicVillage() && Color==nullptr) HearthAincradStyle::ApplyToMesh(Mesh);
     return Mesh;
 }
 
@@ -405,7 +408,9 @@ void AHearthVillage::BuildIslandVillage()
     const auto Roads=HearthTownLayout::VillageRoads(TownLayoutVersion>=3?true:bOrganicTownLayout,TownLayoutVersion);
     auto PathSegment=[this](FVector A,FVector B,float Width)
     {
-        if(IsOrganicVillage()) return; // Real graded ribbons are created after the height field.
+        // OrganicGround supplies the complete graded ribbon. Hundreds of old
+        // flat cube strips both fight its surface and create needless meshes.
+        if(IsOrganicVillage()) return;
         FVector C=(A+B)*.5f; C.Z=3.7f; const FVector D=B-A;
         auto* Mesh=AddMesh(Hearth::Shapes+TEXT("Cube"),C,FVector(D.Size2D()/100,Width/100,.013),&Hearth::Path);
         Mesh->SetWorldRotation(FRotator(0,FMath::RadiansToDegrees(FMath::Atan2(D.Y,D.X)),0));
@@ -463,11 +468,64 @@ void AHearthVillage::BuildIslandVillage()
         auto* Stock=AddMesh(Hearth::Shapes+TEXT("Cube"),WoodPositions[I]+FVector(-15,0,20),FVector(1.1f,1.2f,0.4f),&Hearth::Wood);
         StockMeshes.Add(Stock);
     }
+    if(IsOrganicVillage())
+    {
+        // Finish the ground and its existing-anchor reprojection BEFORE deriving
+        // any ecology transforms. The terrain owns this nonproductive scenery.
+        BuildOrganicGround(); LandGrid.Reset();
+        if(!OrganicGroundActor.IsValid() || !OrganicTerrainSettings.IsValid() || !OrganicTerrainGrid.IsValid()
+            || OrganicTerrainGrid->Vertices.IsEmpty()) return;
+        FVector Market(-1100,-1050,0); Market.Z=GroundHeightAt(Market);
+        AddMesh(Hearth::Houses+TEXT("SM_TownHall"),Market,FVector(1));
+        HearthAincradEcology::FInput Ecology;
+        Ecology.Terrain=*OrganicTerrainSettings; // includes home spurs and the complete royal ascent
+        const auto Reserve=[&Ecology](const FVector& P,float Radius,float Yaw=0.f)
+        {
+            Ecology.Clearings.Add({FVector2D(P.X,P.Y),FVector2D(Radius,Radius),Yaw});
+        };
+        for(int32 I=0;I<HousingPlotCount();++I) Reserve(PlotPositions[I],1100,PlotYaws[I]);
+        for(const FVector& P:WoodPositions) Reserve(P,400);
+        const auto ReserveSites=[&](const TArray<FHearthSite>& Sites)
+        {
+            for(const auto& Site:Sites)
+            {
+                Reserve(Site.Position,FMath::Max(Site.Radius,Site.Kind==EHearthSiteKind::House?1100.f:280.f));
+                if(!Site.Approach.IsNearlyZero())
+                {
+                    Reserve(Site.Approach,220);
+                    HearthOrganicTerrain::FRoadCenterline Access; Access.Width=120; Access.Transition=100;
+                    Access.Nodes.Add({FVector2D(Site.Position.X,Site.Position.Y),0});
+                    Access.Nodes.Add({FVector2D(Site.Approach.X,Site.Approach.Y),0});
+                    Ecology.Terrain.Roads.Add(MoveTemp(Access));
+                }
+            }
+        };
+        ReserveSites(ProductionSites);
+        if(bSavedLayout)
+        {
+            for(int32 I=0;I<FMath::Min(SavedNeighborhood.PlotCount,HearthVillageLimits::MaxPopulation);++I)
+                Reserve(SavedNeighborhood.Plots[I],1100,SavedNeighborhood.PlotYaws[I]);
+            for(const FVector& P:SavedNeighborhood.Stocks) Reserve(P,400);
+            ReserveSites(SavedNeighborhood.Sites);
+            for(const auto& Home:SavedNeighborhood.OrganicHomes)
+            {
+                for(const auto& Kit:Home.Value.MarketKitInstalled)
+                {Reserve(Kit.InstallPosition,450);Reserve(Kit.Anchor,250);}
+                if(Home.Value.bHasMarketKitPending)
+                {Reserve(Home.Value.MarketKitPending.InstallPosition,450);Reserve(Home.Value.MarketKitPending.Anchor,250);}
+            }
+        }
+        // The founding productive sites are initialized later. Reserve their
+        // existing coordinates even on a new world; do not create replacement IDs.
+        for(int32 I=0;I<3;++I)
+        {Reserve(FVector(-4300,-1900+I*1900,0),300);Reserve(FVector(-1000+I*800,3100,0),300);}
+        for(const FVector& P:{FVector(-3300,-2800,0),FVector(-2900,-3400,0),FVector(-3700,-3400,0),FVector(-2600,3100,0)}) Reserve(P,300);
+        Reserve(GetServiceGateFrame().GetLocation(),800);
+        HearthAincradEcology::Build(*OrganicGroundActor.Get(),Ecology,[this](const FVector& P){return GroundHeightAt(P);});
+        return;
+    }
     auto Decorate=[this](const FString& Asset,FVector Position,float Scale)
     {
-        if(IsOrganicVillage() && (Asset.Contains(TEXT("Tree")) || Asset.Contains(TEXT("Shrub")) || Asset.Contains(TEXT("Stone"))))
-            for(int32 Plot=0;Plot<HousingPlotCount();++Plot)
-                if(FVector::DistSquared2D(Position,PlotPositions[Plot])<1100.f*1100.f) return;
         FHitResult Hit;
         FCollisionQueryParams Query; Query.bTraceComplex=true; Query.AddIgnoredActor(this);
         if(GetWorld()->LineTraceSingleByChannel(Hit,Position+FVector(0,0,1000),Position-FVector(0,0,1000),ECC_Visibility,Query)
@@ -488,7 +546,6 @@ void AHearthVillage::BuildIslandVillage()
             Crops+(Kind==3?TEXT("SM_Stone_02"):TEXT("SM_Shrub_01"));
         Decorate(Asset,P,Scatter.FRandRange(0.8f,1.25f));
     }
-    if(IsOrganicVillage()) { BuildOrganicGround(); LandGrid.Reset(); }
 }
 
 void AHearthVillage::OnConstruction(const FTransform& Transform)
@@ -820,8 +877,9 @@ void AHearthVillage::Tick(float DeltaSeconds)
             const FString Capture=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/continuous-development/tool-action.png");
             IFileManager::Get().MakeDirectory(*FPaths::GetPath(Capture),true);
             const FString Command=FString::Printf(TEXT("HighResShot 1600x900 filename=\"%s\""),*Capture);
-            const bool bRequested=GEngine&&GEngine->Exec(GetWorld(),*Command);
-            if(!bRequested) FScreenshotRequest::RequestScreenshot(Capture,false,false);
+            const bool bPlanningCapture=FParse::Param(FCommandLine::Get(),TEXT("HearthCapturePlanning"));
+            const bool bRequested=!bPlanningCapture && GEngine && GEngine->Exec(GetWorld(),*Command);
+            if(!bRequested) FScreenshotRequest::RequestScreenshot(Capture,bPlanningCapture,false);
             UE_LOG(LogThreeHearths,Display,TEXT("ACCEPTANCE_CAPTURE requested=%s path=%s"),bRequested?TEXT("highres"):TEXT("standard"),*Capture);
             if(IsOrganicVillage())
             {
@@ -831,7 +889,8 @@ void AHearthVillage::Tick(float DeltaSeconds)
                 FFileHelper::SaveStringToFile(ExportWorldState(),*(ReviewDir/TEXT("world-payload.json")));
                 const FString TownImage=ExportTownObservation();
                 if(!TownImage.IsEmpty()) IFileManager::Get().Copy(*(ReviewDir/TEXT("village.png")),*TownImage,true);
-                for(int32 Resident:{0,4,7})
+                if(FParse::Param(FCommandLine::Get(),TEXT("HearthCaptureAincradStyle"))) HearthAincradStyle::ExportViews(*this);
+                for(int32 Resident:{0,3,4,7})
                 {
                     const FString HomeImage=ExportDesignObservation(Resident);
                     if(!HomeImage.IsEmpty()) IFileManager::Get().Copy(*(ReviewDir/FString::Printf(TEXT("home-%d.png"),Resident)),*HomeImage,true);
@@ -868,6 +927,7 @@ void AHearthVillage::Tick(float DeltaSeconds)
     if(bSimulationPaused && PendingDecisionCount()>0) ConsumeDecision();
     RefreshProductionVisuals();
     RefreshPublicVisuals();
+    RefreshTownPlanning();
     if(bWorldPersistenceEnabled && !bWorldWriteBlocked)
     {
         WorldSaveTimer+=RealDt;

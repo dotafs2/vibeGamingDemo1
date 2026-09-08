@@ -1,6 +1,12 @@
 #include "HearthVillage.h"
 #include "HearthRoyalWorksPlan.h"
 
+namespace HearthCastleSupply
+{
+    FIntVector CurrentBatchDeficit(const FHearthPublicProject& Project,const TArray<FHearthResident>& Residents);
+    int32 OwnedOrProcessingPlanks(const TArray<FHearthResident>& Residents);
+}
+
 namespace HearthPublicWorks
 {
     void Populate(FHearthPublicProject& Project)
@@ -181,7 +187,10 @@ void AHearthVillage::AdvancePublicWorks(float Dt)
     }
     for(const auto& R:Residents) if((R.Task==EHearthTask::PublicTravel || R.Task==EHearthTask::PublicWork) && R.CargoType==3) HeldPlanks+=R.CargoAmount;
     for(const auto& Order:PublicProject.Orders) if(Order.Status==TEXT("transporting")) HeldPlanks+=Order.ReservedQuantity;
-    const int32 RemainingBill=RemainingWages+2*FMath::Max(0,NeededPlanks-HeldPlanks);
+    const FIntVector CastleNeed=bTown3?HearthCastleSupply::CurrentBatchDeficit(PublicProject,Residents):FIntVector::ZeroValue;
+    const int32 MissingPlanks=bTown3?CastleNeed.Y:FMath::Max(0,NeededPlanks-HeldPlanks);
+    const int32 MillingJobs=bTown3?FMath::Max(0,MissingPlanks-HearthCastleSupply::OwnedOrProcessingPlanks(Residents)):0;
+    const int32 RemainingBill=RemainingWages+2*MissingPlanks+WageForOperation(13)*MillingJobs;
     const int32 Surplus=FMath::Max(0,TaxProjectCoins-RemainingBill);
     if(Surplus>0) { TaxProjectCoins-=Surplus;TaxReleasedCoins+=Surplus; }
     // Physical depot grants are deductions from the real village depot. v2's
@@ -197,13 +206,28 @@ void AHearthVillage::AdvancePublicWorks(float Dt)
         { Need+=Part.Required[M]; Held+=Part.Reserved[M]+Part.Delivered[M]; }
         for(const auto& Resident:Residents) if((Resident.Task==EHearthTask::PublicTravel || Resident.Task==EHearthTask::PublicWork) && Resident.CargoType==M+2) Held+=Resident.CargoAmount;
         int32& Depot = M == 0 ? StoneStock : BeamStock;
-        const int32 Grant = FMath::Min(Depot, FMath::Max(0,Need-Held));
+        const int32 Grant = FMath::Min(Depot, bTown3?CastleNeed[M]:FMath::Max(0,Need-Held));
         if (Grant > 0) { Depot -= Grant; PublicProject.Stock[M] += Grant; PublicProject.Grants[M] += Grant; }
     }
+    // Spend reserved construction wages before ordering for the next parts.
+    if(bTown3) for(int32 I=0;I<Residents.Num();++I)
+        if(CanAssignActivity(I) && StartPublicPart(I)) return;
     for (int32 I = 0; I < Residents.Num(); ++I)
         if (CanAssignActivity(I) && StartSupplyOrder(I)) return;
     for (int32 I = 0; I < Residents.Num(); ++I)
         if (CanAssignActivity(I) && StartPublicPart(I)) return;
+    if(bTown3 && MillingJobs>0)
+    {
+        // One assignment per scheduling pass; the existing saw and workbench
+        // reservations bound concurrency. Busy residents keep their decisions.
+        for(int32 I=0;I<Residents.Num();++I)
+        {
+            if(!CanAssignActivity(I) || Residents[I].Hunger>=65.f || Residents[I].Energy<25.f) continue;
+            for(int32 Site=0;Site<ProductionSites.Num();++Site)
+                if(ProductionSites[Site].Kind==EHearthSiteKind::Carpenter
+                    && StartProduction(I,100+Site*16+13,TEXT("城堡当前阶段缺少可采购木板，先加工原木并送回库存，再出售自己的锯木份额。"),false)) return;
+        }
+    }
 }
 
 void AHearthVillage::AdvancePublicWorker(int32 Worker, float Dt)

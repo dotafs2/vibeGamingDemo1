@@ -27,6 +27,7 @@ class AStaticMeshActor;
 struct FHearthResidentBuildingPlan;
 struct FHearthTavernRuntimeState;
 struct FHearthFreightVisualState;
+namespace HearthFreightNavigation { struct FRecoveryObstacle; }
 
 namespace HearthVillageLimits
 {
@@ -43,6 +44,13 @@ namespace HearthVillageLimits
 
 UENUM(BlueprintType)
 enum class EHearthTask : uint8 { Choosing, ToWood, Chopping, ToHome, Delivering, Building, Settled, LifeChoosing, LifeTravel, LifeActivity, ProductionTravel, ProductionWork, ProductionDeliver, ProductionDeposit, TradeTravel, TradeWaiting, PublicTravel, PublicWork, SupplyTravel, SupplyHandover, OrganicTravel, OrganicWork };
+
+namespace HearthLifeAction
+{
+    // Internal action used after a resident defers a first-person review.
+    // It is never exposed as a model-selectable generic activity.
+    constexpr int32 VisualInspection = 63;
+}
 
 // Stable operation IDs: each site offers only the operations its current state permits.
 enum class EHearthSiteKind : uint8 { Empty, Land, Corn, Wheat, Lettuce, Pumpkin, House, Tree, Shrub, Stone, Carpenter, ClayPit, TileKiln };
@@ -80,7 +88,7 @@ struct FHearthDecisionRecord
 // Each resident owns one request slot; replies never share mutable decision data.
 struct FHearthPendingDecision
 {
-    FString OperationId, ConversationId, VisualSignature, ThinkingRequestId;
+    FString OperationId, ConversationId, VisualSignature, ThinkingRequestId, VisualInspectionId;
     bool bVisual=false, bDaydream=false;
     TSharedPtr<IHttpRequest,ESPMode::ThreadSafe> Request;
     uint64 Serial=0;
@@ -297,6 +305,11 @@ struct FHearthResident
     UPROPERTY(BlueprintReadOnly) FString DesignFeedback;
     UPROPERTY(BlueprintReadOnly) FString DesignRequest;
     UPROPERTY(BlueprintReadOnly) FString LastVisualSignature;
+    UPROPERTY(BlueprintReadOnly) bool bVisualInspectionNeeded = false;
+    bool bVisualInspectionArrived = false;
+    UPROPERTY(BlueprintReadOnly) FString VisualInspectionId;
+    UPROPERTY(BlueprintReadOnly) FString VisualInspectionTargetId;
+    FString VisualInspectionAttemptedRevision;
     UPROPERTY(BlueprintReadOnly) int32 GrowthDirection = 0;
     UPROPERTY(BlueprintReadOnly) bool bDesignSatisfied = false;
     double NextVisualAt = 0;
@@ -463,7 +476,16 @@ public:
     UFUNCTION(BlueprintCallable) FString ExportOrganicState() const;
     float GroundHeightAt(const FVector& Position) const;
     FString PlotLabel(int32 Plot) const;
+    // A visual planning layer, separate from ownership and completed construction.
+    bool bTownPlanningVisible = true;
+    void ToggleTownPlanning();
+    const struct FHearthSettlementPlan* GetSettlementPlan() const;
 private:
+    TSharedPtr<struct FHearthSettlementPlan> SettlementPlan;
+    friend struct FHearthAincradStyleCapture;
+    FString SettlementPlanKey;
+    UPROPERTY() TArray<TObjectPtr<class UInstancedStaticMeshComponent>> PlanningMeshes;
+    void RefreshTownPlanning();
     friend class FOrganicWorldPersistenceTest;
     friend class FHearthOrganicRuntimeTest;
     friend class FHearthOrganicProductionPolicyTest;
@@ -518,6 +540,7 @@ private:
     bool FindMarketLifeAnchor(int32 Index,const FString& Module,const FOrganicConstructionHomeState& Home,FVector& OutWork,FVector& OutInstall,float& OutYaw) const;
     friend class FHearthGuardReflectionRuntimeTest;
     friend class FHearthFreightRuntimeTest;
+    friend class FHearthFreightRecoveryTest;
     friend class FHearthSocialIntegrationTest;
     friend class FHearthTileProductionTest;
     friend class FHearthPrivateTileConstructionTest;
@@ -645,6 +668,9 @@ private:
     void AdvanceFreightResident(int32 ResidentIndex,float Dt);
     bool BuildFreightVehicleRoute(const FVector& AxleStart,float StartYaw,const FVector& AxleGoal,TArray<FVector>& Out,TArray<float>& OutYaws) const;
     bool IsFreightPoseSafe(const FVector& AxlePosition,float Yaw,bool bIncludePeople=false) const;
+    bool CollectFreightRecoveryObstacles(const FVector& Start,TArray<HearthFreightNavigation::FRecoveryObstacle>& Out) const;
+    bool IsFreightRecoveryEnvironmentSafe(const FVector& From,const FVector& To,float Yaw) const;
+    bool BuildFreightRecoveryRoute(const FVector& Start,float Yaw,const FVector& Goal,TArray<FVector>& Out,TArray<float>& OutYaws) const;
     bool bOrganicTownLayout = true;
     bool bReportedComplete = false;
     bool bApiReady = false;
@@ -685,6 +711,8 @@ private:
     void ConsumeDecision();
     void EnsureResidentDesignGoal(int32 Index);
     bool RequestVisualReview(int32 Index);
+    bool BeginVisualInspection(int32 Index);
+    bool CompleteVisualInspection(int32 Index);
     void ApplyVisualReview(int32 Index, FHearthPendingDecision& Reply);
     FString VisualSignature(int32 Index) const;
     void AppendMarketLifeContext(int32 Index,const TSharedRef<FJsonObject>& Context) const;
@@ -748,6 +776,7 @@ private:
     FVector CameraOffset = FVector(-2300,-2800,3300);
     float CameraZoom = 1.f;
     bool bIslandCamera = false;
+    FVector2D LastPlanningViewport = FVector2D::ZeroVector;
     void UpdateCamera();
 };
 

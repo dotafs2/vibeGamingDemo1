@@ -60,6 +60,14 @@ bool FHearthDesignFeedbackTest::RunTest(const FString&)
     TestTrue(TEXT("Visual response cannot cancel worker task"),R.Task==EHearthTask::ProductionTravel);
     Reply.Choice=0; Reply.VisualSignature=TEXT("old-observation"); V->ApplyVisualReview(0,Reply);
     TestFalse(TEXT("Stale satisfaction cannot stop new construction"),R.bDesignSatisfied);
+    Reply.Error.Empty(); Reply.VisualSignature=V->VisualSignature(0); Reply.Choice=6; Reply.AllowedActions.Add(6);
+    Reply.Reason=TEXT("看见：眼前有树和道路；未知：自己的房屋不在视野中；打算：暂缓评估。");
+    V->ApplyVisualReview(0,Reply);
+    TestFalse(TEXT("An unseen home does not become a satisfied design"),R.bDesignSatisfied);
+    TestEqual(TEXT("Deferral preserves the last real expansion intention"),R.GrowthDirection,3);
+    TestTrue(TEXT("Deferral creates one finite physical inspection need"),R.bVisualInspectionNeeded);
+    TestTrue(TEXT("Deferral leaves the current worker task running"),R.Task==EHearthTask::ProductionTravel);
+    TestEqual(TEXT("Deferral does not create a speculative host request"),V->WorldRequests.Num(),0);
     Reply.Error.Empty(); Reply.VisualSignature=V->VisualSignature(0); Reply.Choice=4; Reply.Reason=TEXT("看见：木墙和屋顶；未知：是否能接外地生意；打算：申请尚未实现的皇城订单规则。"); V->ApplyVisualReview(0,Reply);
     TestEqual(TEXT("Unsupported aspirations remain a pending request"),R.DesignRequest,Reply.Reason);
     TestEqual(TEXT("Visual option four enters the real host board"),V->WorldRequests.Num(),1);
@@ -78,13 +86,26 @@ bool FHearthDesignFeedbackTest::RunTest(const FString&)
         TestTrue(TEXT("No screenshot id is invented without a saved capture"),AssetRequest->AssetContext.ObservationId.IsEmpty());
     }
     // Reuse valid world fixtures; serialize optional intention fields with schema 10.
+    Reply=FHearthPendingDecision();Reply.bVisual=true;Reply.Choice=6;Reply.AllowedActions={6};
+    Reply.VisualSignature=V->VisualSignature(0);Reply.VisualInspectionId=TEXT("one-completed-inspection");
+    Reply.Reason=TEXT("看见：遮挡仍在；未知：目标细节；打算：暂缓，先继续生活。");
+    V->ApplyVisualReview(0,Reply);
+    TestFalse(TEXT("Another defer after walking does not create an endless paid inspection loop"),R.bVisualInspectionNeeded);
+    R.bVisualInspectionNeeded=true;R.VisualInspectionId=TEXT("persisted-walking-inspection");R.VisualInspectionTargetId=TEXT("known-owned-target");
     R.BuildProgress=0; R.Task=EHearthTask::Choosing;
     FHearthWorldImage Saved; FString Error;
     TestTrue(TEXT("Design state survives world encoding"),HearthWorld::Decode(V->ExportWorldState(),Saved,Error));
     AddInfo(Error);
     TestEqual(TEXT("Visual host requests survive world persistence"),Saved.WorldRequests.Num(),2);
     TestTrue(TEXT("Typed physical request survives world persistence"),Saved.WorldRequests.ContainsByPredicate([](const FHearthWorldRequest& Request){return Request.bHasAssetContext;}));
-    if(Saved.People.Num()) { TestEqual(TEXT("Persistent desire"),Saved.People[0].Person.DesignGoal,R.DesignGoal); TestEqual(TEXT("Persistent feedback"),Saved.People[0].Person.GrowthDirection,3); }
+    if(Saved.People.Num())
+    {
+        TestEqual(TEXT("Persistent desire"),Saved.People[0].Person.DesignGoal,R.DesignGoal);
+        TestEqual(TEXT("Persistent feedback"),Saved.People[0].Person.GrowthDirection,3);
+        TestTrue(TEXT("Inspection need survives the same world checkpoint"),Saved.People[0].Person.bVisualInspectionNeeded);
+        TestEqual(TEXT("Inspection identity survives reload"),Saved.People[0].Person.VisualInspectionId,R.VisualInspectionId);
+        TestEqual(TEXT("Inspection target survives reload"),Saved.People[0].Person.VisualInspectionTargetId,R.VisualInspectionTargetId);
+    }
     R.Task=EHearthTask::LifeChoosing; R.Route.Reset(); R.NextLifeDecision=0; R.Hunger=90; R.Energy=80; R.Coins=12;
     V->bAutonomousLifeEnabled=true; V->bSimulationPaused=false; V->Elapsed=10;
     V->PendingDecisions[0]=FHearthPendingDecision(); V->PendingDecisions[0].bActive=true; V->PendingDecisions[0].bVisual=true;

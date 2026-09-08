@@ -1,0 +1,93 @@
+{
+  "style_id": "hearth_aincrad_daylight_v1",
+  "master": "/Game/ThreeHearths/Materials/AincradStyle/M_AincradSurface.M_AincradSurface",
+  "materials": [
+    {
+      "id": "Grass",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Grass.MI_Grass",
+      "kind": 0,
+      "roughness": 0.94,
+      "ambient_fill": 0.02
+    },
+    {
+      "id": "Paving",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Paving.MI_Paving",
+      "kind": 1,
+      "roughness": 0.88,
+      "ambient_fill": 0.02
+    },
+    {
+      "id": "PlasterWarm",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_PlasterWarm.MI_PlasterWarm",
+      "kind": 2,
+      "roughness": 0.88,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "PlasterOchre",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_PlasterOchre.MI_PlasterOchre",
+      "kind": 2,
+      "roughness": 0.89,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "PlasterSage",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_PlasterSage.MI_PlasterSage",
+      "kind": 2,
+      "roughness": 0.9,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "Stone",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Stone.MI_Stone",
+      "kind": 3,
+      "roughness": 0.86,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "Terracotta",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Terracotta.MI_Terracotta",
+      "kind": 4,
+      "roughness": 0.8,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "Slate",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Slate.MI_Slate",
+      "kind": 4,
+      "roughness": 0.82,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "Timber",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Timber.MI_Timber",
+      "kind": 5,
+      "roughness": 0.86,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "TimberDark",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_TimberDark.MI_TimberDark",
+      "kind": 5,
+      "roughness": 0.87,
+      "ambient_fill": 0.14
+    },
+    {
+      "id": "Leaf",
+      "asset": "/Game/ThreeHearths/Materials/AincradStyle/MI_Leaf.MI_Leaf",
+      "kind": 6,
+      "roughness": 0.92,
+      "ambient_fill": 0.14
+    }
+  ],
+  "world_mutation": false,
+  "uv_mutation": false,
+  "status": "assets_saved; native_runtime_rendered_and_visually_inspected",
+  "surface_revision": 2,
+  "runtime_validation": {
+    "run": "aincrad-material-final",
+    "material_or_shader_compilation_errors": 0,
+    "evidence": "Docs/Validation/Aincrad_2026-09-08/README.md",
+    "remaining_art_work": "Backlit vegetation, roof proportions, artificial hill silhouette and finite terrain edge still need refinement."
+  }
+}

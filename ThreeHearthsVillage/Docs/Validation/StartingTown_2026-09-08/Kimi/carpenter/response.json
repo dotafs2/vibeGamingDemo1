@@ -1,0 +1,25 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "{\"action\":\"observe\",\"visible\":\"我正站在一栋两层白木筋房前，蓝百叶窗，绿色地面，门开着。建筑外观完整，结构对称，是木工活计。\",\"uncertain\":\"门内是否有人或工具看不清；木材库存未知。\",\"goal\":\"把住处修得结实，让人敢于留下。\",\"need\":\"需要慢慢积攒木材。\"}",
+        "reasoning_content": "",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1788865325,
+  "id": "chatcmpl-6a9feb2d1770821235e824f1",
+  "model": "kimi-k2.6",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 79,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1
+    },
+    "prompt_tokens": 798,
+    "total_tokens": 877
+  }
+}

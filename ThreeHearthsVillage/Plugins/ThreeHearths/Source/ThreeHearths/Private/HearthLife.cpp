@@ -238,6 +238,7 @@ FString AHearthVillage::LifeActionName(int32 Index,int32 Action) const
     if(Action==60) return TEXT("门楼站岗");
     if(Action==61) return TEXT("公共道路巡逻");
     if(Action==62) return TEXT("检查公共马厩与货运场地");
+    if(Action==HearthLifeAction::VisualInspection) return TEXT("走到自家已知住所或工程前沿查看");
     if(Action>=100) return ProductionActionName(Action);
     if(Action==0) return IsSharedServiceResident(Index)?TEXT("去公共生活区休息"):TEXT("回家休息");
     if(Action==1) return TEXT("去农田观察作物");
@@ -250,6 +251,7 @@ FString AHearthVillage::LifeActionName(int32 Index,int32 Action) const
 bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Reason,bool bFromApi)
 {
     if(!Residents.IsValidIndex(Index) || Residents[Index].Task!=EHearthTask::LifeChoosing) return false;
+    if(Action==HearthLifeAction::VisualInspection) return false;
     if(Action>=100) return StartProduction(Index,Action,Reason,bFromApi);
     HearthTavernRuntime::RefreshLive(WorldId,WorldRequests,ProductionSites,StructurePlans);
     if(HearthTavernRuntime::IsSeatAction(Action))
@@ -284,6 +286,87 @@ bool AHearthVillage::StartLifeAction(int32 Index,int32 Action,const FString& Rea
     AcceptHistory(Index,LifeActionName(Index,Action),Reason,R.DecisionSource);
     if(Route.IsEmpty()) SetRoute(Index,Target); else R.Route=MoveTemp(Route);
     VillageEvent=R.Name+TEXT("：")+R.LatestEvent; return true;
+}
+
+bool AHearthVillage::BeginVisualInspection(int32 Index)
+{
+    if(!Residents.IsValidIndex(Index) || Residents[Index].Task!=EHearthTask::LifeChoosing
+        || !Residents[Index].bVisualInspectionNeeded || IsDecisionPending(Index)) return false;
+    auto& R=Residents[Index];
+    if(R.Hunger>=60.f || R.Energy<45.f) return false;
+    R.VisualInspectionAttemptedRevision=VisualSignature(Index);
+    FVector Center; double Width=0; FString TargetId;
+    if(!ResidentObservationTarget(Index,Center,Width,TargetId) || TargetId.IsEmpty())
+    {
+        R.bVisualInspectionNeeded=false; R.LatestEvent=TEXT("自己的已知住所或工程目前没有可确认的目标，结束本次查看。 ");
+        return false;
+    }
+
+    FVector Target=FVector::ZeroVector; bool bFound=false;
+    const bool bKeepTemplate=PublicProject.TemplateId==TEXT("royal_keep_garden_v1") || PublicProject.TemplateId==TEXT("royal_keep_garden_v2");
+    if(R.bKing && bKeepTemplate && PublicProject.Completed>0 && TargetId==PublicProject.Id && ProductionSites.IsValidIndex(PublicProject.Site))
+    {
+        Target=ProductionSites[PublicProject.Site].Approach; bFound=true;
+    }
+    else
+    {
+        for(const auto& Site:ProductionSites)
+            if(Site.Owner==Index && Site.BuildPlanId==TargetId) { Target=Site.Approach; bFound=true; }
+        if(!bFound && R.Plot>=0 && R.Plot<HousingPlotCount() && PlotIds[R.Plot]==TargetId)
+        { Target=HomeApproach(R.Plot); bFound=true; }
+    }
+    if(!bFound)
+    {
+        R.bVisualInspectionNeeded=false; R.LatestEvent=TEXT("自己的目标已不能由当前产权状态确认，结束本次查看。 ");
+        return false;
+    }
+
+    TArray<FVector> Route;
+    if(!FindActivityRoute(Index,Target,Route))
+    {
+        UE_LOG(LogTemp,Display,TEXT("DESIGN_INSPECT no_route resident=%d from=%s target=%s"),Index,*R.Actor->GetActorLocation().ToString(),*Target.ToString());
+        R.bVisualInspectionNeeded=false; R.LatestEvent=TEXT("前往自己的已知住所或工程没有可用通路，结束本次查看。 ");
+        return false;
+    }
+
+    R.VisualInspectionId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    R.VisualInspectionTargetId=TargetId;
+    R.bVisualInspectionNeeded=false;
+    R.bVisualInspectionArrived=false;R.Timer=300.f;
+    R.LifeAction=HearthLifeAction::VisualInspection;
+    R.Reason=TEXT("上次眼前视野无法辨认自己的目标，我沿真实通路去可达前沿再看一次。 ");
+    R.DecisionSource=TEXT("local"); R.ActiveTaskId=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens);
+    R.MoveRetry=0; R.bMovementBlocked=false; R.Task=EHearthTask::LifeTravel; R.Route=MoveTemp(Route);
+    R.LatestEvent=LifeActionName(Index,R.LifeAction)+TEXT("。 ");
+    AcceptHistory(Index,LifeActionName(Index,R.LifeAction),R.Reason,TEXT("local"));
+    VillageEvent=R.Name+TEXT("：")+R.LatestEvent; SaveWorld();
+    UE_LOG(LogTemp,Display,TEXT("DESIGN_INSPECT start resident=%d id=%s from=%s target=%s nodes=%d"),Index,*R.VisualInspectionId,*R.Actor->GetActorLocation().ToString(),*Target.ToString(),R.Route.Num());
+    return true;
+}
+
+bool AHearthVillage::CompleteVisualInspection(int32 Index)
+{
+    if(!Residents.IsValidIndex(Index) || !IsValid(Residents[Index].Actor) || Residents[Index].VisualInspectionId.IsEmpty()) return false;
+    auto& R=Residents[Index]; FVector Center; double Width=0; FString TargetId;
+    auto Finish=[&](const FString& Event)
+    {
+        R.VisualInspectionId.Empty(); R.VisualInspectionTargetId.Empty(); R.bVisualInspectionNeeded=false;R.bVisualInspectionArrived=false;
+        R.Task=EHearthTask::LifeChoosing; R.LifeAction=-1; R.ActiveTaskId.Empty(); R.Route.Reset(); R.NextLifeDecision=Elapsed+LifeDecisionInterval;
+        R.LatestEvent=Event; VillageEvent=R.Name+TEXT("：")+Event; SaveWorld(); return false;
+    };
+    if(!ResidentObservationTarget(Index,Center,Width,TargetId) || TargetId!=R.VisualInspectionTargetId)
+        return Finish(TEXT("抵达后自己的已知住所或工程状态已改变，本次查看结束。 "));
+    const FVector Direction=Center-R.Actor->GetActorLocation();
+    if(Direction.SizeSquared2D()<1.f) return Finish(TEXT("抵达后无法确定自己的目标方向，本次查看结束。 "));
+    R.Actor->SetActorRotation(FRotator(0,Direction.Rotation().Yaw,0));
+    R.bVisualInspectionArrived=true;
+    R.LatestEvent=TEXT("已沿可通行路线抵达自己的已知住所或工程前沿，并让实际身体朝向它，准备记录眼前视野。 ");
+    CompleteHistory(Index,R.LatestEvent);
+    UE_LOG(LogTemp,Display,TEXT("DESIGN_INSPECT arrived resident=%d id=%s position=%s facing=%s"),Index,*R.VisualInspectionId,*R.Actor->GetActorLocation().ToString(),*R.Actor->GetActorRotation().ToString());
+    R.Task=EHearthTask::LifeChoosing; R.LifeAction=-1; R.ActiveTaskId.Empty(); R.Route.Reset(); R.NextLifeDecision=Elapsed+LifeDecisionInterval;
+    if(!RequestVisualReview(Index)) return Finish(TEXT("已抵达自己的已知目标前沿，但本次视觉请求未能开始；继续生活。 "));
+    R.Task=EHearthTask::LifeChoosing; R.LifeAction=-1; R.ActiveTaskId.Empty(); R.Route.Reset(); R.NextLifeDecision=Elapsed+LifeDecisionInterval;
+    SaveWorld(); return true;
 }
 
 void AHearthVillage::DecideLifeLocally(int32 Index,const FString& Failure)
@@ -429,17 +512,31 @@ void AHearthVillage::RequestLifeDecision(int32 Index)
     EnsureResidentDesignGoal(Index);
     if(!HasDecisionCapacity(Index)) return;
     auto& R=Residents[Index];
+    if(bApiReady && !bApiDisabledThisRun && bApiBudgeted && R.VisualInspectionId.IsEmpty())
+    {
+        const FString Revision=VisualSignature(Index);
+        if(!Revision.IsEmpty() && Revision!=R.LastVisualSignature && Revision!=R.VisualInspectionAttemptedRevision) R.bVisualInspectionNeeded=true;
+    }
+    if(R.bVisualInspectionNeeded && bApiReady && !bApiDisabledThisRun && bApiBudgeted && ApiModel==TEXT("kimi-k2.6")
+        && ApiRequests<ApiMaxRequests && FPlatformTime::Seconds()>=R.NextVisualAt && FPlatformTime::Seconds()>=NextVisualCaptureAt)
+    {
+        if(R.Hunger<60.f && R.Energy>=45.f)
+        {
+            if(BeginVisualInspection(Index)) return;
+            if(!R.bVisualInspectionNeeded) { DecideLifeLocally(Index,TEXT("本次实地查看未能开始")); return; }
+        }
+        else
+        {
+            DecideLifeLocally(Index,TEXT("先处理饥饿或精力，再进行实地查看")); return;
+        }
+    }
     if(!bApiReady || ApiBackend==TEXT("codex_spark") || bApiDisabledThisRun || ApiRequests>=ApiMaxRequests)
     {
         const FString Failure=!bApiConfigured?FString():ApiRequests>=ApiMaxRequests?TEXT("本轮模型预算已用完"):ApiBackend==TEXT("codex_spark")?TEXT("旧 Spark 通路暂只支持选址"):ApiStatus;
         DecideLifeLocally(Index,Failure); return;
     }
-    if(RequestVisualReview(Index))
-    {
-        // Review shares the resident HTTP slot but does not freeze ongoing life.
-        DecideLifeLocally(Index,FString());
-        return;
-    }
+    // New visual revisions are inspected on foot above. Only physical arrival
+    // dispatches their image; routine life no longer takes a random house view.
     auto Context=MakeShared<FJsonObject>();
     auto Person=MakeShared<FJsonObject>(); Person->SetNumberField(TEXT("id"),Index);
     Person->SetStringField(TEXT("name"),R.Name); Person->SetStringField(TEXT("personality"),R.Personality);
@@ -523,6 +620,13 @@ void AHearthVillage::UpdateLifeDecisions()
 void AHearthVillage::AdvanceLife(int32 Index,float Dt)
 {
     auto& R=Residents[Index];
+    if(R.LifeAction==HearthLifeAction::VisualInspection && (R.Timer<=0 || R.Hunger>=60.f || R.Energy<35.f))
+    {
+        UE_LOG(LogTemp,Display,TEXT("DESIGN_INSPECT ended resident=%d timeout_or_urgent_need=1"),Index);
+        R.VisualInspectionId.Reset();R.VisualInspectionTargetId.Reset();R.bVisualInspectionArrived=false;R.bVisualInspectionNeeded=false;
+        R.Task=EHearthTask::LifeChoosing;R.LifeAction=-1;R.ActiveTaskId.Reset();R.Route.Reset();R.NextLifeDecision=Elapsed+LifeDecisionInterval;
+        CompleteHistory(Index,TEXT("本次查看结束，先处理生活需要或等待通路改善。"));return;
+    }
     if(!R.ConversationId.IsEmpty())
     {
         if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt)) R.Task=EHearthTask::LifeActivity;
@@ -530,6 +634,11 @@ void AHearthVillage::AdvanceLife(int32 Index,float Dt)
     }
     if(R.Task==EHearthTask::LifeTravel && MoveResident(Index,Dt))
     {
+        if(R.LifeAction==HearthLifeAction::VisualInspection)
+        {
+            CompleteVisualInspection(Index);
+            return;
+        }
         if(HearthTavernRuntime::IsSeatAction(R.LifeAction))
         {
             const FString SeatId=HearthTavernRuntime::LiveSeatForResident(WorldId,R.StableId); FString EventId;

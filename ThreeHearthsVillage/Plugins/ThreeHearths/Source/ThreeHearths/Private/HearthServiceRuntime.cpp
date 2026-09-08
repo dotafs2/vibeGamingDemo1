@@ -17,12 +17,26 @@ namespace
         return TEXT("stable_check");
     }
 
-    FVector GuardPatrolAnchor(const AHearthVillage& Village,int32 ResidentIndex,int32 Point)
+    FVector GuardPatrolAnchor(const AHearthVillage& Village,int32 ResidentIndex,int32 Point,TFunctionRef<bool(const FVector&)> Clear)
     {
         FVector Base=Village.GetServiceDutyAnchor(ResidentIndex);
         const FVector Offsets[]={FVector::ZeroVector,FVector(220,100,0),FVector(-220,200,0)};
         FVector Result=Base+Village.GetServiceGateFrame().TransformVectorNoScale(Offsets[FMath::Clamp(Point,0,2)]);
         if(Village.IsOrganicVillage()) Result.Z=Village.GroundHeightAt(Result)+5.2f;
+        if(Village.IsOrganicVillage() && !Clear(Result))
+        {
+            // Check nearby clear ground in increasing distance. A facade can
+            // span the old point and its entire outward strip, so search all
+            // directions while retaining normal land, obstacle and route rules.
+            for(float Radius:{120.f,240.f,360.f,520.f,700.f,900.f}) for(int32 Angle=0;Angle<12;++Angle)
+            {
+                FVector Candidate=Result+FRotator(0,Angle*30.f,0).RotateVector(FVector(Radius,0,0));
+                Candidate.Z=Village.GroundHeightAt(Candidate)+5.2f;
+                if(Point>0 && (FVector::Dist2D(Candidate,Base)<120.f || FVector::Dist2D(Candidate,Village.Residents[ResidentIndex].Actor->GetActorLocation())<120.f)) continue;
+                if(Clear(Candidate))
+                {UE_LOG(LogTemp,Display,TEXT("SERVICE_PATROL_RELOCATED resident=%d point=%d distance=%.0f"),ResidentIndex,Point,Radius);return Candidate;}
+            }
+        }
         return Result;
     }
 }
@@ -75,7 +89,8 @@ bool AHearthVillage::StartServiceDuty(int32 ResidentIndex)
     // spend money already held for an existing building/transport contract.
     const bool bTaxFunded=GeneralFunds()<3 && TaxProjectCoins>=3;
     if(!ReserveWage(ResidentIndex,TaskId,3,bTaxFunded,-1)) { R.NextLifeDecision=Elapsed+120.f; return false; }
-    TArray<FVector> Route; const bool bGuard=R.ServiceRoleKey==TEXT("royal_guard"); const FVector Anchor=bGuard?GuardPatrolAnchor(*this,ResidentIndex,0):GetServiceDutyAnchor(ResidentIndex);
+    const auto ClearPatrol=[this,ResidentIndex](const FVector& P){TArray<FVector> Probe;return IsClearPoint(P) && IsLand(P) && FindActivityRoute(ResidentIndex,P,Probe);};
+    TArray<FVector> Route; const bool bGuard=R.ServiceRoleKey==TEXT("royal_guard"); const FVector Anchor=bGuard?GuardPatrolAnchor(*this,ResidentIndex,0,ClearPatrol):GetServiceDutyAnchor(ResidentIndex);
     if(bUseCropoutMap && !FindActivityRoute(ResidentIndex,Anchor,Route)) { CancelWage(TaskId); R.NextLifeDecision=Elapsed+120.f; return false; }
     if(!bUseCropoutMap) Route={Anchor};
     FHearthServiceDutyRecord D; D.Id=FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens); D.TaskId=TaskId; D.Kind=DutyKind(R); D.Resident=ResidentIndex; D.Wage=3; D.ShiftSeconds=ServiceShiftSeconds; D.Anchor=Anchor; D.MoveSpeed=90.f; D.PatrolPoint=0; D.NextDutyAt=Elapsed;
@@ -126,7 +141,7 @@ void AHearthVillage::AdvanceServiceResident(int32 ResidentIndex,float Dt)
     }
     if(R.Task==EHearthTask::LifeActivity)
     {
-        if(R.Hunger>=70.f || R.Energy<=35.f) { CancelServiceDuty(ResidentIndex); return; }
+        if(R.Hunger>=70.f || R.Energy<=35.f) { UE_LOG(LogTemp,Display,TEXT("SERVICE_CANCEL needs resident=%d hunger=%.1f energy=%.1f"),ResidentIndex,R.Hunger,R.Energy);CancelServiceDuty(ResidentIndex); return; }
         Duty->DutySeconds=FMath::Min(Duty->ShiftSeconds,Duty->DutySeconds+Dt); Duty->Progress=Duty->DutySeconds/FMath::Max(1.f,Duty->ShiftSeconds);
         const float SegmentEnd=Duty->Kind==TEXT("guard_patrol")?FMath::Min(Duty->ShiftSeconds,(Duty->PatrolPoint+1)*(Duty->ShiftSeconds/3.f)):Duty->ShiftSeconds;
         if(Duty->DutySeconds<SegmentEnd || R.Timer>0.f) return;
@@ -134,8 +149,9 @@ void AHearthVillage::AdvanceServiceResident(int32 ResidentIndex,float Dt)
         {
             if(Duty->PatrolPoint<2)
             {
-                ++Duty->PatrolPoint; const FVector Target=GuardPatrolAnchor(*this,ResidentIndex,Duty->PatrolPoint); TArray<FVector> Route;
-                if(bUseCropoutMap && !FindActivityRoute(ResidentIndex,Target,Route)) { CancelServiceDuty(ResidentIndex); return; }
+                const auto ClearPatrol=[this,ResidentIndex](const FVector& P){TArray<FVector> Probe;return IsClearPoint(P) && IsLand(P) && FindActivityRoute(ResidentIndex,P,Probe);};
+                ++Duty->PatrolPoint; const FVector Target=GuardPatrolAnchor(*this,ResidentIndex,Duty->PatrolPoint,ClearPatrol); TArray<FVector> Route;
+                if(bUseCropoutMap && !FindActivityRoute(ResidentIndex,Target,Route)) { UE_LOG(LogTemp,Display,TEXT("SERVICE_CANCEL route resident=%d target=%s clear=%d land=%d"),ResidentIndex,*Target.ToString(),IsClearPoint(Target),IsLand(Target));CancelServiceDuty(ResidentIndex); return; }
                 if(!bUseCropoutMap) Route={Target}; R.Route=MoveTemp(Route); R.Task=EHearthTask::LifeTravel; R.Timer=0.f; return;
             }
         }

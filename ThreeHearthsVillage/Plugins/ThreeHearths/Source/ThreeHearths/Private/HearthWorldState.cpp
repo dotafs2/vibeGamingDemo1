@@ -321,8 +321,9 @@ namespace HearthWorld
             STR(StableId); if(W.Schema>=12) { STR(ServiceRoleKey); STR(ResidenceId); } STR(ActiveTaskId); STR(Name); STR(Personality); STR(Reason); STR(LatestEvent); STR(DecisionSource); STR(DecisionNote);
             STR(HouseBlueprint); STR(WallMaterial); STR(RoofMaterial);
             STR(DesignGoal); STR(DesignFeedback); STR(DesignRequest); STR(LastVisualSignature);
+            STR(VisualInspectionId); STR(VisualInspectionTargetId);STR(VisualInspectionAttemptedRevision);
             STR(InnerStory); STR(BuildingArchetype);
-            P->SetNumberField(TEXT("GrowthDirection"),R.GrowthDirection); P->SetBoolField(TEXT("design_satisfied"),R.bDesignSatisfied);
+            P->SetNumberField(TEXT("GrowthDirection"),R.GrowthDirection); P->SetBoolField(TEXT("design_satisfied"),R.bDesignSatisfied); P->SetBoolField(TEXT("visual_inspection_needed"),R.bVisualInspectionNeeded);
             STR(HeldToolId); STR(HeldToolOperationId);
             STR(Role); NUM(Hunger); NUM(Mood); NUM(Age); P->SetBoolField(TEXT("king"),R.bKing);
             STR(ConversationId); STR(Speech); STR(ProductionComponentId); NUM(SpeechRemaining);
@@ -575,9 +576,14 @@ namespace HearthWorld
                 P.J->TryGetStringField(TEXT("DesignFeedback"),R.DesignFeedback);
                 P.J->TryGetStringField(TEXT("DesignRequest"),R.DesignRequest);
                 P.J->TryGetStringField(TEXT("LastVisualSignature"),R.LastVisualSignature);
+                P.J->TryGetStringField(TEXT("VisualInspectionId"),R.VisualInspectionId);
+                P.J->TryGetStringField(TEXT("VisualInspectionTargetId"),R.VisualInspectionTargetId);
+                P.J->TryGetStringField(TEXT("VisualInspectionAttemptedRevision"),R.VisualInspectionAttemptedRevision);
+                if(R.VisualInspectionAttemptedRevision.Len()>512) P.Good=false;
                 P.J->TryGetNumberField(TEXT("GrowthDirection"),R.GrowthDirection);
                 P.J->TryGetBoolField(TEXT("design_satisfied"),R.bDesignSatisfied);
-                if(R.GrowthDirection<0 || R.GrowthDirection>3 || R.DesignGoal.Len()>512 || R.DesignFeedback.Len()>512 || R.DesignRequest.Len()>512 || R.LastVisualSignature.Len()>512) P.Good=false;
+                P.J->TryGetBoolField(TEXT("visual_inspection_needed"),R.bVisualInspectionNeeded);
+                if(R.GrowthDirection<0 || R.GrowthDirection>3 || R.DesignGoal.Len()>512 || R.DesignFeedback.Len()>512 || R.DesignRequest.Len()>512 || R.LastVisualSignature.Len()>512 || R.VisualInspectionId.Len()>128 || R.VisualInspectionTargetId.Len()>256) P.Good=false;
                 P.J->TryGetStringField(TEXT("HeldToolId"),R.HeldToolId);
                 P.J->TryGetStringField(TEXT("HeldToolOperationId"),R.HeldToolOperationId);
                 P.J->TryGetStringField(TEXT("ProductionComponentId"),R.ProductionComponentId);
@@ -642,6 +648,27 @@ namespace HearthWorld
 #undef STR
             P.Num(TEXT("Resident"),H.Resident,0,ResidentLimit-1); P.Num(TEXT("Tokens"),H.Tokens,0,1e8); P.Num(TEXT("At"),H.At,0,1e9); P.Num(TEXT("Latency"),H.Latency,0,1e6);
             P.Bool(TEXT("bHasUsage"),H.bHasUsage); C.Good&=P.Good; W.History.Add(MoveTemp(H));
+        }
+        // One-time migration of a real settled first-person defer from before
+        // inspection state existed. Never infer a new need from prose alone.
+        const auto SourcePeople=C.Array(TEXT("people"),HearthVillageLimits::MaxPopulation);
+        for(int32 I=0;I<W.People.Num() && I<SourcePeople.Num();++I)
+        {
+            const auto Source=Object(SourcePeople[I]);
+            if(!Source.IsValid() || Source->HasField(TEXT("visual_inspection_needed"))) continue;
+            auto& R=W.People[I].Person;
+            for(int32 H=W.History.Num()-1;H>=FMath::Max(0,W.History.Num()-1000);--H)
+            {
+                const auto& Review=W.History[H];if(Review.Resident!=I || Review.Kind!=TEXT("design_review")) continue;
+                TSharedPtr<FJsonObject> Context;FString Scope,Revision,Resident;
+                if(Review.Choice==TEXT("6") && Review.Status==TEXT("completed") && Review.bHasUsage
+                    && FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Review.Context),Context) && Context.IsValid()
+                    && Context->TryGetStringField(TEXT("observation_scope"),Scope) && Scope==TEXT("resident_first_person")
+                    && Context->TryGetStringField(TEXT("resident_id"),Resident) && Resident==R.StableId
+                    && Context->TryGetStringField(TEXT("design_revision"),Revision) && Revision==R.LastVisualSignature)
+                    R.bVisualInspectionNeeded=true;
+                break;
+            }
         }
         if(W.Schema>=3)
         {
@@ -939,8 +966,11 @@ namespace HearthWorld
             if(!IdleChoice && ((!Shared && R.Plot<0) || R.ActiveTaskId.IsEmpty())) return Reject(FString::Printf(TEXT("居民 %d 活动任务引用"),I));
             if(R.Task==EHearthTask::ToWood && R.Source<0) return Reject(FString::Printf(TEXT("居民 %d 木材来源"),I));
             const bool ServiceDutyAction=Shared && R.LifeAction>=60 && R.LifeAction<=62;
+            const bool VisualInspectionAction=R.LifeAction==HearthLifeAction::VisualInspection;
+            if(VisualInspectionAction && (R.Task!=EHearthTask::LifeTravel || R.VisualInspectionId.IsEmpty()
+                || R.VisualInspectionTargetId.IsEmpty())) return Reject(FString::Printf(TEXT("居民 %d 实地查看任务引用"),I));
             if((R.Task==EHearthTask::LifeTravel || R.Task==EHearthTask::LifeActivity) && R.LifeAction!=50 && !ServiceDutyAction
-                && (R.LifeAction<0 || R.LifeAction>=3+W.People.Num() || R.LifeAction==3+I)) return Reject(FString::Printf(TEXT("居民 %d 生活行动"),I));
+                && !VisualInspectionAction && (R.LifeAction<0 || R.LifeAction>=3+W.People.Num() || R.LifeAction==3+I)) return Reject(FString::Printf(TEXT("居民 %d 生活行动"),I));
             const bool OrganicConstructionTask=R.Task==EHearthTask::OrganicTravel || R.Task==EHearthTask::OrganicWork;
             const FOrganicConstructionHomeState* OrganicHome=W.OrganicHomes.Find(R.StableId);
             if(OrganicConstructionTask)

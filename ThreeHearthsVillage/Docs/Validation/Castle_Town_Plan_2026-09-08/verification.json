@@ -1,0 +1,155 @@
+{
+  "world_id": "81BDF793-42B4-FAFB-4A27-A983C0C3BF6C",
+  "population": 13,
+  "runtime": [
+    {
+      "run": "city01",
+      "real_seconds": 180,
+      "requested_speed": 15,
+      "elapsed_before": 15852.56640625,
+      "elapsed_after": 18029.294921875
+    },
+    {
+      "run": "city-cold02",
+      "real_seconds": 70,
+      "requested_speed": 3,
+      "elapsed_before": 18029.294921875,
+      "elapsed_after": 18191.693359375
+    },
+    {
+      "run": "city-final03",
+      "real_seconds": 70,
+      "requested_speed": 1,
+      "elapsed_before": 18191.693359375,
+      "elapsed_after": 18258.064453125,
+      "api_enabled": false
+    }
+  ],
+  "castle_completed": [
+    25,
+    27,
+    27,
+    27
+  ],
+  "castle_total": 1276,
+  "new_completed_parts": [
+    "east_wing_floor_tile_03_00",
+    "east_wing_floor_tile_03_01"
+  ],
+  "site_stock_stone_planks_beams": [
+    0,
+    0,
+    30
+  ],
+  "treasury_coins": 7,
+  "tax_project_coins": 7,
+  "new_supply_orders": {
+    "completed": 9
+  },
+  "existing_plots_part_ids_offsets_stages_recipes_and_character_stories_preserved": true,
+  "api_records": [
+    {
+      "resident": 3,
+      "kind": "life",
+      "choice": "与罗兰交谈",
+      "reason": "社交需求低但非紧急，拜访罗兰可维系关系，为将来税收与建设协商留人脉。",
+      "result": "聊过近况，双方继续自己的生活。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 1,
+      "kind": "life",
+      "choice": "去村镇中心吃饭",
+      "reason": "饥饿7需进食，花1枚钱买饭恢复体力，好去田里干活。",
+      "result": "去村镇中心吃饭已完成。精力 100，饥饿 0，社交需求 22。花1枚钱购买并吃掉1份食物，交易与消耗均已入账。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 2,
+      "kind": "life",
+      "choice": "与罗莎交谈",
+      "reason": "上次婉拒了罗莎，社交需求渐长，该去补个话，也看看她那边有无活计或换料的需要。",
+      "result": "两人约好一起去吃饭。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 4,
+      "kind": "life",
+      "choice": "去村镇中心吃饭",
+      "reason": "饥饿已55，先花1枚钱吃饭恢复体力，再做买卖。",
+      "result": "去村镇中心吃饭已完成。精力 99，饥饿 2，社交需求 24。花1枚钱购买并吃掉1份食物，交易与消耗均已入账。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 6,
+      "kind": "life",
+      "choice": "与埃德温交谈",
+      "reason": "埃德温信任高、见面多，我想找他聊聊铁匠铺木架的事，看能否得到建议或帮忙。",
+      "result": "聊过近况，双方继续自己的生活。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 0,
+      "kind": "life",
+      "choice": "去村镇中心吃饭",
+      "reason": "饥饿渐升，先花一枚钱吃饭，恢复体力好继续干活。",
+      "result": "去村镇中心吃饭已完成。精力 91，饥饿 0，社交需求 46。花1枚钱购买并吃掉1份食物，交易与消耗均已入账。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 3,
+      "kind": "design_review",
+      "choice": "5",
+      "reason": "看见：围墙基座围合出庭院轮廓，内部两块灰色平台与一块木质地坪高低错落，东南角有小型阶梯状出入口；未知：平台竖向承重结构与屋顶形式尚未出现，无法判断主堡最终体量与门楼位置；打算：在主堡前方木质地坪与灰色平台交界处提议一条弧形碎石步道，连接东南出入口与将来主堡正门，既引导访客动线，又为后续花坛与行道树定界。",
+      "result": "已记录设计意向；施工仍由真实资源和空间规则批准。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 5,
+      "kind": "life",
+      "choice": "去村镇中心吃饭",
+      "reason": "饥饿将到临界点，精力虽满也该先稳住身体，去村镇中心吃顿饭，顺便看看有没有熟人能聊聊黏土的事。",
+      "result": "去村镇中心吃饭已完成。精力 100，饥饿 0，社交需求 52。花1枚钱购买并吃掉1份食物，交易与消耗均已入账。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 7,
+      "kind": "life",
+      "choice": "与罗兰交谈",
+      "reason": "精力饱满，该维系邻里。罗兰只见过两次，去聊聊，或许能谈成木板买卖或互助。",
+      "result": "聊过近况，双方继续自己的生活。",
+      "status": "completed",
+      "source": "api"
+    },
+    {
+      "resident": 11,
+      "kind": "social_turn",
+      "choice": "回应对话",
+      "reason": "梅芙，我住的是公共生活区，没有私宅。值守刚结束，你呢，织坊最近忙吗？",
+      "result": "已当面说出并处理对应提议。",
+      "status": "completed",
+      "source": "api"
+    }
+  ],
+  "paid_calls_including_explicit_king_image_review": 13,
+  "new_paid_liability_cny": 0.2846744,
+  "local_settled_cny": 0.9089376,
+  "local_reserved_cny": 0.0,
+  "conservative_combined_liability_cny": 18.2781927,
+  "tests": {
+    "succeeded": 102,
+    "succeededWithWarnings": 6,
+    "failed": 0,
+    "notRun": 0
+  },
+  "planning_provenance": "user-directed advisory districts and outline; not completed property. Native individual building observations hide planning components.",
+  "king_image_review_provenance": "explicit coordinator milestone feedback, not an automatically executed action"
+}

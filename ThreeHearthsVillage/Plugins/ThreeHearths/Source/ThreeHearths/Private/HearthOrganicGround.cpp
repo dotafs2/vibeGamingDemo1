@@ -1,6 +1,8 @@
 #include "HearthVillage.h"
 #include "HearthOrganicTerrain.h"
 #include "HearthTownLayout.h"
+#include "HearthRoyalHill.h"
+#include "HearthAincradStyle.h"
 #include "ProceduralMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -100,6 +102,7 @@ void AHearthVillage::BuildOrganicGround()
     // Every selected house receives a full footprint pad. Elevations are taken
     // from the untouched field first, so adding one pad cannot move another.
     FSettings Natural = *OrganicTerrainSettings;
+    OrganicTerrainSettings->bRoyalHill = true;
     // Private home pads retain precedence, preserving saved plot heights.
     const FTransform WatchFrame=GetServiceGateFrame();
     FFlattenZone WatchZone;
@@ -133,18 +136,25 @@ void AHearthVillage::BuildOrganicGround()
     AddFlatZone(*OrganicTerrainSettings, FVector2D(-2800.f, -1050.f), FVector2D(300.f, 260.f), 0.f, 320.f);
     AddFlatZone(*OrganicTerrainSettings, FVector2D(-1550.f, -2200.f), FVector2D(270.f, 250.f), 0.f, 250.f);
     AddFlatZone(*OrganicTerrainSettings, FVector2D(-1135.f, -2825.f), FVector2D(700.f, 520.f), 0.f, 450.f);
-    AddFlatZone(*OrganicTerrainSettings, FVector2D(6500.f, 6500.f), FVector2D(1100.f, 1100.f), 0.f, 500.f);
-    AddFlatZone(*OrganicTerrainSettings, FVector2D(6500.f, 1500.f), FVector2D(300.f, 300.f), 0.f, 360.f);
+    // Retain the old cargo waiting ground and quarry at the foot of the new
+    // hill. Existing goods/vehicles keep XY positions and a usable connection.
+    AddFlatZone(*OrganicTerrainSettings, FVector2D(1200.f, 1250.f), FVector2D(650.f, 1500.f), 0.f, 700.f);
+    AddFlatZone(*OrganicTerrainSettings, FVector2D(-200.f, 3100.f), FVector2D(1150.f, 450.f), 0.f, 650.f);
+    // The complete keep sits on the radial royal plateau. A tiny old square
+    // pad here would cut a pit into that plateau and bury the retained walls.
 
     // Use the authored roads as grade profiles. Their endpoint elevations are
     // read after pads are installed, making approaches join each footprint.
     for (const FHearthTownRoadSegment& Segment : HearthTownLayout::VillageRoads(true, 4))
     {
+        // The uphill profile is one continuous polyline, applied last below.
+        // Do not derive its elevation from the ungraded hillside.
+        if (Segment.Width >= HearthRoyalHill::RoadWidth) continue;
         FRoadCenterline Road; Road.Width = Segment.Width; Road.Transition = 360.f;
         for (const FVector& Point : {Segment.A, Segment.B})
         {
             const FVector2D XY(Point.X, Point.Y);
-            Road.Nodes.Add({XY, HeightAt(XY, *OrganicTerrainSettings)});
+            Road.Nodes.Add({XY, HeightAt(XY, Natural)});
         }
         OrganicTerrainSettings->Roads.Add(MoveTemp(Road));
     }
@@ -175,6 +185,7 @@ void AHearthVillage::BuildOrganicGround()
         }
     }
 
+    HearthRoyalHill::AddToTerrain(*OrganicTerrainSettings);
     if (!GenerateGrid(*OrganicTerrainSettings, *OrganicTerrainGrid))
     {
         OrganicTerrainSettings.Reset(); OrganicTerrainGrid.Reset();
@@ -205,7 +216,7 @@ void AHearthVillage::BuildOrganicGround()
     Ground->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     Ground->SetCollisionProfileName(TEXT("BlockAll"));
     Ground->bUseComplexAsSimpleCollision = true;
-    if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/ThreeHearths/Generated/OrganicVillageMasters/M_OrganicTerrain")))
+    if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/ThreeHearths/Materials/AincradStyle/MI_Grass")))
         Ground->SetMaterial(0, Material);
 
     TArray<FVector> RoadVertices, RoadNormals; TArray<int32> RoadIndices; TArray<FVector2D> RoadUVs; TArray<FLinearColor> RoadColors;
@@ -217,7 +228,7 @@ void AHearthVillage::BuildOrganicGround()
         RoadMesh->ComponentTags.Add(OrganicGroundTag); RoadMesh->SetupAttachment(Root); RoadMesh->RegisterComponent();
         RoadMesh->CreateMeshSection_LinearColor(0, RoadVertices, RoadIndices, RoadNormals, RoadUVs, RoadColors,
             TArray<FProcMeshTangent>(), false);
-        if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/ThreeHearths/Generated/OrganicVillageMasters/M_OrganicTerrain")))
+        if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/ThreeHearths/Materials/AincradStyle/MI_Paving")))
             RoadMesh->SetMaterial(0, Material);
     }
     OrganicGroundActor = GroundActor;
@@ -271,6 +282,8 @@ void AHearthVillage::BuildOrganicGround()
         Sky->LowerHemisphereColor = FLinearColor(.16f, .20f, .24f, 1.f);
         Sky->SetupAttachment(Root); Sky->RegisterComponent();
     }
+
+    HearthAincradStyle::ConfigureWorld(*this,*GroundActor);
 
     // The legacy scaled cube remains in the actor for v3 save compatibility,
     // but it must not shadow or collide with the organic surface.

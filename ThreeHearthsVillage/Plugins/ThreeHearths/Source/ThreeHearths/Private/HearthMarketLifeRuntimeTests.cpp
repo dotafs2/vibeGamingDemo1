@@ -64,7 +64,22 @@ bool FHearthMarketLifeRuntimeTest::RunTest(const FString&)
     Village->bAutonomousLifeEnabled=true;
     if(!TestTrue(TEXT("market fixture has organic roster"),Village->IsOrganicVillage() && Village->Residents.Num()==13)) return false;
 
-    const int32 Index=0; const auto Person=[&]() -> FHearthResident& { return Village->Residents[Index]; };
+    // This exercises two independent purchases, so choose an actual yard with
+    // two legal placements. The first-floor lanes can leave plot zero with
+    // only one pocket; a desire for a second bench must not bypass that limit.
+    int32 Index=INDEX_NONE;
+    for(int32 Candidate=0;Candidate<10;++Candidate)
+    {
+        const auto* Existing=Village->OrganicHomes.Find(Village->Residents[Candidate].StableId);
+        if(!Existing) continue;
+        FOrganicConstructionHomeState Trial=*Existing;FVector Work,Install;float Yaw=0;
+        if(!Village->FindMarketLifeAnchor(Candidate,TEXT("bench_low"),Trial,Work,Install,Yaw)) continue;
+        FOrganicMarketKitRecord First;First.ModuleId=TEXT("bench_low");First.InstallPosition=Install;First.Anchor=Work;
+        Trial.MarketKitInstalled.Add(First);
+        if(Village->FindMarketLifeAnchor(Candidate,TEXT("bench_low"),Trial,Work,Install,Yaw)){Index=Candidate;break;}
+    }
+    if(!TestTrue(TEXT("fixture has an owner with two legal yard spaces"),Index!=INDEX_NONE)) return false;
+    const auto Person=[&]() -> FHearthResident& { return Village->Residents[Index]; };
     const FString ResidentId=Person().StableId; auto* Home=Village->OrganicHomes.Find(ResidentId);
     if(!TestNotNull(TEXT("private home exists for request owner"),Home)) return false;
     const int32 ShellBefore=Home->InstalledKeys.Num(); const int32 CoinsBefore=Person().Coins;
