@@ -1,0 +1,168 @@
+{
+  "schema": 2,
+  "style_id": "level0_anime_crafted_v2",
+  "blender_version": "5.2.1 LTS",
+  "palette_srgb": {
+    "limestone": "D7CAA8",
+    "stone_light": "DDD2B6",
+    "stone_shade": "CABB9D",
+    "mortar": "C3B69A",
+    "paving": "C7C4AA",
+    "paving_light": "CECCB5",
+    "plaster_cream": "E8DEBF",
+    "plaster_peach": "DFC5B3",
+    "plaster_sage": "C3D0B8",
+    "plaster_white": "EAE3CB",
+    "roof": "9E6B61",
+    "roof_light": "A67569",
+    "roof_dark": "916158",
+    "slate": "6C898E",
+    "wood": "796046",
+    "wood_light": "A4885E",
+    "wood_dark": "514638",
+    "shutter": "557B62",
+    "glass": "5B7D79",
+    "iron": "53594F",
+    "canvas_cream": "EFE5CA",
+    "canvas_green": "88AB87",
+    "canvas_gold": "DBBB7D",
+    "canvas_red": "B76A62",
+    "leaf": "689247",
+    "leaf_light": "8CA952",
+    "leaf_dark": "476F3B",
+    "grass": "8FAF61",
+    "grass_light": "A5BA71",
+    "grass_dark": "7D9F55",
+    "water": "82B6B1",
+    "fruit_red": "B65F45",
+    "fruit_yellow": "DBBC64",
+    "fruit_green": "8A9D50",
+    "skin": "D4B495",
+    "cloth_blue": "68828E",
+    "cloth_brown": "8B795E",
+    "cloth_dark": "4B5450",
+    "rock": "8C977C",
+    "paving_warm": "CFC6AC",
+    "paving_cool": "BEC4B1",
+    "roof_shadow": "755D56",
+    "shutter_light": "7C9980",
+    "glass_light": "8FA99A",
+    "recess": "455848",
+    "brass": "B49A5A",
+    "leaf_mid": "789D4A",
+    "leaf_deep": "365D35",
+    "leaf_warm": "A6B962",
+    "foam": "D6E8DD",
+    "bark": "77664D",
+    "bark_light": "968365",
+    "bark_dark": "5E5641",
+    "soil": "877B59",
+    "flower": "DED28B",
+    "door_blue": "699FA9",
+    "door_blue_light": "9ABAC0",
+    "sign_red": "965056"
+  },
+  "canonical_exact_coordinates": false,
+  "npc_behavior_implemented": false,
+  "prototype_origin_east_north_m": [
+    0,
+    -4770
+  ],
+  "source_axes": "Blender east/north/up metres; glTF Y up",
+  "scenes": [
+    {
+      "id": "StartingTown_Market",
+      "region_id": "beginnings_plaza",
+      "floor_east_north_m": [
+        -163,
+        -4752
+      ],
+      "godot_position_m": [
+        -163,
+        0,
+        -18
+      ],
+      "godot_yaw_degrees": 78,
+      "glb": "StartingTown_Market.glb",
+      "sha256": "6bb8aa466255d18b5a6511af2829063a13a96a2cc4217ccf5f0e45edbea40dc9",
+      "triangles": 1356172,
+      "collision_triangles": 564,
+      "collision_mesh_names": [
+        "COL_market_fitted_paving",
+        "COL_market_ground",
+        "COL_market_left_linen",
+        "COL_market_left_arched_shop",
+        "COL_market_left_corner",
+        "COL_market_right_foreground",
+        "COL_market_right_green_shop",
+        "COL_market_right_archway_house",
+        "COL_market_bridge"
+      ],
+      "reference_camera_blender_m": [
+        0.0,
+        -19.0,
+        2.25
+      ],
+      "reference_target_blender_m": [
+        0.3,
+        25.0,
+        6.1
+      ],
+      "reference_horizontal_fov": 70,
+      "mesh_objects": 61
+    },
+    {
+      "id": "Tolbana_Plaza",
+      "region_id": "tolbana",
+      "floor_east_north_m": [
+        0,
+        2900
+      ],
+      "godot_position_m": [
+        0,
+        0,
+        -7670
+      ],
+      "godot_yaw_degrees": 0,
+      "glb": "Tolbana_Plaza.glb",
+      "sha256": "bace46dd870df46fa3d73b835812c54550af829d594156164c929b30fd987f3f",
+      "triangles": 2709692,
+      "collision_triangles": 1348,
+      "collision_mesh_names": [
+        "COL_tolbana_ground",
+        "COL_tolbana_front_walk",
+        "COL_tolbana_west_walk",
+        "COL_tolbana_east_walk",
+        "COL_tolbana_rear_walk",
+        "COL_tolbana_fountain_approach",
+        "COL_tolbana_west_tall",
+        "COL_tolbana_west_low",
+        "COL_tolbana_peach_bread_front",
+        "COL_tolbana_sage_front",
+        "COL_tolbana_east_tower_base",
+        "COL_tolbana_upper_left",
+        "COL_tolbana_upper_peach",
+        "COL_tolbana_upper_cream",
+        "COL_tolbana_upper_sage",
+        "COL_tolbana_skyline_center",
+        "COL_tolbana_left_street_return",
+        "COL_tolbana_right_roof_wing",
+        "COL_tolbana_right_square_tower",
+        "COL_tolbana_tree",
+        "COL_tolbana_fountain"
+      ],
+      "reference_camera_blender_m": [
+        10.0,
+        -24.0,
+        4.7
+      ],
+      "reference_target_blender_m": [
+        -2.0,
+        16.0,
+        2.7
+      ],
+      "reference_horizontal_fov": 66,
+      "mesh_objects": 73
+    }
+  ]
+}

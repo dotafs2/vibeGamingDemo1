@@ -1,0 +1,77 @@
+{
+  "checked_utc": "2026-09-09T08:20:54.1937980Z",
+  "all_owned_exited": true,
+  "processes": [
+    {
+      "pid": 592356,
+      "kind": "blender_hq_build",
+      "started_utc": "2026-09-09T07:54:04.5296657Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 362964,
+      "kind": "godot_hq_capture",
+      "started_utc": "2026-09-09T07:55:40.6156256Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 586168,
+      "kind": "godot_forward_capture",
+      "started_utc": "2026-09-09T07:58:07.8392053Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 591604,
+      "kind": "blender_hq_refine_build",
+      "started_utc": "2026-09-09T08:04:10.7322473Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 590920,
+      "kind": "godot_refine_capture",
+      "started_utc": "2026-09-09T08:06:09.2587567Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 579908,
+      "kind": "blender_hq_final_build",
+      "started_utc": "2026-09-09T08:09:59.6648075Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 584212,
+      "kind": "godot_final_capture",
+      "started_utc": "2026-09-09T08:13:13.640164Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 591800,
+      "kind": "godot_hq_spatial",
+      "started_utc": "2026-09-09T08:14:21.6125193Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 588656,
+      "kind": "godot_gateway_capture",
+      "started_utc": "2026-09-09T08:17:07.4989708Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    },
+    {
+      "pid": 584500,
+      "kind": "godot_hq_final_spatial",
+      "started_utc": "2026-09-09T08:18:20.9460169Z",
+      "still_running": false,
+      "remaining_direct_children": []
+    }
+  ],
+  "user_processes_terminated": 0
+}

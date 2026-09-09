@@ -1,0 +1,18 @@
+{
+  "git_operations": 0,
+  "kimi_requests": 0,
+  "all_owned_processes_exited": true,
+  "kimi_cost_cny": 0,
+  "owned_pids": [
+    362372,
+    576760,
+    585332,
+    552032,
+    585916,
+    506404,
+    588720,
+    587124
+  ],
+  "remaining": [],
+  "checked_at": "2026-09-09T15:18:59.2476608+08:00"
+}

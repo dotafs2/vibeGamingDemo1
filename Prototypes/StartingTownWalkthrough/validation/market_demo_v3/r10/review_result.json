@@ -1,0 +1,42 @@
+{
+  "independent_review_pending": false,
+  "source_sha256": "ce7a7f9d0264e35691b62e046e54909594ed7280ee313342ffea4f4b97f5d87e",
+  "global_render_style_approved": false,
+  "gameplay_loop_validated": false,
+  "tolbana_reviewed_this_round": false,
+  "shape_gates": {
+    "facades_and_parapets": true,
+    "gate_arch_depth": true,
+    "canopy_geometry": true,
+    "staggered_domes": true,
+    "foreground_depth_and_occlusion": true,
+    "round_tower_arcade": true
+  },
+  "note": "The raw capture retained its review-pending state at capture time. This later record contains the completed independent review.",
+  "reviewers": [
+    "market_modeler",
+    "market_reviewer"
+  ],
+  "independent_review": "../Review.md",
+  "reviewed_at": "2026-09-09T19:07:43.5981415+08:00",
+  "schema": 1,
+  "modeler_review": "modeler_review.md",
+  "remaining_differences": [
+    "right wall remains somewhat heavy",
+    "cloth remains regular and clean",
+    "existing Kirito appearance is repeated",
+    "window rhythm is reconstructed, not pixel-identical",
+    "materials and global rendering are not approved"
+  ],
+  "internal_geometry_composition_passed": false,
+  "raw_capture": "capture.json",
+  "user_visual_approval": false,
+  "revision": "r10",
+  "scope": "One Starting Town market demo viewpoint: internal geometry and composition review",
+  "previous_internal_geometry_composition_passed": true,
+  "reference_architecture_match_passed": false,
+  "current_disposition": "Rejected by user; root re-inspection confirms generic architecture and insufficient correspondence checks. Prior internal pass withdrawn.",
+  "diagnosis": "../Architecture_Mismatch_Diagnosis.md",
+  "shape_gate_scope_warning": "The retained true component checks reflect the historical review. They establish component presence or validity, not matching architecture.",
+  "rejection_recorded_at": "2026-09-09T19:14:53.0977014+08:00"
+}

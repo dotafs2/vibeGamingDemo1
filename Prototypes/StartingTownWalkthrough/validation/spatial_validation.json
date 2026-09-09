@@ -1,0 +1,40 @@
+{
+	"checks": {
+		"arcade_blocks_sideways_ray": true,
+		"glb_import": true,
+		"ground_at_four_anchors": true,
+		"navigation_reaches_market": true,
+		"navigation_saved": true,
+		"navigation_synchronized": true,
+		"unique_mesh_names": true,
+		"walk_through_arcade": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"kimi_requests": 0,
+	"kind": "spatial_prototype",
+	"mesh_instances": 778,
+	"nav_region_bounds": "[P: (-274.5, 0.0, -104.5), S: (319.0, 31.0, 219.0)]",
+	"navigation_finish_snap": "(-229.0, 0.5, -27.0)",
+	"navigation_map_active": true,
+	"navigation_path_points": 39,
+	"navigation_polygons": 1534,
+	"navigation_start_snap": "(-30.0, 0.75, 35.0)",
+	"npc_decisions_implemented": false,
+	"passed": true,
+	"persistent_world_loaded": false,
+	"polygons_at_assignment": 1534,
+	"repaired_gateway_piers": 8,
+	"schema": 1,
+	"source_blockout_mesh_instances": 789,
+	"triangle_count": 19164,
+	"walk_finish": [
+		-109.001182556152,
+		0.230732798576355,
+		0.0
+	],
+	"walk_start": [
+		-74.0,
+		0.600000023841858,
+		0.0
+	]
+}

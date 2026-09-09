@@ -1,0 +1,20 @@
+[
+  {
+    "pid": 577448,
+    "role": "Godot camera-only anime comparison",
+    "exited": true,
+    "remaining_children": []
+  },
+  {
+    "pid": 598288,
+    "role": "comparison Node helper",
+    "exited": true,
+    "remaining_children": []
+  },
+  {
+    "pid": 561192,
+    "role": "owned Edge comparison browser",
+    "exited": true,
+    "remaining_children": []
+  }
+]

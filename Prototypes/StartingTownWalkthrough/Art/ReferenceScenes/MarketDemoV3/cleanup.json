@@ -1,0 +1,6 @@
+{
+  "owned_pids": [578208, 578516, 603880, 601192, 604064, 596760, 604232],
+  "all_exited": true,
+  "verification": "Get-Process blender returned no owned Blender process after export",
+  "scope": "Only this task's Blender process"
+}

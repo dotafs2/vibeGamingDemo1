@@ -1,0 +1,3 @@
+# Local browser inspection only; keep URLs, not copies of reference imagery.
+official_*_inspection.png
+official_stills_inspection.png

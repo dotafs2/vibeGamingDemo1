@@ -1,0 +1,9 @@
+{
+  "objects": 789,
+  "housing_masses": 179,
+  "mesh_material_pairs": 18,
+  "glb_bytes": 335276,
+  "glb_container_checks": "passed",
+  "engine_import": "not_tested",
+  "owned_background_processes": 0
+}

@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "scene": "StartingTown_Market",
+  "purpose": "Architectural line and polygon contract for one anime market-street view",
+  "reference": {
+    "url": "https://i.pinimg.com/originals/92/a3/a7/92a3a78f0b36febbef3abcb70f37ff7e.png",
+    "file_px": [2560, 1600],
+    "active_rect_px": [0, 80, 2560, 1440],
+    "coordinate_space": "u=x/2560; v=(y-80)/1440; all points below are in the active picture",
+    "resolution_note": "Browser-reported file dimensions; original/native source resolution is not verified.",
+    "uncertain_policy": "uncertain points are construction guides only and cannot be used as exact acceptance markers"
+  },
+  "key_differences_to_current_r10": [
+    "The reference has stepped left foreground/midground building turns and receding window planes; a single straight left wall loses this depth.",
+    "The gate is a low middle-distance bridge with a compact arch opening, while the round tower rises behind/right and is partially layered by the bridge rather than floating over a clean slab.",
+    "The right near wall is a close perspective plane with deep window recesses and a diagonal terminating edge; its visible width must be solved together with tower exposure."
+  ],
+  "objects": [
+    {"id":"left_near_building","kind":"building","contour_uv":[[0.000,0.055],[0.210,0.055],[0.286,0.150],[0.286,0.585],[0.000,0.585]],"features":[{"id":"front_turn","kind":"edge","outline_uv":[[0.210,0.055],[0.286,0.150],[0.286,0.585]]},{"id":"visible_window_group","kind":"windows","outline_uv":[[0.035,0.270],[0.165,0.245],[0.165,0.355],[0.035,0.355]]}],"uncertain":["lower facade behind stalls"]},
+    {"id":"left_mid_building","kind":"building","contour_uv":[[0.245,0.090],[0.365,0.135],[0.438,0.285],[0.438,0.565],[0.255,0.575],[0.205,0.255]],"features":[{"id":"front_turn","kind":"edge","outline_uv":[[0.365,0.135],[0.438,0.285],[0.438,0.565]]},{"id":"window_sequence","kind":"windows","outline_uv":[[0.285,0.220],[0.399,0.270],[0.399,0.400],[0.285,0.355]]}],"uncertain":["small lower windows"]},
+    {"id":"right_near_building","kind":"building","contour_uv":[[0.705,0.045],[1.000,0.025],[1.000,0.735],[0.748,0.645],[0.705,0.535]],"features":[{"id":"near_corner","kind":"edge","outline_uv":[[0.705,0.045],[0.705,0.535],[0.748,0.645]]},{"id":"upper_window_sequence","kind":"windows","outline_uv":[[0.790,0.155],[0.998,0.090],[0.998,0.256],[0.790,0.286]]}],"uncertain":["lower edge hidden by stall and character"]},
+    {"id":"gate_bridge","kind":"bridge_gate","contour_uv":[[0.425,0.345],[0.685,0.345],[0.700,0.675],[0.420,0.675]],"features":[{"id":"arch_opening","kind":"visible_arch","outline_uv":[[0.492,0.570],[0.492,0.510],[0.530,0.452],[0.558,0.450],[0.600,0.510],[0.600,0.570]]},{"id":"three_small_windows","kind":"windows","outline_uv":[[0.430,0.398],[0.510,0.398],[0.510,0.446],[0.430,0.446]]}],"uncertain":["rear wall behind opening"]},
+    {"id":"round_tower","kind":"tower","contour_uv":[[0.548,0.205],[0.575,0.105],[0.615,0.075],[0.655,0.105],[0.685,0.205],[0.690,0.390],[0.548,0.390]],"features":[{"id":"gallery_bays","kind":"arched_arcade","outline_uv":[[0.557,0.245],[0.615,0.220],[0.677,0.245],[0.677,0.335],[0.557,0.335]]},{"id":"balcony","kind":"rail","outline_uv":[[0.548,0.350],[0.690,0.350],[0.690,0.390],[0.548,0.390]]},{"id":"lower_drum","kind":"drum","outline_uv":[[0.570,0.350],[0.675,0.350],[0.675,0.445],[0.570,0.445]]}],"uncertain":["far-side gallery bays","lower drum partly occluded"]},
+    {"id":"rear_domes","kind":"dome_cluster","valid_for_modeling":false,"contour_uv":[],"features":[],"uncertain":["all central dome contours invalidated pending pixel redraw"]},
+    {"id":"market_canopies","kind":"awnings","contour_uv":[[0.000,0.120],[0.245,0.255],[0.420,0.480],[0.000,0.525],[0.335,0.555],[0.430,0.580]],"features":[{"id":"white_lower_edge","kind":"cloth_edge","outline_uv":[[0.000,0.525],[0.060,0.510],[0.125,0.535],[0.190,0.515],[0.260,0.550],[0.335,0.555]]},{"id":"gold_lower_edge","kind":"cloth_edge","outline_uv":[[0.000,0.275],[0.100,0.290],[0.205,0.335],[0.300,0.390]]},{"id":"green_lower_edge","kind":"cloth_edge","outline_uv":[[0.300,0.520],[0.335,0.555],[0.390,0.555],[0.430,0.580]]},{"id":"blue_right_edge","kind":"cloth_edge","outline_uv":[[0.590,0.510],[0.690,0.485],[0.800,0.470]]}],"uncertain":["cloth hidden by people and goods"]}
+  ],
+  "structures": {
+    "left_near_building": {
+      "confidence": "medium",
+      "outline": [[0.000,0.055],[0.210,0.055],[0.286,0.150],[0.286,0.585],[0.000,0.585]],
+      "front_turn_line": [[0.210,0.055],[0.286,0.150],[0.286,0.585]],
+      "eave_lines": [[[0.000,0.245],[0.205,0.255],[0.286,0.335]],[[0.000,0.405],[0.195,0.420],[0.286,0.465]]],
+      "visible_window_groups": [
+        [[0.035,0.275],[0.060,0.270],[0.060,0.350],[0.035,0.355]],
+        [[0.082,0.270],[0.108,0.268],[0.108,0.350],[0.082,0.352]],
+        [[0.140,0.245],[0.165,0.245],[0.165,0.340],[0.140,0.340]]
+      ]
+    },
+    "left_mid_building": {
+      "confidence": "medium",
+      "outline": [[0.245,0.090],[0.365,0.135],[0.438,0.285],[0.438,0.565],[0.255,0.575],[0.205,0.255]],
+      "front_turn_line": [[0.365,0.135],[0.438,0.285],[0.438,0.565]],
+      "parapet_line": [[0.245,0.090],[0.365,0.135],[0.438,0.285]],
+      "window_groups": [
+        [[0.285,0.220],[0.302,0.225],[0.302,0.360],[0.285,0.355]],
+        [[0.318,0.232],[0.335,0.238],[0.335,0.372],[0.318,0.366]],
+        [[0.350,0.250],[0.367,0.256],[0.367,0.386],[0.350,0.380]],
+        [[0.382,0.270],[0.399,0.276],[0.399,0.400],[0.382,0.394]]
+      ]
+    },
+    "right_near_building": {
+      "confidence": "high",
+      "outline": [[0.705,0.045],[1.000,0.025],[1.000,0.735],[0.748,0.645],[0.705,0.535]],
+      "near_corner": [[0.705,0.045],[0.705,0.535],[0.748,0.645]],
+      "far_edge": [[1.000,0.025],[1.000,0.735]],
+      "window_groups": [
+        [[0.790,0.155],[0.815,0.150],[0.815,0.280],[0.790,0.286]],
+        [[0.850,0.135],[0.875,0.130],[0.875,0.270],[0.850,0.276]],
+        [[0.915,0.115],[0.942,0.110],[0.942,0.260],[0.915,0.266]],
+        [[0.972,0.095],[0.998,0.090],[0.998,0.250],[0.972,0.256]],
+        [[0.760,0.375],[0.785,0.370],[0.785,0.510],[0.760,0.516]],
+        [[0.825,0.355],[0.850,0.350],[0.850,0.495],[0.825,0.501]]
+      ],
+      "uncertain": ["lower edge is hidden by foreground character/stalls", "far-right window cropping"]
+    },
+    "gate_bridge": {
+      "confidence": "high",
+      "wall_outline": [[0.425,0.345],[0.685,0.345],[0.700,0.675],[0.420,0.675]],
+      "top_parapet": [[0.425,0.345],[0.685,0.345],[0.685,0.390],[0.425,0.390]],
+      "arch_opening_visible_line": [[0.492,0.570],[0.492,0.510],[0.505,0.475],[0.530,0.452],[0.558,0.450],[0.585,0.470],[0.600,0.510],[0.600,0.570]],
+      "arch_opening_uncertain": true,
+      "small_windows": [
+        [[0.430,0.405],[0.447,0.404],[0.447,0.445],[0.430,0.446]],
+        [[0.462,0.401],[0.479,0.400],[0.479,0.441],[0.462,0.442]],
+        [[0.493,0.398],[0.510,0.398],[0.510,0.439],[0.493,0.439]]
+      ],
+      "masonry_course_guides": [[[0.425,0.410],[0.685,0.410]],[[0.425,0.470],[0.685,0.470]],[[0.425,0.530],[0.685,0.530]]]
+    },
+    "round_tower": {
+      "confidence": "high",
+      "roof_outline": [[0.548,0.205],[0.575,0.105],[0.615,0.075],[0.655,0.105],[0.685,0.205]],
+      "roof_eave": [[0.548,0.205],[0.615,0.225],[0.685,0.205]],
+      "gallery_outer_outline": [[0.550,0.205],[0.685,0.205],[0.690,0.375],[0.550,0.375]],
+      "gallery_bay_openings": [
+        [[0.557,0.245],[0.575,0.220],[0.592,0.245],[0.592,0.335],[0.557,0.335]],
+        [[0.596,0.245],[0.615,0.220],[0.634,0.245],[0.634,0.335],[0.596,0.335]],
+        [[0.638,0.245],[0.657,0.220],[0.677,0.245],[0.677,0.335],[0.638,0.335]]
+      ],
+      "balcony_rail": [[0.548,0.350],[0.690,0.350],[0.690,0.390],[0.548,0.390]],
+      "lower_drum_visible_outline": [[0.570,0.350],[0.675,0.350],[0.675,0.445],[0.570,0.445]],
+      "uncertain": ["lower drum is partly hidden behind bridge and right facade", "far-side gallery bays"]
+    },
+    "rear_domes_and_small_towers": {
+      "confidence": "invalid_pending_redraw",
+      "valid_for_modeling": false,
+      "large_domes": [],
+      "small_spires": [],
+      "invalid_reason": "Earlier hand-estimated dome contours were inconsistent with central_landmarks crop; do not use them."
+    },
+    "awnings": {
+      "confidence": "high",
+      "white_top": [[0.000,0.405],[0.160,0.415],[0.330,0.445],[0.420,0.480]],
+      "white_lower": [[0.000,0.525],[0.060,0.510],[0.125,0.535],[0.190,0.515],[0.260,0.550],[0.335,0.555]],
+      "gold_top": [[0.000,0.120],[0.120,0.165],[0.245,0.255]],
+      "gold_lower": [[0.000,0.275],[0.100,0.290],[0.205,0.335],[0.300,0.390]],
+      "green_lower": [[0.300,0.520],[0.335,0.555],[0.390,0.555],[0.430,0.580]],
+      "blue_right": [[0.590,0.510],[0.690,0.485],[0.800,0.470]],
+      "uncertain": ["cloth is partially hidden by foreground people and stall goods"]
+    }
+  },
+  "acceptance": {
+    "method": "Project visible mesh extrema and line intersections into this active-image coordinate space; do not use polygon centers as proof.",
+    "hard_structure": ["gate_bridge.wall_outline", "round_tower.roof_outline", "round_tower.gallery_bay_openings", "right_near_building.near_corner"],
+    "medium_structure": ["left_near_building.front_turn_line", "left_mid_building.front_turn_line", "rear_domes_and_small_towers.large_domes"],
+    "style_excluded": ["palette", "postprocess", "fog", "character asset identity"],
+    "status": "reference_contract_only"
+  }
+}

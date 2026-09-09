@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "coordinate_space": "full active picture 2560x1440; integer pixels shown by *_grid.png; UV is not used here",
+  "source": "validation/market_architecture_v4/*_grid.png",
+  "objects": [
+    {
+      "id": "left_near_building",
+      "kind": "facade",
+      "contour_px": [[0,45],[430,55],[520,170],[520,760],[0,760]],
+      "features": [
+        {"id":"near_upper_windows","kind":"window_group","window_outline_px":[[[250,78],[285,82],[285,205],[250,200]],[[325,95],[360,100],[360,225],[325,220]],[[400,112],[435,117],[435,245],[400,240]]]},
+        {"id":"near_lower_windows","kind":"window_group","window_outline_px":[[[130,780],[175,780],[175,900],[130,900]],[[225,785],[270,785],[270,910],[225,910]],[[320,790],[365,790],[365,920],[320,920]]],"uncertain":true}
+      ],
+      "uncertain": ["left roof edge hidden by canopy", "lower facade partially hidden by people"]
+    },
+    {
+      "id": "left_mid_building",
+      "kind": "facade",
+      "contour_px": [[500,95],[820,160],[1070,350],[1070,720],[620,650],[450,300]],
+      "features": [
+        {"id":"stepped_parapet","kind":"roofline","outline_px":[[500,95],[820,160],[1070,350]]},
+        {"id":"waist_high_windows","kind":"arched_window_group","window_outline_px":[[[750,395],[780,395],[780,555],[750,555]],[[800,415],[824,415],[824,560],[800,560]],[[843,435],[862,435],[862,575],[843,575]],[[878,455],[896,455],[896,588],[878,588]]],"note":"four visible tall narrow windows, progressively smaller toward depth"},
+        {"id":"lower_arch_window_group","kind":"arched_window_group","window_outline_px":[[[915,610],[945,610],[945,730],[915,730]],[[960,625],[987,625],[987,745],[960,745]]],"uncertain":true}
+      ],
+      "uncertain": ["far end behind gate and canopy"]
+    },
+    {
+      "id": "right_near_building",
+      "kind": "facade",
+      "contour_px": [[1760,50],[2560,35],[2560,1040],[2130,920],[1760,760]],
+      "features": [
+        {"id":"upper_tapered_windows","kind":"arched_window_group","window_outline_px":[[[1870,95],[1910,90],[1910,245],[1870,250]],[[1980,80],[2020,75],[2020,235],[1980,240]],[[2100,65],[2140,60],[2140,225],[2100,230]],[[2220,52],[2265,48],[2265,215],[2220,220]]]},
+        {"id":"lower_tall_windows","kind":"arched_window_group","window_outline_px":[[[1840,360],[1880,355],[1880,535],[1840,540]],[[1955,345],[1995,340],[1995,520],[1955,525]],[[2070,330],[2110,325],[2110,505],[2070,510]],[[2190,315],[2230,310],[2230,490],[2190,495]]]},
+        {"id":"near_corner_window","kind":"arched_window","outline_px":[[2350,295],[2400,290],[2400,485],[2350,490]],"uncertain":true}
+      ],
+      "uncertain": ["bottom and far-right edge hidden/cropped", "window count behind foreground character"]
+    }
+  ],
+  "verification": {
+    "status": "facade_trace_only",
+    "central_landmarks": "excluded until independently remeasured",
+    "method": "Integer points are read from the supplied full-picture grid labels; use outlines/edges, never polygon centers, for projection checks."
+  }
+}

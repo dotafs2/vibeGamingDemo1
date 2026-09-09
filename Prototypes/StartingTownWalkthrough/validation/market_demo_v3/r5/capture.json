@@ -1,0 +1,163 @@
+{
+	"character_count": 30,
+	"checks": {
+		"close_saved": true,
+		"distinct_towns": true,
+		"gate_detail_saved": true,
+		"gate_walk": true,
+		"geographic_anchor": true,
+		"motion_000.png": true,
+		"motion_045.png": true,
+		"motion_090.png": true,
+		"overview_saved": true,
+		"reference_saved": true,
+		"replacement_characters": true,
+		"tower_detail_saved": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"gate_walk_distance_m": 7.49977207183838,
+	"gate_walk_finished_on_floor": true,
+	"global_style_approved": false,
+	"horizontal_fov": 64.0,
+	"independent_review_pending": true,
+	"kimi_requests": 0,
+	"projected_landmarks": [
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				-1.89999997615814,
+				-11.5,
+				2.24668431282043
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "left_awning_inner_lower",
+			"pixel": [
+				512.989685058594,
+				480.261016845703
+			],
+			"uv": [
+				0.320618553161621,
+				0.533623352050781
+			]
+		},
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				0.807406306266785,
+				21.82,
+				6.61975765228271
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "gate_opening_crown",
+			"pixel": [
+				859.892150878906,
+				405.299163818359
+			],
+			"uv": [
+				0.537432594299316,
+				0.450332404242622
+			]
+		},
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				-1.60614734888077,
+				21.82,
+				4.20620399713516
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "gate_opening_left_spring",
+			"pixel": [
+				784.580505371094,
+				480.600402832031
+			],
+			"uv": [
+				0.490362815856934,
+				0.534000447591146
+			]
+		},
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				3.22095996141434,
+				21.82,
+				4.20620399713516
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "gate_opening_right_spring",
+			"pixel": [
+				936.031860351563,
+				480.357360839844
+			],
+			"uv": [
+				0.585019912719727,
+				0.53373040093316
+			]
+		},
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				5.03816032409668,
+				25.8189067840576,
+				19.2738094329834
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "tower_roof_apex",
+			"pixel": [
+				974.342834472656,
+				67.7004013061523
+			],
+			"uv": [
+				0.60896427154541,
+				0.075222668117947
+			]
+		},
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				0.838887572288513,
+				-16.8,
+				1.96
+			],
+			"marker_source": "actual_skinned_mesh_highest_vertex",
+			"name": "foreground_character_head_top",
+			"pixel": [
+				1321.22302246094,
+				462.103759765625
+			],
+			"uv": [
+				0.825764389038086,
+				0.513448621961806
+			]
+		}
+	],
+	"reference_camera_blender_m": [
+		0.0,
+		-19.0,
+		1.79999995231628
+	],
+	"reference_target_blender_m": [
+		-1.20000004768372,
+		25.0,
+		5.44999980926514
+	],
+	"reference_view_draw_calls": 3443.0,
+	"renderer": "forward_plus",
+	"revision": "r5",
+	"scene_origin": "(-163.0, 0.0, -18.0)",
+	"schema": 1,
+	"screenshots": [
+		"reference.png",
+		"motion_000.png",
+		"motion_045.png",
+		"motion_090.png",
+		"overview.png",
+		"close.png",
+		"gate_detail.png",
+		"tower_detail.png"
+	],
+	"source_glb": "StartingTown_Market_V3.glb",
+	"source_sha256": "15312ab4c862e6dc2659cbb87da5bdbf9a75d66487b6b643aa18d0d67886a2bf",
+	"technical_passed": true,
+	"visual_approval": false
+}

@@ -1,0 +1,854 @@
+{
+  "scope": "Curated representative landscape, not an exhaustive index of GitHub",
+  "method": "Public repository metadata and bounded README inspection; no repositories executed",
+  "repositories": [
+    {
+      "requested_repository": "a16z-infra/ai-town",
+      "retrieved_at_utc": "2026-09-09T03:35:21.584752+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/a16z-infra/ai-town/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "02b40c51b44d54228ec698bf90a901bdab6fa6bc45e0ffabca7dd241b870fd95",
+      "readme_truncated": false,
+      "readme_bytes_read": 25660,
+      "license_file_source": "https://raw.githubusercontent.com/a16z-infra/ai-town/HEAD/LICENSE",
+      "license_file_sha256": "9930be850173b81feab38afc429f798f0bb79aa50bb26138e9713d8767bec177",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "joonspk-research/generative_agents",
+      "retrieved_at_utc": "2026-09-09T03:35:21.585756+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/joonspk-research/generative_agents/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ae25b22ffa0a44d4e4a5135a9d4c12dd5e98b561d229842ea481239935c357a4",
+      "readme_truncated": false,
+      "readme_bytes_read": 12518,
+      "license_file_source": "https://raw.githubusercontent.com/joonspk-research/generative_agents/HEAD/LICENSE",
+      "license_file_sha256": "171fd8201c63d379bccf5a770b26c6c535f33be98f541c02b5d069937070f32b",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "google-deepmind/concordia",
+      "retrieved_at_utc": "2026-09-09T03:35:21.585756+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/google-deepmind/concordia/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "64c5f3732d613ce90ec02131d2841129ea072a4dc4dc945bf722f8b8df3d53a6",
+      "readme_truncated": false,
+      "readme_bytes_read": 7151,
+      "license_file_source": "https://raw.githubusercontent.com/google-deepmind/concordia/HEAD/LICENSE",
+      "license_file_sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "tsinghua-fib-lab/AgentSociety",
+      "retrieved_at_utc": "2026-09-09T03:35:21.586762+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/tsinghua-fib-lab/AgentSociety/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "1829e78f211681ccf929e809ef78fb5a8ba04c5ec2c035cf12a0e3856f7acad1",
+      "readme_truncated": false,
+      "readme_bytes_read": 8858,
+      "license_file_source": "https://raw.githubusercontent.com/tsinghua-fib-lab/AgentSociety/HEAD/LICENSE",
+      "license_file_sha256": "b65b784ed7e4318dc1c3e8944046d867edcc272c7f237ea99dcf0c0ce3a1e75d",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "camel-ai/oasis",
+      "retrieved_at_utc": "2026-09-09T03:35:22.299034+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/camel-ai/oasis/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "d7c32ccb2242d88da97499c4d7768391dbba5909e6d7e86e82b49de20afdf50d",
+      "readme_truncated": false,
+      "readme_bytes_read": 14642,
+      "license_file_source": "https://raw.githubusercontent.com/camel-ai/oasis/HEAD/LICENSE",
+      "license_file_sha256": "950deb34b1341a0ac95236fae92fe247c318c3a83a62c9ebacbe1882530ab1f6",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "mindcraft-bots/mindcraft",
+      "retrieved_at_utc": "2026-09-09T03:35:22.308082+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/mindcraft-bots/mindcraft/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "cc58f52ba9c1ffa0a20c7b6264ceb2c82d37188006c54974589a8f58e355cc41",
+      "readme_truncated": false,
+      "readme_bytes_read": 13264,
+      "license_file_source": "https://raw.githubusercontent.com/mindcraft-bots/mindcraft/HEAD/LICENSE",
+      "license_file_sha256": "99339f9e44831c87361c7e191743e8196b5321fd59f5949f1c55e7844e2941eb",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "MineDojo/Voyager",
+      "retrieved_at_utc": "2026-09-09T03:35:22.395043+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/MineDojo/Voyager/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "36fd5653c731f5b20189013f8552e77fefc182093f664288d6ce836e3efc111a",
+      "readme_truncated": false,
+      "readme_bytes_read": 6737,
+      "license_file_source": "https://raw.githubusercontent.com/MineDojo/Voyager/HEAD/LICENSE",
+      "license_file_sha256": "2319d24336f653a0438af96fb57ccbabbfc9b8a0dd9ddbbfb9854701376adc01",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "altera-al/project-sid",
+      "retrieved_at_utc": "2026-09-09T03:35:22.556900+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/altera-al/project-sid/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "d15f3a5f0cdafc8b29582d0669da22dff50be9227a823ac1f1465cd5ab08c822",
+      "readme_truncated": false,
+      "readme_bytes_read": 1999
+    },
+    {
+      "requested_repository": "SimWorld-AI/SimWorld",
+      "retrieved_at_utc": "2026-09-09T03:35:22.960035+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/SimWorld-AI/SimWorld/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "5d4720283b935b76d67f622ab3cabd0e8a13f81e01934c7f2c563a159ac22c8e",
+      "readme_truncated": false,
+      "readme_bytes_read": 21730,
+      "license_file_source": "https://raw.githubusercontent.com/SimWorld-AI/SimWorld/HEAD/LICENSE",
+      "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "SimWorld-AI/SimWorld-Studio",
+      "retrieved_at_utc": "2026-09-09T03:35:23.079166+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "requested_repository": "EricSun0218/OpenGameAgent",
+      "retrieved_at_utc": "2026-09-09T03:35:23.136972+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/EricSun0218/OpenGameAgent/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "7c5fc55fc9505969979842f34f541cc7b4754faa372b08b5132f3364588cc6c3",
+      "readme_truncated": false,
+      "readme_bytes_read": 26166,
+      "license_file_source": "https://raw.githubusercontent.com/EricSun0218/OpenGameAgent/HEAD/LICENSE",
+      "license_file_sha256": "8fe1cf43e9533d8f85f1530f38fd144c1d2c83d30bedeb8f4e2af5dfaf4b3514",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "JustInternetAI/AgentArena",
+      "retrieved_at_utc": "2026-09-09T03:35:23.173164+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/JustInternetAI/AgentArena/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "e28e2abd46298ab2bd0512e4228c512dcbc803d3b8c2a76d7875966f91c89517",
+      "readme_truncated": false,
+      "readme_bytes_read": 7267,
+      "license_file_source": "https://raw.githubusercontent.com/JustInternetAI/AgentArena/HEAD/LICENSE",
+      "license_file_sha256": "3285cf74058c0cbbcfad980b97e235b0f9caebcce43ca125fabffc2bd6227479",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "undreamai/LLMUnity",
+      "retrieved_at_utc": "2026-09-09T03:35:23.787920+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/undreamai/LLMUnity/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "0267aec3955e2157353f42927ef8e9f80594ccf875c17fa889b732c6d1dc7d3d",
+      "readme_truncated": false,
+      "readme_bytes_read": 27428,
+      "license_file_source": "https://raw.githubusercontent.com/undreamai/LLMUnity/HEAD/LICENSE.md",
+      "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "getnamo/Llama-Unreal",
+      "retrieved_at_utc": "2026-09-09T03:35:23.839191+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/getnamo/Llama-Unreal/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "b750a8c88fab9afca539a705c2131dfb27feb63d55b40b3f69b0ba61c5b8d95a",
+      "readme_truncated": false,
+      "readme_bytes_read": 45781,
+      "license_file_source": "https://raw.githubusercontent.com/getnamo/Llama-Unreal/HEAD/LICENSE",
+      "license_file_sha256": "5ab99863605d1cd32643aabe35a1e3e98682c3c1885763411f03ca5282797522",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "lschiweck/LLM-NPC-Agents",
+      "retrieved_at_utc": "2026-09-09T03:35:23.852763+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/lschiweck/LLM-NPC-Agents/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "d447eb92e38d5aea3864203268436a805e4c860215b755ef2dfe69860139d2f3",
+      "readme_truncated": false,
+      "readme_bytes_read": 31335,
+      "license_file_source": "https://raw.githubusercontent.com/lschiweck/LLM-NPC-Agents/HEAD/LICENSE",
+      "license_file_sha256": "5637ffb0d3e52096ce3699435783208cb57bd97f3d8bd1c8a0f16b710783b216",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "Agentshire/Agentshire",
+      "retrieved_at_utc": "2026-09-09T03:35:24.442386+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/Agentshire/Agentshire/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "a67d70ebc844138ce3883768cfc3c576116678de7f0f6a410e0bf8d13f19b106",
+      "readme_truncated": false,
+      "readme_bytes_read": 22260,
+      "license_file_source": "https://raw.githubusercontent.com/Agentshire/Agentshire/HEAD/LICENSE",
+      "license_file_sha256": "1b9554452e57b90540342e1c78f754e77b22b5d07e36f58c8dba146ea3e0a3d1",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "elizaOS/eliza",
+      "retrieved_at_utc": "2026-09-09T03:35:24.518790+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/elizaOS/eliza/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "2a1b9161ec43e55bed46c06f056082ab106824cd19fecad55d5b2e2fc23e58dd",
+      "readme_truncated": false,
+      "readme_bytes_read": 7524,
+      "license_file_source": "https://raw.githubusercontent.com/elizaOS/eliza/HEAD/LICENSE",
+      "license_file_sha256": "d0590837a439c742e89c8226137dd4e902fa1e0df486347dbfc9b8ba68b5826d",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "mem0ai/mem0",
+      "retrieved_at_utc": "2026-09-09T03:35:24.524822+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/mem0ai/mem0/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "7509347d34a767a2ef37ceb6cf6c714de9e8d84fe66ad5eea92bbae824a8fbeb",
+      "readme_truncated": false,
+      "readme_bytes_read": 11914,
+      "license_file_source": "https://raw.githubusercontent.com/mem0ai/mem0/HEAD/LICENSE",
+      "license_file_sha256": "0bbcbe931c353293a2fafce08326181dfeea0e568c566afd4ce8337a70f5e219",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "getzep/graphiti",
+      "retrieved_at_utc": "2026-09-09T03:35:24.597709+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/getzep/graphiti/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ce1628c02b3c6fd5b59e3e48dc61c958f07824033b4d0b989bb8d433932b6b3f",
+      "readme_truncated": false,
+      "readme_bytes_read": 28280,
+      "license_file_source": "https://raw.githubusercontent.com/getzep/graphiti/HEAD/LICENSE",
+      "license_file_sha256": "2825300b20d7b951209835a4a331f29e24725a39d65168e4b831df53aa372650",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "langchain-ai/langgraph",
+      "retrieved_at_utc": "2026-09-09T03:35:25.118466+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/langchain-ai/langgraph/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "3a13e257af1216962d53d72414a7f44ac1fc5cea34d994bdff60ea2a3b045933",
+      "readme_truncated": false,
+      "readme_bytes_read": 6395,
+      "license_file_source": "https://raw.githubusercontent.com/langchain-ai/langgraph/HEAD/LICENSE",
+      "license_file_sha256": "d9bb52f2e3540d60ff50d8f0f5b6ba649b7fd346948c4c3d086c8afb120763c7",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "BerriAI/litellm",
+      "retrieved_at_utc": "2026-09-09T03:35:25.300932+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/BerriAI/litellm/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ca3f7884775ae73f5dda9adeb45e8d24f5d652f102fde6cd8b95fb1c22e6fce3",
+      "readme_truncated": false,
+      "readme_bytes_read": 35510,
+      "license_file_source": "https://raw.githubusercontent.com/BerriAI/litellm/HEAD/LICENSE",
+      "license_file_sha256": "b170d6bf8e8835dd357e011681db028f4d51e2fb0ea892058f56e01fb39b8273",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "ggml-org/llama.cpp",
+      "retrieved_at_utc": "2026-09-09T03:35:25.438662+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/ggml-org/llama.cpp/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "e58520857253729851cc02313883c9d2a8b2ae86abe212aaf1bcbd7db8bfefb4",
+      "readme_truncated": false,
+      "readme_bytes_read": 7351,
+      "license_file_source": "https://raw.githubusercontent.com/ggml-org/llama.cpp/HEAD/LICENSE",
+      "license_file_sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "vrm-c/UniVRM",
+      "retrieved_at_utc": "2026-09-09T03:35:25.461282+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/vrm-c/UniVRM/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ae1a9cee1b40d9b73850b64268eff7a3cb54ea64b4389c1a0702e49c6d64400a",
+      "readme_truncated": false,
+      "readme_bytes_read": 4044,
+      "license_file_source": "https://raw.githubusercontent.com/vrm-c/UniVRM/HEAD/LICENSE.txt",
+      "license_file_sha256": "5cb01ebb60a7fa1885278a23e7f147f611b44686f772dd78835375365531cfb9",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "ruyo/VRM4U",
+      "retrieved_at_utc": "2026-09-09T03:35:25.849840+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/ruyo/VRM4U/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "fa36d18582b07a7a7190fc30b27f74ba98ed0ad74bfa36b10f7b3c49c0eb9199",
+      "readme_truncated": false,
+      "readme_bytes_read": 32705,
+      "license_file_source": "https://raw.githubusercontent.com/ruyo/VRM4U/HEAD/LICENSE",
+      "license_file_sha256": "4bc13b35acf8feeac664656d487ffe998d9cf9c0aacee398cf51a091ea46a25c",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "V-Sekai/godot-vrm",
+      "retrieved_at_utc": "2026-09-09T03:35:26.133843+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/V-Sekai/godot-vrm/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "b36e994103d3bc1aa65c30c84f35d8662ae73f26515fda0953e54de878d91047",
+      "readme_truncated": false,
+      "readme_bytes_read": 5338,
+      "license_file_source": "https://raw.githubusercontent.com/V-Sekai/godot-vrm/HEAD/LICENSE",
+      "license_file_sha256": "d39666c721f8453445364e66a08d0edec6fbc5b8e30ee1d9d710e84a3094c101",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "pixiv/three-vrm",
+      "retrieved_at_utc": "2026-09-09T03:35:26.169030+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/pixiv/three-vrm/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "09cd85c8a6d8b2616bd43b190ed78fd34dbc5b35cd9b1d93b196c976a09c804d",
+      "readme_truncated": false,
+      "readme_bytes_read": 4455,
+      "license_file_source": "https://raw.githubusercontent.com/pixiv/three-vrm/HEAD/LICENSE",
+      "license_file_sha256": "279ec82987aec7e72ecb9850bb704a87e352d577bc7581454c30f3551a88ea92",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "Unity-Technologies/com.unity.toonshader",
+      "retrieved_at_utc": "2026-09-09T03:35:26.220804+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/Unity-Technologies/com.unity.toonshader/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "70fb2c616b8fdbe4b70bb705bef1a7eca7a23cfe144d7a680a3d89627ff027cc",
+      "readme_truncated": false,
+      "readme_bytes_read": 7432,
+      "license_file_source": "https://raw.githubusercontent.com/Unity-Technologies/com.unity.toonshader/HEAD/LICENSE.md",
+      "license_file_sha256": "7542ef3672b807ec7e83cd5d9639875ac28cb05de0c7e5b589bc667cf28ed79c",
+      "license_detected_names_not_legal_conclusion": [
+        "Unity Companion"
+      ]
+    },
+    {
+      "requested_repository": "saturday06/VRM-Addon-for-Blender",
+      "retrieved_at_utc": "2026-09-09T03:35:26.432425+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/saturday06/VRM-Addon-for-Blender/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "36da6b7ec0cc1ec8c011c5c078389172141687e36b52dac4b56479f7a8cccabb",
+      "readme_truncated": false,
+      "readme_bytes_read": 17451
+    },
+    {
+      "requested_repository": "GodotVR/godot-xr-tools",
+      "retrieved_at_utc": "2026-09-09T03:35:26.818972+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/GodotVR/godot-xr-tools/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "2ff53dd0726db2f707d2c5cd688d58f3bec1f9b9d2eed527f0d22119920a42a6",
+      "readme_truncated": false,
+      "readme_bytes_read": 3624,
+      "license_file_source": "https://raw.githubusercontent.com/GodotVR/godot-xr-tools/HEAD/LICENSE",
+      "license_file_sha256": "3c7b052e959551657929dc088dc7930cfffdabbe1ce327879c875aa3c1f38b7c",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "Unity-Technologies/XR-Interaction-Toolkit-Examples",
+      "retrieved_at_utc": "2026-09-09T03:35:27.068795+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/Unity-Technologies/XR-Interaction-Toolkit-Examples/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "74e3023e8d6d4d234c041da37e3bcde6339d2d66a6f6a94777e9e07164e196a4",
+      "readme_truncated": false,
+      "readme_bytes_read": 4949,
+      "license_file_source": "https://raw.githubusercontent.com/Unity-Technologies/XR-Interaction-Toolkit-Examples/HEAD/LICENSE.md",
+      "license_file_sha256": "f7d86c802e38e5864d32c81e23c9789182edd7beab7378c82fe94f3f81683233",
+      "license_detected_names_not_legal_conclusion": [
+        "Unity Companion"
+      ]
+    },
+    {
+      "requested_repository": "KhronosGroup/OpenXR-SDK-Source",
+      "retrieved_at_utc": "2026-09-09T03:35:27.102976+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/KhronosGroup/OpenXR-SDK-Source/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "9938b0865c167eb8c6903688111d7a91936259fb1489519bcc7e37641fa62508",
+      "readme_truncated": false,
+      "readme_bytes_read": 2187,
+      "license_file_source": "https://raw.githubusercontent.com/KhronosGroup/OpenXR-SDK-Source/HEAD/LICENSE",
+      "license_file_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "heroiclabs/nakama",
+      "retrieved_at_utc": "2026-09-09T03:35:27.238694+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/heroiclabs/nakama/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "6469e75be4292402ed2e7b22bf58bd0d5cccceadaaa514c5b53588a5aceb5129",
+      "readme_truncated": false,
+      "readme_bytes_read": 13291,
+      "license_file_source": "https://raw.githubusercontent.com/heroiclabs/nakama/HEAD/LICENSE",
+      "license_file_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "MirrorNetworking/Mirror",
+      "retrieved_at_utc": "2026-09-09T03:35:27.491534+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/MirrorNetworking/Mirror/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "757b351408b806caeeb8dc6297a1f594bb7471dc6a8acdc59bf8d3ed80078761",
+      "readme_truncated": false,
+      "readme_bytes_read": 31659,
+      "license_file_source": "https://raw.githubusercontent.com/MirrorNetworking/Mirror/HEAD/LICENSE",
+      "license_file_sha256": "74819ab7f08d5e3b91f0392fc41a3146e27bbefe4af90dfafbf71b9c470a9560",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "colyseus/colyseus",
+      "retrieved_at_utc": "2026-09-09T03:35:27.704662+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/colyseus/colyseus/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "7a4ad15c24c1f57c9e9d7c8d01fc024283e22bde792037febfb2451326a48444",
+      "readme_truncated": false,
+      "readme_bytes_read": 15457,
+      "license_file_source": "https://raw.githubusercontent.com/colyseus/colyseus/HEAD/LICENSE",
+      "license_file_sha256": "58f5d8920f8d425a9eec9e8cb07f9d0ac5ac08d2aba15f98270c0caddb9de3e4",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "crashkonijn/GOAP",
+      "retrieved_at_utc": "2026-09-09T03:35:27.783580+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/crashkonijn/GOAP/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "0a64811f8a9fc86f351f4af376947e7ec684fa794c2c4f07d0939de27cd38b16",
+      "readme_truncated": false,
+      "readme_bytes_read": 4080,
+      "license_file_source": "https://raw.githubusercontent.com/crashkonijn/GOAP/HEAD/LICENSE",
+      "license_file_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "luxkun/ReGoap",
+      "retrieved_at_utc": "2026-09-09T03:35:28.032399+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/luxkun/ReGoap/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "68d9f3dbb87a91591a5769c00760fd2541498137ad9bc88ee3e15f321732d90b",
+      "readme_truncated": false,
+      "readme_bytes_read": 4325,
+      "license_file_source": "https://raw.githubusercontent.com/luxkun/ReGoap/HEAD/LICENSE",
+      "license_file_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "limbonaut/limboai",
+      "retrieved_at_utc": "2026-09-09T03:35:28.149016+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/limbonaut/limboai/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "cb51e1d73bf1a40b7e38bb89c3c822406490c4c0d0b7867727c3bb81072510c1",
+      "readme_truncated": false,
+      "readme_bytes_read": 11759,
+      "license_file_source": "https://raw.githubusercontent.com/limbonaut/limboai/HEAD/LICENSE.md",
+      "license_file_sha256": "1b2d39c48e02b683abfafa1187de21e75796cd54cd18f6f60ddf369529ee8240",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "Unity-Technologies/ml-agents",
+      "retrieved_at_utc": "2026-09-09T03:35:28.380743+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "license_file_source": "https://raw.githubusercontent.com/Unity-Technologies/ml-agents/HEAD/LICENSE.md",
+      "license_file_sha256": "21169a6cd5de3af010f89d5bf5e679c0cc33e5ab1163464b6507b3634e3ca6e4",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "unrealcv/unrealcv",
+      "retrieved_at_utc": "2026-09-09T03:35:28.726574+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/unrealcv/unrealcv/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "5458093994af9f23e872e9a3cf105093629e9410bc50df4d340e2ed63ed48c8c",
+      "readme_truncated": false,
+      "readme_bytes_read": 4031,
+      "license_file_source": "https://raw.githubusercontent.com/unrealcv/unrealcv/HEAD/LICENSE",
+      "license_file_sha256": "c3856018bc239cd4c06b773aee079272ac63a3d17007d949d5b47a3e6091b4f7",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "ahujasid/blender-mcp",
+      "retrieved_at_utc": "2026-09-09T03:35:28.743163+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/ahujasid/blender-mcp/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "15660f05cf6de98d2d2a9202017f318932573cf13552698ae43b942ed7c90d18",
+      "readme_truncated": false,
+      "readme_bytes_read": 25365,
+      "license_file_source": "https://raw.githubusercontent.com/ahujasid/blender-mcp/HEAD/LICENSE",
+      "license_file_sha256": "049501fd54d27852507853a5b88094ca1c6ff97404418a5032f3310eecc9cde6",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "CoplayDev/unity-mcp",
+      "retrieved_at_utc": "2026-09-09T03:35:28.842690+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/CoplayDev/unity-mcp/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "eb5d0fc9f6baa1dab43acb69c7e3dc4774e73a1cf9142d2344073bd4309d843b",
+      "readme_truncated": false,
+      "readme_bytes_read": 5278,
+      "license_file_source": "https://raw.githubusercontent.com/CoplayDev/unity-mcp/HEAD/LICENSE",
+      "license_file_sha256": "6efe650c965012ac418238dcd6b9116e4130a5220717ef0dfb539dd159c4245c",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "chongdashu/unreal-mcp",
+      "retrieved_at_utc": "2026-09-09T03:35:29.331277+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/chongdashu/unreal-mcp/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "c7940b0aa091c9cb2d3fca20f55b5ae7093c1cc0c3bae15b4b1b7d812afd8630",
+      "readme_truncated": false,
+      "readme_bytes_read": 6166
+    },
+    {
+      "requested_repository": "princeton-vl/infinigen",
+      "retrieved_at_utc": "2026-09-09T03:35:29.342336+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/princeton-vl/infinigen/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ff6802bfdbd3ce2f95d34480ade6cf98fa173b7383db1ce1b10ee93df6ff2bc8",
+      "readme_truncated": false,
+      "readme_bytes_read": 14329,
+      "license_file_source": "https://raw.githubusercontent.com/princeton-vl/infinigen/HEAD/LICENSE",
+      "license_file_sha256": "e610a367a4cb695282366ffc5b669ed28e8b728ceac45e98f77aa77a7498559a",
+      "license_detected_names_not_legal_conclusion": [
+        "BSD-style (check clauses)"
+      ]
+    },
+    {
+      "requested_repository": "microsoft/TRELLIS.2",
+      "retrieved_at_utc": "2026-09-09T03:35:29.464483+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/microsoft/TRELLIS.2/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "adc985d5a71fda0a5cb7287f58b6baa7de8db1568c4483ac210f3447b786552b",
+      "readme_truncated": false,
+      "readme_bytes_read": 16212,
+      "license_file_source": "https://raw.githubusercontent.com/microsoft/TRELLIS.2/HEAD/LICENSE",
+      "license_file_sha256": "d9a1b1e30d633d5732ea18e3cba9538d293ebc53e1a9e4e96ab739e0c5c4f1cb",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "Tencent-Hunyuan/Hunyuan3D-2.1",
+      "retrieved_at_utc": "2026-09-09T03:35:30.045059+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan3D-2.1/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "35479a9741c38cf6ebc7693bb0c58a6fa447659b3b9f1d60ba01e21098d0af20",
+      "readme_truncated": false,
+      "readme_bytes_read": 10203,
+      "license_file_source": "https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan3D-2.1/HEAD/LICENSE",
+      "license_file_sha256": "b79ac5e11ce063b6c6570dbe9686a45a03ba08bd248aa6aa82fb342a23a81c0c",
+      "license_detected_names_not_legal_conclusion": [
+        "Tencent Hunyuan Community"
+      ]
+    },
+    {
+      "requested_repository": "VAST-AI-Research/TripoSR",
+      "retrieved_at_utc": "2026-09-09T03:35:30.060640+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/VAST-AI-Research/TripoSR/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "ed40f078c5e451c58eae716187e0128f0ce8575e467aab2440b4ed9c75e490b9",
+      "readme_truncated": false,
+      "readme_bytes_read": 5419,
+      "license_file_source": "https://raw.githubusercontent.com/VAST-AI-Research/TripoSR/HEAD/LICENSE",
+      "license_file_sha256": "ade0a66629bdd7e01e46b3296b3851cff0fd27989bca53da470ad6e96ed620fb",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "godotengine/godot",
+      "retrieved_at_utc": "2026-09-09T03:35:30.081249+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/godotengine/godot/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "999955511e1d54b0abe323ad899633a5a22c14c4899d46e31d06de2175bd19f0",
+      "readme_truncated": false,
+      "readme_bytes_read": 3722,
+      "license_file_source": "https://raw.githubusercontent.com/godotengine/godot/HEAD/LICENSE.txt",
+      "license_file_sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "mrdoob/three.js",
+      "retrieved_at_utc": "2026-09-09T03:35:30.098842+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/mrdoob/three.js/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "d553d824625a07d7690de93af6f8daf13d6aaed42700929d7ce4e725fa5ef10d",
+      "readme_truncated": false,
+      "readme_bytes_read": 2969,
+      "license_file_source": "https://raw.githubusercontent.com/mrdoob/three.js/HEAD/LICENSE",
+      "license_file_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "recastnavigation/recastnavigation",
+      "retrieved_at_utc": "2026-09-09T03:35:30.651771+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/recastnavigation/recastnavigation/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "3e36443648f6f8888ebd2121663d8848b719c37a3118cfd345ca8242e7583ea3",
+      "readme_truncated": false,
+      "readme_bytes_read": 4330
+    },
+    {
+      "requested_repository": "atteneder/glTFast",
+      "retrieved_at_utc": "2026-09-09T03:35:30.760848+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/atteneder/glTFast/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "4d2cc2cdf1364a0cd6c77e75e9e8bcbb5d96f4b86c5543b415063ee384238d47",
+      "readme_truncated": false,
+      "readme_bytes_read": 5182,
+      "license_file_source": "https://raw.githubusercontent.com/atteneder/glTFast/HEAD/LICENSE.md",
+      "license_file_sha256": "3a8fdd91afd03287d9de94a8544e21965efa1d0a644a866a5c0d637627dff18d",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "rdeioris/glTFRuntime",
+      "retrieved_at_utc": "2026-09-09T03:35:30.769394+00:00",
+      "execution_tested": false,
+      "metadata_error": "HTTP Error 403: rate limit exceeded",
+      "readme_source": "https://raw.githubusercontent.com/rdeioris/glTFRuntime/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "f87beb7760d1a8b056ee3856332d50ffbf07dc22977357699c0560905c10a2a3",
+      "readme_truncated": false,
+      "readme_bytes_read": 2644,
+      "license_file_source": "https://raw.githubusercontent.com/rdeioris/glTFRuntime/HEAD/LICENSE",
+      "license_file_sha256": "fe108b3cf71498faab7e3fd2776715a9ba019ced5a38ecd2f5cab377bfe9cf99",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "echo-yiyiyi/cube",
+      "retrieved_at_utc": "2026-09-09T03:39:16.589341+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/echo-yiyiyi/cube/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "4a5239f9980ab1a55e043fe62173ccf8f8a0ccf08acbebed89dac031896dddaa",
+      "readme_truncated": false,
+      "readme_bytes_read": 10483
+    },
+    {
+      "requested_repository": "hecomi/uLipSync",
+      "retrieved_at_utc": "2026-09-09T03:39:16.589844+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/hecomi/uLipSync/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "9908ffa49e126e0e78ee9442277725f276d4c21a98b72abe796d10609ab176da",
+      "readme_truncated": false,
+      "readme_bytes_read": 30440,
+      "license_file_source": "https://raw.githubusercontent.com/hecomi/uLipSync/HEAD/LICENSE.md",
+      "license_file_sha256": "d1897e0b1bad123c8ceefdfc3d57356141da9745577e152e01fa3434aeacbefa",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "k2-fsa/sherpa-onnx",
+      "retrieved_at_utc": "2026-09-09T03:39:16.589844+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "8fa218670f33f12a2b18b1415a4c70497918587218dde163934249447f3270e8",
+      "readme_truncated": false,
+      "readme_bytes_read": 53127,
+      "license_file_source": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/HEAD/LICENSE",
+      "license_file_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "ggml-org/whisper.cpp",
+      "retrieved_at_utc": "2026-09-09T03:39:16.590347+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/ggml-org/whisper.cpp/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "33ed1d6e00afed45038fca65b010ca5c7e2b4d0fc93cbf5429252ebc07719e0a",
+      "readme_truncated": false,
+      "readme_bytes_read": 39240,
+      "license_file_source": "https://raw.githubusercontent.com/ggml-org/whisper.cpp/HEAD/LICENSE",
+      "license_file_sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "TokisanGames/Terrain3D",
+      "retrieved_at_utc": "2026-09-09T03:39:17.127189+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/TokisanGames/Terrain3D/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "4a71cb2cd3964af1fab2649600cd8a1e4d82ef0f83674c429a520bfefb624a1e",
+      "readme_truncated": false,
+      "readme_bytes_read": 3862,
+      "license_file_source": "https://raw.githubusercontent.com/TokisanGames/Terrain3D/HEAD/LICENSE.txt",
+      "license_file_sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    },
+    {
+      "requested_repository": "NVIDIA/ACE",
+      "retrieved_at_utc": "2026-09-09T03:48:00.881553+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/NVIDIA/ACE/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "26352876d44b77c10d61f092ce6573b55705fcaab6e5155d3241d1c8701046e1",
+      "readme_truncated": false,
+      "readme_bytes_read": 8793,
+      "license_file_source": "https://raw.githubusercontent.com/NVIDIA/ACE/HEAD/LICENSE",
+      "license_file_sha256": "00144fd68c95c6312c97903f75789e749df51222962cb03093148aedb026522d",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "NVIDIA/game-agent-sdk",
+      "retrieved_at_utc": "2026-09-09T03:48:00.882559+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/NVIDIA/game-agent-sdk/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "74fa825be450000cae64c46b6d1d302422ce6308142b7ac25423f28f294352c0",
+      "readme_truncated": false,
+      "readme_bytes_read": 3836,
+      "license_file_source": "https://raw.githubusercontent.com/NVIDIA/game-agent-sdk/HEAD/LICENSE.txt",
+      "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "license_detected_names_not_legal_conclusion": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "requested_repository": "NVIDIA/Audio2Face-3D-SDK",
+      "retrieved_at_utc": "2026-09-09T03:48:00.883061+00:00",
+      "execution_tested": false,
+      "metadata_error": "Metadata skipped after public API rate limit",
+      "readme_source": "https://raw.githubusercontent.com/NVIDIA/Audio2Face-3D-SDK/HEAD/README.md",
+      "readme_sha256_of_read_bytes": "b6415ea8c479c54ce632103fd0b6b48d7fc4a1db932f478d271d396cfe9cc0bc",
+      "readme_truncated": false,
+      "readme_bytes_read": 12527,
+      "license_file_source": "https://raw.githubusercontent.com/NVIDIA/Audio2Face-3D-SDK/HEAD/LICENSE.txt",
+      "license_file_sha256": "211c1b442d1d55e2989de4344d63e9e6b8896cb3bd91289a92da708597087dd6",
+      "license_detected_names_not_legal_conclusion": [
+        "MIT-style"
+      ]
+    }
+  ],
+  "metadata_availability_note": "Public GitHub repository API was rate limited. Missing dates and archive status are unknown, not evidence of inactivity. README/source browsing was used instead."
+}

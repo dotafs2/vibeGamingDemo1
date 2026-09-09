@@ -1,0 +1,14 @@
+{
+	"checks": {
+		"glb_import": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"kimi_requests": 0,
+	"kind": "spatial_prototype",
+	"mesh_instances": 789,
+	"npc_decisions_implemented": false,
+	"persistent_world_loaded": false,
+	"render_capture": "completed",
+	"schema": 1,
+	"triangle_count": 19232
+}

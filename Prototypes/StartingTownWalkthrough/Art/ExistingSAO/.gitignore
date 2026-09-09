@@ -1,0 +1,11 @@
+# Downloaded character data: author prohibits redistribution of original files.
+Kirito.zip
+sugaki_kirito/
+inspection_dependency/
+page_checks.json
+browser_process.json
+*.blend
+*.blend1
+*.log
+owned_processes.jsonl
+Maya/

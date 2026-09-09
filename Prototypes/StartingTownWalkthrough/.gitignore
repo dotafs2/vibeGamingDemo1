@@ -1,0 +1,4 @@
+.godot/
+*.tmp
+validation/*.log
+*.blend1

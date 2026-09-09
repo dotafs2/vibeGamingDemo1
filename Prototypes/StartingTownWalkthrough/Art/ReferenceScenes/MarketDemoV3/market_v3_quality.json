@@ -1,0 +1,50 @@
+{
+  "asset": "StartingTown_Market_V3.glb",
+  "status": "invalidated_historical_initial_generator_report",
+  "scope_note": "Initial generator asserted object presence only. Independent visual review rejected this revision. This file does not describe the current GLB; use validation/market_demo_v3 revision capture.json and Review.md.",
+  "visual_approval": false,
+  "checks": [
+    {
+      "name": "single_reference_camera",
+      "pass": true,
+      "value": [
+        0,
+        -19,
+        1.7
+      ]
+    },
+    {
+      "name": "central_arch_present",
+      "pass": true,
+      "value": "market_v3_gate_wall_and_round_turret"
+    },
+    {
+      "name": "round_turret_gallery_columns",
+      "pass": true,
+      "value": 10
+    },
+    {
+      "name": "offset_dome_cluster",
+      "pass": true,
+      "value": 3
+    },
+    {
+      "name": "nonuniform_awning_panels",
+      "pass": true,
+      "value": 7
+    },
+    {
+      "name": "collision_meshes",
+      "pass": true,
+      "value": [
+        "COL_market_v3_ground",
+        "COL_v3_left_foreground",
+        "COL_v3_left_mid",
+        "COL_v3_right_foreground",
+        "COL_v3_right_mid",
+        "COL_market_v3_gate"
+      ]
+    }
+  ],
+  "all_pass": false
+}

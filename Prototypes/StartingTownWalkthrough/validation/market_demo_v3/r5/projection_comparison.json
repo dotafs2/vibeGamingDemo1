@@ -1,0 +1,156 @@
+{
+  "revision": "r5",
+  "measurement_scope": "Named visible geometry points, not an overall image similarity score",
+  "markers": [
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        -1.89999997615814,
+        -11.5,
+        2.24668431282043
+      ],
+      "marker_source": "authored_geometry_marker",
+      "name": "left_awning_inner_lower",
+      "pixel": [
+        512.989685058594,
+        480.261016845703
+      ],
+      "uv": [
+        0.320618553161621,
+        0.533623352050781
+      ],
+      "target": null,
+      "delta": null
+    },
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        0.807406306266785,
+        21.82,
+        6.61975765228271
+      ],
+      "marker_source": "authored_geometry_marker",
+      "name": "gate_opening_crown",
+      "pixel": [
+        859.892150878906,
+        405.299163818359
+      ],
+      "uv": [
+        0.537432594299316,
+        0.450332404242622
+      ],
+      "target": [
+        0.546,
+        0.455
+      ],
+      "delta": [
+        -0.008567405700684039,
+        -0.004667595757378018
+      ]
+    },
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        -1.60614734888077,
+        21.82,
+        4.20620399713516
+      ],
+      "marker_source": "authored_geometry_marker",
+      "name": "gate_opening_left_spring",
+      "pixel": [
+        784.580505371094,
+        480.600402832031
+      ],
+      "uv": [
+        0.490362815856934,
+        0.534000447591146
+      ],
+      "target": [
+        0.495,
+        0.555
+      ],
+      "delta": [
+        -0.00463718414306602,
+        -0.020999552408854094
+      ]
+    },
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        3.22095996141434,
+        21.82,
+        4.20620399713516
+      ],
+      "marker_source": "authored_geometry_marker",
+      "name": "gate_opening_right_spring",
+      "pixel": [
+        936.031860351563,
+        480.357360839844
+      ],
+      "uv": [
+        0.585019912719727,
+        0.53373040093316
+      ],
+      "target": [
+        0.598,
+        0.555
+      ],
+      "delta": [
+        -0.012980087280273,
+        -0.021269599066840006
+      ]
+    },
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        5.03816032409668,
+        25.8189067840576,
+        19.2738094329834
+      ],
+      "marker_source": "authored_geometry_marker",
+      "name": "tower_roof_apex",
+      "pixel": [
+        974.342834472656,
+        67.7004013061523
+      ],
+      "uv": [
+        0.60896427154541,
+        0.075222668117947
+      ],
+      "target": [
+        0.615,
+        0.075
+      ],
+      "delta": [
+        -0.006035728454589995,
+        0.00022266811794700858
+      ]
+    },
+    {
+      "behind_camera": false,
+      "local_xyz": [
+        0.838887572288513,
+        -16.8,
+        1.96
+      ],
+      "marker_source": "actual_skinned_mesh_highest_vertex",
+      "name": "foreground_character_head_top",
+      "pixel": [
+        1321.22302246094,
+        462.103759765625
+      ],
+      "uv": [
+        0.825764389038086,
+        0.513448621961806
+      ],
+      "target": [
+        0.835,
+        0.53
+      ],
+      "delta": [
+        -0.009235610961913943,
+        -0.016551378038194065
+      ]
+    }
+  ]
+}

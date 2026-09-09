@@ -1,0 +1,36 @@
+{
+  "revision": "r2",
+  "reviewer": "primary_agent",
+  "actual_images_viewed": [
+    "tolbana_baseline.png",
+    "market_baseline.png",
+    "residences.png",
+    "inn_joinery.png",
+    "inn_interior.png",
+    "fountain_detail.png",
+    "garden_seating.png",
+    "tree_backlight.png",
+    "motion_090.png",
+    "tolbana_comparison.png",
+    "market_comparison.png"
+  ],
+  "resolved": [
+    "front_door_window_frame_clearance",
+    "bench_seat_height_and_disconnected_armrests"
+  ],
+  "remaining": [
+    "unapproved_flat_pale_environment_materials",
+    "static_opaque_fountain_water",
+    "simplified_far_terrain_and_supporting_houses",
+    "interior_lighting_not_final",
+    "global_character_environment_shading_pending_user_direction"
+  ],
+  "technical_checks": 19,
+  "technical_passed": true,
+  "native_tolbana_launcher_smoke_passed": true,
+  "visual_approval": false,
+  "global_style_approved": false,
+  "kimi_requests": 0,
+  "kimi_cost_cny": 0,
+  "all_owned_processes_exited": true
+}

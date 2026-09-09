@@ -1,0 +1,39 @@
+{
+  "checked": "2026-09-09T21:00:19.0790508+08:00",
+  "processes": [
+    {
+      "pid": 616128,
+      "running": false
+    },
+    {
+      "pid": 617184,
+      "running": false
+    },
+    {
+      "pid": 619244,
+      "running": false
+    },
+    {
+      "pid": 619240,
+      "running": false
+    },
+    {
+      "pid": 618100,
+      "running": false
+    },
+    {
+      "pid": 363648,
+      "running": false
+    },
+    {
+      "pid": 612008,
+      "running": false
+    },
+    {
+      "pid": 614852,
+      "running": false
+    }
+  ],
+  "owned_edge_remaining_children": [],
+  "all_owned_exited": true
+}

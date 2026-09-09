@@ -1,0 +1,121 @@
+{
+	"canonical_exact_coordinates": false,
+	"checks": {
+		"geographic_separation": true,
+		"market_close_capture": true,
+		"market_ground": true,
+		"market_overview_capture": true,
+		"market_reference_capture": true,
+		"market_reverse_capture": true,
+		"market_walk": true,
+		"shared_style": true,
+		"tolbana_close_capture": true,
+		"tolbana_ground": true,
+		"tolbana_overview_capture": true,
+		"tolbana_reference_capture": true,
+		"tolbana_reverse_capture": true,
+		"tolbana_walk": true,
+		"two_distinct_regions": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"kimi_requests": 0,
+	"kind": "blender_reference_scene_geometry",
+	"market_walk_distance_m": 7.49997663497925,
+	"market_walk_finish": [
+		-150.773132324219,
+		0.310855358839035,
+		-15.4010705947876
+	],
+	"npc_behavior_implemented": false,
+	"passed": true,
+	"persistent_world_loaded": false,
+	"renderer": "gl_compatibility",
+	"replaced_blockout_object_ids": [
+		"fabric_6",
+		"roof_6",
+		"fabric_38",
+		"roof_38",
+		"fabric_41",
+		"roof_41",
+		"fabric_56",
+		"roof_56",
+		"fabric_74",
+		"roof_74",
+		"fabric_82",
+		"roof_82",
+		"fabric_104",
+		"roof_104",
+		"fabric_116",
+		"roof_116",
+		"fabric_151",
+		"roof_151",
+		"fabric_158",
+		"roof_158",
+		"fabric_167",
+		"roof_167",
+		"fabric_173",
+		"roof_173",
+		"fabric_179",
+		"roof_179",
+		"task_frontage_0",
+		"task_roof_0",
+		"task_awning_0",
+		"task_frontage_1",
+		"task_roof_1",
+		"task_awning_1",
+		"task_frontage_2",
+		"task_roof_2",
+		"task_awning_2"
+	],
+	"scenes": [
+		{
+			"floor_east_north_m": [
+				-163.0,
+				-4752.0
+			],
+			"godot_position_m": [
+				-163.0,
+				0.0,
+				-18.0
+			],
+			"id": "StartingTown_Market",
+			"mesh_instances": 19,
+			"region_id": "beginnings_plaza",
+			"sha256": "f34aa16545861019b3ae9402b6647ca315deb1efd21c03a9a75ffedfa5aa2427",
+			"triangles": 168280.0
+		},
+		{
+			"floor_east_north_m": [
+				0.0,
+				2900.0
+			],
+			"godot_position_m": [
+				0.0,
+				0.0,
+				-7670.0
+			],
+			"id": "Tolbana_Plaza",
+			"mesh_instances": 25,
+			"region_id": "tolbana",
+			"sha256": "5254e929c72a0a601acb9aa82674de1ee6e67edf364614f999ca2135f267353e",
+			"triangles": 259431.0
+		}
+	],
+	"schema": 1,
+	"screenshots": [
+		"res://validation/reference_scenes/market_reference.png",
+		"res://validation/reference_scenes/market_close.png",
+		"res://validation/reference_scenes/market_reverse.png",
+		"res://validation/reference_scenes/market_overview.png",
+		"res://validation/reference_scenes/tolbana_reference.png",
+		"res://validation/reference_scenes/tolbana_close.png",
+		"res://validation/reference_scenes/tolbana_reverse.png",
+		"res://validation/reference_scenes/tolbana_overview.png"
+	],
+	"tolbana_walk_distance_m": 7.49560546875,
+	"tolbana_walk_finish": [
+		3.99990057945251,
+		0.300845056772232,
+		-7663.49560546875
+	]
+}

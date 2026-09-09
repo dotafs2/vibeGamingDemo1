@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "scene": "StartingTown_Market",
+  "reference": {
+    "url": "https://i.pinimg.com/originals/92/a3/a7/92a3a78f0b36febbef3abcb70f37ff7e.png",
+    "source_page": "https://www.pinterest.com/pin/637470522238655015/",
+    "file_px": [2560, 1600],
+    "active_image_rect_px": [0, 80, 2560, 1440],
+    "coordinate_space": "x=u*2560; y=80+v*1440; v excludes black letterbox bars",
+    "resolution_note": "Browser-reported file dimensions; original/native source resolution is not independently verified.",
+    "note": "Third-party anime still; coordinates are visual reconstruction constraints, not a city survey."
+  },
+  "camera_constraints": {
+    "comparison_aspect": "16:9",
+    "camera_height_class": "human_eye_level_low_2m",
+    "dominant_axis": "street longitudinal axis toward gate",
+    "must_preserve": ["large foreground stalls and people", "gate centered slightly right of image center", "right foreground facade fills edge", "round tower above gate-right"],
+    "do_not_claim": "pixel-perfect camera solve from one illustration"
+  },
+  "landmarks": [
+    {"id":"street_vanishing_zone","type":"composition","marker":"center","u":0.525,"v":0.535,"tolerance_u":0.025,"tolerance_v":0.03,"acceptance":"street edges and stall rows converge here"},
+    {"id":"gate_outer_bbox","type":"architecture","u_min":0.451,"u_max":0.686,"v_min":0.35,"v_max":0.705,"tolerance":0.04,"acceptance":"visible stone bridge/gate mass occupies middle distance; opening is tall rounded arch"},
+    {"id":"gate_opening_bbox","type":"architecture","u_min":0.495,"u_max":0.598,"v_min":0.455,"v_max":0.655,"tolerance":0.025,"acceptance":"dark arch opening with visible bright street beyond"},
+    {"id":"round_tower","type":"architecture","u_min":0.545,"u_max":0.687,"v_min":0.075,"v_max":0.435,"tolerance":0.035,"acceptance":"cylindrical tower, conical red roof, open arcade with repeated thick arches and balcony bands"},
+    {"id":"rear_domes","type":"architecture","u_min":0.302,"u_max":0.505,"v_min":0.15,"v_max":0.43,"tolerance":0.04,"acceptance":"multiple pale domes behind/left of gate, staggered depths"},
+    {"id":"left_facade","type":"architecture","u_min":0.0,"u_max":0.355,"v_min":0.08,"v_max":0.70,"tolerance":0.04,"acceptance":"receding pale masonry facade; arched windows and parapet; lower level is mostly hidden by stalls/awnings"},
+    {"id":"right_facade","type":"architecture","u_min":0.70,"u_max":1.0,"v_min":0.06,"v_max":0.75,"tolerance":0.04,"acceptance":"large close pale masonry wall, strong perspective plane, deep windows/recesses"},
+    {"id":"left_stall_canopy","type":"street_life","u_min":0.0,"u_max":0.42,"v_min":0.28,"v_max":0.74,"tolerance":0.04,"acceptance":"layered cloth awnings project into street with irregular sagging edges, not a single straight strip"},
+    {"id":"right_blue_awning","type":"street_life","u_min":0.59,"u_max":0.81,"v_min":0.35,"v_max":0.62,"tolerance":0.04,"acceptance":"cool blue/cyan awning and shadowed stall break up right facade"},
+    {"id":"foreground_people_mass","type":"street_life","u_min":0.03,"u_max":0.72,"v_min":0.48,"v_max":1.0,"tolerance":0.05,"acceptance":"dense overlapping crowd and merchant silhouettes; several bodies crop at bottom/edges"},
+    {"id":"foreground_right_character","type":"street_life","u_min":0.735,"u_max":0.94,"v_min":0.53,"v_max":1.0,"tolerance":0.04,"acceptance":"large brown-haired character cropped by bottom/right, establishes near-camera scale"},
+    {"id":"street_floor","type":"ground","u_min":0.23,"u_max":0.79,"v_min":0.69,"v_max":1.0,"tolerance":0.05,"acceptance":"irregular warm green-gray paving with strong shadow patches; no empty pale corridor"}
+  ],
+  "shape_detail_gates": [
+    "round tower arcade has repeated broad arch openings and visible cylindrical mass",
+    "gate wall has a true rounded arch void and masonry depth",
+    "awnings have cloth thickness, folds, scalloped/irregular lower edges and varied projection",
+    "domes read as layered roof volumes with different depths, not colored hemispheres",
+    "left/right building planes retain individual window rhythm and parapet silhouette",
+    "foreground crowd is a compositional mass with overlap and scale variation"
+  ],
+  "projected_markers": [
+    {"id":"gate_visible_left_top","u":0.451,"v":0.35,"role":"visible_mass_extreme"},
+    {"id":"gate_visible_right_top","u":0.686,"v":0.35,"role":"visible_mass_extreme"},
+    {"id":"gate_opening_left_spring","u":0.495,"v":0.555,"role":"visible_arch_side_extreme"},
+    {"id":"gate_opening_right_spring","u":0.598,"v":0.555,"role":"visible_arch_side_extreme"},
+    {"id":"gate_opening_crown","u":0.546,"v":0.455,"role":"visible_arch_top_extreme"},
+    {"id":"tower_roof_apex","u":0.615,"v":0.075,"role":"silhouette_extreme"},
+    {"id":"tower_left_silhouette","u":0.545,"v":0.22,"role":"silhouette_extreme"},
+    {"id":"tower_right_silhouette","u":0.687,"v":0.22,"role":"silhouette_extreme"},
+    {"id":"left_white_canopy_lower_corner","u":0.015,"v":0.525,"role":"visible_cloth_point","tolerance_u":0.025,"tolerance_v":0.03,"note":"front/lower visible edge of the large white left canopy; not the stall counter"},
+    {"id":"left_green_canopy_lower_corner","u":0.335,"v":0.555,"role":"visible_cloth_point","tolerance_u":0.025,"tolerance_v":0.03,"note":"front/lower visible edge of the midground green canopy; not the crowd or counter"},
+    {"id":"right_wall_inner_top","u":0.70,"v":0.06,"role":"facade_edge"},
+    {"id":"right_wall_edge_mid","u":0.995,"v":0.43,"role":"facade_edge"},
+    {"id":"foreground_character_head_top","u":0.835,"v":0.53,"role":"scale_anchor"},
+    {"id":"foreground_character_right_edge","u":0.94,"v":0.78,"role":"scale_anchor"}
+  ],
+  "scoring": {"projection_error": "report median and max normalized landmark error separately", "visual_gate": "all shape_detail_gates required; any fail blocks demo acceptance", "rendering": "deferred; this file does not approve palette, fog, postprocess, or materials"}
+}

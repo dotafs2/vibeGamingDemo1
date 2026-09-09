@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "style_id": "level0_anime_reference_geometry_v1",
+  "palette_srgb": {
+    "limestone": "C7BA93",
+    "stone_light": "E1D6B3",
+    "stone_shade": "A99E83",
+    "mortar": "9E977F",
+    "paving": "BDB7A0",
+    "paving_light": "D4CEB5",
+    "plaster_cream": "E9DEBA",
+    "plaster_peach": "D9B9A4",
+    "plaster_sage": "BBC9B3",
+    "plaster_white": "E4E2C8",
+    "roof": "985E58",
+    "roof_light": "B67969",
+    "roof_dark": "774C4B",
+    "slate": "5B797E",
+    "wood": "796142",
+    "wood_light": "A88C5C",
+    "wood_dark": "494A35",
+    "shutter": "547963",
+    "glass": "466A65",
+    "iron": "434C47",
+    "canvas_cream": "EFE5C8",
+    "canvas_green": "709C79",
+    "canvas_gold": "DDB16D",
+    "canvas_red": "AE6659",
+    "leaf": "628841",
+    "leaf_light": "8CAE52",
+    "leaf_dark": "426739",
+    "grass": "8FAE57",
+    "grass_light": "A8BC6B",
+    "grass_dark": "718E43",
+    "water": "7DAFA0",
+    "fruit_red": "B95D45",
+    "fruit_yellow": "D8B451",
+    "fruit_green": "93A455",
+    "skin": "D4B495",
+    "cloth_blue": "68828E",
+    "cloth_brown": "8B795E",
+    "cloth_dark": "4B5450",
+    "rock": "8C977C"
+  },
+  "blender_version": "5.2.1 LTS",
+  "units": "metres",
+  "source_axes": "Blender X right/east, Y forward/north, Z up; glTF export Y up",
+  "geography_source": "ThreeHearthsVillage/Plugins/ThreeHearths/Source/ThreeHearths/Private/HearthAincradFloorPlan.cpp",
+  "floor_origin_east_north_m": [
+    0,
+    0
+  ],
+  "prototype_origin_east_north_m": [
+    0,
+    -4770
+  ],
+  "canonical_exact_coordinates": false,
+  "npc_behavior_implemented": false,
+  "scenes": [
+    {
+      "id": "StartingTown_Market",
+      "region_id": "beginnings_plaza",
+      "floor_east_north_m": [
+        -163,
+        -4752
+      ],
+      "godot_position_m": [
+        -163,
+        0,
+        -18
+      ],
+      "godot_yaw_degrees": 78,
+      "glb": "StartingTown_Market.glb",
+      "sha256": "f34aa16545861019b3ae9402b6647ca315deb1efd21c03a9a75ffedfa5aa2427",
+      "mesh_objects": 19,
+      "triangles": 168280,
+      "collision_mesh_names": [
+        "market_street_paving",
+        "market_house_west_00",
+        "market_house_west_01",
+        "market_house_west_02",
+        "market_house_west_03",
+        "market_house_west_04",
+        "market_house_west_05",
+        "market_house_west_06",
+        "market_house_east_00",
+        "market_house_east_01",
+        "market_house_east_02",
+        "market_house_east_03",
+        "market_house_east_04",
+        "market_house_east_05",
+        "market_house_east_06",
+        "market_bridge_and_turret",
+        "market_distant_roofline",
+        "market_awnings_stalls_flags"
+      ],
+      "reference_camera_blender_m": [
+        -0.5,
+        -18.0,
+        2.6500000953674316
+      ],
+      "objects": [
+        {
+          "id": "market_street_paving",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_00",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_01",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_02",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_03",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_04",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_05",
+          "collision": true
+        },
+        {
+          "id": "market_house_west_06",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_00",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_01",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_02",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_03",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_04",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_05",
+          "collision": true
+        },
+        {
+          "id": "market_house_east_06",
+          "collision": true
+        },
+        {
+          "id": "market_bridge_and_turret",
+          "collision": true
+        },
+        {
+          "id": "market_distant_roofline",
+          "collision": true
+        },
+        {
+          "id": "market_awnings_stalls_flags",
+          "collision": true
+        },
+        {
+          "id": "market_scale_figures_no_npc",
+          "collision": false
+        }
+      ]
+    },
+    {
+      "id": "Tolbana_Plaza",
+      "region_id": "tolbana",
+      "floor_east_north_m": [
+        0,
+        2900
+      ],
+      "godot_position_m": [
+        0,
+        0,
+        -7670
+      ],
+      "godot_yaw_degrees": 0,
+      "glb": "Tolbana_Plaza.glb",
+      "sha256": "5254e929c72a0a601acb9aa82674de1ee6e67edf364614f999ca2135f267353e",
+      "mesh_objects": 25,
+      "triangles": 259431,
+      "collision_mesh_names": [
+        "tolbana_plaza_ground_paths",
+        "tolbana_fountain",
+        "tolbana_old_tree_trunk",
+        "tolbana_house_00",
+        "tolbana_house_01",
+        "tolbana_house_02",
+        "tolbana_house_03",
+        "tolbana_house_04",
+        "tolbana_house_05",
+        "tolbana_house_06",
+        "tolbana_house_07",
+        "tolbana_house_08",
+        "tolbana_house_09",
+        "tolbana_house_10",
+        "tolbana_house_11",
+        "tolbana_house_12",
+        "tolbana_house_13",
+        "tolbana_house_14",
+        "tolbana_square_turret",
+        "tolbana_market_and_benches",
+        "tolbana_valley_terrain",
+        "tolbana_north_south_approach"
+      ],
+      "reference_camera_blender_m": [
+        21.0,
+        -31.0,
+        6.300000190734863
+      ],
+      "objects": [
+        {
+          "id": "tolbana_plaza_ground_paths",
+          "collision": true
+        },
+        {
+          "id": "tolbana_fountain",
+          "collision": true
+        },
+        {
+          "id": "tolbana_old_tree_trunk",
+          "collision": true
+        },
+        {
+          "id": "tolbana_old_tree_canopy",
+          "collision": false
+        },
+        {
+          "id": "tolbana_grass_and_shrubs",
+          "collision": false
+        },
+        {
+          "id": "tolbana_house_00",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_01",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_02",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_03",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_04",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_05",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_06",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_07",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_08",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_09",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_10",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_11",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_12",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_13",
+          "collision": true
+        },
+        {
+          "id": "tolbana_house_14",
+          "collision": true
+        },
+        {
+          "id": "tolbana_square_turret",
+          "collision": true
+        },
+        {
+          "id": "tolbana_market_and_benches",
+          "collision": true
+        },
+        {
+          "id": "tolbana_scale_figures_no_npc",
+          "collision": false
+        },
+        {
+          "id": "tolbana_valley_terrain",
+          "collision": true
+        },
+        {
+          "id": "tolbana_north_south_approach",
+          "collision": true
+        }
+      ]
+    }
+  ]
+}

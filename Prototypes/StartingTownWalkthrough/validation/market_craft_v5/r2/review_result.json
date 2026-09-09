@@ -1,0 +1,42 @@
+{
+  "remaining": [
+    "global render style pending user feedback",
+    "Tolbana not refined in this pass",
+    "upper floors have no stairs",
+    "shop objects have no production/trade behavior"
+  ],
+  "manifest_matches_asset": true,
+  "direction": "normal_detailed_3d_architecture",
+  "user_rejected_previous_projection_route": true,
+  "source_sha256": "2e680ec8814a6aa7f4d09c74ad20fb859b5ccae5e3ef161f51d70e9c40f1b67d",
+  "capture_matches_asset": true,
+  "final_revision_root_review": "r2",
+  "shop_walks": [
+    {
+      "distance_m": 4.48394346237183,
+      "end_world": "(-159.0758, 0.26084, -8.083461)",
+      "id": "V5_Bakery",
+      "on_floor": true
+    },
+    {
+      "distance_m": 4.48394632339478,
+      "end_world": "(-161.9221, 0.260834, -27.16)",
+      "id": "V5_Outfitter",
+      "on_floor": true
+    }
+  ],
+  "schema": 1,
+  "global_style_approved": false,
+  "visual_approval": false,
+  "agent_review_revision": "r1",
+  "technical_passed": true,
+  "gate_walk_m": 7.50027799606323,
+  "root_viewed": [
+    "reference.png",
+    "craft_overview.png",
+    "bakery_joinery.png",
+    "bakery_interior.png",
+    "outfitter_interior.png",
+    "motion_090.png"
+  ]
+}

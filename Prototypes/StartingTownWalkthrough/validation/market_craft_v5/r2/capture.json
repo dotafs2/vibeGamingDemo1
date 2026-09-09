@@ -1,0 +1,104 @@
+{
+	"character_count": 5,
+	"checks": {
+		"V5_Bakery_enterable": true,
+		"V5_Outfitter_enterable": true,
+		"architecture_saved": true,
+		"bakery_corner_saved": true,
+		"bakery_interior_saved": true,
+		"bakery_joinery_saved": true,
+		"close_saved": true,
+		"craft_overview_saved": true,
+		"distinct_towns": true,
+		"gate_detail_saved": true,
+		"gate_walk": true,
+		"geographic_anchor": true,
+		"motion_000.png": true,
+		"motion_045.png": true,
+		"motion_090.png": true,
+		"outfitter_corner_saved": true,
+		"outfitter_interior_saved": true,
+		"overview_saved": true,
+		"reference_saved": true,
+		"replacement_characters": true,
+		"tower_detail_saved": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"gate_walk_distance_m": 7.50027799606323,
+	"gate_walk_finished_on_floor": true,
+	"global_style_approved": false,
+	"horizontal_fov": 64.0,
+	"independent_review_pending": true,
+	"kimi_requests": 0,
+	"projected_features": [],
+	"projected_landmarks": [
+		{
+			"behind_camera": false,
+			"local_xyz": [
+				0.0,
+				32.7,
+				6.24
+			],
+			"marker_source": "authored_geometry_marker",
+			"name": "gate_opening_crown",
+			"pixel": [
+				1293.97692871094,
+				338.084442138672
+			],
+			"uv": [
+				0.808735580444336,
+				0.37564938015408
+			]
+		}
+	],
+	"reference_camera_blender_m": [
+		5.40000009536743,
+		-16.0,
+		4.40000009536743
+	],
+	"reference_target_blender_m": [
+		-3.40000009536743,
+		1.0,
+		3.5
+	],
+	"reference_view_draw_calls": 849.0,
+	"renderer": "forward_plus",
+	"revision": "r2",
+	"scene_origin": "(-163.0, 0.0, -18.0)",
+	"schema": 1,
+	"screenshots": [
+		"reference.png",
+		"architecture.png",
+		"motion_000.png",
+		"motion_045.png",
+		"motion_090.png",
+		"overview.png",
+		"close.png",
+		"craft_overview.png",
+		"bakery_corner.png",
+		"bakery_joinery.png",
+		"bakery_interior.png",
+		"outfitter_corner.png",
+		"outfitter_interior.png",
+		"gate_detail.png",
+		"tower_detail.png"
+	],
+	"shop_walks": [
+		{
+			"distance_m": 4.48394346237183,
+			"end_world": "(-159.0758, 0.26084, -8.083461)",
+			"id": "V5_Bakery",
+			"on_floor": true
+		},
+		{
+			"distance_m": 4.48394632339478,
+			"end_world": "(-161.9221, 0.260834, -27.16)",
+			"id": "V5_Outfitter",
+			"on_floor": true
+		}
+	],
+	"source_glb": "StartingTown_Market_CraftV5.glb",
+	"source_sha256": "2e680ec8814a6aa7f4d09c74ad20fb859b5ccae5e3ef161f51d70e9c40f1b67d",
+	"technical_passed": true,
+	"visual_approval": false
+}

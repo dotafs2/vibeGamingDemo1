@@ -1,0 +1,51 @@
+{
+  "source_url": "https://i.pinimg.com/originals/92/a3/a7/92a3a78f0b36febbef3abcb70f37ff7e.png",
+  "file_px": [
+    2560,
+    1600
+  ],
+  "active_rect_px": [
+    0,
+    80,
+    2560,
+    1440
+  ],
+  "regions": [
+    {
+      "id": "left_architecture",
+      "active_rect_px": [
+        0,
+        0,
+        1240,
+        920
+      ]
+    },
+    {
+      "id": "central_landmarks",
+      "active_rect_px": [
+        770,
+        55,
+        1110,
+        870
+      ]
+    },
+    {
+      "id": "right_architecture",
+      "active_rect_px": [
+        1550,
+        0,
+        1010,
+        1040
+      ]
+    },
+    {
+      "id": "canopy_structure",
+      "active_rect_px": [
+        0,
+        300,
+        1850,
+        600
+      ]
+    }
+  ]
+}

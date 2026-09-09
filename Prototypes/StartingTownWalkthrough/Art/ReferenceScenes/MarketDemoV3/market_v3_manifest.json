@@ -1,0 +1,98 @@
+{
+  "schema": 2,
+  "style_id": "level0_anime_market_demo_v3",
+  "scenes": [
+    {
+      "id": "StartingTown_Market",
+      "region_id": "beginnings_plaza",
+      "floor_east_north_m": [
+        -163,
+        -4752
+      ],
+      "godot_position_m": [
+        -163,
+        0,
+        -18
+      ],
+      "godot_yaw_degrees": 78,
+      "glb": "StartingTown_Market_V3.glb",
+      "sha256": "ce7a7f9d0264e35691b62e046e54909594ed7280ee313342ffea4f4b97f5d87e",
+      "triangles": 1574735,
+      "collision_triangles": 2844,
+      "collision_mesh_names": [
+        "COL_market_v3_ground",
+        "COL_market_v3_fitted_paving",
+        "COL_left_near",
+        "COL_left_mid",
+        "COL_left_far",
+        "COL_right_near",
+        "COL_right_far",
+        "COL_market_v3_solid_gate",
+        "COL_market_v3_bridge_left_wing",
+        "COL_market_v3_round_tower",
+        "COL_beyond_gate_-1",
+        "COL_beyond_gate_1",
+        "COL_market_v3_beyond_gate_front_0",
+        "COL_market_v3_beyond_gate_front_1",
+        "COL_market_v3_beyond_gate_front_2"
+      ],
+      "reference_camera_blender_m": [
+        0.0,
+        -19.0,
+        1.7999999523162842
+      ],
+      "reference_target_blender_m": [
+        -1.2000000476837158,
+        25.0,
+        5.449999809265137
+      ],
+      "reference_horizontal_fov": 64.0,
+      "mesh_objects": 185,
+      "reference_landmarks_3d": {
+        "left_white_canopy_lower_corner": [
+          -2.5830440035214006,
+          -15.009209250282078,
+          2.078396011327878
+        ],
+        "left_green_canopy_lower_corner": [
+          -2.5873882362901774,
+          -8.014483454163326,
+          2.242697270180961
+        ],
+        "gate_opening_crown": [
+          0.8074063062667847,
+          21.82,
+          6.619757652282715
+        ],
+        "gate_opening_left_spring": [
+          -1.6061473488807678,
+          21.82,
+          4.206203997135162
+        ],
+        "gate_opening_right_spring": [
+          3.220959961414337,
+          21.82,
+          4.206203997135162
+        ],
+        "tower_roof_apex": [
+          5.03816032409668,
+          25.818906784057617,
+          19.2738094329834
+        ],
+        "foreground_character_head_top": [
+          0.8388875722885132,
+          -16.8,
+          1.96
+        ]
+      },
+      "visual_actor_count": 36,
+      "walkable_gate": true
+    }
+  ],
+  "composition_method": "measured_uv_depth_projection_plus_independent_geometry_review",
+  "visual_approval": false,
+  "source_files_sha256": {
+    "assemble_market_demo.py": "07b5ad5c63da9d97d53e5d4593f20d101d242efb3e7d1f17962e034a0e9e453c",
+    "craft_landmarks.py": "24bca73dd1eeb5f1476052de6e5fc11fc60db49a87ba9ffebdfa5cce52b7be7a"
+  }
+}

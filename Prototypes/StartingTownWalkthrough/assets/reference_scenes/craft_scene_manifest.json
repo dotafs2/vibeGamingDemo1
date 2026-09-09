@@ -1,0 +1,498 @@
+{
+  "schema": 2,
+  "style_id": "level0_two_towns_craft_v5",
+  "blender_version": "5.2.1 LTS",
+  "palette_srgb": {
+    "limestone": "D7CAA8",
+    "stone_light": "DDD2B6",
+    "stone_shade": "CABB9D",
+    "mortar": "C3B69A",
+    "paving": "C7C4AA",
+    "paving_light": "CECCB5",
+    "plaster_cream": "E8DEBF",
+    "plaster_peach": "DFC5B3",
+    "plaster_sage": "C3D0B8",
+    "plaster_white": "EAE3CB",
+    "roof": "9E6B61",
+    "roof_light": "A67569",
+    "roof_dark": "916158",
+    "slate": "6C898E",
+    "wood": "796046",
+    "wood_light": "A4885E",
+    "wood_dark": "514638",
+    "shutter": "557B62",
+    "glass": "5B7D79",
+    "iron": "53594F",
+    "canvas_cream": "EFE5CA",
+    "canvas_green": "88AB87",
+    "canvas_gold": "DBBB7D",
+    "canvas_red": "B76A62",
+    "leaf": "689247",
+    "leaf_light": "8CA952",
+    "leaf_dark": "476F3B",
+    "grass": "8FAF61",
+    "grass_light": "A5BA71",
+    "grass_dark": "7D9F55",
+    "water": "82B6B1",
+    "fruit_red": "B65F45",
+    "fruit_yellow": "DBBC64",
+    "fruit_green": "8A9D50",
+    "skin": "D4B495",
+    "cloth_blue": "68828E",
+    "cloth_brown": "8B795E",
+    "cloth_dark": "4B5450",
+    "rock": "8C977C",
+    "paving_warm": "CFC6AC",
+    "paving_cool": "BEC4B1",
+    "roof_shadow": "755D56",
+    "shutter_light": "7C9980",
+    "glass_light": "8FA99A",
+    "recess": "455848",
+    "brass": "B49A5A",
+    "leaf_mid": "789D4A",
+    "leaf_deep": "365D35",
+    "leaf_warm": "A6B962",
+    "foam": "D6E8DD",
+    "bark": "77664D",
+    "bark_light": "968365",
+    "bark_dark": "5E5641",
+    "soil": "877B59",
+    "flower": "DED28B",
+    "door_blue": "699FA9",
+    "door_blue_light": "9ABAC0",
+    "sign_red": "965056"
+  },
+  "canonical_exact_coordinates": false,
+  "npc_behavior_implemented": false,
+  "prototype_origin_east_north_m": [
+    0,
+    -4770
+  ],
+  "source_axes": "Blender east/north/up metres; glTF Y up",
+  "scenes": [
+    {
+      "id": "StartingTown_Market",
+      "region_id": "beginnings_plaza",
+      "floor_east_north_m": [
+        -163,
+        -4752
+      ],
+      "godot_position_m": [
+        -163,
+        0,
+        -18
+      ],
+      "godot_yaw_degrees": 78,
+      "glb": "StartingTown_Market_CraftV5.glb",
+      "sha256": "2e680ec8814a6aa7f4d09c74ad20fb859b5ccae5e3ef161f51d70e9c40f1b67d",
+      "triangles": 1802453,
+      "collision_triangles": 8716,
+      "collision_mesh_names": [
+        "COL_V5_ground",
+        "COL_V5_street_stone_paving",
+        "COL_V5_Bakery_ground",
+        "COL_V5_Bakery_upper",
+        "COL_V5_Bakery_side_-1",
+        "COL_V5_Bakery_side_1",
+        "COL_V5_Bakery_rear",
+        "COL_V5_Bakery_floor_ceiling",
+        "COL_V5_Bakery_shop_fittings",
+        "COL_V5_Outfitter_ground",
+        "COL_V5_Outfitter_upper",
+        "COL_V5_Outfitter_side_-1",
+        "COL_V5_Outfitter_side_1",
+        "COL_V5_Outfitter_rear",
+        "COL_V5_Outfitter_floor_ceiling",
+        "COL_V5_Outfitter_shop_fittings",
+        "COL_V5_left_inn",
+        "COL_V5_left_end",
+        "COL_V5_right_inn",
+        "COL_V5_right_end",
+        "COL_market_v3_solid_gate",
+        "COL_V5_round_tower"
+      ],
+      "reference_camera_blender_m": [
+        5.400000095367432,
+        -16.0,
+        4.400000095367432
+      ],
+      "reference_target_blender_m": [
+        -3.4000000953674316,
+        1.0,
+        3.5
+      ],
+      "reference_horizontal_fov": 64,
+      "mesh_objects": 104,
+      "reference_landmarks_3d": {
+        "gate_opening_crown": [
+          0,
+          32.7,
+          6.24
+        ]
+      },
+      "shops": [
+        {
+          "id": "V5_Bakery",
+          "kind": "bakery",
+          "position": [
+            -6,
+            -3,
+            0.24
+          ],
+          "yaw": 90,
+          "dimensions_m": [
+            9.8,
+            7.3,
+            6.95
+          ],
+          "door_world": [
+            -6.0,
+            -5.900000095367432,
+            0.3400000035762787
+          ],
+          "inside_world": [
+            -8.800000190734863,
+            -5.900000095367432,
+            0.3400000035762787
+          ],
+          "counter_world": [
+            -5.199999809265137,
+            -1.6500000953674316,
+            1.3600000143051147
+          ],
+          "fittings": {
+            "kind": "bakery",
+            "door_clear_width_m": 1.14,
+            "counter_top_m": 1.14,
+            "shelf_top_heights_m": [
+              0.41,
+              1.1,
+              1.79
+            ],
+            "goods_positions_use_support_surface": true,
+            "source": "root interiors.py; prior shop_fittings.py not used"
+          }
+        },
+        {
+          "id": "V5_Outfitter",
+          "kind": "outfitter",
+          "position": [
+            6.3,
+            3,
+            0.24
+          ],
+          "yaw": -90,
+          "dimensions_m": [
+            7.8,
+            6.5,
+            6.9
+          ],
+          "door_world": [
+            6.300000190734863,
+            0.8499999046325684,
+            0.3400000035762787
+          ],
+          "inside_world": [
+            9.100000381469727,
+            0.8499997854232788,
+            0.3400000035762787
+          ],
+          "counter_world": [
+            5.5,
+            4.200000286102295,
+            1.3600000143051147
+          ],
+          "fittings": {
+            "kind": "outfitter",
+            "door_clear_width_m": 1.14,
+            "counter_top_m": 1.14,
+            "shelf_top_heights_m": [
+              0.41,
+              1.1,
+              1.79
+            ],
+            "goods_positions_use_support_surface": true,
+            "source": "root interiors.py; prior shop_fittings.py not used"
+          }
+        }
+      ],
+      "visual_actor_count": 5,
+      "walkable_gate": true,
+      "layout_is_project_infill": true,
+      "camera_matching_required": false
+    },
+    {
+      "id": "Tolbana_Plaza",
+      "region_id": "tolbana",
+      "floor_east_north_m": [
+        0,
+        2900
+      ],
+      "godot_position_m": [
+        0,
+        0,
+        -7670
+      ],
+      "godot_yaw_degrees": 0,
+      "glb": "Tolbana_Plaza_CraftV5.glb",
+      "sha256": "0dda3a1d576d20f14e11908385f35a2536a16248508371c9f5195269f592cee4",
+      "triangles": 3844488,
+      "collision_triangles": 25600,
+      "collision_mesh_names": [
+        "COL_tolbana_ground",
+        "COL_tolbana_front_walk",
+        "COL_tolbana_west_walk",
+        "COL_tolbana_east_walk",
+        "COL_tolbana_rear_walk",
+        "COL_tolbana_east_tower_base",
+        "COL_tolbana_upper_left",
+        "COL_tolbana_upper_peach",
+        "COL_tolbana_upper_cream",
+        "COL_tolbana_upper_sage",
+        "COL_tolbana_skyline_center",
+        "COL_tolbana_left_street_return",
+        "COL_tolbana_right_roof_wing",
+        "COL_tolbana_right_square_tower",
+        "COL_TolbanaV5_fountain_approach",
+        "COL_TolbanaV5_WestInn_front",
+        "COL_TolbanaV5_WestInn_side_-1",
+        "COL_TolbanaV5_WestInn_side_1",
+        "COL_TolbanaV5_WestInn_back",
+        "COL_TolbanaV5_WestInn_open_doors",
+        "COL_TolbanaV5_WestInn_hall_furniture",
+        "COL_TolbanaV5_WestInn_floors",
+        "COL_TolbanaV5_WhiteResidence_front",
+        "COL_TolbanaV5_WhiteResidence_side_-1",
+        "COL_TolbanaV5_WhiteResidence_side_1",
+        "COL_TolbanaV5_WhiteResidence_back",
+        "COL_TolbanaV5_WhiteResidence_door_closed",
+        "COL_TolbanaV5_WhiteResidence_floors",
+        "COL_TolbanaV5_PeachResidence_front",
+        "COL_TolbanaV5_PeachResidence_side_-1",
+        "COL_TolbanaV5_PeachResidence_side_1",
+        "COL_TolbanaV5_PeachResidence_back",
+        "COL_TolbanaV5_PeachResidence_door_closed",
+        "COL_TolbanaV5_PeachResidence_floors",
+        "COL_TolbanaV5_SageResidence_front",
+        "COL_TolbanaV5_SageResidence_side_-1",
+        "COL_TolbanaV5_SageResidence_side_1",
+        "COL_TolbanaV5_SageResidence_back",
+        "COL_TolbanaV5_SageResidence_door_closed",
+        "COL_TolbanaV5_SageResidence_floors",
+        "COL_TolbanaV5_tree_trunk",
+        "COL_TolbanaV5_fountain_paving",
+        "COL_tolbana_v5_fountain",
+        "COL_tolbana_v5_bench_west",
+        "COL_tolbana_v5_bench_east",
+        "COL_tolbana_v5_planter_00",
+        "COL_tolbana_v5_planter_01",
+        "COL_tolbana_v5_planter_02",
+        "COL_tolbana_v5_planter_03",
+        "COL_tolbana_v5_planter_04",
+        "COL_TolbanaV5_west_lane_house",
+        "COL_TolbanaV5_west_return",
+        "COL_TolbanaV5_house_forecourt"
+      ],
+      "reference_camera_blender_m": [
+        20,
+        -30,
+        7.5
+      ],
+      "reference_target_blender_m": [
+        -3,
+        13,
+        6.8
+      ],
+      "reference_horizontal_fov": 64,
+      "mesh_objects": 144,
+      "buildings": [
+        {
+          "id": "TolbanaV5_WestInn",
+          "dimensions_m": [
+            8.1,
+            9,
+            10.8
+          ],
+          "position": [
+            -22,
+            26,
+            0.22
+          ],
+          "enterable": true,
+          "door_world": [
+            -22,
+            26,
+            0.28
+          ],
+          "inside_world": [
+            -22,
+            29,
+            0.28
+          ],
+          "use": "project_infill_inn_dining_hall"
+        },
+        {
+          "id": "TolbanaV5_WhiteResidence",
+          "dimensions_m": [
+            8,
+            8,
+            6.5
+          ],
+          "position": [
+            -13.8,
+            25,
+            0.22
+          ],
+          "enterable": false,
+          "door_world": [
+            -14.100000000000001,
+            25,
+            0.28
+          ],
+          "inside_world": [
+            -14.100000000000001,
+            28,
+            0.28
+          ],
+          "use": "project_infill_residence"
+        },
+        {
+          "id": "TolbanaV5_PeachResidence",
+          "dimensions_m": [
+            8.9,
+            8,
+            6.6
+          ],
+          "position": [
+            -5.2,
+            25.7,
+            0.22
+          ],
+          "enterable": false,
+          "door_world": [
+            -3.9000000000000004,
+            25.7,
+            0.28
+          ],
+          "inside_world": [
+            -3.9000000000000004,
+            28.7,
+            0.28
+          ],
+          "use": "project_infill_residence"
+        },
+        {
+          "id": "TolbanaV5_SageResidence",
+          "dimensions_m": [
+            10.5,
+            8.6,
+            7.8
+          ],
+          "position": [
+            4.7,
+            25.2,
+            0.22
+          ],
+          "enterable": false,
+          "door_world": [
+            3.1,
+            25.2,
+            0.28
+          ],
+          "inside_world": [
+            3.1,
+            28.2,
+            0.28
+          ],
+          "use": "project_infill_residence"
+        }
+      ],
+      "garden": {
+        "fountain": {
+          "name": "tolbana_v5_fountain_turned_stone_and_joints",
+          "center": [
+            8.9,
+            -5.0,
+            0.22
+          ],
+          "radius": 2.84,
+          "height": 3.91,
+          "collision": "COL_tolbana_v5_fountain"
+        },
+        "benches": [
+          {
+            "name": "tolbana_v5_bench_west",
+            "position": [
+              -15,
+              -8,
+              0.22
+            ],
+            "width": 2.35,
+            "seat_height_above_ground_m": 0.46,
+            "collision": "COL_tolbana_v5_bench_west"
+          },
+          {
+            "name": "tolbana_v5_bench_east",
+            "position": [
+              16,
+              12,
+              0.22
+            ],
+            "width": 2.35,
+            "seat_height_above_ground_m": 0.46,
+            "collision": "COL_tolbana_v5_bench_east"
+          }
+        ],
+        "planters": [
+          {
+            "name": "tolbana_v5_planter_00",
+            "position": [
+              -18,
+              -8
+            ],
+            "collision": "COL_tolbana_v5_planter_00"
+          },
+          {
+            "name": "tolbana_v5_planter_01",
+            "position": [
+              -17,
+              13
+            ],
+            "collision": "COL_tolbana_v5_planter_01"
+          },
+          {
+            "name": "tolbana_v5_planter_02",
+            "position": [
+              -1,
+              13
+            ],
+            "collision": "COL_tolbana_v5_planter_02"
+          },
+          {
+            "name": "tolbana_v5_planter_03",
+            "position": [
+              18,
+              13
+            ],
+            "collision": "COL_tolbana_v5_planter_03"
+          },
+          {
+            "name": "tolbana_v5_planter_04",
+            "position": [
+              17,
+              -8
+            ],
+            "collision": "COL_tolbana_v5_planter_04"
+          }
+        ],
+        "stone_paving_radius": 4.5,
+        "walkway_clearance_m": 1.0
+      },
+      "visual_actor_count": 3,
+      "layout_is_project_infill": true,
+      "camera_matching_required": false
+    }
+  ],
+  "visual_approval": false,
+  "global_style_approved": false
+}

@@ -1,0 +1,19 @@
+{
+  "source_sha256": "10fa3c83a6bd3bf926ec839c99857ccd222c89182e91ba7b615603db24346f1b",
+  "integration_visual_check_passed": true,
+  "user_visual_approval": false,
+  "checked_views": [
+    "market_front",
+    "market_side",
+    "market_pose",
+    "market_motion_60",
+    "tolbana_front",
+    "tolbana_back"
+  ],
+  "findings": [
+    "Character visible at human scale in both actual geographical scenes",
+    "Authored texture, hair cutout, skinning, blink and elbow deformation visible",
+    "Final face shadows, overall shading and color remain to be adjusted with user"
+  ],
+  "screenshots_are_actual_godot": true
+}

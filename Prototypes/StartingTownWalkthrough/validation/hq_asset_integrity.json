@@ -1,0 +1,14 @@
+[
+  {
+    "scene": "StartingTown_Market",
+    "sha256": "6bb8aa466255d18b5a6511af2829063a13a96a2cc4217ccf5f0e45edbea40dc9",
+    "manifest_match": true,
+    "capture_match": true
+  },
+  {
+    "scene": "Tolbana_Plaza",
+    "sha256": "bace46dd870df46fa3d73b835812c54550af829d594156164c929b30fd987f3f",
+    "manifest_match": true,
+    "capture_match": true
+  }
+]

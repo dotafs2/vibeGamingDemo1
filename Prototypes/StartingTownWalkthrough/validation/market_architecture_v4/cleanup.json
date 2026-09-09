@@ -1,0 +1,92 @@
+{
+  "checked": "2026-09-09T20:03:09.8328401+08:00",
+  "processes": [
+    {
+      "pid": 610488,
+      "role": "root reference inspection Node",
+      "running": false
+    },
+    {
+      "pid": 610568,
+      "role": "root reference inspection Edge",
+      "running": false
+    },
+    {
+      "pid": 610812,
+      "role": "root reference inspection Node",
+      "running": false
+    },
+    {
+      "pid": 595028,
+      "role": "root reference inspection Edge",
+      "running": false
+    },
+    {
+      "pid": 610672,
+      "role": "root Blender V4 r1",
+      "running": false
+    },
+    {
+      "pid": 609408,
+      "role": "root Godot V4 r1",
+      "running": false
+    },
+    {
+      "pid": 598124,
+      "role": "root V4 comparison Node",
+      "running": false
+    },
+    {
+      "pid": 576188,
+      "role": "root V4 comparison Edge",
+      "running": false
+    },
+    {
+      "pid": 596352,
+      "role": "root Blender V4 r2",
+      "running": false
+    },
+    {
+      "pid": 411680,
+      "role": "root Godot V4 r2",
+      "running": false
+    },
+    {
+      "pid": 613580,
+      "role": "root Blender V4 r3",
+      "running": false
+    },
+    {
+      "pid": 613980,
+      "role": "root Blender V4 r4",
+      "running": false
+    },
+    {
+      "pid": 610188,
+      "role": "root Godot V4 r4",
+      "running": false
+    },
+    {
+      "pid": 614332,
+      "role": "root V4 comparison Node",
+      "running": false
+    },
+    {
+      "pid": 607004,
+      "role": "root V4 comparison Edge",
+      "running": false
+    },
+    {
+      "pid": 611092,
+      "role": "root Blender V4 r5",
+      "running": false
+    },
+    {
+      "pid": 611680,
+      "role": "root Godot V4 r5",
+      "running": false
+    }
+  ],
+  "termination_needed": false,
+  "all_owned_exited": true
+}

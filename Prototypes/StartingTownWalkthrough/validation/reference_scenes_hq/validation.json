@@ -1,0 +1,143 @@
+{
+	"asset_revision": "level0_anime_crafted_v2",
+	"canonical_exact_coordinates": false,
+	"checks": {
+		"crafted_asset_revision": true,
+		"geographic_separation": true,
+		"market_close_capture": true,
+		"market_craft_capture": true,
+		"market_ground": true,
+		"market_motion_000": true,
+		"market_motion_060": true,
+		"market_motion_120": true,
+		"market_overview_capture": true,
+		"market_reference_capture": true,
+		"market_reverse_capture": true,
+		"market_walk": true,
+		"tolbana_close_capture": true,
+		"tolbana_craft_capture": true,
+		"tolbana_ground": true,
+		"tolbana_motion_000": true,
+		"tolbana_motion_060": true,
+		"tolbana_motion_120": true,
+		"tolbana_overview_capture": true,
+		"tolbana_reference_capture": true,
+		"tolbana_reverse_capture": true,
+		"tolbana_walk": true,
+		"two_distinct_regions": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"kimi_requests": 0,
+	"kind": "blender_reference_scene_geometry",
+	"market_draw_calls_sample": 916.0,
+	"market_reference_fps_sample": 44.0,
+	"market_walk_distance_m": 7.49959325790405,
+	"market_walk_finish": [
+		-150.772720336914,
+		0.23083707690239,
+		-15.4011659622192
+	],
+	"npc_behavior_implemented": false,
+	"passed": true,
+	"persistent_world_loaded": false,
+	"renderer": "forward_plus",
+	"replaced_blockout_object_ids": [
+		"fabric_6",
+		"roof_6",
+		"fabric_38",
+		"roof_38",
+		"fabric_41",
+		"roof_41",
+		"fabric_56",
+		"roof_56",
+		"fabric_74",
+		"roof_74",
+		"fabric_82",
+		"roof_82",
+		"fabric_104",
+		"roof_104",
+		"fabric_116",
+		"roof_116",
+		"fabric_151",
+		"roof_151",
+		"fabric_158",
+		"roof_158",
+		"fabric_167",
+		"roof_167",
+		"fabric_173",
+		"roof_173",
+		"fabric_179",
+		"roof_179",
+		"task_frontage_0",
+		"task_roof_0",
+		"task_awning_0",
+		"task_frontage_1",
+		"task_roof_1",
+		"task_awning_1",
+		"task_frontage_2",
+		"task_roof_2",
+		"task_awning_2"
+	],
+	"scenes": [
+		{
+			"floor_east_north_m": [
+				-163.0,
+				-4752.0
+			],
+			"godot_position_m": [
+				-163.0,
+				0.0,
+				-18.0
+			],
+			"id": "StartingTown_Market",
+			"mesh_instances": 61,
+			"region_id": "beginnings_plaza",
+			"sha256": "6bb8aa466255d18b5a6511af2829063a13a96a2cc4217ccf5f0e45edbea40dc9",
+			"triangles": 1356172.0
+		},
+		{
+			"floor_east_north_m": [
+				0.0,
+				2900.0
+			],
+			"godot_position_m": [
+				0.0,
+				0.0,
+				-7670.0
+			],
+			"id": "Tolbana_Plaza",
+			"mesh_instances": 73,
+			"region_id": "tolbana",
+			"sha256": "bace46dd870df46fa3d73b835812c54550af829d594156164c929b30fd987f3f",
+			"triangles": 2709692.0
+		}
+	],
+	"schema": 1,
+	"screenshots": [
+		"res://validation/reference_scenes_hq/market_reference.png",
+		"res://validation/reference_scenes_hq/market_close.png",
+		"res://validation/reference_scenes_hq/market_craft.png",
+		"res://validation/reference_scenes_hq/market_reverse.png",
+		"res://validation/reference_scenes_hq/market_overview.png",
+		"res://validation/reference_scenes_hq/market_motion_000.png",
+		"res://validation/reference_scenes_hq/market_motion_060.png",
+		"res://validation/reference_scenes_hq/market_motion_120.png",
+		"res://validation/reference_scenes_hq/tolbana_reference.png",
+		"res://validation/reference_scenes_hq/tolbana_close.png",
+		"res://validation/reference_scenes_hq/tolbana_craft.png",
+		"res://validation/reference_scenes_hq/tolbana_reverse.png",
+		"res://validation/reference_scenes_hq/tolbana_overview.png",
+		"res://validation/reference_scenes_hq/tolbana_motion_000.png",
+		"res://validation/reference_scenes_hq/tolbana_motion_060.png",
+		"res://validation/reference_scenes_hq/tolbana_motion_120.png"
+	],
+	"tolbana_draw_calls_sample": 888.0,
+	"tolbana_reference_fps_sample": 33.0,
+	"tolbana_walk_distance_m": 7.47119140625,
+	"tolbana_walk_finish": [
+		4.0,
+		0.190840363502502,
+		-7663.47119140625
+	],
+	"visual_approval": false
+}

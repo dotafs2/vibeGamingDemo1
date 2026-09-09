@@ -1,0 +1,164 @@
+{
+  "schema": 3,
+  "style_id": "level0_market_craft_v5",
+  "scenes": [
+    {
+      "id": "StartingTown_Market",
+      "region_id": "beginnings_plaza",
+      "floor_east_north_m": [
+        -163,
+        -4752
+      ],
+      "godot_position_m": [
+        -163,
+        0,
+        -18
+      ],
+      "godot_yaw_degrees": 78,
+      "glb": "StartingTown_Market_CraftV5.glb",
+      "sha256": "2e680ec8814a6aa7f4d09c74ad20fb859b5ccae5e3ef161f51d70e9c40f1b67d",
+      "triangles": 1802453,
+      "collision_triangles": 8716,
+      "collision_mesh_names": [
+        "COL_V5_ground",
+        "COL_V5_street_stone_paving",
+        "COL_V5_Bakery_ground",
+        "COL_V5_Bakery_upper",
+        "COL_V5_Bakery_side_-1",
+        "COL_V5_Bakery_side_1",
+        "COL_V5_Bakery_rear",
+        "COL_V5_Bakery_floor_ceiling",
+        "COL_V5_Bakery_shop_fittings",
+        "COL_V5_Outfitter_ground",
+        "COL_V5_Outfitter_upper",
+        "COL_V5_Outfitter_side_-1",
+        "COL_V5_Outfitter_side_1",
+        "COL_V5_Outfitter_rear",
+        "COL_V5_Outfitter_floor_ceiling",
+        "COL_V5_Outfitter_shop_fittings",
+        "COL_V5_left_inn",
+        "COL_V5_left_end",
+        "COL_V5_right_inn",
+        "COL_V5_right_end",
+        "COL_market_v3_solid_gate",
+        "COL_V5_round_tower"
+      ],
+      "reference_camera_blender_m": [
+        5.400000095367432,
+        -16.0,
+        4.400000095367432
+      ],
+      "reference_target_blender_m": [
+        -3.4000000953674316,
+        1.0,
+        3.5
+      ],
+      "reference_horizontal_fov": 64,
+      "mesh_objects": 104,
+      "reference_landmarks_3d": {
+        "gate_opening_crown": [
+          0,
+          32.7,
+          6.24
+        ]
+      },
+      "shops": [
+        {
+          "id": "V5_Bakery",
+          "kind": "bakery",
+          "position": [
+            -6,
+            -3,
+            0.24
+          ],
+          "yaw": 90,
+          "dimensions_m": [
+            9.8,
+            7.3,
+            6.95
+          ],
+          "door_world": [
+            -6.0,
+            -5.900000095367432,
+            0.3400000035762787
+          ],
+          "inside_world": [
+            -8.800000190734863,
+            -5.900000095367432,
+            0.3400000035762787
+          ],
+          "counter_world": [
+            -5.199999809265137,
+            -1.6500000953674316,
+            1.3600000143051147
+          ],
+          "fittings": {
+            "kind": "bakery",
+            "door_clear_width_m": 1.14,
+            "counter_top_m": 1.14,
+            "shelf_top_heights_m": [
+              0.41,
+              1.1,
+              1.79
+            ],
+            "goods_positions_use_support_surface": true,
+            "source": "root interiors.py; prior shop_fittings.py not used"
+          }
+        },
+        {
+          "id": "V5_Outfitter",
+          "kind": "outfitter",
+          "position": [
+            6.3,
+            3,
+            0.24
+          ],
+          "yaw": -90,
+          "dimensions_m": [
+            7.8,
+            6.5,
+            6.9
+          ],
+          "door_world": [
+            6.300000190734863,
+            0.8499999046325684,
+            0.3400000035762787
+          ],
+          "inside_world": [
+            9.100000381469727,
+            0.8499997854232788,
+            0.3400000035762787
+          ],
+          "counter_world": [
+            5.5,
+            4.200000286102295,
+            1.3600000143051147
+          ],
+          "fittings": {
+            "kind": "outfitter",
+            "door_clear_width_m": 1.14,
+            "counter_top_m": 1.14,
+            "shelf_top_heights_m": [
+              0.41,
+              1.1,
+              1.79
+            ],
+            "goods_positions_use_support_surface": true,
+            "source": "root interiors.py; prior shop_fittings.py not used"
+          }
+        }
+      ],
+      "visual_actor_count": 5,
+      "walkable_gate": true,
+      "layout_is_project_infill": true,
+      "camera_matching_required": false
+    }
+  ],
+  "visual_approval": false,
+  "direction": "coherent_detailed_3d_architecture_not_single_frame_reconstruction",
+  "source_files_sha256": {
+    "build_market.py": "8cf872410f6a08f41813ba78293dc6d310e82696123119e640a4400a349f1a12",
+    "architecture.py": "7d0e1229614e8dc1a039d6cce0fb8b89d439926ba6614aaaf25a0abbc30cc2e6",
+    "interiors.py": "894429156f890e32ff1081dca2c95af60132b0ccb775f8bc419973324fd8d712"
+  }
+}

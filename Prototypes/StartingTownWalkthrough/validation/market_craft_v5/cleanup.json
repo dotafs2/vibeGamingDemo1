@@ -1,0 +1,38 @@
+{
+  "subagents": "both completed; no new owned process from agents",
+  "processes": [
+    {
+      "pid": 586452,
+      "role": "root Blender craft V5 r1",
+      "running": false
+    },
+    {
+      "pid": 614724,
+      "role": "root Godot craft V5 r1",
+      "running": false
+    },
+    {
+      "pid": 614140,
+      "role": "root Godot craft V5 r1 typed capture",
+      "running": false
+    },
+    {
+      "pid": 611220,
+      "role": "root Blender craft V5 r2",
+      "running": false
+    },
+    {
+      "pid": 616812,
+      "role": "root Godot craft V5 r2",
+      "running": false
+    },
+    {
+      "pid": 617268,
+      "role": "root V5 launch smoke",
+      "running": false
+    }
+  ],
+  "checked": "2026-09-09T20:27:25.4389874+08:00",
+  "all_owned_exited": true,
+  "termination_needed": false
+}

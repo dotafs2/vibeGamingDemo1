@@ -1,0 +1,54 @@
+{
+  "checked_at": "2026-09-09T17:02:21.7537657+08:00",
+  "processes": [
+    {
+      "remaining": [],
+      "kind": "blender_kirito_import",
+      "exited": true,
+      "pid": 595876
+    },
+    {
+      "remaining": [],
+      "kind": "blender_kirito_import",
+      "exited": true,
+      "pid": 596312
+    },
+    {
+      "remaining": [],
+      "kind": "godot_kirito_capture",
+      "exited": true,
+      "pid": 597812
+    },
+    {
+      "remaining": [],
+      "kind": "godot_kirito_capture",
+      "exited": true,
+      "pid": 585712
+    },
+    {
+      "remaining": [],
+      "kind": "godot_kirito_diagnostic",
+      "exited": true,
+      "pid": 367048
+    },
+    {
+      "remaining": [],
+      "kind": "blender_kirito_morph_fix",
+      "exited": true,
+      "pid": 589108
+    },
+    {
+      "remaining": [],
+      "kind": "godot_kirito_corrected_capture",
+      "exited": true,
+      "pid": 597748
+    },
+    {
+      "remaining": [],
+      "kind": "godot_kirito_final_capture",
+      "exited": true,
+      "pid": 597608
+    }
+  ],
+  "all_exited": true
+}

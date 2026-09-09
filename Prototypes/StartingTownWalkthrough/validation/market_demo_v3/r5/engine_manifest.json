@@ -1,0 +1,208 @@
+{
+	"blender_version": "5.2.1 LTS",
+	"canonical_exact_coordinates": false,
+	"npc_behavior_implemented": false,
+	"palette_srgb": {
+		"bark": "77664D",
+		"bark_dark": "5E5641",
+		"bark_light": "968365",
+		"brass": "B49A5A",
+		"canvas_cream": "EFE5CA",
+		"canvas_gold": "DBBB7D",
+		"canvas_green": "88AB87",
+		"canvas_red": "B76A62",
+		"cloth_blue": "68828E",
+		"cloth_brown": "8B795E",
+		"cloth_dark": "4B5450",
+		"door_blue": "699FA9",
+		"door_blue_light": "9ABAC0",
+		"flower": "DED28B",
+		"foam": "D6E8DD",
+		"fruit_green": "8A9D50",
+		"fruit_red": "B65F45",
+		"fruit_yellow": "DBBC64",
+		"glass": "5B7D79",
+		"glass_light": "8FA99A",
+		"grass": "8FAF61",
+		"grass_dark": "7D9F55",
+		"grass_light": "A5BA71",
+		"iron": "53594F",
+		"leaf": "689247",
+		"leaf_dark": "476F3B",
+		"leaf_deep": "365D35",
+		"leaf_light": "8CA952",
+		"leaf_mid": "789D4A",
+		"leaf_warm": "A6B962",
+		"limestone": "D7CAA8",
+		"mortar": "C3B69A",
+		"paving": "C7C4AA",
+		"paving_cool": "BEC4B1",
+		"paving_light": "CECCB5",
+		"paving_warm": "CFC6AC",
+		"plaster_cream": "E8DEBF",
+		"plaster_peach": "DFC5B3",
+		"plaster_sage": "C3D0B8",
+		"plaster_white": "EAE3CB",
+		"recess": "455848",
+		"rock": "8C977C",
+		"roof": "9E6B61",
+		"roof_dark": "916158",
+		"roof_light": "A67569",
+		"roof_shadow": "755D56",
+		"shutter": "557B62",
+		"shutter_light": "7C9980",
+		"sign_red": "965056",
+		"skin": "D4B495",
+		"slate": "6C898E",
+		"soil": "877B59",
+		"stone_light": "DDD2B6",
+		"stone_shade": "CABB9D",
+		"water": "82B6B1",
+		"wood": "796046",
+		"wood_dark": "514638",
+		"wood_light": "A4885E"
+	},
+	"prototype_origin_east_north_m": [
+		0.0,
+		-4770.0
+	],
+	"scenes": [
+		{
+			"collision_mesh_names": [
+				"COL_market_v3_ground",
+				"COL_market_v3_fitted_paving",
+				"COL_left_near",
+				"COL_left_mid",
+				"COL_left_far",
+				"COL_right_near",
+				"COL_right_far",
+				"COL_market_v3_solid_gate",
+				"COL_market_v3_bridge_left_wing",
+				"COL_market_v3_round_tower",
+				"COL_beyond_gate_-1",
+				"COL_beyond_gate_1",
+				"COL_market_v3_beyond_gate_front_0",
+				"COL_market_v3_beyond_gate_front_1",
+				"COL_market_v3_beyond_gate_front_2"
+			],
+			"collision_triangles": 2832.0,
+			"floor_east_north_m": [
+				-163.0,
+				-4752.0
+			],
+			"glb": "StartingTown_Market_V3.glb",
+			"godot_position_m": [
+				-163.0,
+				0.0,
+				-18.0
+			],
+			"godot_yaw_degrees": 78.0,
+			"id": "StartingTown_Market",
+			"mesh_objects": 118.0,
+			"reference_camera_blender_m": [
+				0.0,
+				-19.0,
+				1.79999995231628
+			],
+			"reference_horizontal_fov": 64.0,
+			"reference_landmarks_3d": {
+				"foreground_character_head_top": [
+					0.838887572288513,
+					-16.8,
+					1.96
+				],
+				"gate_opening_crown": [
+					0.807406306266785,
+					21.82,
+					6.61975765228271
+				],
+				"gate_opening_left_spring": [
+					-1.60614734888077,
+					21.82,
+					4.20620399713516
+				],
+				"gate_opening_right_spring": [
+					3.22095996141434,
+					21.82,
+					4.20620399713516
+				],
+				"left_awning_inner_lower": [
+					-1.89999997615814,
+					-11.5,
+					2.24668431282043
+				],
+				"tower_roof_apex": [
+					5.03816032409668,
+					25.8189067840576,
+					19.2738094329834
+				]
+			},
+			"reference_target_blender_m": [
+				-1.20000004768372,
+				25.0,
+				5.44999980926514
+			],
+			"region_id": "beginnings_plaza",
+			"sha256": "15312ab4c862e6dc2659cbb87da5bdbf9a75d66487b6b643aa18d0d67886a2bf",
+			"triangles": 1340459.0,
+			"visual_actor_count": 30.0,
+			"walkable_gate": true
+		},
+		{
+			"collision_mesh_names": [
+				"COL_tolbana_ground",
+				"COL_tolbana_front_walk",
+				"COL_tolbana_west_walk",
+				"COL_tolbana_east_walk",
+				"COL_tolbana_rear_walk",
+				"COL_tolbana_fountain_approach",
+				"COL_tolbana_west_tall",
+				"COL_tolbana_west_low",
+				"COL_tolbana_peach_bread_front",
+				"COL_tolbana_sage_front",
+				"COL_tolbana_east_tower_base",
+				"COL_tolbana_upper_left",
+				"COL_tolbana_upper_peach",
+				"COL_tolbana_upper_cream",
+				"COL_tolbana_upper_sage",
+				"COL_tolbana_skyline_center",
+				"COL_tolbana_left_street_return",
+				"COL_tolbana_right_roof_wing",
+				"COL_tolbana_right_square_tower",
+				"COL_tolbana_tree",
+				"COL_tolbana_fountain"
+			],
+			"collision_triangles": 1348.0,
+			"floor_east_north_m": [
+				0.0,
+				2900.0
+			],
+			"glb": "Tolbana_Plaza.glb",
+			"godot_position_m": [
+				0.0,
+				0.0,
+				-7670.0
+			],
+			"godot_yaw_degrees": 0.0,
+			"id": "Tolbana_Plaza",
+			"mesh_objects": 73.0,
+			"reference_camera_blender_m": [
+				10.0,
+				-24.0,
+				4.7
+			],
+			"reference_horizontal_fov": 66.0,
+			"reference_target_blender_m": [
+				-2.0,
+				16.0,
+				2.7
+			],
+			"region_id": "tolbana",
+			"sha256": "bace46dd870df46fa3d73b835812c54550af829d594156164c929b30fd987f3f",
+			"triangles": 2709692.0
+		}
+	],
+	"schema": 2.0,
+	"source_axes": "Blender east/north/up metres; glTF Y up",
+	"style_id": "level0_market_v3_candidate"
+}

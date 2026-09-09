@@ -1,0 +1,326 @@
+{
+  "source": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\キリト.pmx",
+  "scale": 0.08073119349978872,
+  "blender": "5.2.1 LTS",
+  "importer": "existing standalone MMD Tools PMX reader + explicit Blender conversion",
+  "bones": 200,
+  "mesh_objects": 1,
+  "shape_keys": {
+    "KiritoMesh": [
+      "Basis",
+      "あ",
+      "い",
+      "う",
+      "え",
+      "お",
+      "叫び",
+      "叫び大",
+      "叫び大2",
+      "にやり",
+      "∧",
+      "⌒",
+      "えー",
+      "まばたき",
+      "笑い",
+      "ウィンク",
+      "ウィンク右",
+      "ウィンク2",
+      "ウィンク右2",
+      "びっくり",
+      "じと目",
+      "じと目2",
+      "瞳小",
+      "ハイライト細",
+      "真面目",
+      "困る",
+      "怒り",
+      "にこ",
+      "上",
+      "下",
+      "つま先右",
+      "頬上",
+      "つま先左"
+    ]
+  },
+  "materials": [
+    {
+      "name": "コート",
+      "source": "コート",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\コート.jpg",
+      "outline": true
+    },
+    {
+      "name": "コート白",
+      "source": "コート白",
+      "alpha": 1.0,
+      "texture": null,
+      "outline": true
+    },
+    {
+      "name": "コート金具",
+      "source": "コート金具",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\金具類・服ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "シャツ",
+      "source": "シャツ",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\インナー.jpg",
+      "outline": true
+    },
+    {
+      "name": "シャツ隠",
+      "source": "シャツ隠",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\インナー.jpg",
+      "outline": true
+    },
+    {
+      "name": "ズボン",
+      "source": "ズボン",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\インナー.jpg",
+      "outline": true
+    },
+    {
+      "name": "ズボンチャック",
+      "source": "ズボンチャック",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\透過系表情素材.tga",
+      "outline": false
+    },
+    {
+      "name": "ズボン隠",
+      "source": "ズボン隠",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\インナー.jpg",
+      "outline": true
+    },
+    {
+      "name": "ハイライト",
+      "source": "ハイライト",
+      "alpha": 1.0,
+      "texture": null,
+      "outline": false
+    },
+    {
+      "name": "ベルト",
+      "source": "ベルト",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "ベルト穴隠",
+      "source": "ベルト穴隠",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\インナー.jpg",
+      "outline": false
+    },
+    {
+      "name": "ベルト隠",
+      "source": "ベルト隠",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "口",
+      "source": "口",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\顔.jpg",
+      "outline": false
+    },
+    {
+      "name": "手",
+      "source": "手",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "手袋",
+      "source": "手袋",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手袋.jpg",
+      "outline": true
+    },
+    {
+      "name": "歯",
+      "source": "歯",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": false
+    },
+    {
+      "name": "汗",
+      "source": "汗",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\透過系表情素材.tga",
+      "outline": false
+    },
+    {
+      "name": "爪",
+      "source": "爪",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": false
+    },
+    {
+      "name": "白",
+      "source": "白",
+      "alpha": 1.0,
+      "texture": null,
+      "outline": true
+    },
+    {
+      "name": "白目",
+      "source": "白目",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\顔.jpg",
+      "outline": false
+    },
+    {
+      "name": "眉毛・まつげ・鼻",
+      "source": "眉毛・まつげ・鼻",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\透過系表情素材.tga",
+      "outline": false
+    },
+    {
+      "name": "紅潮",
+      "source": "紅潮",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\透過系表情素材.tga",
+      "outline": false
+    },
+    {
+      "name": "腕・胸ベルト",
+      "source": "腕・胸ベルト",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\金具類・服ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "舌",
+      "source": "舌",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\手・舌・歯・腰ベルト.jpg",
+      "outline": false
+    },
+    {
+      "name": "金具",
+      "source": "金具",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\金具類・服ベルト.jpg",
+      "outline": true
+    },
+    {
+      "name": "青ざめ",
+      "source": "青ざめ",
+      "alpha": 0.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\透過系表情素材.tga",
+      "outline": false
+    },
+    {
+      "name": "靴",
+      "source": "靴",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\靴.jpg",
+      "outline": true
+    },
+    {
+      "name": "靴金具",
+      "source": "靴金具",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\靴.jpg",
+      "outline": true
+    },
+    {
+      "name": "顔",
+      "source": "顔",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\顔.jpg",
+      "outline": true
+    },
+    {
+      "name": "髪",
+      "source": "髪",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪2",
+      "source": "髪2",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪2.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過1",
+      "source": "髪透過1",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過2",
+      "source": "髪透過2",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過3",
+      "source": "髪透過3",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過4",
+      "source": "髪透過4",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過5",
+      "source": "髪透過5",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過6",
+      "source": "髪透過6",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "髪透過7",
+      "source": "髪透過7",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\髪1.tga",
+      "outline": true
+    },
+    {
+      "name": "黒目",
+      "source": "黒目",
+      "alpha": 1.0,
+      "texture": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\Art\\ExistingSAO\\sugaki_kirito\\Kirito\\Textures\\黒目.jpg",
+      "outline": false
+    }
+  ],
+  "physics_transferred": false,
+  "ik_constraints_transferred": false,
+  "material_morphs_transferred": false,
+  "visual_approved": false,
+  "glb": "C:\\vibeGamingDemo1\\Prototypes\\StartingTownWalkthrough\\assets\\characters\\kirito\\Kirito.glb",
+  "sha256": "10fa3c83a6bd3bf926ec839c99857ccd222c89182e91ba7b615603db24346f1b"
+}

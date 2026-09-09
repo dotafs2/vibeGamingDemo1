@@ -1,0 +1,76 @@
+{
+	"character_count": 3,
+	"checks": {
+		"characters_replaced": true,
+		"fountain_detail": true,
+		"fountain_solid": true,
+		"garden_seating": true,
+		"geographic_anchor": true,
+		"inn_corner": true,
+		"inn_enterable": true,
+		"inn_interior": true,
+		"inn_joinery": true,
+		"market_baseline": true,
+		"motion_000.png": true,
+		"motion_045.png": true,
+		"motion_090.png": true,
+		"overview": true,
+		"plaza_walk": true,
+		"residences": true,
+		"tolbana_baseline": true,
+		"town_separation": true,
+		"tree_backlight": true
+	},
+	"engine": "4.7.2-stable (official)",
+	"fountain_collision": {
+		"distance_m": 1.84814453125,
+		"end_world": "(8.899823, 0.258434, -7661.848)",
+		"frames": 150,
+		"on_floor": true,
+		"speed_m_s": 2.0
+	},
+	"geography": [
+		0.0,
+		0.0,
+		-7670.0
+	],
+	"global_style_approved": false,
+	"inn_entry": {
+		"distance_m": 4.49365234375,
+		"end_world": "(-22.0, 0.220825, -7698.894)",
+		"frames": 135,
+		"on_floor": true,
+		"speed_m_s": 2.0
+	},
+	"kimi_requests": 0,
+	"market_sha256": "2e680ec8814a6aa7f4d09c74ad20fb859b5ccae5e3ef161f51d70e9c40f1b67d",
+	"plaza_walk": {
+		"distance_m": 8.99999904632568,
+		"end_world": "(-1.000001, 0.240765, -7655.0)",
+		"frames": 180,
+		"on_floor": true,
+		"speed_m_s": 3.0
+	},
+	"renderer": "forward_plus",
+	"revision": "r2",
+	"schema": 1,
+	"screenshots": [
+		"market_baseline.png",
+		"tolbana_baseline.png",
+		"motion_000.png",
+		"motion_045.png",
+		"motion_090.png",
+		"residences.png",
+		"inn_corner.png",
+		"inn_joinery.png",
+		"inn_interior.png",
+		"fountain_detail.png",
+		"garden_seating.png",
+		"tree_backlight.png",
+		"overview.png"
+	],
+	"source_glb": "Tolbana_Plaza_CraftV5.glb",
+	"source_sha256": "0dda3a1d576d20f14e11908385f35a2536a16248508371c9f5195269f592cee4",
+	"technical_passed": true,
+	"visual_approval": false
+}
