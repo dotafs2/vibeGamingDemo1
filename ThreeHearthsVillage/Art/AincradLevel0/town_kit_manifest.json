@@ -220,114 +220,6 @@
       "uv": "UV0 metric, repeated tile shared"
     },
     {
-      "id": "SM_Inn",
-      "glb": "Assemblies/SM_Inn.glb",
-      "vertices": 14630,
-      "triangles": 21954,
-      "bounds_min_m": [
-        -6.529999732971191,
-        -8.585000038146973,
-        -0.20000000298023224
-      ],
-      "bounds_max_m": [
-        6.529999732971191,
-        9.40000057220459,
-        11.06619930267334
-      ],
-      "parts": 171,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
-      "id": "SM_Inn_Details",
-      "glb": "Assemblies/SM_Inn_Details.glb",
-      "vertices": 8350,
-      "triangles": 12510,
-      "bounds_min_m": [
-        -6.529999732971191,
-        -8.585000038146973,
-        0.0
-      ],
-      "bounds_max_m": [
-        6.529999732971191,
-        9.40000057220459,
-        11.06619930267334
-      ],
-      "parts": 0,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
-      "id": "SM_Smithy",
-      "glb": "Assemblies/SM_Smithy.glb",
-      "vertices": 11102,
-      "triangles": 16662,
-      "bounds_min_m": [
-        -5.529999732971191,
-        -7.585000514984131,
-        -0.20000000298023224
-      ],
-      "bounds_max_m": [
-        5.529999732971191,
-        8.34999942779541,
-        10.339656829833984
-      ],
-      "parts": 132,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
-      "id": "SM_Smithy_Details",
-      "glb": "Assemblies/SM_Smithy_Details.glb",
-      "vertices": 6054,
-      "triangles": 9066,
-      "bounds_min_m": [
-        -5.529999732971191,
-        -7.585000514984131,
-        0.0
-      ],
-      "bounds_max_m": [
-        5.529999732971191,
-        8.34999942779541,
-        10.339656829833984
-      ],
-      "parts": 0,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
-      "id": "SM_Carpentry",
-      "glb": "Assemblies/SM_Carpentry.glb",
-      "vertices": 11126,
-      "triangles": 16698,
-      "bounds_min_m": [
-        -5.529999732971191,
-        -7.585000514984131,
-        -0.20000000298023224
-      ],
-      "bounds_max_m": [
-        5.529999732971191,
-        8.34999942779541,
-        10.339656829833984
-      ],
-      "parts": 132,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
-      "id": "SM_Carpentry_Details",
-      "glb": "Assemblies/SM_Carpentry_Details.glb",
-      "vertices": 6078,
-      "triangles": 9102,
-      "bounds_min_m": [
-        -5.529999732971191,
-        -7.585000514984131,
-        0.0
-      ],
-      "bounds_max_m": [
-        5.529999732971191,
-        8.34999942779541,
-        10.339656829833984
-      ],
-      "parts": 0,
-      "uv": "UV0 metric, repeated tile shared"
-    },
-    {
       "id": "SM_TownHouse",
       "glb": "Assemblies/SM_TownHouse.glb",
       "vertices": 8014,
@@ -467,6 +359,114 @@
         1.0,
         0.4000000059604645,
         0.5850000000000001
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Inn",
+      "glb": "Assemblies/SM_Inn.glb",
+      "vertices": 30878,
+      "triangles": 27342,
+      "bounds_min_m": [
+        -6.529999732971191,
+        -8.585000038146973,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        6.529999732971191,
+        9.40000057220459,
+        11.06619930267334
+      ],
+      "parts": 172,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Inn_Details",
+      "glb": "Assemblies/SM_Inn_Details.glb",
+      "vertices": 8326,
+      "triangles": 12474,
+      "bounds_min_m": [
+        -6.529999732971191,
+        -8.585000038146973,
+        0.0
+      ],
+      "bounds_max_m": [
+        6.529999732971191,
+        9.40000057220459,
+        11.06619930267334
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Smithy",
+      "glb": "Assemblies/SM_Smithy.glb",
+      "vertices": 79866,
+      "triangles": 39490,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.239999771118164,
+        10.339656829833984
+      ],
+      "parts": 134,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Smithy_Details",
+      "glb": "Assemblies/SM_Smithy_Details.glb",
+      "vertices": 6014,
+      "triangles": 9006,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        7.585000514984131,
+        10.339656829833984
+      ],
+      "parts": 0,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Carpentry",
+      "glb": "Assemblies/SM_Carpentry.glb",
+      "vertices": 47386,
+      "triangles": 28710,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        -0.20000000298023224
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        8.239999771118164,
+        10.339656829833984
+      ],
+      "parts": 133,
+      "uv": "UV0 metric, repeated tile shared"
+    },
+    {
+      "id": "SM_Carpentry_Details",
+      "glb": "Assemblies/SM_Carpentry_Details.glb",
+      "vertices": 6054,
+      "triangles": 9066,
+      "bounds_min_m": [
+        -5.529999732971191,
+        -7.585000514984131,
+        0.0
+      ],
+      "bounds_max_m": [
+        5.529999732971191,
+        7.585000514984131,
+        10.339656829833984
       ],
       "parts": 0,
       "uv": "UV0 metric, repeated tile shared"

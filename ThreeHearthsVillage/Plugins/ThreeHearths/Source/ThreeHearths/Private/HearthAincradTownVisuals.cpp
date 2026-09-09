@@ -69,7 +69,12 @@ namespace HearthAincradTownVisuals
                 const FVector Local(P[0]->AsNumber()*100,-P[1]->AsNumber()*100,P[2]->AsNumber()*100);
                 const FString Module=Part->GetStringField(TEXT("module"));
                 if(Module.Contains(TEXT("/")) || Module.Contains(TEXT("..")))continue;
-                const FTransform LocalFrame(FRotator(0,-Part->GetNumberField(TEXT("yaw_degrees")),0),Local);
+                // The terrain and authored ground-floor finish both end at z=0.
+                // Lift only the rendered finish 1 cm to prevent grass/floor depth fighting;
+                // the existing walking collision datum and saved actor positions stay unchanged.
+                FVector VisualLocal=Local;
+                if(Module==TEXT("floor_2m") && FMath::IsNearlyZero(Local.Z)) VisualLocal.Z+=1.f;
+                const FTransform LocalFrame(FRotator(0,-Part->GetNumberField(TEXT("yaw_degrees")),0),VisualLocal);
                 // Wall collision uses simple portal-aware boxes below, giving
                 // deterministic capsule sweeps even before cooked triangle data.
                 Instance(Module,LocalFrame*Frame,false);

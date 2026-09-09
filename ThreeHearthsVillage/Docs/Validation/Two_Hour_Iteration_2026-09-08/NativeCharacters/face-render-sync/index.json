@@ -1,0 +1,97 @@
+{
+  "source": "local_verification",
+  "reviewer": "root/Astra",
+  "reviewed_utc": "2026-09-08T19:42:00Z",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "formal_world_unchanged": true,
+  "formal_world_sha256": "60d8380c6104f284dd48cba1a1ce5a8d6578c1768479e9a0a762ee2672a27af8",
+  "image_count": 15,
+  "images": [
+    {
+      "image": "Aileen_Idle_front.png",
+      "sha256": "be57661b778b18ff7f4afc014f67117e4b22347ebb65e725c1f90deb67d6a907",
+      "bytes": 556099
+    },
+    {
+      "image": "Aileen_Idle_front_context.png",
+      "sha256": "b42ce74e6cc2407bbf8edd04d3f6cfe602456895a0157ae6d5c5b18d092eafa4",
+      "bytes": 800165
+    },
+    {
+      "image": "Aileen_Idle_side.png",
+      "sha256": "4531ab1a94f37e8cc58e3294508ed5ac1fcee44906c62c839ba47c4b19de1c44",
+      "bytes": 525826
+    },
+    {
+      "image": "Aileen_Walk_front.png",
+      "sha256": "3eaee40b78c2bcd5d78ab9b89d0132dd763c955048ced1dc601f860707a0fa97",
+      "bytes": 557636
+    },
+    {
+      "image": "Aileen_Walk_side.png",
+      "sha256": "bea5559696d3bca251f2ec2a8a2c08765f5ac8a78d28b874708a1edfce06913c",
+      "bytes": 545432
+    },
+    {
+      "image": "Kashiwagi_Idle_front.png",
+      "sha256": "3fbfe63f369ab15ea83e53581eef5323dad1abff3293cab1ad38c9f794dd391a",
+      "bytes": 551414
+    },
+    {
+      "image": "Kashiwagi_Idle_front_context.png",
+      "sha256": "74c6932c5cddaa9ae4cb1ded53c5f830edbf63f2464803f6dd07510cebef65bc",
+      "bytes": 852713
+    },
+    {
+      "image": "Kashiwagi_Idle_side.png",
+      "sha256": "f3f140d354630c294ac74a7ba3ffeed847b00cb920c57adce95cdae3b0dbd4b1",
+      "bytes": 492550
+    },
+    {
+      "image": "Kashiwagi_Walk_front.png",
+      "sha256": "b5a24b95bf0172651ba05ee9b6f2e308b71cb8ab6307c1e0bd99a5a76f03b7d1",
+      "bytes": 555020
+    },
+    {
+      "image": "Kashiwagi_Walk_side.png",
+      "sha256": "2cdb0944fb669b80e13d752f1962604ed5d7b3cdce56d4db0d8a79f8a24fcf94",
+      "bytes": 508252
+    },
+    {
+      "image": "Takuma_Idle_front.png",
+      "sha256": "d550611e0a0c26365140228167335dd725f843a4197b2fb87a59e39891ac0c65",
+      "bytes": 551618
+    },
+    {
+      "image": "Takuma_Idle_front_context.png",
+      "sha256": "d757ab00f46d02e2b3dfeffb45d3c3229c10d9f479c00a2dc93b4c718e177a37",
+      "bytes": 853640
+    },
+    {
+      "image": "Takuma_Idle_side.png",
+      "sha256": "a2042410210d83a15c5924c7dbb87391ddde78967edd665f136a29a764d27d6f",
+      "bytes": 517432
+    },
+    {
+      "image": "Takuma_Walk_front.png",
+      "sha256": "b71fd20306d91244157f1e8f583819266642964352df5a3c8ff32063b772348c",
+      "bytes": 554652
+    },
+    {
+      "image": "Takuma_Walk_side.png",
+      "sha256": "ff3c5aad006956bdbc2e583cd2fce82fcf1b6feb5ba2904ec7743c616c1f2c37",
+      "bytes": 541537
+    }
+  ],
+  "helper_report": "helper_report.json",
+  "ue_import_report": "UE_Import_Report_at_capture.json",
+  "rendered_walk_pose_visually_confirmed": true,
+  "automatic_animation_playback_validated": false,
+  "formal_v2_enabled": false,
+  "judgment": "三人原始 Walk 图可见摆臂、前后腿、围裙变形；眼部表面与身份材质正常。相对朝向 -90 度。接受为当前外观样板；需自然跨帧播放检查后才启用。",
+  "limitations": [
+    "手动0.25秒姿态截图不是自动播放证明",
+    "步态和衣物仍为样板，脚部柔韧与袖口细节可继续改进",
+    "隔离角色图隐藏环境并添加评审补光；context图保留实际店铺及遮挡，均非NPC观察"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "source_capture": "v2_cold_forge_inside_20260908_2004",
+  "source_index": "success/v2_cold_forge_inside_20260908_2004/source_index.json",
+  "workshop_review": {
+    "source": "local_verification",
+    "review_role": "coordinator",
+    "npc_vision": false,
+    "target_static_mesh": "smithy_cold_forge",
+    "matching_component_count": 1,
+    "matching_instance_count": 1,
+    "asset_present": true,
+    "instance_count_valid": true,
+    "static_mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/smithy_cold_forge/smithy_cold_forge.smithy_cold_forge",
+    "materials": [
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass"
+    ],
+    "material_slot_count": 9,
+    "materials_valid": true,
+    "instance_transform_read": true,
+    "instance_transform_world": {
+      "location_cm": [
+        2150,
+        465280,
+        0
+      ],
+      "rotation_quaternion": [
+        0,
+        0,
+        -0.7071067811865476,
+        0.7071067811865475
+      ],
+      "scale": [
+        1.0000000000000002,
+        1.0000000000000002,
+        1
+      ]
+    },
+    "scale_valid": true,
+    "image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/v2_cold_forge_inside_20260908_2004/cold_forge_context.png",
+    "camera_eye_world_cm": [
+      1830,
+      465440,
+      225
+    ],
+    "camera_aim_world_cm": [
+      2150,
+      465290,
+      70
+    ],
+    "fov_degrees": 36,
+    "render_capture_completed": true,
+    "render_visually_confirmed": false,
+    "passed": false,
+    "status": "captured; requires visual confirmation"
+  },
+  "coordinator_node_visual_confirmation": false,
+  "root_visual_inspection": true,
+  "root_visual_note": "真实炉体、拱口、砖墙、风箱正确；无旧灰块叠加；风箱支架落地；右侧手柄部分在画面边缘，完整形体另见 Blender 源预览。"
+}

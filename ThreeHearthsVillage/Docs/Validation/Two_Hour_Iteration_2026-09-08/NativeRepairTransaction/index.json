@@ -1,0 +1,16 @@
+{
+  "archive_type": "minimal_transaction_and_interruption_excerpt",
+  "as_of_utc": "2026-09-09T00:45:00Z",
+  "transaction_excerpt": "transaction_excerpt.json",
+  "context_proof": "LocalContextRejectionProof.json",
+  "run_boundary": "run_boundary_excerpt.json",
+  "source_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "retained_seq_range": "17..25",
+  "contract_status": "collected",
+  "repair_edge": 100,
+  "handle": 20,
+  "s4_tool_use_complete": false,
+  "full_world_copied": false,
+  "secrets_or_budget_db_copied": false,
+  "note": "Only selected events, contract, axe, three resident economic/account rows and source SHA are retained; the full Saved world is not copied."
+}

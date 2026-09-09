@@ -1,0 +1,35 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+  "observation_id": "obs_000012",
+  "target_id": "sao_carpentry_01",
+  "scene_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+  "image_file": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/Observations/F4390752-4A07-7DE7-FACD-32BAC6F72C54/425311EB-4D09-0782-AFE2-27A9631F9C0A/obs_000012.png",
+  "image_sha1": "39A9706C455C0FF0FEB581A1088ED88422A6B379",
+  "position_cm": [
+    -607.4990234375,
+    462000,
+    92
+  ],
+  "eye_cm": [
+    -607.4990234375,
+    462000,
+    160
+  ],
+  "facing": [
+    2.220446049250313e-16,
+    1.0000000000000002,
+    0
+  ],
+  "camera_rotation": [
+    2.83276944882399e-16,
+    1,
+    0
+  ],
+  "horizontal_fov": 85,
+  "sequence": 12,
+  "utc": 1788874708,
+  "manual_bootstrap": false,
+  "source": "native",
+  "view": "facade"
+}

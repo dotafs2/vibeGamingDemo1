@@ -61,3 +61,7 @@ UE 5.8 Development 编译成功。`ThreeHearths.Aincrad` 共 **18 项测试通�
 默认离线查看入口：`Tools/Run-AincradLevel0.ps1`。新增扩展的限时离线启动：使用本机 Python 执行 `Tools/run_aincrad_residents.py --seconds 35 --life --verify-walk --max-decisions 0`。付费启动必须沿用已配置接口和累计账本；普通启动不会自动开付费。
 
 可移植状态检查点见 [world-checkpoint.json](world-checkpoint.json)：保留同一世界、13 人及当前生活状态，剔除本机图片路径、请求凭证与预算回执，**不是新世界生成模板**。复制到其他机器前备份并核对当地已有世界，不能覆盖较新的世界；费用账本仍独立保留，不能用此文件重建预算。
+
+## 后续接续
+
+本机已在该线上提交和原世界上继续。最新修复、真实Kimi三次反馈、费用、冷恢复及下一步见 [接续首轮记录](../Life_Continuation_2026-09-08/README.md)。新记录仍明确标注未成交，不把旧工程检查点改写成自主委托已经完成。

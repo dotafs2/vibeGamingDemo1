@@ -1,0 +1,5 @@
+Aileen | inn | waiting
+Takuma | smithy | looking around
+Kashiwagi | carpentry | looking around
+Aileen -> Kashiwagi | axe handle | 5 Col | cancelled - no fee paid
+Aileen -> Kashiwagi | axe handle | 5 Col | cancelled - no fee paid

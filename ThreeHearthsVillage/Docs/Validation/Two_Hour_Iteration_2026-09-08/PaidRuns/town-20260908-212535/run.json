@@ -1,0 +1,146 @@
+{
+  "run": {
+    "run": "town-20260908-212535",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1800,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 74196,
+    "gateway_pid": 67568,
+    "started_utc_epoch": 1788902735.5009513,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 876,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 19.7759768,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 75.2240232,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.5008888
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 884,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.0107701,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.9892299,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.7356821
+    },
+    "new_cost_cny": 0.2347933,
+    "new_settled_calls": 8,
+    "finished_utc_epoch": 1788904548.991889
+  },
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "operation": "E4364DB7-4468-F524-8589-0790AAF75EF4",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "暂无紧迫需求；旅店木料和客房有限，但当前无客人，可优先整理工具或评估修斧事宜。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=293.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "01-E4364DB7-4468-F524-8589-0790AAF75EF4"
+    },
+    {
+      "resident": "拓真",
+      "operation": "FE7486DA-4609-1061-05BD-DDB088EA8B02",
+      "reason": "ordinary_cooldown_due",
+      "action": "look_at_workbench",
+      "option_id": null,
+      "need": "需要找到待修的剑和普通铁料来继续我的愿望——修好镇上每一把常用的剑。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=176.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "02-FE7486DA-4609-1061-05BD-DDB088EA8B02"
+    },
+    {
+      "resident": "柏木",
+      "operation": "976F5081-46D9-E164-1579-EF82AA8CD862",
+      "reason": "ordinary_cooldown_due",
+      "action": "wait",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=296.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "03-976F5081-46D9-E164-1579-EF82AA8CD862"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "A27E782E-4DB6-8477-2FB4-5AACD862ACEA",
+      "reason": "completed_observation_followup",
+      "action": "observe",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=353.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "04-A27E782E-4DB6-8477-2FB4-5AACD862ACEA"
+    },
+    {
+      "resident": "拓真",
+      "operation": "53D76486-4363-371E-9E31-3AA79523ABAE",
+      "reason": "completed_observation_followup",
+      "action": "life",
+      "option_id": "ask_repair_need:425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "need": "需要金属修理委托来实践metal_repair技能，目前只有1铁料且无木材，tool_use_requirements显示需要wood才能制作kindling",
+      "previous_executed_result": "looked_at_workbench; body_yaw_degrees=296.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "05-53D76486-4363-371E-9E31-3AA79523ABAE"
+    },
+    {
+      "resident": "柏木",
+      "operation": "B79E913F-4E8A-D9D4-A338-56BCDC686A56",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "reply_repair_need:repair_need_request_8:no_need",
+      "need": null,
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=296.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "06-B79E913F-4E8A-D9D4-A338-56BCDC686A56"
+    },
+    {
+      "resident": "拓真",
+      "operation": "8536267C-445D-1DD8-C64A-4C8A5E1F6661",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "need": "需要金属修理委托来实践metal_repair技能，目前只有1铁料且无木材，柏木暂无需求，转而询问艾琳",
+      "previous_executed_result": "life_committed: ask_repair_need:425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "image_verified": true,
+      "evidence": "07-8536267C-445D-1DD8-C64A-4C8A5E1F6661"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "37D9BD2E-43B2-D240-0380-9B976FEBD6F2",
+      "reason": "received_life_event",
+      "action": "reply_repair_need:repair_need_request_10:no_need",
+      "option_id": "reply_repair_need:repair_need_request_10:no_need",
+      "need": "柴斧柄部松动的问题仍未解决，但两次委托柏木都取消了，需要再考虑是否自行处理或另寻时机。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=53.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "08-37D9BD2E-43B2-D240-0380-9B976FEBD6F2"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state."
+}

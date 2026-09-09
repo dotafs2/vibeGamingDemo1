@@ -1,0 +1,12 @@
+{
+  "id": "829BC567-44BB-F3C1-250D-AF967D85E1BD",
+  "resident": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+  "state": "settled",
+  "charge": 38850200,
+  "prompt_tokens": 5746,
+  "output_tokens": 158,
+  "cached_tokens": 512,
+  "created": 1788911900.5743735,
+  "finished": 1788911906.408902,
+  "charge_cny": 0.0388502
+}

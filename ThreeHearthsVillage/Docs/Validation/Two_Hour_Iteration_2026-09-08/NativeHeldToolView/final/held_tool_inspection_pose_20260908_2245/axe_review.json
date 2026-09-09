@@ -1,0 +1,194 @@
+{
+  "source": "local_verification",
+  "review_role": "coordinator",
+  "npc_vision": false,
+  "kimi_action": false,
+  "item_state_changed": false,
+  "graded_view_grade_applied": true,
+  "legacy_capture_component_grade_applied": false,
+  "exposure_comparison_scope": "Both inherit the existing unbound scene grade; comparison adds an explicit identical component grade, not an ungraded scene.",
+  "temporary_fill_light": false,
+  "render_visually_confirmed": false,
+  "passed": false,
+  "item_found_in_verification_copy": true,
+  "item_id": "aincrad_axe_erin",
+  "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "custodian_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "edge": 20,
+  "handle": 20,
+  "tagged_actor_count": 1,
+  "tagged_actor_valid": true,
+  "parts": [
+    {
+      "component": "StaticMeshComponent_0",
+      "mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/axe_handle_split/axe_handle_split.axe_handle_split",
+      "relative_transform": {
+        "location_cm": [
+          0,
+          0,
+          0
+        ],
+        "rotation_quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "world_transform": {
+        "location_cm": [
+          -1271.1356132323037,
+          467079.1919417177,
+          95
+        ],
+        "rotation_quaternion": [
+          0.15243809914304357,
+          0.15141314452342394,
+          0.9691207495998864,
+          0.1210027201766059
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "material_slots": [
+        {
+          "slot_index": 0,
+          "slot_name": "AT_Cloth",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Cloth.MI_Town_Cloth"
+        },
+        {
+          "slot_index": 1,
+          "slot_name": "AT_TimberDark",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark"
+        },
+        {
+          "slot_index": 2,
+          "slot_name": "AT_Timber",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber"
+        },
+        {
+          "slot_index": 3,
+          "slot_name": "AT_TimberLight",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight"
+        }
+      ],
+      "material_slot_count": 4,
+      "materials_valid": true
+    },
+    {
+      "component": "StaticMeshComponent_1",
+      "mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/axe_head_chipped/axe_head_chipped.axe_head_chipped",
+      "relative_transform": {
+        "location_cm": [
+          0,
+          0,
+          0
+        ],
+        "rotation_quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "world_transform": {
+        "location_cm": [
+          -1271.1356132323037,
+          467079.1919417177,
+          95
+        ],
+        "rotation_quaternion": [
+          0.15243809914304357,
+          0.15141314452342394,
+          0.9691207495998864,
+          0.1210027201766059
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "material_slots": [
+        {
+          "slot_index": 0,
+          "slot_name": "AT_Iron",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron"
+        },
+        {
+          "slot_index": 1,
+          "slot_name": "AT_StoneLight",
+          "material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight"
+        }
+      ],
+      "material_slot_count": 2,
+      "materials_valid": true
+    }
+  ],
+  "part_count": 2,
+  "visible_mesh_component_count": 2,
+  "expected_handle_mesh": "axe_handle_split",
+  "expected_head_mesh": "axe_head_chipped",
+  "parts_valid_for_condition": true,
+  "tool_actor_transform": {
+    "location_cm": [
+      -1271.1356132323037,
+      467079.1919417177,
+      95
+    ],
+    "rotation_quaternion": [
+      0.15243809914304357,
+      0.15141314452342394,
+      0.9691207495998864,
+      0.1210027201766059
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "tool_actor_transform_unchanged": true,
+  "legacy_exposure_image": "axe_context_legacy_exposure.png",
+  "image": "axe_context.png",
+  "camera_eye_world_cm": [
+    -1267.5094692881355,
+    467220.9426226958,
+    70.12841938402188
+  ],
+  "camera_aim_world_cm": [
+    -1275.0205415713087,
+    467082.15903221816,
+    101.09128112656697
+  ],
+  "fov_degrees": 36,
+  "legacy_exposure_capture_completed": true,
+  "graded_capture_completed": true,
+  "comparison_same_actor_geometry_lighting_camera": true,
+  "render_capture_completed": true,
+  "status": "captured; requires visual confirmation",
+  "source_capture": "held_tool_inspection_pose_20260908_2245",
+  "root_visual_acceptance": true,
+  "rgb_mae_normalized": 7E-05,
+  "explicit_grade_visual_change": false,
+  "note": "Root accepted basic held-tool observation: the tool relative carried-pose yaw offset is about +110 degrees and the actual tool yaw is 163.1063 degrees; the carried pivot stays unchanged while the tool rotation changes. Erin eye/body facing stays unchanged and obs57/obs58 camera orientation is identical. The blade broad face and edge notches are discernible. Dark material and lack of a complete raised-hand animation remain limitations. This is local_verification from the NPC eye position, forced by the native test and not submitted as a real Kimi autonomous request; it is not repair completion.",
+  "tool_inspection_yaw_offset_degrees": 110,
+  "tool_pivot_unchanged": true,
+  "tool_rotation_changed": true,
+  "actual_tool_yaw_degrees": 163.1063,
+  "resident_eye_body_facing_unchanged": true,
+  "obs57_obs58_camera_same": true
+}

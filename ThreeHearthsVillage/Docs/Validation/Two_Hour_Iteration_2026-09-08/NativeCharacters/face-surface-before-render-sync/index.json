@@ -1,0 +1,91 @@
+{
+  "source": "local_verification",
+  "capture_directory": "Saved/ThreeHearths/AincradLevel0/CharacterReview/characters_v2_face_surface_20260908_1920",
+  "verification_world": "Saved/ThreeHearths/AincradLevel0/VerificationWorlds/characters_v2_face_surface_20260908_1920.json",
+  "image_count": 15,
+  "images": [
+    {
+      "relative_path": "Aileen_Idle_front_context.png",
+      "sha256": "12fa707299d83bdc4fea8adabbac14545876134c5b42b13643af64feb9ec5b9c",
+      "bytes": 800225
+    },
+    {
+      "relative_path": "Aileen_Idle_front.png",
+      "sha256": "37a8fcc3f06460b01de71950df551b860f6ea61c793ab85e7abf6edf0a7bd531",
+      "bytes": 555835
+    },
+    {
+      "relative_path": "Aileen_Idle_side.png",
+      "sha256": "c0f3b118226873271c34dd3ba653d9d994d901bbf4a9fecb08e6c82ccb068c1b",
+      "bytes": 525785
+    },
+    {
+      "relative_path": "Aileen_Walk_front.png",
+      "sha256": "b17042560cec457c1b43318e31a4cae5a284c586268684532b88929207063505",
+      "bytes": 557864
+    },
+    {
+      "relative_path": "Aileen_Walk_side.png",
+      "sha256": "435e098269b4fde0dc16c977f34c15df2eceefb29c5ce1e2575a1ba257ea7827",
+      "bytes": 545271
+    },
+    {
+      "relative_path": "Kashiwagi_Idle_front_context.png",
+      "sha256": "bcfde302a43bf99b1849f227fc9cbe9f78b03dee11b2669fa496ee77adc84c6c",
+      "bytes": 852775
+    },
+    {
+      "relative_path": "Kashiwagi_Idle_front.png",
+      "sha256": "25fd941416ccf668bdec7213e8030a85226409a35185fded6d38c4607238b9c3",
+      "bytes": 551165
+    },
+    {
+      "relative_path": "Kashiwagi_Idle_side.png",
+      "sha256": "a4a63a742793b753bb9c638efcb1a715063a2c9f5f5fc58b45a456741646dd12",
+      "bytes": 492352
+    },
+    {
+      "relative_path": "Kashiwagi_Walk_front.png",
+      "sha256": "e44b3395ee97f89d6ee2a8af435a8cd3df4d03e2e26b54afeda9cf30f4d74484",
+      "bytes": 551387
+    },
+    {
+      "relative_path": "Kashiwagi_Walk_side.png",
+      "sha256": "0168e3f3394f8b1fdd653cde95db4c1456256dca8d86f72c92e991fdd11586f9",
+      "bytes": 491353
+    },
+    {
+      "relative_path": "Takuma_Idle_front_context.png",
+      "sha256": "14608a832cd0a035eff350f2ff14bf40c7112985141d6e960c921dd418481a2c",
+      "bytes": 853482
+    },
+    {
+      "relative_path": "Takuma_Idle_front.png",
+      "sha256": "407675bc32aaf7057638f7294c7bcc4b30b3814fb68c5445d956b42d3ec6562c",
+      "bytes": 551527
+    },
+    {
+      "relative_path": "Takuma_Idle_side.png",
+      "sha256": "72b853a3b3b081306bd25dd0ce474262ba7e138bba101e55ac50d711085b41fe",
+      "bytes": 517443
+    },
+    {
+      "relative_path": "Takuma_Walk_front.png",
+      "sha256": "17627ea2b7950c26b8976623cfc5bdc103044ff4aa75da343f5f572ce36d7a01",
+      "bytes": 551823
+    },
+    {
+      "relative_path": "Takuma_Walk_side.png",
+      "sha256": "be9a109eec97775fbfa1823034fc237e40bcb51a3117eb256632b722be91800c",
+      "bytes": 517214
+    }
+  ],
+  "ue_import_report": "UE_Import_Report.json",
+  "cpu_pose_delta_checked": true,
+  "materials_valid_checked": true,
+  "rendered_walk_pose_validated": false,
+  "automatic_animation_playback_validated": false,
+  "native_visual_accepted": false,
+  "status": "pending render-sync validation; V2 is not formally enabled",
+  "note": "The source capture passed helper structural checks for CPU pose deltas, materials, required bones, and sample timestamps. Visual inspection found Walk PNGs still resemble Idle; no rendered Walk pose or automatic playback acceptance is claimed."
+}

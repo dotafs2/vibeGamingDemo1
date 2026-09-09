@@ -1,0 +1,131 @@
+{
+  "run": {
+    "run": "town-20260908-154203",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 300,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 56356,
+    "gateway_pid": 45124,
+    "started_utc_epoch": 1788882123.5066986,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 818,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.8654705,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.1345295,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.5903825
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 824,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 18.0402406,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 76.9597594,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.7651526
+    },
+    "new_cost_cny": 0.1747701,
+    "new_settled_calls": 6,
+    "finished_utc_epoch": 1788882436.3198056
+  },
+  "decisions": [
+    {
+      "resident": "拓真",
+      "operation": "66161F22-4F58-2D6A-AF3F-7AADFA897E0D",
+      "decision_reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要确认工作台位置与当前任务状态。",
+      "available_repair_offers": [],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/01-66161F22-4F58-2D6A-AF3F-7AADFA897E0D"
+    },
+    {
+      "resident": "拓真",
+      "operation": "1856685E-4610-3EBE-03F3-C38C411A0544",
+      "decision_reason": "completed_observation_followup",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要确认工作台位置与当前任务状态。",
+      "available_repair_offers": [],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/02-1856685E-4610-3EBE-03F3-C38C411A0544"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "2A96806E-4754-E800-CED8-BBA3974FC8CF",
+      "decision_reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+      "available_repair_offers": [],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/03-2A96806E-4754-E800-CED8-BBA3974FC8CF"
+    },
+    {
+      "resident": "柏木",
+      "operation": "37F9181B-4C91-2FF6-C5D2-84969FF00723",
+      "decision_reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先确认自己的工作环境再决定下一步。",
+      "available_repair_offers": [
+        "offer_repair:repair_contract_6_0:2",
+        "offer_repair:repair_contract_6_0:5",
+        "offer_repair:repair_contract_6_0:8"
+      ],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/04-37F9181B-4C91-2FF6-C5D2-84969FF00723"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "F36B5A25-44B1-EE83-5CE4-5EB5817D4250",
+      "decision_reason": "completed_observation_followup",
+      "action": "wait",
+      "option_id": null,
+      "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+      "available_repair_offers": [],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/05-F36B5A25-44B1-EE83-5CE4-5EB5817D4250"
+    },
+    {
+      "resident": "柏木",
+      "operation": "8DBE228F-40F3-8B6E-285C-4E94F2D32DD6",
+      "decision_reason": "completed_observation_followup",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先确认自己的工作环境再决定下一步。",
+      "available_repair_offers": [
+        "offer_repair:repair_contract_6_0:2",
+        "offer_repair:repair_contract_6_0:5",
+        "offer_repair:repair_contract_6_0:8"
+      ],
+      "image_verified": true,
+      "evidence": "PaidWorkshop/06-8DBE228F-40F3-8B6E-285C-4E94F2D32DD6"
+    }
+  ]
+}

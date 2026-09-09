@@ -1,0 +1,501 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-T89GBDJ",
+			"instance": "0359063E415BDC3731CD7EA3B4DB548F",
+			"instanceName": "DESKTOP-T89GBDJ-97296",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9278] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 5080",
+			"cPUModel": "Intel(R) Core(TM) i7-14700K",
+			"rAMInGB": 128,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-22.00.58",
+	"succeeded": 29,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.63220345973968506,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "IdentityAppearanceAndAnimation",
+			"fullTestPath": "ThreeHearths.AincradCharacters.IdentityAppearanceAndAnimation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.047423500567674637,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "innkeeper component pose difference: hand 15.401 cm, foot 31.122 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-22.00.57"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "blacksmith component pose difference: hand 16.230 cm, foot 32.796 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-22.00.57"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "carpenter component pose difference: hand 15.570 cm, foot 31.450 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-22.00.57"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicBoundedWoodland",
+			"fullTestPath": "ThreeHearths.AincradEcology.DeterministicBoundedWoodland",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.011081896722316742,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SavedClearingsAndFullAscent",
+			"fullTestPath": "ThreeHearths.AincradEcology.SavedClearingsAndFullAscent",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.019776798784732819,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AllNodesInside",
+			"fullTestPath": "ThreeHearths.AincradFloorPlan.AllNodesInside",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0085797980427742004,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CardinalTopology",
+			"fullTestPath": "ThreeHearths.AincradFloorPlan.CardinalTopology",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0084507986903190613,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NorthernLabyrinthReachability",
+			"fullTestPath": "ThreeHearths.AincradFloorPlan.NorthernLabyrinthReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0084106996655464172,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableIdsAndTerrainPolicy",
+			"fullTestPath": "ThreeHearths.AincradFloorPlan.StableIdsAndTerrainPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0082392990589141846,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DecisionEventFiltering",
+			"fullTestPath": "ThreeHearths.AincradLife.DecisionEventFiltering",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.045434001833200455,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HelpQuestionSingleReply",
+			"fullTestPath": "ThreeHearths.AincradLife.HelpQuestionSingleReply",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.02045159786939621,
+			"dateTime": "2026.09.08-22.00.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitializationAndReload",
+			"fullTestPath": "ThreeHearths.AincradLife.InitializationAndReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.017512500286102295,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersonalWorkStatusBoundaries",
+			"fullTestPath": "ThreeHearths.AincradLife.PersonalWorkStatusBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.078233495354652405,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RejectionShortageIdempotencyAndDistance",
+			"fullTestPath": "ThreeHearths.AincradLife.RejectionShortageIdempotencyAndDistance",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0095047019422054291,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RepairNeedQuestionSingleReply",
+			"fullTestPath": "ThreeHearths.AincradLife.RepairNeedQuestionSingleReply",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.025649398565292358,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RepairOfferPersistenceAndPrivacy",
+			"fullTestPath": "ThreeHearths.AincradLife.RepairOfferPersistenceAndPrivacy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.059196699410676956,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TwoStageRepairAndUse",
+			"fullTestPath": "ThreeHearths.AincradLife.TwoStageRepairAndUse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.11074379831552505,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExplicitTargetAndRetry",
+			"fullTestPath": "ThreeHearths.AincradLook.ExplicitTargetAndRetry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0074173994362354279,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InvalidInputFailsClosed",
+			"fullTestPath": "ThreeHearths.AincradLook.InvalidInputFailsClosed",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0080977976322174072,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OneFollowupAndColdRestore",
+			"fullTestPath": "ThreeHearths.AincradLook.OneFollowupAndColdRestore",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0074024014174938202,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StateAndIdempotency",
+			"fullTestPath": "ThreeHearths.AincradLook.StateAndIdempotency",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0082831010222434998,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DecisionParsingAndMemoryPresentationBoundaries",
+			"fullTestPath": "ThreeHearths.AincradResidentRuntime.DecisionParsingAndMemoryPresentationBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0081516019999980927,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Geometry",
+			"fullTestPath": "ThreeHearths.AincradTownLayout.Geometry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0081336013972759247,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableBuildings",
+			"fullTestPath": "ThreeHearths.AincradTownLayout.StableBuildings",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0082309991121292114,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ColdLoadIdentity",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.ColdLoadIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.015080701559782028,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CorruptFileRefusesReset",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.CorruptFileRefusesReset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0083467997610569,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossWorldOverwriteRejected",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.CrossWorldOverwriteRejected",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.0084024965763092041,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FutureVersionRefusesOverwrite",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.FutureVersionRefusesOverwrite",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.009778197854757309,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MigrationIgnoresResidentArrayOrder",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.MigrationIgnoresResidentArrayOrder",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.018594101071357727,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "V1ToV2Migration",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.V1ToV2Migration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.022944800555706024,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WrongSettingRejected",
+			"fullTestPath": "ThreeHearths.AincradWorldStore.WrongSettingRejected",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0359063E415BDC3731CD7EA3B4DB548F"
+			],
+			"duration": 0.014650598168373108,
+			"dateTime": "2026.09.08-22.00.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

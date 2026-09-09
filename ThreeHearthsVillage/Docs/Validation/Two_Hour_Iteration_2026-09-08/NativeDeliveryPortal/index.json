@@ -1,0 +1,22 @@
+{
+  "archive_type": "native_test_and_recovery_local_verification",
+  "as_of_utc": "2026-09-09T00:30:13Z",
+  "test_report": "NativeDeliveryPortalTests/index.json",
+  "test_process": "NativeDeliveryPortalTests_process.json",
+  "build_log": "BuildDeliveryPortal.log",
+  "recovery_process": "delivery_portal_20260909_003013_process.json",
+  "recovery_excerpt": "recovery_excerpt.json",
+  "formal_world_sha256": "85f6265f62984fd20808408986c2af636c9b5670bb73e074a453a42dfe110c5b",
+  "formal_world_unchanged": true,
+  "recovery_checks_passed": true,
+  "native_tests": {
+    "succeeded": 30,
+    "warnings": 0,
+    "failed": 0,
+    "not_run": 0
+  },
+  "original_operation": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+  "deliver_once": true,
+  "no_copyworld_full": true,
+  "current_run": "town-20260909-003204 still in progress; current totals/checkpoint untouched"
+}

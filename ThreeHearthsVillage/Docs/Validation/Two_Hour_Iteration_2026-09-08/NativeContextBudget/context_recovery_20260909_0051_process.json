@@ -1,0 +1,26 @@
+{
+  "source": "local_verification",
+  "verification_world": "D:\\Dev\\vibeGamingDemo1\\ThreeHearthsVillage\\Saved\\ThreeHearths\\AincradLevel0\\VerificationWorlds\\context_recovery_20260909_0051.json",
+  "api_enabled": false,
+  "confirmed_unsent_operation": "BE3BBA8B-42CA-7547-4A4A-B2839C838509",
+  "ledger_matching_rows": 0,
+  "formal_sha256_before": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "started_utc_epoch": 1788915103.453697,
+  "owned_pid": 66428,
+  "exit_code": 0,
+  "owned_child_stopped": true,
+  "finished_utc_epoch": 1788915140.055131,
+  "formal_sha256_after": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "checks": {
+    "formal_unchanged": true,
+    "life_unchanged": true,
+    "ids_coins_unchanged": true,
+    "pending_cleared": true,
+    "idle": true,
+    "cooldown_unchanged": true,
+    "operation_audited": true,
+    "prior_execution_retained": true,
+    "status_truthful": true
+  },
+  "passed": true
+}

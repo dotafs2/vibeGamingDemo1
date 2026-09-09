@@ -1293,7 +1293,7 @@
     },
     {
       "id": "working_table",
-      "module": "work_table",
+      "module": "carpentry_workbench",
       "position_m": [
         2.8000000000000003,
         2.1,
@@ -1320,6 +1320,16 @@
         2.62
       ],
       "yaw_degrees": 0
+    },
+    {
+      "id": "trade_sign",
+      "module": "carpentry_trade_sign",
+      "position_m": [
+        2.8000000000000003,
+        7.71,
+        2.35
+      ],
+      "yaw_degrees": 90
     }
   ],
   "initial_world_art": true

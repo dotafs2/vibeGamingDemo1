@@ -20,11 +20,17 @@ for name in ('Modules', 'Assemblies', 'Previews', 'Recipes'):
 args = sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
 parser = argparse.ArgumentParser()
 parser.add_argument('--render', action='store_true')
+parser.add_argument('--only-smithy', action='store_true', help='export only SM_Smithy, SM_Smithy_Details and its recipe')
+parser.add_argument('--only-businesses', action='store_true', help='export only the three business assemblies/details and recipes')
 opt = parser.parse_args(args)
+if opt.only_smithy and opt.only_businesses:
+    parser.error('--only-smithy and --only-businesses are mutually exclusive')
+TARGETED = opt.only_smithy or opt.only_businesses
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
 scene.unit_settings.system = 'METRIC'
 MATS = {}
+TRADE_SIGN_MODULES = {'inn_trade_sign', 'smithy_trade_sign', 'carpentry_trade_sign'}
 def linear(c):
     c /= 255
     return c/12.92 if c <= .04045 else ((c+.055)/1.055)**2.4
@@ -46,7 +52,7 @@ def material(key):
 
 class Geo:
     def __init__(self):
-        self.v=[]; self.f=[]; self.roles=[]; self.parts=[]; self.direct_faces=[]
+        self.v=[]; self.f=[]; self.roles=[]; self.parts=[]; self.direct_faces=[]; self.details_excluded_faces=set()
     def mesh(self, v, f, role):
         base=len(self.v); self.v.extend(tuple(x) for x in v)
         self.direct_faces.extend(range(len(self.f),len(self.f)+len(f)))
@@ -80,9 +86,12 @@ class Geo:
     def add(self,other,p=(0,0,0),yaw=0,key='part',module='authored'):
         r=Matrix.Rotation(math.radians(yaw),3,'Z')
         base=len(self.v)
+        face_start=len(self.f)
         self.v.extend(tuple(r@Vector(v)+Vector(p)) for v in other.v)
         self.f.extend(tuple(base+i for i in f) for f in other.f)
         self.roles.extend(other.roles)
+        if module in TRADE_SIGN_MODULES:
+            self.details_excluded_faces.update(range(face_start, len(self.f)))
         self.parts.append({'id':key,'module':module,'position_m':list(p),'yaw_degrees':yaw})
     def object(self,name):
         mesh=bpy.data.meshes.new(name)
@@ -105,11 +114,14 @@ class Geo:
         obj['source_parts']=len(self.parts)
         return obj
     def details(self):
-        result=Geo(); used=sorted({v for i in self.direct_faces for v in self.f[i]})
+        # Trade signs are separate static modules. Keep their faces out of the
+        # Details mesh even if the assembly composition changes later.
+        detail_faces=[i for i in self.direct_faces if i not in self.details_excluded_faces]
+        result=Geo(); used=sorted({v for i in detail_faces for v in self.f[i]})
         mapping={old:new for new,old in enumerate(used)}
         result.v=[self.v[i] for i in used]
-        result.f=[tuple(mapping[v] for v in self.f[i]) for i in self.direct_faces]
-        result.roles=[self.roles[i] for i in self.direct_faces]
+        result.f=[tuple(mapping[v] for v in self.f[i]) for i in detail_faces]
+        result.roles=[self.roles[i] for i in detail_faces]
         return result
 
 LIB={}
@@ -187,6 +199,57 @@ LIB['storage_shelf']=g
 g=Geo();g.box((0,0,.45),(1.7,.38,.11),'TimberLight')
 for x in (-.62,.62):g.box((x,0,.2),(.14,.3,.4),'Timber')
 LIB['guest_bench']=g
+
+def import_external_module(module_id, manifest_name):
+    """Read one authored GLB into Geo without retaining temporary Blender objects."""
+    manifest_path = OUT / manifest_name
+    forge_manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.is_file() else {}
+    expected_row = next((row for row in forge_manifest.get('assets', []) if row.get('id') == module_id), None)
+    source = OUT / expected_row['glb'] if expected_row and expected_row.get('glb') else OUT / 'Modules' / f'{module_id}.glb'
+    if not source.is_file() or not manifest_path.is_file():
+        raise FileNotFoundError(f'missing authored module source or manifest: {source} / {manifest_path}')
+    if not expected_row:
+        raise ValueError(f'{manifest_name} has no {module_id} asset')
+    before = set(bpy.data.objects)
+    result = bpy.ops.import_scene.gltf(filepath=str(source))
+    if 'FINISHED' not in result:
+        raise RuntimeError(f'failed to import authored module: {source}')
+    imported = [obj for obj in bpy.data.objects if obj not in before]
+    meshes = [obj for obj in imported if obj.type == 'MESH' and obj.data and len(obj.data.polygons)]
+    if not meshes:
+        raise ValueError(f'{module_id}.glb imported without mesh objects')
+    role_names = sorted(STYLE['palette_srgb'], key=len, reverse=True)
+    geometry = Geo()
+    for obj in meshes:
+        for poly in obj.data.polygons:
+            material_name = ''
+            if 0 <= poly.material_index < len(obj.data.materials) and obj.data.materials[poly.material_index]:
+                material_name = obj.data.materials[poly.material_index].name
+            role = next((key for key in role_names if f'AT_{key}' in material_name or material_name.endswith(key)), None)
+            if role is None:
+                raise ValueError(f'forge mesh has no town material semantic: {obj.name}:{material_name}')
+            vertices = [tuple(obj.matrix_world @ obj.data.vertices[index].co) for index in poly.vertices]
+            if len(vertices) >= 3:
+                geometry.mesh(vertices, [tuple(range(len(vertices)))], role)
+    if not geometry.v:
+        raise ValueError(f'{module_id}.glb produced no usable geometry')
+    measured = [max(vertex[i] for vertex in geometry.v) - min(vertex[i] for vertex in geometry.v) for i in range(3)]
+    expected = [b - a for a, b in zip(expected_row['bounds_min_m'], expected_row['bounds_max_m'])]
+    if not all(abs(actual - want) < max(0.02, want * 0.01) for actual, want in zip(measured, expected)):
+        raise ValueError(f'{module_id} bounds mismatch: expected {expected}, measured {measured}')
+    for obj in imported:
+        mesh = obj.data if obj.type == 'MESH' else None
+        bpy.data.objects.remove(obj, do_unlink=True)
+        if mesh and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
+    return geometry
+
+LIB['smithy_cold_forge'] = import_external_module('smithy_cold_forge', 'forge_kit_manifest.json')
+LIB['smithy_workbench'] = import_external_module('smithy_workbench', 'workshop_kit_manifest.json')
+if not opt.only_smithy:
+    LIB['carpentry_workbench'] = import_external_module('carpentry_workbench', 'workshop_kit_manifest.json')
+for _kind in ('inn', 'smithy', 'carpentry'):
+    LIB[_kind + '_trade_sign'] = import_external_module(_kind + '_trade_sign', 'trade_sign_manifest.json')
 g=Geo();g.cylinder((0,0,0),.11,.26,'LampWarm',8)
 for z in (-.17,.17):g.cylinder((0,0,z),.17,.06,'Iron',8)
 for x in (-.115,.115):
@@ -234,8 +297,10 @@ def building(w,d,floors,kind):
     g.box((-.8,d/2-1.22,1.13),(.08,.08,.08),'Brass')
     g.box((w*.32,-d*.25,floors*3.2+1.8),(.65,.75,3.6),'Stone')
     for z in (floors*3.2+3.4,floors*3.2+3.65):g.box((w*.32,-d*.25,z),(.85,.95,.18),'StoneLight')
-    # Furniture sits out of the straight entrance/work route.
-    g.add(LIB['work_table'],(w*.28,d*.15,0),key='working_table',module='work_table')
+    # Furniture sits out of the straight entrance/work route. Existing authored
+    # workshop fixtures remain the installed module identity for their shops.
+    working_table = 'smithy_workbench' if kind == 'smithy' else 'carpentry_workbench' if kind == 'carpentry' else 'work_table'
+    g.add(LIB[working_table],(w*.28,d*.15,0),key='working_table',module=working_table)
     if kind=='inn':
         g.box((-w*.28,d*.15,.57),(2.8,.65,1.14),'Timber')
         for x in (-w*.28,w*.28):g.add(LIB['work_table'],(x,-d*.28,0),key=f'guest_table_{x}',module='work_table')
@@ -248,19 +313,28 @@ def building(w,d,floors,kind):
         for x in range(-int(w*.3/.5),int(w*.3/.5)+1):g.box((x*.5,d/2+1.34,3.65),(.065,.065,.85),'TimberDark')
         g.box((0,d/2+1.34,4.1),(w*.65,.12,.12),'Timber')
     elif kind=='smithy':
-        g.box((-w*.28,-d*.25,.52),(1.6,1.5,1.04),'Stone')
-        g.box((-w*.28,-d*.25,1.15),(1.1,1.05,.22),'Iron')
+        g.add(LIB['smithy_cold_forge'],(-w*.28,-d*.25,0),key='cold_forge',module='smithy_cold_forge')
     elif kind=='carpentry':
         for i in range(5):g.box((-w*.3,-d*.15+i*.25,.2),(.24,3.2,.22),'TimberLight')
     if kind in ('inn','smithy','carpentry'):
         for side in (-1,1):g.add(LIB['lantern_hanging'],(side*w*.25,0,2.62),key=f'ceiling_lantern_{side}',module='lantern_hanging')
-    # Hanging shop sign: support + plate. Semantic shop name remains metadata.
-    g.beam((w*.28,d/2,2.8),(w*.28,d/2+1.2,2.8),.07,'Iron')
-    g.box((w*.28,d/2+.95,2.35),(.08,.8,.65),'TimberDark')
-    g.box((w*.28+.047,d/2+.95,2.35),(.014,.63,.45),'Brass')
+    # Business signs are authored local-XZ modules. Their wall bracket is at
+    # local X=-.71m; +90deg around Z maps it to the front wall at y=+d/2.
+    if kind in ('inn', 'smithy', 'carpentry'):
+        g.add(LIB[kind + '_trade_sign'], (w*.43 if kind == 'inn' else w*.28, d/2+.71, 2.35), 90,
+              key='trade_sign', module=kind + '_trade_sign')
+    else:
+        # Ordinary houses keep the former blank support/plate treatment.
+        g.beam((w*.28,d/2,2.8),(w*.28,d/2+1.2,2.8),.07,'Iron')
+        g.box((w*.28,d/2+.95,2.35),(.08,.8,.65),'TimberDark')
+        g.box((w*.28+.047,d/2+.95,2.35),(.014,.63,.45),'Brass')
     return g
 
 ASSETS=[]
+TARGET_SMITHY = ('SM_Smithy', 'SM_Smithy_Details')
+TARGET_BUSINESSES = (
+    'SM_Inn', 'SM_Inn_Details', 'SM_Smithy', 'SM_Smithy_Details',
+    'SM_Carpentry', 'SM_Carpentry_Details')
 def export(name,g,folder):
     obj=g.object(name)
     bpy.ops.object.select_all(action='DESELECT');obj.select_set(True);bpy.context.view_layer.objects.active=obj
@@ -273,38 +347,63 @@ def export(name,g,folder):
     obj.hide_set(True);obj.hide_render=True
     return obj
 
-for name,g in LIB.items():export(name,g,'Modules')
+if not TARGETED:
+    for name,g in LIB.items():
+        if name not in ('smithy_cold_forge', 'smithy_workbench', 'carpentry_workbench',
+                        'inn_trade_sign', 'smithy_trade_sign', 'carpentry_trade_sign'):
+            export(name,g,'Modules')
 ASSEMBLIES={}
 for name,w,d,f,kind in [('SM_Inn',12,16,2,'inn'),('SM_Smithy',10,14,2,'smithy'),('SM_Carpentry',10,14,2,'carpentry'),('SM_TownHouse',8,10,2,'house'),('SM_TownHouse3',8,10,3,'house')]:
+    if opt.only_smithy and name != 'SM_Smithy':
+        continue
+    if opt.only_businesses and name not in ('SM_Inn', 'SM_Smithy', 'SM_Carpentry'):
+        continue
     geometry=building(w,d,f,kind)
     ASSEMBLIES[name]=export(name,geometry,'Assemblies')
     export(name+'_Details',geometry.details(),'Assemblies')
 
-for name in ('SM_StreetTree','SM_CourtyardTree','SM_Shrub','SM_FlowerBed'):
-    g=Geo()
-    if 'Tree' in name:
-        tall=1 if name=='SM_StreetTree' else .72
-        g.cylinder((0,0,2*tall),.16*tall,4*tall,'Timber',10)
-        for i in range(7):
-            a=i*2.399;z=(3.4+(i%3)*.65)*tall
-            p=(math.cos(a)*1.15*tall,math.sin(a)*1.15*tall,z)
-            g.beam((0,0,z-.9),p,.1*tall)
-            g.ellipsoid(p,(1.25*tall,1.15*tall,.95*tall),'LeafLight' if i%3==0 else 'Leaf',i)
-    elif name=='SM_Shrub':
-        for i in range(5):g.ellipsoid(((i-2)*.3,.1*(i%2),.45),(.42,.4,.4),'LeafLight' if i%2 else 'Leaf',i)
-    else:
-        g.box((0,0,.09),(2,.8,.18),'Timber')
-        g.box((0,0,.18),(1.88,.68,.1),'Soil')
-        for i in range(13):
-            x=(i%7-3)*.25;y=(-.18 if i<7 else .18);z=.4+(i%3)*.07
-            g.beam((x,y,.2),(x,y,z),.025,'Leaf')
-            g.ellipsoid((x,y,z),(.09,.09,.045),'FlowerRose' if i%3==0 else 'Flower',i)
-    export(name,g,'Modules')
+if not TARGETED:
+    for name in ('SM_StreetTree','SM_CourtyardTree','SM_Shrub','SM_FlowerBed'):
+        g=Geo()
+        if 'Tree' in name:
+            tall=1 if name=='SM_StreetTree' else .72
+            g.cylinder((0,0,2*tall),.16*tall,4*tall,'Timber',10)
+            for i in range(7):
+                a=i*2.399;z=(3.4+(i%3)*.65)*tall
+                p=(math.cos(a)*1.15*tall,math.sin(a)*1.15*tall,z)
+                g.beam((0,0,z-.9),p,.1*tall)
+                g.ellipsoid(p,(1.25*tall,1.15*tall,.95*tall),'LeafLight' if i%3==0 else 'Leaf',i)
+        elif name=='SM_Shrub':
+            for i in range(5):g.ellipsoid(((i-2)*.3,.1*(i%2),.45),(.42,.4,.4),'LeafLight' if i%2 else 'Leaf',i)
+        else:
+            g.box((0,0,.09),(2,.8,.18),'Timber')
+            g.box((0,0,.18),(1.88,.68,.1),'Soil')
+            for i in range(13):
+                x=(i%7-3)*.25;y=(-.18 if i<7 else .18);z=.4+(i%3)*.07
+                g.beam((x,y,.2),(x,y,z),.025,'Leaf')
+                g.ellipsoid((x,y,z),(.09,.09,.045),'FlowerRose' if i%3==0 else 'Flower',i)
+        export(name,g,'Modules')
 
-(OUT/'town_kit_manifest.json').write_text(json.dumps({'style_id':STYLE['id'],'status':'exported','source_axis':STYLE['source_axis'],'assets':ASSETS},ensure_ascii=False,indent=2),encoding='utf-8')
-bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'AincradTownKit.blend'))
+manifest_path=OUT/'town_kit_manifest.json'
+if opt.only_smithy:
+    if not manifest_path.is_file():
+        raise FileNotFoundError(f'cannot merge targeted smithy rows without {manifest_path}')
+    previous=json.loads(manifest_path.read_text(encoding='utf-8'))
+    preserved=[row for row in previous.get('assets',[]) if row.get('id') not in TARGET_SMITHY]
+    merged=preserved+[row for row in ASSETS if row.get('id') in TARGET_SMITHY]
+    manifest_path.write_text(json.dumps({**previous,'status':'exported','assets':merged},ensure_ascii=False,indent=2),encoding='utf-8')
+elif opt.only_businesses:
+    if not manifest_path.is_file():
+        raise FileNotFoundError(f'cannot merge targeted business rows without {manifest_path}')
+    previous=json.loads(manifest_path.read_text(encoding='utf-8'))
+    preserved=[row for row in previous.get('assets',[]) if row.get('id') not in TARGET_BUSINESSES]
+    merged=preserved+[row for row in ASSETS if row.get('id') in TARGET_BUSINESSES]
+    manifest_path.write_text(json.dumps({**previous,'status':'exported','assets':merged},ensure_ascii=False,indent=2),encoding='utf-8')
+else:
+    manifest_path.write_text(json.dumps({'style_id':STYLE['id'],'status':'exported','source_axis':STYLE['source_axis'],'assets':ASSETS},ensure_ascii=False,indent=2),encoding='utf-8')
+bpy.ops.wm.save_as_mainfile(filepath=str(OUT/('AincradSmithy.blend' if opt.only_smithy else 'AincradBusinesses.blend' if opt.only_businesses else 'AincradTownKit.blend')))
 if opt.render:
-    obj=ASSEMBLIES['SM_Inn'];obj.hide_set(False);obj.hide_render=False
+    obj=ASSEMBLIES['SM_Smithy' if opt.only_smithy else 'SM_Inn'];obj.hide_set(False);obj.hide_render=False
     g=Geo();g.box((0,0,-.22),(55,55,.2),'StoneLight');g.object('Preview ground')
     world=bpy.data.worlds.new('Anime daylight');world.use_nodes=True;world.node_tree.nodes['Background'].inputs['Color'].default_value=(.65,.77,.9,1);world.node_tree.nodes['Background'].inputs['Strength'].default_value=.5;scene.world=world
     for name,loc,power,size in [('Key',(-9,9,20),2400,8),('Fill',(10,6,11),1800,10)]:
@@ -314,6 +413,6 @@ if opt.render:
     camera.location=(22,30,15);camera.rotation_euler=(Vector((0,0,4))-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.type='ORTHO';camera.data.ortho_scale=27
     scene.render.engine='CYCLES';scene.cycles.samples=24;scene.cycles.use_denoising=True;scene.render.threads_mode='FIXED';scene.render.threads=4
     scene.render.resolution_x=1400;scene.render.resolution_y=1100;scene.render.resolution_percentage=100
-    scene.view_settings.view_transform='AgX';scene.render.filepath=str(OUT/'Previews/inn_source.png')
+    scene.view_settings.view_transform='AgX';scene.render.filepath=str(OUT/('Previews/smithy_source.png' if opt.only_smithy else 'Previews/businesses_source.png' if opt.only_businesses else 'Previews/inn_source.png'))
     bpy.ops.render.render(write_still=True)
 print('AINCRAD_TOWN_KIT_EXPORTED',len(ASSETS),flush=True)

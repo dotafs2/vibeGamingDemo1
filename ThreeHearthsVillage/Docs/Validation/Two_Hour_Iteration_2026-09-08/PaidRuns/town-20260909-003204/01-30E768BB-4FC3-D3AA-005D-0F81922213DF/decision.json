@@ -1,0 +1,7 @@
+{
+  "action": "look_at_workbench",
+  "visible": "当前面对木工作台，台上有铁砧、工具和钳子。白色墙壁上有两扇蓝色窗框，光线从右上方照入。",
+  "uncertain": "艾琳尚未将柴斧aincrad_axe_erin和木料送到；合同状态为accepted，但物品 custody 未转移，无法开始 repair。",
+  "goal": "等待艾琳送达柴斧与木料，以便执行 repair_contract_18_0。",
+  "need": "需要艾琳交付物品后才能开始修刃工作。"
+}

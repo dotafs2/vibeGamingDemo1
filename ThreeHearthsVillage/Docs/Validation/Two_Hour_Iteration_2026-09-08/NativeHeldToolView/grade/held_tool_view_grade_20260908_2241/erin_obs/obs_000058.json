@@ -1,0 +1,43 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "observation_id": "obs_000058",
+  "target_id": "sao_inn_01",
+  "scene_revision": "town_layout=1;art=aincrad_anime_town_v1@4",
+  "image_file": "erin_obs/obs_000058.png",
+  "image_sha1": "62DD2B6BC6F60253FA9C4C46AA3B1A9A6484D106",
+  "position_cm": [
+    -1290.5684814453125,
+    467000,
+    92
+  ],
+  "eye_cm": [
+    -1290.5684814453125,
+    467000,
+    160
+  ],
+  "facing": [
+    0.6003319673546832,
+    0.799750916831019,
+    0
+  ],
+  "camera_rotation": [
+    0.19757585223189472,
+    0.8051521372588041,
+    -0.5591903240243169
+  ],
+  "horizontal_fov": 85,
+  "sequence": 58,
+  "utc": 1788907310,
+  "manual_bootstrap": false,
+  "source": "native",
+  "view": "held_tool_attention",
+  "attention_target_kind": "held_tool",
+  "attention_target_item_id": "aincrad_axe_erin",
+  "attention_target_actor_cm": [
+    -1271.1356132323037,
+    467079.1919417177,
+    95
+  ],
+  "archived_image_sha256": "c60c4bf62008da46570b83a83ffee55dc5be386c5942f0b2372275ac4109866d"
+}

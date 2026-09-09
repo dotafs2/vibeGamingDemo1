@@ -1,0 +1,124 @@
+{
+  "run": {
+    "run": "town-20260908-204356",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1800,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 47140,
+    "gateway_pid": 83964,
+    "started_utc_epoch": 1788900236.8924017,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 870,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 19.56559,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 75.43441,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.290502
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 876,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 19.7759768,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 75.2240232,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.5008888
+    },
+    "new_cost_cny": 0.2103868,
+    "new_settled_calls": 6,
+    "finished_utc_epoch": 1788902050.5606174
+  },
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "operation": "370A6E25-44CD-1F2F-EBB3-CC8CADB93A1A",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=233.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "01-370A6E25-44CD-1F2F-EBB3-CC8CADB93A1A"
+    },
+    {
+      "resident": "拓真",
+      "operation": "B14876F8-45AB-6225-D2E4-3881E0D93A77",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要继续观察，找到记忆中的工作台并确认是否有待修物品。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=56.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "02-B14876F8-45AB-6225-D2E4-3881E0D93A77"
+    },
+    {
+      "resident": "柏木",
+      "operation": "CC795C88-4ACD-4E28-8D3F-AC8B93CD59C9",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先确认自己的工作环境再决定下一步。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=236.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "03-CC795C88-4ACD-4E28-8D3F-AC8B93CD59C9"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "6579C844-4389-787A-8D39-B1805E7A7B06",
+      "reason": "completed_observation_followup",
+      "action": "wait",
+      "option_id": null,
+      "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但需待明确需求或旅人带来消息后再行动。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=293.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "04-6579C844-4389-787A-8D39-B1805E7A7B06"
+    },
+    {
+      "resident": "拓真",
+      "operation": "EAA67A5B-4955-61D2-F942-3F90170CDA82",
+      "reason": "completed_observation_followup",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要继续转向观察，找到记忆中的工作台并确认是否有待修物品。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=116.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "05-EAA67A5B-4955-61D2-F942-3F90170CDA82"
+    },
+    {
+      "resident": "柏木",
+      "operation": "A082D3A2-4E43-8B42-468A-3499DB13C528",
+      "reason": "completed_observation_followup",
+      "action": "wait",
+      "option_id": null,
+      "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先静一静再决定下一步要不要主动找她谈谈，还是等她自己想清楚。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=296.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "06-A082D3A2-4E43-8B42-468A-3499DB13C528"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state."
+}

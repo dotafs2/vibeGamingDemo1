@@ -1,0 +1,365 @@
+{
+  "source_commit": "46a4e5714b60c72eec27205448547688f78e28e5",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_count": 13,
+  "paid_run_before_fix": {
+    "run": "town-20260908-141201",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 240,
+    "api": true,
+    "life": true,
+    "max_decisions": 12,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "manual_route_verification": false,
+    "ue_pid": 83680,
+    "gateway_pid": 35592,
+    "started_utc_epoch": 1788876721.5661676,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 799,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.4160371,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.5839629,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.1409491
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 809,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.6304463,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.3695537,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.3553583
+    },
+    "new_cost_cny": 0.2144092,
+    "new_settled_calls": 10,
+    "finished_utc_epoch": 1788876976.6738813
+  },
+  "decisions": [
+    {
+      "request_id": "4F83422C-4341-4DB6-F6C8-A5BCF02CEEEA",
+      "resident": "艾琳",
+      "action": "life",
+      "option_id": "repair_handle:aincrad_axe_erin:425311EB-4D09-0782-AFE2-27A9631F9C0A:5",
+      "utterance": "柏木，我旅店那把柴斧柄有些松了，能麻烦你帮忙修一下吗？我出5 Col。",
+      "charge_cny": 0.0201715,
+      "evidence": "Kimi/01-innkeeper"
+    },
+    {
+      "request_id": "440A4F6A-4613-EF92-A403-8881F96C0469",
+      "resident": "拓真",
+      "action": "observe",
+      "option_id": null,
+      "utterance": "先到工作台确认今天的状况。",
+      "charge_cny": 0.0134566,
+      "evidence": "Kimi/02-blacksmith"
+    },
+    {
+      "request_id": "1B1B6A3A-418E-EE9E-0710-06BAD6576F6D",
+      "resident": "柏木",
+      "action": "walk_to_work",
+      "option_id": null,
+      "utterance": "先回工坊看看，今天得把结构再理一理。",
+      "charge_cny": 0.0145326,
+      "evidence": "Kimi/03-carpenter"
+    },
+    {
+      "request_id": "92A0E10F-4F37-1E5B-E3EE-37A6333A6243",
+      "resident": "艾琳",
+      "action": "life",
+      "option_id": "cancel:repair_contract_4_0",
+      "utterance": "柏木，那把斧子我暂时不修了，5 Col的委托取消吧。",
+      "charge_cny": 0.0188126,
+      "evidence": "Kimi/04-innkeeper"
+    },
+    {
+      "request_id": "23A19EC8-407F-1163-2572-F5AF81E91EA4",
+      "resident": "艾琳",
+      "action": "life",
+      "option_id": "repair_handle:aincrad_axe_erin:425311EB-4D09-0782-AFE2-27A9631F9C0A:5",
+      "utterance": "柏木，之前那把斧子我还是想修。柄松了不好使，5 Col的委托我重新发给你，方便的话麻烦接一下。",
+      "charge_cny": 0.0253056,
+      "evidence": "Kimi/05-innkeeper"
+    },
+    {
+      "request_id": "2FE7E872-4EFE-249A-4A0B-81B411896D3B",
+      "resident": "柏木",
+      "action": "observe",
+      "option_id": null,
+      "utterance": "这地方够大，得好好规划一下结构。",
+      "charge_cny": 0.021162,
+      "evidence": "Kimi/06-carpenter"
+    },
+    {
+      "request_id": "B85E5D63-4731-8BB7-C98A-3E916A360497",
+      "resident": "艾琳",
+      "action": "life",
+      "option_id": "cancel:repair_contract_6_0",
+      "utterance": "柏木，斧子的事我再想想，这委托先取消吧。",
+      "charge_cny": 0.0229947,
+      "evidence": "Kimi/07-innkeeper"
+    },
+    {
+      "request_id": "C1869C6A-4287-9C0A-C0D3-FC9465A1552B",
+      "resident": "柏木",
+      "action": "life",
+      "option_id": "accept:repair_contract_6_0",
+      "utterance": "行，我接。你把斧子带过来吧，我看看柄松成什么样。",
+      "charge_cny": 0.0207384,
+      "evidence": "Kimi/08-carpenter"
+    },
+    {
+      "request_id": "D107DA08-4557-B9B1-430A-D09A7180A594",
+      "resident": "艾琳",
+      "action": "wait",
+      "option_id": null,
+      "utterance": "",
+      "charge_cny": 0.0307036,
+      "evidence": "Kimi/09-innkeeper"
+    },
+    {
+      "request_id": "9C7237B4-43F1-1824-0146-25B188F61F54",
+      "resident": "柏木",
+      "action": "observe",
+      "option_id": null,
+      "utterance": "",
+      "charge_cny": 0.0265316,
+      "evidence": "Kimi/10-carpenter"
+    }
+  ],
+  "unchanged_coins": true,
+  "unchanged_items": true,
+  "unchanged_materials_and_reserves": true,
+  "prior_events_preserved": true,
+  "life_seq_before": 3,
+  "life_seq_after": 7,
+  "real_closed_contracts": [
+    {
+      "id": "repair_contract_4_0",
+      "part": "handle",
+      "item_id": "aincrad_axe_erin",
+      "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "worker_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "price_col": 5,
+      "reserved_col": 0,
+      "status": "cancelled"
+    },
+    {
+      "id": "repair_contract_6_0",
+      "part": "handle",
+      "item_id": "aincrad_axe_erin",
+      "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "worker_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "price_col": 5,
+      "reserved_col": 0,
+      "status": "cancelled"
+    }
+  ],
+  "repairs_completed": 0,
+  "trigger_fix_verification": "19 native regressions passed; API-enabled cold reload 0 calls; naturally due follow-up 3 paid decisions with no new proposal, so live post-fix handoff remains unproven",
+  "cold_reload_after_fix": {
+    "run": "town-20260908-143535",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 60,
+    "api": true,
+    "life": true,
+    "max_decisions": 3,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "manual_route_verification": false,
+    "ue_pid": 99620,
+    "gateway_pid": 61196,
+    "started_utc_epoch": 1788878135.0906274,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 809,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.6304463,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.3695537,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.3553583
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 809,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.6304463,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.3695537,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.3553583
+    },
+    "new_cost_cny": 0.0,
+    "new_settled_calls": 0,
+    "finished_utc_epoch": 1788878209.7878485
+  },
+  "cold_reload_preserved_life_and_cooldowns": true,
+  "native_tests": {
+    "succeeded": 19,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "build": "BuildFinal.log succeeded; final native HUD and capsule/handoff margin checks compiled",
+  "player_review": {
+    "run": "town-20260908-143856",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 35,
+    "api": false,
+    "life": true,
+    "max_decisions": 0,
+    "budget_profile": "city-validation",
+    "external_liability_cny": 17.3692551,
+    "manual_route_verification": false,
+    "ue_pid": 73632,
+    "gateway_pid": null,
+    "started_utc_epoch": 1788878336.2894194,
+    "ue_exit": 0,
+    "finished_utc_epoch": 1788878384.9715226
+  },
+  "walking_check": {
+    "source": "local player walking movement including step and ground handling; not NPC decisions or VR validation",
+    "door_end_cm": "X=1150.000 Y=465000.000 Z=90.000",
+    "wall_blocked": true,
+    "door_passable": true,
+    "eye_height_cm": 160,
+    "passed": true
+  },
+  "player_hud_review": {
+    "native_viewport": true,
+    "image_sha256": "3af42acf99a0c4abf6682e38cb71ec4944f1dd0e0fb529f1c9997c323f42811e",
+    "text_reviewed": true,
+    "status_rows": 5,
+    "private_balances_or_thoughts_shown": false
+  },
+  "handoff_geometry": {
+    "meeting_offset_cm": 150,
+    "terminal_tolerance_cm": 5,
+    "legacy_station_tolerance_cm": 60,
+    "handoff_limit_cm": 220,
+    "capsule_diameter_cm": 84,
+    "max_pair_distance_cm": 215,
+    "min_pair_distance_cm": 85,
+    "compile_time_margin_assertions": true,
+    "paid_handoff": "not yet observed"
+  },
+  "natural_followup_decisions": [
+    {
+      "request_id": "E99CFFD0-4250-002F-9B2E-B8B09216AA07",
+      "resident": "拓真",
+      "action": "observe",
+      "goal": "到达工作台，检视是否有镇上居民送来的待修之剑，用我手边的1单位普通铁料开始修缮工作。",
+      "charge_cny": 0.0127772,
+      "evidence": "FollowupKimi/01-blacksmith"
+    },
+    {
+      "request_id": "DDEC53BD-4571-DD58-A328-319E3C8984AE",
+      "resident": "艾琳",
+      "action": "wait",
+      "goal": "在岗位上稳定等待，观察是否有旅人前来，同时让自己关于修斧与木料扩充的决策沉淀下来，避免再次反复。",
+      "charge_cny": 0.0323585,
+      "evidence": "FollowupKimi/02-innkeeper"
+    },
+    {
+      "request_id": "27A5546C-4340-9B11-33A3-04A3F99DA9A2",
+      "resident": "柏木",
+      "action": "observe",
+      "goal": "把住处修得结实，让人敢于留下。",
+      "charge_cny": 0.0272726,
+      "evidence": "FollowupKimi/03-carpenter"
+    }
+  ],
+  "natural_followup_cost_cny": 0.0724083,
+  "this_turn_paid_calls": 13,
+  "this_turn_paid_cost_cny": 0.2868175,
+  "natural_followup_run": {
+    "run": "town-20260908-144145",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 300,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "manual_route_verification": false,
+    "ue_pid": 60996,
+    "gateway_pid": 99032,
+    "started_utc_epoch": 1788878505.0449147,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 809,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.6304463,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.3695537,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.3553583
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 812,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.7028546,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.2971454,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.4277666
+    },
+    "new_cost_cny": 0.0724083,
+    "new_settled_calls": 3,
+    "finished_utc_epoch": 1788878819.964455
+  },
+  "followup_preserved_life_state": true,
+  "final_pending_operations": 0,
+  "final_runtime_source_sha256": "18fb5984d2d9a27898dec77e25e15fc6bb5f8d4d2dc0a69527e1ecf814e8ee4e"
+}

@@ -1,0 +1,23 @@
+{
+  "archive_type": "native_test_and_build_metadata",
+  "as_of_utc": "2026-09-09T00:00:00Z",
+  "tests_report": "NativeNeedQuoteTests/index.json",
+  "process_metadata": "NativeNeedQuoteTests_process.json",
+  "build_log": "BuildNeedQuote.log",
+  "formal_world_sha256": "b47937292e113f131bb466720b73daad87eda9f2f9142a0d3eb575fb4bd41f82",
+  "formal_world_unchanged": true,
+  "owned_pid": 11616,
+  "exit_code": 0,
+  "tests": {
+    "succeeded": 30,
+    "warnings": 0,
+    "failed": 0,
+    "not_run": 0
+  },
+  "extended_existing_tests": [
+    "ThreeHearths.AincradLife.RepairNeedQuestionSingleReply",
+    "ThreeHearths.AincradResidentRuntime.DecisionParsingAndMemoryPresentationBoundaries"
+  ],
+  "no_new_contract_or_payment_claim": true,
+  "note": "NativeNeedQuote adds quote_repair_need:<request>:2|5|8 as an optional non-contract path; this archive is native validation, not a claim that the paid run selected a quote."
+}

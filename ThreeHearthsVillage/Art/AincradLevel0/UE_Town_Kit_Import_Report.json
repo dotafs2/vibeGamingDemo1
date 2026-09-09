@@ -173,143 +173,6 @@
       ]
     },
     {
-      "id": "SM_Inn",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Inn/SM_Inn.SM_Inn",
-      "dimensions_cm": [
-        1306.0,
-        1798.5000610351562,
-        1126.619873046875
-      ],
-      "source_sha256": "e0d5a8326334cf665ebab502753e2d75d806db51fc99f49d55a6a5369e1a708f",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x0000028515CF3800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000028515CF0800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000285911CE000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000028515CF0000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x0000028515CF6000) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
-      "id": "SM_Inn_Details",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Inn_Details/SM_Inn_Details.SM_Inn_Details",
-      "dimensions_cm": [
-        1306.0,
-        1798.5000610351562,
-        1106.619873046875
-      ],
-      "source_sha256": "c214106dc826f0bf17ec0f1144a6105468d33e3414376d5abf509d466f51d0c1",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000028515CF0000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000028515CF0800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
-      "id": "SM_Smithy",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Smithy/SM_Smithy.SM_Smithy",
-      "dimensions_cm": [
-        1106.0,
-        1593.5,
-        1053.9656982421875
-      ],
-      "source_sha256": "29dbf1d4db7991b6348c5488c189be4d31bb9102998ea58efe6e6935cf81d317",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x0000028515CF3800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000028515CF0800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000285911CE000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000028515CF0000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x0000028515CF6000) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
-      "id": "SM_Smithy_Details",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Smithy_Details/SM_Smithy_Details.SM_Smithy_Details",
-      "dimensions_cm": [
-        1106.0,
-        1593.5,
-        1033.9656982421875
-      ],
-      "source_sha256": "e0af1cd63e7b1c3eafea5d422fc3b1064a4f1f11ab377082ffaabdd1adc92514",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000028515CF0000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000028515CF0800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
-      "id": "SM_Carpentry",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Carpentry/SM_Carpentry.SM_Carpentry",
-      "dimensions_cm": [
-        1106.0,
-        1593.5,
-        1053.9656982421875
-      ],
-      "source_sha256": "106fd69172618cb4cb0b938fb00bde4788540bc330bf6b2d7c873c17cd72053c",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x0000028515CF3800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000028515CF0800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000285911CE000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight' (0x0000028515CF1000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta' (0x0000028515CF1800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x0000028515CF6000) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
-      "id": "SM_Carpentry_Details",
-      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Carpentry_Details/SM_Carpentry_Details.SM_Carpentry_Details",
-      "dimensions_cm": [
-        1106.0,
-        1593.5,
-        1033.9656982421875
-      ],
-      "source_sha256": "de76f56b5b5ca89cc647420c59ada1b3d7e2babaf1988ec61a7ffde9ba6045ea",
-      "materials": [
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000285911CF800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000285911CD000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight' (0x0000028515CF1000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta' (0x0000028515CF1800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000285911CC000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000285911CD800) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000028515CF2000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000285911CF000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000285911CE000) Class 'MaterialInstanceConstant'>",
-        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x0000028515CF2800) Class 'MaterialInstanceConstant'>"
-      ]
-    },
-    {
       "id": "SM_TownHouse",
       "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_TownHouse/SM_TownHouse.SM_TownHouse",
       "dimensions_cm": [
@@ -456,6 +319,142 @@
         "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Leaf.MI_Town_Leaf' (0x00000223E6A00000) Class 'MaterialInstanceConstant'>",
         "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_FlowerRose.MI_Town_FlowerRose' (0x00000223E6A02800) Class 'MaterialInstanceConstant'>",
         "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Flower.MI_Town_Flower' (0x00000223E6A01000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Inn",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Inn/SM_Inn.SM_Inn",
+      "dimensions_cm": [
+        1306.0,
+        1798.5000610351562,
+        1126.619873046875
+      ],
+      "source_sha256": "1ca19136346a91de143056f16c89589ee31bb2687e06860d8fe68d22c3d150e4",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000289A2843000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x00000289A284A000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000289A2845000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000289A2846800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x00000289A2847000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000289A2846000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000289A2844800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000289A2845800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x00000289A2847800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x00000289A2849800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x00000289A2849000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x00000289A284E000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Inn_Details",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Inn_Details/SM_Inn_Details.SM_Inn_Details",
+      "dimensions_cm": [
+        1306.0,
+        1798.5000610351562,
+        1106.619873046875
+      ],
+      "source_sha256": "ae443b8fbe44eed5671486b65bc8393e83fe9c79947f0a37c37e503053a4583c",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x0000026C47CBE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x0000026C13D80800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x0000026C13D82000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000026C13D83800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000026C13D83000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x0000026C13D80000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000026C13D85800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x0000026C13D82800) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Smithy",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Smithy/SM_Smithy.SM_Smithy",
+      "dimensions_cm": [
+        1106.0,
+        1582.5000610351562,
+        1053.9656982421875
+      ],
+      "source_sha256": "2b09525234faba84dfed974ef11c0bf035376035f3d54db36e6128251a4ee4e2",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000289A2843000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x00000289A284A000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000289A2845000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000289A2846800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x00000289A2847000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000289A2846000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000289A2844800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000289A2845800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x00000289A2847800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x00000289A2849800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x00000289A2849000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x00000289A284E000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight' (0x00000289A2848800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta' (0x00000289A2848000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Smithy_Details",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Smithy_Details/SM_Smithy_Details.SM_Smithy_Details",
+      "dimensions_cm": [
+        1106.0,
+        1517.0001220703125,
+        1033.9656982421875
+      ],
+      "source_sha256": "804b20ded6226da8011cd7ddb76962425554e276a65a990f4ad7289f206a6fa7",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x0000026C13D82000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x0000026C13D80800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_SlateLight.MI_Town_SlateLight' (0x0000026C13D83800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x0000026C13D83000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x0000026C47CBE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x0000026C13D80000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000026C13D85800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x0000026C13D82800) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Carpentry",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Carpentry/SM_Carpentry.SM_Carpentry",
+      "dimensions_cm": [
+        1106.0,
+        1582.5000610351562,
+        1053.9656982421875
+      ],
+      "source_sha256": "e13fc00d89a449f63b64bf8c04f567052881d5b52bdbe8a7653935d5efe5d88f",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x00000289A2843000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Glass.MI_Town_Glass' (0x00000289A284A000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x00000289A2845000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x00000289A2846800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Slate.MI_Town_Slate' (0x00000289A2847000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x00000289A2846000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x00000289A2844800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x00000289A2845800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta' (0x00000289A2848000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight' (0x00000289A2848800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x00000289A2849800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x00000289A2849000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_LampWarm.MI_Town_LampWarm' (0x00000289A284E000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "SM_Carpentry_Details",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/SM_Carpentry_Details/SM_Carpentry_Details.SM_Carpentry_Details",
+      "dimensions_cm": [
+        1106.0,
+        1517.0001220703125,
+        1033.9656982421875
+      ],
+      "source_sha256": "5051e056bfbc9553997a81657bd05615847e7419a8556696dfdd59c01474f926",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone' (0x0000026C13D82000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x0000026C13D80800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta' (0x0000026C13D84000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight' (0x0000026C13D84800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster' (0x0000026C47CBE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x0000026C13D80000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x0000026C13D85800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x0000026C13D82800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x0000026C13D81800) Class 'MaterialInstanceConstant'>"
       ]
     }
   ],

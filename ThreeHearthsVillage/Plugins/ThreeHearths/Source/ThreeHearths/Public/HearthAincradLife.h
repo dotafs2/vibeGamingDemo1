@@ -23,6 +23,9 @@ namespace HearthAincradLife
     /** Returns only the resident's own assets, skills, contracts and directed context. */
     THREEHEARTHS_API TSharedRef<FJsonObject> PersonalContext(const TSharedRef<FJsonObject>& World, const FString& ResidentId);
 
+    /** Returns whether an unread inbox event warrants one resident decision. Read-only. */
+    THREEHEARTHS_API bool HasDecisionEvent(const TSharedRef<FJsonObject>& World, const FString& ResidentId, double LastDispatchedSeq);
+
     /** Applies one already-runtime-validated life operation transactionally. */
     THREEHEARTHS_API bool Apply(const TSharedRef<FJsonObject>& World, const FString& ResidentId, const FString& OptionId, const FString& OperationId, const FString& Utterance, FString& Error);
 }

@@ -1,0 +1,8 @@
+{
+  "action": "life",
+  "option_id": "quote_repair_need:repair_need_request_10:5",
+  "utterance": "艾琳，柴斧修刃我报5 Col。这价格里含了我手边铁料，但引火用的木料得请你那边出——我这边库存不够。你看这样行吗？",
+  "visible": "当前面对木工作台，台上有铁砧、工具和钳子。白色墙壁上有两扇蓝色窗框，光线从右上方照入。",
+  "goal": "先谈妥艾琳柴斧修刃的报价和木料分担，再推进正式委托。",
+  "need": "需要对方提供木料以补足引火和辅助耗材，否则仅凭现有1铁料无法完成repair_requirements之外的tool_use准备。"
+}

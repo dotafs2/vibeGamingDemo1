@@ -1,0 +1,8 @@
+{
+	"source": "local player walking movement including step and ground handling; not NPC decisions or VR validation",
+	"door_end_cm": "X=1150.000 Y=465000.000 Z=90.000",
+	"wall_blocked": true,
+	"door_passable": true,
+	"eye_height_cm": 160,
+	"passed": true
+}

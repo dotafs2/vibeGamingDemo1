@@ -1,0 +1,112 @@
+{
+  "front_axis": "Blender -Y; UE orientation requires native visual verification",
+  "height_basis": "Per-asset measured mesh bounds in metres",
+  "palette": {
+    "Aileen": {
+      "Skin": "F3CFB7",
+      "Hair": "7D4733",
+      "HairLight": "AC7150",
+      "Iris": "52775B",
+      "Cloth": "EFE3CC",
+      "Accent": "44675B",
+      "Leather": "704D38",
+      "Boot": "483D38",
+      "Metal": "B7A585"
+    },
+    "Takuma": {
+      "Skin": "E3B494",
+      "Hair": "353846",
+      "HairLight": "626778",
+      "Iris": "666F84",
+      "Cloth": "BBC8D0",
+      "Accent": "465975",
+      "Leather": "895941",
+      "Boot": "36333A",
+      "Metal": "ABB5BE"
+    },
+    "Kashiwagi": {
+      "Skin": "ECCCAB",
+      "Hair": "887353",
+      "HairLight": "B59D72",
+      "Iris": "71826B",
+      "Cloth": "D8D8B7",
+      "Accent": "65765D",
+      "Leather": "776044",
+      "Boot": "49473C",
+      "Metal": "B2AEA0"
+    }
+  },
+  "assets": [
+    {
+      "id": "Aileen",
+      "fbx": "Exports/Aileen.fbx",
+      "vertices": 6248,
+      "triangles": 11540,
+      "bones": 18,
+      "roles": [
+        "Accent",
+        "Skin",
+        "White",
+        "Ink",
+        "Iris",
+        "Hair",
+        "Mouth",
+        "HairLight",
+        "Cloth",
+        "Boot",
+        "Leather",
+        "Metal"
+      ],
+      "height_m": 1.7335868934169412,
+      "revision": 2
+    },
+    {
+      "id": "Takuma",
+      "fbx": "Exports/Takuma.fbx",
+      "vertices": 5382,
+      "triangles": 9884,
+      "bones": 18,
+      "roles": [
+        "Accent",
+        "Skin",
+        "White",
+        "Ink",
+        "Iris",
+        "Hair",
+        "Mouth",
+        "HairLight",
+        "Cloth",
+        "Boot",
+        "Leather",
+        "Metal"
+      ],
+      "height_m": 1.8268662095069885,
+      "revision": 2
+    },
+    {
+      "id": "Kashiwagi",
+      "fbx": "Exports/Kashiwagi.fbx",
+      "vertices": 5748,
+      "triangles": 10512,
+      "bones": 18,
+      "roles": [
+        "Accent",
+        "Skin",
+        "White",
+        "Ink",
+        "Iris",
+        "Hair",
+        "Mouth",
+        "HairLight",
+        "Cloth",
+        "Boot",
+        "Leather",
+        "Metal"
+      ],
+      "height_m": 1.7599867065437138,
+      "revision": 2
+    }
+  ],
+  "revision": 2,
+  "scope": "Blender art review prototype; not installed in live world; same three existing identities"
+}

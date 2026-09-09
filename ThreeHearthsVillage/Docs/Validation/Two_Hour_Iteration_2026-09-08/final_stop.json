@@ -1,0 +1,22 @@
+{
+  "status": "stopped_at_user_deadline",
+  "deadline_utc": "2026-09-09T01:00:00Z",
+  "verified_utc": "2026-09-09T01:02:28.128526+00:00",
+  "final_run": "town-20260909-005335",
+  "final_run_ue_exit": 0,
+  "owned_children_stopped": true,
+  "gateway_endpoint_present": false,
+  "automation_id": "level0",
+  "automation_deleted": true,
+  "world_sha256": "f6d8bd614f858863f4de7c35b83e7415ddc6bc4a46a7f36ff2d3b631fb6a87ce",
+  "resident_count": 13,
+  "all_pending_operations_empty": true,
+  "life_seq": 25,
+  "settled_calls_this_session": 107,
+  "settled_cost_cny_this_session": 3.618313,
+  "prior_uncertain_count_preserved": 6,
+  "prior_uncertain_reserved_cny_preserved": 10.265088,
+  "repair_result": "contract18 collected; 5 Col paid; edge100; handle20 explicitly deferred",
+  "context_fix_validation": "build, native 30 tests, offline real rejected payload, 9 copy-world recovery checks; no fresh paid request forced",
+  "new_work_after_deadline": false
+}

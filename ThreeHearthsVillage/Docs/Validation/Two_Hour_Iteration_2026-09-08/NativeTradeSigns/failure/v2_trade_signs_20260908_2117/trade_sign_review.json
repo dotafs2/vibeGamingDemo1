@@ -1,0 +1,267 @@
+{
+  "trade_sign_review": {
+    "source": "local_verification",
+    "source_capture": "v2_trade_signs_20260908_2117",
+    "review_role": "coordinator",
+    "npc_vision": false,
+    "numeric_validation": true,
+    "visual_validation": false,
+    "root_visual_acceptance": false,
+    "shadow_limited": true,
+    "note": "First capture rejected visually: relief normals faced inward and the inn sign intersected the balcony support. Retained as failure evidence; do not reuse its image hashes as current.",
+    "expected_count": 3,
+    "captured_count": 3,
+    "all_three_captured": true,
+    "render_visually_confirmed": false,
+    "passed": false,
+    "status": "captured; requires visual confirmation",
+    "signs": [
+      {
+        "role": "inn",
+        "target_static_mesh": "inn_trade_sign",
+        "render_visually_confirmed": false,
+        "passed": false,
+        "matching_component_count": 1,
+        "matching_instance_count": 1,
+        "instance_count_valid": true,
+        "static_mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/inn_trade_sign/inn_trade_sign.inn_trade_sign",
+        "material_slots": [
+          {
+            "slot_index": 0,
+            "slot_name": "AT_Brass",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass"
+          },
+          {
+            "slot_index": 1,
+            "slot_name": "AT_Iron",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron"
+          },
+          {
+            "slot_index": 2,
+            "slot_name": "AT_TimberDark",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark"
+          },
+          {
+            "slot_index": 3,
+            "slot_name": "AT_Plaster",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Plaster.MI_Town_Plaster"
+          },
+          {
+            "slot_index": 4,
+            "slot_name": "AT_TimberLight",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight"
+          },
+          {
+            "slot_index": 5,
+            "slot_name": "AT_Timber",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber"
+          }
+        ],
+        "material_slot_count": 6,
+        "materials_valid": true,
+        "instance_transform_read": true,
+        "instance_transform_world": {
+          "location_cm": [
+            -928.9999999999995,
+            467336,
+            235
+          ],
+          "rotation_quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "image": "failure/v2_trade_signs_20260908_2117/inn_trade_sign_context.png",
+        "camera_eye_world_cm": [
+          -858.9999999999995,
+          467086,
+          260
+        ],
+        "camera_aim_world_cm": [
+          -928.9999999999995,
+          467336,
+          250
+        ],
+        "fov_degrees": 36,
+        "render_capture_completed": true,
+        "status": "captured; requires visual confirmation",
+        "numeric_validation": true,
+        "visual_validation": false,
+        "root_visual_acceptance": false
+      },
+      {
+        "role": "smithy",
+        "target_static_mesh": "smithy_trade_sign",
+        "render_visually_confirmed": false,
+        "passed": false,
+        "matching_component_count": 1,
+        "matching_instance_count": 1,
+        "instance_count_valid": true,
+        "static_mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/smithy_trade_sign/smithy_trade_sign.smithy_trade_sign",
+        "material_slots": [
+          {
+            "slot_index": 0,
+            "slot_name": "AT_Brass",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass"
+          },
+          {
+            "slot_index": 1,
+            "slot_name": "AT_Iron",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron"
+          },
+          {
+            "slot_index": 2,
+            "slot_name": "AT_TimberDark",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark"
+          },
+          {
+            "slot_index": 3,
+            "slot_name": "AT_TimberLight",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight"
+          },
+          {
+            "slot_index": 4,
+            "slot_name": "AT_Timber",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber"
+          }
+        ],
+        "material_slot_count": 5,
+        "materials_valid": true,
+        "instance_transform_read": true,
+        "instance_transform_world": {
+          "location_cm": [
+            1028.9999999999995,
+            464720,
+            235
+          ],
+          "rotation_quaternion": [
+            0,
+            0,
+            1,
+            -1.1102230246251558E-16
+          ],
+          "scale": [
+            1.0000000000000009,
+            1.0000000000000009,
+            1
+          ]
+        },
+        "image": "failure/v2_trade_signs_20260908_2117/smithy_trade_sign_context.png",
+        "camera_eye_world_cm": [
+          958.9999999999994,
+          464970,
+          260
+        ],
+        "camera_aim_world_cm": [
+          1028.9999999999995,
+          464720,
+          250
+        ],
+        "fov_degrees": 36,
+        "render_capture_completed": true,
+        "status": "captured; requires visual confirmation",
+        "numeric_validation": true,
+        "visual_validation": false,
+        "root_visual_acceptance": false
+      },
+      {
+        "role": "carpentry",
+        "target_static_mesh": "carpentry_trade_sign",
+        "render_visually_confirmed": false,
+        "passed": false,
+        "matching_component_count": 1,
+        "matching_instance_count": 1,
+        "instance_count_valid": true,
+        "static_mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/carpentry_trade_sign/carpentry_trade_sign.carpentry_trade_sign",
+        "material_slots": [
+          {
+            "slot_index": 0,
+            "slot_name": "AT_Iron",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron"
+          },
+          {
+            "slot_index": 1,
+            "slot_name": "AT_TimberDark",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark"
+          },
+          {
+            "slot_index": 2,
+            "slot_name": "AT_Brass",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass"
+          },
+          {
+            "slot_index": 3,
+            "slot_name": "AT_TimberLight",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight"
+          },
+          {
+            "slot_index": 4,
+            "slot_name": "AT_Timber",
+            "asset_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber",
+            "effective_material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber"
+          }
+        ],
+        "material_slot_count": 5,
+        "materials_valid": true,
+        "instance_transform_read": true,
+        "instance_transform_world": {
+          "location_cm": [
+            -1028.9999999999995,
+            462280,
+            235
+          ],
+          "rotation_quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "image": "failure/v2_trade_signs_20260908_2117/carpentry_trade_sign_context.png",
+        "camera_eye_world_cm": [
+          -958.9999999999995,
+          462030,
+          260
+        ],
+        "camera_aim_world_cm": [
+          -1028.9999999999995,
+          462280,
+          250
+        ],
+        "fov_degrees": 36,
+        "render_capture_completed": true,
+        "status": "captured; requires visual confirmation",
+        "numeric_validation": true,
+        "visual_validation": false,
+        "root_visual_acceptance": false
+      }
+    ]
+  }
+}

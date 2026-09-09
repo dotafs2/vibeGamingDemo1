@@ -1710,6 +1710,16 @@
         2.62
       ],
       "yaw_degrees": 0
+    },
+    {
+      "id": "trade_sign",
+      "module": "inn_trade_sign",
+      "position_m": [
+        5.16,
+        8.71,
+        2.35
+      ],
+      "yaw_degrees": 90
     }
   ],
   "initial_world_art": true

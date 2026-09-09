@@ -1,0 +1,260 @@
+{
+  "source": "local verification excerpt from BeforeContextLimitStop_world.json",
+  "source_world_path": "Saved/ThreeHearths/AincradLevel0/TwoHourIteration/BeforeContextLimitStop_world.json",
+  "source_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "seq_range": "17..25",
+  "events": [
+    {
+      "event_id": "life_event_17",
+      "seq": 17,
+      "type": "quote_repair_need",
+      "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "contract_id": "",
+      "item_id": "",
+      "recipient_ids": [
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "A757B4D7-497C-99F3-3482-52A77F688D69"
+      ],
+      "operation_id": "7678582E-4F0E-66E7-E729-ABB6F1188047",
+      "offer_price_col": 5,
+      "request_id": "repair_need_request_10",
+      "reply_choice": null,
+      "text": "拓真向艾琳报出修刃参考价5 Col；这不是合同，也未扣款或预留材料。 原话：艾琳，柴斧修刃我报5 Col。这价格里含了我手边铁料，但引火用的木料得请你那边出——我这边库存不够。你看这样行吗？"
+    },
+    {
+      "event_id": "life_event_18",
+      "seq": 18,
+      "type": "repair_edge",
+      "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "subject_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "contract_id": "repair_contract_18_0",
+      "item_id": "aincrad_axe_erin",
+      "recipient_ids": [
+        "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F"
+      ],
+      "operation_id": "2519080B-489D-4316-524F-F1AF83EC5066",
+      "offer_price_col": null,
+      "request_id": null,
+      "reply_choice": null,
+      "text": "艾琳向拓真提出修刃委托，报价5 Col。 原话：拓真，修刃5 Col我可以接受，木料我这儿出。麻烦你接一下这委托。"
+    },
+    {
+      "event_id": "life_event_19",
+      "seq": 19,
+      "type": "reply_repair_need",
+      "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "contract_id": "",
+      "item_id": "",
+      "recipient_ids": [
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+      ],
+      "operation_id": "829BC567-44BB-F3C1-250D-AF967D85E1BD",
+      "offer_price_col": null,
+      "request_id": "repair_need_request_16",
+      "reply_choice": "no_need",
+      "text": "拓真近期没有需要修柄的物品。 原话：柏木，谢了，我这边暂时没有需要修柄的工具。你的好意我心领了，有需要再找你。"
+    },
+    {
+      "event_id": "life_event_20",
+      "seq": 20,
+      "type": "accept",
+      "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "contract_id": "repair_contract_18_0",
+      "item_id": "aincrad_axe_erin",
+      "recipient_ids": [
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "A757B4D7-497C-99F3-3482-52A77F688D69"
+      ],
+      "operation_id": "578F5D40-4594-96A4-39BF-648129BFC401",
+      "offer_price_col": null,
+      "request_id": null,
+      "reply_choice": null,
+      "text": "拓真接受艾琳的修刃委托，已明确预留5 Col。 原话：艾琳，这委托我接了。你把柴斧和木料一起带过来，我这就准备开工。"
+    },
+    {
+      "event_id": "life_event_21",
+      "seq": 21,
+      "type": "ask_repair_need",
+      "actor_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "contract_id": "",
+      "item_id": "",
+      "recipient_ids": [
+        "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "A757B4D7-497C-99F3-3482-52A77F688D69"
+      ],
+      "operation_id": "79B23B9E-4C57-DAC8-A799-099D9EE2090E",
+      "offer_price_col": null,
+      "request_id": "repair_need_request_21",
+      "reply_choice": null,
+      "text": "柏木想问艾琳近期是否有需要修柄的物品；这只是询问，不是委托。 原话：艾琳，你那边有没有需要修柄的工具？我手头还有木料，可以帮你看看。"
+    },
+    {
+      "event_id": "life_event_22",
+      "seq": 22,
+      "type": "deliver",
+      "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "subject_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "contract_id": "repair_contract_18_0",
+      "item_id": "aincrad_axe_erin",
+      "recipient_ids": [
+        "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F"
+      ],
+      "operation_id": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+      "offer_price_col": null,
+      "request_id": null,
+      "reply_choice": null,
+      "text": "艾琳已把aincrad_axe_erin交到拓真的岗位，等待实际修理。 原话：拓真，斧子和木料我这就送过去。"
+    },
+    {
+      "event_id": "life_event_23",
+      "seq": 23,
+      "type": "reply_repair_need",
+      "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "contract_id": "",
+      "item_id": "",
+      "recipient_ids": [
+        "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+      ],
+      "operation_id": "29F092AA-4D08-D177-3192-9EBD5F147D27",
+      "offer_price_col": null,
+      "request_id": "repair_need_request_21",
+      "reply_choice": "no_need",
+      "text": "艾琳近期没有需要修柄的物品。 原话：柏木，斧柄的事我暂时不打算修了，你那边的好意我心领了。"
+    },
+    {
+      "event_id": "life_event_24",
+      "seq": 24,
+      "type": "work",
+      "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "contract_id": "repair_contract_18_0",
+      "item_id": "aincrad_axe_erin",
+      "recipient_ids": [
+        "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F"
+      ],
+      "operation_id": "6CCAB8D7-471E-1CC7-EB7E-CF915CB64ADA",
+      "offer_price_col": null,
+      "request_id": null,
+      "reply_choice": null,
+      "text": "拓真完成了aincrad_axe_erin的修刃，修理完成使双方对这次合作的信任改善。 原话：艾琳，斧子我收到了，这就上工修刃。"
+    },
+    {
+      "event_id": "life_event_25",
+      "seq": 25,
+      "type": "collect",
+      "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "subject_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "contract_id": "repair_contract_18_0",
+      "item_id": "aincrad_axe_erin",
+      "recipient_ids": [
+        "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F"
+      ],
+      "operation_id": "EE3E1314-4D05-3CAF-5407-EE9D83F634A4",
+      "offer_price_col": null,
+      "request_id": null,
+      "reply_choice": null,
+      "text": "艾琳取回aincrad_axe_erin，向拓真结算5 Col。 原话：拓真，我来取回那把修好的柴斧了。"
+    }
+  ],
+  "contract18": {
+    "id": "repair_contract_18_0",
+    "part": "edge",
+    "item_id": "aincrad_axe_erin",
+    "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+    "worker_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+    "price_col": 5,
+    "reserved_col": 0,
+    "status": "collected"
+  },
+  "axe": {
+    "id": "aincrad_axe_erin",
+    "kind": "axe",
+    "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+    "custodian_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+    "edge": 100,
+    "handle": 20,
+    "source": "developer_initial_condition"
+  },
+  "residents": [
+    {
+      "stable_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "name": "艾琳",
+      "coins_col": 95,
+      "accounts": {
+        "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "wood": 2,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      "active": true,
+      "position_cm": [
+        1376.143569191666,
+        464898.8014116056,
+        92
+      ]
+    },
+    {
+      "stable_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "name": "拓真",
+      "coins_col": 205,
+      "accounts": {
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      "active": true,
+      "position_cm": [
+        1520.681884765625,
+        464858.625,
+        92
+      ]
+    },
+    {
+      "stable_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "name": "柏木",
+      "coins_col": 100,
+      "accounts": {
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "wood": 1,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      "active": true,
+      "position_cm": [
+        -1518.837158203125,
+        462139.21875,
+        92
+      ]
+    }
+  ],
+  "operation": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+  "notes": {
+    "contract_status": "collected",
+    "edge_repaired_to": 100,
+    "handle_remains": 20,
+    "coins_after": "Erin 95 / Takuma 205 / Kashiwagi 100",
+    "no_new_materials": true,
+    "s4_tool_use_complete": false,
+    "cold_forge_or_wood_extra_promise_executed": false,
+    "current_run": "town-20260909-003204 was interrupted by local context threshold after seq25; not a normal batch completion."
+  }
+}

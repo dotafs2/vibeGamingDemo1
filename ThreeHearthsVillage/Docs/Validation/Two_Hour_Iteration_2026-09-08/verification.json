@@ -1,0 +1,783 @@
+{
+  "user_start_utc": "2026-09-08T14:49:04Z",
+  "user_deadline_utc": "2026-09-09T01:00:00Z",
+  "stop_at_epoch": 1788915600,
+  "automation_id": "level0",
+  "native_tests": {
+    "succeeded": 22,
+    "failed": 0,
+    "warnings": 0
+  },
+  "native_look_check": {
+    "passed": true,
+    "source": "local native copy-world exercise; not Kimi choices",
+    "rows": [
+      {
+        "resident": "艾琳",
+        "delta_degrees": 59.99999665614706,
+        "same_position": true,
+        "same_eye": true,
+        "original_world_sha256": "4f82cdf8bb26e9db210f89e076290f616c4db60b39522ec6067ffc9767aba29e",
+        "images": "NativeLook/1"
+      },
+      {
+        "resident": "拓真",
+        "delta_degrees": 60.0,
+        "same_position": true,
+        "same_eye": true,
+        "original_world_sha256": "4f82cdf8bb26e9db210f89e076290f616c4db60b39522ec6067ffc9767aba29e",
+        "images": "NativeLook/2"
+      },
+      {
+        "resident": "柏木",
+        "delta_degrees": 60.0,
+        "same_position": true,
+        "same_eye": true,
+        "original_world_sha256": "4f82cdf8bb26e9db210f89e076290f616c4db60b39522ec6067ffc9767aba29e",
+        "images": "NativeLook/3"
+      }
+    ]
+  },
+  "native_deadline_test": {
+    "run": "town-20260908-150217",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 68,
+    "api": false,
+    "life": true,
+    "max_decisions": 0,
+    "budget_profile": "city-validation",
+    "external_liability_cny": 17.3692551,
+    "stop_at_utc": 1788879836,
+    "manual_route_verification": false,
+    "ue_pid": 18424,
+    "gateway_pid": null,
+    "started_utc_epoch": 1788879737.0656326,
+    "ue_exit": 0,
+    "finished_utc_epoch": 1788879812.2592313
+  },
+  "native_deadline_margin_seconds": 23.740768671035767,
+  "real_kimi_runs": [
+    {
+      "meta": {
+        "run": "town-20260908-151120",
+        "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+        "seconds": 300,
+        "api": true,
+        "life": true,
+        "max_decisions": 18,
+        "budget_profile": "overnight",
+        "external_liability_cny": 1.6521896,
+        "stop_at_utc": 1788886144,
+        "manual_route_verification": false,
+        "ue_pid": 41676,
+        "gateway_pid": 83876,
+        "started_utc_epoch": 1788880280.177568,
+        "budget_before": {
+          "allocation_cap_cny": 95.0,
+          "authorized_cny": 100.0,
+          "counts": {
+            "settled": 812,
+            "uncertain": 6
+          },
+          "deadline_utc": 0,
+          "halted": "",
+          "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+          "liability_cny": 17.7028546,
+          "model": "kimi-k2.6",
+          "prior_unverified_cny": 0.01,
+          "remaining_allocatable_cny": 77.2971454,
+          "reserved_cny": 10.265088,
+          "settled_cny": 7.4277666
+        },
+        "ue_exit": 0,
+        "budget_after": {
+          "allocation_cap_cny": 95.0,
+          "authorized_cny": 100.0,
+          "counts": {
+            "settled": 818,
+            "uncertain": 6
+          },
+          "deadline_utc": 0,
+          "halted": "",
+          "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+          "liability_cny": 17.8654705,
+          "model": "kimi-k2.6",
+          "prior_unverified_cny": 0.01,
+          "remaining_allocatable_cny": 77.1345295,
+          "reserved_cny": 10.265088,
+          "settled_cny": 7.5903825
+        },
+        "new_cost_cny": 0.1626159,
+        "new_settled_calls": 6,
+        "finished_utc_epoch": 1788880592.355673
+      },
+      "decisions": [
+        {
+          "resident": "拓真",
+          "operation_id": "5C83E9CE-4251-00F7-1579-4BBE5300F4F6",
+          "action": "observe",
+          "reason": "ordinary_cooldown_due",
+          "charge_cny": 0.0163965,
+          "evidence": "PaidLook/01-blacksmith"
+        },
+        {
+          "resident": "拓真",
+          "operation_id": "866F9F27-4374-A784-4C72-C1BD02EF83A2",
+          "action": "walk_to_work",
+          "reason": "completed_observation_followup",
+          "charge_cny": 0.0163741,
+          "evidence": "PaidLook/02-blacksmith"
+        },
+        {
+          "resident": "艾琳",
+          "operation_id": "06C88C0B-4D36-6A53-AB34-F886FEE7A276",
+          "action": "observe",
+          "reason": "ordinary_cooldown_due",
+          "charge_cny": 0.0335931,
+          "evidence": "PaidLook/03-innkeeper"
+        },
+        {
+          "resident": "柏木",
+          "operation_id": "77A48B7B-43C5-E969-FB9E-3485DBAD54B1",
+          "action": "observe",
+          "reason": "ordinary_cooldown_due",
+          "charge_cny": 0.0289401,
+          "evidence": "PaidLook/04-carpenter"
+        },
+        {
+          "resident": "柏木",
+          "operation_id": "01269C09-43A1-7689-E637-6D8B172DE5F7",
+          "action": "wait",
+          "reason": "completed_observation_followup",
+          "charge_cny": 0.0308656,
+          "evidence": "PaidLook/05-carpenter"
+        },
+        {
+          "resident": "艾琳",
+          "operation_id": "974504B2-42A7-65B8-5C7A-AEB34187AA75",
+          "action": "wait",
+          "reason": "completed_observation_followup",
+          "charge_cny": 0.0364465,
+          "evidence": "PaidLook/06-innkeeper"
+        }
+      ]
+    }
+  ],
+  "two_hour_paid_calls": 30,
+  "two_hour_paid_cost_cny": 0.9472084,
+  "current_deadline_utc": "2026-09-09T01:00:00Z",
+  "native_offers_tests": {
+    "succeeded": 23,
+    "failed": 0,
+    "earlier_failure": "offer menu omitted durable dedupe; corrected and retested"
+  },
+  "workshop_assets": [
+    {
+      "id": "bench_vise",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/bench_vise/bench_vise.bench_vise",
+      "dimensions_cm": [
+        32.0,
+        40.100003242492676,
+        23.000000476837158
+      ],
+      "source_sha256": "5a2f9ca3f069422ece022489b6078d9369ca4e0e2ada694bf8050060cbbc6d2e",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "hand_plane",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/hand_plane/hand_plane.hand_plane",
+      "dimensions_cm": [
+        27.000001907348633,
+        9.300000190734863,
+        13.250000026077032
+      ],
+      "source_sha256": "53e018c5721cb8e75f4cff9b33eb7053ba369a1785c2de0897fdbea0142bbc20",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "bench_anvil",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/bench_anvil/bench_anvil.bench_anvil",
+      "dimensions_cm": [
+        79.49999618530273,
+        25.0,
+        32.999999821186066
+      ],
+      "source_sha256": "f4b60560a9eeacb4003a0545e5656a8ea027895dbff63dbf61e2d21cc53ce086",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "smith_hand_tools",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/smith_hand_tools/smith_hand_tools.smith_hand_tools",
+      "dimensions_cm": [
+        38.75,
+        22.831849098205566,
+        6.999999761581421
+      ],
+      "source_sha256": "49a3964e371861aedbaa8a2f1c144c552332c362c393b949e1d2e77d5757bd8f",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "carpentry_workbench",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/carpentry_workbench/carpentry_workbench.carpentry_workbench",
+      "dimensions_cm": [
+        180.0,
+        105.5,
+        101.94377659261227
+      ],
+      "source_sha256": "bcc93fa826d9c78036b49542e5ec8c31e24f99d5398b9128b9bbf70d36d8743f",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "smithy_workbench",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/smithy_workbench/smithy_workbench.smithy_workbench",
+      "dimensions_cm": [
+        180.0,
+        81.91246795654297,
+        123.99377964437008
+      ],
+      "source_sha256": "1edce5119d4874bd225d63dbc1cd9f79ab303b63110ada9f414a4cd8c9fb9dff",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    }
+  ],
+  "paid_workshop": {
+    "run": "town-20260908-154203",
+    "calls": 6,
+    "cost_cny": 0.1747701,
+    "decisions": [
+      {
+        "resident": "拓真",
+        "operation": "66161F22-4F58-2D6A-AF3F-7AADFA897E0D",
+        "decision_reason": "ordinary_cooldown_due",
+        "action": "observe",
+        "option_id": null,
+        "need": "需要确认工作台位置与当前任务状态。",
+        "available_repair_offers": [],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/01-66161F22-4F58-2D6A-AF3F-7AADFA897E0D"
+      },
+      {
+        "resident": "拓真",
+        "operation": "1856685E-4610-3EBE-03F3-C38C411A0544",
+        "decision_reason": "completed_observation_followup",
+        "action": "observe",
+        "option_id": null,
+        "need": "需要确认工作台位置与当前任务状态。",
+        "available_repair_offers": [],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/02-1856685E-4610-3EBE-03F3-C38C411A0544"
+      },
+      {
+        "resident": "艾琳",
+        "operation": "2A96806E-4754-E800-CED8-BBA3974FC8CF",
+        "decision_reason": "ordinary_cooldown_due",
+        "action": "observe",
+        "option_id": null,
+        "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+        "available_repair_offers": [],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/03-2A96806E-4754-E800-CED8-BBA3974FC8CF"
+      },
+      {
+        "resident": "柏木",
+        "operation": "37F9181B-4C91-2FF6-C5D2-84969FF00723",
+        "decision_reason": "ordinary_cooldown_due",
+        "action": "observe",
+        "option_id": null,
+        "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先确认自己的工作环境再决定下一步。",
+        "available_repair_offers": [
+          "offer_repair:repair_contract_6_0:2",
+          "offer_repair:repair_contract_6_0:5",
+          "offer_repair:repair_contract_6_0:8"
+        ],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/04-37F9181B-4C91-2FF6-C5D2-84969FF00723"
+      },
+      {
+        "resident": "艾琳",
+        "operation": "F36B5A25-44B1-EE83-5CE4-5EB5817D4250",
+        "decision_reason": "completed_observation_followup",
+        "action": "wait",
+        "option_id": null,
+        "need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+        "available_repair_offers": [],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/05-F36B5A25-44B1-EE83-5CE4-5EB5817D4250"
+      },
+      {
+        "resident": "柏木",
+        "operation": "8DBE228F-40F3-8B6E-285C-4E94F2D32DD6",
+        "decision_reason": "completed_observation_followup",
+        "action": "observe",
+        "option_id": null,
+        "need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，想先确认自己的工作环境再决定下一步。",
+        "available_repair_offers": [
+          "offer_repair:repair_contract_6_0:2",
+          "offer_repair:repair_contract_6_0:5",
+          "offer_repair:repair_contract_6_0:8"
+        ],
+        "image_verified": true,
+        "evidence": "PaidWorkshop/06-8DBE228F-40F3-8B6E-285C-4E94F2D32DD6"
+      }
+    ]
+  },
+  "targeted_look": {
+    "native_tests": {
+      "passed": 24,
+      "failed": 0
+    },
+    "copy_world": {
+      "formal_world_unchanged": true,
+      "formal_world_sha256": "9f3d9d6918ddf3ba971d875ca64674da04abd24c2d531369bac77390cc145f69",
+      "local_only_no_api": true,
+      "rows": [
+        {
+          "name": "艾琳",
+          "same_position": true,
+          "yaw": 128.72541809082028,
+          "result": "looked_at_workbench; body_yaw_degrees=128.7; position unchanged; no work completed",
+          "observation": "obs_000028"
+        },
+        {
+          "name": "拓真",
+          "same_position": true,
+          "yaw": -63.43493652343749,
+          "result": "looked_at_workbench; body_yaw_degrees=296.6; position unchanged; no work completed",
+          "observation": "obs_000023"
+        },
+        {
+          "name": "柏木",
+          "same_position": true,
+          "yaw": 124.36380767822267,
+          "result": "looked_at_workbench; body_yaw_degrees=124.4; position unchanged; no work completed",
+          "observation": "obs_000030"
+        }
+      ]
+    }
+  },
+  "paid_targeted_look": {
+    "run": "town-20260908-161130",
+    "calls": 6,
+    "cost_cny": 0.1893315,
+    "evidence": "PaidRuns/town-20260908-161130"
+  },
+  "original_user_deadline_utc": "2026-09-08T16:49:04Z",
+  "original_stop_at_epoch": 1788886144,
+  "native_workpoint": {
+    "native_tests": {
+      "succeeded": 24,
+      "failed": 0
+    },
+    "actual_copy_walk_passed": true,
+    "copy_evidence": "NativeWorkpoint/workpoint-source-check",
+    "formal_world_unchanged": true,
+    "source": "local_verification",
+    "new_source_attribution_fix_verified": true
+  },
+  "paid_workpoint": {
+    "run": "town-20260908-164840",
+    "seconds": 300,
+    "calls": 6,
+    "cost_cny": 0.201297,
+    "evidence": "PaidRuns/town-20260908-164840",
+    "new_contracts": 0,
+    "life_seq": 7
+  },
+  "character_v2": {
+    "mesh_count": 3,
+    "animation_count": 6,
+    "initial_import_report": "../../../Art/AincradCharacters/V2/UE_Import_Report.json",
+    "cold_load_status": "12 materials per character persist; CPU pose deltas and material structure checks passed, but rendered Walk PNGs still resemble Idle",
+    "cpu_pose_delta_checked": true,
+    "materials_valid_checked": true,
+    "rendered_walk_pose_validated": false,
+    "automatic_animation_playback_validated": false,
+    "native_visual_accepted": false,
+    "status": "pending render-sync validation; V2 is not formally enabled",
+    "evidence": "NativeCharacters/face-surface-before-render-sync"
+  },
+  "paid_action_effects": {
+    "run": "town-20260908-171816",
+    "seconds": 300,
+    "calls": 6,
+    "cost_cny": 0.2191939,
+    "evidence": "PaidRuns/town-20260908-171816",
+    "autonomous_move": {
+      "resident": "Takuma",
+      "source": "kimi",
+      "position_cm": [
+        1520.681881715092,
+        464858.636227393,
+        92
+      ]
+    },
+    "new_contracts": 0,
+    "life_seq": 7
+  },
+  "native_communication": {
+    "succeeded": 25,
+    "failed": 0,
+    "first_test_crash": "temporary PersonalContext lifetime in test, fixed by retaining shared reference",
+    "formal_communication_events": 0
+  },
+  "paid_communication_available": {
+    "run": "town-20260908-175540",
+    "seconds": 300,
+    "calls": 5,
+    "cost_cny": 0.1872791,
+    "evidence": "PaidRuns/town-20260908-175540",
+    "life_seq": 7,
+    "new_contracts": 0,
+    "communication_actions": 0
+  },
+  "two_hour_settled_calls": 107,
+  "two_hour_new_cost_cny": 3.618313,
+  "latest_completed_run": "town-20260909-005335",
+  "continued_runs": {
+    "town-20260908-183339": {
+      "seconds": 300,
+      "calls": 6,
+      "cost_cny": 0.1848816,
+      "evidence": "PaidRuns/town-20260908-183339",
+      "life_seq": 7,
+      "note": "本轮柏木自主走到新工作台，旧错误已清除；拓真看工作台、艾琳观察后等待。仍无新增问答、合同或支付。人物6段数据及游戏组件动画通过，场景截图待验收。"
+    },
+    "town-20260908-191011": {
+      "seconds": 300,
+      "calls": 5,
+      "cost_cny": 0.155583,
+      "evidence": "PaidRuns/town-20260908-191011",
+      "life_seq": 7,
+      "note": "27项原生测试通过，维修需求问答确实进入真实请求；本轮仍是自主观察或等待，无新增问答、合同或付款。新人物游戏副本15张截图生成成功，源面部正在进一步改进，正式外观仍待切换。"
+    },
+    "town-20260908-194023": {
+      "seconds": 300,
+      "calls": 6,
+      "cost_cny": 0.1918492,
+      "evidence": "PaidRuns/town-20260908-194023",
+      "life_seq": 7,
+      "note": "三人普通观察后艾琳等待，两位工匠自主转向工作台；没有新询问、合同或修理。人物手动姿态截图已修复并目视确认，下一步验证自然播放、导入冷炉。"
+    },
+    "town-20260908-200614": {
+      "seconds": 1800,
+      "calls": 6,
+      "cost_cny": 0.1959341,
+      "evidence": "PaidRuns/town-20260908-200614",
+      "life_seq": 7,
+      "note": "首个1800秒连续批次正常结束；新人物默认正式载入，Kimi认出工作台及新炉体；三人仍观察或等待，尚无新询问/合同。下一步接入可靠个人位置与开放委托摘要，说明斧子使用条件。"
+    },
+    "town-20260908-204356": {
+      "seconds": 1800,
+      "calls": 6,
+      "cost_cny": 0.2103868,
+      "evidence": "PaidRuns/town-20260908-204356",
+      "life_seq": 7,
+      "note": "新个人事实已进入真实请求，但三人仍重复旧猜测；本轮6次0.2103868元，无实际新委托。下一批只投影历史action+visible，并安装三店职业招牌。"
+    },
+    "town-20260908-212535": {
+      "seconds": 1800,
+      "calls": 8,
+      "cost_cny": 0.2347933,
+      "evidence": "PaidRuns/town-20260908-212535",
+      "life_seq": 10,
+      "note": "8次真实Kimi0.2347933元；拓真问柏木修刃需求，柏木回答无需求，拓真再问艾琳。艾琳回复action字段无效未执行。接下来验证严格别名兼容和工具部件外观。"
+    },
+    "town-20260908-220838": {
+      "seconds": 1800,
+      "calls": 4,
+      "cost_cny": 0.1328309,
+      "evidence": "PaidRuns/town-20260908-220838",
+      "life_seq": 10,
+      "note": "4 settled calls: Erin and Takuma wait; Kashiwagi observes then waits. Same life seq10, no new repair contract, delivery or payment. Shared grade and held-tool look are source changes under build/native validation; not yet available in paid play. Continue root loop until Beijing09:00."
+    },
+    "town-20260908-224718": {
+      "seconds": 1800,
+      "calls": 6,
+      "cost_cny": 0.1913781,
+      "evidence": "PaidRuns/town-20260908-224718",
+      "life_seq": 10,
+      "note": "6 settled calls. Three ordinary observations; follow-ups: Erin chose has_need reply using action-only form, rejected and not executed; Takuma and Kashiwagi looked at own workbenches. Life seq10 unchanged, no trade. Action-only canonicalization built; native tests and axe revision2 import/review pending; never replay old rejected response."
+    },
+    "town-20260908-232450": {
+      "seconds": 1800,
+      "calls": 9,
+      "cost_cny": 0.302618,
+      "evidence": "PaidRuns/town-20260908-232450",
+      "life_seq": 15,
+      "note": "Real seq15: Erin has_need; both neighbours willing to discuss wood, no transfer. First repair quote and precise material rules built; read-only failure feedback built; NativeNeedQuoteTests30 passed with formal hash unchanged. Resume same world without forced actions or replay."
+    },
+    "town-20260908-235801": {
+      "seconds": 1800,
+      "calls": 8,
+      "cost_cny": 0.3196296,
+      "evidence": "PaidRuns/town-20260908-235801",
+      "life_seq": 21,
+      "note": "Real quote5/contract18/accept reserve5; original Kimi delivery blocked at smithy jamb due early intermediate waypoint turn. Door-centre ingress/egress and once-only original intent recovery built. Native30 pass; exact formal copy recovery delivered once with original operation, intermediate walking positions, same IDs/accounts/axe owner and reserve5, no blocked end. Formal hash unchanged. Resume real same world until deadline."
+    },
+    "town-20260909-005335": {
+      "seconds": 354,
+      "calls": 0,
+      "cost_cny": 0.0,
+      "evidence": "PaidRuns/town-20260909-005335",
+      "life_seq": 25,
+      "note": "Final deadline reached; real seq25 edge repair/collection/payment complete, handle20 explicitly deferred. Door recovery and context budget repairs built/native verified; confirmed unsent request retired without replay or cooldown reset. All residents idle/pending empty. Final run normal exit; earlier003204 controlled interruption remains separately labelled. No new paid context request forced before cooldown."
+    }
+  },
+  "character_v2_latest": {
+    "as_of_utc": "2026-09-08T20:04:00Z",
+    "rendered_walk_pose_visually_confirmed": true,
+    "automatic_animation_playback_validated": true,
+    "visual_evidence": "NativeCharacters/face-render-sync/index.json",
+    "natural_playback_evidence": "NativeCharacters/natural-playback/index.json",
+    "code_default_enabled": true,
+    "code_built_and_copy_verified": true,
+    "cold_forge_installed_in_copy": true,
+    "cold_forge_visual_confirmed_in_copy": true,
+    "cold_forge_evidence": "NativeForge/success/workshop_review.json",
+    "formal_new_run_verified": true,
+    "formal_new_run_evidence": "Saved/ThreeHearths/AincradLevel0/Runs/town-20260908-200614.log#L1592-L1595",
+    "legacy_flag": "AincradLegacyAppearance",
+    "status": "V2 code/copy and cold_forge local visual checks recorded; formal new run loaded V2 in the same world; continuous run remains in progress"
+  },
+  "latest_personal_facts": {
+    "as_of_utc": "2026-09-08T20:43:56Z",
+    "evidence": "NativePersonalFacts/index.json",
+    "succeeded": 28,
+    "failed": 0,
+    "warnings": 0,
+    "facts": {
+      "current_place": "authoritative registered building_id/role and actual at_own_workpoint state",
+      "own_work_status": "owned/held item counts and open contracts; completed remains active until collected",
+      "tool_use_requirements": "edge=100+handle=100, owner/custodian self, registered work station, at least 1 wood; consume 1 wood and create 1 kindling"
+    },
+    "current_run_note": "20:43 requests contained these fields; residents may retain older guesses, so no behavior improvement is claimed."
+  },
+  "latest_trade_signs": {
+    "as_of_utc": "2026-09-08T21:23:00Z",
+    "evidence": "NativeTradeSigns/index.json",
+    "captured_count": 3,
+    "numeric_validation": true,
+    "visual_validation_in_helper": false,
+    "root_visual_acceptance": true,
+    "shadow_limited": true,
+    "npc_vision": false,
+    "resident_installation_claim": false,
+    "formal_world_sha256_prefix": "5956002d",
+    "failure_evidence": "NativeTradeSigns/failure/v2_trade_signs_20260908_2117/trade_sign_review.json",
+    "current_run_note": "town-20260908-212535 remains in progress; current checkpoint and paid totals untouched."
+  },
+  "latest_axe": {
+    "as_of_utc": "2026-09-08T22:05:00Z",
+    "evidence": "NativeAxe/index.json",
+    "formal_world_sha256_prefix": "b9f307ab",
+    "edge": 20,
+    "handle": 20,
+    "parts": [
+      "axe_handle_split",
+      "axe_head_chipped"
+    ],
+    "part_count": 2,
+    "numeric_validation": true,
+    "visual_validation_in_helper": false,
+    "root_visual_acceptance": true,
+    "lighting_limited": true,
+    "npc_vision": false,
+    "repair_completion_claim": false,
+    "full_material_lighting_claim": false,
+    "failure_evidence": "NativeAxe/failure/v2_axe_components_20260908_2201/axe_review.json",
+    "current_run_note": "town-20260908-220838 remains in progress; current checkpoint and paid totals untouched."
+  },
+  "latest_decision_boundary_tests": {
+    "as_of_utc": "2026-09-08T22:00:58Z",
+    "evidence": "NativeAxe/NativeAxeAliasTests/index.json",
+    "succeeded": 29,
+    "failed": 0,
+    "warnings": 0
+  },
+  "latest_held_tool_view": {
+    "as_of_utc": "2026-09-08T22:45:00Z",
+    "evidence": "NativeHeldToolView/index.json",
+    "formal_world_sha256_prefix": "3a1877ca",
+    "same_world_and_13_stable_ids": true,
+    "npc_vision": false,
+    "kimi_action": false,
+    "observation_source": "NPC same-eye-position local forced test; not submitted as a real Kimi autonomous request",
+    "first_round_edge_on_rejected": true,
+    "tool_inspection_yaw_offset_degrees": 110,
+    "actual_tool_yaw_degrees": 163.1063,
+    "tool_pivot_unchanged": true,
+    "tool_rotation_changed": true,
+    "resident_eye_body_facing_unchanged": true,
+    "obs57_obs58_camera_same": true,
+    "root_basic_observation_acceptance": true,
+    "dark_material_limited": true,
+    "complete_hand_raise_animation_missing": true,
+    "rgb_mae_normalized_about": 7e-05,
+    "rgb_mae_denominator": 255,
+    "explicit_grade_changed_visual": false,
+    "context_temporary_fill": false,
+    "repair_completion_claim": false,
+    "current_run_note": "town-20260908-224718 remains in progress; current checkpoint and paid totals untouched."
+  },
+  "latest_native_tests": {
+    "as_of_utc": "2026-09-09T00:45:00Z",
+    "evidence": "NativeDeliveryPortal/NativeDeliveryPortalTests/index.json",
+    "succeeded": 30,
+    "failed": 0,
+    "warnings": 0,
+    "not_run": 0
+  },
+  "runtime_continuity": {
+    "max_batch_seconds": 1800,
+    "ordinary_kimi_min_seconds": 1800,
+    "absolute_stop_at_epoch": 1788915600,
+    "reason": "Keep the world running through paid thought cooldowns; root remains active across batches.",
+    "first_continuous_batch_verified": true,
+    "first_continuous_batch_evidence": "Saved/ThreeHearths/AincradLevel0/Runs/town-20260908-200614.json",
+    "first_continuous_batch_seconds": 1800,
+    "first_continuous_batch_exit_code": 0
+  },
+  "latest_axe_steel_eye": {
+    "as_of_utc": "2026-09-08T23:20:00Z",
+    "evidence": "NativeAxeSteelEye/index.json",
+    "formal_world_sha256_prefix": "a8a79",
+    "same_life_coins_and_13_stable_ids": true,
+    "edge": 20,
+    "handle": 20,
+    "handles_sha_unchanged": true,
+    "head_meshes_have_real_handle_holes": true,
+    "blender_closed_face_check_passed": true,
+    "materials": [
+      "AT_IronLight",
+      "AT_SteelEdge"
+    ],
+    "ue_receipt_matches_new_materials": true,
+    "root_basic_native_readability_acceptance": true,
+    "tool_inspection_yaw_offset_degrees": 110,
+    "actual_tool_yaw_degrees": -136.8937,
+    "tool_pivot_unchanged": true,
+    "tool_rotation_changed": true,
+    "body_yaw_degrees": 113.1,
+    "previous_2245_body_yaw_degrees": 53.1,
+    "strict_same_camera_ab": false,
+    "floating_carried_position": true,
+    "complete_finger_grip": false,
+    "raised_hand_animation_complete": false,
+    "dark_material_limited": true,
+    "npc_vision": false,
+    "repair_completion_claim": false,
+    "current_run_note": "town-20260908-232450 remains in progress; current checkpoint untouched."
+  },
+  "latest_need_quote": {
+    "as_of_utc": "2026-09-09T00:00:00Z",
+    "evidence": "NativeNeedQuote/index.json",
+    "formal_world_sha256_before": "b47937292e113f131bb466720b73daad87eda9f2f9142a0d3eb575fb4bd41f82",
+    "formal_world_sha256_after": "b47937292e113f131bb466720b73daad87eda9f2f9142a0d3eb575fb4bd41f82",
+    "world_unchanged": true,
+    "tests_succeeded": 30,
+    "tests_failed": 0,
+    "quote_path_implemented": true,
+    "quote_selected_by_kimi": false,
+    "no_contract_or_payment_claim": true,
+    "current_paid_run_note": "town-20260909-003204 remains in progress; seq22 delivery and seq23 Erin wait are not yet settled."
+  },
+  "latest_delivery_portal": {
+    "as_of_utc": "2026-09-09T00:30:13Z",
+    "evidence": "NativeDeliveryPortal/index.json",
+    "formal_world_sha256": "85f6265f62984fd20808408986c2af636c9b5670bb73e074a453a42dfe110c5b",
+    "formal_world_unchanged": true,
+    "native_tests_succeeded": 30,
+    "native_tests_failed": 0,
+    "recovery_checks_passed": true,
+    "original_operation": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+    "delivered_once": true,
+    "reserved_col": 5,
+    "owner_and_13_ids_unchanged": true,
+    "custodian_after": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+    "pending_api_empty": true,
+    "repair_completion_claim": false,
+    "payment_claim": false,
+    "current_run": "town-20260909-003204 in progress; current totals/checkpoint untouched."
+  },
+  "latest_repair_transaction": {
+    "as_of_utc": "2026-09-09T00:45:00Z",
+    "evidence": "NativeRepairTransaction/index.json",
+    "run": "town-20260909-003204",
+    "life_seq": 25,
+    "edge_after": 100,
+    "handle_after": 20,
+    "contract18_status": "collected",
+    "payment_col": 5,
+    "coins_after": "Erin 95 / Takuma 205 / Kashiwagi 100",
+    "s4_tool_use_complete": false,
+    "cold_forge_or_wood_promise_executed": false,
+    "source_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+    "interruption_reason": "local context limit rejection; abnormal UE/runner exit; not normal completion",
+    "current_checkpoint_updated": false,
+    "api_context_fix_validated": false
+  },
+  "latest_context_budget": {
+    "as_of_utc": "2026-09-09T00:51:00Z",
+    "evidence": "NativeContextBudget/index.json",
+    "formal_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+    "native_tests": 30,
+    "offline_original_bytes": 24724,
+    "offline_after_dedup_bytes": 17327,
+    "received_letters_retained": true,
+    "normalizer_passed": true,
+    "api_writes": 0,
+    "ledger_writes": 0,
+    "recovery_checks": 9,
+    "fresh_paid_request_forced": false,
+    "current_run": "town-20260909-005335 in progress",
+    "prior_interruption_exit": 4294967295
+  },
+  "final_stop": {
+    "status": "stopped_at_user_deadline",
+    "deadline_utc": "2026-09-09T01:00:00Z",
+    "verified_utc": "2026-09-09T01:02:28.128526+00:00",
+    "final_run": "town-20260909-005335",
+    "final_run_ue_exit": 0,
+    "owned_children_stopped": true,
+    "gateway_endpoint_present": false,
+    "automation_id": "level0",
+    "automation_deleted": true,
+    "world_sha256": "f6d8bd614f858863f4de7c35b83e7415ddc6bc4a46a7f36ff2d3b631fb6a87ce",
+    "resident_count": 13,
+    "all_pending_operations_empty": true,
+    "life_seq": 25,
+    "settled_calls_this_session": 107,
+    "settled_cost_cny_this_session": 3.618313,
+    "prior_uncertain_count_preserved": 6,
+    "prior_uncertain_reserved_cny_preserved": 10.265088,
+    "repair_result": "contract18 collected; 5 Col paid; edge100; handle20 explicitly deferred",
+    "context_fix_validation": "build, native 30 tests, offline real rejected payload, 9 copy-world recovery checks; no fresh paid request forced",
+    "new_work_after_deadline": false
+  }
+}

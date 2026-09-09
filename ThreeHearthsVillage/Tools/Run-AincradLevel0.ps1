@@ -1,9 +1,14 @@
-param([ValidateRange(0,600)][int]$ReviewSeconds=0,[switch]$Capture,[switch]$Offscreen)
+param([ValidateRange(0,600)][int]$ReviewSeconds=0,[switch]$Capture,[switch]$Offscreen,[string]$EditorPath='')
 $ErrorActionPreference='Stop'
 $project=Split-Path -Parent $PSScriptRoot
-$editor='C:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe'
-if(-not(Test-Path -LiteralPath $editor)){throw 'Set $editor to the installed UE 5.8 editor.'}
-$argsList=@(('"'+(Join-Path $project 'CropoutSampleProject.uproject')+'"'),'/Game/ThreeHearths/Maps/L_AincradLevel0','-game','-windowed','-ResX=1600','-ResY=1000','-nosplash','-nop4','-HearthDisableApi','-ExecCmds="t.MaxFPS 30"')
+$world=Join-Path $project 'Saved\ThreeHearths\AincradLevel0\world.json'
+$projectFile=Join-Path $project 'CropoutSampleProject.uproject'
+if(-not(Test-Path -LiteralPath $projectFile -PathType Leaf)){throw 'Level0 project file is missing.'}
+if(-not(Test-Path -LiteralPath $world -PathType Leaf)){throw 'Existing AincradLevel0 world.json is required; refusing to create a new world.'}
+$editorCandidates=@('D:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe','C:\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe')
+$editor=if($EditorPath){$EditorPath}else{$editorCandidates|Where-Object{Test-Path -LiteralPath $_ -PathType Leaf}|Select-Object -First 1}
+if(-not $editor -or -not(Test-Path -LiteralPath $editor -PathType Leaf)){throw 'UnrealEditor.exe was not found; pass -EditorPath.'}
+$argsList=@(('"'+$projectFile+'"'),'/Game/ThreeHearths/Maps/L_AincradLevel0','-game','-windowed','-ResX=1600','-ResY=1000','-nosplash','-nop4','-HearthDisableApi','-ExecCmds="t.MaxFPS 30"')
 if($Capture){$argsList+='-AincradCapture'}
 if($ReviewSeconds -gt 0){$argsList+=('-AincradReviewSeconds='+$ReviewSeconds)}
 $records=Join-Path $project 'Saved\ThreeHearths\AincradLevel0\Runs'

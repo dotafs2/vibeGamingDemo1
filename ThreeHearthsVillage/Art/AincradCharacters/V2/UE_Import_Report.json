@@ -1,0 +1,129 @@
+{
+  "revision": 2,
+  "destination": "/Game/ThreeHearths/Generated/AincradCharactersV2",
+  "assets": [
+    {
+      "id": "Aileen",
+      "mesh": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/SK_Aileen.SK_Aileen",
+      "skeleton": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/SK_Aileen_Skeleton.SK_Aileen_Skeleton",
+      "mesh_bounds_cm": [
+        99.28800201416016,
+        35.65700149536133,
+        173.35868552327156
+      ],
+      "manifest_height_m": 1.7335868934169412,
+      "measured_height_m": 1.7335868552327156,
+      "source_sha256": "5852f11c9fd2972cc75829d261f6c55990035c7646a870c68fe310d1a4e83c66",
+      "animations": [
+        {
+          "clip": "Idle",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Idle.AC_Aileen_Idle",
+          "duration_s": 1.0,
+          "source_sha256": "729ef05c403de68f69a4c08eacd07da24f3a396b1bfa1acde204e89845df16d6"
+        },
+        {
+          "clip": "Walk",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Walk.AC_Aileen_Walk",
+          "duration_s": 1.0,
+          "source_sha256": "a5dd7ad53c365850fc9c7531da37a3cfbe8056754e2c82af37ff317f2bbb0fa6"
+        }
+      ],
+      "material_slots": {
+        "AC_Aileen_Accent": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Accent.MI_Aileen_Accent",
+        "AC_Aileen_Skin": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Skin.MI_Aileen_Skin",
+        "AC_Aileen_White": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_White.MI_Aileen_White",
+        "AC_Aileen_Iris": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Iris.MI_Aileen_Iris",
+        "AC_Aileen_Ink": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Ink.MI_Aileen_Ink",
+        "AC_Aileen_Hair": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Hair.MI_Aileen_Hair",
+        "AC_Aileen_Mouth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Mouth.MI_Aileen_Mouth",
+        "AC_Aileen_HairLight": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_HairLight.MI_Aileen_HairLight",
+        "AC_Aileen_Cloth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Cloth.MI_Aileen_Cloth",
+        "AC_Aileen_Boot": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Boot.MI_Aileen_Boot",
+        "AC_Aileen_Leather": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Leather.MI_Aileen_Leather",
+        "AC_Aileen_Metal": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Metal.MI_Aileen_Metal"
+      }
+    },
+    {
+      "id": "Takuma",
+      "mesh": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/SK_Takuma.SK_Takuma",
+      "skeleton": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/SK_Takuma_Skeleton.SK_Takuma_Skeleton",
+      "mesh_bounds_cm": [
+        104.63040161132812,
+        31.41837787628174,
+        182.68662190437317
+      ],
+      "manifest_height_m": 1.8268662095069885,
+      "measured_height_m": 1.8268662190437317,
+      "source_sha256": "087c78593231462aded3fde2821efe544a12498dfec00348f207446659c297a8",
+      "animations": [
+        {
+          "clip": "Idle",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Idle.AC_Takuma_Idle",
+          "duration_s": 1.0,
+          "source_sha256": "9437a5a29016e5a21ecf4e6893290d0ce46965faeacb07525c691fcef232d5b6"
+        },
+        {
+          "clip": "Walk",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Walk.AC_Takuma_Walk",
+          "duration_s": 1.0,
+          "source_sha256": "e501a057da2267ab84bafe41bd928246a692e429988dcd95c4be27caa51b51bb"
+        }
+      ],
+      "material_slots": {
+        "AC_Takuma_Accent": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Accent.MI_Takuma_Accent",
+        "AC_Takuma_Skin": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Skin.MI_Takuma_Skin",
+        "AC_Takuma_White": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_White.MI_Takuma_White",
+        "AC_Takuma_Iris": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Iris.MI_Takuma_Iris",
+        "AC_Takuma_Ink": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Ink.MI_Takuma_Ink",
+        "AC_Takuma_Hair": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Hair.MI_Takuma_Hair",
+        "AC_Takuma_Mouth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Mouth.MI_Takuma_Mouth",
+        "AC_Takuma_HairLight": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_HairLight.MI_Takuma_HairLight",
+        "AC_Takuma_Cloth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Cloth.MI_Takuma_Cloth",
+        "AC_Takuma_Boot": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Boot.MI_Takuma_Boot",
+        "AC_Takuma_Leather": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Leather.MI_Takuma_Leather",
+        "AC_Takuma_Metal": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Metal.MI_Takuma_Metal"
+      }
+    },
+    {
+      "id": "Kashiwagi",
+      "mesh": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/SK_Kashiwagi.SK_Kashiwagi",
+      "skeleton": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/SK_Kashiwagi_Skeleton.SK_Kashiwagi_Skeleton",
+      "mesh_bounds_cm": [
+        100.80000305175781,
+        31.20000171661377,
+        175.99866637587547
+      ],
+      "manifest_height_m": 1.7599867065437138,
+      "measured_height_m": 1.7599866637587547,
+      "source_sha256": "e246417ba0cbfadc4dab50e7fa8ff25522fa30bb0caa98dda00751ac80effe40",
+      "animations": [
+        {
+          "clip": "Idle",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Idle.AC_Kashiwagi_Idle",
+          "duration_s": 1.0,
+          "source_sha256": "97c1b57d1304f7c3da7c14c34dd9d0c92a5f8364ba27a65054bb8eabf2cabae5"
+        },
+        {
+          "clip": "Walk",
+          "path": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Walk.AC_Kashiwagi_Walk",
+          "duration_s": 1.0,
+          "source_sha256": "4576b8a7b2d90c4f75ca812d09c0492258a76b37401fdc56560efc670f53c4f9"
+        }
+      ],
+      "material_slots": {
+        "AC_Kashiwagi_Accent": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Accent.MI_Kashiwagi_Accent",
+        "AC_Kashiwagi_Skin": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Skin.MI_Kashiwagi_Skin",
+        "AC_Kashiwagi_White": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_White.MI_Kashiwagi_White",
+        "AC_Kashiwagi_Iris": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Iris.MI_Kashiwagi_Iris",
+        "AC_Kashiwagi_Ink": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Ink.MI_Kashiwagi_Ink",
+        "AC_Kashiwagi_Hair": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Hair.MI_Kashiwagi_Hair",
+        "AC_Kashiwagi_Mouth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Mouth.MI_Kashiwagi_Mouth",
+        "AC_Kashiwagi_HairLight": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_HairLight.MI_Kashiwagi_HairLight",
+        "AC_Kashiwagi_Cloth": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Cloth.MI_Kashiwagi_Cloth",
+        "AC_Kashiwagi_Boot": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Boot.MI_Kashiwagi_Boot",
+        "AC_Kashiwagi_Leather": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Leather.MI_Kashiwagi_Leather",
+        "AC_Kashiwagi_Metal": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Metal.MI_Kashiwagi_Metal"
+      }
+    }
+  ]
+}

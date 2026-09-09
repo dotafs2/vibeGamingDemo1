@@ -1,0 +1,90 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "revision": 1,
+  "source_axis": "Blender meters, +Z up, +Y facade; UE import=(x,-y,z)*100; native facade -Y",
+  "scope": "Static original cold forge fixtures. No new inventory, fuel, coins, work claims, heat or crafting capability. Installation is separate from generation.",
+  "assets": [
+    {
+      "id": "forge_masonry_hearth",
+      "glb": "Modules/forge_masonry_hearth.glb",
+      "role": "reusable unlit masonry hearth with open ash arch",
+      "vertices": 4168,
+      "triangles": 8044,
+      "objects": 73,
+      "bounds_min_m": [
+        -0.6000000238418579,
+        -0.6000000238418579,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.6000000238418579,
+        0.6389999985694885,
+        1.4249999523162842
+      ],
+      "uv": "metric projected UV0; common town material palette",
+      "materials": [
+        "AT_Iron",
+        "AT_Stone",
+        "AT_StoneLight",
+        "AT_Terracotta",
+        "AT_TerracottaLight"
+      ]
+    },
+    {
+      "id": "forge_hand_bellows",
+      "glb": "Modules/forge_hand_bellows.glb",
+      "role": "reusable stationary leather bellows and rack",
+      "vertices": 1481,
+      "triangles": 2864,
+      "objects": 13,
+      "bounds_min_m": [
+        -0.22553464770317078,
+        -0.7019385099411011,
+        -0.75
+      ],
+      "bounds_max_m": [
+        0.22553466260433197,
+        0.6150000095367432,
+        0.350757360458374
+      ],
+      "uv": "metric projected UV0; common town material palette",
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    },
+    {
+      "id": "smithy_cold_forge",
+      "glb": "Modules/smithy_cold_forge.glb",
+      "role": "replacement visual for the existing smithy gray pedestal; no lit fuel or inventory",
+      "vertices": 5705,
+      "triangles": 11016,
+      "objects": 87,
+      "bounds_min_m": [
+        -1.4019384384155273,
+        -0.6000000238418579,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.8300000429153442,
+        0.6389999985694885,
+        1.4249999523162842
+      ],
+      "uv": "metric projected UV0; common town material palette",
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Stone",
+        "AT_StoneLight",
+        "AT_Terracotta",
+        "AT_TerracottaLight",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    }
+  ]
+}

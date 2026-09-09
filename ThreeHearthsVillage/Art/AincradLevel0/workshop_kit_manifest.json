@@ -1,0 +1,155 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "revision": 1,
+  "source_axis": "Blender meters, +Z up, +Y facade; UE import=(x,-y,z)*100; native facade -Y",
+  "scope": "Original static fixtures. Two existing work-table replacements; four reusable components. No new stock, wealth, skills, actions, repair animations or forced NPC choice.",
+  "assets": [
+    {
+      "id": "bench_vise",
+      "glb": "Modules/bench_vise.glb",
+      "role": "reusable carpentry vise",
+      "vertices": 688,
+      "triangles": 1344,
+      "objects": 8,
+      "bounds_min_m": [
+        -0.1599999964237213,
+        -0.3009999990463257,
+        0.01499999314546585
+      ],
+      "bounds_max_m": [
+        0.1599999964237213,
+        0.10000000149011612,
+        0.24500000476837158
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    },
+    {
+      "id": "hand_plane",
+      "glb": "Modules/hand_plane.glb",
+      "role": "reusable hand plane",
+      "vertices": 360,
+      "triangles": 700,
+      "objects": 5,
+      "bounds_min_m": [
+        -0.13500000536441803,
+        -0.04650000110268593,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.13500000536441803,
+        0.04650000110268593,
+        0.13249999284744263
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Iron",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    },
+    {
+      "id": "bench_anvil",
+      "glb": "Modules/bench_anvil.glb",
+      "role": "reusable mounted anvil",
+      "vertices": 714,
+      "triangles": 1396,
+      "objects": 8,
+      "bounds_min_m": [
+        -0.26499998569488525,
+        -0.125,
+        0.0
+      ],
+      "bounds_max_m": [
+        0.5299999713897705,
+        0.125,
+        0.33000001311302185
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Brass",
+        "AT_Iron"
+      ]
+    },
+    {
+      "id": "smith_hand_tools",
+      "glb": "Modules/smith_hand_tools.glb",
+      "role": "reusable hammer and tongs",
+      "vertices": 432,
+      "triangles": 836,
+      "objects": 7,
+      "bounds_min_m": [
+        -0.20000000298023224,
+        -0.1274999976158142,
+        0.0020000003278255463
+      ],
+      "bounds_max_m": [
+        0.1875,
+        0.10081850737333298,
+        0.07199999690055847
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_TimberLight"
+      ]
+    },
+    {
+      "id": "carpentry_workbench",
+      "glb": "Modules/carpentry_workbench.glb",
+      "role": "existing carpenter work-table visual",
+      "vertices": 3384,
+      "triangles": 6572,
+      "objects": 49,
+      "bounds_min_m": [
+        -0.8999999761581421,
+        -0.6460000276565552,
+        -0.001937774010002613
+      ],
+      "bounds_max_m": [
+        0.8999999761581421,
+        0.4090000092983246,
+        1.0175000429153442
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    },
+    {
+      "id": "smithy_workbench",
+      "glb": "Modules/smithy_workbench.glb",
+      "role": "existing smith work-table visual",
+      "vertices": 3426,
+      "triangles": 6652,
+      "objects": 50,
+      "bounds_min_m": [
+        -0.8999999761581421,
+        -0.4090000092983246,
+        -0.001937774010002613
+      ],
+      "bounds_max_m": [
+        0.8999999761581421,
+        0.41012465953826904,
+        1.2380000352859497
+      ],
+      "uv": "UV0 metric projected; shared material palette",
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ]
+    }
+  ]
+}

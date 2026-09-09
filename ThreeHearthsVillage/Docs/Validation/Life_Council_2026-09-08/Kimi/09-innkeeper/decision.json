@@ -1,0 +1,15 @@
+{
+  "action": "wait",
+  "utterance": "",
+  "visible": "室内绿色地面，前方地面上有一把黑柄红身的工具（柴斧），右侧有深色柜台或桌子，远处墙上有蓝色百叶窗。看起来是旅店内部空间。",
+  "uncertain": "柏木是否在线、是否愿意重新接单、修柄所需时间未知；当前旅店是否有客人到来未知。",
+  "goal": "在岗位上等待，观察是否有旅人前来，同时思考木料扩充与斧子修理的优先级。",
+  "need": "旅店木料仅2单位，需要扩充客房但资金有限；斧子修好后可自行获取木料，但目前两次委托又取消，需先稳定决策。",
+  "life_context": {
+    "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+    "coins_col": 100,
+    "wood": 2,
+    "contracts_cancelled_twice_to_baumu": true,
+    "current_phase": "idle_at_workpoint"
+  }
+}

@@ -10,6 +10,7 @@ class USkeletalMeshComponent;
 class FJsonObject;
 class IHttpResponse;
 class UStaticMeshComponent;
+class UStaticMesh;
 
 /**
  * Independent Level0 resident visual.  This actor deliberately does not use
@@ -30,6 +31,9 @@ public:
     TObjectPtr<USkeletalMeshComponent> Body;
 
     void SetWalking(bool bWalking);
+
+    /** Applies a verified V2 identity appearance atomically; leaves the legacy appearance intact on failure. */
+    bool ConfigureIdentityAppearance(const FString& ResidentRole, float MeshYawDegrees);
 
 private:
     UPROPERTY()
@@ -54,6 +58,7 @@ class THREEHEARTHS_API AHearthAincradResidentRuntime : public AActor
 
 public:
     AHearthAincradResidentRuntime();
+    AHearthAincradResidentRuntime(FVTableHelper& Helper);
     ~AHearthAincradResidentRuntime();
 
     virtual void Tick(float DeltaSeconds) override;
@@ -94,6 +99,8 @@ private:
     double ExerciseStartedAt = 0.0;
     uint8 ExerciseStage = 0;
     bool bExerciseRoutes = false;
+    bool bLookExerciseStarted = false;
+    bool bHeldToolExerciseRecaptured = false;
     bool bLifeEnabled = false;
     bool bLifeSaveFailed = false;
     int32 DecisionLimit = 3;
@@ -102,15 +109,24 @@ private:
     UPROPERTY() TObjectPtr<AActor> LifeToolVisual;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> LifeBlade;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> LifeHandle;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> LifeBladeEdge;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeAxeHandleSound;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeAxeHandleSplit;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeAxeHeadSharp;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeAxeHeadChipped;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeLegacyCylinder;
+    UPROPERTY() TObjectPtr<UStaticMesh> LifeLegacyCube;
+    int32 LifeAxeVisualState = INDEX_NONE;
     UPROPERTY() TObjectPtr<AActor> LifeSuppliesVisual;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LifeSupplyPieces;
 
     void RebindLifeState();
     bool StartLifeAction(FResidentSlot& Slot, const FString& OptionId, const FString& Utterance, const FString& OperationId);
-    bool TravelForLife(FResidentSlot& Slot, const FString& BuildingId, bool bMeeting);
+    bool TravelForLife(FResidentSlot& Slot, const FString& BuildingId, bool bMeeting, const FString& Source = TEXT("kimi"));
     void AdvanceLife(FResidentSlot& Slot, float DeltaSeconds);
     bool CommitLife(FResidentSlot& Slot);
     void UpdateLifeVisual();
+    bool ResolveHeldToolTarget(FResidentSlot& Slot, AActor*& OutActor, FString& OutItemId) const;
     bool HasLifeTrigger(const FResidentSlot& Slot) const;
     bool RestoreLifeRoute(FResidentSlot& Slot) const;
 
@@ -126,6 +142,7 @@ private:
         const FString& Source = FString(), bool bLookInside = false);
     bool CaptureForDecision(FResidentSlot& Slot);
     void AdvanceSlot(FResidentSlot& Slot, float DeltaSeconds);
+    void AdvanceLook(FResidentSlot& Slot, float DeltaSeconds);
     void AdvanceObservationScheduling(FResidentSlot& Slot, double NowUtc);
     void AdvanceRouteExercise();
     void DispatchDecision(FResidentSlot& Slot);

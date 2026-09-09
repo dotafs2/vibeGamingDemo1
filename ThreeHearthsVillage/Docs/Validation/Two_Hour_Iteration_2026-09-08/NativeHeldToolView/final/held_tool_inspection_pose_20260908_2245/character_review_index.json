@@ -1,0 +1,947 @@
+{
+	"source": "local_verification",
+	"sampling_method": "explicit SetWalking, SetPosition(0.25), TickAnimation(0), RefreshBoneTransforms",
+	"verification_world": "D:/Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/VerificationWorlds/held_tool_inspection_pose_20260908_2245.json",
+	"copy_name": "held_tool_inspection_pose_20260908_2245",
+	"npc_vision": false,
+	"kimi_action": false,
+	"automatic_animation_playback_validated": true,
+	"automatic_animation_playback_status": "passed",
+	"automatic_animation_playback_method": "Walk reset to zero, then sampled across at least 0.2 wall seconds and two natural frames without manual TickAnimation or RefreshBoneTransforms",
+	"automatic_animation_playback": [
+		{
+			"character": "Aileen",
+			"command_frame": 217,
+			"start_frame": 218,
+			"end_frame": 224,
+			"start_position_seconds": 0.033333402127027512,
+			"elapsed_wall_seconds": 0.20006310194730759,
+			"start_bones_world_cm":
+			{
+				"hand_L": [
+					-1306.7135846579486,
+					467016.79602746206,
+					86.001060933962108
+				],
+				"hand_R": [
+					-1269.8522244122489,
+					466986.5905153894,
+					86.062129346585067
+				],
+				"foot_L": [
+					-1299.4931904763368,
+					467004.59176928567,
+					10.36097609364321
+				],
+				"foot_R": [
+					-1280.6707674390057,
+					466996.86309908854,
+					10.338670907203451
+				]
+			},
+			"end_bones_world_cm":
+			{
+				"hand_L": [
+					-1295.2577442953914,
+					467019.62403476599,
+					87.576060764671155
+				],
+				"hand_R": [
+					-1269.5941732316196,
+					466976.46972842491,
+					87.712223395820956
+				],
+				"foot_L": [
+					-1309.5338620740879,
+					466991.79690943775,
+					12.406023549832
+				],
+				"foot_R": [
+					-1264.8585125936409,
+					467018.78224752832,
+					16.722286298491156
+				]
+			},
+			"start_wall_seconds": 17580844.933898799,
+			"end_wall_seconds": 17580845.133961901,
+			"end_position_seconds": 0.23333409428596497,
+			"position_advance_seconds": 0.20000068843364716,
+			"start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Walk.AC_Aileen_Walk",
+			"end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Walk.AC_Aileen_Walk",
+			"start_playing": true,
+			"end_playing": true,
+			"max_required_bone_delta_cm": 27.770975112915039,
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"timed_out": false,
+			"passed": true
+		},
+		{
+			"character": "Takuma",
+			"command_frame": 217,
+			"start_frame": 218,
+			"end_frame": 224,
+			"start_position_seconds": 0.033333402127027512,
+			"elapsed_wall_seconds": 0.20006310194730759,
+			"start_bones_world_cm":
+			{
+				"hand_L": [
+					1544.1188441610357,
+					464865.93935477815,
+					90.628228686782876
+				],
+				"hand_R": [
+					1498.2832005566779,
+					464845.4106453234,
+					90.69293620623003
+				],
+				"foot_L": [
+					1529.2130887519781,
+					464864.87683381792,
+					10.91847796724673
+				],
+				"foot_R": [
+					1513.0641362530696,
+					464850.77081468189,
+					10.894973783668078
+				]
+			},
+			"end_bones_world_cm":
+			{
+				"hand_L": [
+					1541.390666663166,
+					464853.80578407098,
+					92.28828856870723
+				],
+				"hand_R": [
+					1488.6225786974842,
+					464849.93049796356,
+					92.431752433549804
+				],
+				"foot_L": [
+					1521.8782487952185,
+					464880.36735563737,
+					13.073561094669088
+				],
+				"foot_R": [
+					1526.2834423978841,
+					464825.54283793591,
+					17.622078606781095
+				]
+			},
+			"start_wall_seconds": 17580844.933898799,
+			"end_wall_seconds": 17580845.133961901,
+			"end_position_seconds": 0.23333409428596497,
+			"position_advance_seconds": 0.20000068843364716,
+			"start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Walk.AC_Takuma_Walk",
+			"end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Walk.AC_Takuma_Walk",
+			"start_playing": true,
+			"end_playing": true,
+			"max_required_bone_delta_cm": 29.265249252319336,
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"timed_out": false,
+			"passed": true
+		},
+		{
+			"character": "Kashiwagi",
+			"command_frame": 217,
+			"start_frame": 218,
+			"end_frame": 224,
+			"start_position_seconds": 0.033333402127027512,
+			"elapsed_wall_seconds": 0.20006310194730759,
+			"start_bones_world_cm":
+			{
+				"hand_L": [
+					-1513.7492345203834,
+					462162.31728003622,
+					87.3107299473468
+				],
+				"hand_R": [
+					-1518.4896421208744,
+					462114.16787064727,
+					87.372732470761036
+				],
+				"foot_L": [
+					-1519.987759687004,
+					462149.34309009981,
+					10.518765404125006
+				],
+				"foot_R": [
+					-1515.9096366031611,
+					462129.09240160621,
+					10.496121008087336
+				]
+			},
+			"end_bones_world_cm":
+			{
+				"hand_L": [
+					-1504.906149782797,
+					462154.23585948284,
+					88.909725661679403
+				],
+				"hand_R": [
+					-1526.8914986232314,
+					462108.24754405936,
+					89.04795672297999
+				],
+				"foot_L": [
+					-1536.4506728949139,
+					462150.61365180509,
+					12.594956361879696
+				],
+				"foot_R": [
+					-1488.4890988408481,
+					462128.08850967907,
+					16.976949556764993
+				]
+			},
+			"start_wall_seconds": 17580844.933898799,
+			"end_wall_seconds": 17580845.133961901,
+			"end_position_seconds": 0.23333409428596497,
+			"position_advance_seconds": 0.20000068843364716,
+			"start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Walk.AC_Kashiwagi_Walk",
+			"end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Walk.AC_Kashiwagi_Walk",
+			"start_playing": true,
+			"end_playing": true,
+			"max_required_bone_delta_cm": 28.193880081176758,
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"timed_out": false,
+			"passed": true
+		}
+	],
+	"cpu_pose_status": "validated from required bone transforms at 0.25 seconds",
+	"render_pose_submission": "review-only render-state recreation and end-of-frame render update after each sampled pose",
+	"render_pose_status": "captured; requires visual confirmation",
+	"shared_view_grade_applied": true,
+	"isolated_character_temporary_fill_light": true,
+	"context_temporary_fill_light": false,
+	"prior_same_tick_evidence_interpretation": "CPU pose passed; render pose remained unconfirmed because same-frame bone revisions can be reused",
+	"isolated_pose_frames_environment_hidden": true,
+	"context_frame_policy": "one additional idle front frame per character renders the scene environment at the unchanged actor location",
+	"characters": [
+		{
+			"character": "Aileen",
+			"actor_before":
+			{
+				"location_cm": [
+					-1290.5684814453125,
+					467000,
+					92
+				],
+				"rotation_quaternion": [
+					0,
+					-0,
+					0.44702798158801921,
+					0.89451997388394922
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_before":
+			{
+				"location_cm": [
+					-1290.5684814453125,
+					467000,
+					92
+				],
+				"rotation_quaternion": [
+					0,
+					-0,
+					0.44702798158801921,
+					0.89451997388394922
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_radius_cm": 42,
+			"capsule_half_height_cm": 85,
+			"mesh_bounds_origin_cm": [
+				-1289.5632247140657,
+				467001.33918404515,
+				87.07334278523922
+			],
+			"mesh_bounds_box_extent_cm": [
+				50.405854249411902,
+				44.061240610618356,
+				86.67934276163578
+			],
+			"material_slot_count": 12,
+			"materials": [
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Accent.MI_Aileen_Accent",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Skin.MI_Aileen_Skin",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_White.MI_Aileen_White",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Iris.MI_Aileen_Iris",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Ink.MI_Aileen_Ink",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Hair.MI_Aileen_Hair",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Mouth.MI_Aileen_Mouth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_HairLight.MI_Aileen_HairLight",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Cloth.MI_Aileen_Cloth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Boot.MI_Aileen_Boot",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Leather.MI_Aileen_Leather",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/Materials/MI_Aileen_Metal.MI_Aileen_Metal"
+			],
+			"materials_valid": true,
+			"required_bones_valid": true,
+			"Idle_actual_sample_time_seconds": 0.25,
+			"Idle_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Aileen_Idle_front.png",
+			"Idle_front_exists": true,
+			"Idle_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Aileen_Idle_side.png",
+			"Idle_side_exists": true,
+			"Idle_front_context_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Aileen_Idle_front_context.png",
+			"Idle_front_context_exists": true,
+			"Idle_front_context_environment_hidden": false,
+			"Idle_bones_world_cm":
+			{
+				"hand_L": [
+					-1309.9268563923983,
+					467015.25915899203,
+					85.852886680759468
+				],
+				"hand_R": [
+					-1270.5112299457412,
+					466985.67187116126,
+					85.852886680759468
+				],
+				"foot_L": [
+					-1298.4460089749628,
+					467005.91328365199,
+					10.342498927777413
+				],
+				"foot_R": [
+					-1282.6909269938938,
+					466994.08675221266,
+					10.342498927777413
+				]
+			},
+			"Walk_actual_sample_time_seconds": 0.25,
+			"Walk_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Aileen_Walk_front.png",
+			"Walk_front_exists": true,
+			"Walk_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Aileen_Walk_side.png",
+			"Walk_side_exists": true,
+			"Walk_bones_world_cm":
+			{
+				"hand_L": [
+					-1295.2577436466877,
+					467019.62403496762,
+					87.576061031720684
+				],
+				"hand_R": [
+					-1269.5941732316196,
+					466976.46972842491,
+					87.712223395820956
+				],
+				"foot_L": [
+					-1309.5338621320013,
+					466991.79690912814,
+					12.406023633408971
+				],
+				"foot_R": [
+					-1264.8585125869663,
+					467018.78224752424,
+					16.722286298845525
+				]
+			},
+			"max_hand_idle_walk_delta_cm": 15.401439666748047,
+			"max_foot_idle_walk_delta_cm": 31.121763229370117,
+			"actor_after":
+			{
+				"location_cm": [
+					-1290.5684814453125,
+					467000,
+					92
+				],
+				"rotation_quaternion": [
+					0,
+					-0,
+					0.44702798158801921,
+					0.89451997388394922
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_after":
+			{
+				"location_cm": [
+					-1290.5684814453125,
+					467000,
+					92
+				],
+				"rotation_quaternion": [
+					0,
+					-0,
+					0.44702798158801921,
+					0.89451997388394922
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"sample_times_valid": true,
+			"cpu_pose_passed": true,
+			"render_pose_capture_completed": true,
+			"render_pose_visually_confirmed": false,
+			"passed": false
+		},
+		{
+			"character": "Kashiwagi",
+			"actor_before":
+			{
+				"location_cm": [
+					-1518.837158203125,
+					462139.21875,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.027782782131275083,
+					0.99961398400434875
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_before":
+			{
+				"location_cm": [
+					-1518.837158203125,
+					462139.21875,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.027782782131275083,
+					0.99961398400434875
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_radius_cm": 42,
+			"capsule_half_height_cm": 85,
+			"mesh_bounds_origin_cm": [
+				-1514.6436417345212,
+				462138.98546470085,
+				88.399333193898201
+			],
+			"mesh_bounds_box_extent_cm": [
+				18.375341591990558,
+				51.188683961544093,
+				87.999333187937737
+			],
+			"material_slot_count": 12,
+			"materials": [
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Accent.MI_Kashiwagi_Accent",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Skin.MI_Kashiwagi_Skin",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_White.MI_Kashiwagi_White",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Iris.MI_Kashiwagi_Iris",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Ink.MI_Kashiwagi_Ink",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Hair.MI_Kashiwagi_Hair",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Mouth.MI_Kashiwagi_Mouth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_HairLight.MI_Kashiwagi_HairLight",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Cloth.MI_Kashiwagi_Cloth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Boot.MI_Kashiwagi_Boot",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Leather.MI_Kashiwagi_Leather",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/Materials/MI_Kashiwagi_Metal.MI_Kashiwagi_Metal"
+			],
+			"materials_valid": true,
+			"required_bones_valid": true,
+			"Idle_actual_sample_time_seconds": 0.25,
+			"Idle_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Kashiwagi_Idle_front.png",
+			"Idle_front_exists": true,
+			"Idle_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Kashiwagi_Idle_side.png",
+			"Idle_side_exists": true,
+			"Idle_front_context_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Kashiwagi_Idle_front_context.png",
+			"Idle_front_context_exists": true,
+			"Idle_front_context_environment_hidden": false,
+			"Idle_bones_world_cm":
+			{
+				"hand_L": [
+					-1516.8574609058414,
+					462164.16497567215,
+					87.16029841009312
+				],
+				"hand_R": [
+					-1519.6366301516528,
+					462114.20686839789,
+					87.16029841009312
+				],
+				"foot_L": [
+					-1518.2816953526935,
+					462149.20330453222,
+					10.500007117685143
+				],
+				"foot_R": [
+					-1519.3925769218538,
+					462129.23419301276,
+					10.500007117685143
+				]
+			},
+			"Walk_actual_sample_time_seconds": 0.25,
+			"Walk_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Kashiwagi_Walk_front.png",
+			"Walk_front_exists": true,
+			"Walk_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Kashiwagi_Walk_side.png",
+			"Walk_side_exists": true,
+			"Walk_bones_world_cm":
+			{
+				"hand_L": [
+					-1504.9061494964362,
+					462154.2358593783,
+					88.909725743404152
+				],
+				"hand_R": [
+					-1526.8914986232314,
+					462108.24754405936,
+					89.04795672297999
+				],
+				"foot_L": [
+					-1536.4506731944628,
+					462150.61365160678,
+					12.594956444725753
+				],
+				"foot_R": [
+					-1488.4890988411928,
+					462128.08850968699,
+					16.976949556405216
+				]
+			},
+			"max_hand_idle_walk_delta_cm": 15.635910034179688,
+			"max_foot_idle_walk_delta_cm": 31.595701217651367,
+			"actor_after":
+			{
+				"location_cm": [
+					-1518.837158203125,
+					462139.21875,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.027782782131275083,
+					0.99961398400434875
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_after":
+			{
+				"location_cm": [
+					-1518.837158203125,
+					462139.21875,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.027782782131275083,
+					0.99961398400434875
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"sample_times_valid": true,
+			"cpu_pose_passed": true,
+			"render_pose_capture_completed": true,
+			"render_pose_visually_confirmed": false,
+			"passed": false
+		},
+		{
+			"character": "Takuma",
+			"actor_before":
+			{
+				"location_cm": [
+					1520.681884765625,
+					464858.625,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.52571742822719203,
+					0.85065926531025748
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_before":
+			{
+				"location_cm": [
+					1520.681884765625,
+					464858.625,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.52571742822719203,
+					0.85065926531025748
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_radius_cm": 42,
+			"capsule_half_height_cm": 85,
+			"mesh_bounds_origin_cm": [
+				1522.8479742291374,
+				464854.29316949419,
+				91.758510947227478
+			],
+			"mesh_bounds_box_extent_cm": [
+				53.817200278779737,
+				37.448074167587585,
+				91.343310952186584
+			],
+			"material_slot_count": 12,
+			"materials": [
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Accent.MI_Takuma_Accent",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Skin.MI_Takuma_Skin",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_White.MI_Takuma_White",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Iris.MI_Takuma_Iris",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Ink.MI_Takuma_Ink",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Hair.MI_Takuma_Hair",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Mouth.MI_Takuma_Mouth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_HairLight.MI_Takuma_HairLight",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Cloth.MI_Takuma_Cloth",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Boot.MI_Takuma_Boot",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Leather.MI_Takuma_Leather",
+				"/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/Materials/MI_Takuma_Metal.MI_Takuma_Metal"
+			],
+			"materials_valid": true,
+			"required_bones_valid": true,
+			"Idle_actual_sample_time_seconds": 0.25,
+			"Idle_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Takuma_Idle_front.png",
+			"Idle_front_exists": true,
+			"Idle_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Takuma_Idle_side.png",
+			"Idle_side_exists": true,
+			"Idle_front_context_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Takuma_Idle_front_context.png",
+			"Idle_front_context_exists": true,
+			"Idle_front_context_environment_hidden": false,
+			"Idle_bones_world_cm":
+			{
+				"hand_L": [
+					1544.1826640895645,
+					464869.69040191837,
+					90.472383735985446
+				],
+				"hand_R": [
+					1497.729878210647,
+					464846.46214081527,
+					90.472383735985446
+				],
+				"foot_L": [
+					1529.9658925840151,
+					464863.26735486055,
+					10.899007066806227
+				],
+				"foot_R": [
+					1511.397894882472,
+					464853.98260927183,
+					10.899007066806227
+				]
+			},
+			"Walk_actual_sample_time_seconds": 0.25,
+			"Walk_front_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Takuma_Walk_front.png",
+			"Walk_front_exists": true,
+			"Walk_side_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/Takuma_Walk_side.png",
+			"Walk_side_exists": true,
+			"Walk_bones_world_cm":
+			{
+				"hand_L": [
+					1541.3906668976549,
+					464853.80578449572,
+					92.288288369507157
+				],
+				"hand_R": [
+					1488.6225789944785,
+					464849.9304977709,
+					92.431752394921972
+				],
+				"foot_L": [
+					1521.878248600829,
+					464880.36735587235,
+					13.073561182959203
+				],
+				"foot_R": [
+					1526.2834424048401,
+					464825.54283794033,
+					17.622078606407626
+				]
+			},
+			"max_hand_idle_walk_delta_cm": 16.23002815246582,
+			"max_foot_idle_walk_delta_cm": 32.796337127685547,
+			"actor_after":
+			{
+				"location_cm": [
+					1520.681884765625,
+					464858.625,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.52571742822719203,
+					0.85065926531025748
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"capsule_after":
+			{
+				"location_cm": [
+					1520.681884765625,
+					464858.625,
+					92
+				],
+				"rotation_quaternion": [
+					-0,
+					0,
+					-0.52571742822719203,
+					0.85065926531025748
+				],
+				"scale": [
+					1,
+					1,
+					1
+				]
+			},
+			"actor_transform_unchanged": true,
+			"capsule_transform_unchanged": true,
+			"sample_times_valid": true,
+			"cpu_pose_passed": true,
+			"render_pose_capture_completed": true,
+			"render_pose_visually_confirmed": false,
+			"passed": false
+		}
+	],
+	"character_count": 3,
+	"cpu_pose_and_capture_pipeline_passed": true,
+	"render_pose_visually_confirmed": false,
+	"status": "awaiting_render_pose_visual_confirmation",
+	"passed": false,
+	"axe_review":
+	{
+		"source": "local_verification",
+		"review_role": "coordinator",
+		"npc_vision": false,
+		"kimi_action": false,
+		"item_state_changed": false,
+		"graded_view_grade_applied": true,
+		"legacy_capture_component_grade_applied": false,
+		"exposure_comparison_scope": "Both inherit the existing unbound scene grade; comparison adds an explicit identical component grade, not an ungraded scene.",
+		"temporary_fill_light": false,
+		"render_visually_confirmed": false,
+		"passed": false,
+		"item_found_in_verification_copy": true,
+		"item_id": "aincrad_axe_erin",
+		"owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+		"custodian_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+		"edge": 20,
+		"handle": 20,
+		"tagged_actor_count": 1,
+		"tagged_actor_valid": true,
+		"parts": [
+			{
+				"component": "StaticMeshComponent_0",
+				"mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/axe_handle_split/axe_handle_split.axe_handle_split",
+				"relative_transform":
+				{
+					"location_cm": [
+						0,
+						0,
+						0
+					],
+					"rotation_quaternion": [
+						0,
+						0,
+						0,
+						1
+					],
+					"scale": [
+						1,
+						1,
+						1
+					]
+				},
+				"world_transform":
+				{
+					"location_cm": [
+						-1271.1356132323037,
+						467079.1919417177,
+						95
+					],
+					"rotation_quaternion": [
+						0.15243809914304357,
+						0.15141314452342394,
+						0.96912074959988637,
+						0.1210027201766059
+					],
+					"scale": [
+						1,
+						1,
+						1
+					]
+				},
+				"material_slots": [
+					{
+						"slot_index": 0,
+						"slot_name": "AT_Cloth",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Cloth.MI_Town_Cloth"
+					},
+					{
+						"slot_index": 1,
+						"slot_name": "AT_TimberDark",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark"
+					},
+					{
+						"slot_index": 2,
+						"slot_name": "AT_Timber",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber"
+					},
+					{
+						"slot_index": 3,
+						"slot_name": "AT_TimberLight",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight"
+					}
+				],
+				"material_slot_count": 4,
+				"materials_valid": true
+			},
+			{
+				"component": "StaticMeshComponent_1",
+				"mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/axe_head_chipped/axe_head_chipped.axe_head_chipped",
+				"relative_transform":
+				{
+					"location_cm": [
+						0,
+						0,
+						0
+					],
+					"rotation_quaternion": [
+						0,
+						0,
+						0,
+						1
+					],
+					"scale": [
+						1,
+						1,
+						1
+					]
+				},
+				"world_transform":
+				{
+					"location_cm": [
+						-1271.1356132323037,
+						467079.1919417177,
+						95
+					],
+					"rotation_quaternion": [
+						0.15243809914304357,
+						0.15141314452342394,
+						0.96912074959988637,
+						0.1210027201766059
+					],
+					"scale": [
+						1,
+						1,
+						1
+					]
+				},
+				"material_slots": [
+					{
+						"slot_index": 0,
+						"slot_name": "AT_Iron",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron"
+					},
+					{
+						"slot_index": 1,
+						"slot_name": "AT_StoneLight",
+						"material_path": "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight"
+					}
+				],
+				"material_slot_count": 2,
+				"materials_valid": true
+			}
+		],
+		"part_count": 2,
+		"visible_mesh_component_count": 2,
+		"expected_handle_mesh": "axe_handle_split",
+		"expected_head_mesh": "axe_head_chipped",
+		"parts_valid_for_condition": true,
+		"tool_actor_transform":
+		{
+			"location_cm": [
+				-1271.1356132323037,
+				467079.1919417177,
+				95
+			],
+			"rotation_quaternion": [
+				0.15243809914304357,
+				0.15141314452342394,
+				0.96912074959988637,
+				0.1210027201766059
+			],
+			"scale": [
+				1,
+				1,
+				1
+			]
+		},
+		"tool_actor_transform_unchanged": true,
+		"legacy_exposure_image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/axe_context_legacy_exposure.png",
+		"image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/held_tool_inspection_pose_20260908_2245/axe_context.png",
+		"camera_eye_world_cm": [
+			-1267.5094692881355,
+			467220.94262269582,
+			70.128419384021882
+		],
+		"camera_aim_world_cm": [
+			-1275.0205415713087,
+			467082.15903221816,
+			101.09128112656697
+		],
+		"fov_degrees": 36,
+		"legacy_exposure_capture_completed": true,
+		"graded_capture_completed": true,
+		"comparison_same_actor_geometry_lighting_camera": true,
+		"render_capture_completed": true,
+		"status": "captured; requires visual confirmation"
+	}
+}

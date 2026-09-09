@@ -9,6 +9,7 @@ namespace HearthAincradTownLayout
         constexpr float ReplacementWestCm = -3200.f;
         constexpr float ReplacementEastCm = 3200.f;
         constexpr float ReplacementFloorCm = 900.f;
+        constexpr float WorkbenchStandOffCm = 155.f;
 
         FVector RotateLocalXY(const FVector2D& LocalCm, const FVector& CenterCm, float YawDegrees, float ZCm)
         {
@@ -28,7 +29,8 @@ namespace HearthAincradTownLayout
             const FVector2D& FootprintCm,
             float YawDegrees,
             int32 Floors,
-            const FVector* SpawnOverride = nullptr)
+            const FVector* SpawnOverride = nullptr,
+            bool bHasWorkbench = false)
         {
             FBuilding Building;
             Building.Id = Id;
@@ -41,8 +43,18 @@ namespace HearthAincradTownLayout
             const float HalfDepthCm = FootprintCm.Y * 0.5f;
             Building.EntranceCm = RotateLocalXY(
                 FVector2D(0.f, -HalfDepthCm - 90.f), CenterCm, YawDegrees, 92.f);
-            Building.WorkCm = RotateLocalXY(
+            Building.LegacyWorkCm = RotateLocalXY(
                 FVector2D(0.f, -HalfDepthCm + 350.f), CenterCm, YawDegrees, 92.f);
+            Building.WorkCm = Building.LegacyWorkCm;
+            Building.bHasWorkbench = bHasWorkbench;
+            if (bHasWorkbench)
+            {
+                Building.WorkbenchCm = RotateLocalXY(
+                    FVector2D(FootprintCm.X * 0.28f, -FootprintCm.Y * 0.15f), CenterCm, YawDegrees, 88.f);
+                const FVector TowardLegacyWork = (Building.LegacyWorkCm - Building.WorkbenchCm).GetSafeNormal2D();
+                Building.WorkCm = Building.WorkbenchCm + TowardLegacyWork * WorkbenchStandOffCm;
+                Building.WorkCm.Z = 92.f;
+            }
             Building.ObserveCm = RotateLocalXY(
                 FVector2D(0.f, -HalfDepthCm - 550.f), CenterCm, YawDegrees, 92.f);
             Building.SpawnCm = SpawnOverride != nullptr ? *SpawnOverride : Building.EntranceCm;
@@ -70,13 +82,13 @@ namespace HearthAincradTownLayout
 
         Plan.Buildings.Add(MakeBuilding(
             TEXT("sao_inn_01"), TEXT("innkeeper"),
-            FVector(-1800.f, 467000.f, 0.f), FVector2D(1200.f, 1600.f), 90.f, 2, &InnSpawn));
+            FVector(-1800.f, 467000.f, 0.f), FVector2D(1200.f, 1600.f), 90.f, 2, &InnSpawn, true));
         Plan.Buildings.Add(MakeBuilding(
             TEXT("sao_smithy_01"), TEXT("blacksmith"),
-            FVector(1800.f, 465000.f, 0.f), FVector2D(1000.f, 1400.f), -90.f, 2, &SmithySpawn));
+            FVector(1800.f, 465000.f, 0.f), FVector2D(1000.f, 1400.f), -90.f, 2, &SmithySpawn, true));
         Plan.Buildings.Add(MakeBuilding(
             TEXT("sao_carpentry_01"), TEXT("carpenter"),
-            FVector(-1800.f, 462000.f, 0.f), FVector2D(1000.f, 1400.f), 90.f, 2, &CarpentrySpawn));
+            FVector(-1800.f, 462000.f, 0.f), FVector2D(1000.f, 1400.f), 90.f, 2, &CarpentrySpawn, true));
 
         Plan.Buildings.Add(MakeBuilding(
             TEXT("sao_residential_01"), TEXT("residential"),

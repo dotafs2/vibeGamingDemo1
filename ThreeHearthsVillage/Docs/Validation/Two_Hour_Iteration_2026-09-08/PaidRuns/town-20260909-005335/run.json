@@ -1,0 +1,69 @@
+{
+  "run": {
+    "run": "town-20260909-005335",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 354,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 100288,
+    "gateway_pid": 84008,
+    "started_utc_epoch": 1788915215.735382,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 919,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 21.3211676,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 73.6788324,
+      "reserved_cny": 10.265088,
+      "settled_cny": 11.0460796
+    },
+    "confirmed_local_rejection": {
+      "operation_id": "BE3BBA8B-42CA-7547-4A4A-B2839C838509",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "ledger_matching_rows": 0,
+      "replayed": false
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 919,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 21.3211676,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 73.6788324,
+      "reserved_cny": 10.265088,
+      "settled_cny": 11.0460796
+    },
+    "new_cost_cny": 0.0,
+    "new_settled_calls": 0,
+    "finished_utc_epoch": 1788915576.4131522
+  },
+  "decisions": [],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state.",
+  "completion": {
+    "kind": "normal_exit",
+    "native_exit_code": 0,
+    "actual_wall_seconds": 360.67777013778687,
+    "reason": null
+  }
+}

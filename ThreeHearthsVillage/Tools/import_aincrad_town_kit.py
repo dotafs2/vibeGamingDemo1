@@ -4,6 +4,11 @@ import hashlib
 from pathlib import Path
 import unreal as ue
 
+# Cold reimport must not race a background build of the old mesh description.
+_world = ue.get_editor_subsystem(ue.UnrealEditorSubsystem).get_editor_world()
+ue.SystemLibrary.execute_console_command(_world, "Editor.AsyncStaticMeshCompilation 0")
+ue.SystemLibrary.execute_console_command(_world, "Editor.AsyncStaticMeshCompilationFinishAll")
+
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Art/AincradLevel0'
 DEST='/Game/ThreeHearths/Generated/AincradTownKit'
@@ -61,7 +66,7 @@ for key,code in palette.items():
     edit.set_material_instance_vector_parameter_value(mi,'HearthTint',ue.LinearColor(*srgb(code),1))
     edit.set_material_instance_scalar_parameter_value(mi,'HearthKind',0 if key=='Grass' else 2 if 'Timber' in key else 1)
     edit.set_material_instance_scalar_parameter_value(mi,'HearthFill',3.5 if key=='LampWarm' else .015 if key in ('Grass','Paving') else .07)
-    if key in ('Iron','Brass'):
+    if key in ('Iron','IronLight','SteelEdge','Brass'):
         edit.set_material_instance_scalar_parameter_value(mi,'HearthMetallic',.4);edit.set_material_instance_scalar_parameter_value(mi,'HearthRoughness',.6)
     edit.update_material_instance(mi);assert ue.EditorAssetLibrary.save_loaded_asset(mi)
     materials[key]=mi

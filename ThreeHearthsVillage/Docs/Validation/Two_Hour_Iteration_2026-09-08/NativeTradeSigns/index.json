@@ -1,0 +1,67 @@
+{
+  "archive_type": "local_verification",
+  "as_of_utc": "2026-09-08T21:23:00Z",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "formal_world_sha256_prefix": "5956002d",
+  "formal_world_status": "unchanged per root check",
+  "success": {
+    "capture": "v2_trade_signs_normals_20260908_2123",
+    "review": "success/v2_trade_signs_normals_20260908_2123/trade_sign_review.json",
+    "root_visual_acceptance": true,
+    "numeric_validation": true,
+    "visual_validation_in_helper": false,
+    "shadow_limited": true,
+    "images": [
+      {
+        "path": "success/v2_trade_signs_normals_20260908_2123/inn_trade_sign_context.png",
+        "sha256": "8db91fbca06f5e5506f8b02057e8ee5b6e3b34d0b110f0b29e0a7567eeaecf01"
+      },
+      {
+        "path": "success/v2_trade_signs_normals_20260908_2123/smithy_trade_sign_context.png",
+        "sha256": "72fdbdbd6f20ed71697eb790e1c5f029ceda9299a8d12e91fefd9b96f0b53125"
+      },
+      {
+        "path": "success/v2_trade_signs_normals_20260908_2123/carpentry_trade_sign_context.png",
+        "sha256": "60c8e2cb7016945e83ded603ae241f8beb8194362246ef3278612b83dfc9c584"
+      }
+    ]
+  },
+  "failure": {
+    "capture": "v2_trade_signs_20260908_2117",
+    "review": "failure/v2_trade_signs_20260908_2117/trade_sign_review.json",
+    "root_visual_acceptance": false,
+    "numeric_validation": true,
+    "visual_validation_in_helper": false,
+    "reason": "relief normals faced inward (black faces); inn sign intersected balcony support",
+    "images": [
+      {
+        "path": "failure/v2_trade_signs_20260908_2117/inn_trade_sign_context.png",
+        "sha256": "6cdf8dd74835ad5c7740af847aa75cd608c538b1e59a09486e8551813f50e346"
+      },
+      {
+        "path": "failure/v2_trade_signs_20260908_2117/smithy_trade_sign_context.png",
+        "sha256": "d1a17f4cb5708e1b4ffb80a5b8692d1bf5eb0773f3b0ca931f7ae9650ae62237"
+      },
+      {
+        "path": "failure/v2_trade_signs_20260908_2117/carpentry_trade_sign_context.png",
+        "sha256": "db885a993054a8b923e753350db07eaeada25eac79e93c44ae8b4861a4e46519"
+      }
+    ]
+  },
+  "matching_sources": {
+    "trade_sign_manifest": {
+      "path": "trade_sign_manifest.json",
+      "sha256": "29af969ee04b96b097dc73f7d8efb862288220b06db84d6ad4a1d752a3d04379"
+    },
+    "ue_import_report": {
+      "path": "UE_Trade_Signs_Import_Report.json",
+      "sha256": "17607be1e9e210740d002b9c6d56390d745f7a9d8b02a5396d2773cb3f3778b3"
+    }
+  },
+  "scope": {
+    "npc_vision": false,
+    "resident_installation_claim": false,
+    "static_identification_fixture": true,
+    "current_paid_run": "town-20260908-212535 in progress; current paid totals/checkpoint untouched"
+  }
+}

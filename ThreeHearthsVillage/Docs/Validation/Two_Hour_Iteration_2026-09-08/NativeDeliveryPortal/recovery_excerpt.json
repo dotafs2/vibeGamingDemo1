@@ -1,0 +1,60 @@
+{
+  "source": "local_verification excerpt",
+  "source_process": "delivery_portal_20260909_003013_process.json",
+  "formal_sha256_before": "85f6265f62984fd20808408986c2af636c9b5670bb73e074a453a42dfe110c5b",
+  "formal_sha256_after": "85f6265f62984fd20808408986c2af636c9b5670bb73e074a453a42dfe110c5b",
+  "formal_world_unchanged": true,
+  "world_and_ids_retained": true,
+  "accounts_unchanged": true,
+  "delivered_once_with_original_operation": true,
+  "accepted_reserve_retained": true,
+  "axe_same_owner_different_custodian": true,
+  "observed_intermediate_positions": true,
+  "no_pending_intent": true,
+  "no_blocked_end": true,
+  "original_operation": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+  "contract_id": "repair_contract_18_0",
+  "contract_status": "delivered",
+  "reserved_col": 5,
+  "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "custodian_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+  "axe_edge": 20,
+  "axe_handle": 20,
+  "sample_positions": [
+    {
+      "elapsed_seconds": 16997.91819119081,
+      "position_cm": [
+        1115.1868905058404,
+        464961.91946896113,
+        92
+      ],
+      "phase": "blocked",
+      "result": "life_committed: repair_edge:aincrad_axe_erin:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F:5",
+      "route_index": 7
+    },
+    {
+      "elapsed_seconds": 16998.531683191657,
+      "position_cm": [
+        1134.2711073727887,
+        464964.07757988054,
+        92
+      ],
+      "phase": "moving",
+      "result": "life_committed: repair_edge:aincrad_axe_erin:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F:5",
+      "route_index": 1
+    },
+    {
+      "elapsed_seconds": 17000.187433291227,
+      "position_cm": [
+        1376.38392976463,
+        464899.9181832983,
+        92
+      ],
+      "phase": "idle",
+      "result": "life_committed: deliver:repair_contract_18_0",
+      "route_index": 3
+    }
+  ],
+  "final_last_blocked_reason": "swept capsule hit channel=0",
+  "copyworld_policy": "Full Saved verification copy/world and private or budget files are not copied here; this excerpt retains only required checks and original SHA/path."
+}

@@ -1,0 +1,202 @@
+{
+  "source_commit": "46a4e5714b60c72eec27205448547688f78e28e5",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "residents_preserved": 13,
+  "all_original_nonruntime_resident_fields_preserved": true,
+  "life_money_materials_contracts_unchanged": true,
+  "contracts_completed": 0,
+  "contracts_proposed": 0,
+  "paid_run": {
+    "run": "town-20260908-133815",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 240,
+    "api": true,
+    "life": true,
+    "max_decisions": 12,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "manual_route_verification": false,
+    "ue_pid": 69700,
+    "gateway_pid": 7072,
+    "started_utc_epoch": 1788874695.190048,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 796,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.3692551,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.6307449,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.0941671
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 799,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.4160371,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.5839629,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.1409491
+    },
+    "new_cost_cny": 0.046782,
+    "new_settled_calls": 3,
+    "finished_utc_epoch": 1788874949.4063647
+  },
+  "restart_run": {
+    "run": "town-20260908-134549",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 60,
+    "api": true,
+    "life": true,
+    "max_decisions": 3,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "manual_route_verification": false,
+    "ue_pid": 43240,
+    "gateway_pid": 21152,
+    "started_utc_epoch": 1788875149.939294,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 799,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.4160371,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.5839629,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.1409491
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 799,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 17.4160371,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 77.5839629,
+      "reserved_cny": 10.265088,
+      "settled_cny": 7.1409491
+    },
+    "new_cost_cny": 0.0,
+    "new_settled_calls": 0,
+    "finished_utc_epoch": 1788875224.139598
+  },
+  "native_tests_before_self_knowledge_fields": {
+    "succeeded": 18,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "final_self_knowledge_build": "passed; BuildSelfKnowledge.log",
+  "post_self_knowledge_paid_decision_evidence": false,
+  "next_step": "Continue the same world after ordinary cooldown; evaluate the new self-location facts without forcing a commission. Kimi proposal/accept/reject/delivery/repair/use remain to be observed.",
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "operation_id": "D68775E8-402A-CBC7-A537-538CE0A69895",
+      "decision": {
+        "action": "walk_to_work",
+        "utterance": "先回岗位看看今天有没有客人。",
+        "visible": "室内绿色地面，有一张木桌和一把椅子，墙上挂着蓝色百叶窗，光线从窗外照入。看起来像是旅店内部或邻近建筑的一间屋子。",
+        "uncertain": "不确定当前是否已在自家旅店sao_inn_01内，还是在外部邻近建筑中；门外白色三层建筑是否为自家旅店尚待确认。",
+        "goal": "抵达旅店工作位置，确认自身位置，准备接待可能前来的旅人。",
+        "need": "维持旅店基本运营，后续考虑修斧和扩充木料。"
+      },
+      "accepted_result": "accepted action=walk_to_work",
+      "position_cm": [
+        -1290.5684814453125,
+        467000,
+        92
+      ],
+      "unchanged_cooldown_utc": 1788874708,
+      "next_ordinary_decision_utc": "2026-09-08T14:08:28+00:00",
+      "charged_cny": 0.0180515
+    },
+    {
+      "resident": "拓真",
+      "id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "operation_id": "69687E84-4AC6-C2AB-3F7E-448452B99B59",
+      "decision": {
+        "action": "walk_to_work",
+        "visible": "我在铁匠铺内部，白色墙壁、棕色地板，右侧有一张木桌，墙上两扇蓝色百叶窗。尚未到达我的工作台位置。",
+        "uncertain": "工作台前是否有待修的剑或客人，需继续前进才能确认。",
+        "goal": "到工作台前开始用普通铁料修缮镇上常用的剑。",
+        "need": "需要到达我的工作位置，才能继续我的修缮工作。",
+        "utterance": ""
+      },
+      "accepted_result": "accepted action=walk_to_work",
+      "position_cm": [
+        1392.5225830078125,
+        465000,
+        92
+      ],
+      "unchanged_cooldown_utc": 1788874708,
+      "next_ordinary_decision_utc": "2026-09-08T14:08:28+00:00",
+      "charged_cny": 0.0137175
+    },
+    {
+      "resident": "柏木",
+      "id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "operation_id": "D3E2F614-4E07-D65B-E493-95A23FD1A98B",
+      "decision": {
+        "action": "observe",
+        "utterance": "",
+        "visible": "我正站在室外开阔处，面前是白色道路与绿色地面。左侧是一栋两层白木筋房，深色屋顶，蓝百叶窗。右侧是一栋类似的两层房屋，深色屋顶，深色百叶窗。正前方远处有两座深色圆顶建筑，其中一座带尖塔。天空晴朗无云。地面光影显示太阳位置较高。",
+        "uncertain": "当前位置是否在自己的木工房附近无法确认；远处建筑是否有人活动看不清；室内是否有工具或木材未知。",
+        "goal": "把住处修得结实，让人敢于留下。",
+        "need": "需要慢慢积攒木材。"
+      },
+      "accepted_result": "accepted action=observe",
+      "position_cm": [
+        -607.4990234375,
+        462000,
+        92
+      ],
+      "unchanged_cooldown_utc": 1788874708,
+      "next_ordinary_decision_utc": "2026-09-08T14:08:28+00:00",
+      "charged_cny": 0.015013
+    }
+  ],
+  "elapsed_seconds": {
+    "before": 700.6159389987588,
+    "paid": 940.6657069958746,
+    "restart": 1000.7273582965136
+  },
+  "known_limitations": [
+    "No autonomous commission occurred in this bounded run.",
+    "Self-location prompt fields compile and preserve the world on restart, but have not yet been consumed by a fresh paid decision.",
+    "Uncertain-request reconciliation, blocked delivery-route recovery, finite inbox limits, model replacement and capability installation remain incomplete.",
+    "Lethe editor-menu timeout persists in launch logs."
+  ],
+  "runtime_processes_stopped": true
+}

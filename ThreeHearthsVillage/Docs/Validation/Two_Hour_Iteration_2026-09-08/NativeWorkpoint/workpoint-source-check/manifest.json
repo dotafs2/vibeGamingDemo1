@@ -1,0 +1,75 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "source": "local_verification",
+  "formal_unchanged": true,
+  "check": "Saved/ThreeHearths/AincradLevel0/TwoHourIteration/workpoint-source-check.json",
+  "observations": [
+    {
+      "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "observation_id": "obs_000030"
+    },
+    {
+      "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "observation_id": "obs_000026"
+    },
+    {
+      "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "observation_id": "obs_000033"
+    }
+  ],
+  "files": [
+    {
+      "file": "workpoint-source-check/A757B4D7-497C-99F3-3482-52A77F688D69/obs_000030.png",
+      "sha256": "6d6d6f8b68981d9bb7fc52f394ae351c48a22ad6027008992f69a496f1c7943d"
+    },
+    {
+      "file": "workpoint-source-check/A757B4D7-497C-99F3-3482-52A77F688D69/obs_000030.json",
+      "sha256": "8fa48e35eeae3319a14dbb903dbe147f20c72536247b938fd260924af572a738"
+    },
+    {
+      "file": "workpoint-source-check/A757B4D7-497C-99F3-3482-52A77F688D69/events.jsonl",
+      "sha256": "409f7282ffb09e95ecd8a0b3435af5f246f24328037d6592f9277778e22f3728"
+    },
+    {
+      "file": "workpoint-source-check/A757B4D7-497C-99F3-3482-52A77F688D69/history.jsonl",
+      "sha256": "409f7282ffb09e95ecd8a0b3435af5f246f24328037d6592f9277778e22f3728"
+    },
+    {
+      "file": "workpoint-source-check/18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F/obs_000026.png",
+      "sha256": "09d22a544745d23ea7e5549eb84526afbf40f40fe1ba04139b31074b03fd1aa3"
+    },
+    {
+      "file": "workpoint-source-check/18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F/obs_000026.json",
+      "sha256": "600adaab2c0b6a3e00d8039725653846f45f064af1d2c1f10b4ed6bd37e89c18"
+    },
+    {
+      "file": "workpoint-source-check/18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F/events.jsonl",
+      "sha256": "690ad42d89d0c6843b0f881194fc4135d2fac218544b1902c821fb2a4320d678"
+    },
+    {
+      "file": "workpoint-source-check/18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F/history.jsonl",
+      "sha256": "690ad42d89d0c6843b0f881194fc4135d2fac218544b1902c821fb2a4320d678"
+    },
+    {
+      "file": "workpoint-source-check/425311EB-4D09-0782-AFE2-27A9631F9C0A/obs_000033.png",
+      "sha256": "f4fa834e3a08d2a84094a3662b1002c9cf76cd9a91436597c4688429457efa8b"
+    },
+    {
+      "file": "workpoint-source-check/425311EB-4D09-0782-AFE2-27A9631F9C0A/obs_000033.json",
+      "sha256": "396ba99e2577f3027215cf9faea542e363fc421453b771d5edaf7d20c1bb746a"
+    },
+    {
+      "file": "workpoint-source-check/425311EB-4D09-0782-AFE2-27A9631F9C0A/events.jsonl",
+      "sha256": "945215fc6188bf7b9e3f39f8c4c2b43f1d62372bdc69ec21844d4a6a600d75a1"
+    },
+    {
+      "file": "workpoint-source-check/425311EB-4D09-0782-AFE2-27A9631F9C0A/history.jsonl",
+      "sha256": "945215fc6188bf7b9e3f39f8c4c2b43f1d62372bdc69ec21844d4a6a600d75a1"
+    },
+    {
+      "file": "workpoint-source-check/workpoint-check.json",
+      "sha256": "dd97b9382e493d2eb9ccdf13f52b8ee350536a89953356ff20543347d9b6f77d"
+    }
+  ],
+  "limits": "Original PNG, metadata, events, and history bytes were copied; arrival evidence does not prove work completion."
+}

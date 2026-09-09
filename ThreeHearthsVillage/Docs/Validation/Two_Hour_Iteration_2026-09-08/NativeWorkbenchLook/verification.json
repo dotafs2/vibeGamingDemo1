@@ -1,0 +1,28 @@
+{
+  "formal_world_unchanged": true,
+  "formal_world_sha256": "9f3d9d6918ddf3ba971d875ca64674da04abd24c2d531369bac77390cc145f69",
+  "local_only_no_api": true,
+  "rows": [
+    {
+      "name": "艾琳",
+      "same_position": true,
+      "yaw": 128.72541809082028,
+      "result": "looked_at_workbench; body_yaw_degrees=128.7; position unchanged; no work completed",
+      "observation": "obs_000028"
+    },
+    {
+      "name": "拓真",
+      "same_position": true,
+      "yaw": -63.43493652343749,
+      "result": "looked_at_workbench; body_yaw_degrees=296.6; position unchanged; no work completed",
+      "observation": "obs_000023"
+    },
+    {
+      "name": "柏木",
+      "same_position": true,
+      "yaw": 124.36380767822267,
+      "result": "looked_at_workbench; body_yaw_degrees=124.4; position unchanged; no work completed",
+      "observation": "obs_000030"
+    }
+  ]
+}

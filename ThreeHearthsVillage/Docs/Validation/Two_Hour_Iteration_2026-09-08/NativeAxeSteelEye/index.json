@@ -1,0 +1,104 @@
+{
+  "archive_type": "local_verification",
+  "as_of_utc": "2026-09-08T23:20:00Z",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "formal_world_sha256_prefix": "a8a79",
+  "formal_world_status": "unchanged per root check",
+  "same_life_coins_and_13_stable_ids": true,
+  "npc_vision": false,
+  "kimi_action": false,
+  "review": {
+    "capture": "axe_steel_eye_20260908_2320",
+    "character_review_index": "review/axe_steel_eye_20260908_2320/character_review_index.json",
+    "axe_review": "review/axe_steel_eye_20260908_2320/axe_review.json",
+    "image": "review/axe_steel_eye_20260908_2320/axe_context.png",
+    "image_sha256": "ed0fd91d142b76a606ba0338cff44ff2279062f11fbf74600f71a23f3ef29df5",
+    "legacy_image": "review/axe_steel_eye_20260908_2320/axe_context_legacy_exposure.png",
+    "legacy_sha256": "4f8720bb9880a8eea50fa4a9384cdb37e02a27ffaec2d139830425279ea4ede9",
+    "edge": 20,
+    "handle": 20,
+    "handles_sha_unchanged": true,
+    "head_meshes_have_real_handle_holes": true,
+    "blender_closed_face_check_passed": true,
+    "materials": [
+      "AT_IronLight",
+      "AT_SteelEdge"
+    ],
+    "ue_receipt_matches_new_materials": true,
+    "root_basic_native_readability_acceptance": true,
+    "tool_inspection_yaw_offset_degrees": 110,
+    "actual_tool_yaw_degrees": -136.8937,
+    "tool_pivot_unchanged": true,
+    "tool_rotation_changed": true,
+    "body_yaw_degrees": 113.1,
+    "previous_2245_body_yaw_degrees": 53.1,
+    "strict_same_camera_ab": false,
+    "floating_carried_position": true,
+    "complete_finger_grip": false,
+    "raised_hand_animation_complete": false,
+    "dark_material_limited": true
+  },
+  "erin_observations": [
+    {
+      "observation_id": "obs_000059",
+      "image": "erin_obs/axe_steel_eye_20260908_2320/obs_000059.png",
+      "image_sha1": "3B71641F0102A5491CB7288BF7BFAB3B9A6310F4",
+      "sha256": "a91ab283b310a6e9d5792b36656bdb4254f564a9846cb32ba3d146ca0fe310cc",
+      "sequence": 59,
+      "actual_tool_yaw_degrees": null,
+      "camera_rotation": [
+        -0.3924386269982127,
+        0.9197781928485572,
+        0
+      ]
+    },
+    {
+      "observation_id": "obs_000060",
+      "image": "erin_obs/axe_steel_eye_20260908_2320/obs_000060.png",
+      "image_sha1": "CAFE1F9600527523A0925FD70DB2B0285B393031",
+      "sha256": "53a98b0ba593f59e0d6c47742bf4a0aedbf57f0957a12a296683a4e94ef6640a",
+      "sequence": 60,
+      "actual_tool_yaw_degrees": -136.89367675781247,
+      "camera_rotation": [
+        -0.5984942786612382,
+        0.5736817758369461,
+        -0.559190324024238
+      ]
+    },
+    {
+      "observation_id": "obs_000061",
+      "image": "erin_obs/axe_steel_eye_20260908_2320/obs_000061.png",
+      "image_sha1": "7689B61B64CC032AB0E2216EE233851C14EEA5D6",
+      "sha256": "103074e418977c5429db9c4d5945e550e78aa131d6569f4690d06e5eed710e38",
+      "sequence": 61,
+      "actual_tool_yaw_degrees": -136.89367675781247,
+      "camera_rotation": [
+        -0.5984942786612382,
+        0.5736817758369461,
+        -0.559190324024238
+      ]
+    }
+  ],
+  "native_tests": {
+    "path": "NativeActionOnlyTests/index.json",
+    "succeeded": 30,
+    "failed": 0,
+    "warnings": 0
+  },
+  "sources": {
+    "manifest": "sources/axe_kit_manifest.json",
+    "import_report": "sources/UE_Axe_Kit_Import_Report.json",
+    "style": "sources/style.json",
+    "source_preview": "sources/axe_conditions_source.png"
+  },
+  "prior_failure": {
+    "log_location": "Saved/ThreeHearths/AincradLevel0/TwoHourIteration/AxeSteelEyeBlender.log",
+    "reason": "Initial Boolean left an empty material slot; fixed source retained privately and giant log not copied."
+  },
+  "scope": {
+    "repair_completion_claim": false,
+    "npc_vision_claim": false,
+    "current_paid_run": "town-20260908-232450 in progress; current checkpoint and paid totals untouched"
+  },
+  "earlier_component_import_failure_evidence": "../NativeAxe/failure/v2_axe_components_20260908_2201/axe_review.json"
+}

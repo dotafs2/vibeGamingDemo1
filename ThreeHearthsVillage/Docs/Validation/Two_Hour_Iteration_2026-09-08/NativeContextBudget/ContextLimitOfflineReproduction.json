@@ -1,0 +1,12 @@
+{
+  "source_request_sha256": "e365ce06943ccd6846a4fe1694a80ba5329d6edb127a66cc47959c55480dbe34",
+  "original_error": "Context byte limit exceeded",
+  "original_reconstructed_context_bytes": 24724,
+  "deduplicated_context_bytes": 17327,
+  "limit": 24576,
+  "all_received_letters_retained": true,
+  "formal_world_modified": false,
+  "provider_calls": 0,
+  "ledger_writes": 0,
+  "gateway_normalizer_passed_after_deduplication": true
+}

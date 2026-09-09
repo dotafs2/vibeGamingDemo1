@@ -1,0 +1,102 @@
+{
+  "run": {
+    "run": "town-20260908-220838",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1800,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 73336,
+    "gateway_pid": 73468,
+    "started_utc_epoch": 1788905318.4558487,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 884,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.0107701,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.9892299,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.7356821
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 888,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.143601,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.856399,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.868513
+    },
+    "new_cost_cny": 0.1328309,
+    "new_settled_calls": 4,
+    "finished_utc_epoch": 1788907131.720873
+  },
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "operation": "9DBB3564-4143-1531-ACE5-DFB552FA4790",
+      "reason": "ordinary_cooldown_due",
+      "action": "wait",
+      "option_id": null,
+      "need": "需要修理aincrad_axe_erin的柄（已知松了）和刃（待确认实际损耗程度），但目前没有活跃委托。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=53.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "01-9DBB3564-4143-1531-ACE5-DFB552FA4790"
+    },
+    {
+      "resident": "拓真",
+      "operation": "B1465797-42CC-7BB0-F4A8-C1A3090E70F5",
+      "reason": "ordinary_cooldown_due",
+      "action": "wait",
+      "option_id": null,
+      "need": "需要修刃委托或材料来源，以实践metal_repair技能。",
+      "previous_executed_result": "life_committed: ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "image_verified": true,
+      "evidence": "02-B1465797-42CC-7BB0-F4A8-C1A3090E70F5"
+    },
+    {
+      "resident": "柏木",
+      "operation": "C74B6871-4263-1B7E-8640-71A4A89356B5",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "木材、稳定委托收入。",
+      "previous_executed_result": "life_committed: reply_repair_need:repair_need_request_8:no_need",
+      "image_verified": true,
+      "evidence": "03-C74B6871-4263-1B7E-8640-71A4A89356B5"
+    },
+    {
+      "resident": "柏木",
+      "operation": "F8D16240-4079-B540-FE15-BEA3290D12C0",
+      "reason": "completed_observation_followup",
+      "action": "wait",
+      "option_id": null,
+      "need": "木材需要慢慢积攒，目前只有1木料，远远不够。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=356.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "04-F8D16240-4079-B540-FE15-BEA3290D12C0"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state."
+}

@@ -1,0 +1,20 @@
+{
+  "archive_type": "context_budget_native_and_offline_verification",
+  "as_of_utc": "2026-09-09T00:51:00Z",
+  "native_tests": {
+    "report": "NativeContextBudgetTests/index.json",
+    "succeeded": 30,
+    "warnings": 0,
+    "failed": 0,
+    "not_run": 0,
+    "process": "NativeContextBudgetTests_process.json"
+  },
+  "offline_proof": "ContextLimitOfflineReproduction.json",
+  "recovery_process": "context_recovery_20260909_0051_process.json",
+  "formal_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "formal_world_unchanged": true,
+  "no_api_or_ledger_writes": true,
+  "current_run": "town-20260909-005335 in progress; no forced fresh paid request",
+  "prior_interruption": "town-20260909-003204 exit 4294967295 retained",
+  "full_world_or_db_copied": false
+}

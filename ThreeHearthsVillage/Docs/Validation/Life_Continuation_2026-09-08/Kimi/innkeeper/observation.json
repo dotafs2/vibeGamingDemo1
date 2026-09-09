@@ -1,0 +1,35 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "observation_id": "obs_000010",
+  "target_id": "sao_inn_01",
+  "scene_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+  "image_file": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/Observations/F4390752-4A07-7DE7-FACD-32BAC6F72C54/A757B4D7-497C-99F3-3482-52A77F688D69/obs_000010.png",
+  "image_sha1": "E53012EAE55797EFAFE29233A9B2078C74899FDB",
+  "position_cm": [
+    -1290.5684814453125,
+    467000,
+    92
+  ],
+  "eye_cm": [
+    -1290.5684814453125,
+    467000,
+    160
+  ],
+  "facing": [
+    -0.39243868504778345,
+    0.9197781680807425,
+    0
+  ],
+  "camera_rotation": [
+    -0.32904123267097035,
+    0.7711903890725867,
+    -0.5449745416112947
+  ],
+  "horizontal_fov": 85,
+  "sequence": 10,
+  "utc": 1788874708,
+  "manual_bootstrap": false,
+  "source": "native",
+  "view": "facade"
+}

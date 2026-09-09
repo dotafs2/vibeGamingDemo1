@@ -1,0 +1,38 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "source": "local_verification",
+  "formal_sha256": "f2319c07f693a12036f191a8a21ec8a47d9178960b5cb2d215512343d02c9d3c",
+  "formal_unchanged": true,
+  "residents": [
+    {
+      "id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "position_cm": [
+        -1477.8501666386137,
+        467204.5602765574,
+        92
+      ],
+      "result": "arrived_at_own_workpoint; route_source=local_verification; arrival does not imply work completed",
+      "observation": "obs_000030"
+    },
+    {
+      "id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "position_cm": [
+        1520.681881715092,
+        464858.636227393,
+        92
+      ],
+      "result": "arrived_at_own_workpoint; route_source=local_verification; arrival does not imply work completed",
+      "observation": "obs_000026"
+    },
+    {
+      "id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "position_cm": [
+        -1518.838473684046,
+        462139.23027674784,
+        92
+      ],
+      "result": "arrived_at_own_workpoint; route_source=local_verification; arrival does not imply work completed",
+      "observation": "obs_000033"
+    }
+  ]
+}

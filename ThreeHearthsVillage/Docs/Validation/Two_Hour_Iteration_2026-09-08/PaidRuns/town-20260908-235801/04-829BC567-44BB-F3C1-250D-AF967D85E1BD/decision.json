@@ -1,0 +1,9 @@
+{
+  "action": "life",
+  "option_id": "reply_repair_need:repair_need_request_16:no_need",
+  "utterance": "柏木，谢了，我这边暂时没有需要修柄的工具。你的好意我心领了，有需要再找你。",
+  "visible": "当前面对木工作台，台上有铁砧、工具和钳子。白色墙壁上有两扇蓝色窗框，光线从右上方照入。",
+  "uncertain": "柏木是否有多余木料可交易，以及艾琳是否接受5 Col报价，均待对方回复。",
+  "goal": "先处理手头已有对话：回复柏木的修柄询问，等待艾琳对报价的回应。",
+  "need": "需要至少1 wood才能使用工具制作kindling；当前wood=0，iron=1。"
+}

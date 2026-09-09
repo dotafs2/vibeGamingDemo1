@@ -1,0 +1,99 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "assets": [
+    {
+      "id": "bench_vise",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/bench_vise/bench_vise.bench_vise",
+      "dimensions_cm": [
+        32.0,
+        40.100003242492676,
+        23.000000476837158
+      ],
+      "source_sha256": "5a2f9ca3f069422ece022489b6078d9369ca4e0e2ada694bf8050060cbbc6d2e",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "hand_plane",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/hand_plane/hand_plane.hand_plane",
+      "dimensions_cm": [
+        27.000001907348633,
+        9.300000190734863,
+        13.250000026077032
+      ],
+      "source_sha256": "53e018c5721cb8e75f4cff9b33eb7053ba369a1785c2de0897fdbea0142bbc20",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "bench_anvil",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/bench_anvil/bench_anvil.bench_anvil",
+      "dimensions_cm": [
+        79.49999618530273,
+        25.0,
+        32.999999821186066
+      ],
+      "source_sha256": "f4b60560a9eeacb4003a0545e5656a8ea027895dbff63dbf61e2d21cc53ce086",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "smith_hand_tools",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/smith_hand_tools/smith_hand_tools.smith_hand_tools",
+      "dimensions_cm": [
+        38.75,
+        22.831849098205566,
+        6.999999761581421
+      ],
+      "source_sha256": "49a3964e371861aedbaa8a2f1c144c552332c362c393b949e1d2e77d5757bd8f",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "carpentry_workbench",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/carpentry_workbench/carpentry_workbench.carpentry_workbench",
+      "dimensions_cm": [
+        180.0,
+        105.5,
+        101.94377659261227
+      ],
+      "source_sha256": "bcc93fa826d9c78036b49542e5ec8c31e24f99d5398b9128b9bbf70d36d8743f",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "smithy_workbench",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/smithy_workbench/smithy_workbench.smithy_workbench",
+      "dimensions_cm": [
+        180.0,
+        81.91246795654297,
+        123.99377964437008
+      ],
+      "source_sha256": "1edce5119d4874bd225d63dbc1cd9f79ab303b63110ada9f414a4cd8c9fb9dff",
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000001F1A29E2800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000001F1A2DCD800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000001F1A2DCF000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000001F1A2DCE000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass' (0x000001F1A29E3000) Class 'MaterialInstanceConstant'>"
+      ]
+    }
+  ],
+  "native_collision": "complex-as-simple for static modular pieces; runtime chooses query participation"
+}

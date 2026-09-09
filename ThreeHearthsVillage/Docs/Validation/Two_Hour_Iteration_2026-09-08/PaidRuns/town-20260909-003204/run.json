@@ -1,0 +1,152 @@
+{
+  "run": {
+    "run": "town-20260909-003204",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1645,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 90376,
+    "gateway_pid": 62460,
+    "started_utc_epoch": 1788913924.0591936,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 911,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.9572267,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.0427733,
+      "reserved_cny": 10.265088,
+      "settled_cny": 10.6821387
+    },
+    "ue_exit": 4294967295,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 919,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 21.3211676,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 73.6788324,
+      "reserved_cny": 10.265088,
+      "settled_cny": 11.0460796
+    },
+    "new_cost_cny": 0.3639409,
+    "new_settled_calls": 8,
+    "finished_utc_epoch": 1788914589.3770592
+  },
+  "decisions": [
+    {
+      "resident": "拓真",
+      "operation": "30E768BB-4FC3-D3AA-005D-0F81922213DF",
+      "reason": "ordinary_cooldown_due",
+      "action": "look_at_workbench",
+      "option_id": null,
+      "need": "需要艾琳交付物品后才能开始修刃工作。",
+      "previous_executed_result": "life_committed: accept:repair_contract_18_0",
+      "image_verified": true,
+      "evidence": "01-30E768BB-4FC3-D3AA-005D-0F81922213DF"
+    },
+    {
+      "resident": "柏木",
+      "operation": "D7B6EBDB-4801-6B9B-5902-DEAA072498FE",
+      "reason": "ordinary_cooldown_due",
+      "action": "wait",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "life_committed: ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "image_verified": true,
+      "evidence": "02-D7B6EBDB-4801-6B9B-5902-DEAA072498FE"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "29F092AA-4D08-D177-3192-9EBD5F147D27",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "reply_repair_need:repair_need_request_21:no_need",
+      "need": "等待拓真完成修刃；木料有限，不宜同时开启多项修理。",
+      "previous_executed_result": "life_committed: deliver:repair_contract_18_0",
+      "image_verified": true,
+      "evidence": "03-29F092AA-4D08-D177-3192-9EBD5F147D27"
+    },
+    {
+      "resident": "拓真",
+      "operation": "6CCAB8D7-471E-1CC7-EB7E-CF915CB64ADA",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "work:repair_contract_18_0",
+      "need": "已在工作点，持有委托物品与铁料，满足修理条件。",
+      "previous_executed_result": "looked_at_workbench; body_yaw_degrees=296.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "04-6CCAB8D7-471E-1CC7-EB7E-CF915CB64ADA"
+    },
+    {
+      "resident": "柏木",
+      "operation": "DA8046A3-4601-2A5B-9DF9-2BA946CE09E8",
+      "reason": "received_life_event",
+      "action": "wait",
+      "option_id": null,
+      "need": "木材来源与修柄委托",
+      "previous_executed_result": "life_committed: ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "image_verified": true,
+      "evidence": "05-DA8046A3-4601-2A5B-9DF9-2BA946CE09E8"
+    },
+    {
+      "resident": "拓真",
+      "operation": "938F0F37-4819-29D3-8FE6-CCA745353F04",
+      "reason": "received_life_event",
+      "action": "wait",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "life_committed: work:repair_contract_18_0",
+      "image_verified": true,
+      "evidence": "06-938F0F37-4819-29D3-8FE6-CCA745353F04"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "EE3E1314-4D05-3CAF-5407-EE9D83F634A4",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "collect:repair_contract_18_0",
+      "need": null,
+      "previous_executed_result": "life_committed: reply_repair_need:repair_need_request_21:no_need",
+      "image_verified": true,
+      "evidence": "07-EE3E1314-4D05-3CAF-5407-EE9D83F634A4"
+    },
+    {
+      "resident": "拓真",
+      "operation": "ECFEF620-4958-6700-9EFB-01A2D898F977",
+      "reason": "received_life_event",
+      "action": "wait",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "life_committed: work:repair_contract_18_0",
+      "image_verified": true,
+      "evidence": "08-ECFEF620-4958-6700-9EFB-01A2D898F977"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state.",
+  "completion": {
+    "kind": "controlled_interruption",
+    "native_exit_code": 4294967295,
+    "actual_wall_seconds": 665.3178656101227,
+    "reason": "Root intentionally stopped owned UE after verified unsent local context-limit HTTP400 to repair before09:00. Original exit4294967295 retained. Formal seq25 repair/collection/payment saved; interrupted run is not a normal native exit. LocalContextRejectionProof confirms failed operation never entered ledger."
+  }
+}

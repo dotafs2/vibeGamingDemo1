@@ -1,0 +1,124 @@
+{
+  "run": {
+    "run": "town-20260908-224718",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1800,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 104224,
+    "gateway_pid": 32844,
+    "started_utc_epoch": 1788907638.634069,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 888,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.143601,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.856399,
+      "reserved_cny": 10.265088,
+      "settled_cny": 9.868513
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 894,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.3349791,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.6650209,
+      "reserved_cny": 10.265088,
+      "settled_cny": 10.0598911
+    },
+    "new_cost_cny": 0.1913781,
+    "new_settled_calls": 6,
+    "finished_utc_epoch": 1788909452.1723256
+  },
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "operation": "776C523B-4190-77F7-A5AF-1BB7E97C6BB3",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "回复拓真关于修刃的询问，同时评估柴斧的实际状态。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=53.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "01-776C523B-4190-77F7-A5AF-1BB7E97C6BB3"
+    },
+    {
+      "resident": "拓真",
+      "operation": "F98580B3-4A72-2DA8-44B2-33BE50ABBF66",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要木材才能使用工具制作火种，但当前没有木材；也没有待修的刀剑委托。",
+      "previous_executed_result": "life_committed: ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "image_verified": true,
+      "evidence": "02-F98580B3-4A72-2DA8-44B2-33BE50ABBF66"
+    },
+    {
+      "resident": "柏木",
+      "operation": "4DFA3536-4199-6BB2-D844-9E9E6AEC6C2D",
+      "reason": "ordinary_cooldown_due",
+      "action": "observe",
+      "option_id": null,
+      "need": "需要更多木材来修缮住处，但目前库存极少。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=356.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "03-4DFA3536-4199-6BB2-D844-9E9E6AEC6C2D"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "A41EFE4C-41AA-A957-C0E1-A6850D0062EC",
+      "reason": "completed_observation_followup",
+      "action": "reply_repair_need:repair_need_request_10:has_need",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=113.1; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "04-A41EFE4C-41AA-A957-C0E1-A6850D0062EC"
+    },
+    {
+      "resident": "拓真",
+      "operation": "EAECD3FF-402B-C362-FBF4-28BB82A59A4D",
+      "reason": "completed_observation_followup",
+      "action": "look_at_workbench",
+      "option_id": null,
+      "need": "目前暂无紧急需求，但希望获得修刃委托以使用手边的铁料。",
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=356.6; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "05-EAECD3FF-402B-C362-FBF4-28BB82A59A4D"
+    },
+    {
+      "resident": "柏木",
+      "operation": "A6DF3A63-4336-D110-6640-EBBDC3DB3902",
+      "reason": "completed_observation_followup",
+      "action": "look_at_workbench",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "observed_next_sector; body_yaw_degrees=56.8; position unchanged; no work completed",
+      "image_verified": true,
+      "evidence": "06-A6DF3A63-4336-D110-6640-EBBDC3DB3902"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state."
+}

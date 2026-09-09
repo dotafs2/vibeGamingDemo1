@@ -1,0 +1,107 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "revision": 1,
+  "destination": "/Game/ThreeHearths/Generated/AincradTownKit",
+  "assets": [
+    {
+      "id": "axe_handle_sound",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/axe_handle_sound/axe_handle_sound.axe_handle_sound",
+      "dimensions_cm": [
+        7.366374731063843,
+        3.9075706005096436,
+        57.30000114440918
+      ],
+      "source_sha256": "cae60fef9d49bf54a21ba4ec5b27f152ca27738e09db79f94d60f1568e99c763",
+      "source_bounds_min_m": [
+        -0.04377831146121025,
+        -0.019537853077054024,
+        -0.2849999964237213
+      ],
+      "source_bounds_max_m": [
+        0.029885437339544296,
+        0.019537853077054024,
+        0.2880000174045563
+      ],
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000002175FFF5000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Cloth.MI_Town_Cloth' (0x000002175FFFD000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000002175FFF4800) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "axe_handle_split",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/axe_handle_split/axe_handle_split.axe_handle_split",
+      "dimensions_cm": [
+        7.366369962692261,
+        3.9075706005096436,
+        58.180625915527344
+      ],
+      "source_sha256": "b508fd0d134a2a96d4969eca7d39748ed38219a35fe3271363ad5f30babf5d5f",
+      "source_bounds_min_m": [
+        -0.04377828538417816,
+        -0.019537853077054024,
+        -0.2849999964237213
+      ],
+      "source_bounds_max_m": [
+        0.029885413125157356,
+        0.019537853077054024,
+        0.296806275844574
+      ],
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Cloth.MI_Town_Cloth' (0x000002175FFFD000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark' (0x000002175FFF4800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber' (0x000002175FFF4000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight' (0x000002175FFF5000) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "axe_head_sharp",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/axe_head_sharp/axe_head_sharp.axe_head_sharp",
+      "dimensions_cm": [
+        28.913150787353516,
+        4.213281869888306,
+        18.306443214416504
+      ],
+      "source_sha256": "98a43e54685685d2a433989766e1e3b608c67f9b10c5acd7d8bba23eaafa5c32",
+      "source_bounds_min_m": [
+        -0.05000000074505806,
+        -0.021066410467028618,
+        0.08998042345046997
+      ],
+      "source_bounds_max_m": [
+        0.23913151025772095,
+        0.02106640860438347,
+        0.2730448544025421
+      ],
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x000002175FFF6000) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000002175FFF8800) Class 'MaterialInstanceConstant'>"
+      ]
+    },
+    {
+      "id": "axe_head_chipped",
+      "mesh": "/Game/ThreeHearths/Generated/AincradTownKit/axe_head_chipped/axe_head_chipped.axe_head_chipped",
+      "dimensions_cm": [
+        28.913135528564453,
+        4.213281869888306,
+        18.304749488830566
+      ],
+      "source_sha256": "ac0b23d8f8d9ede4e5c4dcea3cd87ce25061882f2b16c58835a2335a64f68f8d",
+      "source_bounds_min_m": [
+        -0.05000000074505806,
+        -0.021066410467028618,
+        0.08998356759548187
+      ],
+      "source_bounds_max_m": [
+        0.239131361246109,
+        0.02106640860438347,
+        0.2730310559272766
+      ],
+      "materials": [
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron' (0x000002175FFF8800) Class 'MaterialInstanceConstant'>",
+        "<Object '/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight' (0x000002175FFF6000) Class 'MaterialInstanceConstant'>"
+      ]
+    }
+  ],
+  "scope": "Four independently replaceable appearance components for one existing axe. No new item, material inventory, condition, skill, ownership, currency or repair changes."
+}

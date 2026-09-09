@@ -1,0 +1,17 @@
+{
+  "source": "root-curated run boundary metadata",
+  "run": "town-20260909-003204",
+  "new_settled_calls": 8,
+  "new_cost_cny": 0.3639409,
+  "cumulative_calls": 107,
+  "cumulative_cost_cny": 3.618313,
+  "life_seq_at_stop": 25,
+  "context_rejection_operation": "BE3BBA8B-42CA-7547-4A4A-B2839C838509",
+  "context_rejection_not_provider_call": true,
+  "owned_ue_exit_code": 4294967295,
+  "runner_exit_code": 1,
+  "gateway_stopped": true,
+  "interruption_reason": "local context limit rejection; not normal completion",
+  "current_checkpoint_updated": false,
+  "source_world_sha256": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0"
+}

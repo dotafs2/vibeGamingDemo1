@@ -1,0 +1,146 @@
+{
+  "run": {
+    "run": "town-20260908-235801",
+    "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+    "seconds": 1800,
+    "api": true,
+    "life": true,
+    "max_decisions": 18,
+    "budget_profile": "overnight",
+    "external_liability_cny": 1.6521896,
+    "stop_at_utc": 1788915600,
+    "manual_route_verification": false,
+    "ue_pid": 80444,
+    "gateway_pid": 66268,
+    "started_utc_epoch": 1788911881.898785,
+    "budget_before": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 903,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.6375971,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.3624029,
+      "reserved_cny": 10.265088,
+      "settled_cny": 10.3625091
+    },
+    "ue_exit": 0,
+    "budget_after": {
+      "allocation_cap_cny": 95.0,
+      "authorized_cny": 100.0,
+      "counts": {
+        "settled": 911,
+        "uncertain": 6
+      },
+      "deadline_utc": 0,
+      "halted": "",
+      "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+      "liability_cny": 20.9572267,
+      "model": "kimi-k2.6",
+      "prior_unverified_cny": 0.01,
+      "remaining_allocatable_cny": 74.0427733,
+      "reserved_cny": 10.265088,
+      "settled_cny": 10.6821387
+    },
+    "new_cost_cny": 0.3196296,
+    "new_settled_calls": 8,
+    "finished_utc_epoch": 1788913695.5697916
+  },
+  "decisions": [
+    {
+      "resident": "艾琳",
+      "operation": "EE806363-40AE-5EBA-4BD8-029EEAE1D785",
+      "reason": "ordinary_cooldown_due",
+      "action": "wait",
+      "option_id": null,
+      "need": null,
+      "previous_executed_result": "life_committed: reply_help:help_request_12:willing",
+      "image_verified": true,
+      "evidence": "01-EE806363-40AE-5EBA-4BD8-029EEAE1D785"
+    },
+    {
+      "resident": "拓真",
+      "operation": "7678582E-4F0E-66E7-E729-ABB6F1188047",
+      "reason": "ordinary_cooldown_due",
+      "action": "life",
+      "option_id": "quote_repair_need:repair_need_request_10:5",
+      "need": "需要对方提供木料以补足引火和辅助耗材，否则仅凭现有1铁料无法完成repair_requirements之外的tool_use准备。",
+      "previous_executed_result": "life_committed: ask_help:425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "image_verified": true,
+      "evidence": "02-7678582E-4F0E-66E7-E729-ABB6F1188047"
+    },
+    {
+      "resident": "柏木",
+      "operation": "E0C3B899-4CBE-3267-D9D8-62AB2D29833B",
+      "reason": "ordinary_cooldown_due",
+      "action": "life",
+      "option_id": "ask_repair_need:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "need": "拓真之前说缺木料做引火和辅助耗材，我想先确认他是否有需要修柄的物品，再谈木料交换或合作。",
+      "previous_executed_result": "life_committed: reply_help:help_request_14:willing",
+      "image_verified": true,
+      "evidence": "03-E0C3B899-4CBE-3267-D9D8-62AB2D29833B"
+    },
+    {
+      "resident": "拓真",
+      "operation": "829BC567-44BB-F3C1-250D-AF967D85E1BD",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "reply_repair_need:repair_need_request_16:no_need",
+      "need": "需要至少1 wood才能使用工具制作kindling；当前wood=0，iron=1。",
+      "previous_executed_result": "life_committed: quote_repair_need:repair_need_request_10:5",
+      "image_verified": true,
+      "evidence": "04-829BC567-44BB-F3C1-250D-AF967D85E1BD"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "2519080B-489D-4316-524F-F1AF83EC5066",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "repair_edge:aincrad_axe_erin:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F:5",
+      "need": "柴斧刃口已钝，需要修刃；愿意支付5 Col并提供拓真所需的木料。",
+      "previous_executed_result": "life_committed: reply_help:help_request_12:willing",
+      "image_verified": true,
+      "evidence": "05-2519080B-489D-4316-524F-F1AF83EC5066"
+    },
+    {
+      "resident": "拓真",
+      "operation": "578F5D40-4594-96A4-39BF-648129BFC401",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "accept:repair_contract_18_0",
+      "need": null,
+      "previous_executed_result": "life_committed: reply_repair_need:repair_need_request_16:no_need",
+      "image_verified": true,
+      "evidence": "06-578F5D40-4594-96A4-39BF-648129BFC401"
+    },
+    {
+      "resident": "柏木",
+      "operation": "79B23B9E-4C57-DAC8-A799-099D9EE2090E",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "ask_repair_need:A757B4D7-497C-99F3-3482-52A77F688D69",
+      "need": "需要更多木料和收入来修缮住处，让人敢于留下。",
+      "previous_executed_result": "life_committed: ask_repair_need:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "image_verified": true,
+      "evidence": "07-79B23B9E-4C57-DAC8-A799-099D9EE2090E"
+    },
+    {
+      "resident": "艾琳",
+      "operation": "1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC",
+      "reason": "received_life_event",
+      "action": "life",
+      "option_id": "deliver:repair_contract_18_0",
+      "need": null,
+      "previous_executed_result": "life_committed: repair_edge:aincrad_axe_erin:18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F:5",
+      "image_verified": true,
+      "evidence": "08-1103E587-4F9A-5A7F-CD6C-1391FFEFD7EC"
+    }
+  ],
+  "limits": "Choices are not proof of execution; use next request physical facts, native journals and world state."
+}

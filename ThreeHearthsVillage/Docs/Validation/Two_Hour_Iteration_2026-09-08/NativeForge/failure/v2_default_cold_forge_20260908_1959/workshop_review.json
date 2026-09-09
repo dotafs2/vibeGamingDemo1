@@ -1,0 +1,67 @@
+{
+  "source_capture": "v2_default_cold_forge_20260908_1959",
+  "source_index": "failure/v2_default_cold_forge_20260908_1959/source_index.json",
+  "workshop_review": {
+    "source": "local_verification",
+    "review_role": "coordinator",
+    "npc_vision": false,
+    "target_static_mesh": "smithy_cold_forge",
+    "matching_component_count": 1,
+    "matching_instance_count": 1,
+    "asset_present": true,
+    "instance_count_valid": true,
+    "static_mesh_path": "/Game/ThreeHearths/Generated/AincradTownKit/smithy_cold_forge/smithy_cold_forge.smithy_cold_forge",
+    "materials": [
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Iron.MI_Town_Iron",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Stone.MI_Town_Stone",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_StoneLight.MI_Town_StoneLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberLight.MI_Town_TimberLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Timber.MI_Town_Timber",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TimberDark.MI_Town_TimberDark",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_TerracottaLight.MI_Town_TerracottaLight",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Terracotta.MI_Town_Terracotta",
+      "/Game/ThreeHearths/Materials/AincradLevel0/MI_Town_Brass.MI_Town_Brass"
+    ],
+    "material_slot_count": 9,
+    "materials_valid": true,
+    "instance_transform_read": true,
+    "instance_transform_world": {
+      "location_cm": [
+        2150,
+        465280,
+        0
+      ],
+      "rotation_quaternion": [
+        0,
+        0,
+        -0.7071067811865476,
+        0.7071067811865475
+      ],
+      "scale": [
+        1.0000000000000002,
+        1.0000000000000002,
+        1
+      ]
+    },
+    "scale_valid": true,
+    "image": "../../../../Dev/vibeGamingDemo1/ThreeHearthsVillage/Saved/ThreeHearths/AincradLevel0/CharacterReview/v2_default_cold_forge_20260908_1959/cold_forge_context.png",
+    "camera_eye_world_cm": [
+      1750,
+      465580,
+      280
+    ],
+    "camera_aim_world_cm": [
+      2150,
+      465290,
+      70
+    ],
+    "fov_degrees": 36,
+    "render_capture_completed": true,
+    "render_visually_confirmed": false,
+    "passed": false,
+    "status": "captured; requires visual confirmation"
+  },
+  "coordinator_node_visual_confirmation": false,
+  "root_visual_inspection": false,
+  "failure_reason": "相机位于店铺墙外，画面被空白墙面遮挡；保留原始失败图，不改图。"
+}

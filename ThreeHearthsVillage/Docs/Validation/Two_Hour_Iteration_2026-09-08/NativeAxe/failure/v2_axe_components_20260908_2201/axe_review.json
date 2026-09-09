@@ -1,0 +1,61 @@
+{
+  "source": "local_verification",
+  "review_role": "coordinator",
+  "npc_vision": false,
+  "kimi_action": false,
+  "item_state_changed": false,
+  "render_visually_confirmed": false,
+  "passed": false,
+  "item_found_in_verification_copy": true,
+  "item_id": "aincrad_axe_erin",
+  "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "custodian_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "edge": 20,
+  "handle": 20,
+  "tagged_actor_count": 0,
+  "tagged_actor_valid": false,
+  "parts": [],
+  "part_count": 0,
+  "visible_mesh_component_count": 0,
+  "expected_handle_mesh": "axe_handle_split",
+  "expected_head_mesh": "axe_head_chipped",
+  "parts_valid_for_condition": false,
+  "tool_actor_transform": {
+    "location_cm": [
+      0,
+      0,
+      0
+    ],
+    "rotation_quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "tool_actor_transform_unchanged": false,
+  "image": null,
+  "camera_eye_world_cm": [
+    30,
+    -140,
+    15
+  ],
+  "camera_aim_world_cm": [
+    6,
+    0,
+    5
+  ],
+  "fov_degrees": 36,
+  "render_capture_completed": false,
+  "status": "failed",
+  "numeric_validation": true,
+  "visual_validation": false,
+  "root_visual_acceptance": false,
+  "lighting_limited": false,
+  "note": "Retained failure metadata only: no axe PNG was produced and tagged_actor_count was 0. The first AxeNativeImport attempt failed at material binding because role names produced an AT_AT_ material match; root later normalized role names. Full log remains at Saved/ThreeHearths/AincradLevel0/TwoHourIteration/AxeNativeImport.log and is not copied here."
+}

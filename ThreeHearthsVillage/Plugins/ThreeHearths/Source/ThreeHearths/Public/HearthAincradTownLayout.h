@@ -14,7 +14,10 @@ namespace HearthAincradTownLayout
         float YawDegrees = 0.f;
         int32 Floors = 1;
         FVector EntranceCm = FVector::ZeroVector;
+        FVector LegacyWorkCm = FVector::ZeroVector;
         FVector WorkCm = FVector::ZeroVector;
+        bool bHasWorkbench = false;
+        FVector WorkbenchCm = FVector::ZeroVector;
         FVector ObserveCm = FVector::ZeroVector;
         FVector SpawnCm = FVector::ZeroVector;
     };

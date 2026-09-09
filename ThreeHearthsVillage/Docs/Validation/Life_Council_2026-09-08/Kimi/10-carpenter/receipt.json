@@ -1,0 +1,13 @@
+{
+  "id": "9C7237B4-43F1-1824-0146-25B188F61F54",
+  "resident": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+  "state": "settled",
+  "prompt_tokens": 3526,
+  "output_tokens": 185,
+  "cached_tokens": 256,
+  "created": 1788876765.176995,
+  "finished": 1788876771.6898007,
+  "payload_sha": "7f345c03a049f0e4169d8854a47b9b85f1c4b23c2c9a248c63510ac0da43d96f",
+  "response_sha": "b25a62148af3adb0c983350ddc2d219e3d43de4e5c274e55b545793ff5f0ccf5",
+  "charge_cny": 0.0265316
+}

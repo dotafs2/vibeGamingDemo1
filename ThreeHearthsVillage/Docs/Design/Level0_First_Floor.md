@@ -36,19 +36,19 @@
 - 地图：`/Game/ThreeHearths/Maps/L_AincradLevel0`。
 - 新存档：`Saved/ThreeHearths/AincradLevel0/world.json`，独立世界 ID。
 - 旧档：`Saved/ThreeHearths/Archives/Medieval_20260908_81BDF793/`，原世界文件仍保留，校验摘要记录在验收中。
-- 新建 13 位原创背景 NPC 档案，身份是 SAO 本地居民，不冒充原作具名人物，也不把他们误当成玩家。档案保存长期故事、个性、住所引用、Col 与需求值。住所引用目前只是预留 ID，尚未绑定场景建筑产权；居民档案尚未实例化为自主活动角色。
-- 目前档案能力只有地图样板和持久身份；商店 AI、战斗、剑技、任务、转移等明确为未启用。无国王、皇家税款和旧城堡工程。
+- 新建 13 位原创背景 NPC 档案，身份是 SAO 本地居民，不冒充原作具名人物，也不把他们误当成玩家。档案保存长期故事、个性、住所引用、Col 与需求值；当前仅艾琳、拓真、柏木已作为活跃永久居民接入真实走路、工作点和本人视野，另外 10 人仍保留为未激活档案。
+- 三人生活扩展已完成首笔真实修刃交易：`town-20260909-003204` seq24 work 消耗 1 铁料使 edge=100，seq25 Erin collect 取回斧子并支付 5 Col；Erin 95、拓真 205、柏木 100，contract18 已 collected，handle=20。冷炉和木料额外承诺未执行，工具完整使用与 S4 仍未完成。该批因约 24KB context rejection 异常停止，API context 修复尚未验收；证据见 [NativeRepairTransaction](../Validation/Two_Hour_Iteration_2026-09-08/NativeRepairTransaction/index.json)。
 - `world.json` 校验失败时停止载入，不自动造一个新世界覆盖它。保存保留上一版备份，并拒绝把另一世界 ID 写到现有世界路径。
 
 居民自主故事与长期迭代是本项目对 SAO 的扩展。既有世界观作为约束，不能声称这种开放式 NPC 自我开发机制已经是原作明确设定。原作剧情人物与事件后续应单独确定是否重现，不能随机替换他们的既定经历。
 
 ## 可执行迭代顺序
 
-下一阶段具体执行以 [起始之城迭代执行计划](Starting_Town_Iteration_Plan.md) 为准：先完成同档迁移和三位居民的真实行动/个人视野，再沿一条样板街完善美术与需求兑现。下列为整层路线概览。
+下一阶段具体执行以 [起始之城迭代执行计划](Starting_Town_Iteration_Plan.md) 为准：先验证 API context 修复，再继续 handle 修理与工具使用闭环；冷炉和木料额外承诺不自动执行，S4 真实交易闭环暂不提前标记完成。
 
 1. 地理骨架：先验收整层南北关系、起始之城比例、城门与外部道路，以及进入迷宫的路线。本轮体量样板已验收，接下来进入起始之城迭代。
 2. 起始之城样板街：完成广场、钟楼/转移门外观、旅店、铁匠与道具店的一段可步行街道，统一成年人物尺度、门窗、屋檐、屋顶与树木风格。粗略体量必须替换成有正常接口、碰撞和可进入空间的构件。
-3. 居民生活：让同一批 NPC 从旅店/家出发到店面工作，用自己的 FOV 看自己经营的场所；真实调用 Kimi，区分已知记忆、当前看见和未实现需求。
+3. 居民生活：继续让这三位 NPC 从旅店/家出发到店面工作，用自己的 FOV 看自己经营的场所；真实调用 Kimi，区分已知记忆、当前看见和未实现需求，并保留另外 10 人未激活的边界。
 4. 首个闭环：玩家或居民遇到具体困难，提出有限需求；主持人检查设定与成本，暂停世界完成最小功能或资产，恢复原存档，观察实际使用结果。
 5. 城外内容：草原采集/怪物、霍伦卡任务、森林与湖区，再到托尔巴纳和第一层迷宫。区域按需加载和更新，不能让所有 NPC 每帧向 API 请求整个世界。
 
@@ -58,6 +58,9 @@ API 模型升级只更换决策适配层。世界状态、角色 ID、事件、�
 
 使用 `Tools/Run-AincradLevel0.ps1` 启动新地图。数字键 1–5 在整层、起始之城、广场、霍伦卡、托尔巴纳之间切换；WASD 移动、Q/E 升降、按住鼠标右键转向，Shift 加速。
 
-本轮浏览器/截图只是检查地图的协调者视角，不是 NPC FOV。当前启动脚本明确关闭 API；首次居民行为接入后再以既有 Kimi 账本进行真实验收，不让旧社会代码在新设定中继续扣税或委托城堡。
+浏览器/协调者截图不等同于 NPC FOV；居民真实行动和本人视野须以 Kimi 账本、请求、实景与存档结果共同验收。当前三人实测、两次取消及 `town-20260908-212535` 的有限问答均保留在[两小时迭代验证](../Validation/Two_Hour_Iteration_2026-09-08/README.md)，艾琳无效 action 回执不重放、不记交易；NativeAxe/NativeTradeSigns/V2 证据仍分别保留数值/画面边界，不让旧社会代码在新设定中继续扣税或委托城堡。
 
 本轮另以现有账本进行了两次独立的 Kimi 协调者看图验收，并落实黑铁宫的深色金属材质。实机图、地图分布图、旧档哈希、重启验证和测试结果见 [2026-09-08 验收记录](../Validation/Level0_2026-09-08/README.md)。
+
+
+上下文预算修复（2026-09-09 00:51 UTC）：NativeContextBudget 与 offline reproduction 均通过，重复 known_events 去除后 17327 bytes、全部 received_letters 保留；gateway normalizer 通过，0 API/账本写。恢复副本 9 checks 全 true，双 CLI + SQLiteRO row=0 才清本地拒绝 pending，wrong operation/ledger/source 保持，life/IDs/coins/lastthink/prior execution 不变。正式历史不改；仅裁剪最旧信/记忆以通过 UTF8 preflight。新鲜收费请求等待普通冷却，不强行触发。证据见 [NativeContextBudget](../Validation/Two_Hour_Iteration_2026-09-08/NativeContextBudget/index.json)。

@@ -23,3 +23,11 @@ Art/Exports/ThreeHearths_All_Git_Assets_*.blend filter=lfs diff=lfs merge=lfs -t
 # Preserve the exact portable checkpoint bytes referenced by manifest SHA256.
 Content/ThreeHearths/Data/MedievalShowcase/world.json -text whitespace=cr-at-eol
 Content/ThreeHearths/Data/MedievalShowcase/history.json -text whitespace=cr-at-eol
+
+# Keep original native evidence bytes intact for archived SHA256 checks.
+Docs/Validation/Life_Continuation_2026-09-08/**/*.json -text whitespace=cr-at-eol
+Docs/Validation/Life_Continuation_2026-09-08/**/*.jsonl -text whitespace=cr-at-eol
+Docs/Validation/Life_Council_2026-09-08/**/*.json -text whitespace=cr-at-eol
+Docs/Validation/Life_Council_2026-09-08/**/*.jsonl -text whitespace=cr-at-eol
+Docs/Validation/Two_Hour_Iteration_2026-09-08/**/*.json -text whitespace=cr-at-eol
+Docs/Validation/Two_Hour_Iteration_2026-09-08/**/*.jsonl -text whitespace=cr-at-eol

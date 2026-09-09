@@ -2,6 +2,8 @@
 
 适用于整个仓库。用户当前明确指令优先；阶段文档中的日期、暂停、模型与上传限制属于当时任务，不能覆盖后续授权。当前目标入口：[Level0：艾恩葛朗特第一层](ThreeHearthsVillage/Docs/Design/Level0_First_Floor.md)。旧交付仅作历史：[中世纪社会本轮交付](ThreeHearthsVillage/Docs/Medieval_Night_Delivery_2026-09-08.md)。
 
+最新本机接续记录：[本轮夜间迭代](ThreeHearthsVillage/Docs/Validation/Two_Hour_Iteration_2026-09-08/README.md)。用户最新截止延长至北京时间2026-09-09 09:00，覆盖原两小时停止时间。模型分工按[夜间节省额度规则](ThreeHearthsVillage/Docs/Design/Overnight_Model_Policy_2026-09-08.md)：Astra负责大方向及Blender/画面，Spark负责简单清单与机械工作，Luna负责有界工程，复杂问题再升级Sol/Astra。每批继续同一Kimi真实世界验收，保留冷却与累计预算。
+
 ## 2026-09-08 最新世界方向（覆盖下文旧国王目标）
 
 用户明确要求完全转向 SAO 艾恩葛朗特第一层地理与设定，项目代号 Level0，废弃中央高地城堡与国王征税路线，并选择“新建 SAO 世界，旧世界留档”。新世界使用独立地图 `L_AincradLevel0` 和 `Saved/ThreeHearths/AincradLevel0/world.json`；禁止让旧社会启动逻辑、旧皇家工程或旧人物记忆混入新世界。原世界保留为档案。新世界建立后，继续保持同一批新人物及存档，不因模型升级或重启随意重建。

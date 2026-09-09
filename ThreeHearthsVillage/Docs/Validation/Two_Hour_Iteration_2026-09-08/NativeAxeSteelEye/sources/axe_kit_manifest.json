@@ -1,0 +1,103 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "revision": 2,
+  "source_axis": "Blender meters, +Z up, +Y facade; UE import=(x,-y,z)*100; native facade -Y",
+  "scope": "Four independently replaceable appearance components for one existing axe. No new item, material inventory, condition, skill, ownership, currency or repair changes.",
+  "assets": [
+    {
+      "id": "axe_handle_sound",
+      "glb": "Modules/axe_handle_sound.glb",
+      "role": "same existing tool: handle=100 visual",
+      "vertices": 880,
+      "triangles": 1748,
+      "bounds_min_m": [
+        -0.04377831146121025,
+        -0.019537853077054024,
+        -0.2849999964237213
+      ],
+      "bounds_max_m": [
+        0.029885437339544296,
+        0.019537853077054024,
+        0.2880000174045563
+      ],
+      "materials": [
+        "AT_Cloth",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ],
+      "pivot": "shared tool origin; shaft center; +Z shaft, +X cutting edge",
+      "uv": "metric projection for solid parts; shared town material palette"
+    },
+    {
+      "id": "axe_handle_split",
+      "glb": "Modules/axe_handle_split.glb",
+      "role": "same existing tool: handle<100 visual; split is geometric",
+      "vertices": 1054,
+      "triangles": 2084,
+      "bounds_min_m": [
+        -0.04377828538417816,
+        -0.019537853077054024,
+        -0.2849999964237213
+      ],
+      "bounds_max_m": [
+        0.029885413125157356,
+        0.019537853077054024,
+        0.296806275844574
+      ],
+      "materials": [
+        "AT_Cloth",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ],
+      "pivot": "shared tool origin; shaft center; +Z shaft, +X cutting edge",
+      "uv": "metric projection for solid parts; shared town material palette"
+    },
+    {
+      "id": "axe_head_sharp",
+      "glb": "Modules/axe_head_sharp.glb",
+      "role": "same existing tool: edge=100 visual",
+      "vertices": 176,
+      "triangles": 348,
+      "bounds_min_m": [
+        -0.05000000074505806,
+        -0.021066410467028618,
+        0.08998042345046997
+      ],
+      "bounds_max_m": [
+        0.23913151025772095,
+        0.02106640860438347,
+        0.2730448544025421
+      ],
+      "materials": [
+        "AT_IronLight",
+        "AT_SteelEdge"
+      ],
+      "pivot": "shared tool origin; shaft center; +Z shaft, +X cutting edge",
+      "uv": "metric projection for solid parts; shared town material palette"
+    },
+    {
+      "id": "axe_head_chipped",
+      "glb": "Modules/axe_head_chipped.glb",
+      "role": "same existing tool: edge<100 visual; two real edge notches",
+      "vertices": 262,
+      "triangles": 516,
+      "bounds_min_m": [
+        -0.05000000074505806,
+        -0.021066410467028618,
+        0.08998356759548187
+      ],
+      "bounds_max_m": [
+        0.239131361246109,
+        0.02106640860438347,
+        0.2730310559272766
+      ],
+      "materials": [
+        "AT_IronLight",
+        "AT_SteelEdge"
+      ],
+      "pivot": "shared tool origin; shaft center; +Z shaft, +X cutting edge",
+      "uv": "metric projection for solid parts; shared town material palette"
+    }
+  ]
+}

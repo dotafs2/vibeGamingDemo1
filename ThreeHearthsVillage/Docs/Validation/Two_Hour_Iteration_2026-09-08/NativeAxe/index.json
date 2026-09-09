@@ -1,0 +1,53 @@
+{
+  "archive_type": "local_verification",
+  "as_of_utc": "2026-09-08T22:05:00Z",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "formal_world_sha256_prefix": "b9f307ab",
+  "formal_world_status": "unchanged per root check",
+  "success": {
+    "capture": "v2_axe_continuous_20260908_2205",
+    "review": "success/v2_axe_continuous_20260908_2205/axe_review.json",
+    "image": "success/v2_axe_continuous_20260908_2205/axe_context.png",
+    "image_sha256": "1729fa915ac707c680b26719def6ace7e7a16654058fcb32bab047f6b73d0a7f",
+    "edge": 20,
+    "handle": 20,
+    "handle_mesh": "axe_handle_split",
+    "head_mesh": "axe_head_chipped",
+    "part_count": 2,
+    "numeric_validation": true,
+    "visual_validation_in_helper": false,
+    "root_visual_acceptance": true,
+    "lighting_limited": true
+  },
+  "failure": {
+    "capture": "v2_axe_components_20260908_2201",
+    "review": "failure/v2_axe_components_20260908_2201/axe_review.json",
+    "image_present": false,
+    "tagged_actor_count": 0,
+    "reason": "No axe PNG; tagged_actor_count=0. Earlier AxeNativeImport material binding failed on AT_AT_ role matching; role names were later normalized.",
+    "log_location": "Saved/ThreeHearths/AincradLevel0/TwoHourIteration/AxeNativeImport.log",
+    "root_visual_acceptance": false
+  },
+  "matching_sources": {
+    "axe_kit_manifest": {
+      "path": "axe_kit_manifest.json",
+      "sha256": "0f8afdf22affd6d3b336747b0b73648c92eee2d4f81d6e454abd48cdbad1ab69"
+    },
+    "ue_import_report": {
+      "path": "UE_Axe_Kit_Import_Report.json",
+      "sha256": "ed916ff5be74c068417a4a7521db5df58374654caf16bbfbb4da1c3a61f5d28a"
+    }
+  },
+  "native_tests": {
+    "path": "NativeAxeAliasTests/index.json",
+    "succeeded": 29,
+    "failed": 0,
+    "warnings": 0
+  },
+  "scope": {
+    "npc_vision": false,
+    "repair_completion_claim": false,
+    "full_material_lighting_claim": false,
+    "current_paid_run": "town-20260908-220838 in progress; current checkpoint and paid totals untouched"
+  }
+}

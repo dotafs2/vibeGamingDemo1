@@ -1,0 +1,15 @@
+{
+  "formal_sha256_before": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "stop_at_utc": 1788915600,
+  "owned_pid": 74780,
+  "exit_code": 0,
+  "owned_child_stopped": true,
+  "formal_sha256_after": "da68d5aea87b613d23cd52fce9f60df163eeb6612bb6b3681c54d6f61c8926b0",
+  "formal_world_unchanged": true,
+  "tests": {
+    "succeeded": 30,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "source": "local_verification",
+  "copy_name": "characters_v2_natural_playback_20260908_1953",
+  "npc_vision": false,
+  "kimi_action": false,
+  "automatic_animation_playback_validated": true,
+  "automatic_animation_playback_status": "passed",
+  "automatic_animation_playback_method": "Walk reset to zero, then sampled across at least 0.2 wall seconds and two natural frames without manual TickAnimation or RefreshBoneTransforms",
+  "automatic_animation_playback": [
+    {
+      "character": "Aileen",
+      "command_frame": 210,
+      "start_frame": 211,
+      "end_frame": 217,
+      "start_position_seconds": 0.03333349898457527,
+      "elapsed_wall_seconds": 0.2000581994652748,
+      "start_bones_world_cm": {
+        "hand_L": [
+          -1297.0417232524062,
+          466977.6199237775,
+          86.001061020235
+        ],
+        "hand_R": [
+          -1289.3136488263217,
+          467024.6455509549,
+          86.06212976231456
+        ],
+        "foot_L": [
+          -1290.0827020422532,
+          466989.9750886376,
+          10.360976392737712
+        ],
+        "foot_R": [
+          -1292.8007246544644,
+          467010.1401245867,
+          10.338671465387868
+        ]
+      },
+      "end_bones_world_cm": {
+        "hand_L": [
+          -1305.2187628658871,
+          466986.1269622717,
+          87.57606095370006
+        ],
+        "hand_R": [
+          -1280.677822610165,
+          467029.9294195274,
+          87.71222339582096
+        ],
+        "foot_L": [
+          -1273.9817060177863,
+          466987.6770439735,
+          12.406023633097455
+        ],
+        "foot_R": [
+          -1319.689369374454,
+          467012.8743623556,
+          16.722286297961908
+        ]
+      },
+      "start_wall_seconds": 17570523.6884184,
+      "end_wall_seconds": 17570523.8884766,
+      "end_position_seconds": 0.23333430290222168,
+      "position_advance_seconds": 0.2000008076429367,
+      "start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Walk.AC_Aileen_Walk",
+      "end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Aileen/AC_Aileen_Walk.AC_Aileen_Walk",
+      "start_playing": true,
+      "end_playing": true,
+      "max_required_bone_delta_cm": 27.770952224731445,
+      "actor_transform_unchanged": true,
+      "capsule_transform_unchanged": true,
+      "timed_out": false,
+      "passed": true
+    },
+    {
+      "character": "Takuma",
+      "command_frame": 210,
+      "start_frame": 211,
+      "end_frame": 217,
+      "start_position_seconds": 0.03333349898457527,
+      "elapsed_wall_seconds": 0.2000581994652748,
+      "start_bones_world_cm": {
+        "hand_L": [
+          1544.1188420115197,
+          464865.9393445802,
+          90.6282287772824
+        ],
+        "hand_R": [
+          1498.2831932693234,
+          464845.4106491107,
+          90.6929366448067
+        ],
+        "foot_L": [
+          1529.213082508554,
+          464864.876847044,
+          10.918478282430982
+        ],
+        "foot_R": [
+          1513.0641470081177,
+          464850.7707938937,
+          10.894974371891415
+        ]
+      },
+      "end_bones_world_cm": {
+        "hand_L": [
+          1541.390666897655,
+          464853.8057844957,
+          92.28828836950716
+        ],
+        "hand_R": [
+          1488.6225789944785,
+          464849.9304977709,
+          92.43175239492197
+        ],
+        "foot_L": [
+          1521.8782487394071,
+          464880.36735593947,
+          13.073561185255208
+        ],
+        "foot_R": [
+          1526.283442431903,
+          464825.54283795384,
+          17.622078606223347
+        ]
+      },
+      "start_wall_seconds": 17570523.6884184,
+      "end_wall_seconds": 17570523.8884766,
+      "end_position_seconds": 0.23333430290222168,
+      "position_advance_seconds": 0.2000008076429367,
+      "start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Walk.AC_Takuma_Walk",
+      "end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Takuma/AC_Takuma_Walk.AC_Takuma_Walk",
+      "start_playing": true,
+      "end_playing": true,
+      "max_required_bone_delta_cm": 29.265226364135742,
+      "actor_transform_unchanged": true,
+      "capsule_transform_unchanged": true,
+      "timed_out": false,
+      "passed": true
+    },
+    {
+      "character": "Kashiwagi",
+      "command_frame": 210,
+      "start_frame": 211,
+      "end_frame": 217,
+      "start_position_seconds": 0.03333349898457527,
+      "elapsed_wall_seconds": 0.2000581994652748,
+      "start_bones_world_cm": {
+        "hand_L": [
+          -1541.3850308665951,
+          462132.0757629747,
+          87.31073003491471
+        ],
+        "hand_R": [
+          -1497.3162130091466,
+          462152.04514667945,
+          87.37273289283002
+        ],
+        "foot_L": [
+          -1527.029786307215,
+          462133.1601160289,
+          10.518765707772225
+        ],
+        "foot_R": [
+          -1511.5312553493852,
+          462146.8172530463,
+          10.49612156539974
+        ]
+      },
+      "end_bones_world_cm": {
+        "hand_L": [
+          -1538.8078613234995,
+          462143.7747997917,
+          88.9097256616794
+        ],
+        "hand_R": [
+          -1487.9881379958397,
+          462147.72909366357,
+          89.04795672297999
+        ],
+        "foot_L": [
+          -1519.8986721827514,
+          462118.2675476228,
+          12.594956444725753
+        ],
+        "foot_R": [
+          -1524.3721212568478,
+          462171.0660597867,
+          16.976949556764993
+        ]
+      },
+      "start_wall_seconds": 17570523.6884184,
+      "end_wall_seconds": 17570523.8884766,
+      "end_position_seconds": 0.23333430290222168,
+      "position_advance_seconds": 0.2000008076429367,
+      "start_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Walk.AC_Kashiwagi_Walk",
+      "end_animation_asset": "/Game/ThreeHearths/Generated/AincradCharactersV2/Kashiwagi/AC_Kashiwagi_Walk.AC_Kashiwagi_Walk",
+      "start_playing": true,
+      "end_playing": true,
+      "max_required_bone_delta_cm": 28.193857192993164,
+      "actor_transform_unchanged": true,
+      "capsule_transform_unchanged": true,
+      "timed_out": false,
+      "passed": true
+    }
+  ],
+  "matching_visual_evidence": "../face-render-sync/index.json",
+  "matching_source_report": "UE_Import_Report_at_capture.json",
+  "formal_world_unchanged": true,
+  "formal_world_sha256": "41e8c056ccfacb11ce8ccea73d936e78aa3d1310072fb49c026df203b09e49d1",
+  "scope": "Natural component ticks advanced Walk time and actual bones; did not command a resident route or count as an autonomous action."
+}

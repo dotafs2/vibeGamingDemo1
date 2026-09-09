@@ -1,0 +1,49 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+  "observation_id": "obs_000058",
+  "target_id": "sao_inn_01",
+  "scene_revision": "town_layout=1;art=aincrad_anime_town_v1@4",
+  "image_file": "erin_obs/obs_000058.png",
+  "image_sha1": "7D731F11CB39DFF24172CE61DFF3296F98ACDCE3",
+  "position_cm": [
+    -1290.5684814453125,
+    467000,
+    92
+  ],
+  "eye_cm": [
+    -1290.5684814453125,
+    467000,
+    160
+  ],
+  "facing": [
+    0.6003319673546832,
+    0.799750916831019,
+    0
+  ],
+  "camera_rotation": [
+    0.19757585223189472,
+    0.8051521372588041,
+    -0.5591903240243169
+  ],
+  "horizontal_fov": 85,
+  "sequence": 58,
+  "utc": 1788907543,
+  "manual_bootstrap": false,
+  "source": "native",
+  "view": "held_tool_attention",
+  "attention_target_kind": "held_tool",
+  "attention_target_item_id": "aincrad_axe_erin",
+  "attention_target_actor_cm": [
+    -1271.1356132323037,
+    467079.1919417177,
+    95
+  ],
+  "attention_target_actor_pitch_yaw_roll": [
+    14.999999999999993,
+    163.10632324218756,
+    -19.999999999999982
+  ],
+  "attention_tool_pose": "inspection: actual tool yaw offset 110 degrees; carried pivot unchanged",
+  "archived_image_sha256": "234a2a59cb6e71ebad3dd5b72947a5a1d6138d12f2d4b8b20ca1cb91bd50338f"
+}

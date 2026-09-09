@@ -4,6 +4,8 @@
 #include "HearthAincradTownLayout.h"
 #include "HearthAincradTownVisuals.h"
 #include "HearthAincradResidentRuntime.h"
+#include "HearthAincradCharacterReview.h"
+#include "HearthAincradViewGrade.h"
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/CapsuleComponent.h"
@@ -17,6 +19,7 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/Canvas.h"
+#include "UnrealClient.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -26,6 +29,7 @@
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Misc/CommandLine.h"
+#include "Misc/DateTime.h"
 #include "Misc/Parse.h"
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
@@ -47,16 +51,6 @@ namespace
     {
         const FVector2D D=B-A;const double T=D.SizeSquared()>0?FMath::Clamp(FVector2D::DotProduct(P-A,D)/D.SizeSquared(),0.0,1.0):0;
         return (P-A-D*T).Size();
-    }
-    void Grade(FPostProcessSettings& P)
-    {
-        P.bOverride_AutoExposureMethod=true;P.AutoExposureMethod=AEM_Manual;
-        P.bOverride_AutoExposureApplyPhysicalCameraExposure=true;P.AutoExposureApplyPhysicalCameraExposure=false;
-        P.bOverride_AutoExposureBias=true;P.AutoExposureBias=1.f;
-        P.bOverride_BloomIntensity=true;P.BloomIntensity=.15f;
-        P.bOverride_MotionBlurAmount=true;P.MotionBlurAmount=0;
-        P.bOverride_VignetteIntensity=true;P.VignetteIntensity=0;
-        P.bOverride_AmbientOcclusionIntensity=true;P.AmbientOcclusionIntensity=.4f;
     }
     void Pose(int32 Mode,FVector& Eye,FVector& Aim)
     {
@@ -298,7 +292,7 @@ void AHearthAincradLevel::BuildPreview()
     HouseCount+=HearthAincradTownVisuals::Build(this,Generated);
     auto* Sun=NewObject<UDirectionalLightComponent>(this);Sun->SetupAttachment(RootComponent);Sun->SetMobility(EComponentMobility::Movable);Sun->SetIntensity(8.f);Sun->SetLightColor(FLinearColor(1.f,.95f,.86f));Sun->SetWorldRotation(FRotator(-48,-25,0));Sun->LightSourceAngle=2.f;Sun->RegisterComponent();Generated.Add(Sun);
     auto* Sky=NewObject<USkyLightComponent>(this);Sky->SetupAttachment(RootComponent);Sky->SetMobility(EComponentMobility::Movable);Sky->SourceType=SLS_SpecifiedCubemap;Sky->SetCubemap(LoadObject<UTextureCube>(nullptr,TEXT("/Engine/MapTemplates/Sky/DaylightAmbientCubemap")));Sky->SetIntensity(2.5f);Sky->RegisterComponent();Generated.Add(Sky);
-    auto* Post=NewObject<UPostProcessComponent>(this);Post->SetupAttachment(RootComponent);Post->bUnbound=true;Post->Priority=120;Grade(Post->Settings);Post->RegisterComponent();Generated.Add(Post);
+    auto* Post=NewObject<UPostProcessComponent>(this);Post->SetupAttachment(RootComponent);Post->bUnbound=true;Post->Priority=120;HearthAincradViewGrade::Apply(Post->Settings);Post->RegisterComponent();Generated.Add(Post);
     UE_LOG(LogTemp,Display,TEXT("LEVEL0_LAYOUT floor_diameter_m=10000 houses=%d trees=%d regions=%d batches=%d retired_royal_actors=0"),HouseCount,TreeCount,Plan.Regions.Num(),Batches.Num());
 }
 
@@ -306,6 +300,19 @@ void AHearthAincradLevel::BeginPlay()
 {
     Super::BeginPlay();StartedAt=FPlatformTime::Seconds();LastSaved=StartedAt;
     StatePath=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/AincradLevel0/world.json");
+    FString VerificationPath;
+    if(FParse::Value(FCommandLine::Get(),TEXT("AincradVerificationWorld="),VerificationPath))
+    {
+        VerificationPath=FPaths::ConvertRelativePathToFull(VerificationPath);
+        FPaths::NormalizeFilename(VerificationPath);
+        FPaths::CollapseRelativeDirectories(VerificationPath);
+        const FString Allowed=FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir()/TEXT("ThreeHearths/AincradLevel0/VerificationWorlds"));
+        if(!FParse::Param(FCommandLine::Get(),TEXT("HearthDisableApi"))
+            || !FPaths::IsUnderDirectory(VerificationPath,Allowed) || !IFileManager::Get().FileExists(*VerificationPath))
+        {bFailed=true;UE_LOG(LogTemp,Error,TEXT("LEVEL0_VERIFICATION_WORLD_REFUSED"));FPlatformMisc::RequestExit(false);return;}
+        StatePath=VerificationPath;
+        UE_LOG(LogTemp,Display,TEXT("LEVEL0_VERIFICATION_COPY no paid decisions, original world untouched"));
+    }
     FString Error;
     if(!HearthAincradWorldStore::LoadOrCreate(StatePath,PersistentState,Error)){bFailed=true;UE_LOG(LogTemp,Error,TEXT("LEVEL0_STORE_REFUSED %s"),*Error);return;}
     StartElapsed=PersistentState->GetNumberField(TEXT("elapsed_seconds"));
@@ -327,7 +334,17 @@ void AHearthAincradLevel::EndPlay(const EEndPlayReason::Type Reason){if(IsValid(
 void AHearthAincradLevel::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);if(bFailed) return;const double Now=FPlatformTime::Seconds();
+    double StopAtUtc=0;
+    if(FParse::Value(FCommandLine::Get(),TEXT("AincradStopUtc="),StopAtUtc)
+        && (!FMath::IsFinite(StopAtUtc) || static_cast<double>(FDateTime::UtcNow().ToUnixTimestamp())>=StopAtUtc-25.0))
+    {
+        SaveState();
+        UE_LOG(LogTemp,Display,TEXT("LEVEL0_ABSOLUTE_STOP saved before user deadline"));
+        FPlatformMisc::RequestExit(false);
+        return;
+    }
     if(Now-LastSaved>=20){SaveState();LastSaved=Now;}
+    if(Now-StartedAt>8) HearthAincradCharacterReview::TryCapture(this,StatePath);
     if(auto* PC=GetWorld()->GetFirstPlayerController())
     {
         for(int32 N=1;N<=9;++N)
@@ -337,7 +354,17 @@ void AHearthAincradLevel::Tick(float DeltaSeconds)
         }
         if(PC->WasInputKeyJustPressed(EKeys::F)) SetView(ViewMode==9?6:9);
     }
-    if(!bCaptured && Now-StartedAt>12 && FParse::Param(FCommandLine::Get(),TEXT("AincradCapture"))){bCaptured=true;CaptureViews();}
+    if(!bCaptured && Now-StartedAt>12 && FParse::Param(FCommandLine::Get(),TEXT("AincradCapture")))
+    {
+        bCaptured=true;
+        CaptureViews();
+        const FString Folder=FPaths::ProjectSavedDir()/TEXT("ThreeHearths/AincradLevel0/Views");
+        if(IsValid(ResidentRuntime))
+            FFileHelper::SaveStringToFile(ResidentRuntime->LifeReport(),*(Folder/TEXT("life-report.txt")),FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+        // SceneCapture does not include the player's HUD. Preserve a native
+        // viewport frame as separate evidence without altering any NPC camera.
+        FScreenshotRequest::RequestScreenshot(FPaths::ConvertRelativePathToFull(Folder/TEXT("player-hud.png")),true,false);
+    }
     if(!bWalkVerified && Now-StartedAt>14 && FParse::Param(FCommandLine::Get(),TEXT("AincradVerifyWalk"))
         && FParse::Param(FCommandLine::Get(),TEXT("HearthDisableApi")))
     {
@@ -407,7 +434,7 @@ void AHearthAincradLevel::CaptureViews()
         const int32 Width=Mode==6?512:1600,Height=Mode==6?512:1000;
         FVector Eye,Aim;Pose(Mode==6?2:Mode>6?Mode-1:Mode,Eye,Aim);auto* Target=NewObject<UTextureRenderTarget2D>(this);Target->RenderTargetFormat=RTF_RGBA8;Target->InitAutoFormat(Width,Height);Target->UpdateResourceImmediate(true);
         auto* Capture=NewObject<USceneCaptureComponent2D>(this);Capture->TextureTarget=Target;Capture->bCaptureEveryFrame=false;Capture->bCaptureOnMovement=false;Capture->bAlwaysPersistRenderingState=true;
-        Capture->CaptureSource=SCS_FinalColorLDR;Capture->FOVAngle=65;Grade(Capture->PostProcessSettings);Capture->PostProcessBlendWeight=1;Capture->RegisterComponent();Capture->SetWorldLocationAndRotation(Eye,(Aim-Eye).Rotation());
+        Capture->CaptureSource=SCS_FinalColorLDR;Capture->FOVAngle=65;HearthAincradViewGrade::Apply(Capture->PostProcessSettings);Capture->PostProcessBlendWeight=1;Capture->RegisterComponent();Capture->SetWorldLocationAndRotation(Eye,(Aim-Eye).Rotation());
         for(int32 N=0;N<4;++N){Capture->CaptureScene();FlushRenderingCommands();}
         TArray<FColor> Pixels;const bool Good=Target->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);Capture->DestroyComponent();if(!Good) continue;for(auto& P:Pixels)P.A=255;
         auto& Images=FModuleManager::LoadModuleChecked<IImageWrapperModule>(TEXT("ImageWrapper"));auto PNG=Images.CreateImageWrapper(EImageFormat::PNG);PNG->SetRaw(Pixels.GetData(),Pixels.Num()*sizeof(FColor),Width,Height,ERGBFormat::BGRA,8);
@@ -433,7 +460,7 @@ AHearthAincradExplorer::AHearthAincradExplorer()
     Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(Capsule);
     Camera->FieldOfView=65;
-    Grade(Camera->PostProcessSettings);
+    HearthAincradViewGrade::Apply(Camera->PostProcessSettings);
     Camera->PostProcessBlendWeight=1;
 }
 void AHearthAincradExplorer::SetWalking(bool bEnable)
@@ -557,8 +584,21 @@ void AHearthAincradHUD::DrawHUD()
         const FString Life=It->LifeReport();
         if(!Life.IsEmpty())
         {
-            DrawRect(FLinearColor(.03f,.06f,.075f,.82f),20,Canvas->SizeY-58,Canvas->SizeX-40,38);
-            DrawText(Life,FLinearColor(.98f,.91f,.74f),34,Canvas->SizeY-48,nullptr,1.f);
+            TArray<FString> Lines;
+            Life.ParseIntoArrayLines(Lines);
+            float WidestLine = 1.f;
+            for (const FString& Line : Lines)
+            {
+                float Width=0.f, Height=0.f;
+                GetTextSize(Line,Width,Height,nullptr,1.f);
+                WidestLine=FMath::Max(WidestLine,Width);
+            }
+            const float Scale = FMath::Min(1.1f,FMath::Max(.75f,(Canvas->SizeX-68.f)/WidestLine));
+            const float LineHeight = 23.f * Scale;
+            const float Top = Canvas->SizeY - 40.f - Lines.Num() * LineHeight;
+            DrawRect(FLinearColor(.03f,.06f,.075f,.86f),20,Top,Canvas->SizeX-40,20.f+Lines.Num()*LineHeight);
+            for (int32 Index=0; Index<Lines.Num(); ++Index)
+                DrawText(Lines[Index],FLinearColor(.98f,.91f,.74f),34,Top+10.f+Index*LineHeight,nullptr,Scale);
         }
         break;
     }

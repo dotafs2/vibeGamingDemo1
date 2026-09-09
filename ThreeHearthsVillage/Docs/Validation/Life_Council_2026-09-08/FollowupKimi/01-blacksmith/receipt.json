@@ -1,0 +1,13 @@
+{
+  "id": "E99CFFD0-4250-002F-9B2E-B8B09216AA07",
+  "resident": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+  "state": "settled",
+  "prompt_tokens": 1876,
+  "output_tokens": 124,
+  "cached_tokens": 512,
+  "created": 1788878535.1026828,
+  "finished": 1788878539.860624,
+  "payload_sha": "174bbfcf807987e74b46dba0b6b9eaeba9084c6b253f0799a66ad6e457a42122",
+  "response_sha": "a7e2451e5c706d1785e4faaa44eb393f1e0e9ead9a0a0e1f394571260ad5353d",
+  "charge_cny": 0.0127772
+}

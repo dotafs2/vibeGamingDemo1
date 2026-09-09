@@ -1,0 +1,16 @@
+{
+  "as_of_utc_epoch": 1788914524.4889941,
+  "operation_id": "BE3BBA8B-42CA-7547-4A4A-B2839C838509",
+  "ledger_id": "0a1b7b45-f8c9-4372-886f-d4f2247f36ee",
+  "ledger_matching_rows": 0,
+  "counts": {
+    "settled": 919,
+    "uncertain": 6
+  },
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "world_sha256": "7d4e984674bcdf9b79c480bb7de83bf9b7bbd0a34b492e931f3d353f6e24a7cd",
+  "context_utf8_bytes_reconstructed": 24724,
+  "gateway_context_limit_bytes": 24576,
+  "exact_error": "Invalid or unauthorized request options",
+  "status": "confirmed_local_pre_reservation_rejection; no provider call for this operation"
+}

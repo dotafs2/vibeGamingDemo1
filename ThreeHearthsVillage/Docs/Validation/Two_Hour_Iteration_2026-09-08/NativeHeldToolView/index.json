@@ -1,0 +1,114 @@
+{
+  "archive_type": "local_verification",
+  "as_of_utc": "2026-09-08T22:45:00Z",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "formal_world_sha256_prefix": "3a1877ca",
+  "formal_world_status": "unchanged per root check",
+  "copy_life_identity": "Both verification copies use the same life/world identity; 13 stable resident IDs retained.",
+  "npc_vision": false,
+  "kimi_action": false,
+  "grade": {
+    "capture": "held_tool_view_grade_20260908_2241",
+    "character_review_index": "grade/held_tool_view_grade_20260908_2241/character_review_index.json",
+    "axe_review": "grade/held_tool_view_grade_20260908_2241/axe_review.json",
+    "image": "grade/held_tool_view_grade_20260908_2241/axe_context.png",
+    "image_sha256": "152aa668ed40b58cda1d808458efbc7111789c0def93b953b98f749f64e71dfb",
+    "legacy_exposure_image": "grade/held_tool_view_grade_20260908_2241/axe_context_legacy_exposure.png",
+    "legacy_exposure_sha256": "3a015486ed522d68d83ae4b235c5cd1315d2f73ff5b396ee31d26d5f0e722ddc",
+    "erin_observations": "grade/held_tool_view_grade_20260908_2241/erin_obs/",
+    "edge_on_rejected": true,
+    "context_temporary_fill": false
+  },
+  "final": {
+    "capture": "held_tool_inspection_pose_20260908_2245",
+    "character_review_index": "final/held_tool_inspection_pose_20260908_2245/character_review_index.json",
+    "axe_review": "final/held_tool_inspection_pose_20260908_2245/axe_review.json",
+    "image": "final/held_tool_inspection_pose_20260908_2245/axe_context.png",
+    "image_sha256": "b3a108ad946ac59916c4c1e319d1a97204ebd782750570c5b9b2d7fc975d31b0",
+    "legacy_exposure_image": "final/held_tool_inspection_pose_20260908_2245/axe_context_legacy_exposure.png",
+    "legacy_exposure_sha256": "3fcd1160f7c89af8bbfa7f4edfd8b50171e70739de0c3f6da46b8abb4a61c192",
+    "tool_actor_transform_unchanged": true,
+    "root_basic_observation_acceptance": true,
+    "dark_material_limited": true,
+    "complete_hand_raise_animation_missing": true,
+    "tool_inspection_yaw_offset_degrees": 110,
+    "tool_pivot_unchanged": true,
+    "tool_rotation_changed": true,
+    "actual_tool_yaw_degrees": 163.1063,
+    "resident_eye_body_facing_unchanged": true,
+    "obs57_obs58_camera_same": true,
+    "erin_observations": "final/held_tool_inspection_pose_20260908_2245/erin_obs/"
+  },
+  "exposure_comparison": {
+    "same_camera_actor_geometry_lighting": true,
+    "rgb_mae_normalized_about": 7E-05,
+    "denominator": "255",
+    "explicit_grade_changed_visual": false,
+    "interpretation": "Both inherit the existing unbound scene grade; exposure difference is not the root cause of the dark side."
+  },
+  "native_tests": {
+    "path": "NativeHeldToolViewTests/index.json",
+    "succeeded": 30,
+    "warnings": 0,
+    "failed": 0,
+    "not_run": 0
+  },
+  "scope": {
+    "repair_completion_claim": false,
+    "npc_vision_claim": false,
+    "full_material_lighting_claim": false,
+    "current_paid_run": "town-20260908-224718 in progress; current checkpoint and paid totals untouched"
+  },
+  "final_erin_observations": [
+    {
+      "observation_id": "obs_000056",
+      "image": "final/held_tool_inspection_pose_20260908_2245/erin_obs/obs_000056.png",
+      "sha256": "151060ff44c9e6f8b7ee64ef166ef78d1c4e818ea9172dc0a445591bbbefa853",
+      "image_sha1": "81D6590F992D29121474DB3DCC01CB605A572130",
+      "sequence": 56,
+      "camera_rotation": [
+        0.6003319673547105,
+        0.7997509168309986,
+        0
+      ],
+      "tool_actor_pitch_yaw_roll": null,
+      "attention_tool_pose": null
+    },
+    {
+      "observation_id": "obs_000057",
+      "image": "final/held_tool_inspection_pose_20260908_2245/erin_obs/obs_000057.png",
+      "sha256": "6f87351484b1f779db810e11a7bbb50f6bd3f22b4671ae10da3bbbe722a784f1",
+      "image_sha1": "CE0AAF50C102EEA3049C9868476EFB45A2A9B3F4",
+      "sequence": 57,
+      "camera_rotation": [
+        0.19757585223189472,
+        0.8051521372588041,
+        -0.5591903240243169
+      ],
+      "tool_actor_pitch_yaw_roll": [
+        14.999999999999993,
+        163.10632324218756,
+        -19.999999999999982
+      ],
+      "attention_tool_pose": "inspection: actual tool yaw offset 110 degrees; carried pivot unchanged"
+    },
+    {
+      "observation_id": "obs_000058",
+      "image": "final/held_tool_inspection_pose_20260908_2245/erin_obs/obs_000058.png",
+      "sha256": "234a2a59cb6e71ebad3dd5b72947a5a1d6138d12f2d4b8b20ca1cb91bd50338f",
+      "image_sha1": "7D731F11CB39DFF24172CE61DFF3296F98ACDCE3",
+      "sequence": 58,
+      "camera_rotation": [
+        0.19757585223189472,
+        0.8051521372588041,
+        -0.5591903240243169
+      ],
+      "tool_actor_pitch_yaw_roll": [
+        14.999999999999993,
+        163.10632324218756,
+        -19.999999999999982
+      ],
+      "attention_tool_pose": "inspection: actual tool yaw offset 110 degrees; carried pivot unchanged"
+    }
+  ]
+}

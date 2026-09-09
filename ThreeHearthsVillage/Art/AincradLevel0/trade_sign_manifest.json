@@ -1,0 +1,87 @@
+{
+  "style_id": "aincrad_anime_town_v1",
+  "revision": 1,
+  "source_axis": "Blender meters, +Z up, +Y facade; UE import=(x,-y,z)*100; native facade -Y",
+  "scope": "Original double-sided trade identification signs. Static fixtures replacing blank sign plates. No shops, inventory, transactions or resident-built claims.",
+  "assets": [
+    {
+      "id": "inn_trade_sign",
+      "glb": "Modules/inn_trade_sign.glb",
+      "role": "inn identification fixture; no inventory or new shop identity",
+      "vertices": 2776,
+      "triangles": 5424,
+      "bounds_min_m": [
+        -0.7380000352859497,
+        -0.09600000083446503,
+        -0.36000001430511475
+      ],
+      "bounds_max_m": [
+        0.5300000309944153,
+        0.09600000083446503,
+        0.8100000023841858
+      ],
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Plaster",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ],
+      "uv": "metric projected UV0; shared town palette",
+      "pivot": "plaque center; local front +Y, reverse face -Y; wall bracket at X=-0.71m"
+    },
+    {
+      "id": "smithy_trade_sign",
+      "glb": "Modules/smithy_trade_sign.glb",
+      "role": "smithy identification fixture; no inventory or new shop identity",
+      "vertices": 2692,
+      "triangles": 5280,
+      "bounds_min_m": [
+        -0.7380000352859497,
+        -0.08400000631809235,
+        -0.36000001430511475
+      ],
+      "bounds_max_m": [
+        0.5300000309944153,
+        0.08400000631809235,
+        0.8100000023841858
+      ],
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ],
+      "uv": "metric projected UV0; shared town palette",
+      "pivot": "plaque center; local front +Y, reverse face -Y; wall bracket at X=-0.71m"
+    },
+    {
+      "id": "carpentry_trade_sign",
+      "glb": "Modules/carpentry_trade_sign.glb",
+      "role": "carpentry identification fixture; no inventory or new shop identity",
+      "vertices": 2832,
+      "triangles": 5536,
+      "bounds_min_m": [
+        -0.7380000352859497,
+        -0.08350000530481339,
+        -0.36000001430511475
+      ],
+      "bounds_max_m": [
+        0.5300000309944153,
+        0.08350000530481339,
+        0.8100000023841858
+      ],
+      "materials": [
+        "AT_Brass",
+        "AT_Iron",
+        "AT_Timber",
+        "AT_TimberDark",
+        "AT_TimberLight"
+      ],
+      "uv": "metric projected UV0; shared town palette",
+      "pivot": "plaque center; local front +Y, reverse face -Y; wall bracket at X=-0.71m"
+    }
+  ]
+}

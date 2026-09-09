@@ -1,0 +1,1274 @@
+{
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "schema_version": 2,
+  "setting_id": "sao_aincrad_floor_1",
+  "project_codename": "Level0",
+  "layout_revision": 1,
+  "elapsed_seconds": 1635.9332424923778,
+  "capabilities_enabled": [
+    "map_blockout",
+    "persistent_identity"
+  ],
+  "capabilities_pending": [
+    "combat",
+    "swordskill",
+    "quests",
+    "teleport",
+    "shops_ai"
+  ],
+  "residents": [
+    {
+      "stable_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "name": "艾琳",
+      "personality": "谨慎而善于倾听",
+      "story": "我想让旅店成为大家能安心交换消息的地方，但木料和客房都很有限。",
+      "role": "innkeeper",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_01",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": true,
+        "building_id": "sao_inn_01",
+        "position_cm": [
+          -1290.5684814453125,
+          467000,
+          92
+        ],
+        "phase": "idle",
+        "observation_seq": 20,
+        "last_think_utc": 1788878564,
+        "pending_operation": "",
+        "memory": [
+          "action=walk_to_work visible=白色两层木筋墙建筑，蓝色百叶窗，二楼有木栏杆阳台，入口敞开，门前有绿色地面与两侧花箱。 uncertain=建筑内部是否已有客人、客房当前占用情况、木料库存具体数量。 goal=抵达旅店工作位置，准备接待可能前来的旅人。 need=旅店需要更多木料扩充客房，但目前应先回到岗位维持基本运营。",
+          "action=walk_to_work visible=白色两层木筋墙建筑，蓝色百叶窗，二楼有木栏杆阳台，入口敞开，门前有绿色地面与两侧花箱。 uncertain=建筑内部是否已有客人、客房当前占用情况、木料库存具体数量。 goal=抵达旅店工作位置，准备接待可能前来的旅人。 need=旅店需要更多木料扩充客房，但目前应先回到岗位维持基本运营。",
+          "action=walk_to_work visible=我正站在一处门廊或室内，前方敞开的门框外可见白色三层木筋墙建筑，蓝色百叶窗，绿色地面，远处天空明亮。 uncertain=我当前是否已在自家旅店内，还是在外部邻近建筑中；门外建筑是否为sao_inn_01。 goal=返回旅店工作位置准备接待旅人。 need=确认自身位置并抵达岗位。",
+          "action=walk_to_work visible=室内绿色地面，有一张木桌和一把椅子，墙上挂着蓝色百叶窗，光线从窗外照入。看起来像是旅店内部或邻近建筑的一间屋子。 uncertain=不确定当前是否已在自家旅店sao_inn_01内，还是在外部邻近建筑中；门外白色三层建筑是否为自家旅店尚待确认。 goal=抵达旅店工作位置，确认自身位置，准备接待可能前来的旅人。 need=维持旅店基本运营，后续考虑修斧和扩充木料。",
+          "action=life visible=室内绿色地面，一张木桌和一把椅子，墙上蓝色百叶窗，光线从窗外照入。地上似乎有工具或木料的阴影。 uncertain=不确定柏木此刻是否在附近或能否立即接单；修柄所需时间未知。 goal=修好柴斧以便后续自行处理木料，减少对外依赖。 need=柴斧柄部待修，目前旅店木料有限，能自己砍柴会更有余地。",
+          "action=life visible=室内绿色与棕色地面，一张木桌和椅子，远处墙上有蓝色百叶窗，角落有长凳和梯子状结构。地面中央有一把黑色短柄工具，可能是待修的柴斧。 uncertain=柏木是否已收到此取消通知、是否已开始修理尚不可知；工具是否为aincrad_axe_erin需确认。 goal=收回5 Col资金，暂缓修斧，优先保留现金应对木料扩充需求。 need=旅店木料仅2单位，扩充客房需要资金，修斧非当前最紧迫支出。",
+          "action=life visible=室内棕色地面，前方地面上有一把黑柄工具，右侧有深色柜台或桌子，远处墙上有蓝色百叶窗，角落有长凳和梯子状结构。看起来是旅店内部空间。 uncertain=柏木是否在线、是否愿意重新接单、修柄所需时间未知；地上工具是否为aincrad_axe_erin需确认。 goal=修好柴斧以便自行处理木料，减少对外依赖，为扩充客房做准备。 need=旅店木料仅2单位，能自己砍柴会更有余地；斧子修好后可尝试自行获取木料。",
+          "action=life visible=室内绿色与棕色地面，前方地面上有一把黑柄工具，右侧有深色柜台或桌子，远处墙上有蓝色百叶窗。看起来是旅店内部空间。 uncertain=柏木是否已看到此委托、是否已开始修理尚不可知；工具是否为aincrad_axe_erin需确认。 goal=撤回5 Col委托，保留现金优先应对木料扩充需求；斧子修不修等木料状况明朗后再决定。 need=旅店木料仅2单位，扩充客房需要资金，修斧非当前最紧迫支出。",
+          "action=wait visible=室内绿色地面，前方地面上有一把黑柄红身的工具（柴斧），右侧有深色柜台或桌子，远处墙上有蓝色百叶窗。看起来是旅店内部空间。 uncertain=柏木是否在线、是否愿意重新接单、修柄所需时间未知；当前旅店是否有客人到来未知。 goal=在岗位上等待，观察是否有旅人前来，同时思考木料扩充与斧子修理的优先级。 need=旅店木料仅2单位，需要扩充客房但资金有限；斧子修好后可自行获取木料，但目前两次委托又取消，需先稳定决策。",
+          "action=wait visible=室内绿色与棕色地面，前方地面上有一把黑柄红身的工具（柴斧），右侧有一张木桌，远处墙上有蓝色百叶窗。光线从窗外照入，空间安静，暂无他人。 uncertain=柏木是否在线、是否愿意再次接单、修柄所需时间未知；当前是否有旅人正前来旅店未知。 goal=在岗位上稳定等待，观察是否有旅人前来，同时让自己关于修斧与木料扩充的决策沉淀下来，避免再次反复。 need=旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。"
+        ],
+        "route_index": 2,
+        "route_progress_cm": 59.4315185546875,
+        "last_action_position_cm": [
+          -1290.5684814453125,
+          467000,
+          92
+        ],
+        "last_action_route_index": 2,
+        "last_observation_id": "obs_000020",
+        "last_observation_target": "sao_inn_01",
+        "last_observation_town_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "last_observation_position_cm": [
+          -1290.5684814453125,
+          467000,
+          92
+        ],
+        "last_observation_eye_cm": [
+          -1290.5684814453125,
+          467000,
+          160
+        ],
+        "last_observation_facing": [
+          -0.39243868504778345,
+          0.9197781680807425,
+          0
+        ],
+        "last_observation_camera_direction": [
+          -0.32904123267097035,
+          0.7711903890725867,
+          -0.5449745416112947
+        ],
+        "last_observation_fov": 85,
+        "last_observation_source": "native",
+        "last_action": "wait",
+        "pending_scene_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "pending_position_cm": [
+          -1290.5684814453125,
+          467000,
+          92
+        ],
+        "pending_operation_started_utc": 1788878564,
+        "last_visible": "室内绿色与棕色地面，前方地面上有一把黑柄红身的工具（柴斧），右侧有一张木桌，远处墙上有蓝色百叶窗。光线从窗外照入，空间安静，暂无他人。",
+        "last_uncertain": "柏木是否在线、是否愿意再次接单、修柄所需时间未知；当前是否有旅人正前来旅店未知。",
+        "last_goal": "在岗位上稳定等待，观察是否有旅人前来，同时让自己关于修斧与木料扩充的决策沉淀下来，避免再次反复。",
+        "last_need": "旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。",
+        "last_operation": "DDEC53BD-4571-DD58-A328-319E3C8984AE",
+        "last_result_raw": "{\"action\":\"wait\",\"utterance\":\"……斧子就先放那儿吧。\",\"visible\":\"室内绿色与棕色地面，前方地面上有一把黑柄红身的工具（柴斧），右侧有一张木桌，远处墙上有蓝色百叶窗。光线从窗外照入，空间安静，暂无他人。\",\"uncertain\":\"柏木是否在线、是否愿意再次接单、修柄所需时间未知；当前是否有旅人正前来旅店未知。\",\"goal\":\"在岗位上稳定等待，观察是否有旅人前来，同时让自己关于修斧与木料扩充的决策沉淀下来，避免再次反复。\",\"need\":\"旅店木料仅2单位，扩充客房需要资金与木料来源；斧子修好后可自行获取木料，但两次委托又取消已显摇摆，需先稳定心神，待有明确需求或旅人带来消息后再行动。\"}",
+        "last_result": "accepted action=wait",
+        "last_result_source": "kimi",
+        "last_result_utc": 1788878570,
+        "last_action_source": "kimi",
+        "route_waypoints_cm": [
+          [
+            -1290.5684814453125,
+            467000,
+            92
+          ],
+          [
+            -1350,
+            467000,
+            92
+          ]
+        ],
+        "route_observe_after_arrival": false,
+        "route_bootstrap_pending": false,
+        "route_source": "kimi",
+        "last_observation_view": "facade",
+        "life_pending_inbox_seq": 5,
+        "life_last_dispatched_inbox_seq": 5,
+        "life_route": true,
+        "life_pending_option": "",
+        "life_pending_operation": "",
+        "life_pending_utterance": "柏木，斧子的事我再想想，这委托先取消吧。",
+        "life_selected_option": {
+          "id": "cancel:repair_contract_6_0",
+          "label": "取消修理委托",
+          "verb": "cancel",
+          "counterparty_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        },
+        "life_remaining_seconds": 0,
+        "life_last_speech": "柏木，斧子的事我再想想，这委托先取消吧。",
+        "life_last_outcome": "cancel:repair_contract_6_0",
+        "last_executed_result": "life_committed: cancel:repair_contract_6_0"
+      }
+    },
+    {
+      "stable_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "name": "拓真",
+      "personality": "沉静，做事精确",
+      "story": "我想修好镇上每一把常用的剑，却只能先用手边的普通铁料。",
+      "role": "blacksmith",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_02",
+      "hp": 100,
+      "coins_col": 200,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": true,
+        "building_id": "sao_smithy_01",
+        "position_cm": [
+          1392.5225830078125,
+          465000,
+          92
+        ],
+        "phase": "idle",
+        "observation_seq": 14,
+        "last_think_utc": 1788878535,
+        "pending_operation": "",
+        "memory": [
+          "action=walk_to_work visible=我在镇上的街道，眼前是一栋两层白色木筋墙建筑，门口两侧有花坛，门口敞开。这是我熟悉的铁匠铺外观。 uncertain=屋内是否已有待修的剑或客人，我尚未看清。 goal=到工作台前开始用普通铁料修缮镇上常用的剑。 need=需要到达我的工作位置，才能继续我的修缮工作。",
+          "action=walk_to_work visible=我正面对铁匠铺正面，白色木筋墙、蓝色百叶窗、门口敞开，两侧有花坛。这是我熟悉的工作场所外观。 uncertain=屋内是否有待修的剑或客人，需进入后才能确认。 goal=到工作台前开始用普通铁料修缮镇上常用的剑。 need=需要进入屋内到达我的工作位置。",
+          "action=walk_to_work visible=我正站在敞开的门口内侧，门框左侧有一扇打开的深色木门，门外可见街道与对面的白色木筋墙建筑。两侧墙壁上有蓝色百叶窗。我已接近工作位置。 uncertain=屋内工作台前是否有待修的剑或客人，尚未看清。 goal=到工作台前开始用普通铁料修缮镇上常用的剑。 need=需要进入屋内到达我的工作位置。",
+          "action=walk_to_work visible=我在铁匠铺内部，白色墙壁、棕色地板，右侧有一张木桌，墙上两扇蓝色百叶窗。尚未到达我的工作台位置。 uncertain=工作台前是否有待修的剑或客人，需继续前进才能确认。 goal=到工作台前开始用普通铁料修缮镇上常用的剑。 need=需要到达我的工作位置，才能继续我的修缮工作。",
+          "action=observe visible=我在铁匠铺内部，面对白色墙壁与两扇蓝色百叶窗，右侧有一张木桌。光线从右侧高处照入，室内安静，尚未看到工作台或待修物品。 uncertain=工作台的具体位置和当前是否有待修的剑，需要再移动或转视角才能确认。 goal=到达工作台，检视是否有镇上居民送来的待修之剑，用我手边的1单位普通铁料开始修缮工作。 need=需要确认工作台位置与当前任务状态。",
+          "action=observe visible=我在铁匠铺内部，面对白色墙壁与两扇蓝色百叶窗，右侧有一张木桌。光线从右侧高处照入，室内安静，尚未看到工作台或待修物品。 uncertain=工作台的具体位置和当前是否有待修的剑，需要再移动或转视角才能确认。 goal=到达工作台，检视是否有镇上居民送来的待修之剑，用我手边的1单位普通铁料开始修缮工作。 need=需要确认工作台位置与当前任务状态。"
+        ],
+        "route_index": 2,
+        "route_progress_cm": 57.4774169921875,
+        "last_action_position_cm": [
+          1392.5225830078125,
+          465000,
+          92
+        ],
+        "last_action_route_index": 2,
+        "last_observation_id": "obs_000014",
+        "last_observation_target": "sao_smithy_01",
+        "last_observation_town_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "last_observation_position_cm": [
+          1392.5225830078125,
+          465000,
+          92
+        ],
+        "last_observation_eye_cm": [
+          1392.5225830078125,
+          465000,
+          160
+        ],
+        "last_observation_facing": [
+          -2.220446049250313e-16,
+          -1.0000000000000002,
+          0
+        ],
+        "last_observation_camera_direction": [
+          6.123233995736766e-17,
+          -1,
+          0
+        ],
+        "last_observation_fov": 85,
+        "last_observation_source": "native",
+        "last_action": "observe",
+        "pending_scene_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "pending_position_cm": [
+          1392.5225830078125,
+          465000,
+          92
+        ],
+        "pending_operation_started_utc": 1788878535,
+        "last_visible": "我在铁匠铺内部，面对白色墙壁与两扇蓝色百叶窗，右侧有一张木桌。光线从右侧高处照入，室内安静，尚未看到工作台或待修物品。",
+        "last_uncertain": "工作台的具体位置和当前是否有待修的剑，需要再移动或转视角才能确认。",
+        "last_goal": "到达工作台，检视是否有镇上居民送来的待修之剑，用我手边的1单位普通铁料开始修缮工作。",
+        "last_need": "需要确认工作台位置与当前任务状态。",
+        "last_operation": "E99CFFD0-4250-002F-9B2E-B8B09216AA07",
+        "last_result_raw": "{\"action\":\"observe\",\"utterance\":\"先看清工作台的位置和状况。\",\"visible\":\"我在铁匠铺内部，面对白色墙壁与两扇蓝色百叶窗，右侧有一张木桌。光线从右侧高处照入，室内安静，尚未看到工作台或待修物品。\",\"uncertain\":\"工作台的具体位置和当前是否有待修的剑，需要再移动或转视角才能确认。\",\"goal\":\"到达工作台，检视是否有镇上居民送来的待修之剑，用我手边的1单位普通铁料开始修缮工作。\",\"need\":\"需要确认工作台位置与当前任务状态。\"}",
+        "last_result": "accepted action=observe",
+        "last_result_source": "kimi",
+        "last_result_utc": 1788878539,
+        "last_action_source": "native",
+        "route_waypoints_cm": [
+          [
+            1392.5225830078125,
+            465000,
+            92
+          ],
+          [
+            1450,
+            465000,
+            92
+          ]
+        ],
+        "route_observe_after_arrival": false,
+        "route_bootstrap_pending": false,
+        "route_source": "kimi",
+        "last_observation_view": "facade",
+        "life_pending_inbox_seq": 1,
+        "life_last_dispatched_inbox_seq": 1,
+        "life_route": true
+      }
+    },
+    {
+      "stable_id": "1D3418EF-4AE2-CAB4-6AE0-55A3770A45E4",
+      "name": "米娅",
+      "personality": "健谈但会记账",
+      "story": "我想让货物在镇里流转得更公平，但我还不知道远处会带来什么。",
+      "role": "merchant",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_03",
+      "hp": 100,
+      "coins_col": 200,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "F3F91F35-45FA-9A58-30CF-A6BB48156754",
+      "name": "洛恩",
+      "personality": "耐心，珍惜新鲜食材",
+      "story": "我想每天都烤出不让人挨饿的面包，但炉火和面粉必须精打细算。",
+      "role": "baker",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_04",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "7000F1FB-4280-A354-D0A5-008BBBD4E968",
+      "name": "莎耶",
+      "personality": "温和，观察细致",
+      "story": "我想种出能缓解小伤的草药，但药圃的土还没有准备好。",
+      "role": "herbalist",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_05",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "A83564BD-4018-9997-9CCE-95991AE26175",
+      "name": "朔",
+      "personality": "务实，愿意等季节",
+      "story": "我想收成稳定一些，让邻居冬天也有粮，可我手上的种子不多。",
+      "role": "farmer",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_06",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "D9185FF1-4C96-D350-9187-67BA3FD51517",
+      "name": "宁音",
+      "personality": "爱整洁，重视体面",
+      "story": "我想为镇民做出耐穿的衣服，但布料和时间总是不够。",
+      "role": "tailor",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_07",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "name": "柏木",
+      "personality": "慢热，喜欢解决结构问题",
+      "story": "我想把新住处修得结实，让人敢于留下，可木材需要慢慢积攒。",
+      "role": "carpenter",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_08",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": true,
+        "building_id": "sao_carpentry_01",
+        "position_cm": [
+          -1398.5396728515625,
+          462000,
+          92
+        ],
+        "phase": "idle",
+        "observation_seq": 21,
+        "last_think_utc": 1788878565,
+        "pending_operation": "",
+        "memory": [
+          "action=observe visible=我正站在一栋两层白木筋房前，蓝百叶窗，绿色地面，门开着。建筑外观完整，结构对称，是木工活计。 uncertain=门内是否有人或工具看不清；木材库存未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=walk_to_work visible=我正面对一栋两层白木筋房，蓝百叶窗，绿色地面，门开着，门内有暖光。建筑外观完整，结构对称，是木工活计。 uncertain=门内具体有什么工具或材料看不清；木材库存未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=observe visible=我正站在门内，面向敞开的深色木门，门外是绿色地面与白色道路，远处可见几栋建筑，包括右侧一栋带深色屋顶和蓝百叶窗的两层房屋，左侧远处有橙红色屋顶的建筑群。门两侧墙壁为浅色，左右各有一扇关闭的蓝灰色百叶窗。室内上部有大片暗区，看不清天花板或上层结构。 uncertain=室内是否有工具、木材或工作台完全看不清；门外远处建筑是否有人活动未知；当前是否在自己的木工房内无法确认。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=observe visible=我正站在室外开阔处，面前是白色道路与绿色地面。左侧是一栋两层白木筋房，深色屋顶，蓝百叶窗。右侧是一栋类似的两层房屋，深色屋顶，深色百叶窗。正前方远处有两座深色圆顶建筑，其中一座带尖塔。天空晴朗无云。地面光影显示太阳位置较高。 uncertain=当前位置是否在自己的木工房附近无法确认；远处建筑是否有人活动看不清；室内是否有工具或木材未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=walk_to_work visible=我正站在室外开阔处，面前是白色道路与绿色地面。左侧是一栋两层白木筋房，深色屋顶，蓝百叶窗。右侧是一栋类似的两层房屋，深色屋顶，深色百叶窗。正前方远处有两座深色圆顶建筑，其中一座带尖塔。天空晴朗无云。 uncertain=当前位置是否在自己的木工房附近无法确认；远处建筑是否有人活动看不清；室内是否有工具或木材未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=observe visible=我正站在一个宽敞的空房间内，浅色墙壁，棕色地面，天花板呈暖棕色。左右墙壁各有一盏壁灯亮着，发出暖光。正面墙壁有五扇关闭的蓝灰色窗户/百叶窗，左右侧墙壁各有一扇。房间右侧地面有一根长木条，左侧边缘似乎有另一根木料。室内空旷，没有家具或工作台。 uncertain=这是否就是我自己的木工房无法确认；房间上层结构看不清；是否有其他木料或工具在视野外未知；门外情况未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材。",
+          "action=life visible=我正站在一个宽敞的空房间内，浅色墙壁，棕色地面，天花板呈暖棕色。左右墙壁各有一盏壁灯亮着，发出暖光。正面墙壁有五扇关闭的蓝灰色窗户/百叶窗，左右侧墙壁各有一扇。房间右侧地面有一根长木条，左侧边缘似乎有另一根木料。室内空旷，没有家具或工作台。 uncertain=这是否就是我自己的木工房无法完全确认，但当前位于工作点附近；房间上层结构看不清；是否有其他木料或工具在视野外未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材；接了修柄活计，5 Col收入可攒下。",
+          "action=observe visible=我正站在一个宽敞的空房间内，浅色墙壁，棕色地面，天花板呈暖棕色。左右墙壁各有一盏壁灯亮着，发出暖光。正面墙壁有五扇关闭的蓝灰色窗户/百叶窗，左右侧墙壁各有一扇。房间右侧地面有一根长木条，左侧边缘似乎有另一根木料。室内空旷，没有家具或工作台。 uncertain=这是否就是我自己的木工房无法完全确认，但当前位于工作点附近；房间上层结构看不清；是否有其他木料或工具在视野外未知；艾琳的委托又取消了，她可能还会再变卦。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，得看看有没有别的活计或先整理现有木料。",
+          "action=observe visible=我正站在一个室内空间，浅色墙壁，绿色地面，天花板呈暖棕色。正面墙壁有两扇关闭的蓝灰色窗户/百叶窗，左侧墙壁有一扇。右侧有一张简易木桌，桌面呈浅棕色，桌腿深色。室内光线来自右上方，形成明显阴影。房间空旷，未见木料或工具。 uncertain=这是否就是我自己的木工房无法完全确认；之前看到的木料现在不在视野内；房间上层结构看不清；门外情况未知。 goal=把住处修得结实，让人敢于留下。 need=需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，得看看有没有别的活计或先整理现有木料。"
+        ],
+        "route_index": 5,
+        "route_progress_cm": 2057.4990234375,
+        "last_action_position_cm": [
+          -1398.5396728515625,
+          462000,
+          92
+        ],
+        "last_action_route_index": 5,
+        "last_observation_id": "obs_000021",
+        "last_observation_target": "sao_carpentry_01",
+        "last_observation_town_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "last_observation_position_cm": [
+          -1398.5396728515625,
+          462000,
+          92
+        ],
+        "last_observation_eye_cm": [
+          -1398.5396728515625,
+          462000,
+          160
+        ],
+        "last_observation_facing": [
+          2.220446049250313e-16,
+          1.0000000000000002,
+          0
+        ],
+        "last_observation_camera_direction": [
+          6.123233995736766e-17,
+          1,
+          0
+        ],
+        "last_observation_fov": 85,
+        "last_observation_source": "native",
+        "last_action": "observe",
+        "pending_scene_revision": "town_layout=1;art=aincrad_anime_town_v1@2",
+        "pending_position_cm": [
+          -1398.5396728515625,
+          462000,
+          92
+        ],
+        "pending_operation_started_utc": 1788878565,
+        "last_visible": "我正站在一个室内空间，浅色墙壁，绿色地面，天花板呈暖棕色。正面墙壁有两扇关闭的蓝灰色窗户/百叶窗，左侧墙壁有一扇。右侧有一张简易木桌，桌面呈浅棕色，桌腿深色。室内光线来自右上方，形成明显阴影。房间空旷，未见木料或工具。",
+        "last_uncertain": "这是否就是我自己的木工房无法完全确认；之前看到的木料现在不在视野内；房间上层结构看不清；门外情况未知。",
+        "last_goal": "把住处修得结实，让人敢于留下。",
+        "last_need": "需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，得看看有没有别的活计或先整理现有木料。",
+        "last_operation": "27A5546C-4340-9B11-33A3-04A3F99DA9A2",
+        "last_result_raw": "{\"action\":\"observe\",\"utterance\":\"先看清这间屋子的全貌，再决定怎么收拾。\",\"visible\":\"我正站在一个室内空间，浅色墙壁，绿色地面，天花板呈暖棕色。正面墙壁有两扇关闭的蓝灰色窗户/百叶窗，左侧墙壁有一扇。右侧有一张简易木桌，桌面呈浅棕色，桌腿深色。室内光线来自右上方，形成明显阴影。房间空旷，未见木料或工具。\",\"uncertain\":\"这是否就是我自己的木工房无法完全确认；之前看到的木料现在不在视野内；房间上层结构看不清；门外情况未知。\",\"goal\":\"把住处修得结实，让人敢于留下。\",\"need\":\"需要慢慢积攒木材；艾琳的斧柄委托两次取消，5 Col收入暂时落空，得看看有没有别的活计或先整理现有木料。\"}",
+        "last_result": "accepted action=observe",
+        "last_result_source": "kimi",
+        "last_result_utc": 1788878571,
+        "last_action_source": "native",
+        "route_waypoints_cm": [
+          [
+            -607.4990234375,
+            462000,
+            92
+          ],
+          [
+            0,
+            462000,
+            92
+          ],
+          [
+            -550,
+            462000,
+            92
+          ],
+          [
+            -1010,
+            462000,
+            92
+          ],
+          [
+            -1450,
+            462000,
+            92
+          ]
+        ],
+        "route_observe_after_arrival": false,
+        "route_bootstrap_pending": false,
+        "route_source": "kimi",
+        "last_observation_view": "facade",
+        "life_pending_inbox_seq": 5,
+        "life_last_dispatched_inbox_seq": 5,
+        "life_route": true,
+        "last_executed_result": "arrived_at_own_workpoint; route_source=kimi; arrival does not imply work completed",
+        "last_error": "accepted action could not start in current resident state"
+      }
+    },
+    {
+      "stable_id": "0521569B-4A4A-C361-6982-5CBF68834A4D",
+      "name": "阿律",
+      "personality": "可靠，先确认路线",
+      "story": "我想让搬运少走弯路，使每个人都能早点回家，但道路还很陌生。",
+      "role": "porter",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_09",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "71F41AE3-4ADD-086B-A7E2-D8BDA3E144E6",
+      "name": "绫",
+      "personality": "爽朗，怕浪费",
+      "story": "我想让忙碌的人吃上一顿热饭，可厨房的锅具和柴火有限。",
+      "role": "cook",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_10",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "0BA51A0D-4763-59CF-939A-5CBA03F3653D",
+      "name": "冬马",
+      "personality": "稳重，和动物相处自然",
+      "story": "我想照料好镇里的坐骑，让出行更可靠，但马厩还需要整理。",
+      "role": "stablehand",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_11",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "9F51CDA4-452E-3437-E7BC-93AEC839B6E4",
+      "name": "澪",
+      "personality": "好奇，喜欢拆解工具",
+      "story": "我想做出不容易坏的工具，可我还得先学会辨认合适的材料。",
+      "role": "toolvendor",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_12",
+      "hp": 100,
+      "coins_col": 200,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    },
+    {
+      "stable_id": "B8903FB7-46D7-EAA5-5FFE-C99CF1069889",
+      "name": "小岚",
+      "personality": "勤奋但缺少经验",
+      "story": "我想成为一名真正有用的工匠，眼下只能从记录库存和跑腿开始。",
+      "role": "apprentice",
+      "faction": "npc_local",
+      "known_places": [
+        "town_of_beginnings"
+      ],
+      "home_id": "home_13",
+      "hp": 100,
+      "coins_col": 100,
+      "needs": {
+        "hunger": 100,
+        "warmth": 100,
+        "safety": 100
+      },
+      "runtime": {
+        "active": false,
+        "building_id": "",
+        "position_cm": [
+          0,
+          0,
+          0
+        ],
+        "phase": "idle",
+        "observation_seq": 0,
+        "last_think_utc": 0,
+        "pending_operation": "",
+        "memory": []
+      }
+    }
+  ],
+  "town_layout_revision": 1,
+  "buildings": [
+    {
+      "building_id": "sao_inn_01",
+      "role": "innkeeper",
+      "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "position_cm": [
+        -1800,
+        467000,
+        0
+      ]
+    },
+    {
+      "building_id": "sao_smithy_01",
+      "role": "blacksmith",
+      "owner_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "position_cm": [
+        1800,
+        465000,
+        0
+      ]
+    },
+    {
+      "building_id": "sao_carpentry_01",
+      "role": "carpenter",
+      "owner_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "position_cm": [
+        -1800,
+        462000,
+        0
+      ]
+    }
+  ],
+  "building_bindings": [
+    {
+      "building_id": "sao_inn_01",
+      "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "home_id": "home_01"
+    },
+    {
+      "building_id": "sao_smithy_01",
+      "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "home_id": "home_02"
+    },
+    {
+      "building_id": "sao_carpentry_01",
+      "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "home_id": "home_08"
+    }
+  ],
+  "life": {
+    "version": 1,
+    "seq": 7,
+    "initialization_source": "developer_initial_condition",
+    "events": [
+      {
+        "event_id": "life_event_1",
+        "seq": 1,
+        "type": "initial_condition",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "contract_id": "",
+        "item_id": "aincrad_axe_erin",
+        "recipient_ids": [
+          "A757B4D7-497C-99F3-3482-52A77F688D69"
+        ],
+        "text": "开发者明确写入：艾琳拥有待修的柴斧和2木料；这不是居民自行发现。",
+        "operation_id": "initial_condition:erin",
+        "source": "developer_initial_condition"
+      },
+      {
+        "event_id": "life_event_2",
+        "seq": 2,
+        "type": "initial_condition",
+        "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "subject_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "contract_id": "",
+        "item_id": "",
+        "recipient_ids": [
+          "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F"
+        ],
+        "text": "开发者明确写入：拓真拥有metal_repair技能和1铁料；这不是居民自行发现。",
+        "operation_id": "initial_condition:takuya",
+        "source": "developer_initial_condition"
+      },
+      {
+        "event_id": "life_event_3",
+        "seq": 3,
+        "type": "initial_condition",
+        "actor_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "contract_id": "",
+        "item_id": "",
+        "recipient_ids": [
+          "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        ],
+        "text": "开发者明确写入：柏木拥有wood_repair技能和1木料；这不是居民自行发现。",
+        "operation_id": "initial_condition:kashiwagi",
+        "source": "developer_initial_condition"
+      },
+      {
+        "event_id": "life_event_4",
+        "seq": 4,
+        "type": "repair_handle",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "contract_id": "repair_contract_4_0",
+        "item_id": "aincrad_axe_erin",
+        "recipient_ids": [
+          "A757B4D7-497C-99F3-3482-52A77F688D69",
+          "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        ],
+        "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，我旅店那把柴斧柄有些松了，能麻烦你帮忙修一下吗？我出5 Col。",
+        "operation_id": "4F83422C-4341-4DB6-F6C8-A5BCF02CEEEA"
+      },
+      {
+        "event_id": "life_event_5",
+        "seq": 5,
+        "type": "cancel",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "contract_id": "repair_contract_4_0",
+        "item_id": "aincrad_axe_erin",
+        "recipient_ids": [
+          "A757B4D7-497C-99F3-3482-52A77F688D69",
+          "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        ],
+        "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，那把斧子我暂时不修了，5 Col的委托取消吧。",
+        "operation_id": "92A0E10F-4F37-1E5B-E3EE-37A6333A6243"
+      },
+      {
+        "event_id": "life_event_6",
+        "seq": 6,
+        "type": "repair_handle",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "contract_id": "repair_contract_6_0",
+        "item_id": "aincrad_axe_erin",
+        "recipient_ids": [
+          "A757B4D7-497C-99F3-3482-52A77F688D69",
+          "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        ],
+        "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，之前那把斧子我还是想修。柄松了不好使，5 Col的委托我重新发给你，方便的话麻烦接一下。",
+        "operation_id": "23A19EC8-407F-1163-2572-F5AF81E91EA4"
+      },
+      {
+        "event_id": "life_event_7",
+        "seq": 7,
+        "type": "cancel",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "contract_id": "repair_contract_6_0",
+        "item_id": "aincrad_axe_erin",
+        "recipient_ids": [
+          "A757B4D7-497C-99F3-3482-52A77F688D69",
+          "425311EB-4D09-0782-AFE2-27A9631F9C0A"
+        ],
+        "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，斧子的事我再想想，这委托先取消吧。",
+        "operation_id": "B85E5D63-4731-8BB7-C98A-3E916A360497"
+      }
+    ],
+    "applied": [
+      {
+        "operation_id": "4F83422C-4341-4DB6-F6C8-A5BCF02CEEEA",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "option_id": "repair_handle:aincrad_axe_erin:425311EB-4D09-0782-AFE2-27A9631F9C0A:5",
+        "utterance": "柏木，我旅店那把柴斧柄有些松了，能麻烦你帮忙修一下吗？我出5 Col。",
+        "event_seq": 4
+      },
+      {
+        "operation_id": "92A0E10F-4F37-1E5B-E3EE-37A6333A6243",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "option_id": "cancel:repair_contract_4_0",
+        "utterance": "柏木，那把斧子我暂时不修了，5 Col的委托取消吧。",
+        "event_seq": 5
+      },
+      {
+        "operation_id": "23A19EC8-407F-1163-2572-F5AF81E91EA4",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "option_id": "repair_handle:aincrad_axe_erin:425311EB-4D09-0782-AFE2-27A9631F9C0A:5",
+        "utterance": "柏木，之前那把斧子我还是想修。柄松了不好使，5 Col的委托我重新发给你，方便的话麻烦接一下。",
+        "event_seq": 6
+      },
+      {
+        "operation_id": "B85E5D63-4731-8BB7-C98A-3E916A360497",
+        "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "option_id": "cancel:repair_contract_6_0",
+        "utterance": "柏木，斧子的事我再想想，这委托先取消吧。",
+        "event_seq": 7
+      }
+    ],
+    "contracts": [
+      {
+        "id": "repair_contract_4_0",
+        "part": "handle",
+        "item_id": "aincrad_axe_erin",
+        "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "worker_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "price_col": 5,
+        "reserved_col": 0,
+        "status": "cancelled"
+      },
+      {
+        "id": "repair_contract_6_0",
+        "part": "handle",
+        "item_id": "aincrad_axe_erin",
+        "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "worker_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "price_col": 5,
+        "reserved_col": 0,
+        "status": "cancelled"
+      }
+    ],
+    "relations": [],
+    "items": [
+      {
+        "id": "aincrad_axe_erin",
+        "kind": "axe",
+        "owner_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "custodian_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "edge": 20,
+        "handle": 20,
+        "source": "developer_initial_condition"
+      }
+    ],
+    "skills": [
+      {
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "skill_id": "metal_repair",
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "skill_id": "wood_repair",
+        "source": "developer_initial_condition"
+      }
+    ],
+    "accounts": [
+      {
+        "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "wood": 2,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "wood": 0,
+        "iron": 1,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "1D3418EF-4AE2-CAB4-6AE0-55A3770A45E4",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "F3F91F35-45FA-9A58-30CF-A6BB48156754",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "7000F1FB-4280-A354-D0A5-008BBBD4E968",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "A83564BD-4018-9997-9CCE-95991AE26175",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "D9185FF1-4C96-D350-9187-67BA3FD51517",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "wood": 1,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "0521569B-4A4A-C361-6982-5CBF68834A4D",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "71F41AE3-4ADD-086B-A7E2-D8BDA3E144E6",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "0BA51A0D-4763-59CF-939A-5CBA03F3653D",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "9F51CDA4-452E-3437-E7BC-93AEC839B6E4",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      },
+      {
+        "resident_id": "B8903FB7-46D7-EAA5-5FFE-C99CF1069889",
+        "wood": 0,
+        "iron": 0,
+        "kindling": 0,
+        "reserved_col": 0,
+        "source": "developer_initial_condition"
+      }
+    ],
+    "initial_conditions": [
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "fact": "拥有一把需要修刃和修柄的柴斧，edge=20，handle=20"
+      },
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "fact": "拥有2木料"
+      },
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "fact": "拥有metal_repair技能"
+      },
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "fact": "拥有1铁料"
+      },
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "fact": "拥有wood_repair技能"
+      },
+      {
+        "source": "developer_initial_condition",
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "fact": "拥有1木料"
+      }
+    ],
+    "inboxes": [
+      {
+        "resident_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+        "next_seq": 5,
+        "events": [
+          {
+            "seq": 1,
+            "event_id": "life_event_1",
+            "type": "initial_condition",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "contract_id": "",
+            "item_id": "aincrad_axe_erin",
+            "text": "开发者明确写入：艾琳拥有待修的柴斧和2木料；这不是居民自行发现。"
+          },
+          {
+            "seq": 2,
+            "event_id": "life_event_4",
+            "type": "repair_handle",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_4_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，我旅店那把柴斧柄有些松了，能麻烦你帮忙修一下吗？我出5 Col。"
+          },
+          {
+            "seq": 3,
+            "event_id": "life_event_5",
+            "type": "cancel",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_4_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，那把斧子我暂时不修了，5 Col的委托取消吧。"
+          },
+          {
+            "seq": 4,
+            "event_id": "life_event_6",
+            "type": "repair_handle",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_6_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，之前那把斧子我还是想修。柄松了不好使，5 Col的委托我重新发给你，方便的话麻烦接一下。"
+          },
+          {
+            "seq": 5,
+            "event_id": "life_event_7",
+            "type": "cancel",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_6_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，斧子的事我再想想，这委托先取消吧。"
+          }
+        ]
+      },
+      {
+        "resident_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+        "next_seq": 1,
+        "events": [
+          {
+            "seq": 1,
+            "event_id": "life_event_2",
+            "type": "initial_condition",
+            "actor_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+            "subject_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+            "contract_id": "",
+            "item_id": "",
+            "text": "开发者明确写入：拓真拥有metal_repair技能和1铁料；这不是居民自行发现。"
+          }
+        ]
+      },
+      {
+        "resident_id": "1D3418EF-4AE2-CAB4-6AE0-55A3770A45E4",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "F3F91F35-45FA-9A58-30CF-A6BB48156754",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "7000F1FB-4280-A354-D0A5-008BBBD4E968",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "A83564BD-4018-9997-9CCE-95991AE26175",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "D9185FF1-4C96-D350-9187-67BA3FD51517",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+        "next_seq": 5,
+        "events": [
+          {
+            "seq": 1,
+            "event_id": "life_event_3",
+            "type": "initial_condition",
+            "actor_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "",
+            "item_id": "",
+            "text": "开发者明确写入：柏木拥有wood_repair技能和1木料；这不是居民自行发现。"
+          },
+          {
+            "seq": 2,
+            "event_id": "life_event_4",
+            "type": "repair_handle",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_4_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，我旅店那把柴斧柄有些松了，能麻烦你帮忙修一下吗？我出5 Col。"
+          },
+          {
+            "seq": 3,
+            "event_id": "life_event_5",
+            "type": "cancel",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_4_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，那把斧子我暂时不修了，5 Col的委托取消吧。"
+          },
+          {
+            "seq": 4,
+            "event_id": "life_event_6",
+            "type": "repair_handle",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_6_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳向柏木提出修柄委托，报价5 Col。 原话：柏木，之前那把斧子我还是想修。柄松了不好使，5 Col的委托我重新发给你，方便的话麻烦接一下。"
+          },
+          {
+            "seq": 5,
+            "event_id": "life_event_7",
+            "type": "cancel",
+            "actor_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+            "subject_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+            "contract_id": "repair_contract_6_0",
+            "item_id": "aincrad_axe_erin",
+            "text": "艾琳取消了给柏木的修柄委托。 原话：柏木，斧子的事我再想想，这委托先取消吧。"
+          }
+        ]
+      },
+      {
+        "resident_id": "0521569B-4A4A-C361-6982-5CBF68834A4D",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "71F41AE3-4ADD-086B-A7E2-D8BDA3E144E6",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "0BA51A0D-4763-59CF-939A-5CBA03F3653D",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "9F51CDA4-452E-3437-E7BC-93AEC839B6E4",
+        "next_seq": 0,
+        "events": []
+      },
+      {
+        "resident_id": "B8903FB7-46D7-EAA5-5FFE-C99CF1069889",
+        "next_seq": 0,
+        "events": []
+      }
+    ]
+  }
+}
