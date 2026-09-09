@@ -1,0 +1,6 @@
+
+
+# Reviewed authored art upload 2026-09-10; exact paths only.
+"StartingTown_Massing.png" filter=lfs diff=lfs merge=lfs -text
+"StartingTown_Outline.glb" filter=lfs diff=lfs merge=lfs -text
+"StartingTown_Plan.png" filter=lfs diff=lfs merge=lfs -text
