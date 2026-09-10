@@ -1,6 +1,8 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "HearthAincradLife.h"
+#include "HearthAincradSurvival.h"
+#include "HearthAincradForaging.h"
 
 #include "HearthAincradTownLayout.h"
 #include "HearthAincradWorldStore.h"
@@ -159,6 +161,10 @@ bool FHearthAincradLifePersonalWorkStatusTest::RunTest(const FString&)
     const TSharedRef<FJsonObject> AfterReject = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId);
     TestEqual(TEXT("rejected contract is no longer active"), AfterReject->GetObjectField(TEXT("own_work_status"))->GetIntegerField(TEXT("active_contract_count")), 0);
     TestEqual(TEXT("rejected contract remains in history"), AfterReject->GetArrayField(TEXT("contracts")).Num(), 1);
+    const TSharedPtr<FJsonObject> RejectOutcome = AfterReject->GetObjectField(TEXT("own_work_status"))->GetArrayField(TEXT("closed_contract_outcomes"))[0]->AsObject();
+    TestEqual(TEXT("rejected outcome reports status"), RejectOutcome->GetStringField(TEXT("status")), TEXT("rejected"));
+    TestTrue(TEXT("rejected outcome does not claim completion"), !RejectOutcome->GetStringField(TEXT("statement")).Contains(TEXT("已完成")));
+    TestEqual(TEXT("terminal outcome identifies authoritative source"), RejectOutcome->GetStringField(TEXT("source")), TEXT("authoritative_personal_life_state"));
 
     const FString SecondProposal = FString::Printf(TEXT("repair_edge:%s:%s:2"), *AxeId, *TakuyaId);
     TestTrue(TEXT("second proposal can start a new active job"), LifeStep(World, Path, ErinId, SecondProposal, TEXT("work-status-propose-2"), TEXT("再问一次"), Error));
@@ -175,6 +181,13 @@ bool FHearthAincradLifePersonalWorkStatusTest::RunTest(const FString&)
     TestTrue(TEXT("owner can collect completed work"), LifeStep(World, Path, ErinId, TEXT("collect:") + SecondContract, TEXT("work-status-collect"), TEXT("取回"), Error));
     const TSharedRef<FJsonObject> AfterCollect = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId);
     TestEqual(TEXT("collected contract leaves no active work"), AfterCollect->GetObjectField(TEXT("own_work_status"))->GetIntegerField(TEXT("active_contract_count")), 0);
+    const TSharedPtr<FJsonObject> CollectOutcome = AfterCollect->GetObjectField(TEXT("own_work_status"))->GetArrayField(TEXT("closed_contract_outcomes"))[1]->AsObject();
+    TestEqual(TEXT("collected outcome reports status"), CollectOutcome->GetStringField(TEXT("status")), TEXT("collected"));
+    TestTrue(TEXT("collected outcome states repair return and settlement"), CollectOutcome->GetStringField(TEXT("statement")).Contains(TEXT("已完成")) && CollectOutcome->GetStringField(TEXT("statement")).Contains(TEXT("归还")) && CollectOutcome->GetStringField(TEXT("statement")).Contains(TEXT("结清")));
+    const FString BeforePrivateContext = [&](){ FString S; LifeTextOf(World.ToSharedRef(), S); return S; }();
+    const FString KashiwagiId = LifeResidentId(World.ToSharedRef(), TEXT("柏木"));
+    TestEqual(TEXT("non-participant cannot see closed contract outcomes"), HearthAincradLife::PersonalContext(World.ToSharedRef(), KashiwagiId)->GetObjectField(TEXT("own_work_status"))->GetArrayField(TEXT("closed_contract_outcomes")).Num(), 0);
+    FString AfterPrivateContext; LifeTextOf(World.ToSharedRef(), AfterPrivateContext); TestEqual(TEXT("context projection is read-only"), AfterPrivateContext, BeforePrivateContext);
     return true;
 }
 
@@ -233,6 +246,9 @@ bool FHearthAincradLifeDecisionEventTest::RunTest(const FString&)
     TestFalse(TEXT("resident's own cancellation echo does not wake her"), HearthAincradLife::HasDecisionEvent(World.ToSharedRef(), ErinId, ErinBeforeCancelSeq));
     TestTrue(TEXT("self cancellation after an external event does not hide that external event"), HearthAincradLife::HasDecisionEvent(World.ToSharedRef(), ErinId, ErinInitialSeq));
     TestEqual(TEXT("cancellation remains a durable terminal state"), LifeContract(World.ToSharedRef())->GetStringField(TEXT("status")), TEXT("cancelled"));
+    const TSharedPtr<FJsonObject> CancelOutcome = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId)->GetObjectField(TEXT("own_work_status"))->GetArrayField(TEXT("closed_contract_outcomes"))[0]->AsObject();
+    TestEqual(TEXT("cancelled outcome reports status"), CancelOutcome->GetStringField(TEXT("status")), TEXT("cancelled"));
+    TestTrue(TEXT("cancelled outcome does not claim completion"), !CancelOutcome->GetStringField(TEXT("statement")).Contains(TEXT("已完成")));
     TestTrue(TEXT("exact repeated cancellation is idempotent"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, TEXT("cancel:") + ContractId, TEXT("decision-cancel"), TEXT("我先取消"), Error));
     TestEqual(TEXT("repeated cancellation adds no event"), World->GetObjectField(TEXT("life"))->GetArrayField(TEXT("events")).Num(), EventsBeforeCancel + 1);
     TestTrue(TEXT("cancelled world reloads"), HearthAincradWorldStore::Save(Path, World.ToSharedRef(), Error));
@@ -517,4 +533,188 @@ bool FHearthAincradLifeRepairNeedCommunicationTest::RunTest(const FString&)
     return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthAincradMaterialGiftTest, "ThreeHearths.AincradLife.MaterialGift", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthAincradMaterialGiftTest::RunTest(const FString&)
+{
+    const FString Path = LifeTestPath(); ON_SCOPE_EXIT { LifeCleanup(Path); };
+    FString Error; TSharedPtr<FJsonObject> World;
+    if (!TestTrue(TEXT("create world"), HearthAincradWorldStore::LoadOrCreate(Path, World, Error))) return false;
+    bool Added = false; if (!TestTrue(TEXT("initialize life"), HearthAincradLife::Initialize(World.ToSharedRef(), Added, Error))) return false;
+    const FString ErinId = LifeResidentId(World.ToSharedRef(), TEXT("艾琳")); const FString TakuyaId = LifeResidentId(World.ToSharedRef(), TEXT("拓真"));
+    LifePutAtWork(World.ToSharedRef(), ErinId, TEXT("sao_smithy_01")); LifePutAtWork(World.ToSharedRef(), TakuyaId, TEXT("sao_smithy_01"));
+    const FString Gift = FString::Printf(TEXT("give_material:wood:%s:1"), *TakuyaId);
+    TestTrue(TEXT("gift option is exposed with inventory"), LifeHasOption(World.ToSharedRef(), ErinId, Gift));
+    const double ErinBefore = LifeAccount(World.ToSharedRef(), ErinId)->GetNumberField(TEXT("wood")); const double TakuyaBefore = LifeAccount(World.ToSharedRef(), TakuyaId)->GetNumberField(TEXT("wood"));
+    TestTrue(TEXT("gift transfers exactly one"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, Gift, TEXT("gift-1"), TEXT("给你木料"), Error));
+    TestEqual(TEXT("sender loses one"), LifeAccount(World.ToSharedRef(), ErinId)->GetNumberField(TEXT("wood")), ErinBefore - 1.0);
+    TestEqual(TEXT("recipient gains one"), LifeAccount(World.ToSharedRef(), TakuyaId)->GetNumberField(TEXT("wood")), TakuyaBefore + 1.0);
+    const FString BeforeRetry = [&](){ FString S; LifeTextOf(World.ToSharedRef(), S); return S; }();
+    TestTrue(TEXT("gift retry is idempotent"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, Gift, TEXT("gift-1"), TEXT("给你木料"), Error));
+    FString AfterRetry; LifeTextOf(World.ToSharedRef(), AfterRetry); TestEqual(TEXT("retry changes no state"), AfterRetry, BeforeRetry);
+    LifeAccount(World.ToSharedRef(), ErinId)->SetNumberField(TEXT("wood"), 0);
+    TestFalse(TEXT("no inventory rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, Gift, TEXT("gift-2"), TEXT("赠送"), Error));
+    LifeAccount(World.ToSharedRef(), ErinId)->SetNumberField(TEXT("wood"), 1);
+    LifeResident(World.ToSharedRef(), TakuyaId)->GetObjectField(TEXT("runtime"))->SetArrayField(TEXT("position_cm"),
+        { MakeShared<FJsonValueNumber>(999999.0), MakeShared<FJsonValueNumber>(999999.0), MakeShared<FJsonValueNumber>(92.0) });
+    FString BeforeNegative; LifeTextOf(World.ToSharedRef(), BeforeNegative);
+    TestFalse(TEXT("remote recipient rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, Gift, TEXT("gift-remote"), TEXT("赠送"), Error));
+    FString AfterNegative; LifeTextOf(World.ToSharedRef(), AfterNegative);
+    TestEqual(TEXT("remote rejection leaves state unchanged"), AfterNegative, BeforeNegative);
+    TestFalse(TEXT("illegal material rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, FString::Printf(TEXT("give_material:stone:%s:1"), *TakuyaId), TEXT("gift-illegal"), TEXT("赠送"), Error));
+    TestFalse(TEXT("quantity other than one rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, FString::Printf(TEXT("give_material:wood:%s:2"), *TakuyaId), TEXT("gift-quantity"), TEXT("赠送"), Error));
+    const FString NonNeighbourId = LifeResidentId(World.ToSharedRef(), TEXT("阿律"));
+    TestFalse(TEXT("non-neighbour rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, FString::Printf(TEXT("give_material:wood:%s:1"), *NonNeighbourId), TEXT("gift-nonneighbour"), TEXT("赠送"), Error));
+    LifePutAtWork(World.ToSharedRef(), TakuyaId, TEXT("sao_smithy_01"));
+    LifeAccount(World.ToSharedRef(), TakuyaId)->SetNumberField(TEXT("wood"), 1000000);
+    TestFalse(TEXT("recipient inventory upper bound rejects gift"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, Gift, TEXT("gift-full"), TEXT("赠送"), Error));
+    LifeAccount(World.ToSharedRef(), TakuyaId)->SetNumberField(TEXT("wood"), 0);
+    const FString KashiwagiId = LifeResidentId(World.ToSharedRef(), TEXT("柏木"));
+    LifePutAtWork(World.ToSharedRef(), ErinId, TEXT("sao_carpentry_01")); LifePutAtWork(World.ToSharedRef(), KashiwagiId, TEXT("sao_carpentry_01"));
+    const FString SecondGift = FString::Printf(TEXT("give_material:wood:%s:1"), *KashiwagiId);
+    TestTrue(TEXT("second resident pair reuses gift action"), HearthAincradLife::Apply(World.ToSharedRef(), ErinId, SecondGift, TEXT("gift-second"), TEXT("给你木料"), Error));
+    TestTrue(TEXT("gift state saves"), HearthAincradWorldStore::Save(Path, World.ToSharedRef(), Error));
+    TSharedPtr<FJsonObject> Reloaded; TestTrue(TEXT("gift state reloads"), HearthAincradWorldStore::LoadOrCreate(Path, Reloaded, Error));
+    FString BeforeReloadRetry; LifeTextOf(Reloaded.ToSharedRef(), BeforeReloadRetry);
+    TestTrue(TEXT("same gift operation remains idempotent after reload"), HearthAincradLife::Apply(Reloaded.ToSharedRef(), ErinId, SecondGift, TEXT("gift-second"), TEXT("给你木料"), Error));
+    FString AfterReloadRetry; LifeTextOf(Reloaded.ToSharedRef(), AfterReloadRetry); TestEqual(TEXT("reload retry changes no state"), AfterReloadRetry, BeforeReloadRetry);
+    return true;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthAincradSurvivalLifeIntegrationTest,
+    "ThreeHearths.AincradLife.SurvivalTransactionsPersist", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthAincradSurvivalLifeIntegrationTest::RunTest(const FString&)
+{
+    TSharedPtr<FJsonObject> World; FString Path, Error;
+    if (!TestTrue(TEXT("independent life world"), LifeStartWorld(World, Path, Error))) return false;
+    ON_SCOPE_EXIT { LifeCleanup(Path); };
+    const FString Id = LifeResidentId(World.ToSharedRef(), TEXT("艾琳"));
+    const FString WorldId = World->GetStringField(TEXT("world_id"));
+    const int64 Coins = LifeCoinsTotal(World.ToSharedRef());
+    bool Added = false;
+    if (!TestTrue(TEXT("install finite survival conditions"), HearthAincradSurvival::Initialize(World.ToSharedRef(), Added, Error))) return false;
+    TestTrue(TEXT("first install adds extension"), Added);
+    TestTrue(TEXT("live-time need progression"), HearthAincradSurvival::Tick(World.ToSharedRef(), 2400.0, Error));
+    LifePutAtWork(World.ToSharedRef(), Id, TEXT("sao_inn_01"));
+    const FString Eat = TEXT("eat_ration:") + Id;
+    TestTrue(TEXT("life exposes actual ration option"), LifeHasOption(World.ToSharedRef(), Id, Eat));
+    if (!TestTrue(TEXT("life transaction eats and cold saves"), LifeStep(World, Path, Id, Eat, TEXT("survival-eat-1"), TEXT("吃一份口粮"), Error))) { AddError(Error); return false; }
+    auto Context = HearthAincradSurvival::PersonalContext(World.ToSharedRef(), Id);
+    TestEqual(TEXT("one finite ration remains after reload"), Context->GetNumberField(TEXT("food")), 1.0);
+    TestEqual(TEXT("hunger recovered by consuming food"), LifeResident(World.ToSharedRef(), Id)->GetObjectField(TEXT("needs"))->GetNumberField(TEXT("hunger")), 100.0);
+    FString BeforeReplay; LifeTextOf(World.ToSharedRef(), BeforeReplay);
+    TestTrue(TEXT("settled eat replay is idempotent"), HearthAincradLife::Apply(World.ToSharedRef(), Id, Eat, TEXT("survival-eat-1"), TEXT("吃一份口粮"), Error));
+    FString AfterReplay; LifeTextOf(World.ToSharedRef(), AfterReplay);
+    TestEqual(TEXT("replay does not consume or change facts"), AfterReplay, BeforeReplay);
+    TestTrue(TEXT("continue same body's time"), HearthAincradSurvival::Tick(World.ToSharedRef(), 1200.0, Error));
+    const FString Rest = TEXT("rest:") + Id;
+    TestTrue(TEXT("life exposes needed rest"), LifeHasOption(World.ToSharedRef(), Id, Rest));
+    TestTrue(TEXT("rest action settles and reloads"), LifeStep(World, Path, Id, Rest, TEXT("survival-rest-1"), FString(), Error));
+    Context = HearthAincradSurvival::PersonalContext(World.ToSharedRef(), Id);
+    TestEqual(TEXT("rest restores energy without generating food"), Context->GetNumberField(TEXT("energy")), 100.0);
+    TestEqual(TEXT("rest food remains one"), Context->GetNumberField(TEXT("food")), 1.0);
+    TestEqual(TEXT("existing identity retained"), World->GetStringField(TEXT("world_id")), WorldId);
+    TestEqual(TEXT("coins conserved throughout survival"), LifeCoinsTotal(World.ToSharedRef()), Coins);
+    return true;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthAincradForagingLifeIntegrationTest,
+    "ThreeHearths.AincradLife.ForagingHarvestTransaction", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthAincradForagingLifeIntegrationTest::RunTest(const FString&)
+{
+    TSharedPtr<FJsonObject> World; FString Path, Error;
+    if (!TestTrue(TEXT("independent life world"), LifeStartWorld(World, Path, Error))) return false;
+    ON_SCOPE_EXIT { LifeCleanup(Path); };
+    const FString Id = LifeResidentId(World.ToSharedRef(), TEXT("艾琳"));
+    bool Added = false;
+    if (!TestTrue(TEXT("install survival before foraging"), HearthAincradSurvival::Initialize(World.ToSharedRef(), Added, Error))) return false;
+    if (!TestTrue(TEXT("install foraging extension"), HearthAincradForaging::Initialize(World.ToSharedRef(), Added, Error))) return false;
+    if (!TestTrue(TEXT("real live time makes eating legal"), HearthAincradSurvival::Tick(World.ToSharedRef(), 2400, Error))) return false;
+    const FString Eat = TEXT("eat_ration:") + Id;
+    LifePutAtWork(World.ToSharedRef(), Id, TEXT("sao_inn_01"));
+    if (!TestTrue(TEXT("eat option is legal"), LifeHasOption(World.ToSharedRef(), Id, Eat))) return false;
+    if (!TestTrue(TEXT("eat persists through Life.Apply"), LifeStep(World, Path, Id, Eat, TEXT("foraging-eat"), TEXT("吃一份口粮"), Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("eat leaves one food for harvesting test"), HearthAincradSurvival::PersonalContext(World.ToSharedRef(), Id)->GetNumberField(TEXT("food")), 1.0);
+
+    const TSharedPtr<FJsonObject> Runtime = LifeResident(World.ToSharedRef(), Id)->GetObjectField(TEXT("runtime"));
+    const FVector Work = HearthAincradForaging::WorkPoint();
+    Runtime->SetArrayField(TEXT("position_cm"), { MakeShared<FJsonValueNumber>(Work.X), MakeShared<FJsonValueNumber>(Work.Y), MakeShared<FJsonValueNumber>(Work.Z) });
+    const FString Harvest = TEXT("harvest_ration:starter_commons_berry_patch");
+    if (!TestTrue(TEXT("harvest option is exposed at the real work point"), LifeHasOption(World.ToSharedRef(), Id, Harvest))) return false;
+    if (!TestTrue(TEXT("harvest applies through Life.Apply"), LifeStep(World, Path, Id, Harvest, TEXT("foraging-harvest"), TEXT("去浆果地采集"), Error))) { AddError(Error); return false; }
+    TestEqual(TEXT("harvest raises food to two"), HearthAincradSurvival::PersonalContext(World.ToSharedRef(), Id)->GetNumberField(TEXT("food")), 2.0);
+    const TSharedPtr<FJsonObject> Foraging = World->GetObjectField(TEXT("foraging"));
+    TestEqual(TEXT("harvest consumes one public stock"), Foraging->GetNumberField(TEXT("stock")), 2.0);
+    const TSharedPtr<FJsonObject> Event = World->GetObjectField(TEXT("life"))->GetArrayField(TEXT("events")).Last()->AsObject();
+    TestEqual(TEXT("harvest writes the real event type"), Event->GetStringField(TEXT("type")), TEXT("harvest_ration"));
+    TestEqual(TEXT("harvest event subject is self"), Event->GetStringField(TEXT("subject_id")), Id);
+    TestEqual(TEXT("harvest event has no item"), Event->GetStringField(TEXT("item_id")), TEXT(""));
+    TestEqual(TEXT("harvest event has no contract"), Event->GetStringField(TEXT("contract_id")), TEXT(""));
+    TestEqual(TEXT("harvest event has only self recipient"), Event->GetArrayField(TEXT("recipient_ids")).Num(), 1);
+    TestEqual(TEXT("harvest recipient is self"), Event->GetArrayField(TEXT("recipient_ids"))[0]->AsString(), Id);
+
+    FString BeforeReplay; LifeTextOf(World.ToSharedRef(), BeforeReplay);
+    TestTrue(TEXT("duplicate harvest operation is idempotent"), HearthAincradLife::Apply(World.ToSharedRef(), Id, Harvest, TEXT("foraging-harvest"), TEXT("去浆果地采集"), Error));
+    FString AfterReplay; LifeTextOf(World.ToSharedRef(), AfterReplay);
+    TestEqual(TEXT("duplicate harvest does not add food or event"), AfterReplay, BeforeReplay);
+
+    if (!TestTrue(TEXT("harvested state reloads"), HearthAincradWorldStore::Save(Path, World.ToSharedRef(), Error))) return false;
+    TSharedPtr<FJsonObject> Reloaded;
+    if (!TestTrue(TEXT("reloaded harvested state"), HearthAincradWorldStore::LoadOrCreate(Path, Reloaded, Error))) return false;
+    TestTrue(TEXT("reloaded life and foraging validate"), HearthAincradLife::Validate(Reloaded.ToSharedRef(), Error));
+    TestEqual(TEXT("reloaded food remains two"), HearthAincradSurvival::PersonalContext(Reloaded.ToSharedRef(), Id)->GetNumberField(TEXT("food")), 2.0);
+    TestEqual(TEXT("reloaded stock remains two"), Reloaded->GetObjectField(TEXT("foraging"))->GetNumberField(TEXT("stock")), 2.0);
+
+    if (!TestTrue(TEXT("later real time permits second meal"), HearthAincradSurvival::Tick(Reloaded.ToSharedRef(), 2400, Error))) return false;
+    LifePutAtWork(Reloaded.ToSharedRef(), Id, TEXT("sao_inn_01"));
+    if (!TestTrue(TEXT("second meal frees capacity without editing food"), LifeStep(Reloaded, Path, Id, Eat, TEXT("foraging-eat-second"), TEXT("吃饭"), Error))) return false;
+    const TSharedPtr<FJsonObject> BadRuntime = LifeResident(Reloaded.ToSharedRef(), Id)->GetObjectField(TEXT("runtime"));
+    BadRuntime->SetArrayField(TEXT("position_cm"), { MakeShared<FJsonValueNumber>(1000), MakeShared<FJsonValueNumber>(465000), MakeShared<FJsonValueNumber>(92) });
+    TestTrue(TEXT("capacity is available so distance alone blocks settlement"), LifeHasOption(Reloaded.ToSharedRef(), Id, Harvest));
+    FString BeforeBad; LifeTextOf(Reloaded.ToSharedRef(), BeforeBad);
+    TestFalse(TEXT("harvest away from the real work point is rejected"), HearthAincradLife::Apply(Reloaded.ToSharedRef(), Id, Harvest, TEXT("foraging-bad-position"), TEXT("错误位置采集"), Error));
+    FString AfterBad; LifeTextOf(Reloaded.ToSharedRef(), AfterBad);
+    TestEqual(TEXT("bad-position harvest leaves world unchanged"), AfterBad, BeforeBad);
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHearthAincradToolFeedbackContextTest,
+    "ThreeHearths.AincradLife.PersonalToolFeedback", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FHearthAincradToolFeedbackContextTest::RunTest(const FString&)
+{
+    TSharedPtr<FJsonObject> World;
+    FString Path, Error;
+    if (!TestTrue(TEXT("independent life world"), LifeStartWorld(World, Path, Error))) return false;
+    ON_SCOPE_EXIT { LifeCleanup(Path); };
+    const FString ErinId = LifeResidentId(World.ToSharedRef(), TEXT("艾琳"));
+    const FString TakuyaId = LifeResidentId(World.ToSharedRef(), TEXT("拓真"));
+
+    const TSharedRef<FJsonObject> InitialContext = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId);
+    const TSharedPtr<FJsonObject> InitialTool = InitialContext->GetObjectField(TEXT("own_work_status"))->GetObjectField(TEXT("tool_use_requirements"));
+    const TArray<TSharedPtr<FJsonValue>>& InitialTools = InitialTool->GetArrayField(TEXT("known_owned_tool_conditions"));
+    if (!TestEqual(TEXT("damaged owned axe is reported"), InitialTools.Num(), 1)) return false;
+    TestFalse(TEXT("damaged axe condition blocks use"), InitialTools[0]->AsObject()->GetBoolField(TEXT("condition_allows_use")));
+    TestTrue(TEXT("edge and handle blockers are explicit"), InitialTools[0]->AsObject()->GetArrayField(TEXT("condition_blockers")).Num() == 2);
+    TestFalse(TEXT("damaged axe has no offered use option"), InitialTool->GetBoolField(TEXT("use_option_offered")));
+
+    const TSharedPtr<FJsonObject> Axe = LifeItem(World.ToSharedRef());
+    Axe->SetNumberField(TEXT("edge"), 100);
+    Axe->SetNumberField(TEXT("handle"), 100);
+    const TSharedRef<FJsonObject> RepairedContext = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId);
+    const TSharedPtr<FJsonObject> RepairedTool = RepairedContext->GetObjectField(TEXT("own_work_status"))->GetObjectField(TEXT("tool_use_requirements"));
+    TestTrue(TEXT("repaired condition is reflected"), RepairedTool->GetArrayField(TEXT("known_owned_tool_conditions"))[0]->AsObject()->GetBoolField(TEXT("condition_allows_use")));
+    TestTrue(TEXT("repaired axe offers use while wood exists"), RepairedTool->GetBoolField(TEXT("use_option_offered")));
+
+    LifeAccount(World.ToSharedRef(), ErinId)->SetNumberField(TEXT("wood"), 0);
+    const TSharedRef<FJsonObject> NoWoodContext = HearthAincradLife::PersonalContext(World.ToSharedRef(), ErinId);
+    const TSharedPtr<FJsonObject> NoWoodTool = NoWoodContext->GetObjectField(TEXT("own_work_status"))->GetObjectField(TEXT("tool_use_requirements"));
+    TestFalse(TEXT("zero wood removes offered use option"), NoWoodTool->GetBoolField(TEXT("use_option_offered")));
+    TestTrue(TEXT("zero wood does not alter tool condition"), NoWoodTool->GetArrayField(TEXT("known_owned_tool_conditions"))[0]->AsObject()->GetBoolField(TEXT("condition_allows_use")));
+
+    const TSharedRef<FJsonObject> OtherContext = HearthAincradLife::PersonalContext(World.ToSharedRef(), TakuyaId);
+    const TSharedPtr<FJsonObject> OtherTool = OtherContext->GetObjectField(TEXT("own_work_status"))->GetObjectField(TEXT("tool_use_requirements"));
+    TestEqual(TEXT("non-owner receives no private axe condition"), OtherTool->GetArrayField(TEXT("known_owned_tool_conditions")).Num(), 0);
+    return true;
+}
 #endif

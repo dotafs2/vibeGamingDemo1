@@ -1,4 +1,6 @@
 #include "HearthAincradLife.h"
+#include "HearthAincradSurvival.h"
+#include "HearthAincradForaging.h"
 #include "HearthAincradTownLayout.h"
 
 #include "Dom/JsonObject.h"
@@ -531,7 +533,7 @@ namespace HearthAincradLife
             return Option;
         }
 
-        bool AddEvent(const TSharedPtr<FJsonObject>& Life, const FString& Type, const FString& ActorId, const FString& SubjectId, const FString& ContractId, const FString& ItemId, const TArray<FString>& Recipients, const FString& Text, const FString& OperationId, int64& OutSeq, FString& Error, const FString& OfferPart = FString(), int64 OfferPrice = 0, const FString& CommunicationRequestId = FString(), const FString& CommunicationChoice = FString(), const FString& CommunicationTopic = FString(), const FString& CommunicationSkill = FString())
+        bool AddEvent(const TSharedPtr<FJsonObject>& Life, const FString& Type, const FString& ActorId, const FString& SubjectId, const FString& ContractId, const FString& ItemId, const TArray<FString>& Recipients, const FString& Text, const FString& OperationId, int64& OutSeq, FString& Error, const FString& OfferPart = FString(), int64 OfferPrice = 0, const FString& CommunicationRequestId = FString(), const FString& CommunicationChoice = FString(), const FString& CommunicationTopic = FString(), const FString& CommunicationSkill = FString(), const FString& GiftMaterial = FString(), int64 GiftQuantity = 0)
         {
             int64 CurrentSeq = 0;
             if (!IntegerField(Life, TEXT("seq"), CurrentSeq, 0, TNumericLimits<int64>::Max())) { Error = TEXT("life seq is invalid"); return false; }
@@ -546,6 +548,7 @@ namespace HearthAincradLife
             Event->SetArrayField(TEXT("recipient_ids"), StringArray(Recipients)); Event->SetStringField(TEXT("text"), Text); Event->SetStringField(TEXT("operation_id"), OperationId); if (Type == TEXT("initial_condition")) Event->SetStringField(TEXT("source"), TEXT("developer_initial_condition"));
             if (Type == TEXT("offer_repair")) { Event->SetStringField(TEXT("part"), OfferPart); Event->SetNumberField(TEXT("offer_price_col"), static_cast<double>(OfferPrice)); }
             if (Type == TEXT("quote_repair_need")) Event->SetNumberField(TEXT("offer_price_col"), static_cast<double>(OfferPrice));
+            if (Type == TEXT("give_material")) { Event->SetStringField(TEXT("material"), GiftMaterial); Event->SetNumberField(TEXT("quantity"), static_cast<double>(GiftQuantity)); }
             if (Type == TEXT("ask_help") || Type == TEXT("reply_help") || Type == TEXT("ask_repair_need") || Type == TEXT("reply_repair_need") || Type == TEXT("quote_repair_need")) { Event->SetStringField(TEXT("request_id"), CommunicationRequestId); Event->SetStringField(TEXT("topic"), CommunicationTopic.IsEmpty() ? TEXT("help_availability") : CommunicationTopic); Event->SetBoolField(TEXT("contractual"), false); if (Type == TEXT("reply_help") || Type == TEXT("reply_repair_need")) Event->SetStringField(TEXT("reply_choice"), CommunicationChoice); if (Type == TEXT("ask_repair_need") || Type == TEXT("reply_repair_need") || Type == TEXT("quote_repair_need")) Event->SetStringField(TEXT("repair_skill"), CommunicationSkill); }
             FJsonArray Events = *ExistingEvents; Events.Add(MakeShared<FJsonValueObject>(Event)); Life->SetArrayField(TEXT("events"), Events);
 
@@ -731,6 +734,15 @@ namespace HearthAincradLife
                     { Error = TEXT("life repair need quote event is invalid"); return false; }
                     QuotedRepairNeedRequests.Add(RequestId);
                 }
+                if (Type == TEXT("give_material"))
+                {
+                    FString Material; int64 Quantity = 0;
+                    if (!Contract.IsEmpty() || !Item.IsEmpty() || Subject.IsEmpty()
+                        || !RequiredString(Event, TEXT("material"), Material, 32)
+                        || (Material != TEXT("wood") && Material != TEXT("iron") && Material != TEXT("kindling"))
+                        || !IntegerField(Event, TEXT("quantity"), Quantity, 1, 1))
+                    { Error = TEXT("material gift event is invalid"); return false; }
+                }
                 const TArray<TSharedPtr<FJsonValue>>* Recipients = nullptr; if (!Event->TryGetArrayField(TEXT("recipient_ids"), Recipients) || Recipients->Num() == 0) { Error = TEXT("life event recipients are invalid"); return false; }
                 TSet<FString> RecipientSet;
                 for (const TSharedPtr<FJsonValue>& RecipientValue : *Recipients) { FString Recipient; if (!RecipientValue.IsValid() || !RecipientValue->TryGetString(Recipient) || !Residents.Contains(Recipient) || RecipientSet.Contains(Recipient)) { Error = TEXT("life event recipient is invalid"); return false; } RecipientSet.Add(Recipient); }
@@ -795,7 +807,7 @@ namespace HearthAincradLife
         Error.Empty();
         TSharedPtr<FJsonObject> Life;
         if (!GetLife(World, Life, Error, true)) return false;
-        return !Life.IsValid() || ValidateLifeObject(World, Life, Error);
+        return (!Life.IsValid() || ValidateLifeObject(World, Life, Error)) && HearthAincradSurvival::Validate(World, Error) && HearthAincradForaging::Validate(World, Error);
     }
 
     bool HasDecisionEvent(const TSharedRef<FJsonObject>& World, const FString& ResidentId, double LastDispatchedSeq)
@@ -845,7 +857,7 @@ namespace HearthAincradLife
                 || Value == TEXT("use_tool") || Value == TEXT("offer_repair")
                 || Value == TEXT("ask_help") || Value == TEXT("reply_help")
                 || Value == TEXT("ask_repair_need") || Value == TEXT("reply_repair_need")
-                || Value == TEXT("quote_repair_need");
+                || Value == TEXT("quote_repair_need") || Value == TEXT("give_material") || Value == TEXT("eat_ration") || Value == TEXT("rest") || Value == TEXT("harvest_ration");
         };
 
         for (const TSharedPtr<FJsonValue>& Value : *InboxEvents)
@@ -921,7 +933,7 @@ namespace HearthAincradLife
             if (ActorId != ResidentId) return true;
 
             // These self-authored results can expose a newly legal next action.
-            if (Type == TEXT("work") || Type == TEXT("collect") || Type == TEXT("use_tool")) return true;
+            if (Type == TEXT("work") || Type == TEXT("collect") || Type == TEXT("use_tool") || Type == TEXT("eat_ration") || Type == TEXT("rest") || Type == TEXT("harvest_ration")) return true;
         }
         return false;
     }
@@ -1163,6 +1175,21 @@ namespace HearthAincradLife
             }
         }
 
+        for (const TPair<FString, TSharedPtr<FJsonObject>>& Pair : Residents)
+        {
+            const FString TargetId = Pair.Key; if (TargetId == ResidentId || !IsInitialNeighbour(Residents, ResidentId, TargetId)) continue;
+            FString TargetBuilding; if (!BuildingForOwner(World, TargetId, TargetBuilding)) continue;
+            const TSharedPtr<FJsonObject> Account = FindAccount(Life, ResidentId); if (!Account.IsValid()) continue;
+            for (const FString& Material : { FString(TEXT("wood")), FString(TEXT("iron")), FString(TEXT("kindling")) })
+            {
+                int64 Quantity = 0;
+                if (IntegerField(Account, *Material, Quantity, 0, 1000000) && Quantity > 0)
+                    Result.Add(MakeShared<FJsonValueObject>(MakeOption(FString::Printf(TEXT("give_material:%s:%s:1"), *Material, *TargetId),
+                        FString::Printf(TEXT("无偿赠予%s 1份%s（不是交易报价）"), *NameOf(Residents, TargetId), *Material),
+                        TEXT("give_material"), TargetId, TargetBuilding, 6)));
+            }
+        }
+
         const TArray<TSharedPtr<FJsonValue>>* Items = nullptr; Life->TryGetArrayField(TEXT("items"), Items);
         double Coins = Resident->GetNumberField(TEXT("coins_col"));
         for (const TSharedPtr<FJsonValue>& Value : *Items)
@@ -1184,6 +1211,8 @@ namespace HearthAincradLife
                 const TSharedPtr<FJsonObject> Account = FindAccount(Life, ResidentId); int64 Wood = 0; if (Account.IsValid() && IntegerField(Account, TEXT("wood"), Wood, 0, 1000000) && Wood > 0) { FString OwnerBuilding; if (BuildingForOwner(World, ResidentId, OwnerBuilding)) Result.Add(MakeShared<FJsonValueObject>(MakeOption(TEXT("use_tool:") + ItemId, TEXT("用修好的柴斧把1木料变成柴火"), TEXT("use_tool"), FString(), OwnerBuilding, 6))); }
             }
         }
+        Result.Append(HearthAincradSurvival::Options(World, ResidentId));
+        Result.Append(HearthAincradForaging::Options(World, ResidentId));
         return Result;
     }
 
@@ -1199,18 +1228,93 @@ namespace HearthAincradLife
         Life->TryGetArrayField(TEXT("items"), Values); for (const TSharedPtr<FJsonValue>& Value : *Values) { const TSharedPtr<FJsonObject> Item = ObjectValue(Value); FString Owner, Custodian; Item->TryGetStringField(TEXT("owner_id"), Owner); Item->TryGetStringField(TEXT("custodian_id"), Custodian); if (Owner == ResidentId) ++OwnedItemCount; if (Custodian == ResidentId) ++HeldItemCount; if (Owner == ResidentId || Custodian == ResidentId) OwnItems.Add(Value); }
         Life->TryGetArrayField(TEXT("accounts"), Values); for (const TSharedPtr<FJsonValue>& Value : *Values) { const TSharedPtr<FJsonObject> Account = ObjectValue(Value); FString Owner; Account->TryGetStringField(TEXT("resident_id"), Owner); if (Owner == ResidentId) OwnAccounts.Add(Value); }
         int32 ActiveContractCount = 0;
-        Life->TryGetArrayField(TEXT("contracts"), Values); for (const TSharedPtr<FJsonValue>& Value : *Values) { const TSharedPtr<FJsonObject> Contract = ObjectValue(Value); FString Owner, Worker, Status; Contract->TryGetStringField(TEXT("owner_id"), Owner); Contract->TryGetStringField(TEXT("worker_id"), Worker); Contract->TryGetStringField(TEXT("status"), Status); if (Owner == ResidentId || Worker == ResidentId) { OwnContracts.Add(Value); if (IsPersonalActiveContractStatus(Status)) ++ActiveContractCount; } }
-        Life->TryGetArrayField(TEXT("relations"), Values); for (const TSharedPtr<FJsonValue>& Value : *Values) { const TSharedPtr<FJsonObject> Relation = ObjectValue(Value); FString From; Relation->TryGetStringField(TEXT("from_id"), From); if (From == ResidentId) OwnRelations.Add(Value); }
+        FJsonArray ClosedContractOutcomes;
+        Life->TryGetArrayField(TEXT("contracts"), Values);
+        for (const TSharedPtr<FJsonValue>& Value : *Values)
+        {
+            const TSharedPtr<FJsonObject> Contract = ObjectValue(Value);
+            FString ContractId, Owner, Worker, Status;
+            Contract->TryGetStringField(TEXT("id"), ContractId); Contract->TryGetStringField(TEXT("owner_id"), Owner); Contract->TryGetStringField(TEXT("worker_id"), Worker); Contract->TryGetStringField(TEXT("status"), Status);
+            if (Owner == ResidentId || Worker == ResidentId)
+            {
+                OwnContracts.Add(Value);
+                if (IsPersonalActiveContractStatus(Status)) ++ActiveContractCount;
+                if (Status == TEXT("collected") || Status == TEXT("cancelled") || Status == TEXT("rejected"))
+                {
+                    auto Outcome = MakeShared<FJsonObject>(); Outcome->SetStringField(TEXT("contract_id"), ContractId); Outcome->SetStringField(TEXT("status"), Status); Outcome->SetStringField(TEXT("source"), TEXT("authoritative_personal_life_state"));
+                    const FString Statement = Status == TEXT("collected")
+                        ? TEXT("修理已完成，物品已归还，费用已结清；该合同无待交付、待加工或待付款。")
+                        : Status == TEXT("cancelled")
+                            ? TEXT("合同已取消，未完成修理；没有待交付、待加工或待付款事实。")
+                            : TEXT("合同已拒绝，未完成修理；没有待交付、待加工或待付款事实。");
+                    Outcome->SetStringField(TEXT("statement"), Statement); Outcome->SetStringField(TEXT("reassessment_note"), TEXT("旧目标需由本人结合当前事实重新评估；系统不强制后续动作。")); ClosedContractOutcomes.Add(MakeShared<FJsonValueObject>(Outcome));
+                }
+            }
+        }
+        Life->TryGetArrayField(TEXT("relations"), Values);
+        for (const TSharedPtr<FJsonValue>& Value : *Values)
+        {
+            const TSharedPtr<FJsonObject> Relation = ObjectValue(Value); FString From;
+            Relation->TryGetStringField(TEXT("from_id"), From);
+            if (From == ResidentId) OwnRelations.Add(Value);
+        }
         int64 InboxSeq = 0; Life->TryGetArrayField(TEXT("inboxes"), Values); for (const TSharedPtr<FJsonValue>& Value : *Values) { const TSharedPtr<FJsonObject> Inbox = ObjectValue(Value); FString Owner; Inbox->TryGetStringField(TEXT("resident_id"), Owner); if (Owner == ResidentId) { IntegerField(Inbox, TEXT("next_seq"), InboxSeq, 0, TNumericLimits<int64>::Max()); const TArray<TSharedPtr<FJsonValue>>* InboxEvents = nullptr; Inbox->TryGetArrayField(TEXT("events"), InboxEvents); for (const TSharedPtr<FJsonValue>& Event : *InboxEvents) Received.Add(Event); } }
         TArray<FString> InitialNeighbourIds; for (const TPair<FString, TSharedPtr<FJsonObject>>& Pair : Residents) { FString Name; Pair.Value->TryGetStringField(TEXT("name"), Name); if (Name == TEXT("艾琳") || Name == TEXT("拓真") || Name == TEXT("柏木")) InitialNeighbourIds.Add(Pair.Key); }
         for (const FString& NeighbourId : InitialNeighbourIds) { const TSharedPtr<FJsonObject> Pair = Residents[NeighbourId]; auto Neighbour = MakeShared<FJsonObject>(); Neighbour->SetStringField(TEXT("resident_id"), NeighbourId); Neighbour->SetStringField(TEXT("name"), Pair->GetStringField(TEXT("name"))); FJsonArray PublicSkills; Life->TryGetArrayField(TEXT("skills"), Values); for (const TSharedPtr<FJsonValue>& SkillValue : *Values) { const TSharedPtr<FJsonObject> Skill = ObjectValue(SkillValue); FString Holder; Skill->TryGetStringField(TEXT("resident_id"), Holder); if (Holder == NeighbourId) { auto SkillCopy = MakeShared<FJsonObject>(); SkillCopy->SetStringField(TEXT("skill_id"), Skill->GetStringField(TEXT("skill_id"))); SkillCopy->SetStringField(TEXT("source"), Skill->GetStringField(TEXT("source"))); PublicSkills.Add(MakeShared<FJsonValueObject>(SkillCopy)); } } Neighbour->SetArrayField(TEXT("skills"), PublicSkills); Neighbours.Add(MakeShared<FJsonValueObject>(Neighbour)); }
         auto WorkStatus = MakeShared<FJsonObject>(); WorkStatus->SetNumberField(TEXT("owned_item_count"), OwnedItemCount); WorkStatus->SetNumberField(TEXT("held_item_count"), HeldItemCount); WorkStatus->SetNumberField(TEXT("active_contract_count"), ActiveContractCount); WorkStatus->SetStringField(TEXT("active_contract_statuses"), TEXT("proposed,accepted,delivered,completed; cancelled/rejected/collected excluded")); WorkStatus->SetStringField(TEXT("source"), TEXT("authoritative_personal_life_state"));
-        auto ToolUse = MakeShared<FJsonObject>(); ToolUse->SetStringField(TEXT("requires"), TEXT("edge=100 and handle=100; owner_id and custodian_id are this resident; at the registered work station; at least 1 wood")); ToolUse->SetStringField(TEXT("effect"), TEXT("consume 1 wood and create 1 kindling; no wood is created")); WorkStatus->SetObjectField(TEXT("tool_use_requirements"), ToolUse);
-        auto RepairRequirements = MakeShared<FJsonObject>();
+        WorkStatus->SetArrayField(TEXT("closed_contract_outcomes"), ClosedContractOutcomes);
+        auto ToolUse = MakeShared<FJsonObject>();
+        ToolUse->SetStringField(TEXT("requires"), TEXT("edge=100 and handle=100; owner_id and custodian_id are this resident; at the registered work station; at least 1 wood"));
+        ToolUse->SetStringField(TEXT("effect"), TEXT("consume 1 wood and create 1 kindling; no wood is created"));
+        ToolUse->SetBoolField(TEXT("observation_changes_condition"), false);
+        ToolUse->SetNumberField(TEXT("required_edge"), 100);
+        ToolUse->SetNumberField(TEXT("required_handle"), 100);
+        ToolUse->SetStringField(TEXT("source"), TEXT("authoritative_personal_life_state"));
+        ToolUse->SetStringField(TEXT("condition_scope"), TEXT("condition_allows_use reports only edge/handle thresholds; it does not establish inventory, position, custody, or ownership"));
+        FJsonArray OwnedToolConditions;
+        const TArray<TSharedPtr<FJsonValue>>* ToolItems = nullptr;
+        Life->TryGetArrayField(TEXT("items"), ToolItems);
+        for (const TSharedPtr<FJsonValue>& Value : *ToolItems)
+        {
+            const TSharedPtr<FJsonObject> Item = ObjectValue(Value);
+            FString ItemId, Kind, Owner;
+            Item->TryGetStringField(TEXT("id"), ItemId);
+            Item->TryGetStringField(TEXT("kind"), Kind);
+            Item->TryGetStringField(TEXT("owner_id"), Owner);
+            if (Owner != ResidentId || Kind != TEXT("axe")) continue;
+            int64 Edge = 0, Handle = 0;
+            IntegerField(Item, TEXT("edge"), Edge, 0, 100);
+            IntegerField(Item, TEXT("handle"), Handle, 0, 100);
+            auto Condition = MakeShared<FJsonObject>();
+            Condition->SetStringField(TEXT("item_id"), ItemId);
+            Condition->SetNumberField(TEXT("edge"), Edge);
+            Condition->SetNumberField(TEXT("handle"), Handle);
+            Condition->SetBoolField(TEXT("condition_allows_use"), Edge == 100 && Handle == 100);
+            FJsonArray Blockers;
+            if (Edge < 100) Blockers.Add(MakeShared<FJsonValueString>(TEXT("edge_not_fully_repaired")));
+            if (Handle < 100) Blockers.Add(MakeShared<FJsonValueString>(TEXT("handle_not_fully_repaired")));
+            Condition->SetArrayField(TEXT("condition_blockers"), Blockers);
+            OwnedToolConditions.Add(MakeShared<FJsonValueObject>(Condition));
+        }
+        ToolUse->SetArrayField(TEXT("known_owned_tool_conditions"), OwnedToolConditions);
+        WorkStatus->SetObjectField(TEXT("tool_use_requirements"), ToolUse);        auto RepairRequirements = MakeShared<FJsonObject>();
         if (HasSkill(Life, ResidentId, TEXT("metal_repair"))) { auto Rule = MakeShared<FJsonObject>(); Rule->SetStringField(TEXT("requires"), TEXT("a delivered edge-repair contract, custody of its item, own registered work station, and at least 1 iron")); Rule->SetStringField(TEXT("effect"), TEXT("consume exactly 1 iron and set edge=100; consumes no wood or kindling")); RepairRequirements->SetObjectField(TEXT("metal_repair"), Rule); }
         if (HasSkill(Life, ResidentId, TEXT("wood_repair"))) { auto Rule = MakeShared<FJsonObject>(); Rule->SetStringField(TEXT("requires"), TEXT("a delivered handle-repair contract, custody of its item, own registered work station, and at least 1 wood")); Rule->SetStringField(TEXT("effect"), TEXT("consume exactly 1 wood and set handle=100; consumes no iron or kindling")); RepairRequirements->SetObjectField(TEXT("wood_repair"), Rule); }
         WorkStatus->SetObjectField(TEXT("repair_requirements"), RepairRequirements);
-        Context->SetNumberField(TEXT("inbox_seq"), static_cast<double>(InboxSeq)); Context->SetArrayField(TEXT("skills"), OwnSkills); Context->SetArrayField(TEXT("items"), OwnItems); Context->SetArrayField(TEXT("accounts"), OwnAccounts); Context->SetArrayField(TEXT("contracts"), OwnContracts); Context->SetObjectField(TEXT("own_work_status"), WorkStatus); Context->SetArrayField(TEXT("received_letters"), Received); Context->SetArrayField(TEXT("known_events"), Received); Context->SetArrayField(TEXT("initial_neighbours"), Neighbours); Context->SetArrayField(TEXT("relations"), OwnRelations); Context->SetArrayField(TEXT("options"), Options(World, ResidentId)); return Context;
+        Context->SetNumberField(TEXT("inbox_seq"), static_cast<double>(InboxSeq)); Context->SetArrayField(TEXT("skills"), OwnSkills); Context->SetArrayField(TEXT("items"), OwnItems); Context->SetArrayField(TEXT("accounts"), OwnAccounts); Context->SetArrayField(TEXT("contracts"), OwnContracts); Context->SetObjectField(TEXT("own_work_status"), WorkStatus); Context->SetArrayField(TEXT("received_letters"), Received); Context->SetArrayField(TEXT("known_events"), Received); Context->SetArrayField(TEXT("initial_neighbours"), Neighbours); Context->SetArrayField(TEXT("relations"), OwnRelations);         const TArray<TSharedPtr<FJsonValue>> AvailableOptions = Options(World, ResidentId);
+        bool bUseOptionOffered = false;
+        for (const TSharedPtr<FJsonValue>& Value : AvailableOptions)
+        {
+            const TSharedPtr<FJsonObject> Option = ObjectValue(Value);
+            FString OptionId;
+            if (Option->TryGetStringField(TEXT("id"), OptionId) && OptionId.StartsWith(TEXT("use_tool:")))
+            {
+                bUseOptionOffered = true;
+                break;
+            }
+        }
+        ToolUse->SetBoolField(TEXT("use_option_offered"), bUseOptionOffered);
+        Context->SetArrayField(TEXT("options"), AvailableOptions); return Context;
     }
 
     bool Apply(const TSharedRef<FJsonObject>& World, const FString& ResidentId, const FString& OptionId, const FString& OperationId, const FString& Utterance, FString& Error)
@@ -1222,6 +1326,7 @@ namespace HearthAincradLife
         TSharedPtr<FJsonObject> Candidate; if (!CloneWorld(World, Candidate, Error)) return false; TSharedPtr<FJsonObject> CandidateLife; if (!GetLife(Candidate.ToSharedRef(), CandidateLife, Error, false)) return false;
         TMap<FString, TSharedPtr<FJsonObject>> Residents; if (!CollectResidents(Candidate.ToSharedRef(), Residents, Error) || !Residents.Contains(ResidentId)) { Error = TEXT("life operation actor is unknown"); return false; }
         TArray<FString> Parts; OptionId.ParseIntoArray(Parts, TEXT(":"), false); if (Parts.Num() < 2) { Error = TEXT("life option id is malformed"); return false; }
+        FString GiftMaterial; int64 GiftQuantity = 0;
         const FString Verb = Parts[0]; int64 EventSeq = 0; FString EventText; TArray<FString> Recipients; FString SubjectId, ContractId, ItemId, OfferPart, CommunicationRequestId, CommunicationChoice, CommunicationTopic, CommunicationSkill; int64 OfferPrice = 0; bool bRelationImproved = false; FString RelationFrom, RelationTo; FString RelationReason;
         auto Fail = [&Error](const TCHAR* Message) { Error = Message; return false; };
         TSharedPtr<FJsonObject> ContractObject;
@@ -1396,13 +1501,51 @@ namespace HearthAincradLife
         {
             if (Parts.Num() != 2) return Fail(TEXT("use_tool option is malformed")); const TSharedPtr<FJsonObject> Item = FindItem(CandidateLife, Parts[1]); if (!Item.IsValid()) return Fail(TEXT("tool is missing")); FString Owner, Custodian; Item->TryGetStringField(TEXT("owner_id"), Owner); Item->TryGetStringField(TEXT("custodian_id"), Custodian); auto Account = FindAccount(CandidateLife, ResidentId); FString OwnerBuilding; int64 WoodQuantity = 0; if (Owner != ResidentId || Custodian != ResidentId || Item->GetNumberField(TEXT("edge")) != 100.0 || Item->GetNumberField(TEXT("handle")) != 100.0 || !IntegerField(Account, TEXT("wood"), WoodQuantity, 0, 1000000) || WoodQuantity <= 0 || !BuildingForOwner(Candidate.ToSharedRef(), ResidentId, OwnerBuilding) || !AtBuilding(Candidate.ToSharedRef(), Residents[ResidentId], OwnerBuilding)) return Fail(TEXT("tool use requires a fully repaired axe, one wood and the owner's station")); Account->SetNumberField(TEXT("wood"), WoodQuantity - 1); Account->SetNumberField(TEXT("kindling"), Account->GetNumberField(TEXT("kindling")) + 1); ItemId = Parts[1]; SubjectId = ResidentId; Recipients = { ResidentId }; EventText = FString::Printf(TEXT("%s在自己的岗位用修好的柴斧把1木料变成了柴火。"), *NameOf(Residents, ResidentId));
         }
+        else if (Verb == TEXT("give_material"))
+        {
+            if (Parts.Num() != 4 || Parts[3] != TEXT("1")) return Fail(TEXT("material gift option is malformed"));
+            const FString Material = Parts[1], TargetId = Parts[2]; GiftMaterial = Material; GiftQuantity = 1;
+            if (Material != TEXT("wood") && Material != TEXT("iron") && Material != TEXT("kindling")) return Fail(TEXT("material gift is not allowed"));
+            if (TargetId == ResidentId || !IsInitialNeighbour(Residents, ResidentId, TargetId)) return Fail(TEXT("material gift recipient is not a known neighbour"));
+            FString TargetBuilding; if (!BuildingForOwner(Candidate.ToSharedRef(), TargetId, TargetBuilding)) return Fail(TEXT("material gift recipient has no building"));
+            const TSharedPtr<FJsonObject> SenderAccount = FindAccount(CandidateLife, ResidentId);
+            const TSharedPtr<FJsonObject> TargetAccount = FindAccount(CandidateLife, TargetId);
+            const TSharedPtr<FJsonObject> SenderResident = Residents[ResidentId];
+            const TSharedPtr<FJsonObject> TargetResident = Residents[TargetId];
+            int64 SenderQuantity = 0, TargetQuantity = 0;
+            if (!SenderAccount.IsValid() || !TargetAccount.IsValid()
+                || !IntegerField(SenderAccount, *Material, SenderQuantity, 1, 1000000)
+                || !IntegerField(TargetAccount, *Material, TargetQuantity, 0, 999999)
+                || !AtBuilding(Candidate.ToSharedRef(), SenderResident, TargetBuilding)
+                || !AtBuilding(Candidate.ToSharedRef(), TargetResident, TargetBuilding)
+                || !ResidentsClose(SenderResident, TargetResident)) return Fail(TEXT("material gift requires both residents at recipient station"));
+            SenderAccount->SetNumberField(*Material, SenderQuantity - 1);
+            TargetAccount->SetNumberField(*Material, TargetQuantity + 1);
+            SubjectId = TargetId; Recipients = { ResidentId, TargetId };
+            EventText = FString::Printf(TEXT("%s无偿赠予%s 1份%s；这不是交易。"), *NameOf(Residents, ResidentId), *NameOf(Residents, TargetId), *Material);
+        }
+        else if (Verb == TEXT("eat_ration") || Verb == TEXT("rest"))
+        {
+            if (!HearthAincradSurvival::Apply(Candidate.ToSharedRef(), ResidentId, OptionId, Error)) return false;
+            SubjectId = ResidentId; Recipients = { ResidentId };
+            EventText = Verb == TEXT("eat_ration")
+                ? FString::Printf(TEXT("%s在自己的岗位消耗1份有限口粮，饱腹恢复；不是生产食物。"), *NameOf(Residents, ResidentId))
+                : FString::Printf(TEXT("%s在自己的岗位休息，精力恢复；没有生成食物或钱。"), *NameOf(Residents, ResidentId));
+        }
+        else if (Verb == TEXT("harvest_ration"))
+        {
+            if (Parts.Num() != 2 || Parts[1] != TEXT("starter_commons_berry_patch")) return Fail(TEXT("harvest option is malformed"));
+            if (!HearthAincradForaging::Apply(Candidate.ToSharedRef(), ResidentId, OptionId, Error)) return false;
+            SubjectId = ResidentId; Recipients = { ResidentId };
+            EventText = FString::Printf(TEXT("%s在公共浆果地采集1份口粮；公共stock减少1，本人food增加1。"), *NameOf(Residents, ResidentId));
+        }
         else return Fail(TEXT("unknown life option verb"));
 
         if (Recipients.Num() == 0) return Fail(TEXT("life event has no recipients"));
         const FString FullText = Utterance.IsEmpty() ? EventText : EventText + TEXT(" 原话：") + Utterance;
         FString EventContractId = ContractId;
         if (EventContractId.IsEmpty() && (Verb == TEXT("accept") || Verb == TEXT("reject") || Verb == TEXT("cancel") || Verb == TEXT("deliver") || Verb == TEXT("work") || Verb == TEXT("collect"))) EventContractId = Parts[1];
-        if (!AddEvent(CandidateLife, Verb, ResidentId, SubjectId, EventContractId, ItemId, Recipients, FullText, OperationId, EventSeq, Error, OfferPart, OfferPrice, CommunicationRequestId, CommunicationChoice, CommunicationTopic, CommunicationSkill)) return false;
+        if (!AddEvent(CandidateLife, Verb, ResidentId, SubjectId, EventContractId, ItemId, Recipients, FullText, OperationId, EventSeq, Error, OfferPart, OfferPrice, CommunicationRequestId, CommunicationChoice, CommunicationTopic, CommunicationSkill, GiftMaterial, GiftQuantity)) return false;
         if (bRelationImproved && !UpdateRelation(CandidateLife, RelationFrom, RelationTo, EventSeq, RelationReason, Error)) return false;
         if (!AddApplied(CandidateLife, OperationId, ResidentId, OptionId, Utterance, EventSeq, Error)) return false;
         if (!Validate(Candidate.ToSharedRef(), Error)) return false;

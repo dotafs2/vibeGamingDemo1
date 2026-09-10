@@ -11,3 +11,7 @@ v2-scene-match-*.png
 
 # Local diagnostic scratch; selected evidence lives under Docs/Validation.
 /.codex-ue58-diagnostics/
+
+# Python local artifacts across engine prototypes
+**/__pycache__/
+*.pyc

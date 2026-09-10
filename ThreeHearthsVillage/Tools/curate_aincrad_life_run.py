@@ -10,6 +10,7 @@ def write(path,obj): path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run',required=True)
+    parser.add_argument('--output-root',type=Path,help='Evidence directory beneath Docs/Validation; defaults to the historical session.')
     parser.add_argument('--interruption-reason',help='Archive an intentionally interrupted run while retaining its nonzero native exit and actual duration.')
     args=parser.parse_args()
     assert args.run.startswith('town-') and all(c.isdigit() or c=='-' for c in args.run[5:]),'Invalid run id'
@@ -25,7 +26,10 @@ def main():
     assert all(row['id'] in request_paths for row in rows),'Ledger window contains an unmatched request; manual reconciliation needed'
     assert sum(r['state']=='settled' for r in rows)==meta['new_settled_calls'],'Run and operation settlement count differ'
     assert abs(sum((r['charge'] or 0)/1e9 for r in rows if r['state']=='settled')-meta['new_cost_cny'])<.00000002,'Run and operation costs differ'
-    dest=ROOT/'Docs/Validation/Two_Hour_Iteration_2026-09-08/PaidRuns'/args.run;dest.mkdir(parents=True,exist_ok=True)
+    validation=(ROOT/'Docs/Validation').resolve()
+    output_root=args.output_root.resolve() if args.output_root else validation/'Two_Hour_Iteration_2026-09-08/PaidRuns'
+    assert output_root.is_relative_to(validation),'Evidence output must remain beneath Docs/Validation'
+    dest=output_root/args.run;dest.mkdir(parents=True,exist_ok=True)
     summaries=[]
     for i,row in enumerate(rows,1):
         request=request_paths[row['id']];j=read(request)

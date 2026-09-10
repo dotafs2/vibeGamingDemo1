@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "world_id": "F4390752-4A07-7DE7-FACD-32BAC6F72C54",
+  "generated_at_utc": "2026-09-09T23:49:09.730545+00:00",
+  "baseline_life_seq": 25,
+  "observed_life_seq": 37,
+  "active_residents": [
+    "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+    "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+    "A757B4D7-497C-99F3-3482-52A77F688D69"
+  ],
+  "initial_rations": 6,
+  "successful_eat_count": 2,
+  "successful_rest_count": 2,
+  "successful_harvest_count": 1,
+  "foraging_source_count": 1,
+  "foraging_present": true,
+  "public_foraging_source": {
+    "source_id": "starter_commons_berry_patch",
+    "source": "developer_ecosystem_bootstrap",
+    "stock": 2,
+    "capacity": 3,
+    "initial_stock": 3,
+    "produced_total": 0,
+    "harvested_total": 1,
+    "growth_remainder_seconds": 162.3978405483067,
+    "installed_at_life_seq": 36
+  },
+  "residents": [
+    {
+      "stable_id": "18D2BAAA-4E86-1B05-CD3B-F0B284AAD58F",
+      "food": 2,
+      "energy": 54,
+      "hunger_satisfaction": 54,
+      "completed_actions": [],
+      "pending_operation": "",
+      "goal": "等待艾琳交付aincrad_axe_erin和至少1 wood，以便执行repair_contract_18_0"
+    },
+    {
+      "stable_id": "425311EB-4D09-0782-AFE2-27A9631F9C0A",
+      "food": 2,
+      "energy": 89,
+      "hunger_satisfaction": 92,
+      "completed_actions": [
+        "eat_ration",
+        "rest",
+        "harvest_ration"
+      ],
+      "pending_operation": "",
+      "goal": "采集公共浆果地口粮，补充food储备；之后返回住处核实木料状态。"
+    },
+    {
+      "stable_id": "A757B4D7-497C-99F3-3482-52A77F688D69",
+      "food": 1,
+      "energy": 89,
+      "hunger_satisfaction": 93,
+      "completed_actions": [
+        "rest",
+        "eat_ration"
+      ],
+      "pending_operation": "",
+      "goal": "维持旅店日常运转，留意是否有客人或邻居来访"
+    }
+  ]
+}

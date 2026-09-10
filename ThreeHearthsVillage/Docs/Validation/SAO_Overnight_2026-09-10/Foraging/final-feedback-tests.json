@@ -1,0 +1,171 @@
+{
+  "succeeded": 41,
+  "failed": 0,
+  "notRun": 0,
+  "tests": [
+    {
+      "name": "ThreeHearths.AincradCharacters.IdentityAppearanceAndAnimation",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradEcology.DeterministicBoundedWoodland",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradEcology.SavedClearingsAndFullAscent",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.AllNodesInside",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.CardinalTopology",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.NorthernLabyrinthReachability",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradFloorPlan.StableIdsAndTerrainPolicy",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradForaging.PublicBerrySource",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradIntent.ConflictCapacityAndCopy",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradIntent.GoalSupersedesAndContextIsPrivate",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradIntent.IdempotentPrivateBounded",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.DecisionEventFiltering",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.ForagingHarvestTransaction",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.HelpQuestionSingleReply",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.InitializationAndReload",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.MaterialGift",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.PersonalToolFeedback",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.PersonalWorkStatusBoundaries",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.RejectionShortageIdempotencyAndDistance",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.RepairNeedQuestionSingleReply",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.RepairOfferPersistenceAndPrivacy",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.SurvivalTransactionsPersist",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLife.TwoStageRepairAndUse",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLook.ExplicitTargetAndRetry",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLook.HeldToolAttentionState",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLook.InvalidInputFailsClosed",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLook.OneFollowupAndColdRestore",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradLook.StateAndIdempotency",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradResidentRuntime.DecisionParsingAndMemoryPresentationBoundaries",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradSurvival.InitializationAndColdReload",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradSurvival.PrivateFiniteStationActions",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradSurvival.TickBoundsAndInvalidState",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradTownLayout.Geometry",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradTownLayout.StableBuildings",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.ColdLoadIdentity",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.CorruptFileRefusesReset",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.CrossWorldOverwriteRejected",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.FutureVersionRefusesOverwrite",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.MigrationIgnoresResidentArrayOrder",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.V1ToV2Migration",
+      "state": "Success"
+    },
+    {
+      "name": "ThreeHearths.AincradWorldStore.WrongSettingRejected",
+      "state": "Success"
+    }
+  ]
+}

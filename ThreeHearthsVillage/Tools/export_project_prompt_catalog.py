@@ -1,5 +1,4 @@
 """Export project-owned prompt literals and NPC identity fields; never credentials."""
-import ast
 import json
 import re
 from pathlib import Path
@@ -8,7 +7,7 @@ PROJECT = Path(__file__).resolve().parents[1]
 OUT = PROJECT / "Docs/Prompts"
 OUT.mkdir(parents=True, exist_ok=True)
 MODULE = PROJECT / "Plugins/ThreeHearths/Source/ThreeHearths"
-files = sorted((MODULE / "Private").glob("*.cpp")) + sorted((MODULE / "Public").glob("*.h"))
+files = sorted((MODULE / "Private").glob("HearthAincrad*.cpp")) + sorted((MODULE / "Public").glob("HearthAincrad*.h"))
 files = [p for p in files if "Tests" not in p.name]
 assert len(files) <= 400, "Review scope before expanding catalog scan."
 cue = re.compile(r"你是|你要|请根据|必须|Return only|system.?prompt|world.?rules|Use only|You are|SAO|Kimi", re.I)
@@ -38,19 +37,7 @@ catalog = {
     "source_files": source_files,
     "entries": entries,
 }
-for name in ('kimi_estimate_vision.py', 'test_kimi_vision.py', 'test_spark_bridge.py'):
-    path = PROJECT / 'Plugins/ThreeHearths/Tools' / name
-    if not path.exists():
-        continue
-    assert path.stat().st_size <= 1024 * 1024
-    tree = ast.parse(path.read_text(encoding='utf-8-sig'))
-    rows = [node for node in ast.walk(tree) if isinstance(node, ast.Constant)
-            and isinstance(node.value, str) and len(node.value) >= 60 and cue.search(node.value)]
-    if rows:
-        relative = path.relative_to(PROJECT).as_posix()
-        source_files.append(relative)
-        entries.extend({'source': relative, 'line': node.lineno, 'text': node.value} for node in rows)
-catalog['scope'] = 'Bounded project C++ and named Python prompt/instruction literal candidates; excludes platform instructions and credentials.'
+catalog['scope'] = 'Current Aincrad C++ prompt/instruction candidates only; legacy village and API test prompts excluded.'
 (OUT / "runtime_prompt_catalog.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 state_path = PROJECT / "Saved/ThreeHearths/AincradLevel0/world.json"
 if state_path.exists():

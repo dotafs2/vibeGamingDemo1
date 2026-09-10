@@ -28,6 +28,8 @@ parser.add_argument('--api',action='store_true')
 parser.add_argument('--confirm-local-rejection',help='Explicitly recover one proven unsent local HTTP 400 operation; verifies ledger absence before launch.')
 parser.add_argument('--capture',action='store_true')
 parser.add_argument('--life',action='store_true',help='Install/continue the versioned tool-commission life extension in the same world.')
+parser.add_argument('--survival',action='store_true',help='Install/continue versioned finite rations and bodily needs in this same world; implies no autonomous food production.')
+parser.add_argument('--foraging',action='store_true',help='Explicitly install the finite shared renewable berry source; requires life and survival.')
 parser.add_argument('--max-decisions',type=int,default=3,help='Maximum fee dispatches for this bounded run, including directed life events.')
 parser.add_argument('--budget-profile',choices=('city-validation','overnight'),default='city-validation')
 parser.add_argument('--external-liability-cny',type=float,default=17.3692551,help='Known liability from another machine, included in the CNY 95 allocation check.')
@@ -35,6 +37,12 @@ parser.add_argument('--stop-at-utc',type=int,help='Absolute UTC epoch at which t
 parser.add_argument('--verify-walk',action='store_true',help='Local capsule/door/eye-height check, separate from paid resident behavior.')
 parser.add_argument('--exercise-routes',action='store_true',help='Local manual route verification; never combined with API.')
 opt=parser.parse_args()
+# Operator pause applies only before a new run. Existing owned runs retain
+# their deadline and normal save/settlement/cleanup path.
+pause_new_runs = PROJECT/'Saved/ThreeHearths/AincradLevel0/PAUSE_NEW_RUNS'
+if pause_new_runs.exists():
+    print(json.dumps({'status':'paused','reason':'PAUSE_NEW_RUNS exists; no run or fee started'}),flush=True)
+    raise SystemExit(75)
 if not math.isfinite(opt.external_liability_cny) or opt.external_liability_cny<0: parser.error('--external-liability-cny must be finite and non-negative')
 if opt.stop_at_utc is not None:
     if opt.stop_at_utc<=0: parser.error('--stop-at-utc must be a positive UTC epoch')
@@ -47,6 +55,7 @@ else:
     runtime_seconds=opt.seconds
 if not 30 <= opt.seconds <= 1800: parser.error('--seconds must be between 30 and 1800')
 assert 0<=opt.max_decisions<=24
+if opt.foraging and not (opt.life and opt.survival): parser.error('--foraging requires --life --survival')
 assert not (opt.api and opt.exercise_routes),'Manual verification must stay separate from paid decisions.'
 assert not (opt.api and opt.verify_walk),'Player collision verification is local-only.'
 EDITOR=Path(opt.editor) if opt.editor else next((p for p in EDITOR_CANDIDATES if p.is_file()),None)
@@ -76,7 +85,7 @@ if opt.confirm_local_rejection:
 RUNS.mkdir(parents=True,exist_ok=True)
 run='town-'+time.strftime('%Y%m%d-%H%M%S',time.gmtime())
 meta_path=RUNS/(run+'.json')
-meta={'run':run,'world_id':world.get('world_id'),'seconds':runtime_seconds,'api':opt.api,'life':opt.life,'max_decisions':opt.max_decisions,'budget_profile':opt.budget_profile,'external_liability_cny':opt.external_liability_cny,'stop_at_utc':opt.stop_at_utc,'manual_route_verification':opt.exercise_routes,'ue_pid':None,'gateway_pid':None,'started_utc_epoch':time.time()}
+meta={'run':run,'world_id':world.get('world_id'),'seconds':runtime_seconds,'api':opt.api,'life':opt.life,'survival':opt.survival,'foraging':opt.foraging,'max_decisions':opt.max_decisions,'budget_profile':opt.budget_profile,'external_liability_cny':opt.external_liability_cny,'stop_at_utc':opt.stop_at_utc,'manual_route_verification':opt.exercise_routes,'ue_pid':None,'gateway_pid':None,'started_utc_epoch':time.time()}
 flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
 owned_ue=None;owned_gateway=None;logs=[]
 def record():meta_path.write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -128,6 +137,8 @@ try:
     args.append(f'-AincradDecisionLimit={opt.max_decisions}')
     args.append(f'-AincradDecisionWindow={max(12,runtime_seconds-55)}')
     if opt.life:args.append('-AincradLife')
+    if opt.survival:args.append('-AincradSurvival')
+    if opt.foraging:args.append('-AincradForaging')
     if confirmed_unsent_ledger:
         args.extend(['-AincradConfirmedUnsentOperation='+opt.confirm_local_rejection,'-AincradConfirmedUnsentLedgerId='+confirmed_unsent_ledger])
         meta['confirmed_local_rejection']={'operation_id':opt.confirm_local_rejection,'ledger_id':confirmed_unsent_ledger,'ledger_matching_rows':0,'replayed':False}

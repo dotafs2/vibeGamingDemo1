@@ -101,6 +101,7 @@ private:
     bool bExerciseRoutes = false;
     bool bLookExerciseStarted = false;
     bool bHeldToolExerciseRecaptured = false;
+    bool bForagingExerciseStarted = false;
     bool bLifeEnabled = false;
     bool bLifeSaveFailed = false;
     int32 DecisionLimit = 3;
@@ -119,6 +120,11 @@ private:
     int32 LifeAxeVisualState = INDEX_NONE;
     UPROPERTY() TObjectPtr<AActor> LifeSuppliesVisual;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LifeSupplyPieces;
+
+    UPROPERTY() TObjectPtr<AActor> ForagingVisual;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ForagingStockPieces;
+    void UpdateForagingVisual();
+    bool TravelForResource(FResidentSlot& Slot, const FString& ResourceId);
 
     void RebindLifeState();
     bool StartLifeAction(FResidentSlot& Slot, const FString& OptionId, const FString& Utterance, const FString& OperationId);

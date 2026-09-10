@@ -1,3 +1,5 @@
+> 当前主线与接手顺序见 [CURRENT_STATE.md](../../CURRENT_STATE.md)。本文保留场景操作与美术版本历史；过期的“下一步讨论”不是当前阻断。新生活入口见 [只读观察窗](SAO_LIFE_DEBUG_README.md)，尚未完成Godot社会迁移。
+
 > 最新用户裁决：停止 V4 按截图反投影的造型路线。改做正常、精致、细节更多且符合 SAO 设定的完整三维建筑，不要求截图完全一致。见 validation/market_craft_v5/Direction.md；下文 V4 为已否决历史。
 
 # 起始之城：可行走空间原型
