@@ -20,4 +20,6 @@
 
 上传必须同时完成 LFS 内容传输和 Git 分支推送，并核对远端提交。LFS 用小指针记录大文件，浏览器里看见指针不代表模型丢失；取得项目时需安装 Git LFS 并执行 `git lfs pull`。[Git LFS 官方说明](https://git-lfs.com/)
 
-本机手动上传入口：`C:\vibeGamingDemo1\tmp\level0-assets-upload-20260910\Push-Level0-Art.ps1`。脚本使用普通 Git，遵守当前执行入口；不修改 PATH、CodexProcessGate 或系统限制。任务内只进行了清单、哈希和脚本验证，实际远端结果以脚本生成的成功回执及用户终端输出为准。
+2026-09-10 已完成补传：[提交 1f6e5fe](https://github.com/dotafs2/vibeGamingDemo1/commit/1f6e5fe5f564b5fba596ef8d428cb4532cb7e13b) 包含 24 个新增/修改美术文件、1,064,642,297 字节，24 项 LFS 指针哈希与内容传输均有成功回执。其余清单资源已在此前版本中管理。该提交已包含于后续同步的分支，本机 `git lfs pull` 与 `git lfs fsck` 通过。角色依赖与干净克隆运行限制仍按上文执行。
+
+历史手动上传入口为 `C:\vibeGamingDemo1\tmp\level0-assets-upload-20260910\Push-Level0-Art.ps1`；成功回执位于同目录的 `remote_art_receipt.json`。当前普通 Git 已恢复，无需重复运行旧上传脚本。

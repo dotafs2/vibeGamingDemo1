@@ -40,3 +40,23 @@ MMD 球面/Toon 专用效果、142 刚体/374 约束、MMD IK 求解和 4 个材
 Maya 原生关键帧可自动补间；[MotionMaker 官方工作流](https://help.autodesk.com/cloudhelp/2026/ENU/Maya-MotionMaker/files/GUID-473B9D09-124C-4A5C-94F8-F3B4B89FAB18.html)是路线/动作条件生成及 HumanIK 重定向。尚未验证此版本以任意两个人工姿势为端点的 AI 动作补全，桐人也尚未完成 HumanIK 定义。骨骼和蒙皮已实际可用，用户无需重新从零绑定。
 
 此后续没有启动新 Maya/助手进程或收费调用；播放已停止，用户 Maya 与姿势按钮保持可用。没有提交或上传。
+
+## 后续：夸张腾空上勾拳与灯光
+
+用户接受助手通过骨骼脚本摆姿势，并要求快速完成，之后要求更夸张的跳跃、细化姿势和合适打光。当前 Maya 已打开 [Kirito_Airborne_Uppercut.ma](Maya/Kirito_Airborne_Uppercut.ma)：右拳伸向斜上方、右膝提起、左腿向后、胸胯扭转、手指分节握拳，衣摆与部分发梢配合上升方向调整。全身最低点离地 45 cm，是静态腾空 Pose；没有运行衣物物理或生成跳跃动画。
+
+场景包含暖色主光、冷色补光、蓝色轮廓光和较弱暖色侧后光、环境补光及暗蓝地面，使用实际 Maya 灯光和阴影。外套、手套、头发与金属附件补了分级高光，开启视口抗锯齿与适量遮蔽。保留独立 Hero 摄像机，当前透视视口已对准完整动作。见[真实视口图](Maya/airborne_uppercut_viewport.png)、[制作脚本](pose_airborne_uppercut_maya.py)和[结果记录](Maya/airborne_uppercut_result.json)。按用户要求仅做针对画面的快速修正，没有扩大为一轮工程测试。原站姿、两姿势演示及第一版上勾拳场景均保留；没有另启长期进程、AI 模型调用、提交或上传。
+
+## 后续：普通补间与真实 MotionMaker 混合动画
+
+已在用户 Maya 中载入 [Kirito_Transition_Comparison.ma](Maya/Kirito_Transition_Comparison.ma)，提供普通过渡（1–72 帧）与 AI 混合过渡（101–172 帧）两个播放按钮，均为 24 fps。首尾为同一个站立上勾拳和腾空上勾拳。普通版采用四元数平滑插值；AI 混合版实际调用本机 Maya 2026.2 MotionMaker 的 adsk_biped/basic_male 模型，生成跳跃关键帧后，将源 36–49 帧的腿部方向、身体动作和足部离地时序重定向，并混合回指定端点。拳姿、衣摆及首尾衔接由脚本调整，不能称为 AI 自动生成格斗动作或任意双端点 AI 补间。
+
+原始 AI 生成成功码为 0，输出保存在 [MotionMaker_Native_Jump_Source.ma](Maya/MotionMaker_Native_Jump_Source.ma) 和 [采样数据](Maya/native_motionmaker_jump.json)。制作入口为 [生成脚本](generate_native_motionmaker.py) 与 [对比脚本](compare_uppercut_transitions_maya.py)；[结果记录](Maya/transition_comparison_result.json) 包含范围和来源。[普通版预览](Maya/transition_smooth.gif)、[AI 混合版预览](Maya/transition_ai.gif) 使用实际 Maya 软件渲染。源场景保留，用户当前未保存状态另存 Before_Transition 时间戳文件。所有后台 mayapy 已退出，无收费 API、提交或上传。
+
+按钮为当前会话 UI。重新打开对比场景后，在 Maya Python 中使用 runpy.run_path 执行 compare_uppercut_transitions_maya.py，再调用返回字典的 show_ui() 可恢复，勿调用 main() 重建。
+
+## 后续：助手编排的夸张上勾拳 Demo
+
+用户要求自行判断合理过渡并制作演示。新增 [Kirito_Directed_Uppercut_Demo.ma](Maya/Kirito_Directed_Uppercut_Demo.ma)：24 fps、1–72 帧、3 秒，保留原先两个首尾姿势。中间重新设计收拳、压低约 32 cm、胸胯反扭、双脚固定蓄力、快速蹬地、拳头上行弧线、顶点轻微超调与定格，最终回到原腾空姿势。衣摆蓄力阶段按世界重力方向摆放，底部避免钻地，起跳后延迟张开；这是骨骼动画，没有衣物物理。新版本是助手编排关键帧，未新增 MotionMaker 模型调用，之前真实 MotionMaker 输出保留。
+
+制作脚本 [direct_uppercut_demo_maya.py](direct_uppercut_demo_maya.py)，Maya 内运行 [open_directed_uppercut_maya.py](open_directed_uppercut_maya.py) 可保存当前未保存状态、打开 Demo 并显示“播放 Demo / 半速看动作细节 / 停止”。演示视频 [MP4](Maya/Kirito_Directed_Uppercut_Demo.mp4) 为实际 Maya 软件渲染，768×768、24 fps。未提交、上传或启动收费调用。

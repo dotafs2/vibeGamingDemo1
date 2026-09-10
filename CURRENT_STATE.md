@@ -50,6 +50,8 @@
 
 已核对远程新增提交 `1f6e5fe`：补传自制环境美术、Blender/GLB与LFS恢复说明。本次交接保留该提交。详见 `Prototypes/StartingTownWalkthrough/Art/Asset_Publication.md`。新电脑需取得Git LFS内容；默认人物Kirito.glb仍是本机依赖，未随Git分发，按原作者来源与项目接入说明准备，不能声称干净克隆已能完整启动。只读生活窗可独立使用。
 
+2026-09-10 本机已实际同步生存/采集交接提交 `2b4f482`，LFS 拉取与完整性检查通过。本次补齐 Maya 姿势和动作制作脚本，入口为 [Maya 制作记录](Prototypes/StartingTownWalkthrough/Art/ExistingSAO/Maya_Import.md)；衍生角色场景仍不随 Git 分发。此次仅同步与静态检查，没有启动新的引擎验收或付费居民运行。
+
 ## 按需入口
 
 - Godot场景：[原型说明](Prototypes/StartingTownWalkthrough/README.md)，`project.godot` / `Run.ps1`。
