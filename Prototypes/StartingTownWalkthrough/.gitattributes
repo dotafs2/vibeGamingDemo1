@@ -1,0 +1,24 @@
+
+
+# Reviewed authored art upload 2026-09-10; exact paths only.
+"Art/ReferenceScenes/Level0_Anime_Reference_Scenes.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/Level0_Anime_Reference_Scenes_HQ.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketArchitectureV4/StartingTown_Market_ArchitectureV4.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketCraftV5/StartingTown_Market_CraftV5.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketCraftV5/textures/plaster_normal.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketCraftV5/textures/stone_normal.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketCraftV5/textures/wood_normal.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketDemoV3/landmark_check.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketDemoV3/landmark_check.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketDemoV3/market_v3_assembled_preview.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketDemoV3/market_v3_demo.png" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/MarketDemoV3/StartingTown_Market_V3.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/Rejected_V1/Level0_Anime_Reference_Scenes.blend" filter=lfs diff=lfs merge=lfs -text
+"Art/ReferenceScenes/TolbanaCraftV5/Tolbana_Plaza_CraftV5.blend" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/StartingTown_Market.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/StartingTown_Market_ArchitectureV4.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/StartingTown_Market_CraftV5.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/StartingTown_Market_V3.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/Tolbana_Plaza.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/reference_scenes/Tolbana_Plaza_CraftV5.glb" filter=lfs diff=lfs merge=lfs -text
+"assets/StartingTown_Outline.glb" filter=lfs diff=lfs merge=lfs -text
